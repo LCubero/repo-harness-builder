@@ -6,5 +6,17 @@
 
 - Repository documentation remains the visible source of project state.
 - Gentle AI and Engram are required for integrated continuity, but never override current repository evidence.
-- Git, provider, backup, and publication operations are outside the core harness.
-- The harness creates absent files. Only selected root runtime pointers may receive their exact missing directive; every other existing file stays unchanged.
+- Editable product sources are `skill/repo-harness-builder/` and `command/repo-harness-builder.md`; `.opencode/` and `.claude/` are runtime projections for execution and testing.
+- This repository recursively uses its generated harness to improve the builder itself.
+- Git initialization and provider publication are optional, separately approved boundaries. Publication also requires an explicit private or public visibility choice.
+- New or effectively empty repositories receive a complete useful baseline after plan approval, including `README.md`. Existing repositories receive content analysis and an informed integration proposal. Obsolete or incompatible content may be archived for a clean baseline only after a distinct conversational choice and explicit approval.
+- Generated ownership markers may bound generated material but never exempt a pre-existing README or other human-owned document from analysis and improvement.
+- Only builder apply uses the exact digest-bound `APROBAR` or `DENEGAR` protocol. Generated session skills use conversational questions while retaining explicit approval for external mutations.
+- Root runtime pointers preserve all existing bytes, detect the exact directive as a complete line, and append only the missing newline-delimited directive using the existing consistent line-ending convention where possible.
+- Prior harness versions are audited rather than refused because managed files exist. Upgrade analysis classifies current, stale, missing, human-evolved, and legacy paths. Replacement, archive, and deletion require an exact proposed action and explicit user approval.
+- Generated session-stop approvals are resumable checkpoints within the same invocation. Approved actions run once, declined documentation does not stop closing, and final handoff output follows refreshed evidence and successful final continuity saving.
+- Generated session-start synchronizes only after read-only state inspection and conversational network approval. It uses fetch, ahead/behind comparison, and fast-forward-only integration, never blind pull, rebase, reset, or automatic conflict resolution.
+- Generated session-stop completes documentation and continuity before Git. Commit and push are separate resumable gates; staging excludes private state, tool indexes, secrets, caches, and unrelated work, while push requires a fresh fetch and stops on remote-ahead or divergence.
+- Generated sessions use scoped `ready`, `paused`, `blocked`, `failed`, `completed`, and `degraded` outcomes. Required continuity and optional Git branches report separately, and optional Git failure never falsely fails the whole session.
+- Every safe pending approval is one concrete final question. Commit proposals require per-path sensitive screening, exact work-unit paths, rationale, Conventional Commit message, exclusions, and staged-path disclosure. Transport diagnostics retain bounded command receipts and safely-local state.
+- Self-hosted verification separates on-disk projection parity from active-process registered skill freshness and from runtime reload capability. Same-process stale registered content degrades only optional live validation; it does not block or fail verified repository state, documentation close, or continuity, and no reload command is assumed.

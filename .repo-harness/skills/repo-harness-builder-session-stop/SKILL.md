@@ -26,19 +26,51 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 - If any Engram save fails, surface the failure and must not claim successful continuity.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - Git, commit, push, provider, backup, and publication actions are separate optional gates and are never implied by session stop.
+- Keep ordinary handoff and continuation questions conversational. Do not use the builder's exact digest-bound approval vocabulary.
+- Ask for explicit conversational approval before any external mutation.
+- Ask only one blocking question per turn. Every blocking approval is a resumable intermediate checkpoint, not terminal completion or a new unrelated task.
+- Commit approval does not approve push. Every Git or network action requires its own separate conversational approval.
+- Never use `git add .`, stage secrets, `.ld9/`, `.codegraph/`, unknown generated caches, or unrelated pre-existing work automatically.
+- Never force-push, rebase, reset, auto-merge, or resolve conflicts automatically.
+- Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
+
+## Self-Update And Runtime Cache
+
+- Distinguish on-disk canonical and projection parity, active-process registered skill freshness, and runtime reload or restart capability.
+- A session-stop running under previously loaded instructions must still complete the best valid close permitted by that contract. It must not simulate unseen new instructions, but may report deferred registered-name validation as an informational limitation.
+- If current on-disk projections are verified but registered-name loading in this same process returns older content, report an expected active-process cache limitation and defer registered-name validation. Do not classify repository state, documentation close, continuity, or verified projections as blocked or failed.
+- Optional live registered-name validation is `degraded` while required close and continuity may succeed, so the close may remain `completed`. A fresh runtime process will load the updated projection; a supported explicit registry reload may be used if the runtime provides one. Never claim or invent a reload command, and do not require immediate restart unless the user wants live validation now.
 
 ## Execution Steps
 
 1. Inspect the selected repository state read-only and collect fresh verification evidence.
 2. Summarize completed work, decisions, unresolved issues, and next steps.
 3. Validate referenced paths and reconcile the summary with `REPO-HARNESS.md` and deeper documentation.
-4. Present the exact documentation changes and any meaningful completed-work changelog entry for approval, one blocking decision at a time.
-5. After approval, update only the canonical owners and verify links and claims.
-6. Save significant decisions, discoveries, fixes, and the session summary to Engram; report every save result.
+4. Present the exact documentation changes and any meaningful completed-work changelog entry for conversational approval, one blocking question per turn, then pause.
+5. After the user answers, resume the same session-stop invocation from the next unfinished step. If approved, execute that exact approved action once, update only the canonical owners, refresh repository evidence, and verify paths, links, and claims. If documentation is declined, continue the close protocol without writing and record the proposal as declined or pending as appropriate.
+6. A session summary saved before an approved mutation is provisional. Save or update a final session summary that includes the approved mutation only after refreshed evidence and verification.
+7. Save significant decisions, discoveries, fixes, and the session summary to Engram; report every save result.
+8. Only after documentation and continuity are complete, classify staged paths, unstaged tracked paths, untracked paths, renamed paths, deleted paths, unrelated pre-existing paths, excluded private, tool, and cache paths, and sensitive-looking paths. Perform mandatory per-path sensitive screening before any proposed staging. Filename screening is a warning baseline, not proof of safety. A sensitive candidate must pause before any staging.
+9. For each proposed reviewable work-unit grouping show exact paths, why they belong together, a proposed Conventional Commit message, explicit exclusions, and already-staged paths. The final user-facing line must ask: `May I stage exactly these paths and create this proposed commit: <message>?` Resume the same session-stop invocation after approval, stage only those paths, create the commit exactly once, refresh status after the commit, and only then evaluate push.
+10. Existing unpushed commits trigger a push offer without an empty commit. Commit approval never implies push. If the local branch is ahead and push preflight is safe, show the upstream and ahead count, then end with: `May I push these existing local commits to <upstream>?`
+11. A detached HEAD, unborn branch, no upstream, missing remote, missing remote branch, or ahead-behind divergence blocks only the optional push branch and must include actionable safely-local evidence. Fetch or comparison before push requires explicit network approval scoped to that exact operation. Do not infer broad consent from earlier approval.
+12. Inspect the upstream remote URL, host, and scheme read-only. Native Git is the core transport. Recognized provider tooling is only an alternate credential path if installed and separately approved. Before push, fetch and compare only after exact approval. If the remote is ahead or the branch has diverged, stop the optional push branch. For every authentication, transport, comparison, fetch, commit, or push failure, preserve the attempted command, exit status, stderr, and safely-local state. Make at most 2 distinct transport attempts, then stop without indefinite retries.
+
+## Outcome Model
+
+- `completed`: required close steps and continuity succeeded.
+- `paused`: one safe approval question is pending.
+- `blocked`: evidence or a human decision is required before that scoped branch can proceed.
+- `failed`: a required continuity step failed, or an attempted scoped operation failed.
+- `degraded`: required continuity succeeded but an optional Git branch failed or is unavailable.
+- `ready`: startup is locally actionable; it is not a close outcome.
+
+Always report required continuity outcome separately from optional Git branch outcome. An optional commit, synchronization, provider, or push failure must not make the whole session `failed`.
 
 ## Output Contract
 
-Return completed work, decisions, unresolved issues, next steps, verified paths, proposed or approved documentation updates, memory result, and separately pending optional gates.
+Deliver the complete Output Contract only after continuity is saved successfully. Return close outcome, required continuity outcome, optional Git branch outcome, completed work, decisions, unresolved issues, next steps, verified paths, documentation update result, memory result, classified Git state, proposed or completed work units, commit result, push result, transport receipts, safely-local state, and separately pending optional gates. When safe and relevant, ask exactly one blocking question and make it the final user-facing line.
+If continuity saving fails, surface the failure and do not claim successful continuity or a final handoff.
 
 ## References
 

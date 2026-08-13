@@ -2,7 +2,7 @@
 
 Read this before creating the standalone `repo-harness-builder` repository. It carries the knowledge that currently lives in `skills-pack-ld9` and would otherwise be lost, because the builder generates an empty harness shell and knows nothing about its own history.
 
-This file is a handoff, not an operating document. Once the new repository exists and its own `CHANGELOG.md` and `docs/repo-harness/decisions.md` are seeded from the sections below, this file has served its purpose.
+This file is a completed historical handoff, not an operating document. Current policy lives in `REPO-HARNESS.md` and `docs/repo-harness/decisions.md`.
 
 ## Decision Behind The Split
 
@@ -50,7 +50,7 @@ Implementation constraint: Python 3.10 or later, standard library only.
 
 Seed these into `docs/repo-harness/decisions.md` in the new repository.
 
-- **Additive create only.** Create only absent files. The single exception appends the exact selected-runtime directive to root `CLAUDE.md` or `AGENTS.md`. Existing bytes are never replaced, normalized, or deleted.
+- **Historical preservation policy, superseded.** The original additive-create-only rule was replaced by the repository-sensitive policy in `docs/repo-harness/decisions.md`.
 - **Version control is the safety net.** The tool is not presented as a boundary against a hostile filesystem.
 - **Wrappers load by registered name, never by path.** This applies to generated wrappers and to the external command wrapper.
 - **Tool-owned path boundary.** The builder claims no path under `.atl`, `.codegraph`, or `.engram`, and generates no ignore file.
@@ -58,7 +58,7 @@ Seed these into `docs/repo-harness/decisions.md` in the new repository.
 - **Root pointer attribution.** `CLAUDE.md` counts with `claude-code`. `AGENTS.md` counts with `opencode` or `pi`. Only `REPO-HARNESS.md` and `CHANGELOG.md` are common to every runtime.
 - **Integrated preflight is local.** Defined as `gentle-ai version` plus one successful local Engram MCP call. It does not require Engram Cloud health or sync.
 - **Language split.** User-facing reports are localized. Generated artifacts stay in English.
-- **One blocking decision per turn.** Approval answers are case-sensitive uppercase, exactly `APROBAR` or `DENEGAR`, and a digest is approved once and never reused.
+- **One blocking decision per turn.** The builder's content-bound apply plan uses case-sensitive uppercase `APROBAR` or `DENEGAR`, and a digest is approved once and never reused. Other choices are conversational.
 - **Generated session-start must not delegate to a subagent.** The purpose of session-start is to load evidence into the main thread. A subagent compresses and returns a summary, which discards the exact evidence the parent needs. Delegation exists to keep noise out of the parent, and here the output is the point.
 
 ## Builder History To Seed Into The New Changelog

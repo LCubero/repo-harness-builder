@@ -4,19 +4,21 @@
 
 Resolve one explicitly selected repository root. Inspect only descendants needed to classify intended harness paths, relevant ancestors, existing project documentation, runtime surfaces, and ownership evidence. Reject links, aliases, sibling repositories, and external references. Do not read secret values or mutate the target.
 
-Report which managed paths are absent and which already exist. Report uncertainty and the exact missing evidence instead of guessing.
+Classify the repository as new or effectively empty, or existing, using current content rather than Git presence alone. For an installed prior harness, audit the manifest, generated markers, managed files, and runtime projections. Classify each intended managed path as `current`, `stale`, `missing`, `human-evolved`, or `legacy`; an exact root pointer directive is `present`. In an existing repository, analyze relevant content and summarize what should be reused, improved, added, or superseded. Report uncertainty and the exact missing evidence instead of guessing.
 
 Resolve integration before approval. Default to integrated mode and validate the Gentle AI CLI through the host's available status, doctor, or version capability, then validate Engram through its available MCP or CLI. If either validation fails, surface the failure and do not approve or apply an integrated plan. `--standalone` is the sole exception and generates repository-only continuity without either dependency.
 
-While auditing, resolve the license the generated skills will carry: read a root `LICENSE` or `LICENSE.md`, then a `license` field in `package.json`, `pyproject.toml`, or `Cargo.toml`. Use the first non-empty, single-line SPDX expression found. Reject values containing characters outside letters, digits, spaces, `.`, `+`, `-`, `:`, and parentheses. Pass the exact accepted value to the renderer, which encodes it as a quoted YAML string rather than interpolating it as a plain scalar. When nothing declares one, generate `UNLICENSED` and say so in the report rather than choosing on the project's behalf. This is an observation, not a question; do not spend a blocking turn on it.
+While auditing, resolve the license the generated skills will carry: read a root `LICENSE` or `LICENSE.md`, then a `license` field in `package.json`, `pyproject.toml`, or `Cargo.toml`. Use the first non-empty, single-line SPDX expression found. Reject values containing characters outside letters, digits, spaces, `.`, `+`, `-`, `:`, and parentheses. Pass the exact accepted value to the renderer, which encodes it as a quoted YAML string rather than interpolating it as a plain scalar. When nothing declares one, read `license-selection.md` and ask the user to choose; do not choose on the project's behalf. If the user declines to choose, generate `UNLICENSED` and say so.
 
 ## Decisions
 
 Ask one blocking decision per turn and stop for the answer. Keep questions clear and localized without forcing ceremonial labels on trivial exchanges. Explain the immediate consequence when it is not obvious.
 
-For the write decision only, state `Answers are case-sensitive and must be written exactly in uppercase.` before showing the choices. The complete answer domain is exactly `APROBAR` and `DENEGAR`. Continue only for `APROBAR`; stop for `DENEGAR`. Reject lowercase, mixed case, aliases, and prose with `Invalid answer. Write exactly APROBAR or DENEGAR in uppercase.` Do not normalize or retry.
+For the builder's content-bound apply plan only, state `Answers are case-sensitive and must be written exactly in uppercase.` before showing the choices. The complete answer domain is exactly `APROBAR` and `DENEGAR`. Continue only for `APROBAR`; stop for `DENEGAR`. Reject lowercase, mixed case, aliases, and prose with `Invalid answer. Write exactly APROBAR or DENEGAR in uppercase.` Do not normalize or retry. Runtime, license, integrate/update versus archive/start-clean, and generated session choices are conversational and non-strict.
 
-The first decision after audit permits planning only. The later write decision must reference the exact current plan and its newly printed digest; never reuse a digest from an earlier preview. A proven-empty bootstrap needs one lightweight write approval after the exact create set is shown. Adopt and upgrade need stronger ownership and conflict evidence.
+The first decision after audit permits planning only. A new or effectively empty repository proceeds to a complete baseline plan. An existing repository first receives an evidence-based proposal and, when needed, one conversational choice between integrate/update and archive/start clean. The later write decision must reference the exact current plan and its newly printed digest; never reuse a digest from an earlier preview.
+
+Upgrade diagnostics and integration choices are conversational. Exact `APROBAR` and `DENEGAR` remain exclusive to the final content-bound apply plan. A proposal may name replacement for proven generated `stale` or `legacy` files, but human-evolved content requires integration or archive/start-clean choices. Never schedule replacement, archive, or deletion merely from classification.
 
 ## Runtime Selection
 
@@ -54,4 +56,4 @@ Then translate every user-facing word, not only the titles. Both report template
 
 Preserve commands, paths, identifiers, enum values, states, and anything inside backticks exactly as written. Generated repository artifacts stay in English regardless of the report language.
 
-Optional capability questions appear only when relevant. Do not ask about Git, providers, remotes, visibility, collaboration, backup, or publication merely to satisfy a generic checklist.
+After the harness is verified, optional capability questions appear only when relevant. Git initialization and provider publication are separate approval boundaries. For publication, suggest GitHub as one provider, ask whether visibility should be private or public, and require explicit approval before authentication or remote mutation.

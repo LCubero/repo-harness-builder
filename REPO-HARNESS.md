@@ -6,7 +6,7 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 
 ## Purpose
 
-Canonical source of `repo-harness-builder`, an agent skill that builds or inspects a minimal documentation and continuity harness inside a selected repository. It creates only absent files and appends only the exact root runtime pointer directive. This repository is the product; consumers install a copy of the packaged skill.
+Canonical source of `repo-harness-builder`, an agent skill that builds or inspects a minimal documentation and continuity harness inside a selected repository. Editable product sources are `skill/repo-harness-builder/` and `command/repo-harness-builder.md`; `.opencode/` and `.claude/` are runtime projections for testing. This repository recursively uses its generated harness to improve the builder itself.
 
 ## Hard Rules
 
@@ -16,7 +16,7 @@ Canonical source of `repo-harness-builder`, an agent skill that builds or inspec
 - Do not introduce unrelated tools, processes, abstractions, or scope.
 - Do not retry indefinitely. After a repeated failure, stop, present evidence, and request a decision.
 - Do not continue automatically into unrequested tasks.
-- Preserve unknown files and existing work.
+- Preserve unknown files and existing work through informed, explicitly approved evolution; never freeze content by default.
 - Verify current repository evidence before trusting prior memory. Current files win.
 - Gentle AI and Engram are required for integrated continuity; repository evidence remains authoritative.
 - Keep Git, provider, backup, and publication operations separately approved. Nothing implies them.

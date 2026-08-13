@@ -6,6 +6,7 @@
 
 | Document | Ownership |
 |---|---|
+| `../../README.md` | Product guide, development entry point, and self-hosting source model |
 | `usage.md` | Human workflow, integration availability checks, and approval boundaries |
 | `current-state.md` | Verified current state, recent completed work, pending work, and next step |
 | `decisions.md` | Durable decisions and constraints with evidence |

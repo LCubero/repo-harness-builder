@@ -25,20 +25,53 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - If Engram is unavailable or recovery fails, surface the failure and must not claim successful continuity.
 - Report discrepancies and uncertainty instead of inventing certainty.
+- Keep ordinary continuation questions conversational and low-friction. Do not use the builder's exact digest-bound approval vocabulary.
+- Ask for explicit conversational approval before any external mutation.
+- Treat every network approval as a resumable checkpoint: resume the same session-start invocation and execute the approved synchronization branch once.
+- A clean worktree and index with a usable upstream requires one conversational approval before network access.
+- Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
+
+## Self-Update And Runtime Cache
+
+- Distinguish on-disk canonical and projection parity, active-process registered skill freshness, and runtime reload or restart capability.
+- In a fresh process, compare the on-disk projection checker result and report `current` or `drift` normally. This process cannot prove what a prior process cached.
+- If current on-disk projections are verified, older content observed by registered name in the process that changed them is an expected active-process cache limitation, not repository or continuity failure. Defer registered-name validation to a fresh runtime process or use a supported explicit registry reload if the runtime provides one. Never claim or invent a reload command.
 
 ## Execution Steps
 
 1. Resolve the selected repository root and confirm `REPO-HARNESS.md` belongs to it.
 2. Read the rulebook, follow only the decision gates the current work triggers, then the latest relevant changelog entries.
-3. Inspect current files and available read-only repository status.
+3. Detect whether the root is a Git repository. If it is, inspect branch, worktree, index, upstream, remotes, and each upstream remote URL, host, and scheme read-only before suggesting network access. Provider recognition is optional and must not require provider tooling.
 4. Run `python .repo-harness/check.py` and retain its status and any drifted runtime projection paths.
 5. Recover relevant recent context from Engram, label it as memory evidence, and reconcile it with repository evidence.
 6. Identify completed work, remaining work, constraints, and the next recommended step.
 7. Report stale links, contradictions, or missing evidence before proceeding.
 
+## Optional Git Synchronization Gate
+
+Outcomes are scoped. Startup uses `ready`, `paused`, `blocked`, `failed`, or `degraded`; a successful close uses `completed`. A required continuity failure is `failed`. An optional Git branch may be `paused`, `blocked`, `failed`, or `degraded` while local startup remains `ready`; optional synchronization failure must not make the whole session `failed`.
+
+| Observed state | Required behavior |
+|---|---|
+| Root is not a Git repository | Continue normal local startup. Git initialization is only a separate later capability, never a blocker. |
+| Git has a dirty worktree or index | Report exact dirty state, continue local startup, and defer synchronization. Do not suggest or run fetch or integration. |
+| detached HEAD or unborn branch | Mark the optional Git branch `blocked`, keep startup `ready`, and give actionable remediation: check out or create the intended branch locally before synchronization. |
+| Missing upstream, missing upstream remote, or missing upstream branch | Mark the optional Git branch `blocked`, keep startup `ready`, and name the exact local configuration or remote branch evidence that is missing. Do not guess a target. |
+| multiple remotes make the target ambiguous | Mark the optional Git branch `paused`, keep startup `ready`, show the candidates, and ask which remote is intended as the final user-facing line. |
+| Clean Git with a usable upstream | Show branch, upstream, clean status, remote URL host and scheme, then end with: `May I run `git fetch <remote> <branch>` to check remote state?` Substitute the exact values and keep network approval mandatory. |
+| Equal | Report synchronization healthy and continue. |
+| ahead-only | Report synchronization healthy, including exact local unpushed commit evidence. |
+| behind-only | After approval, use `git fetch`, compare ahead and behind, then use fast-forward-only integration. |
+| diverged | Preserve state, report exact evidence, and stop only the Git synchronization branch for a human decision. |
+| comparison failure | Mark the optional Git branch `failed`, preserve safely-local evidence and command receipt, and continue startup as `degraded` with actionable remediation. |
+| authentication or transport failure | Mark the optional Git branch `failed`, preserve state and the full command receipt, stop only that branch, and continue local startup as `degraded`. |
+| fast-forward-only failure | Preserve state and exact command error, stop only the Git synchronization branch, and do not claim synchronization. |
+
+Never use git pull, git rebase, git reset, force operations, merge on divergence, or automatic conflict resolution. Native Git is the core transport. Recognized provider tooling is only an alternate credential path if installed and separately approved. For transport diagnostics, retain each attempted command, exit status, stderr, and safely-local state. Make at most 2 distinct transport attempts, never indefinite retries.
+
 ## Output Contract
 
-Return current objective, evidence read, completed work, remaining work, discrepancies, and one next recommended step. State that no mutation occurred.
+Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
 Report `Skills al día` when the checker returns `current`. Report `Skill necesita actualización: <paths>` when the checker returns `drift`, listing each drifted runtime projection.
 
 ## References

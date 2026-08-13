@@ -90,6 +90,78 @@ class ApprovalUxTests(unittest.TestCase):
             self.assertEqual(json.loads(result.stdout)["approvalPrompt"], TOOL.APPROVAL_PROMPT)
 
 
+class ProductWorkflowTests(unittest.TestCase):
+    def test_render_creates_a_bounded_human_owned_readme(self):
+        outputs = TOOL.render("Example", [])
+        readme = outputs["README.md"]
+        self.assertIn("<!-- repo-harness-builder:start -->", readme)
+        self.assertIn("<!-- repo-harness-builder:end -->", readme)
+        self.assertTrue(TOOL.human_owned("README.md", RULEBOOK))
+
+    def test_existing_readme_is_reported_for_informed_evolution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            readme = root / "README.md"
+            original = b"# Human product guide\n\nKeep every byte.\n"
+            readme.write_bytes(original)
+            outputs = TOOL.render("Example", [])
+            plan = TOOL.plan_changes(root, outputs)
+            entry = next(item for item in plan["existing"] if item["path"] == "README.md")
+            self.assertIn("analyze", entry["reason"])
+            self.assertIn("approved", entry["reason"])
+            TOOL.write_outputs(root, outputs, plan)
+            self.assertEqual(readme.read_bytes(), original)
+
+    def test_builder_documents_repository_sensitive_readme_maintenance(self):
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        safety = (ROOT / "references" / "preservation-and-safety.md").read_text(encoding="utf-8")
+        combined = skill + safety
+        self.assertIn("new or effectively empty", combined)
+        self.assertIn("analyze", combined)
+        self.assertIn("archive", combined)
+        self.assertIn("must not require `APROBAR`", combined)
+
+    def test_existing_repository_policy_offers_integration_or_clean_baseline(self):
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        safety = (ROOT / "references" / "preservation-and-safety.md").read_text(encoding="utf-8")
+        combined = skill + safety
+        self.assertIn("integrate", combined)
+        self.assertIn("start from a clean generated baseline", combined)
+        self.assertIn("explicit approval", combined)
+        self.assertNotIn("Create only absent files", skill)
+
+    def test_exact_uppercase_gate_is_scoped_to_content_bound_apply_plan(self):
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        interview = (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")
+        combined = skill + interview
+        self.assertIn("content-bound apply plan", combined)
+        self.assertIn("conversational", combined)
+
+    def test_session_skills_use_conversational_approval_not_builder_protocol(self):
+        outputs = TOOL.render("Example", [])
+        for suffix in ("session-start", "session-stop"):
+            text = outputs[f".repo-harness/skills/example-{suffix}/SKILL.md"]
+            self.assertIn("conversational", text)
+            self.assertNotIn("APROBAR", text)
+            self.assertNotIn("DENEGAR", text)
+
+    def test_builder_keeps_git_init_and_publication_as_separate_optional_gates(self):
+        text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("Git initialization", text)
+        self.assertIn("provider publication", text)
+        self.assertIn("GitHub", text)
+        self.assertIn("private or public", text)
+        self.assertIn("separate approval", text)
+
+    def test_license_guidance_offers_verified_choices_and_custom_choice(self):
+        text = (ROOT / "references" / "license-selection.md").read_text(encoding="utf-8")
+        for token in ("MIT", "Apache-2.0", "GPL-3.0-only", "custom", "https://spdx.org/licenses/"):
+            self.assertIn(token, text)
+        self.assertIn("patent", text.lower())
+        self.assertIn("copyleft", text.lower())
+        self.assertNotIn("is the most popular", text.lower())
+
+
 def install(
     root: Path,
     project: str = "Example",
@@ -244,7 +316,13 @@ class RootPointerTests(unittest.TestCase):
             self.assertEqual(target.read_bytes(), original)
 
     def test_missing_directive_appends_smallest_newline_delimited_bytes(self):
-        cases = ((b"human bytes", b"human bytes\n"), (b"human bytes\r\n", b"human bytes\r\n"))
+        cases = (
+            (b"", b""),
+            (b"human bytes", b"human bytes\n"),
+            (b"human bytes\n", b"human bytes\n"),
+            (b"human bytes\r\n", b"human bytes\r\n"),
+            (b"human\r\nbytes", b"human\r\nbytes\r\n"),
+        )
         for original, prefix in cases:
             with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
@@ -254,7 +332,37 @@ class RootPointerTests(unittest.TestCase):
                 plan = TOOL.plan_changes(root, outputs)
                 self.assertEqual([item["path"] for item in plan["append"]], ["AGENTS.md"])
                 TOOL.write_outputs(root, outputs, plan)
-                self.assertEqual(target.read_bytes(), prefix + AGENTS_POINTER.encode() + b"\n")
+                ending = b"\r\n" if b"\r\n" in original and b"\n" not in original.replace(b"\r\n", b"") else b"\n"
+                self.assertEqual(target.read_bytes(), prefix + AGENTS_POINTER.encode() + ending)
+
+    def test_pointer_detection_requires_an_exact_line(self):
+        near_matches = (
+            ("prefix " + CLAUDE_POINTER + " suffix").encode(),
+            (CLAUDE_POINTER + "-old").encode(),
+            ("# " + CLAUDE_POINTER).encode(),
+        )
+        for original in near_matches:
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root / "CLAUDE.md"
+                target.write_bytes(original)
+                outputs = TOOL.render("Example", ["claude-code"])
+                plan = TOOL.plan_changes(root, outputs)
+                self.assertEqual([item["path"] for item in plan["append"]], ["CLAUDE.md"])
+                TOOL.write_outputs(root, outputs, plan)
+                self.assertEqual(target.read_bytes(), original + b"\n" + CLAUDE_POINTER.encode() + b"\n")
+
+    def test_check_classifies_an_exact_pointer_as_present(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = TOOL.render("Example", ["claude-code"])
+            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+            target = root / "CLAUDE.md"
+            target.write_bytes(b"human\r\n" + CLAUDE_POINTER.encode() + b"\r\n")
+
+            entry = next(item for item in TOOL.check(root, "Example", ["claude-code"])["files"] if item["path"] == "CLAUDE.md")
+
+            self.assertEqual(entry["state"], "present")
 
     def test_pointer_directive_is_never_duplicated(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -351,6 +459,48 @@ class CheckTests(unittest.TestCase):
             self.assertEqual(report["writes"], 0)
             self.assertEqual(report["status"], "current")
 
+    def test_check_classifies_managed_upgrade_states(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = TOOL.render("Example", ["opencode"])
+            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+
+            stale = root / ".opencode/commands/repo-harness-help.md"
+            stale.write_text(outputs[".opencode/commands/repo-harness-help.md"] + "stale\n", encoding="utf-8")
+            legacy = root / ".opencode/commands/session-start.md"
+            legacy.write_text(legacy.read_text(encoding="utf-8").replace(":3.0 -->", ":2.0 -->", 1), encoding="utf-8")
+            human = root / "docs/repo-harness/current-state.md"
+            human.write_text(human.read_text(encoding="utf-8") + "\nHuman project detail.\n", encoding="utf-8")
+            missing = root / ".repo-harness/skills/example-session-stop/SKILL.md"
+            missing.unlink()
+
+            entries = {item["path"]: item for item in TOOL.check(root, "Example", ["opencode"])["files"]}
+
+            self.assertEqual(entries[".opencode/commands/repo-harness-help.md"]["state"], "stale")
+            self.assertEqual(entries[".opencode/commands/session-start.md"]["state"], "legacy")
+            self.assertEqual(entries["docs/repo-harness/current-state.md"]["state"], "human-evolved")
+            self.assertEqual(entries[".repo-harness/skills/example-session-stop/SKILL.md"]["state"], "missing")
+            self.assertEqual(entries[".repo-harness/manifest.json"]["state"], "current")
+
+    def test_upgrade_plan_never_schedules_replacement_archive_or_deletion(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = TOOL.render("Example", ["opencode"])
+            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+            generated = root / ".opencode/commands/session-start.md"
+            generated.write_text(generated.read_text(encoding="utf-8").replace(":3.0 -->", ":2.0 -->", 1), encoding="utf-8")
+            human = root / "README.md"
+            human.write_text(human.read_text(encoding="utf-8") + "\nHuman detail.\n", encoding="utf-8")
+
+            plan = TOOL.upgrade_plan(root, "Example", ["opencode"])
+
+            self.assertEqual(plan["applyActions"], [])
+            proposals = {item["path"]: item for item in plan["proposals"]}
+            self.assertEqual(proposals[".opencode/commands/session-start.md"]["state"], "legacy")
+            self.assertEqual(proposals[".opencode/commands/session-start.md"]["choices"], ["replace-after-explicit-approval", "keep"])
+            self.assertEqual(proposals["README.md"]["state"], "human-evolved")
+            self.assertEqual(proposals["README.md"]["choices"], ["integrate-after-explicit-approval", "archive-and-start-clean-after-explicit-approval", "keep"])
+
     def test_generated_files_are_compared_by_content(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -358,7 +508,7 @@ class CheckTests(unittest.TestCase):
             (root / ".repo-harness/skills/example-session-start/SKILL.md").write_text("gutted\n", encoding="utf-8")
             report = TOOL.check(root, "Example", ["opencode"])
             states = {item["path"]: item["state"] for item in report["files"]}
-            self.assertEqual(states[".repo-harness/skills/example-session-start/SKILL.md"], "modified")
+            self.assertEqual(states[".repo-harness/skills/example-session-start/SKILL.md"], "stale")
             self.assertEqual(report["status"], "drift")
 
     def test_human_owned_files_are_compared_by_heading_presence(self):
@@ -372,7 +522,7 @@ class CheckTests(unittest.TestCase):
             rulebook.write_text(edited, encoding="utf-8")
             report = TOOL.check(root, "Example", [])
             states = {item["path"]: item["state"] for item in report["files"]}
-            self.assertEqual(states[RULEBOOK], "current")
+            self.assertEqual(states[RULEBOOK], "human-evolved")
             self.assertEqual(report["status"], "current")
 
     def test_human_owned_file_missing_a_section_is_reported(self):
@@ -471,6 +621,79 @@ class GeneratedCoreTests(unittest.TestCase):
             start,
         )
 
+    def test_session_start_defines_git_state_matrix(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/example-session-start/SKILL.md"]
+        for phrase in (
+            "not a Git repository",
+            "dirty worktree or index",
+            "clean worktree and index",
+            "usable upstream",
+            "ahead-only",
+            "behind-only",
+            "diverged",
+            "missing upstream",
+            "authentication or transport failure",
+            "fast-forward-only failure",
+        ):
+            self.assertIn(phrase, start)
+        self.assertIn("`git fetch`", start)
+        self.assertIn("fast-forward-only", start)
+        self.assertIn("Never use git pull, git rebase, git reset", start)
+
+    def test_session_start_requires_one_resumable_network_approval(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/example-session-start/SKILL.md"]
+        for phrase in (
+            "one conversational approval before network access",
+            "resume the same session-start invocation",
+            "execute the approved synchronization branch once",
+            "Git synchronization branch",
+        ):
+            self.assertIn(phrase, start)
+        self.assertNotIn("APROBAR", start)
+        self.assertNotIn("DENEGAR", start)
+
+    def test_session_contracts_define_outcomes_by_scope(self):
+        outputs = TOOL.render("Example", [])
+        start = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
+        stop = outputs[".repo-harness/skills/example-session-stop/SKILL.md"]
+        for outcome in ("`ready`", "`paused`", "`blocked`", "`failed`", "`completed`", "`degraded`"):
+            self.assertIn(outcome, start + stop)
+        self.assertIn("startup outcome", start)
+        self.assertIn("required continuity outcome", stop)
+        self.assertIn("optional Git branch outcome", start + stop)
+        self.assertIn("must not make the whole session `failed`", start + stop)
+
+    def test_session_start_requires_actionable_terminal_questions_and_remediation(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/example-session-start/SKILL.md"]
+        for phrase in (
+            "final user-facing line",
+            "May I run `git fetch <remote> <branch>`",
+            "detached HEAD",
+            "unborn branch",
+            "missing upstream remote",
+            "missing upstream branch",
+            "multiple remotes",
+            "comparison failure",
+            "actionable remediation",
+        ):
+            self.assertIn(phrase, start)
+
+    def test_transport_diagnostics_are_bounded_and_preserve_receipts(self):
+        outputs = TOOL.render("Example", [])
+        scoped = outputs[".repo-harness/skills/example-session-start/SKILL.md"] + outputs[
+            ".repo-harness/skills/example-session-stop/SKILL.md"
+        ]
+        for phrase in (
+            "remote URL, host, and scheme",
+            "Native Git is the core transport",
+            "at most 2 distinct transport attempts",
+            "attempted command",
+            "exit status",
+            "stderr",
+            "safely-local state",
+        ):
+            self.assertIn(phrase, scoped)
+
     def test_rulebook_answers_how_to_work_here_in_four_sections(self):
         text = TOOL.render("Example", ["opencode"])[RULEBOOK]
         self.assertEqual(TOOL.structural_headings(text), ["Purpose", "Hard Rules", "Decision Gates", "Updating This File"])
@@ -523,6 +746,128 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertIn("If any Engram save fails", stop)
         self.assertIn("must not claim successful continuity", stop)
         self.assertNotIn("Continue without failure when it is absent", start + stop)
+
+    def test_session_stop_approval_is_a_resumable_checkpoint(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+
+        for phrase in (
+            "resumable intermediate checkpoint",
+            "resume the same session-stop invocation from the next unfinished step",
+            "execute that exact approved action once",
+            "If documentation is declined, continue the close protocol without writing",
+            "one blocking question per turn",
+        ):
+            self.assertIn(phrase, stop)
+        self.assertNotIn("APROBAR", stop)
+        self.assertNotIn("DENEGAR", stop)
+
+    def test_session_stop_refreshes_final_continuity_after_approved_documentation(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+
+        for phrase in (
+            "refresh repository evidence",
+            "A session summary saved before an approved mutation is provisional",
+            "Save or update a final session summary that includes the approved mutation",
+            "Deliver the complete Output Contract only after continuity is saved successfully",
+            "If continuity saving fails, surface the failure",
+        ):
+            self.assertIn(phrase, stop)
+
+    def test_session_stop_defines_commit_and_push_as_separate_gates(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+        for phrase in (
+            "Commit approval does not approve push",
+            "separate conversational approval",
+            "reviewable work-unit grouping",
+            "unpushed commits",
+            "fetch and compare",
+            "remote is ahead or the branch has diverged",
+            "Never force-push",
+            "same session-stop invocation",
+        ):
+            self.assertIn(phrase, stop)
+
+    def test_session_stop_excludes_unsafe_staging_paths_and_commands(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+        for phrase in ("`.ld9/`", "`.codegraph/`", "secrets", "unknown generated caches", "unrelated pre-existing work"):
+            self.assertIn(phrase, stop)
+        self.assertIn("Never use `git add .`", stop)
+        self.assertNotIn("force-push", stop.lower().replace("never force-push", ""))
+
+    def test_session_stop_requires_classified_screened_commit_proposals(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+        for phrase in (
+            "staged paths",
+            "unstaged tracked paths",
+            "untracked paths",
+            "renamed paths",
+            "deleted paths",
+            "unrelated pre-existing paths",
+            "excluded private, tool, and cache paths",
+            "sensitive-looking paths",
+            "per-path sensitive screening",
+            "Filename screening is a warning baseline, not proof of safety",
+            "exact paths",
+            "why they belong together",
+            "Conventional Commit message",
+            "explicit exclusions",
+            "already-staged paths",
+            "May I stage exactly these paths and create this proposed commit",
+        ):
+            self.assertIn(phrase, stop)
+        self.assertIn("pause before any staging", stop)
+        self.assertIn("final user-facing line", stop)
+
+    def test_session_stop_push_gate_cannot_be_bundled_with_commit(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+        for phrase in (
+            "refresh status after the commit",
+            "only then evaluate push",
+            "upstream and ahead count",
+            "May I push these existing local commits",
+            "exact operation",
+            "Do not infer broad consent",
+            "detached HEAD",
+            "unborn branch",
+            "missing remote branch",
+            "ahead-behind divergence",
+        ):
+            self.assertIn(phrase, stop)
+
+    def test_generated_session_skills_classify_same_process_skill_cache_without_false_failure(self):
+        outputs = TOOL.render("Example", ["claude-code", "opencode"])
+        start = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
+        stop = outputs[".repo-harness/skills/example-session-stop/SKILL.md"]
+        combined = start + stop
+
+        for phrase in (
+            "on-disk canonical and projection parity",
+            "active-process registered skill freshness",
+            "expected active-process cache limitation",
+            "defer registered-name validation",
+            "fresh runtime process",
+            "supported explicit registry reload",
+            "Never claim or invent a reload command",
+        ):
+            self.assertIn(phrase, combined)
+        self.assertIn("cannot prove what a prior process cached", start)
+        self.assertIn("must still complete the best valid close", stop)
+        self.assertIn("close may remain `completed`", stop)
+        self.assertIn("live registered-name validation is `degraded`", stop)
+        self.assertNotIn("restart is required", combined.lower())
+        self.assertNotRegex(combined, r"(?i)(reload|refresh)[-_ ](skills|registry)\s+command")
+
+    def test_builder_skill_documents_self_update_runtime_cache_contract(self):
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        for phrase in (
+            "Self-Update And Runtime Cache",
+            "on-disk canonical and projection parity",
+            "active-process registered skill freshness",
+            "expected active-process cache limitation",
+            "defer registered-name validation",
+            "Never claim or invent a reload command",
+        ):
+            self.assertIn(phrase, skill)
 
     def test_explicit_standalone_mode_uses_repository_files_only(self):
         outputs = TOOL.render("Example", [], standalone=True)
@@ -646,7 +991,7 @@ class GeneratedCoreTests(unittest.TestCase):
 
 
 class UsageGuideTests(unittest.TestCase):
-    def test_integrated_guide_is_brief_and_routes_the_continuity_workflow(self):
+    def test_integrated_guide_routes_the_complete_operational_workflow(self):
         outputs = TOOL.render("Example", ["claude-code", "opencode"])
         guide = outputs["docs/repo-harness/usage.md"]
 
@@ -656,13 +1001,16 @@ class UsageGuideTests(unittest.TestCase):
             "reconciles it with current repository evidence",
             "`example-documentation`",
             "`example-session-stop`",
-            "Recover context when you enter",
-            "save it when you leave",
+            "## Integrated Availability",
+            "Gentle AI and Engram are available",
+            "## Congruence And Ownership",
+            "python .repo-harness/check.py",
+            "repository files remain authoritative",
+            "## Approval Boundaries",
+            "separate optional approvals",
         ):
             self.assertIn(phrase, guide)
-        self.assertLessEqual(len(guide.splitlines()), 16)
-        self.assertNotIn("## Integrated Availability", guide)
-        self.assertNotIn("## Approval Boundaries", guide)
+        self.assertLessEqual(len(guide.splitlines()), 32)
 
     def test_standalone_guide_uses_repository_only_continuity(self):
         guide = TOOL.render("Example", ["opencode"], standalone=True)[
@@ -673,6 +1021,8 @@ class UsageGuideTests(unittest.TestCase):
         self.assertIn("repository continuity", guide)
         self.assertIn("current repository evidence", guide)
         self.assertIn("`example-session-stop`", guide)
+        self.assertIn("repository files remain authoritative", guide)
+        self.assertIn("## Approval Boundaries", guide)
         self.assertNotRegex(guide, r"(?i)engram|gentle ai|cloud")
 
     def test_rulebook_and_documentation_map_link_to_the_usage_guide(self):
@@ -693,7 +1043,7 @@ class UsageGuideTests(unittest.TestCase):
 
             report = TOOL.check(root, "Example", [])
             entry = next(item for item in report["files"] if item["path"] == "docs/repo-harness/usage.md")
-            self.assertEqual(entry["state"], "current")
+            self.assertEqual(entry["state"], "human-evolved")
 
 
 class RepoHarnessHelpWrapperTests(unittest.TestCase):
@@ -764,7 +1114,7 @@ class RuleFileTests(unittest.TestCase):
             target.write_text(body + "\n- Ship behind a flag until the rollout is signed off.\n", encoding="utf-8")
             report = TOOL.check(root, "Example", [])
             states = {item["path"]: item["state"] for item in report["files"]}
-            self.assertEqual(states[".repo-harness/rules/working-agreements.md"], "current")
+            self.assertEqual(states[".repo-harness/rules/working-agreements.md"], "human-evolved")
             self.assertEqual(report["status"], "current")
 
     def test_rule_files_stay_within_the_same_budget_as_the_rulebook(self):

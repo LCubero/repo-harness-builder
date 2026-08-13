@@ -6,6 +6,21 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-12
 
+- Completed a blind dual review of the full builder package and recorded unresolved upgrade, approval-enforcement, runtime-set, provenance, and behavioral-test risks.
+- Corrected self-hosted runtime-cache handling by separating verified on-disk parity from active-process registered skill freshness and deferring optional registered-name validation without false blocking or failure.
+- Made generated Git-aware sessions actionable with scoped outcomes, mandatory concrete final questions, per-path sensitive staging review, exact commit proposals, separate push preflight, and bounded transport receipts.
+- Added provider-neutral Git-aware generated session start and stop contracts with clean, dirty, no-Git, upstream, ahead, behind, and diverged handling; separate commit and push approvals; and conservative staging and publication boundaries.
+- Fixed generated session-stop approvals so they resume the same close invocation, refresh post-mutation evidence, save a final continuity summary, and emit the complete handoff only after continuity succeeds.
+- Expanded the product guide and generated usage guide with lifecycle, role, continuity, congruence, ownership, upgrade, and approval-boundary guidance.
+- Added safe prior-version harness audits with current, stale, missing, human-evolved, and legacy classifications plus proposal-only upgrade choices.
+- Added exact root pointer line detection and byte-preserving, idempotent append behavior across empty, LF, CRLF, near-match, and unrelated-content cases.
+- Corrected preservation to distinguish complete empty-repository baselines from informed evolution of existing repositories, with an explicitly approved archive/start-clean alternative.
+- Limited exact `APROBAR` and `DENEGAR` to the builder's content-bound apply plan; repository-shape and session choices remain conversational.
+- Added the root product guide and documented canonical sources, runtime projections, and recursive self-hosting.
+- Added README generation with bounded ownership markers.
+- Added researched MIT, Apache-2.0, GPL-3.0-only, and custom license choice guidance.
+- Added separately approved optional Git initialization and provider publication with an explicit visibility choice.
+- Made generated session skills conversational outside the builder's strict digest-bound apply gate.
 - Stopped versioning `.atl/`, which Gentle AI owns and regenerates.
 - Aligned the builder skill frontmatter license with the repository MIT license.
 - Published the repository as a private GitHub repository and pushed `main`.

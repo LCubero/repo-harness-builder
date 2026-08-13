@@ -4,9 +4,9 @@
 
 ## Verified State
 
-- Harness present and reporting `current`: 29 of 29 files, 0 writes, generated checker exit 0.
+- Harness present and reporting `current`: generated checker exit 0 with 0 writes.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Generator 3.0, skill package 3.1.
-- Packaged suite: 116 tests passing, 5 expected skips.
+- Packaged suite: 141 tests passing with 5 expected skips, including generated Git state, scoped outcome, terminal-question, sensitive-screening, bounded transport receipt, and runtime-cache contracts.
 - Licensed MIT in `LICENSE` and in both `SKILL.md` copies.
 - Published as a private GitHub repository; `main` tracks `origin/main`.
 
@@ -14,14 +14,23 @@
 
 - Split from `skills-pack-ld9` into this repository and bootstrapped its harness.
 - Added the MIT license and aligned the builder skill frontmatter to it.
+- Added the root product guide and documented the recursive self-hosting source model.
+- Corrected preservation so empty repositories receive a complete baseline while existing repositories receive informed integration or an explicitly approved archive/start-clean path.
+- Added exact byte-preserving root pointer coverage and proposal-only prior-version upgrade classification.
+- Expanded the product guide and generated operational usage contract to cover the complete builder-to-daily-session lifecycle.
+- Made generated session-stop approval pauses resumable and required refreshed post-mutation evidence and final continuity before handoff output.
+- Added provider-neutral Git-aware session start and stop matrices with conservative synchronization, separate commit and push approvals, and protected staging exclusions.
+- Made Git-aware session gates operational with scoped outcomes, concrete final questions, per-path commit screening, exact proposal fields, and bounded transport diagnostics.
+- Corrected self-hosted cache classification so verified on-disk projections remain complete while same-process registered-name validation may be deferred and degraded.
 
 ## Pending Work
 
-- Seed `docs/repo-harness/decisions.md` and the changelog history from `REPO-BOOTSTRAP.md`, then delete that handoff.
-- Write the product guide, distinct from the generated `docs/repo-harness/usage.md`.
+- Make approved upgrade replacement and integration plans executable without weakening preservation guarantees.
+- Enforce the exact builder apply approval in the executable CLI contract.
+- Make runtime-set widening update or invalidate stale manifest and checker coverage.
 - Carry over the review report from `skills-pack-ld9`.
-- Define how a consumer repository detects a stale installed copy of the builder.
+- Define how a consumer repository detects a stale installed copy of the builder itself, distinct from an installed generated harness.
 
 ## Next Step
 
-Seed `docs/repo-harness/decisions.md` from the decisions section of `REPO-BOOTSTRAP.md`.
+Make approved upgrade replacement and integration plans executable without weakening preservation guarantees.

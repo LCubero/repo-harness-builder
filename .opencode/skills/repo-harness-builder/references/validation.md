@@ -1,0 +1,73 @@
+# Validation
+
+## Required Behavior
+
+- Bootstrap a temporary empty project with the complete canonical core, then run it again and confirm the second run creates nothing.
+- Confirm an existing file is never overwritten: seed one by hand, run the builder, and prove its bytes are unchanged and its path is absent from the created list.
+- Confirm root `REPO-HARNESS.md` contains every required concise section, holds no dated project status, and that deeper references resolve. Confirm no project-id rulebook remains.
+- Confirm `.repo-harness/rules/` is seeded, every seed has a gate row in the rulebook, seeds are human-owned, and each budgeted file reports `over-budget` once it passes the limit.
+- Confirm a dated root `CHANGELOG.md` is created when absent and left alone when present.
+- Confirm start reads only the latest relevant changelog entries after canonical state, stop proposes entries only for meaningful completed work under existing approval, and documentation keeps history factual and separate from plans.
+- Confirm default integrated output records exactly `integrationMode: integrated`, requires Gentle AI and Engram, reconciles Engram with authoritative repository evidence, and refuses to claim continuity when recovery fails.
+- Confirm integrated session stop requires significant decisions, discoveries, fixes, and a session summary saved to Engram, surfaces save failures, and leaves external operations separate.
+- Confirm `--standalone` records exactly `integrationMode: standalone` and generates repository-only session and rule instructions with no Gentle AI, Engram, or conditional-memory behavior.
+- Confirm the skill workflow validates the Gentle AI CLI and Engram MCP or CLI before approving or applying integrated mode.
+- Confirm documentation maintenance enforces canonical ownership, links, freshness, duplication control, and durable versus temporary state.
+- Confirm `docs/repo-harness/usage.md` explains start and resume, repository evidence, the generated congruence check, session stop, integrated availability, durable documentation ownership, and approval boundaries; standalone output must remain repository-only.
+- Generate wrappers only for enabled profiles. Each enabled profile receives a thin read-only `repo-harness-help` wrapper that reads `docs/repo-harness/usage.md`, presents concise help, never loads the builder, never duplicates the guide, never modifies files, and reports a missing guide as an incomplete or outdated harness. Claude Code receives only root `CLAUDE.md`; OpenCode and Pi receive only root `AGENTS.md`; combinations receive the union without duplicate directives.
+- Confirm absent pointers are created minimally, exact existing directives preserve every byte, missing directives append minimally, and unrelated existing files remain unchanged.
+- Confirm preview distinguishes `create`, `append`, `existing`, and `identical`; prints the case-sensitive uppercase rule before exactly `APROBAR` and `DENEGAR`; rejects lowercase, mixed-case, alias, and prose answers with both exact tokens in the error; and apply rejects an approved plan after relevant pointer bytes change.
+- Confirm `check` writes nothing, compares generated files by content, and compares human-owned files only by promised sections.
+- Confirm `check` refuses a symlink or junction in any managed-path ancestor before reading through it.
+- Confirm multiline license input is rejected before generated frontmatter is rendered, and every accepted single-line value is encoded as a quoted YAML string that preserves its exact scalar value.
+- Confirm apply refuses an existing managed directory or indirect target before creating any file.
+- Confirm the generated `.repo-harness/check.py` is standard-library only, embeds the SHA-256 of exact manifest bytes, reports `current` on a fresh install, treats the `canonical-source:` rewrite as expected rather than drift, and reports a stale or missing runtime copy while writing nothing.
+- Confirm the generated checker rejects malformed JSON, wrong digest, missing or unexpected checker schema fields, invalid integration mode, absolute paths, drive-qualified paths, parent traversal, symlink or reparse ancestors, and outside-resolving paths without outside reads.
+- Confirm a human-owned file with edited prose reads as `current`, and one missing a promised section reads as `sections-missing` naming that section.
+- Confirm every generated skill carries `license`, `metadata.author`, `metadata.version`, a `References` section, and no automatic discovery trigger.
+- Confirm excluded methodologies, cloud behavior, specialized agents, project branding, and automatic external actions are absent.
+- Confirm Python 3.10+ standard-library-only operation and absence of forbidden Unicode.
+- Confirm the builder claims no path owned by another tool. `.atl` belongs to Gentle AI, `.codegraph` to CodeGraph, and `.engram` to Engram. No ignore file is generated, and an existing `.gitignore` keeps every byte.
+- Confirm the packaged suite passes when the skill directory is installed on its own, with no host directory outside the package required.
+- Confirm the runtime set is never inferred. With none supplied, the audit reports every supported profile and its absent paths, names the set as the open decision, and an empty selection renders the core with no wrapper for any profile.
+
+## Commands
+
+Two audiences run different sets. Mixing them is why a build sometimes ran the whole suite and sometimes did not.
+
+### Developing this skill
+
+Run when the package itself changes. These prove the builder, not any repository it built.
+
+```text
+python -B -m unittest discover -s tests -v
+REPO_HARNESS_COMMAND_PATH=PATH python -B -m unittest discover -s tests -v
+python -B scripts/harness_tool.py self-test
+python -B scripts/harness_tool.py self-test --standalone
+python -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode --standalone
+```
+
+### Building a harness in a repository
+
+Run when creating or inspecting a harness. Run the self-test for the mode being generated, not both. The packaged suite is not part of this set: it tests the builder, which did not change, and the built harness is already proven by the plan digest, `check`, and the generated checker.
+
+```text
+python -B scripts/harness_tool.py check  --root DIR --project-name NAME --runtime opencode
+python -B scripts/harness_tool.py check  --root DIR --project-name NAME --runtime opencode --runtime claude-code --runtime pi
+python -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode
+python -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode --apply --approved-plan-sha256 HASH
+python -B scripts/harness_tool.py self-test
+python -B DIR/.repo-harness/check.py
+```
+
+`--runtime` is repeatable. One `check` call reports every profile passed to it, so auditing several profiles never needs one invocation per profile. Passing none reports the core only.
+
+The external command wrapper lives outside this package. Its three contract checks run only when `REPO_HARNESS_COMMAND_PATH` names the wrapper file, and skip otherwise. The path is never inferred from a host directory convention.
+
+`check` and `render` without `--apply` are read-only. Preview prints the exact approval prompt and current digest. Apply requires that newly approved digest, creates only `create` entries, and appends only approved exact root pointer directives.
+
+## Limitations
+
+The renderer does not provide generic agent packs, managed-region merging, schema-library validation, Git operations, provider operations, backup, publication, or repository-wide secret scanning. Runtime discovery and registration remain host responsibilities.
+
+It cannot repair an existing file except for the exact selected-runtime root pointer directive. Correcting any other stale generated file is a human edit, or a delete followed by a rerun.
