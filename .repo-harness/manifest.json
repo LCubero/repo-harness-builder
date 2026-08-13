@@ -1,0 +1,22 @@
+{
+  "canonicalSkills": {
+    "repo-harness-builder-documentation": ".repo-harness/skills/repo-harness-builder-documentation/SKILL.md",
+    "repo-harness-builder-session-start": ".repo-harness/skills/repo-harness-builder-session-start/SKILL.md",
+    "repo-harness-builder-session-stop": ".repo-harness/skills/repo-harness-builder-session-stop/SKILL.md"
+  },
+  "generator": {
+    "name": "repo-harness-builder",
+    "version": "3.0"
+  },
+  "integrationMode": "integrated",
+  "project": {
+    "id": "repo-harness-builder",
+    "rulebook": "REPO-HARNESS.md"
+  },
+  "runtimes": [
+    "claude-code",
+    "opencode"
+  ],
+  "schemaVersion": "3.0",
+  "writeSemantics": "additive-create-with-runtime-pointer-append"
+}
