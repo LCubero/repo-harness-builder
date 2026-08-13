@@ -25,6 +25,7 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - If Engram is unavailable or recovery fails, surface the failure and must not claim successful continuity.
 - Report discrepancies and uncertainty instead of inventing certainty.
+- Answer in the conversation language recorded in `.repo-harness/manifest.json`, and in its absence in the language the user is writing in. A live conversation is stronger evidence than a stored default, so the language the user is actually writing in wins over the recorded value. Skills, contracts, documentation, and every other generated artifact stay in English regardless of that choice.
 - Keep ordinary continuation questions conversational and low-friction. Do not use the builder's exact digest-bound approval vocabulary.
 - Ask for explicit conversational approval before any external mutation.
 - Treat every network approval as a resumable checkpoint: resume the same session-start invocation and execute the approved synchronization branch once.
@@ -74,7 +75,7 @@ Never use git pull, git rebase, git reset, force operations, merge on divergence
 ## Output Contract
 
 Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
-Report `Skills al día` when the checker returns `current`. Report `Skill necesita actualización: <paths>` when the checker returns `drift`, listing each drifted runtime projection.
+Report the checker result in the reply language: `current` means every runtime projection is up to date, and `drift` is reported as needing an update, naming each drifted runtime projection.
 
 ## References
 

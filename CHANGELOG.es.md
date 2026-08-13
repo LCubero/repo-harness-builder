@@ -5,6 +5,10 @@
 ## 2026-08-13
 
 - Se hizo accionable la remediacion ante fallos de transporte: una sesion generada ahora debe comprobar si existe una via de credenciales alternativa y nombrarla, prefiriendo la herramienta del proveedor usada como asistente de credenciales de un solo comando que no altera la configuracion global, y devolviendo el comando exacto a la persona cuando la via restante necesita un secreto que el agente no puede aportar.
+- Se ligo la respuesta de las sesiones generadas al idioma preferido declarado por la persona usuaria o, en su defecto, al idioma en que escribe, y se eliminaron los literales en espanol fijos del informe del verificador que imponian un unico idioma sin importar quien leyera.
+- El idioma de la documentacion pasa a ser una eleccion declarada y no una suposicion universal: un repositorio es solo en ingles salvo que declare mas idiomas, asi que uno monolingue ya no hereda nueve archivos en espanol, un contrato de mantenimiento i18n y un selector de README que nunca pidio.
+- Se registraron en el manifiesto el idioma de conversacion y los idiomas declarados de documentacion, se validan ambos en el verificador generado, y la comprobacion de congruencia los descubre en lugar de exigir que se los indiquen otra vez.
+- Se separo el idioma del informe del constructor, que es presentacion y nunca entra en el digest del plan, del idioma de conversacion del harness construido, que es una eleccion del producto que el constructor pregunta.
 
 ## 2026-08-12
 

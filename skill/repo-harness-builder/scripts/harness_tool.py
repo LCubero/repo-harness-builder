@@ -36,6 +36,8 @@ FORBIDDEN_METHODS = ("SDD", "TDD", "RDD", "Fabric", "Azure", "Brain_AI", "Panda"
 DATE_HEADING = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 SPDX_EXPRESSION = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+:() -]*")
 DEFAULT_REPORT_LANGUAGE = "english"
+PRIMARY_DOCUMENTATION_LANGUAGE = "en"
+DOCUMENTATION_LANGUAGES = {"en", "es"}
 APPROVAL_DOMAINS = {
     "english": {
         "approve": "APPROVE",
@@ -341,6 +343,7 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 - Inspect repository state read-only. Do not pull, commit, push, publish, or mutate by default.
 {continuity.rstrip()}
 - Report discrepancies and uncertainty instead of inventing certainty.
+- Answer in the conversation language recorded in `.repo-harness/manifest.json`, and in its absence in the language the user is writing in. A live conversation is stronger evidence than a stored default, so the language the user is actually writing in wins over the recorded value. Skills, contracts, documentation, and every other generated artifact stay in English regardless of that choice.
 - Keep ordinary continuation questions conversational and low-friction. Do not use the builder's exact digest-bound approval vocabulary.
 - Ask for explicit conversational approval before any external mutation.
 - Treat every network approval as a resumable checkpoint: resume the same session-start invocation and execute the approved synchronization branch once.
@@ -390,7 +393,7 @@ Never use git pull, git rebase, git reset, force operations, merge on divergence
 ## Output Contract
 
 Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
-Report `Skills al día` when the checker returns `current`. Report `Skill necesita actualización: <paths>` when the checker returns `drift`, listing each drifted runtime projection.
+Report the checker result in the reply language: `current` means every runtime projection is up to date, and `drift` is reported as needing an update, naming each drifted runtime projection.
 {references_section(rulebook_path)}"""
 
 
@@ -425,6 +428,7 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 
 - Load and follow the canonical rulebook at `{rulebook_path}`, including its execution discipline.
 - Summarize only work supported by current repository evidence and verified command results.
+- Answer in the conversation language recorded in `.repo-harness/manifest.json`, and in its absence in the language the user is writing in. A live conversation is stronger evidence than a stored default, so the language the user is actually writing in wins over the recorded value. Skills, contracts, documentation, and every other generated artifact stay in English regardless of that choice.
 - Validate every referenced repository path and avoid stale claims.
 - Propose updates to `{rulebook_path}` and canonical documentation, but write them only after explicit approval.
 - Keep the rulebook inside its budget. Move durable detail down into its owned deeper document.
@@ -683,15 +687,45 @@ Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. A fil
     return {".repo-harness/rules/memory.md": memory, ".repo-harness/rules/working-agreements.md": agreements}
 
 
-def docs_outputs(project_id: str, rulebook_path: str, standalone: bool) -> dict[str, str]:
+def normalize_documentation_languages(values: list[str] | None) -> tuple[str, ...]:
+    """Resolve the declared documentation locales, defaulting to English only."""
+    languages = tuple(values) if values is not None else (PRIMARY_DOCUMENTATION_LANGUAGE,)
+    require(bool(languages), "documentation languages must not be empty")
+    require(len(languages) == len(set(languages)), f"duplicate documentation language: {list(languages)}")
+    unsupported = sorted(set(languages) - DOCUMENTATION_LANGUAGES)
+    require(not unsupported, f"unsupported documentation language: {unsupported}")
+    require(
+        languages[0] == PRIMARY_DOCUMENTATION_LANGUAGE,
+        f"English is the AI-read surface and stays the primary documentation language, not {languages[0]}",
+    )
+    return languages
+
+
+def docs_outputs(
+    project_id: str,
+    rulebook_path: str,
+    standalone: bool,
+    documentation_languages: tuple[str, ...] = (PRIMARY_DOCUMENTATION_LANGUAGE,),
+) -> dict[str, str]:
     """Render durable documentation for the operational core."""
+    multilingual = len(documentation_languages) > 1
     marker = f"<!-- {GENERATED_MARKER}; source: core/docs:{VERSION} -->"
     continuity = (
         "Session summaries in repository files remain temporary continuity inputs."
         if standalone
         else "Engram session summaries remain temporary continuity inputs and must be reconciled with repository evidence."
     )
-    selector_en = "<!-- README-I18N:START -->\n\n**English** | [Español](./README.es.md)\n\n<!-- README-I18N:END -->"
+    selector_en = (
+        "<!-- README-I18N:START -->\n\n**English** | [Español](./README.es.md)\n\n<!-- README-I18N:END -->"
+        if multilingual
+        else ""
+    )
+    multilingual_rows = (
+        "| `i18n-maintenance.md` | Bilingual ownership, synchronization, and link maintenance contract |\n"
+        "| `../es/repo-harness/README.md` | Complete Spanish documentation peer |\n"
+        if multilingual
+        else ""
+    )
     selector_es = "<!-- README-I18N:START -->\n\n[English](./README.md) | **Español**\n\n<!-- README-I18N:END -->"
     index = f"""# AI Harness Documentation
 
@@ -706,9 +740,7 @@ def docs_outputs(project_id: str, rulebook_path: str, standalone: bool) -> dict[
 | `usage.md` | Human workflow, integration availability checks, and approval boundaries |
 | `current-state.md` | Verified current state, recent completed work, pending work, and next step |
 | `decisions.md` | Durable decisions and constraints with evidence |
-| `i18n-maintenance.md` | Bilingual ownership, synchronization, and link maintenance contract |
-| `../es/repo-harness/README.md` | Complete Spanish documentation peer |
-| `../../CHANGELOG.md` | Factual, dated, concise completed changes; never future plans |
+{multilingual_rows}| `../../CHANGELOG.md` | Factual, dated, concise completed changes; never future plans |
 
 {continuity} They do not become durable truth until reconciled with repository evidence and promoted into the appropriate canonical owner.
 """
@@ -1024,22 +1056,29 @@ Actualice este par cuando cambie una regla o ruta en `{rulebook_path}`. El archi
 
 - Se creo el harness minimo de IA del repositorio y su documentacion visible de continuidad.
 """
-    return {
+    outputs = {
         "README.md": readme,
-        "README.es.md": readme_es,
-        "REPO-HARNESS.es.md": rulebook_es,
-        "CHANGELOG.es.md": changelog_es,
         "docs/repo-harness/README.md": index,
         "docs/repo-harness/usage.md": usage,
         "docs/repo-harness/current-state.md": state,
         "docs/repo-harness/decisions.md": decisions,
-        "docs/repo-harness/i18n-maintenance.md": maintenance,
-        "docs/es/repo-harness/README.md": index_es,
-        "docs/es/repo-harness/usage.md": usage_es,
-        "docs/es/repo-harness/current-state.md": state_es,
-        "docs/es/repo-harness/decisions.md": decisions_es,
-        "docs/es/repo-harness/i18n-maintenance.md": maintenance_es,
     }
+    if not multilingual:
+        return outputs
+    outputs.update(
+        {
+            "README.es.md": readme_es,
+            "REPO-HARNESS.es.md": rulebook_es,
+            "CHANGELOG.es.md": changelog_es,
+            "docs/repo-harness/i18n-maintenance.md": maintenance,
+            "docs/es/repo-harness/README.md": index_es,
+            "docs/es/repo-harness/usage.md": usage_es,
+            "docs/es/repo-harness/current-state.md": state_es,
+            "docs/es/repo-harness/decisions.md": decisions_es,
+            "docs/es/repo-harness/i18n-maintenance.md": maintenance_es,
+        }
+    )
+    return outputs
 
 
 def changelog() -> str:
@@ -1101,7 +1140,9 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
 MANIFEST_SHA256 = "{manifest_sha256}"
-MANIFEST_FIELDS = {{"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "writeSemantics", "integrationMode"}}
+MANIFEST_FIELDS = {{"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "writeSemantics", "integrationMode", "language"}}
+REPORT_LANGUAGES = {{"english", "espanol"}}
+DOCUMENTATION_LANGUAGES = {{"en", "es"}}
 RUNTIMES = {{"claude-code", "opencode", "pi"}}
 SKILL_SURFACES = {{
     "claude-code": ".claude/skills/{{name}}/SKILL.md",
@@ -1173,6 +1214,20 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         raise ValueError("unexpected integration mode")
     if manifest["writeSemantics"] != "additive-create-with-runtime-pointer-append":
         raise ValueError("unexpected write semantics")
+    language = manifest["language"]
+    if not isinstance(language, dict) or set(language) != {{"conversation", "documentation"}}:
+        raise ValueError("unexpected language schema")
+    if language["conversation"] not in REPORT_LANGUAGES:
+        raise ValueError("unexpected conversation language")
+    documentation = language["documentation"]
+    if (
+        not isinstance(documentation, list)
+        or not documentation
+        or len(documentation) != len(set(documentation))
+        or not set(documentation) <= DOCUMENTATION_LANGUAGES
+        or documentation[0] != "en"
+    ):
+        raise ValueError("unexpected documentation languages")
     skills = manifest["canonicalSkills"]
     if not isinstance(skills, dict) or not skills:
         raise ValueError("unexpected canonical skills")
@@ -1245,10 +1300,15 @@ def render(
     license_id: str = DEFAULT_LICENSE,
     standalone: bool = False,
     report_language: str = DEFAULT_REPORT_LANGUAGE,
+    documentation_languages: list[str] | None = None,
+    conversation_language: str | None = None,
 ) -> dict[str, str]:
     """Render all canonical and applicable runtime outputs in memory."""
     project_id = normalize_project_name(project_name)
     approval_domain(report_language)
+    languages = normalize_documentation_languages(documentation_languages)
+    conversation = conversation_language or DEFAULT_REPORT_LANGUAGE
+    approval_domain(conversation)
     selected = sorted(set(runtimes))
     require(set(selected) <= RUNTIMES, f"unsupported runtime: {sorted(set(selected) - RUNTIMES)}")
     rulebook_path = RULEBOOK_PATH
@@ -1261,7 +1321,7 @@ def render(
         rulebook_path: rulebook(project_id, standalone),
         "CHANGELOG.md": changelog(),
         **rule_outputs(rulebook_path, standalone),
-        **docs_outputs(project_id, rulebook_path, standalone),
+        **docs_outputs(project_id, rulebook_path, standalone, languages),
     }
     for path, content in outputs.items():
         if budgeted(path, rulebook_path):
@@ -1298,6 +1358,7 @@ def render(
         "canonicalSkills": {name: f".repo-harness/skills/{name}/SKILL.md" for name in skills},
         "writeSemantics": "additive-create-with-runtime-pointer-append",
         "integrationMode": "standalone" if standalone else "integrated",
+        "language": {"conversation": conversation, "documentation": list(languages)},
     })
     outputs[MANIFEST_PATH] = manifest
     outputs[".repo-harness/check.py"] = check_script(digest_text(manifest))
@@ -1468,6 +1529,20 @@ def runtime_set_report(root: Path, runtimes: list[str]) -> dict[str, Any]:
     return report
 
 
+def declared_languages(root: Path) -> tuple[list[str] | None, str | None]:
+    """Read the languages an installed harness declared, tolerating an absent one."""
+    try:
+        manifest = json.loads((root / MANIFEST_PATH).read_text(encoding="utf-8"))
+        language = manifest["language"]
+        documentation = language["documentation"]
+        conversation = language["conversation"]
+    except (OSError, ValueError, KeyError, TypeError):
+        return None, None
+    if not isinstance(documentation, list) or not isinstance(conversation, str):
+        return None, None
+    return documentation, conversation
+
+
 def check(
     root: Path,
     project_name: str,
@@ -1479,8 +1554,14 @@ def check(
 
     Generated files are compared byte for byte. Human-owned files are compared only
     by the sections they promise, so ordinary editing never reads as drift.
+
+    The installed harness declares its own languages, so they are discovered rather
+    than supplied again: checking must never contradict what the repository recorded.
     """
-    expected = render(project_name, runtimes, license_id, standalone)
+    documentation_languages, conversation_language = declared_languages(root)
+    expected = render(
+        project_name, runtimes, license_id, standalone, DEFAULT_REPORT_LANGUAGE, documentation_languages, conversation_language
+    )
     rulebook_path = RULEBOOK_PATH
     entries: list[dict[str, Any]] = []
     for relative, content in sorted(expected.items()):
@@ -1597,6 +1678,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         child.add_argument("--license", dest="license_id", default=DEFAULT_LICENSE, help="SPDX identifier for generated skills")
         child.add_argument("--standalone", action="store_true", help="generate repository-only continuity without Gentle AI or Engram")
         child.add_argument("--report-language", choices=sorted(APPROVAL_DOMAINS), default=DEFAULT_REPORT_LANGUAGE, help="language for builder approval output; defaults to english")
+        child.add_argument("--documentation-language", action="append", dest="documentation_languages", choices=sorted(DOCUMENTATION_LANGUAGES), help="documentation locale; repeat the flag for a multilingual repository, omit it for English only")
+        child.add_argument("--conversation-language", choices=sorted(APPROVAL_DOMAINS), help="language the generated sessions converse in; ask the human, defaults to english")
         if name == "render":
             child.add_argument("--apply", action="store_true", help="create the absent files listed in the plan")
             child.add_argument("--approved-plan-sha256", help="digest printed by the approved preview")
@@ -1614,7 +1697,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         if args.command == "check":
             print(dump_json(check(root, args.project_name, selected, args.license_id, args.standalone)), end="")
             return 0
-        outputs = render(args.project_name, selected, args.license_id, args.standalone, args.report_language)
+        outputs = render(args.project_name, selected, args.license_id, args.standalone, args.report_language, args.documentation_languages, args.conversation_language)
         plan = plan_changes(root, outputs)
         digest = plan_digest(plan)
         domain = approval_domain(args.report_language)

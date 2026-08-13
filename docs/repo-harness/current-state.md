@@ -28,6 +28,8 @@
 - Routed generated help through the resolved report language while preserving a language-independent action-plan digest.
 - Made one-sided README selector plans fail closed by blocking Spanish peer creation until reciprocal existing-file integration is executable.
 - Made transport-failure remediation name an available alternate credential path, preferring a single-command provider credential helper that changes no global configuration and handing back the exact command when a secret the agent cannot supply is required.
+- Bound generated session replies to the user's stated preferred language, otherwise to the language they are writing in, and replaced the hardcoded Spanish checker report literals that contradicted that rule.
+- Made documentation language a declared choice: English only by default, additional locales only when declared, with the conversation language and declared locales recorded in the manifest, validated by the generated checker, and discovered by congruence checking.
 
 ## Pending Work
 
@@ -36,7 +38,10 @@
 - Make runtime-set widening update or invalidate stale manifest and checker coverage.
 - Carry over the review report from `skills-pack-ld9`.
 - Define how a consumer repository detects a stale installed copy of the builder itself, distinct from an installed generated harness.
-- Reinforce reply-language selection so generated sessions and builder output answer in the user's stated preferred language, or in the language the user is writing in when no preference is stated.
+- Repair section comparison: `check` reports `sections-missing` for `REPO-HARNESS.md` naming `Purpose`, `Hard Rules`, `Decision Gates`, and `Updating This File` while the file demonstrably carries all four headings and their role markers.
+- Back-fill the `doc-role` markers into this repository's own durable documents, which predate the markers the current generator emits.
+- Refresh the checked-in `repo-harness-help` wrappers, which still lack the "in its language" routing clause the current generator emits.
+- Make the builder ask for the conversation language and the documentation locales during the interview, so the recorded values come from a human choice rather than a default.
 
 ## Next Step
 

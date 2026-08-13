@@ -103,7 +103,7 @@ class ApprovalUxTests(unittest.TestCase):
 
 class ProductWorkflowTests(unittest.TestCase):
     def test_generated_spanish_docs_are_complete_localized_baselines(self):
-        outputs = TOOL.render("Example", [])
+        outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
         expectations = {
             "docs/es/repo-harness/usage.md": (("Use las tres habilidades generadas", "Limites de aprobacion", "repositorio permanece como fuente autoritativa"), ("The daily skills inspect",)),
             "docs/es/repo-harness/current-state.md": (("El harness minimo", "hechos verificados del proyecto", "Revise `REPO-HARNESS.md`"), ("The minimal repository", "Replace placeholders")),
@@ -117,7 +117,7 @@ class ProductWorkflowTests(unittest.TestCase):
                     self.assertNotIn(phrase, outputs[path])
 
     def test_locale_content_baseline_rejects_missing_roles_and_mixed_language(self):
-        outputs = TOOL.render("Example", [])
+        outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
         path = "docs/es/repo-harness/current-state.md"
         self.assertEqual(TOOL.locale_content_issues(path, outputs[path]), [])
         incomplete = outputs[path].replace("Revise `REPO-HARNESS.md`", "Review `REPO-HARNESS.md`")
@@ -126,7 +126,7 @@ class ProductWorkflowTests(unittest.TestCase):
         self.assertTrue(any("known English body fragment present" in issue for issue in issues))
 
     def test_render_creates_complete_bilingual_documentation(self):
-        outputs = TOOL.render("Example", [])
+        outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
         required = {
             "README.md",
             "README.es.md",
@@ -146,7 +146,7 @@ class ProductWorkflowTests(unittest.TestCase):
         self.assertTrue(required <= set(outputs))
 
     def test_readmes_have_one_reciprocal_language_selector(self):
-        outputs = TOOL.render("Example", [])
+        outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
         english = outputs["README.md"]
         spanish = outputs["README.es.md"]
         for text in (english, spanish):
@@ -156,7 +156,7 @@ class ProductWorkflowTests(unittest.TestCase):
         self.assertIn("[English](./README.md) | **Español**", spanish)
 
     def test_localized_documents_share_semantic_roles_not_literal_headings(self):
-        outputs = TOOL.render("Example", [])
+        outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
         pairs = {
             "README.md": "README.es.md",
             "docs/repo-harness/README.md": "docs/es/repo-harness/README.md",
@@ -199,7 +199,7 @@ class ProductWorkflowTests(unittest.TestCase):
     def test_checker_accepts_human_evolved_localized_headings_by_semantic_contract(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            install(root)
+            install(root, documentation_languages=["en", "es"])
             spanish = root / "docs/es/repo-harness/usage.md"
             spanish.write_text(spanish.read_text(encoding="utf-8").replace("## Flujo diario", "## Rutina de trabajo"), encoding="utf-8")
             report = TOOL.check(root, "Example", [])
@@ -228,7 +228,7 @@ class ProductWorkflowTests(unittest.TestCase):
             readme = root / "README.md"
             original = b"# Human product guide\n\nKeep every byte.\n"
             readme.write_bytes(original)
-            outputs = TOOL.render("Example", [])
+            outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
             plan = TOOL.plan_changes(root, outputs)
             entry = next(item for item in plan["existing"] if item["path"] == "README.md")
             self.assertIn("analyze", entry["reason"])
@@ -241,7 +241,7 @@ class ProductWorkflowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "README.md").write_text("# Human product guide\n", encoding="utf-8")
-            outputs = TOOL.render("Example", [])
+            outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
             plan = TOOL.plan_changes(root, outputs)
             self.assertNotIn("README.es.md", [item["path"] for item in plan["create"]])
             self.assertEqual(plan["blocked"][0]["path"], "README.es.md")
@@ -253,7 +253,7 @@ class ProductWorkflowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "README.md").write_text("# Human product guide\n\n[Español](./README.es.md)\n", encoding="utf-8")
-            plan = TOOL.plan_changes(root, TOOL.render("Example", []))
+            plan = TOOL.plan_changes(root, TOOL.render("Example", [], documentation_languages=["en", "es"]))
             self.assertIn("README.es.md", [item["path"] for item in plan["create"]])
             self.assertEqual(plan["blocked"], [])
 
@@ -312,9 +312,12 @@ def install(
     project: str = "Example",
     runtimes: tuple[str, ...] = (),
     standalone: bool = False,
+    documentation_languages: list[str] | None = None,
 ) -> dict[str, str]:
     """Render and apply the whole core into an empty root."""
-    outputs = TOOL.render(project, list(runtimes), standalone=standalone)
+    outputs = TOOL.render(
+        project, list(runtimes), standalone=standalone, documentation_languages=documentation_languages
+    )
     TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
     return outputs
 
@@ -789,11 +792,72 @@ class GeneratedCoreTests(unittest.TestCase):
             ".repo-harness/skills/example-session-start/SKILL.md"
         ]
         self.assertIn("Run `python .repo-harness/check.py`", start)
-        self.assertIn("Report `Skills al día` when the checker returns `current`.", start)
-        self.assertIn(
-            "Report `Skill necesita actualización: <paths>` when the checker returns `drift`, listing each drifted runtime projection.",
-            start,
+        self.assertIn("Report the checker result in the reply language", start)
+        self.assertIn("naming each drifted runtime projection", start)
+
+    def test_single_language_documentation_emits_no_second_locale(self):
+        """A monolingual repository must not inherit peer files it never asked for."""
+        outputs = TOOL.render("Example", ["claude-code"])
+        self.assertEqual([p for p in outputs if "/es/" in p or p.endswith(".es.md")], [])
+        self.assertNotIn("docs/repo-harness/i18n-maintenance.md", outputs)
+        self.assertNotIn("README-I18N:START", outputs["README.md"])
+
+    def test_declared_multilingual_documentation_emits_complete_peers(self):
+        outputs = TOOL.render("Example", ["claude-code"], documentation_languages=["en", "es"])
+        for path in (
+            "README.es.md",
+            "REPO-HARNESS.es.md",
+            "CHANGELOG.es.md",
+            "docs/repo-harness/i18n-maintenance.md",
+            "docs/es/repo-harness/README.md",
+            "docs/es/repo-harness/usage.md",
+            "docs/es/repo-harness/current-state.md",
+            "docs/es/repo-harness/decisions.md",
+            "docs/es/repo-harness/i18n-maintenance.md",
+        ):
+            self.assertIn(path, outputs)
+        self.assertIn("README-I18N:START", outputs["README.md"])
+
+    def test_manifest_records_conversation_and_documentation_languages(self):
+        """A session cannot honor a preference the harness never recorded."""
+        single = json.loads(TOOL.render("Example", ["claude-code"])[".repo-harness/manifest.json"])
+        self.assertEqual(single["language"], {"conversation": "english", "documentation": ["en"]})
+        both = TOOL.render(
+            "Example", ["claude-code"], documentation_languages=["en", "es"], conversation_language="espanol"
         )
+        manifest = json.loads(both[".repo-harness/manifest.json"])
+        self.assertEqual(manifest["language"], {"conversation": "espanol", "documentation": ["en", "es"]})
+
+    def test_report_language_stays_out_of_the_built_product(self):
+        """How the builder talks while building never changes what it builds."""
+        english = TOOL.render("Example", ["claude-code"], report_language="english")
+        spanish = TOOL.render("Example", ["claude-code"], report_language="espanol")
+        self.assertEqual(
+            json.loads(english[".repo-harness/manifest.json"])["language"],
+            json.loads(spanish[".repo-harness/manifest.json"])["language"],
+        )
+
+    def test_documentation_languages_reject_unknown_or_non_english_primary(self):
+        """English is the AI-read surface, so it stays the primary documentation language."""
+        with self.assertRaises(ValueError):
+            TOOL.render("Example", ["claude-code"], documentation_languages=["es"])
+        with self.assertRaises(ValueError):
+            TOOL.render("Example", ["claude-code"], documentation_languages=["en", "en"])
+        with self.assertRaises(ValueError):
+            TOOL.render("Example", ["claude-code"], documentation_languages=[])
+
+    def test_session_contracts_follow_the_user_reply_language(self):
+        """A contract that hardcodes one locale answers the wrong human."""
+        outputs = TOOL.render("Example", [])
+        for path in (
+            ".repo-harness/skills/example-session-start/SKILL.md",
+            ".repo-harness/skills/example-session-stop/SKILL.md",
+        ):
+            text = outputs[path]
+            self.assertIn("Answer in the conversation language recorded in `.repo-harness/manifest.json`", text)
+            self.assertIn("the language the user is actually writing in wins over the recorded value", text)
+            self.assertIn("Skills, contracts, documentation, and every other generated artifact stay in English", text)
+            self.assertNotIn("Skills al día", text)
 
     def test_session_start_defines_git_state_matrix(self):
         start = TOOL.render("Example", [])[".repo-harness/skills/example-session-start/SKILL.md"]

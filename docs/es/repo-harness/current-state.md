@@ -21,6 +21,8 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - Se localizo la aprobacion estricta del constructor sin trasladarla a las habilidades conversacionales.
 - Se sustituyeron las plantillas parciales en espanol, se agrego validacion proporcional por idioma, se enruto la ayuda localizada y se bloqueo cualquier selector README unilateral.
 - Se hizo que la remediacion ante fallos de transporte nombre una via de credenciales alternativa disponible, prefiriendo un asistente de credenciales del proveedor de un solo comando que no altera la configuracion global, y devolviendo el comando exacto cuando hace falta un secreto que el agente no puede aportar.
+- Se ligo la respuesta de las sesiones generadas al idioma preferido declarado por la persona usuaria o, en su defecto, al idioma en que escribe, y se reemplazaron los literales en espanol fijos del informe del verificador que contradecian esa regla.
+- El idioma de la documentacion pasa a ser una eleccion declarada: solo ingles por defecto, idiomas adicionales solo cuando se declaran, con el idioma de conversacion y los idiomas declarados registrados en el manifiesto, validados por el verificador generado y descubiertos por la comprobacion de congruencia.
 
 ## Trabajo pendiente
 
@@ -29,7 +31,10 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - Integrar selectores en README existentes mediante una accion acotada y aprobada; hasta entonces, la creacion del par se bloquea de forma segura.
 - Trasladar el informe de revision de `skills-pack-ld9`.
 - Definir como detectar una copia instalada obsoleta del propio constructor.
-- Reforzar la seleccion del idioma de respuesta para que las sesiones generadas y la salida del constructor respondan en el idioma preferido declarado por la persona usuaria o, si no hay preferencia declarada, en el idioma en que esta escribiendo.
+- Reparar la comparacion por secciones: `check` informa `sections-missing` en `REPO-HARNESS.md` nombrando `Purpose`, `Hard Rules`, `Decision Gates` y `Updating This File` mientras el archivo lleva las cuatro cabeceras y sus marcadores de rol.
+- Incorporar los marcadores `doc-role` a los documentos durables de este mismo repositorio, anteriores a los marcadores que emite el generador actual.
+- Actualizar los envoltorios `repo-harness-help` versionados, a los que aun les falta la clausula de ruteo "in its language" que emite el generador actual.
+- Hacer que el constructor pregunte el idioma de conversacion y los idiomas de documentacion durante la entrevista, para que los valores registrados provengan de una eleccion humana y no de un valor por defecto.
 
 ## Siguiente paso
 

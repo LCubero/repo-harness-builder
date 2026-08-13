@@ -17,6 +17,7 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 
 - Load and follow the canonical rulebook at `REPO-HARNESS.md`, including its execution discipline.
 - Summarize only work supported by current repository evidence and verified command results.
+- Answer in the conversation language recorded in `.repo-harness/manifest.json`, and in its absence in the language the user is writing in. A live conversation is stronger evidence than a stored default, so the language the user is actually writing in wins over the recorded value. Skills, contracts, documentation, and every other generated artifact stay in English regardless of that choice.
 - Validate every referenced repository path and avoid stale claims.
 - Propose updates to `REPO-HARNESS.md` and canonical documentation, but write them only after explicit approval.
 - Keep the rulebook inside its budget. Move durable detail down into its owned deeper document.

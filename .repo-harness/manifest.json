@@ -9,6 +9,13 @@
     "version": "3.0"
   },
   "integrationMode": "integrated",
+  "language": {
+    "conversation": "espanol",
+    "documentation": [
+      "en",
+      "es"
+    ]
+  },
   "project": {
     "id": "repo-harness-builder",
     "rulebook": "REPO-HARNESS.md"

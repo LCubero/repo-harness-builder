@@ -13,8 +13,10 @@ import re
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
-MANIFEST_SHA256 = "f1c3d1c61e219c0e13d9e26d368b0dc0012a7ae004fcf1b58e95725294814e1e"
-MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "writeSemantics", "integrationMode"}
+MANIFEST_SHA256 = "0a355c943b3657502ff5d61b3fabb696281747ea7b40881764eadd679b0c93ce"
+MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "writeSemantics", "integrationMode", "language"}
+REPORT_LANGUAGES = {"english", "espanol"}
+DOCUMENTATION_LANGUAGES = {"en", "es"}
 RUNTIMES = {"claude-code", "opencode", "pi"}
 SKILL_SURFACES = {
     "claude-code": ".claude/skills/{name}/SKILL.md",
@@ -86,6 +88,20 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         raise ValueError("unexpected integration mode")
     if manifest["writeSemantics"] != "additive-create-with-runtime-pointer-append":
         raise ValueError("unexpected write semantics")
+    language = manifest["language"]
+    if not isinstance(language, dict) or set(language) != {"conversation", "documentation"}:
+        raise ValueError("unexpected language schema")
+    if language["conversation"] not in REPORT_LANGUAGES:
+        raise ValueError("unexpected conversation language")
+    documentation = language["documentation"]
+    if (
+        not isinstance(documentation, list)
+        or not documentation
+        or len(documentation) != len(set(documentation))
+        or not set(documentation) <= DOCUMENTATION_LANGUAGES
+        or documentation[0] != "en"
+    ):
+        raise ValueError("unexpected documentation languages")
     skills = manifest["canonicalSkills"]
     if not isinstance(skills, dict) or not skills:
         raise ValueError("unexpected canonical skills")
