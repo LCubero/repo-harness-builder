@@ -6,6 +6,7 @@ Last updated: 2026-08-13
 
 ## Sources scanned
 
+- .opencode\skills
 - .claude\skills
 - C:\Users\LD9\.config\opencode\skills
 - C:\Users\LD9\.claude\skills
@@ -377,6 +378,9 @@ Last updated: 2026-08-13
 | `reference-signal-forms` | Trigger: reference-signal-forms, Explains the mental model and architecture of the code under `packages/forms/signals`. Preserve source workflow with portable agent instructions. | user | `C:\Users\LD9\.config\opencode\skills\reference-signal-forms\SKILL.md` |
 | `remotion-best-practices` | Trigger: remotion-best-practices, Best practices for Remotion - Video creation in React. Preserve source workflow with portable agent instructions. | user | `C:\Users\LD9\.config\opencode\skills\remotion-best-practices\SKILL.md` |
 | `repo-harness-builder` | Build or check a minimal documentation and continuity harness in the selected repository with bounded root runtime pointers. | project | `E:\code\00-skills-pack_ld9\0_mis_skills\repo-harness-builder\.claude\skills\repo-harness-builder\SKILL.md` |
+| `repo-harness-builder-documentation` | Maintain concise canonical documentation for repo-harness-builder. | project | `E:\code\00-skills-pack_ld9\0_mis_skills\repo-harness-builder\.opencode\skills\repo-harness-builder-documentation\SKILL.md` |
+| `repo-harness-builder-session-start` | Start a work session for repo-harness-builder from current repository evidence. | project | `E:\code\00-skills-pack_ld9\0_mis_skills\repo-harness-builder\.opencode\skills\repo-harness-builder-session-start\SKILL.md` |
+| `repo-harness-builder-session-stop` | Close a work session for repo-harness-builder with an evidence-based handoff. | project | `E:\code\00-skills-pack_ld9\0_mis_skills\repo-harness-builder\.opencode\skills\repo-harness-builder-session-stop\SKILL.md` |
 | `requesting-code-review` | Trigger: requesting-code-review, Use when completing tasks, implementing major features, or before merging to verify work meets requirements. Preserve source workflow with portable agent instructions. | user | `C:\Users\LD9\.config\opencode\skills\requesting-code-review\SKILL.md` |
 | `research` | Trigger: research, primary-source investigation, docs lookup. Investigate a question and save cited findings as Markdown. | user | `C:\Users\LD9\.config\opencode\skills\research\SKILL.md` |
 | `responsive-design` | Trigger: responsive-design, Implement modern responsive layouts using container queries, fluid typography, CSS Grid, and mobile-first breakpoint strategies. Preserve source workflow with portable agent instructions. | user | `C:\Users\LD9\.config\opencode\skills\responsive-design\SKILL.md` |

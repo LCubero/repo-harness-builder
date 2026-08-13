@@ -1,7 +1,7 @@
 ---
 name: repo-harness-builder
 description: "Build or check a minimal documentation and continuity harness in the selected repository with bounded root runtime pointers."
-license: CC BY-NC 4.0
+license: MIT
 metadata:
   author: Luis Diego Cubero Chavarria
   version: "3.1"
