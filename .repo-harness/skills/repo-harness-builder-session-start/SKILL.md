@@ -69,7 +69,7 @@ Outcomes are scoped. Startup uses `ready`, `paused`, `blocked`, `failed`, or `de
 | authentication or transport failure | Mark the optional Git branch `failed`, preserve state and the full command receipt, stop only that branch, and continue local startup as `degraded`. |
 | fast-forward-only failure | Preserve state and exact command error, stop only the Git synchronization branch, and do not claim synchronization. |
 
-Never use git pull, git rebase, git reset, force operations, merge on divergence, or automatic conflict resolution. Native Git is the core transport. Recognized provider tooling is only an alternate credential path if installed and separately approved. For transport diagnostics, retain each attempted command, exit status, stderr, and safely-local state. Make at most 2 distinct transport attempts, never indefinite retries.
+Never use git pull, git rebase, git reset, force operations, merge on divergence, or automatic conflict resolution. Native Git is the core transport. Recognized provider tooling is only an alternate credential path if installed and separately approved. For transport diagnostics, retain each attempted command, exit status, stderr, and safely-local state. Make at most 2 distinct transport attempts, never indefinite retries. After an authentication or transport failure, check read-only whether an alternate credential path is actually available and name it in remediation instead of stopping with none: prefer installed and authenticated provider tooling used as a single-command credential helper that changes no global configuration, and when the only remaining path needs a passphrase or secret the agent cannot supply, hand the exact command to the human to run.
 
 ## Output Contract
 

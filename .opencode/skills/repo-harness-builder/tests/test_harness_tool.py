@@ -868,6 +868,20 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(phrase, scoped)
 
+    def test_transport_failure_offers_an_available_alternate_credential_path(self):
+        """Naming a failure without naming its available exit is not remediation."""
+        outputs = TOOL.render("Example", [])
+        scoped = outputs[".repo-harness/skills/example-session-start/SKILL.md"] + outputs[
+            ".repo-harness/skills/example-session-stop/SKILL.md"
+        ]
+        for phrase in (
+            "name it in remediation instead of stopping with none",
+            "changes no global configuration",
+            "the agent cannot supply",
+            "hand the exact command to the human",
+        ):
+            self.assertIn(phrase, scoped)
+
     def test_rulebook_answers_how_to_work_here_in_four_sections(self):
         text = TOOL.render("Example", ["opencode"])[RULEBOOK]
         self.assertEqual(TOOL.structural_headings(text), ["Purpose", "Hard Rules", "Decision Gates", "Updating This File"])

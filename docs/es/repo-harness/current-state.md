@@ -20,6 +20,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - Se agrego un control previo al commit que separa trabajo preparado con anterioridad.
 - Se localizo la aprobacion estricta del constructor sin trasladarla a las habilidades conversacionales.
 - Se sustituyeron las plantillas parciales en espanol, se agrego validacion proporcional por idioma, se enruto la ayuda localizada y se bloqueo cualquier selector README unilateral.
+- Se hizo que la remediacion ante fallos de transporte nombre una via de credenciales alternativa disponible, prefiriendo un asistente de credenciales del proveedor de un solo comando que no altera la configuracion global, y devolviendo el comando exacto cuando hace falta un secreto que el agente no puede aportar.
 
 ## Trabajo pendiente
 

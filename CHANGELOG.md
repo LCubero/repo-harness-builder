@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-08-13
+
+- Made transport-failure remediation actionable: a generated session must now check whether an alternate credential path exists and name it, preferring provider tooling used as a single-command credential helper that changes no global configuration, and handing the exact command back to the human when the remaining path needs a secret the agent cannot supply.
+
 ## 2026-08-12
 
 - Fixed six bilingual review blockers: complete Spanish templates and root peers, locale-aware completeness validation, integrated localized help routing with stable digest, fail-closed reciprocal README planning, resolving documentation maps, and normative source labeling.

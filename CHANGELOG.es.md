@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-08-13
+
+- Se hizo accionable la remediacion ante fallos de transporte: una sesion generada ahora debe comprobar si existe una via de credenciales alternativa y nombrarla, prefiriendo la herramienta del proveedor usada como asistente de credenciales de un solo comando que no altera la configuracion global, y devolviendo el comando exacto a la persona cuando la via restante necesita un secreto que el agente no puede aportar.
+
 ## 2026-08-12
 
 - Se corrigieron seis bloqueos de revision bilingue: plantillas y pares raiz completos en espanol, validacion de completitud por idioma, ayuda localizada integrada con digest estable, planificacion reciproca de README con cierre seguro, mapas con enlaces resolubles y clasificacion normativa de fuentes.

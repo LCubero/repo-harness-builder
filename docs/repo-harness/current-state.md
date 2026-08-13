@@ -27,6 +27,7 @@
 - Replaced chained Spanish heading substitutions with complete usage, current-state, and decisions templates; added locale-aware content baselines and semantic-role checks.
 - Routed generated help through the resolved report language while preserving a language-independent action-plan digest.
 - Made one-sided README selector plans fail closed by blocking Spanish peer creation until reciprocal existing-file integration is executable.
+- Made transport-failure remediation name an available alternate credential path, preferring a single-command provider credential helper that changes no global configuration and handing back the exact command when a secret the agent cannot supply is required.
 
 ## Pending Work
 
