@@ -14,11 +14,11 @@ While auditing, resolve the license the generated skills will carry: read a root
 
 Ask one blocking decision per turn and stop for the answer. Keep questions clear and localized without forcing ceremonial labels on trivial exchanges. Explain the immediate consequence when it is not obvious.
 
-For the builder's content-bound apply plan only, state `Answers are case-sensitive and must be written exactly in uppercase.` before showing the choices. The complete answer domain is exactly `APROBAR` and `DENEGAR`. Continue only for `APROBAR`; stop for `DENEGAR`. Reject lowercase, mixed case, aliases, and prose with `Invalid answer. Write exactly APROBAR or DENEGAR in uppercase.` Do not normalize or retry. Runtime, license, integrate/update versus archive/start-clean, and generated session choices are conversational and non-strict.
+For the builder's content-bound apply plan only, use the resolved report language consistently for the headline, case-sensitive instruction, allowed answers, question, and invalid-answer message. English accepts exactly uppercase `APPROVE` or `DENY`; Spanish accepts exactly uppercase `APROBAR` or `DENEGAR`. Continue only for the active language's approval token and stop for its denial token. Reject lowercase, mixed case, aliases, prose, and cross-language tokens with the active localized error. Do not normalize or retry. Runtime, license, integrate/update versus archive/start-clean, and generated session choices are conversational and non-strict.
 
 The first decision after audit permits planning only. A new or effectively empty repository proceeds to a complete baseline plan. An existing repository first receives an evidence-based proposal and, when needed, one conversational choice between integrate/update and archive/start clean. The later write decision must reference the exact current plan and its newly printed digest; never reuse a digest from an earlier preview.
 
-Upgrade diagnostics and integration choices are conversational. Exact `APROBAR` and `DENEGAR` remain exclusive to the final content-bound apply plan. A proposal may name replacement for proven generated `stale` or `legacy` files, but human-evolved content requires integration or archive/start-clean choices. Never schedule replacement, archive, or deletion merely from classification.
+Upgrade diagnostics and integration choices are conversational. The strict language-scoped tokens remain exclusive to the final content-bound apply plan. A proposal may name replacement for proven generated `stale` or `legacy` files, but human-evolved content requires integration or archive/start-clean choices. Never schedule replacement, archive, or deletion merely from classification.
 
 ## Runtime Selection
 
@@ -53,6 +53,8 @@ Resolve it once, in this order, and state which source won:
 A supplied argument wins even as a bare token with no sentence around it. `espanol` alone is the canonical form of step 1, not a weaker one. The wrapper prose, this contract, and every tool output are written in English by design, so none of them is evidence of the conversation language. When an argument matches a language token, resolution stops at step 1 and step 3 is never consulted.
 
 Then translate every user-facing word, not only the titles. Both report templates in `assets/` mark translatable text as `{{t "..."}}`; every one of those markers must come out in the resolved language. A field label left in English is the defect this contract exists to prevent.
+
+Pass the resolved value explicitly to the renderer as `--report-language english` or `--report-language espanol` for both preview and apply. The CLI does not use global language state. When a pure renderer or direct CLI caller supplies no language, the deterministic product fallback is `english`; an orchestrating runtime still resolves the existing argument, host preference, and conversation contract before invoking it. Apply fails closed unless both the current `planSha256` and the exact active-domain `--approval` are supplied. Report language changes only approval presentation and validation; it never enters the action plan or its digest.
 
 Preserve commands, paths, identifiers, enum values, states, and anything inside backticks exactly as written. Generated repository artifacts stay in English regardless of the report language.
 

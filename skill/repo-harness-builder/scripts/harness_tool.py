@@ -35,14 +35,35 @@ RULEBOOK_TOKEN_BUDGET = 700
 FORBIDDEN_METHODS = ("SDD", "TDD", "RDD", "Fabric", "Azure", "Brain_AI", "Panda")
 DATE_HEADING = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 SPDX_EXPRESSION = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+:() -]*")
-APPROVAL_PROMPT = (
-    "Answers are case-sensitive and must be written exactly in uppercase.\n"
-    "Allowed answers:\n"
-    "- APROBAR\n"
-    "- DENEGAR\n"
-    "Do you approve this exact plan?"
-)
-INVALID_APPROVAL = "Invalid answer. Write exactly APROBAR or DENEGAR in uppercase."
+DEFAULT_REPORT_LANGUAGE = "english"
+APPROVAL_DOMAINS = {
+    "english": {
+        "approve": "APPROVE",
+        "deny": "DENY",
+        "prompt": (
+            "Builder content-bound approval\n"
+            "Answers are case-sensitive and must be written exactly in uppercase.\n"
+            "Allowed answers:\n"
+            "- APPROVE\n"
+            "- DENY\n"
+            "Do you approve this exact plan?"
+        ),
+        "invalid": "Invalid answer. Write exactly APPROVE or DENY in uppercase.",
+    },
+    "espanol": {
+        "approve": "APROBAR",
+        "deny": "DENEGAR",
+        "prompt": (
+            "Aprobacion de contenido del constructor\n"
+            "Las respuestas distinguen mayusculas y minusculas y deben escribirse exactamente en mayusculas.\n"
+            "Respuestas permitidas:\n"
+            "- APROBAR\n"
+            "- DENEGAR\n"
+            "Aprueba este plan exacto?"
+        ),
+        "invalid": "Respuesta no valida. Escriba exactamente APROBAR o DENEGAR en mayusculas.",
+    },
+}
 GIT_CONSENT_STEPS = {
     "commit-and-push": ("stage", "commit", "checks", "fetch", "push"),
     "commit": ("stage", "commit", "checks"),
@@ -61,10 +82,30 @@ def require(condition: bool, message: str) -> None:
         raise ContractError(message)
 
 
-def approval_granted(answer: str) -> bool:
-    """Accept only the two exact case-sensitive approval answers."""
-    require(answer in ("APROBAR", "DENEGAR"), INVALID_APPROVAL)
-    return answer == "APROBAR"
+def approval_domain(report_language: str = DEFAULT_REPORT_LANGUAGE) -> dict[str, str]:
+    """Return the strict approval domain for one explicit report language."""
+    require(report_language in APPROVAL_DOMAINS, f"unsupported report language: {report_language}")
+    return APPROVAL_DOMAINS[report_language]
+
+
+def approval_prompt(report_language: str = DEFAULT_REPORT_LANGUAGE) -> str:
+    """Render the complete strict approval prompt in one language."""
+    return approval_domain(report_language)["prompt"]
+
+
+def approval_granted(answer: str, report_language: str = DEFAULT_REPORT_LANGUAGE) -> bool:
+    """Validate and interpret one exact case-sensitive language-scoped answer."""
+    domain = approval_domain(report_language)
+    require(answer in (domain["approve"], domain["deny"]), domain["invalid"])
+    return answer == domain["approve"]
+
+
+def documentation_entry_points(report_language: str = DEFAULT_REPORT_LANGUAGE) -> dict[str, str]:
+    """Return reader-first documentation paths for one resolved interaction language."""
+    approval_domain(report_language)
+    if report_language == "espanol":
+        return {"readme": "README.es.md", "usage": "docs/es/repo-harness/usage.md"}
+    return {"readme": "README.md", "usage": "docs/repo-harness/usage.md"}
 
 
 def git_consent_steps(outcome: str, material_changes: tuple[str, ...] = ()) -> tuple[str, ...]:
@@ -204,6 +245,38 @@ def structural_headings(text: str) -> list[str]:
     """List the level-two headings that define a document's shape, ignoring dated entries."""
     found = [line[3:].strip() for line in text.splitlines() if line.startswith("## ")]
     return [heading for heading in found if not DATE_HEADING.match(heading)]
+
+
+def semantic_sections(relative: str, text: str) -> list[str]:
+    """Return locale-independent section roles declared by human-owned docs."""
+    roles = re.findall(r"<!-- doc-role:([a-z0-9-]+) -->", text)
+    return roles or structural_headings(text)
+
+
+LOCALE_CONTENT_BASELINES = {
+    "docs/es/repo-harness/usage.md": {
+        "required": ("Use las tres habilidades generadas", "Limites de aprobacion", "repositorio permanece como fuente autoritativa"),
+        "forbidden": ("The daily skills inspect", "Explicit combined commit-and-push consent"),
+    },
+    "docs/es/repo-harness/current-state.md": {
+        "required": ("El harness minimo", "hechos verificados del proyecto", "Revise `REPO-HARNESS.md`"),
+        "forbidden": ("The minimal repository", "Replace placeholders", "Review `REPO-HARNESS.md`"),
+    },
+    "docs/es/repo-harness/decisions.md": {
+        "required": ("La documentacion del repositorio", "archivos ausentes", "operaciones de Git"),
+        "forbidden": ("Repository documentation remains", "The harness creates absent files"),
+    },
+}
+
+
+def locale_content_issues(relative: str, text: str) -> list[str]:
+    """Apply a proportional baseline for required locale content and known leakage."""
+    baseline = LOCALE_CONTENT_BASELINES.get(relative)
+    if baseline is None:
+        return []
+    issues = [f"required Spanish content missing: {phrase}" for phrase in baseline["required"] if phrase not in text]
+    issues.extend(f"known English body fragment present: {phrase}" for phrase in baseline["forbidden"] if phrase in text)
+    return issues
 
 
 def frontmatter(name: str, description: str, source: str, license_id: str) -> str:
@@ -618,9 +691,13 @@ def docs_outputs(project_id: str, rulebook_path: str, standalone: bool) -> dict[
         if standalone
         else "Engram session summaries remain temporary continuity inputs and must be reconciled with repository evidence."
     )
+    selector_en = "<!-- README-I18N:START -->\n\n**English** | [Español](./README.es.md)\n\n<!-- README-I18N:END -->"
+    selector_es = "<!-- README-I18N:START -->\n\n[English](./README.md) | **Español**\n\n<!-- README-I18N:END -->"
     index = f"""# AI Harness Documentation
 
 {marker}
+
+<!-- doc-role:documentation-map -->
 
 `{rulebook_path}` is the visible entry point. This directory owns durable detail.
 
@@ -629,6 +706,8 @@ def docs_outputs(project_id: str, rulebook_path: str, standalone: bool) -> dict[
 | `usage.md` | Human workflow, integration availability checks, and approval boundaries |
 | `current-state.md` | Verified current state, recent completed work, pending work, and next step |
 | `decisions.md` | Durable decisions and constraints with evidence |
+| `i18n-maintenance.md` | Bilingual ownership, synchronization, and link maintenance contract |
+| `../es/repo-harness/README.md` | Complete Spanish documentation peer |
 | `../../CHANGELOG.md` | Factual, dated, concise completed changes; never future plans |
 
 {continuity} They do not become durable truth until reconciled with repository evidence and promoted into the appropriate canonical owner.
@@ -651,10 +730,13 @@ def docs_outputs(project_id: str, rulebook_path: str, standalone: bool) -> dict[
     usage = f"""# Using The Repository Harness
 
 {marker}
+<!-- doc-role:overview -->
 
 Use the three generated skills as a loop: recover context, keep durable documentation current, then leave a verified handoff.
 
 ## Daily Workflow
+
+<!-- doc-role:daily-workflow -->
 
 1. Start or resume with `{project_id}-session-start` and state the objective. It {recovery}, reports a scoped outcome, inspects local Git state read-only, and, when safe, ends with one concrete remote-check question.
 2. Use `{project_id}-documentation` when durable documentation or visible project state needs updating.
@@ -662,13 +744,19 @@ Use the three generated skills as a loop: recover context, keep durable document
 
 ## Integrated Availability
 
+<!-- doc-role:availability -->
+
 {availability}
 
 ## Congruence And Ownership
 
+<!-- doc-role:ownership -->
+
 Run `python .repo-harness/check.py` after canonical skills or runtime projections change. The checker is read-only and reports whether generated runtime copies still match their canonical skills. {continuity_owner}
 
 ## Approval Boundaries
+
+<!-- doc-role:approval-boundaries -->
 
 The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, or `degraded`, scoped so optional Git failure does not fail successful continuity. Documentation writes require explicit conversational approval. Explicit safe-sync consent covers bounded fetch plus fast-forward-only integration. Explicit combined commit-and-push consent covers exact staging, commit, checks, one fetch preflight, and one push to the identified upstream. Commit-only and push-only remain narrow, and material changes invalidate consent. Dirty or diverged repositories stay local for human resolution, and no Git action is required for continuity.
 """
@@ -678,17 +766,25 @@ The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `
 
 ## Verified State
 
+<!-- doc-role:verified-state -->
+
 The minimal repository AI harness exists. Project-specific state is pending review.
 
 ## Recent Completed Work
+
+<!-- doc-role:recent-work -->
 
 - Bootstrapped canonical project documentation and operational session skills.
 
 ## Pending Work
 
+<!-- doc-role:pending-work -->
+
 - Replace placeholders with verified project facts.
 
 ## Next Step
+
+<!-- doc-role:next-step -->
 
 Review `{rulebook_path}` and this document together, then update only supported claims.
 """
@@ -703,14 +799,67 @@ Review `{rulebook_path}` and this document together, then update only supported 
 
 ## Standing Decisions
 
+<!-- doc-role:standing-decisions -->
+
 - Repository documentation remains the visible source of project state.
 {continuity_decision}
 - Git, provider, backup, and publication operations are outside the core harness.
 - The harness creates absent files. Only selected root runtime pointers may receive their exact missing directive; every other existing file stays unchanged.
 """
+    maintenance = f"""# Bilingual Documentation Maintenance
+
+{marker}
+
+<!-- doc-role:canonical-ownership -->
+## Canonical Ownership
+
+`{rulebook_path}`, `CHANGELOG.md`, and the English files under `docs/repo-harness/` own operational facts. Spanish peers are complete reader-facing projections and link to their factual owners.
+
+<!-- doc-role:translation-sync -->
+## Translation Sync
+
+Update the factual owner first, then update its Spanish peer in the same work unit. Equivalent meaning is required; literal heading or sentence equality is not. Locale-specific phrasing is allowed when facts, commands, paths, constraints, and outcomes remain equivalent.
+
+<!-- doc-role:link-validation -->
+## Link Validation
+
+Keep one reciprocal language selector in each root README. Validate every relative link from the file that contains it and run `python .repo-harness/check.py` after documentation changes.
+
+<!-- doc-role:freshness -->
+## Freshness
+
+`CHANGELOG.md` is the sole chronological owner and `docs/repo-harness/current-state.md` is the sole current-state owner. Localized peers present those facts and identify the canonical source, so dates and status never become independent truth.
+"""
+    maintenance_es = f"""# Mantenimiento de la documentacion bilingue
+
+{marker}
+
+<!-- doc-role:canonical-ownership -->
+## Propiedad canonica
+
+`{rulebook_path}`, `CHANGELOG.md` y los archivos en ingles bajo `docs/repo-harness/` son propietarios de los hechos operativos. Los pares en espanol son proyecciones completas para lectura y enlazan a sus fuentes factuales.
+
+<!-- doc-role:translation-sync -->
+## Sincronizacion de traducciones
+
+Actualice primero el propietario factual y luego su par en espanol dentro de la misma unidad de trabajo. Se exige significado equivalente, no igualdad literal de encabezados u oraciones. Se permite redaccion propia de cada idioma si los hechos, comandos, rutas, restricciones y resultados permanecen equivalentes.
+
+<!-- doc-role:link-validation -->
+## Validacion de enlaces
+
+Mantenga un selector reciproco de idioma en cada README raiz. Valide cada enlace relativo desde el archivo que lo contiene y ejecute `python .repo-harness/check.py` despues de cambiar la documentacion.
+
+<!-- doc-role:freshness -->
+## Vigencia
+
+`CHANGELOG.md` es el unico propietario cronologico y `docs/repo-harness/current-state.md` es el unico propietario del estado actual. Los pares localizados presentan esos hechos e identifican la fuente canonica, para que las fechas y el estado no se conviertan en verdades independientes.
+"""
     readme = f"""# {project_id}
 
+{selector_en}
+
 <!-- repo-harness-builder:start -->
+<!-- doc-role:repository-harness -->
 ## Repository Harness
 
 This repository uses a generated documentation and continuity harness. Start with [`{rulebook_path}`]({rulebook_path}) for working rules and [`docs/repo-harness/usage.md`](docs/repo-harness/usage.md) for the human workflow.
@@ -718,12 +867,178 @@ This repository uses a generated documentation and continuity harness. Start wit
 The content between the `repo-harness-builder` markers is the builder-managed section. Content outside the markers belongs to the repository's maintainers.
 <!-- repo-harness-builder:end -->
 """
+    readme_es = f"""# {project_id}
+
+{selector_es}
+
+<!-- repo-harness-builder:start -->
+<!-- doc-role:repository-harness -->
+## Harness del repositorio
+
+Este repositorio usa un harness generado de documentacion y continuidad. Comience con [`{rulebook_path}`]({rulebook_path}) para las reglas operativas y con [`docs/es/repo-harness/usage.md`](docs/es/repo-harness/usage.md) para el flujo humano en espanol.
+
+El contenido entre los marcadores `repo-harness-builder` es administrado por el constructor. El contenido fuera de los marcadores pertenece a quienes mantienen el repositorio.
+<!-- repo-harness-builder:end -->
+"""
+    index_es = f"""# Documentacion del harness de IA
+
+{marker}
+
+<!-- doc-role:documentation-map -->
+
+`{rulebook_path}` es la entrada operativa canonica. Este arbol contiene pares completos en espanol de la documentacion durable.
+
+| Documento | Propiedad |
+|---|---|
+| `usage.md` | Flujo humano, disponibilidad y limites de aprobacion |
+| `current-state.md` | Presentacion en espanol del estado canonico en `../../../repo-harness/current-state.md` |
+| `decisions.md` | Presentacion en espanol de decisiones y restricciones |
+| `i18n-maintenance.md` | Contrato de mantenimiento bilingue |
+| `../../../repo-harness/README.md` | Mapa canonico en ingles |
+| `../../../CHANGELOG.md` | Historial cronologico canonico |
+"""
+    availability_es = (
+        "Confirme que las habilidades generadas esten disponibles en el entorno seleccionado y que Gentle AI y Engram esten disponibles. Si falta alguna dependencia de continuidad, informelo y no afirme que la continuidad integrada funciona."
+        if not standalone
+        else "Confirme que las habilidades generadas esten disponibles en el entorno seleccionado. La continuidad permanece en archivos del repositorio y no depende de un servicio externo de memoria."
+    )
+    ownership_es = (
+        "Engram conserva contexto temporal entre sesiones; el repositorio permanece como fuente autoritativa. Promueva hechos durables verificados mediante la habilidad de documentacion."
+        if not standalone
+        else "La salida de sesion conserva contexto temporal; el repositorio permanece como fuente autoritativa. Promueva hechos durables verificados mediante la habilidad de documentacion."
+    )
+    usage_es = f"""# Uso del harness del repositorio
+
+{marker}
+<!-- doc-role:overview -->
+
+Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vigente la documentacion durable y deje una transferencia verificada.
+
+## Flujo diario
+
+<!-- doc-role:daily-workflow -->
+
+1. Inicie o reanude con `{project_id}-session-start` e indique el objetivo. La habilidad recupera contexto pertinente, lo reconcilia con evidencia actual del repositorio, informa un resultado acotado, inspecciona Git en modo de solo lectura y, cuando sea seguro, termina con una sola pregunta concreta sobre la comprobacion remota.
+2. Use `{project_id}-documentation` cuando sea necesario actualizar documentacion durable o el estado visible del proyecto.
+3. Pause o cierre con `{project_id}-session-stop`. La habilidad verifica la evidencia final y guarda continuidad antes de inspeccionar Git. Examina cada ruta candidata, propone unidades de commit exactas y revisables, y termina las compuertas seguras de commit o push con una sola pregunta concreta.
+
+## Disponibilidad integrada
+
+<!-- doc-role:availability -->
+
+{availability_es}
+
+## Congruencia y propiedad
+
+<!-- doc-role:ownership -->
+
+Ejecute `python .repo-harness/check.py` despues de cambiar habilidades canonicas o proyecciones de ejecucion. El verificador es de solo lectura e informa si las copias generadas coinciden con sus habilidades canonicas. {ownership_es}
+
+## Limites de aprobacion
+
+<!-- doc-role:approval-boundaries -->
+
+Las habilidades diarias inspeccionan en modo de solo lectura por defecto. Los resultados son `ready`, `paused`, `blocked`, `failed`, `completed` o `degraded`; el alcance evita que un fallo opcional de Git invalide una continuidad exitosa. Las escrituras documentales requieren aprobacion conversacional explicita. El consentimiento para sincronizacion segura cubre un fetch acotado y una integracion solo por avance rapido. El consentimiento combinado para commit y push cubre las rutas exactas, el commit, las comprobaciones, un fetch previo y un push al upstream identificado. Los consentimientos solo para commit o solo para push permanecen limitados, y cualquier cambio material los invalida. Los repositorios sucios o divergentes permanecen locales para resolucion humana; la continuidad no exige ninguna operacion de Git.
+"""
+    state_es = f"""# Estado actual
+
+{marker}
+
+## Estado verificado
+
+<!-- doc-role:verified-state -->
+
+El harness minimo de IA del repositorio existe. El estado especifico del proyecto esta pendiente de revision.
+
+## Trabajo reciente completado
+
+<!-- doc-role:recent-work -->
+
+- Se crearon la documentacion canonica del proyecto y las habilidades operativas de sesion.
+
+## Trabajo pendiente
+
+<!-- doc-role:pending-work -->
+
+- Sustituir los marcadores de posicion por hechos verificados del proyecto.
+
+## Siguiente paso
+
+<!-- doc-role:next-step -->
+
+Revise `REPO-HARNESS.md` junto con este documento y actualice solo afirmaciones respaldadas por evidencia.
+"""
+    continuity_decision_es = "- La continuidad usa solo archivos del repositorio." if standalone else "- Gentle AI y Engram son obligatorios para la continuidad integrada, pero nunca reemplazan la evidencia actual del repositorio."
+    decisions_es = f"""# Decisiones y restricciones
+
+{marker}
+
+## Decisiones permanentes
+
+<!-- doc-role:standing-decisions -->
+
+- La documentacion del repositorio permanece como fuente visible del estado del proyecto.
+{continuity_decision_es}
+- Las operaciones de Git, proveedor, respaldo y publicacion quedan fuera del nucleo del harness.
+- El harness crea archivos ausentes. Solo los punteros raiz seleccionados pueden recibir su directiva exacta faltante; cualquier otro archivo existente permanece sin cambios.
+"""
+    rulebook_es = f"""# {project_id}: guia operativa en espanol
+
+{marker}
+
+Esta es una presentacion completa en espanol. [`{rulebook_path}`]({rulebook_path}) es la unica fuente operativa canonica y prevalece si existe una discrepancia.
+
+## Proposito
+<!-- doc-role:purpose -->
+
+El harness mantiene visibles las reglas de trabajo, el estado durable y las rutas hacia las habilidades generadas.
+
+## Reglas obligatorias
+<!-- doc-role:hard-rules -->
+
+- Trabaje solo dentro del repositorio seleccionado y preserve archivos desconocidos.
+- Verifique la evidencia actual antes de confiar en memoria previa.
+- Use [la guia de uso](docs/es/repo-harness/usage.md), [el estado actual](docs/es/repo-harness/current-state.md) y [las decisiones](docs/es/repo-harness/decisions.md).
+- Ejecute `python .repo-harness/check.py` para comprobar las proyecciones.
+
+## Compuertas de decision
+<!-- doc-role:decision-gates -->
+
+- Para iniciar o reanudar, use `.repo-harness/skills/{project_id}-session-start/SKILL.md`.
+- Para pausar o cerrar, use `.repo-harness/skills/{project_id}-session-stop/SKILL.md`.
+- Para el flujo humano, consulte [la guia de uso](docs/es/repo-harness/usage.md).
+- Para estado, entregas y razones, consulte [el estado actual](docs/es/repo-harness/current-state.md), [CHANGELOG.md](CHANGELOG.md) y [las decisiones](docs/es/repo-harness/decisions.md).
+
+## Actualizacion de este archivo
+<!-- doc-role:maintenance -->
+
+Actualice este par cuando cambie una regla o ruta en `{rulebook_path}`. El archivo canonico en ingles conserva la propiedad operativa. No coloque estado fechado aqui; mantenga el detalle en sus documentos propietarios.
+"""
+    changelog_es = f"""# Historial de cambios
+
+{marker}
+
+[`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este par ofrece la presentacion en espanol y debe actualizarse en la misma unidad de trabajo, sin crear una segunda fuente de verdad.
+
+## {date.today().isoformat()}
+
+- Se creo el harness minimo de IA del repositorio y su documentacion visible de continuidad.
+"""
     return {
         "README.md": readme,
+        "README.es.md": readme_es,
+        "REPO-HARNESS.es.md": rulebook_es,
+        "CHANGELOG.es.md": changelog_es,
         "docs/repo-harness/README.md": index,
         "docs/repo-harness/usage.md": usage,
         "docs/repo-harness/current-state.md": state,
         "docs/repo-harness/decisions.md": decisions,
+        "docs/repo-harness/i18n-maintenance.md": maintenance,
+        "docs/es/repo-harness/README.md": index_es,
+        "docs/es/repo-harness/usage.md": usage_es,
+        "docs/es/repo-harness/current-state.md": state_es,
+        "docs/es/repo-harness/decisions.md": decisions_es,
+        "docs/es/repo-harness/i18n-maintenance.md": maintenance_es,
     }
 
 
@@ -752,12 +1067,13 @@ def wrapper(runtime: str, skill_name: str) -> str:
     )
 
 
-def help_wrapper(runtime: str) -> str:
+def help_wrapper(runtime: str, report_language: str = DEFAULT_REPORT_LANGUAGE) -> str:
     """Render the thin read-only harness help command."""
     source = f"wrapper/{runtime}/repo-harness-help:{VERSION}"
+    guide = "docs/es/repo-harness/usage.md" if report_language == "espanol" else "docs/repo-harness/usage.md"
     return (
         f"<!-- {GENERATED_MARKER}; source: {source} -->\n"
-        "Read `docs/repo-harness/usage.md` and present concise help. Work read-only: do not modify files, load skills, or invoke commands.\n"
+        f"Read `{guide}` and present concise help in its language. Work read-only: do not modify files, load skills, or invoke commands.\n"
         "Do not duplicate the guide content. If the guide is missing, report that the harness is incomplete or outdated and recommend running the builder in read-only inspection mode.\n"
     )
 
@@ -913,9 +1229,9 @@ def human_owned(relative: str, rulebook_path: str) -> bool:
     Structural checking allows informed project-specific evolution. It does not
     classify the file as immutable or exempt it from future content analysis.
     """
-    if relative in (rulebook_path, "CHANGELOG.md", "README.md"):
+    if relative in (rulebook_path, "REPO-HARNESS.es.md", "CHANGELOG.md", "CHANGELOG.es.md", "README.md", "README.es.md"):
         return True
-    return relative.startswith("docs/repo-harness/") or relative.startswith(".repo-harness/rules/")
+    return relative.startswith("docs/repo-harness/") or relative.startswith("docs/es/repo-harness/") or relative.startswith(".repo-harness/rules/")
 
 
 def budgeted(relative: str, rulebook_path: str) -> bool:
@@ -928,9 +1244,11 @@ def render(
     runtimes: list[str],
     license_id: str = DEFAULT_LICENSE,
     standalone: bool = False,
+    report_language: str = DEFAULT_REPORT_LANGUAGE,
 ) -> dict[str, str]:
     """Render all canonical and applicable runtime outputs in memory."""
     project_id = normalize_project_name(project_name)
+    approval_domain(report_language)
     selected = sorted(set(runtimes))
     require(set(selected) <= RUNTIMES, f"unsupported runtime: {sorted(set(selected) - RUNTIMES)}")
     rulebook_path = RULEBOOK_PATH
@@ -967,7 +1285,7 @@ def render(
             if runtime == "pi"
             else f"{'.opencode' if runtime == 'opencode' else '.claude'}/commands/repo-harness-help.md"
         )
-        outputs[help_path] = help_wrapper(runtime)
+        outputs[help_path] = help_wrapper(runtime, report_language)
     if "claude-code" in selected:
         outputs["CLAUDE.md"] = POINTER_DIRECTIVES["CLAUDE.md"] + "\n"
     if {"opencode", "pi"} & set(selected):
@@ -995,6 +1313,7 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
     append: list[dict[str, str]] = []
     identical: list[str] = []
     existing: list[dict[str, str]] = []
+    blocked: list[dict[str, str]] = []
     for relative, content in sorted(outputs.items()):
         target = guarded_target(root, relative)
         if not target.exists() and not target.is_symlink():
@@ -1025,17 +1344,31 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
                 else "already present; analyze compatibility before an approved update or archive choice"
             )
             existing.append({"path": relative, "reason": reason})
-    return {"create": create, "append": append, "identical": identical, "existing": existing}
+    readme = root / "README.md"
+    spanish_create = next((item for item in create if item["path"] == "README.es.md"), None)
+    if spanish_create and readme.is_file() and not readme.is_symlink() and b"README.es.md" not in readme.read_bytes():
+        create.remove(spanish_create)
+        blocked.append({
+            "path": "README.es.md",
+            "requires": "README.md",
+            "reason": "reciprocal language selector integration is required before creating the Spanish peer",
+        })
+    return {"create": create, "append": append, "identical": identical, "existing": existing, "blocked": blocked}
 
 
 def plan_digest(plan: dict[str, Any]) -> str:
     """Bind approval to one deterministic serialized plan."""
-    return digest_text(dump_json(plan))
+    stable = json.loads(dump_json(plan))
+    for item in stable["create"]:
+        if item["path"].endswith("repo-harness-help.md"):
+            item["sha256"] = digest_text(help_wrapper("stable", "english") + help_wrapper("stable", "espanol"))
+    return digest_text(dump_json(stable))
 
 
 def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> list[str]:
     """Execute only the unchanged approved plan, with pointer appends as the sole exception."""
     require(plan == plan_changes(root, outputs), "approved plan is stale; preview again")
+    require(not plan["blocked"], "blocked plan actions require approved executable integration")
     for item in plan["existing"]:
         relative = item["path"]
         target = guarded_target(root, relative)
@@ -1162,12 +1495,16 @@ def check(
         elif human_owned(relative, rulebook_path):
             current_bytes = target.read_bytes()
             current_text = current_bytes.decode("utf-8", errors="replace")
-            present = set(structural_headings(current_text))
-            absent = [heading for heading in structural_headings(content) if heading not in present]
+            present = set(semantic_sections(relative, current_text))
+            absent = [section for section in semantic_sections(relative, content) if section not in present]
+            locale_issues = locale_content_issues(relative, current_text)
             size = token_proxy(current_text)
             if absent:
                 entry["state"] = "sections-missing"
                 entry["missing"] = absent
+            elif locale_issues:
+                entry["state"] = "locale-content-incomplete"
+                entry["issues"] = locale_issues
             elif budgeted(relative, rulebook_path) and size >= RULEBOOK_TOKEN_BUDGET:
                 entry["state"] = "over-budget"
                 entry["tokens"] = size
@@ -1259,9 +1596,11 @@ def main(argv: Optional[list[str]] = None) -> int:
         child.add_argument("--runtime", action="append", choices=sorted(RUNTIMES), default=[], help="runtime profile; repeat the flag to select several, omit it for the core only")
         child.add_argument("--license", dest="license_id", default=DEFAULT_LICENSE, help="SPDX identifier for generated skills")
         child.add_argument("--standalone", action="store_true", help="generate repository-only continuity without Gentle AI or Engram")
+        child.add_argument("--report-language", choices=sorted(APPROVAL_DOMAINS), default=DEFAULT_REPORT_LANGUAGE, help="language for builder approval output; defaults to english")
         if name == "render":
             child.add_argument("--apply", action="store_true", help="create the absent files listed in the plan")
             child.add_argument("--approved-plan-sha256", help="digest printed by the approved preview")
+            child.add_argument("--approval", help="exact approval answer from the active report-language domain")
     self_test = sub.add_parser("self-test", help="bootstrap and verify a temporary empty project")
     self_test.add_argument("--standalone", action="store_true", help="test repository-only continuity")
     args = parser.parse_args(argv)
@@ -1275,16 +1614,21 @@ def main(argv: Optional[list[str]] = None) -> int:
         if args.command == "check":
             print(dump_json(check(root, args.project_name, selected, args.license_id, args.standalone)), end="")
             return 0
-        outputs = render(args.project_name, selected, args.license_id, args.standalone)
+        outputs = render(args.project_name, selected, args.license_id, args.standalone, args.report_language)
         plan = plan_changes(root, outputs)
         digest = plan_digest(plan)
+        domain = approval_domain(args.report_language)
         if not args.apply:
-            print(dump_json({"status": "plan", "approvalPrompt": APPROVAL_PROMPT, "planSha256": digest, **plan, "runtimeSet": runtime_set_report(root, selected), "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": documentation_entry_points(args.report_language), "approvalPrompt": domain["prompt"], "approvalAnswers": [domain["approve"], domain["deny"]], "planSha256": digest, **plan, "runtimeSet": runtime_set_report(root, selected), "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")
+            require(bool(args.approval), "--approval is required with --apply")
+            if not approval_granted(args.approval, args.report_language):
+                print(dump_json({"status": "DENIED", "changed": [], "planSha256": digest, "reportLanguage": args.report_language}), end="")
+                return 0
             changed = write_outputs(root, outputs, plan)
-            print(dump_json({"status": "VALIDATED", "changed": changed, "planSha256": digest, "plan": plan}), end="")
+            print(dump_json({"status": "VALIDATED", "changed": changed, "planSha256": digest, "reportLanguage": args.report_language, "plan": plan}), end="")
         return 0
     except (ContractError, OSError, json.JSONDecodeError) as error:
         print(dump_json({"status": "FAILED_CLOSED", "error": str(error)}), end="", file=sys.stderr)

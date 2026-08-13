@@ -6,6 +6,9 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-12
 
+- Fixed six bilingual review blockers: complete Spanish templates and root peers, locale-aware completeness validation, integrated localized help routing with stable digest, fail-closed reciprocal README planning, resolving documentation maps, and normative source labeling.
+- Added complete English and Spanish repository and generated-harness documentation with semantic synchronization, localized routing, and single-owner operational truth.
+- Localized strict builder approval domains and made apply fail closed unless both the current plan digest and exact active-language approval token validate.
 - Added a lightweight pre-commit staged-scope check with behavioral coverage for exact match, extra or missing paths, status or mode changes, and pre-existing staged-work separation.
 - Replaced command-by-command Git questions with intent-scoped safe-sync and commit-and-push consent, with narrow commit-only and push-only behavior plus material-change invalidation.
 - Completed a blind dual review of the full builder package and recorded unresolved upgrade, approval-enforcement, runtime-set, provenance, and behavioral-test risks.

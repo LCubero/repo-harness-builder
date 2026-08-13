@@ -1,24 +1,32 @@
 # repo-harness-builder
 
+<!-- README-I18N:START -->
+
+**English** | [Español](./README.es.md)
+
+<!-- README-I18N:END -->
+
 `repo-harness-builder` gives a repository a small, durable operating system for AI-assisted work. It keeps working rules visible, project state current, session context recoverable, runtime instructions portable, and handoffs verifiable without taking ownership away from maintainers.
 
 The result is less context loss between sessions, safer repository evolution, clearer documentation ownership, and the same core workflow across Claude Code, OpenCode, and Pi.
 
 ## Quick Start
+<!-- doc-role:quick-start -->
 
 1. Install or project the builder skill and command into a supported runtime.
 2. Open the target repository and invoke `/repo-harness-builder`.
 3. Choose the runtime projections and license when asked.
-4. Review the exact plan and approve its digest-bound apply only with `APROBAR`.
+4. Review the exact plan and use its language-scoped digest-bound approval: `APPROVE` or `DENY` in English, `APROBAR` or `DENEGAR` in Spanish.
 5. Start normal work with the generated `<project>-session-start` skill.
 
 With no operation, the builder performs a read-only audit. It does not initialize Git, mutate remotes, commit, push, or publish unless those separate actions are later requested and approved.
 
 ## What It Builds
+<!-- doc-role:outputs -->
 
 - Root `REPO-HARNESS.md` as the concise working entry point.
-- Root `README.md` when absent, with a bounded builder-managed section.
-- Durable documentation under `docs/repo-harness/`.
+- Root `README.md` and `README.es.md` when absent, with reciprocal language selectors and bounded builder-managed sections.
+- Complete English durable documentation under `docs/repo-harness/` and Spanish peers under `docs/es/repo-harness/`.
 - Runtime-neutral session and documentation skills under `.repo-harness/skills/`.
 - Selected Claude Code, OpenCode, or Pi runtime projections.
 - `.repo-harness/check.py` for read-only projection drift checks.
@@ -33,6 +41,7 @@ With no operation, the builder performs a read-only audit. It does not initializ
 | `.repo-harness/check.py` | A read-only congruence check that detects missing or stale runtime projections. |
 
 ## Builder And Generated Skills
+<!-- doc-role:skills -->
 
 The builder is the installer and upgrader. The three repository skills are the daily operating workflow after installation.
 
@@ -44,6 +53,7 @@ The builder is the installer and upgrader. The three repository skills are the d
 | `<project>-session-stop` | Pausing or ending work | Verified continuity, screened exact-path work units, and one outcome-scoped Git question when needed |
 
 ## Lifecycle
+<!-- doc-role:lifecycle -->
 
 ```text
 First builder run
@@ -64,6 +74,7 @@ Normal session
 In integrated mode, Gentle AI and Engram must be available for continuity. Engram helps bridge sessions, but it never overrides current repository files. In standalone mode, continuity remains repository-only.
 
 ## Example Workflow
+<!-- doc-role:example -->
 
 ```text
 /repo-harness-builder
@@ -82,6 +93,7 @@ Runtime command names vary, so invoke skills by their registered names through t
 Generated session outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, and `degraded`. They are scoped: optional Git failure can degrade a successful local session without falsely failing continuity. Explicit `commit and push` consent covers the unchanged safe sequence through one push; commit-only never implies push, and material changes pause for renewed consent.
 
 ## Repository Behavior
+<!-- doc-role:repository-behavior -->
 
 ### New Repositories
 
@@ -97,7 +109,10 @@ Older harnesses are audited rather than blindly replaced. Managed paths are clas
 
 The README is human-owned after creation. Its bounded builder section identifies the initial harness entry points, while maintainers may evolve the full product guide. Existing `CLAUDE.md` and `AGENTS.md` files are byte-preserved: the builder appends only an exact missing pointer line, and repeated runs are idempotent.
 
+Operational facts remain single-owned. `REPO-HARNESS.md`, `CHANGELOG.md`, and the English current-state owners are canonical; complete Spanish peers provide localized presentation and link back to those owners. See the [bilingual maintenance contract](docs/repo-harness/i18n-maintenance.md).
+
 ## Development
+<!-- doc-role:development -->
 
 Editable product sources are:
 
@@ -121,5 +136,6 @@ python .repo-harness/check.py
 ```
 
 ## License
+<!-- doc-role:license -->
 
 Licensed under the [MIT License](LICENSE).

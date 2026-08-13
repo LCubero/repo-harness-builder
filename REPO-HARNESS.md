@@ -5,10 +5,12 @@
 Read first. This is how work is done here. Where the project stands lives in [current state](docs/repo-harness/current-state.md).
 
 ## Purpose
+<!-- doc-role:purpose -->
 
 Canonical source of `repo-harness-builder`, an agent skill that builds or inspects a minimal documentation and continuity harness inside a selected repository. Editable product sources are `skill/repo-harness-builder/` and `command/repo-harness-builder.md`; `.opencode/` and `.claude/` are runtime projections for testing. This repository recursively uses its generated harness to improve the builder itself.
 
 ## Hard Rules
+<!-- doc-role:hard-rules -->
 
 - Work only inside the selected repository.
 - Ask for explicit approval before reading or modifying paths outside it.
@@ -22,6 +24,7 @@ Canonical source of `repo-harness-builder`, an agent skill that builds or inspec
 - Keep Git consent outcome-scoped and conversational. Combined intent may cover unchanged safe prerequisites; provider changes, backup, publication, destructive actions, and material risk changes require their own approval.
 
 ## Decision Gates
+<!-- doc-role:decision-gates -->
 
 | Situation | Read or run |
 |---|---|
@@ -36,6 +39,7 @@ Canonical source of `repo-harness-builder`, an agent skill that builds or inspec
 | Why something was decided, or a standing constraint | [decisions](docs/repo-harness/decisions.md) |
 
 ## Updating This File
+<!-- doc-role:maintenance -->
 
 1. **When.** A rule changes, a gate destination moves, or a statement here stops being true. Same change, not later.
 2. **Where.** A rule that must never be missed goes in Hard Rules. Everything else moves down into a file under `.repo-harness/rules/` and earns at most one gate row here. Detail never moves up. A new rule file gets a gate row and the same budget.

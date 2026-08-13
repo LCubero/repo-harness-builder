@@ -16,7 +16,10 @@
 - Confirm `docs/repo-harness/usage.md` explains start and resume, repository evidence, the generated congruence check, session stop, integrated availability, durable documentation ownership, and approval boundaries; standalone output must remain repository-only.
 - Generate wrappers only for enabled profiles. Each enabled profile receives a thin read-only `repo-harness-help` wrapper that reads `docs/repo-harness/usage.md`, presents concise help, never loads the builder, never duplicates the guide, never modifies files, and reports a missing guide as an incomplete or outdated harness. Claude Code receives only root `CLAUDE.md`; OpenCode and Pi receive only root `AGENTS.md`; combinations receive the union without duplicate directives.
 - Confirm absent pointers are created minimally, exact existing directives preserve every byte, missing directives append minimally, and unrelated existing files remain unchanged.
-- Confirm preview distinguishes `create`, `append`, `existing`, and `identical`; prints the case-sensitive uppercase rule before exactly `APROBAR` and `DENEGAR`; rejects lowercase, mixed-case, alias, and prose answers with both exact tokens in the error; and apply rejects an approved plan after relevant pointer bytes change.
+- Confirm preview distinguishes `create`, `append`, `existing`, `identical`, and `blocked`; localizes the complete strict domain; accepts only `APPROVE` or `DENY` for English and only `APROBAR` or `DENEGAR` for Spanish; rejects lowercase, mixed-case, aliases, prose, and cross-language tokens with localized errors; preserves one plan digest across languages; and rejects apply after relevant pointer bytes change.
+- Confirm Spanish usage, current-state, and decisions contain their required locale phrases, reject known English body leakage, and retain every required semantic role. Treat this as a proportional completeness baseline, never as proof that machine checks establish semantic equivalence.
+- Confirm an empty repository receives reciprocal README selectors. If `README.md` already exists without a reciprocal `README.es.md` link, require an exact executable integration action or classify Spanish peer creation as blocked and fail apply closed.
+- Confirm each selected runtime receives help routed to the resolved language's usage guide through full render integration, not only direct `help_wrapper` tests, while English and Spanish previews retain the same `planSha256`.
 - Confirm `check` writes nothing, compares generated files by content, and compares human-owned files only by promised sections.
 - Confirm `check` refuses a symlink or junction in any managed-path ancestor before reading through it.
 - Confirm multiline license input is rejected before generated frontmatter is rendered, and every accepted single-line value is encoded as a quoted YAML string that preserves its exact scalar value.
@@ -55,7 +58,7 @@ Run when creating or inspecting a harness. Run the self-test for the mode being 
 python -B scripts/harness_tool.py check  --root DIR --project-name NAME --runtime opencode
 python -B scripts/harness_tool.py check  --root DIR --project-name NAME --runtime opencode --runtime claude-code --runtime pi
 python -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode
-python -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode --apply --approved-plan-sha256 HASH
+python -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode --report-language english --apply --approved-plan-sha256 HASH --approval APPROVE
 python -B scripts/harness_tool.py self-test
 python -B DIR/.repo-harness/check.py
 ```
@@ -64,7 +67,7 @@ python -B DIR/.repo-harness/check.py
 
 The external command wrapper lives outside this package. Its three contract checks run only when `REPO_HARNESS_COMMAND_PATH` names the wrapper file, and skip otherwise. The path is never inferred from a host directory convention.
 
-`check` and `render` without `--apply` are read-only. Preview prints the exact approval prompt and current digest. Apply requires that newly approved digest, creates only `create` entries, and appends only approved exact root pointer directives.
+`check` and `render` without `--apply` are read-only. Preview prints the exact localized approval prompt, domain, and current digest. Direct CLI calls default to English. Apply requires the newly approved digest plus the exact active-domain approval, creates only `create` entries, and appends only approved exact root pointer directives.
 
 ## Limitations
 

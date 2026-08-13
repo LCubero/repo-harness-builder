@@ -6,10 +6,13 @@
 
 | Document | Ownership |
 |---|---|
-| `../../README.md` | Product guide, development entry point, and self-hosting source model |
-| `usage.md` | Human workflow, integration availability checks, and approval boundaries |
-| `current-state.md` | Verified current state, recent completed work, pending work, and next step |
-| `decisions.md` | Durable decisions and constraints with evidence |
-| `../../CHANGELOG.md` | Factual, dated, concise completed changes; never future plans |
+| [README.md](../../README.md) | Product guide, development entry point, and self-hosting source model |
+| [usage.md](usage.md) | Human workflow, integration availability checks, and approval boundaries |
+| [current-state.md](current-state.md) | Verified current state, recent completed work, pending work, and next step |
+| [decisions.md](decisions.md) | Durable decisions and constraints with evidence |
+| [i18n-maintenance.md](i18n-maintenance.md) | Bilingual ownership, synchronization, and link contract |
+| [i18n-research.md](i18n-research.md) | Primary-source research and architecture tradeoffs |
+| [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |
+| [CHANGELOG.md](../../CHANGELOG.md) | Factual, dated, concise completed changes; never future plans |
 
 Engram session summaries remain temporary continuity inputs and must be reconciled with repository evidence. They do not become durable truth until reconciled with repository evidence and promoted into the appropriate canonical owner.

@@ -21,3 +21,5 @@ Run `python .repo-harness/check.py` after canonical skills or runtime projection
 ## Approval Boundaries
 
 The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, or `degraded`, and `paused` means human input is actually needed. Explicit safe-sync consent covers bounded fetch plus fast-forward-only integration. Explicit combined commit-and-push consent covers exact staging, commit, checks, one fetch preflight, and one push to the identified upstream. Commit-only and push-only remain narrow. Changed scope, sensitive or unrelated files, divergence, destination or credential changes, destructive integration, hook mutation, or verification failure invalidates consent.
+
+Builder apply is separate and strict: English uses exact `APPROVE` or `DENY`; Spanish uses exact `APROBAR` or `DENEGAR`. The CLI receives the resolved language explicitly and requires both the current plan digest and exact active-domain approval. Direct CLI calls default to English. Generated daily session skills remain conversational.

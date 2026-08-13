@@ -23,14 +23,19 @@
 - Made Git-aware session gates operational with scoped outcomes, concrete final questions, per-path commit screening, exact proposal fields, and bounded transport diagnostics.
 - Corrected self-hosted cache classification so verified on-disk projections remain complete while same-process registered-name validation may be deferred and degraded.
 - Added one lightweight pre-commit staged-scope guard that continues silently on an exact match and pauses on extra, missing, or changed path status/mode without absorbing pre-existing staged work.
+- Localized strict builder approval by resolved report language and made executable apply require both the current digest and exact active-domain token while keeping session skills conversational.
+- Replaced chained Spanish heading substitutions with complete usage, current-state, and decisions templates; added locale-aware content baselines and semantic-role checks.
+- Routed generated help through the resolved report language while preserving a language-independent action-plan digest.
+- Made one-sided README selector plans fail closed by blocking Spanish peer creation until reciprocal existing-file integration is executable.
 
 ## Pending Work
 
 - Make approved upgrade replacement and integration plans executable without weakening preservation guarantees.
-- Enforce the exact builder apply approval in the executable CLI contract.
+- Add a bounded, exact approved existing-README selector integration executor; current behavior deliberately fails closed instead of creating a one-way peer.
 - Make runtime-set widening update or invalidate stale manifest and checker coverage.
 - Carry over the review report from `skills-pack-ld9`.
 - Define how a consumer repository detects a stale installed copy of the builder itself, distinct from an installed generated harness.
+- Reinforce reply-language selection so generated sessions and builder output answer in the user's stated preferred language, or in the language the user is writing in when no preference is stated.
 
 ## Next Step
 

@@ -57,40 +57,164 @@ def external_command_text() -> str:
 
 
 class ApprovalUxTests(unittest.TestCase):
-    def test_exact_uppercase_answers_are_the_only_valid_domain(self):
-        self.assertTrue(TOOL.approval_granted("APROBAR"))
-        self.assertFalse(TOOL.approval_granted("DENEGAR"))
+    def test_exact_uppercase_answers_are_language_scoped(self):
+        self.assertTrue(TOOL.approval_granted("APPROVE", "english"))
+        self.assertFalse(TOOL.approval_granted("DENY", "english"))
+        self.assertTrue(TOOL.approval_granted("APROBAR", "espanol"))
+        self.assertFalse(TOOL.approval_granted("DENEGAR", "espanol"))
 
-    def test_lowercase_mixed_case_aliases_and_prose_are_rejected(self):
-        for answer in ("aprobar", "acepto", "dale", "dENEGAR", "APROBAR por favor"):
-            with self.subTest(answer=answer), self.assertRaisesRegex(
-                TOOL.ContractError,
-                r"Write exactly APROBAR or DENEGAR in uppercase\.",
-            ):
-                TOOL.approval_granted(answer)
+    def test_invalid_answers_are_rejected_with_the_localized_error(self):
+        cases = {
+            "english": (("approve", "Approve", "yes", "APPROVE please", "APROBAR", "DENEGAR"), "Invalid answer. Write exactly APPROVE or DENY in uppercase."),
+            "espanol": (("aprobar", "Aprobar", "si", "APROBAR por favor", "APPROVE", "DENY"), "Respuesta no valida. Escriba exactamente APROBAR o DENEGAR en mayusculas."),
+        }
+        for language, (answers, error) in cases.items():
+            for answer in answers:
+                with self.subTest(language=language, answer=answer), self.assertRaisesRegex(TOOL.ContractError, re.escape(error)):
+                    TOOL.approval_granted(answer, language)
 
-    def test_prompt_states_case_sensitivity_and_uppercase_before_choices(self):
-        prompt = TOOL.APPROVAL_PROMPT
-        rule = "Answers are case-sensitive and must be written exactly in uppercase."
-        self.assertIn(rule, prompt)
-        self.assertLess(prompt.index(rule), prompt.index("APROBAR"))
-        self.assertLess(prompt.index(rule), prompt.index("DENEGAR"))
+    def test_prompts_are_fully_localized(self):
+        self.assertEqual(TOOL.approval_prompt("english"), "Builder content-bound approval\nAnswers are case-sensitive and must be written exactly in uppercase.\nAllowed answers:\n- APPROVE\n- DENY\nDo you approve this exact plan?")
+        self.assertEqual(TOOL.approval_prompt("espanol"), "Aprobacion de contenido del constructor\nLas respuestas distinguen mayusculas y minusculas y deben escribirse exactamente en mayusculas.\nRespuestas permitidas:\n- APROBAR\n- DENEGAR\nAprueba este plan exacto?")
 
-    def test_preview_exposes_the_exact_approval_prompt(self):
+    def test_preview_exposes_the_localized_approval_domain(self):
         with tempfile.TemporaryDirectory() as directory:
-            result = subprocess.run(
-                [
-                    "python", "-B", str(SCRIPT), "render", "--root", directory,
-                    "--project-name", "Example", "--runtime", "opencode",
-                ],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-            self.assertEqual(json.loads(result.stdout)["approvalPrompt"], TOOL.APPROVAL_PROMPT)
+            for language, answers in (("english", ["APPROVE", "DENY"]), ("espanol", ["APROBAR", "DENEGAR"])):
+                result = subprocess.run(["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--runtime", "opencode", "--report-language", language], check=True, capture_output=True, text=True)
+                payload = json.loads(result.stdout)
+                self.assertEqual(payload["approvalPrompt"], TOOL.approval_prompt(language))
+                self.assertEqual(payload["approvalAnswers"], answers)
+                self.assertEqual(payload["reportLanguage"], language)
+
+    def test_cli_defaults_to_english_and_plan_digest_is_language_independent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = ["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example"]
+            default = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
+            spanish = json.loads(subprocess.run([*base, "--report-language", "espanol"], check=True, capture_output=True, text=True).stdout)
+            self.assertEqual(default["reportLanguage"], "english")
+            self.assertEqual(default["planSha256"], spanish["planSha256"])
+
+    def test_generated_session_skills_do_not_contain_builder_tokens(self):
+        outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])
+        session_contracts = "\n".join(content for path, content in outputs.items() if "session-start" in path or "session-stop" in path)
+        for token in ("APPROVE", "DENY", "APROBAR", "DENEGAR"):
+            self.assertNotIn(token, session_contracts)
 
 
 class ProductWorkflowTests(unittest.TestCase):
+    def test_generated_spanish_docs_are_complete_localized_baselines(self):
+        outputs = TOOL.render("Example", [])
+        expectations = {
+            "docs/es/repo-harness/usage.md": (("Use las tres habilidades generadas", "Limites de aprobacion", "repositorio permanece como fuente autoritativa"), ("The daily skills inspect",)),
+            "docs/es/repo-harness/current-state.md": (("El harness minimo", "hechos verificados del proyecto", "Revise `REPO-HARNESS.md`"), ("The minimal repository", "Replace placeholders")),
+            "docs/es/repo-harness/decisions.md": (("La documentacion del repositorio", "archivos ausentes", "operaciones de Git"), ("Repository documentation remains", "The harness creates absent files")),
+        }
+        for path, (required, forbidden) in expectations.items():
+            with self.subTest(path=path):
+                for phrase in required:
+                    self.assertIn(phrase, outputs[path])
+                for phrase in forbidden:
+                    self.assertNotIn(phrase, outputs[path])
+
+    def test_locale_content_baseline_rejects_missing_roles_and_mixed_language(self):
+        outputs = TOOL.render("Example", [])
+        path = "docs/es/repo-harness/current-state.md"
+        self.assertEqual(TOOL.locale_content_issues(path, outputs[path]), [])
+        incomplete = outputs[path].replace("Revise `REPO-HARNESS.md`", "Review `REPO-HARNESS.md`")
+        issues = TOOL.locale_content_issues(path, incomplete)
+        self.assertTrue(any("required Spanish content missing" in issue for issue in issues))
+        self.assertTrue(any("known English body fragment present" in issue for issue in issues))
+
+    def test_render_creates_complete_bilingual_documentation(self):
+        outputs = TOOL.render("Example", [])
+        required = {
+            "README.md",
+            "README.es.md",
+            "docs/repo-harness/README.md",
+            "docs/repo-harness/usage.md",
+            "docs/repo-harness/current-state.md",
+            "docs/repo-harness/decisions.md",
+            "docs/repo-harness/i18n-maintenance.md",
+            "docs/es/repo-harness/README.md",
+            "docs/es/repo-harness/usage.md",
+            "docs/es/repo-harness/current-state.md",
+            "docs/es/repo-harness/decisions.md",
+            "docs/es/repo-harness/i18n-maintenance.md",
+            "REPO-HARNESS.es.md",
+            "CHANGELOG.es.md",
+        }
+        self.assertTrue(required <= set(outputs))
+
+    def test_readmes_have_one_reciprocal_language_selector(self):
+        outputs = TOOL.render("Example", [])
+        english = outputs["README.md"]
+        spanish = outputs["README.es.md"]
+        for text in (english, spanish):
+            self.assertEqual(text.count("<!-- README-I18N:START -->"), 1)
+            self.assertEqual(text.count("<!-- README-I18N:END -->"), 1)
+        self.assertIn("**English** | [Español](./README.es.md)", english)
+        self.assertIn("[English](./README.md) | **Español**", spanish)
+
+    def test_localized_documents_share_semantic_roles_not_literal_headings(self):
+        outputs = TOOL.render("Example", [])
+        pairs = {
+            "README.md": "README.es.md",
+            "docs/repo-harness/README.md": "docs/es/repo-harness/README.md",
+            "docs/repo-harness/usage.md": "docs/es/repo-harness/usage.md",
+            "docs/repo-harness/current-state.md": "docs/es/repo-harness/current-state.md",
+            "docs/repo-harness/decisions.md": "docs/es/repo-harness/decisions.md",
+            "docs/repo-harness/i18n-maintenance.md": "docs/es/repo-harness/i18n-maintenance.md",
+        }
+        for english, spanish in pairs.items():
+            with self.subTest(english=english):
+                self.assertEqual(TOOL.semantic_sections(english, outputs[english]), TOOL.semantic_sections(spanish, outputs[spanish]))
+        self.assertNotEqual(TOOL.structural_headings(outputs["docs/repo-harness/usage.md"]), TOOL.structural_headings(outputs["docs/es/repo-harness/usage.md"]))
+
+    def test_help_routes_to_the_active_language_without_mixed_approval_tokens(self):
+        english = TOOL.help_wrapper("opencode", "english")
+        spanish = TOOL.help_wrapper("opencode", "espanol")
+        self.assertIn("docs/repo-harness/usage.md", english)
+        self.assertNotIn("docs/es/repo-harness/usage.md", english)
+        self.assertIn("docs/es/repo-harness/usage.md", spanish)
+        self.assertNotIn("APPROVE", spanish)
+        self.assertNotIn("DENY", spanish)
+        self.assertNotIn("APROBAR", english)
+        self.assertNotIn("DENEGAR", english)
+
+    def test_render_routes_generated_help_to_the_resolved_report_language(self):
+        outputs = TOOL.render("Example", ["opencode"], report_language="espanol")
+        text = outputs[".opencode/commands/repo-harness-help.md"]
+        self.assertIn("docs/es/repo-harness/usage.md", text)
+        self.assertNotIn("docs/repo-harness/usage.md", text)
+
+    def test_report_language_exposes_localized_documentation_entry_points(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = ["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example"]
+            english = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
+            spanish = json.loads(subprocess.run([*base, "--report-language", "espanol"], check=True, capture_output=True, text=True).stdout)
+            self.assertEqual(english["documentation"], {"readme": "README.md", "usage": "docs/repo-harness/usage.md"})
+            self.assertEqual(spanish["documentation"], {"readme": "README.es.md", "usage": "docs/es/repo-harness/usage.md"})
+            self.assertEqual(english["planSha256"], spanish["planSha256"])
+
+    def test_checker_accepts_human_evolved_localized_headings_by_semantic_contract(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root)
+            spanish = root / "docs/es/repo-harness/usage.md"
+            spanish.write_text(spanish.read_text(encoding="utf-8").replace("## Flujo diario", "## Rutina de trabajo"), encoding="utf-8")
+            report = TOOL.check(root, "Example", [])
+            entry = next(item for item in report["files"] if item["path"] == "docs/es/repo-harness/usage.md")
+            self.assertEqual(entry["state"], "human-evolved")
+            self.assertEqual(report["status"], "current")
+
+    def test_bilingual_render_is_deterministic_and_contains_no_private_references(self):
+        first = TOOL.render("Example", ["opencode", "claude-code"])
+        second = TOOL.render("Example", ["opencode", "claude-code"])
+        self.assertEqual(first, second)
+        combined = "\n".join(content for path, content in first.items() if path.endswith(".md") and (path.startswith("docs/") or path.startswith("README")))
+        for forbidden in (".ld9", "memory-bk", "C:\\Users\\", "E:\\code\\"):
+            self.assertNotIn(forbidden, combined)
+
     def test_render_creates_a_bounded_human_owned_readme(self):
         outputs = TOOL.render("Example", [])
         readme = outputs["README.md"]
@@ -109,8 +233,29 @@ class ProductWorkflowTests(unittest.TestCase):
             entry = next(item for item in plan["existing"] if item["path"] == "README.md")
             self.assertIn("analyze", entry["reason"])
             self.assertIn("approved", entry["reason"])
-            TOOL.write_outputs(root, outputs, plan)
+            with self.assertRaisesRegex(TOOL.ContractError, "blocked plan actions"):
+                TOOL.write_outputs(root, outputs, plan)
             self.assertEqual(readme.read_bytes(), original)
+
+    def test_existing_readme_without_reciprocal_selector_blocks_spanish_peer_creation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "README.md").write_text("# Human product guide\n", encoding="utf-8")
+            outputs = TOOL.render("Example", [])
+            plan = TOOL.plan_changes(root, outputs)
+            self.assertNotIn("README.es.md", [item["path"] for item in plan["create"]])
+            self.assertEqual(plan["blocked"][0]["path"], "README.es.md")
+            with self.assertRaisesRegex(TOOL.ContractError, "blocked plan actions"):
+                TOOL.write_outputs(root, outputs, plan)
+            self.assertFalse((root / "README.es.md").exists())
+
+    def test_existing_readme_with_reciprocal_selector_allows_spanish_peer_creation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "README.md").write_text("# Human product guide\n\n[Español](./README.es.md)\n", encoding="utf-8")
+            plan = TOOL.plan_changes(root, TOOL.render("Example", []))
+            self.assertIn("README.es.md", [item["path"] for item in plan["create"]])
+            self.assertEqual(plan["blocked"], [])
 
     def test_builder_documents_repository_sensitive_readme_maintenance(self):
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -434,7 +579,7 @@ class RootPointerTests(unittest.TestCase):
             approved = json.loads(preview.stdout)["planSha256"]
             pointer.write_bytes(b"changed after preview\n")
             applied = subprocess.run(
-                [*base, "--apply", "--approved-plan-sha256", approved],
+                [*base, "--apply", "--approved-plan-sha256", approved, "--approval", "APPROVE"],
                 check=False,
                 capture_output=True,
                 text=True,
@@ -443,6 +588,35 @@ class RootPointerTests(unittest.TestCase):
             self.assertIn("approved plan does not match", applied.stderr)
             self.assertEqual(pointer.read_bytes(), b"changed after preview\n")
             self.assertFalse((root / RULEBOOK).exists())
+
+    def test_cli_apply_requires_matching_digest_and_exact_language_approval(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base = [
+                "python", "-B", str(SCRIPT), "render", "--root", str(root),
+                "--project-name", "Example", "--report-language", "espanol",
+            ]
+            preview = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
+            digest = preview["planSha256"]
+            for approval in (None, "APPROVE", "aprobar", "APROBAR por favor"):
+                command = [*base, "--apply", "--approved-plan-sha256", digest]
+                if approval is not None:
+                    command.extend(("--approval", approval))
+                result = subprocess.run(command, check=False, capture_output=True, text=True)
+                self.assertEqual(result.returncode, 2)
+                self.assertFalse((root / RULEBOOK).exists())
+            denied = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", digest, "--approval", "DENEGAR"],
+                check=True, capture_output=True, text=True,
+            )
+            self.assertEqual(json.loads(denied.stdout)["status"], "DENIED")
+            self.assertFalse((root / RULEBOOK).exists())
+            approved = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", digest, "--approval", "APROBAR"],
+                check=True, capture_output=True, text=True,
+            )
+            self.assertEqual(json.loads(approved.stdout)["status"], "VALIDATED")
+            self.assertTrue((root / RULEBOOK).is_file())
 
 
 class CheckTests(unittest.TestCase):
@@ -1012,6 +1186,30 @@ class GeneratedCoreTests(unittest.TestCase):
             root = Path(directory)
             outputs = install(root, runtimes=("claude-code",))
             TOOL.verify_outputs(root, outputs)
+
+    def test_checked_in_documentation_maps_use_resolving_markdown_links(self):
+        repository = ROOT.parents[1]
+        if not (repository / "docs/repo-harness/README.md").is_file():
+            self.skipTest("checked-in product documentation is outside the standalone package")
+        maps = (repository / "docs/repo-harness/README.md", repository / "docs/es/repo-harness/README.md")
+        for document in maps:
+            text = document.read_text(encoding="utf-8")
+            links = re.findall(r"\[[^]]+\]\(([^)#]+)(?:#[^)]+)?\)", text)
+            self.assertGreaterEqual(len(links), 6, document)
+            for link in links:
+                with self.subTest(document=document, link=link):
+                    self.assertTrue((document.parent / link).resolve().is_file())
+
+    def test_checked_in_root_peers_cover_equivalent_semantic_roles(self):
+        repository = ROOT.parents[1]
+        if not (repository / "README.md").is_file():
+            self.skipTest("checked-in root peers are outside the standalone package")
+        pairs = (("README.md", "README.es.md"), ("REPO-HARNESS.md", "REPO-HARNESS.es.md"), ("CHANGELOG.md", "CHANGELOG.es.md"))
+        for english, spanish in pairs:
+            english_roles = TOOL.semantic_sections(english, (repository / english).read_text(encoding="utf-8"))
+            spanish_roles = TOOL.semantic_sections(spanish, (repository / spanish).read_text(encoding="utf-8"))
+            with self.subTest(english=english, spanish=spanish):
+                self.assertEqual(english_roles, spanish_roles)
     def test_external_command_remains_thin_and_path_free(self):
         text = external_command_text()
         self.assertLessEqual(len(text.splitlines()), 10)

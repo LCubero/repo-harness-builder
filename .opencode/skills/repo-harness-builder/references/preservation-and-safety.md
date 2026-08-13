@@ -40,6 +40,8 @@ The plan and the check both carry `runtimeSet` with `recorded`, `requested`, and
 
 Root `README.md` is part of the complete baseline for a new or effectively empty repository. In an existing repository, read and analyze the README, then propose an informed update that preserves useful project-specific content and improves gaps. Generated ownership markers may bound generated material, but they never justify refusing analysis or improvement. If integration is unsuitable, offer archive and start-clean as a distinct conversational choice. This choice must not require `APROBAR`; exact uppercase approval remains exclusive to the builder's content-bound apply plan. Never mutate or archive the README until the user approves the exact proposed action.
 
+README language selectors are atomic across peers. If an existing `README.md` does not already link reciprocally to `README.es.md`, the ordinary additive writer cannot complete that integration. Remove `README.es.md` from `create`, report it in `blocked` with the required `README.md` integration, and refuse the entire apply. Do not create a one-way Spanish peer or report bilingual completeness. A future bounded existing-file integration executor may resolve this broader pending capability after TDD and exact approval.
+
 ## Human-Owned Versus Generated
 
 After creation, two kinds of file behave differently under `check`:

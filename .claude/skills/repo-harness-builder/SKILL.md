@@ -24,12 +24,17 @@ An optional argument sets `español` or `english`; otherwise follow runtime pref
 - Version control is the safety net. Do not present this tool as a boundary against a hostile filesystem.
 - Resolve and inspect only the selected repository. Never traverse links, siblings, aliases, or external references.
 - Show four action sets. Approve only the current digest; never reuse it.
-- Only the builder's content-bound apply plan uses case-sensitive uppercase answers: exactly `APROBAR` or `DENEGAR`.
+- Only the builder's content-bound apply plan uses strict answers. English accepts exactly `APPROVE` or `DENY`; Spanish accepts exactly `APROBAR` or `DENEGAR`.
 - Keep wrappers thin and path-free: they load a generated skill by registered name, and Pi-like runtimes use their prompt mechanism.
 - Keep repository evidence authoritative. Integrated mode requires Gentle AI and Engram; standalone mode must contain neither requirement.
 - Never perform Git initialization, provider, backup, publication, or specialized methodology behavior automatically.
 - Treat Git initialization and provider publication as separate approval boundaries. Publication visibility is another explicit choice.
-- Ask one blocking decision per turn. Localize user reports; keep generated artifacts in English.
+- Ask one blocking decision per turn. Localize user reports and bilingual documentation peers; keep generated technical contracts in English.
+- Generate complete English and Spanish reader documentation. Route English interaction to `README.md` and `docs/repo-harness/usage.md`; route Spanish interaction to `README.es.md` and `docs/es/repo-harness/usage.md`.
+- Keep operational truth single-owned in `REPO-HARNESS.md`, `CHANGELOG.md`, and English durable state owners. Spanish peers are complete localized presentations, not independent factual owners.
+- Treat reciprocal README selectors as one atomic integration. If an existing `README.md` cannot be updated by the exact executable plan, classify `README.es.md` as blocked and do not create a one-way peer or claim bilingual completeness.
+- Validate localized human-owned documents with semantic roles plus proportional locale baselines for required content and known cross-language leakage. These checks detect incompleteness; they do not claim automated proof of translation equivalence.
+- For existing repositories, analyze every expected bilingual path and propose integration. Never overwrite human-evolved documentation merely to install or normalize localization.
 - Use Python 3.10+ and the standard library only.
 
 ## Decision Gates
@@ -68,8 +73,8 @@ An optional argument sets `español` or `english`; otherwise follow runtime pref
 2. Report what is absent across every runtime profile inspected, then ask one question: which profiles to include. That answer is the permission to plan. Stop for it.
 3. Read `references/architecture.md`. For integrated mode, validate the Gentle AI CLI with its available status, doctor, or version capability and validate the Engram MCP or CLI before approving or applying. Refuse on failure. Skip this dependency preflight only for `--standalone`.
 4. Read `references/license-selection.md` and resolve the license choice. Read `references/preservation-and-safety.md`. If a prior harness exists, audit its manifest, generator markers, managed files, and runtime projections, then classify paths as `current`, `stale`, `missing`, `human-evolved`, or `legacy`. If the repository is existing, analyze relevant content and conversationally resolve integrate/update versus archive/start clean before forming the apply plan.
-5. Show the content-bound apply plan and `planSha256`, then follow the exact write-approval contract in `references/audit-and-interview.md`. Proceed only for exact `APROBAR`.
-6. Run `scripts/harness_tool.py render --apply --approved-plan-sha256 HASH` with the approved digest and resolved `--license`, then `check`. Confirm changed bytes, resolved links, and zero writes from the check.
+5. Show the content-bound apply plan and `planSha256`, then follow the resolved language domain in `references/audit-and-interview.md`.
+6. Run `scripts/harness_tool.py render --report-language LANGUAGE --apply --approved-plan-sha256 HASH --approval TOKEN` with the same resolved language, exact approval, approved digest, and resolved `--license`, then `check`. The selected language also generates runtime help routed to that locale, while the action-plan digest remains language-independent. Confirm changed bytes, resolved links, and zero writes from the check.
 7. Validate with `references/validation.md` and report limitations, including deferred registered-name validation when the active process retained older registered content.
 8. After harness verification, optionally ask whether to initialize Git. This is a separate approval and must never happen without explicit approval.
 9. Separately offer provider publication, suggesting GitHub without making it mandatory. Ask whether the repository should be private or public, then obtain explicit publication approval. Never authenticate or publish without it.
