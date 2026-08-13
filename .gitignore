@@ -1,2 +1,5 @@
 __pycache__/
 *.py[cod]
+
+# Gentle AI owns and regenerates this directory
+.atl/
