@@ -19,7 +19,7 @@ Canonical source of `repo-harness-builder`, an agent skill that builds or inspec
 - Preserve unknown files and existing work through informed, explicitly approved evolution; never freeze content by default.
 - Verify current repository evidence before trusting prior memory. Current files win.
 - Gentle AI and Engram are required for integrated continuity; repository evidence remains authoritative.
-- Keep Git, provider, backup, and publication operations separately approved. Nothing implies them.
+- Keep Git consent outcome-scoped and conversational. Combined intent may cover unchanged safe prerequisites; provider changes, backup, publication, destructive actions, and material risk changes require their own approval.
 
 ## Decision Gates
 

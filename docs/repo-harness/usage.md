@@ -8,7 +8,7 @@ Use the three generated skills as a loop: recover context, keep durable document
 
 1. Start or resume with `repo-harness-builder-session-start` and state the objective. It reports a scoped outcome, reconciles context with repository evidence, inspects Git read-only, and ends with one concrete remote-check question when safe.
 2. Use `repo-harness-builder-documentation` when durable documentation or visible project state needs updating.
-3. Pause or close with `repo-harness-builder-session-stop`. It completes documentation and Engram continuity first, screens each changed path, then may propose exact-path commit work units and a separately approved provider-neutral push.
+3. Pause or close with `repo-harness-builder-session-stop`. It completes documentation and Engram continuity first, screens each changed path, then may request one outcome-scoped approval for an exact commit, push, or combined commit and push.
 
 ## Integrated Availability
 
@@ -20,4 +20,4 @@ Run `python .repo-harness/check.py` after canonical skills or runtime projection
 
 ## Approval Boundaries
 
-The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, or `degraded`, and optional Git failures do not falsely fail successful continuity. Documentation writes require explicit conversational approval. Every safe pending approval ends the turn as one concrete final question. Network synchronization, commit, push, provider tooling, backup, publication, and other external mutations remain separate optional approvals. Commit approval never approves push. Dirty or diverged repositories remain local for human resolution, and Git actions never gate continuity.
+The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, or `degraded`, and `paused` means human input is actually needed. Explicit safe-sync consent covers bounded fetch plus fast-forward-only integration. Explicit combined commit-and-push consent covers exact staging, commit, checks, one fetch preflight, and one push to the identified upstream. Commit-only and push-only remain narrow. Changed scope, sensitive or unrelated files, divergence, destination or credential changes, destructive integration, hook mutation, or verification failure invalidates consent.

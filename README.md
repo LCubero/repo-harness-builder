@@ -41,7 +41,7 @@ The builder is the installer and upgrader. The three repository skills are the d
 | `repo-harness-builder` | Creating, auditing, or safely upgrading a harness | A planned, approved, verified repository harness |
 | `<project>-session-start` | Starting or resuming work | A scoped outcome, current evidence, local Git state, and one concrete remote-check question when safe |
 | `<project>-documentation` | Durable facts or visible state changed | Canonical docs updated without duplication or stale ownership |
-| `<project>-session-stop` | Pausing or ending work | Verified continuity, screened exact-path commit work units, and separate concrete commit or push questions |
+| `<project>-session-stop` | Pausing or ending work | Verified continuity, screened exact-path work units, and one outcome-scoped Git question when needed |
 
 ## Lifecycle
 
@@ -79,7 +79,7 @@ Load my-project-session-stop and prepare the handoff.
 
 Runtime command names vary, so invoke skills by their registered names through the runtime's skill mechanism. The generated help command reads `docs/repo-harness/usage.md` for concise repository-specific guidance.
 
-Generated session outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, and `degraded`. They are scoped: optional Git failure can degrade a successful local session without falsely failing continuity. When an approval is safe and relevant, the generated skill ends that turn with one visible concrete question. Commit approval never includes push approval.
+Generated session outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, and `degraded`. They are scoped: optional Git failure can degrade a successful local session without falsely failing continuity. Explicit `commit and push` consent covers the unchanged safe sequence through one push; commit-only never implies push, and material changes pause for renewed consent.
 
 ## Repository Behavior
 

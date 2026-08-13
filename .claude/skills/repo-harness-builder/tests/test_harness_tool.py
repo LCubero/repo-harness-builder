@@ -773,11 +773,63 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(phrase, stop)
 
-    def test_session_stop_defines_commit_and_push_as_separate_gates(self):
+    def test_git_consent_scope_covers_only_the_approved_outcome(self):
+        cases = (
+            ("commit-and-push", (), ("stage", "commit", "checks", "fetch", "push")),
+            ("commit", (), ("stage", "commit", "checks")),
+            ("push", (), ("checks", "fetch", "push")),
+            ("sync", (), ("fetch", "fast-forward-only")),
+            ("commit-and-push", ("remote-advanced",), ()),
+            ("commit-and-push", ("changed-path-scope",), ()),
+        )
+        for outcome, changes, expected in cases:
+            with self.subTest(outcome=outcome, changes=changes):
+                self.assertEqual(TOOL.git_consent_steps(outcome, changes), expected)
+
+    def test_staged_scope_check_continues_for_exact_workflow_scope(self):
+        result = TOOL.check_staged_scope(
+            (("README.md", "M  100644"), ("new.py", "A  100644")),
+            (("existing.txt", "M  100644"),),
+            (("existing.txt", "M  100644"), ("README.md", "M  100644"), ("new.py", "A  100644")),
+        )
+        self.assertEqual(result, {"outcome": "continue", "extra": (), "missing": (), "changed": (), "pre_existing_changed": ()})
+
+    def test_staged_scope_check_pauses_for_extra_missing_or_status_mode_change(self):
+        result = TOOL.check_staged_scope(
+            (("README.md", "M  100644"), ("removed.py", "D  100644"), ("script.sh", "M  100755")),
+            (),
+            (("README.md", "M  100644"), ("script.sh", "M  100644"), ("secret.env", "A  100644")),
+        )
+        self.assertEqual(result["outcome"], "pause")
+        self.assertEqual(result["extra"], (("secret.env", "A  100644"),))
+        self.assertEqual(result["missing"], (("removed.py", "D  100644"),))
+        self.assertEqual(result["changed"], (("script.sh", "M  100755", "M  100644"),))
+
+    def test_staged_scope_check_keeps_pre_existing_index_separate(self):
+        result = TOOL.check_staged_scope(
+            (("work.py", "M  100644"),),
+            (("existing.txt", "M  100644"),),
+            (("existing.txt", "M  100644"), ("work.py", "M  100644")),
+        )
+        self.assertEqual(result["outcome"], "continue")
+        self.assertNotIn("existing.txt", repr(result))
+
+    def test_staged_scope_check_pauses_if_pre_existing_index_changes(self):
+        result = TOOL.check_staged_scope(
+            (("work.py", "M  100644"),),
+            (("existing.txt", "M  100644"),),
+            (("existing.txt", "M  100755"), ("work.py", "M  100644")),
+        )
+        self.assertEqual(result["outcome"], "pause")
+        self.assertEqual(result["pre_existing_changed"], (("existing.txt", "M  100644", "M  100755"),))
+
+    def test_session_stop_defines_intent_scoped_commit_and_push_consent(self):
         stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
         for phrase in (
             "Commit approval does not approve push",
-            "separate conversational approval",
+            "commit and push",
+            "one bounded fetch",
+            "without asking again",
             "reviewable work-unit grouping",
             "unpushed commits",
             "fetch and compare",
@@ -818,21 +870,44 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertIn("pause before any staging", stop)
         self.assertIn("final user-facing line", stop)
 
-    def test_session_stop_push_gate_cannot_be_bundled_with_commit(self):
+    def test_session_stop_invalidates_consent_on_material_change(self):
         stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
         for phrase in (
             "refresh status after the commit",
             "only then evaluate push",
             "upstream and ahead count",
             "May I push these existing local commits",
-            "exact operation",
-            "Do not infer broad consent",
+            "changed path scope or commit message",
+            "newly detected sensitive or unrelated file",
+            "remote advanced",
+            "missing or changed upstream or destination",
+            "commit hooks mutate content",
             "detached HEAD",
             "unborn branch",
             "missing remote branch",
             "ahead-behind divergence",
         ):
             self.assertIn(phrase, stop)
+
+    def test_session_start_combines_safe_sync_fetch_and_fast_forward_consent(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/example-session-start/SKILL.md"]
+        for phrase in (
+            "sync or update safely",
+            "bounded fetch plus fast-forward-only integration",
+            "without a second approval",
+            "remote advanced",
+        ):
+            self.assertIn(phrase, start)
+
+    def test_happy_path_does_not_repeat_git_approval_questions(self):
+        outputs = TOOL.render("Example", [])
+        start = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
+        stop = outputs[".repo-harness/skills/example-session-stop/SKILL.md"]
+        self.assertNotIn("Every Git or network action requires its own separate conversational approval", stop)
+        self.assertNotIn("Fetch or comparison before push requires explicit network approval scoped to that exact operation", stop)
+        self.assertIn("Record each authorized substep and its evidence", stop)
+        self.assertIn("Do not classify an authorized happy-path substep as `paused`", stop)
+        self.assertIn("Do not ask separately for fetch and fast-forward-only integration", start)
 
     def test_generated_session_skills_classify_same_process_skill_cache_without_false_failure(self):
         outputs = TOOL.render("Example", ["claude-code", "opencode"])
@@ -1007,7 +1082,8 @@ class UsageGuideTests(unittest.TestCase):
             "python .repo-harness/check.py",
             "repository files remain authoritative",
             "## Approval Boundaries",
-            "separate optional approvals",
+            "Explicit combined commit-and-push consent",
+            "Commit-only and push-only remain narrow",
         ):
             self.assertIn(phrase, guide)
         self.assertLessEqual(len(guide.splitlines()), 32)

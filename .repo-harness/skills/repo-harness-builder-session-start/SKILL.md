@@ -29,6 +29,8 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Ask for explicit conversational approval before any external mutation.
 - Treat every network approval as a resumable checkpoint: resume the same session-start invocation and execute the approved synchronization branch once.
 - A clean worktree and index with a usable upstream requires one conversational approval before network access.
+- If the user explicitly asks to sync or update safely after the exact upstream is identified, that consent covers bounded fetch plus fast-forward-only integration without a second approval. Do not ask separately for fetch and fast-forward-only integration.
+- Invalidate synchronization consent and pause if the remote advanced into divergence, the upstream or destination changed, integration is not fast-forward-only, authentication needs a different credential path, verification fails, or any destructive or conflict-resolving action becomes necessary.
 - Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
 
 ## Self-Update And Runtime Cache

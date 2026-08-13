@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-12
 
+- Added a lightweight pre-commit staged-scope check with behavioral coverage for exact match, extra or missing paths, status or mode changes, and pre-existing staged-work separation.
+- Replaced command-by-command Git questions with intent-scoped safe-sync and commit-and-push consent, with narrow commit-only and push-only behavior plus material-change invalidation.
 - Completed a blind dual review of the full builder package and recorded unresolved upgrade, approval-enforcement, runtime-set, provenance, and behavioral-test risks.
 - Corrected self-hosted runtime-cache handling by separating verified on-disk parity from active-process registered skill freshness and deferring optional registered-name validation without false blocking or failure.
 - Made generated Git-aware sessions actionable with scoped outcomes, mandatory concrete final questions, per-path sensitive staging review, exact commit proposals, separate push preflight, and bounded transport receipts.

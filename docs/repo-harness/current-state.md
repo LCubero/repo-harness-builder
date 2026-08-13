@@ -6,7 +6,7 @@
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Generator 3.0, skill package 3.1.
-- Packaged suite: 141 tests passing with 5 expected skips, including generated Git state, scoped outcome, terminal-question, sensitive-screening, bounded transport receipt, and runtime-cache contracts.
+- Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
 - Licensed MIT in `LICENSE` and in both `SKILL.md` copies.
 - Published as a private GitHub repository; `main` tracks `origin/main`.
 
@@ -19,9 +19,10 @@
 - Added exact byte-preserving root pointer coverage and proposal-only prior-version upgrade classification.
 - Expanded the product guide and generated operational usage contract to cover the complete builder-to-daily-session lifecycle.
 - Made generated session-stop approval pauses resumable and required refreshed post-mutation evidence and final continuity before handoff output.
-- Added provider-neutral Git-aware session start and stop matrices with conservative synchronization, separate commit and push approvals, and protected staging exclusions.
+- Added intent-scoped Git consent so one explicit safe-sync or commit-and-push approval covers its unchanged bounded sequence while narrow intents and material-change stops remain enforced.
 - Made Git-aware session gates operational with scoped outcomes, concrete final questions, per-path commit screening, exact proposal fields, and bounded transport diagnostics.
 - Corrected self-hosted cache classification so verified on-disk projections remain complete while same-process registered-name validation may be deferred and degraded.
+- Added one lightweight pre-commit staged-scope guard that continues silently on an exact match and pauses on extra, missing, or changed path status/mode without absorbing pre-existing staged work.
 
 ## Pending Work
 

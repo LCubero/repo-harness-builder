@@ -43,6 +43,12 @@ APPROVAL_PROMPT = (
     "Do you approve this exact plan?"
 )
 INVALID_APPROVAL = "Invalid answer. Write exactly APROBAR or DENEGAR in uppercase."
+GIT_CONSENT_STEPS = {
+    "commit-and-push": ("stage", "commit", "checks", "fetch", "push"),
+    "commit": ("stage", "commit", "checks"),
+    "push": ("checks", "fetch", "push"),
+    "sync": ("fetch", "fast-forward-only"),
+}
 
 
 class ContractError(ValueError):
@@ -59,6 +65,47 @@ def approval_granted(answer: str) -> bool:
     """Accept only the two exact case-sensitive approval answers."""
     require(answer in ("APROBAR", "DENEGAR"), INVALID_APPROVAL)
     return answer == "APROBAR"
+
+
+def git_consent_steps(outcome: str, material_changes: tuple[str, ...] = ()) -> tuple[str, ...]:
+    """Return safe steps covered by one unchanged outcome approval."""
+    require(outcome in GIT_CONSENT_STEPS, f"unknown Git consent outcome: {outcome}")
+    return () if material_changes else GIT_CONSENT_STEPS[outcome]
+
+
+def check_staged_scope(
+    approved: tuple[tuple[str, str], ...],
+    pre_existing: tuple[tuple[str, str], ...],
+    staged: tuple[tuple[str, str], ...],
+) -> dict[str, Any]:
+    """Compare workflow-staged paths and status/modes with the approved scope."""
+    approved_by_path = dict(approved)
+    pre_existing_by_path = dict(pre_existing)
+    staged_by_path = dict(staged)
+    workflow_staged = {path: state for path, state in staged if path not in pre_existing_by_path}
+    extra = tuple(sorted((path, state) for path, state in workflow_staged.items() if path not in approved_by_path))
+    missing = tuple(sorted((path, state) for path, state in approved_by_path.items() if path not in workflow_staged))
+    changed = tuple(
+        sorted(
+            (path, approved_state, workflow_staged[path])
+            for path, approved_state in approved_by_path.items()
+            if path in workflow_staged and workflow_staged[path] != approved_state
+        )
+    )
+    pre_existing_changed = tuple(
+        sorted(
+            (path, state, staged_by_path.get(path, "missing"))
+            for path, state in pre_existing_by_path.items()
+            if staged_by_path.get(path) != state
+        )
+    )
+    return {
+        "outcome": "pause" if extra or missing or changed or pre_existing_changed else "continue",
+        "extra": extra,
+        "missing": missing,
+        "changed": changed,
+        "pre_existing_changed": pre_existing_changed,
+    }
 
 
 def dump_json(value: Any) -> str:
@@ -225,6 +272,8 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 - Ask for explicit conversational approval before any external mutation.
 - Treat every network approval as a resumable checkpoint: resume the same session-start invocation and execute the approved synchronization branch once.
 - A clean worktree and index with a usable upstream requires one conversational approval before network access.
+- If the user explicitly asks to sync or update safely after the exact upstream is identified, that consent covers bounded fetch plus fast-forward-only integration without a second approval. Do not ask separately for fetch and fast-forward-only integration.
+- Invalidate synchronization consent and pause if the remote advanced into divergence, the upstream or destination changed, integration is not fast-forward-only, authentication needs a different credential path, verification fails, or any destructive or conflict-resolving action becomes necessary.
 - Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
 
 ## Self-Update And Runtime Cache
@@ -312,7 +361,8 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 - Keep ordinary handoff and continuation questions conversational. Do not use the builder's exact digest-bound approval vocabulary.
 - Ask for explicit conversational approval before any external mutation.
 - Ask only one blocking question per turn. Every blocking approval is a resumable intermediate checkpoint, not terminal completion or a new unrelated task.
-- Commit approval does not approve push. Every Git or network action requires its own separate conversational approval.
+- Git consent is outcome-scoped. An explicit request to commit and push, commit, then push, or clear approval of that complete bounded outcome covers exact-path staging, the proposed commit, required read-only checks, one bounded fetch or preflight, and push to the already identified upstream without asking again while material facts remain unchanged.
+- Commit approval does not approve push. Push approval does not approve staging or creating a commit.
 - Never use `git add .`, stage secrets, `.ld9/`, `.codegraph/`, unknown generated caches, or unrelated pre-existing work automatically.
 - Never force-push, rebase, reset, auto-merge, or resolve conflicts automatically.
 - Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
@@ -334,15 +384,15 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 6. A session summary saved before an approved mutation is provisional. Save or update a final session summary that includes the approved mutation only after refreshed evidence and verification.
 7. {save_step.split('. ', 1)[1]}
 8. Only after documentation and continuity are complete, classify staged paths, unstaged tracked paths, untracked paths, renamed paths, deleted paths, unrelated pre-existing paths, excluded private, tool, and cache paths, and sensitive-looking paths. Perform mandatory per-path sensitive screening before any proposed staging. Filename screening is a warning baseline, not proof of safety. A sensitive candidate must pause before any staging.
-9. For each proposed reviewable work-unit grouping show exact paths, why they belong together, a proposed Conventional Commit message, explicit exclusions, and already-staged paths. The final user-facing line must ask: `May I stage exactly these paths and create this proposed commit: <message>?` Resume the same session-stop invocation after approval, stage only those paths, create the commit exactly once, refresh status after the commit, and only then evaluate push.
+9. For each proposed reviewable work-unit grouping show exact paths, why they belong together, a proposed Conventional Commit message, explicit exclusions, and already-staged paths. Record pre-existing staged paths before staging and keep them outside the proposed work unit. Ask conversationally for the intended outcome. For commit-only, the final user-facing line must ask: `May I stage exactly these paths and create this proposed commit: <message>?` For commit and push, include the exact upstream and ask once for that complete bounded outcome. Resume the same session-stop invocation after approval and stage only those paths. Immediately before commit, perform one read-only staged-scope check comparing workflow-staged path names and status/modes with the approved scope and confirming that no excluded, sensitive, unrelated, extra, or missing path entered the workflow scope. If it matches, continue silently under existing consent. If it differs or a hook changed content or mode unexpectedly, invalidate consent, report the concise difference, and ask one new approval. Unstage only paths staged by this workflow when selective unstage is proven safe and supported without disturbing pre-existing staged work; otherwise stop, leave the index unchanged, and provide remediation evidence. Then create the commit exactly once, refresh status after the commit, and only then evaluate push under the same consent scope.
 10. Existing unpushed commits trigger a push offer without an empty commit. Commit approval never implies push. If the local branch is ahead and push preflight is safe, show the upstream and ahead count, then end with: `May I push these existing local commits to <upstream>?`
-11. A detached HEAD, unborn branch, no upstream, missing remote, missing remote branch, or ahead-behind divergence blocks only the optional push branch and must include actionable safely-local evidence. Fetch or comparison before push requires explicit network approval scoped to that exact operation. Do not infer broad consent from earlier approval.
-12. Inspect the upstream remote URL, host, and scheme read-only. Native Git is the core transport. Recognized provider tooling is only an alternate credential path if installed and separately approved. Before push, fetch and compare only after exact approval. If the remote is ahead or the branch has diverged, stop the optional push branch. For every authentication, transport, comparison, fetch, commit, or push failure, preserve the attempted command, exit status, stderr, and safely-local state. Make at most 2 distinct transport attempts, then stop without indefinite retries.
+11. A detached HEAD, unborn branch, no upstream, missing remote, missing remote branch, or ahead-behind divergence blocks only the optional push branch and must include actionable safely-local evidence. Pause and invalidate consent for changed path scope or commit message; a newly detected sensitive or unrelated file; remote advanced or integration needed; missing or changed upstream or destination; authentication or provider ambiguity requiring a different credential path; destructive action, force, merge, rebase, reset, conflict resolution; verification failure; or commit hooks mutate content.
+12. Inspect the upstream remote URL, host, and scheme read-only. Native Git is the core transport. Recognized provider tooling is only an alternate credential path if installed and covered by unchanged consent. Before push, fetch and compare under commit-and-push or push consent. If the remote is ahead or the branch has diverged, stop the optional push branch. Record each authorized substep and its evidence without turning substeps into questions. For every authentication, transport, comparison, fetch, commit, or push failure, preserve the attempted command, exit status, stderr, and safely-local state. Make at most 2 distinct transport attempts, then stop without indefinite retries.
 
 ## Outcome Model
 
 - `completed`: required close steps and continuity succeeded.
-- `paused`: one safe approval question is pending.
+- `paused`: human input is actually needed for approval or a material change. Do not classify an authorized happy-path substep as `paused`.
 - `blocked`: evidence or a human decision is required before that scoped branch can proceed.
 - `failed`: a required continuity step failed, or an attempted scoped operation failed.
 - `degraded`: required continuity succeeded but an optional Git branch failed or is unavailable.
@@ -620,7 +670,7 @@ Run `python .repo-harness/check.py` after canonical skills or runtime projection
 
 ## Approval Boundaries
 
-The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, or `degraded`, scoped so optional Git failure does not fail successful continuity. Documentation writes require explicit conversational approval. Network synchronization, commit, push, provider tooling, backup, publication, and other external mutations remain separate optional approvals. A safe pending approval is always the single final question. Commit approval never approves push. Dirty or diverged repositories stay local for human resolution, and no Git action is required for continuity.
+The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, or `degraded`, scoped so optional Git failure does not fail successful continuity. Documentation writes require explicit conversational approval. Explicit safe-sync consent covers bounded fetch plus fast-forward-only integration. Explicit combined commit-and-push consent covers exact staging, commit, checks, one fetch preflight, and one push to the identified upstream. Commit-only and push-only remain narrow, and material changes invalidate consent. Dirty or diverged repositories stay local for human resolution, and no Git action is required for continuity.
 """
     state = f"""# Current State
 
