@@ -4,16 +4,24 @@
 
 ## Verified State
 
-The minimal repository AI harness exists. Project-specific state is pending review.
+- Harness present and reporting `current`: 29 of 29 files, 0 writes, generated checker exit 0.
+- Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Generator 3.0, skill package 3.1.
+- Packaged suite: 116 tests passing, 5 expected skips.
+- Licensed MIT in `LICENSE` and in both `SKILL.md` copies.
+- Published as a private GitHub repository; `main` tracks `origin/main`.
 
 ## Recent Completed Work
 
-- Bootstrapped canonical project documentation and operational session skills.
+- Split from `skills-pack-ld9` into this repository and bootstrapped its harness.
+- Added the MIT license and aligned the builder skill frontmatter to it.
 
 ## Pending Work
 
-- Replace placeholders with verified project facts.
+- Seed `docs/repo-harness/decisions.md` and the changelog history from `REPO-BOOTSTRAP.md`, then delete that handoff.
+- Write the product guide, distinct from the generated `docs/repo-harness/usage.md`.
+- Carry over the review report from `skills-pack-ld9`.
+- Define how a consumer repository detects a stale installed copy of the builder.
 
 ## Next Step
 
-Review `REPO-HARNESS.md` and this document together, then update only supported claims.
+Seed `docs/repo-harness/decisions.md` from the decisions section of `REPO-BOOTSTRAP.md`.

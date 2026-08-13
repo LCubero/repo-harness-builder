@@ -6,4 +6,9 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-12
 
+- Stopped versioning `.atl/`, which Gentle AI owns and regenerates.
+- Aligned the builder skill frontmatter license with the repository MIT license.
+- Published the repository as a private GitHub repository and pushed `main`.
+- Added the MIT license.
+- Split `repo-harness-builder` from `skills-pack-ld9` into its own Git repository and imported the canonical package.
 - Created the minimal repository AI harness and its visible continuity documentation.

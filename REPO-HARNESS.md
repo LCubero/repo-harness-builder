@@ -6,7 +6,7 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 
 ## Purpose
 
-Describe what this project does and who it serves.
+Canonical source of `repo-harness-builder`, an agent skill that builds or inspects a minimal documentation and continuity harness inside a selected repository. It creates only absent files and appends only the exact root runtime pointer directive. This repository is the product; consumers install a copy of the packaged skill.
 
 ## Hard Rules
 
