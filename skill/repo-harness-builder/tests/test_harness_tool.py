@@ -795,6 +795,43 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertIn("Report the checker result in the reply language", start)
         self.assertIn("naming each drifted runtime projection", start)
 
+    def test_human_owned_locale_check_detects_leakage_without_pinning_seed_prose(self):
+        """Editing a Spanish document is ownership, not drift; untranslated English is the defect."""
+        relative = "docs/es/repo-harness/decisions.md"
+        rewritten = "Este repositorio decide sus reglas y las revisa cuando cambian los hechos."
+        self.assertEqual(TOOL.locale_leakage_issues(relative, rewritten), [])
+        leaked = rewritten + "\nRepository documentation remains the authority.\n"
+        self.assertEqual(len(TOOL.locale_leakage_issues(relative, leaked)), 1)
+
+    def test_generated_locale_baseline_still_requires_complete_seed_content(self):
+        """The required baseline still guards what the generator emits."""
+        outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
+        relative = "docs/es/repo-harness/decisions.md"
+        self.assertEqual(TOOL.locale_content_issues(relative, outputs[relative]), [])
+        self.assertTrue(TOOL.locale_content_issues(relative, "# Decisiones\n\nVacio.\n"))
+
+    def test_section_comparison_uses_one_vocabulary_for_both_sides(self):
+        """Adding role markers is an improvement; it must not read as losing every section."""
+        promised = "# Guide\n\n## Purpose\n\nWhy.\n\n## Limits\n\nHow far.\n"
+        annotated = (
+            "# Guide\n\n<!-- doc-role:purpose -->\n\n## Purpose\n\nWhy.\n\n"
+            "<!-- doc-role:limits -->\n\n## Limits\n\nHow far.\n"
+        )
+        self.assertEqual(TOOL.missing_sections(promised, promised), [])
+        self.assertEqual(TOOL.missing_sections(promised, annotated), [])
+        promised_roles = "# Guide\n\n<!-- doc-role:purpose -->\n\n## Purpose\n\nWhy.\n"
+        translated = "# Guide\n\n<!-- doc-role:purpose -->\n\n## Proposito\n\nPor que.\n"
+        self.assertEqual(TOOL.missing_sections(promised_roles, translated), [])
+
+    def test_section_comparison_still_reports_a_genuinely_dropped_section(self):
+        promised = "# Guide\n\n## Purpose\n\nWhy.\n\n## Limits\n\nHow far.\n"
+        self.assertEqual(TOOL.missing_sections(promised, "# Guide\n\n## Purpose\n\nWhy.\n"), ["Limits"])
+        promised_roles = "# Guide\n\n<!-- doc-role:purpose -->\n\n## Purpose\n\nWhy.\n\n<!-- doc-role:limits -->\n\n## Limits\n\nHow far.\n"
+        self.assertEqual(
+            TOOL.missing_sections(promised_roles, "# Guide\n\n<!-- doc-role:purpose -->\n\n## Cualquiera\n\nWhy.\n"),
+            ["limits"],
+        )
+
     def test_single_language_documentation_emits_no_second_locale(self):
         """A monolingual repository must not inherit peer files it never asked for."""
         outputs = TOOL.render("Example", ["claude-code"])

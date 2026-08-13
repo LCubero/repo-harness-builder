@@ -11,6 +11,9 @@ This file records meaningful completed changes in chronological order, newest fi
 - Made documentation language a declared choice instead of a universal assumption: a repository is English-only unless it declares more locales, so a monolingual repository no longer inherits nine Spanish files, an i18n maintenance contract, and a README selector it never asked for.
 - Recorded the conversation language and the declared documentation languages in the harness manifest, validated both in the generated checker, and taught congruence checking to discover them instead of being told again.
 - Separated the builder's report language, which is presentation and never enters the plan digest, from the conversation language of the built harness, which is a product choice the builder asks for.
+- Fixed section comparison so the promised document chooses the vocabulary for both sides, ending a false report that named every section of a document that demonstrably still had them.
+- Limited the human-owned locale check to untranslated English instead of pinning seeded template sentences that made legitimate rewriting read as drift, while the generated output keeps its complete required baseline.
+- Back-filled the `doc-role` markers and refreshed the `repo-harness-help` wrappers in this repository, bringing both the builder check and the generated checker to `current`.
 
 ## 2026-08-12
 

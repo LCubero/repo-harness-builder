@@ -3,6 +3,7 @@
 La fuente canonica es [`../../repo-harness/decisions.md`](../../repo-harness/decisions.md).
 
 ## Decisiones permanentes
+<!-- doc-role:standing-decisions -->
 
 - La evidencia actual del repositorio prevalece sobre memoria previa.
 - Gentle AI y Engram son obligatorios en modo integrado, pero no reemplazan evidencia actual.

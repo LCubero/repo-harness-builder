@@ -9,6 +9,9 @@
 - El idioma de la documentacion pasa a ser una eleccion declarada y no una suposicion universal: un repositorio es solo en ingles salvo que declare mas idiomas, asi que uno monolingue ya no hereda nueve archivos en espanol, un contrato de mantenimiento i18n y un selector de README que nunca pidio.
 - Se registraron en el manifiesto el idioma de conversacion y los idiomas declarados de documentacion, se validan ambos en el verificador generado, y la comprobacion de congruencia los descubre en lugar de exigir que se los indiquen otra vez.
 - Se separo el idioma del informe del constructor, que es presentacion y nunca entra en el digest del plan, del idioma de conversacion del harness construido, que es una eleccion del producto que el constructor pregunta.
+- Se corrigio la comparacion por secciones para que el documento prometido elija el vocabulario de ambos lados, terminando con un informe falso que nombraba todas las secciones de un documento que demostrablemente las conservaba.
+- Se limito la comprobacion de idioma en documentos de propiedad humana al ingles sin traducir en lugar de fijar frases sembradas que hacian que reescribir legitimamente se leyera como deriva, mientras la salida generada conserva su base requerida completa.
+- Se incorporaron los marcadores `doc-role` y se actualizaron los envoltorios `repo-harness-help` de este repositorio, dejando en `current` tanto el check del constructor como el verificador generado.
 
 ## 2026-08-12
 

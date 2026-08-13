@@ -249,10 +249,28 @@ def structural_headings(text: str) -> list[str]:
     return [heading for heading in found if not DATE_HEADING.match(heading)]
 
 
+def declared_roles(text: str) -> list[str]:
+    """List the locale-independent section roles a document declares."""
+    return re.findall(r"<!-- doc-role:([a-z0-9-]+) -->", text)
+
+
 def semantic_sections(relative: str, text: str) -> list[str]:
     """Return locale-independent section roles declared by human-owned docs."""
-    roles = re.findall(r"<!-- doc-role:([a-z0-9-]+) -->", text)
-    return roles or structural_headings(text)
+    return declared_roles(text) or structural_headings(text)
+
+
+def missing_sections(promised: str, actual: str) -> list[str]:
+    """Report promised sections the actual document dropped.
+
+    The promised document chooses the vocabulary for both sides. Reading each side
+    independently compares roles against headings, so a document that adds role
+    markers reads as having lost every section it actually still has.
+    """
+    if declared_roles(promised):
+        present = set(declared_roles(actual))
+        return [role for role in declared_roles(promised) if role not in present]
+    present = set(structural_headings(actual))
+    return [heading for heading in structural_headings(promised) if heading not in present]
 
 
 LOCALE_CONTENT_BASELINES = {
@@ -271,13 +289,25 @@ LOCALE_CONTENT_BASELINES = {
 }
 
 
+def locale_leakage_issues(relative: str, text: str) -> list[str]:
+    """Report untranslated English left in a localized document.
+
+    Human-owned documents are meant to be rewritten, so their seeded sentences are
+    never required forever. Untranslated English is a real defect at any age.
+    """
+    baseline = LOCALE_CONTENT_BASELINES.get(relative)
+    if baseline is None:
+        return []
+    return [f"known English body fragment present: {phrase}" for phrase in baseline["forbidden"] if phrase in text]
+
+
 def locale_content_issues(relative: str, text: str) -> list[str]:
     """Apply a proportional baseline for required locale content and known leakage."""
     baseline = LOCALE_CONTENT_BASELINES.get(relative)
     if baseline is None:
         return []
     issues = [f"required Spanish content missing: {phrase}" for phrase in baseline["required"] if phrase not in text]
-    issues.extend(f"known English body fragment present: {phrase}" for phrase in baseline["forbidden"] if phrase in text)
+    issues.extend(locale_leakage_issues(relative, text))
     return issues
 
 
@@ -1576,9 +1606,8 @@ def check(
         elif human_owned(relative, rulebook_path):
             current_bytes = target.read_bytes()
             current_text = current_bytes.decode("utf-8", errors="replace")
-            present = set(semantic_sections(relative, current_text))
-            absent = [section for section in semantic_sections(relative, content) if section not in present]
-            locale_issues = locale_content_issues(relative, current_text)
+            absent = missing_sections(content, current_text)
+            locale_issues = locale_leakage_issues(relative, current_text)
             size = token_proxy(current_text)
             if absent:
                 entry["state"] = "sections-missing"

@@ -1,4 +1,5 @@
 # Documentacion del harness de IA
+<!-- doc-role:documentation-map -->
 
 `REPO-HARNESS.md` es la entrada operativa canonica. Este arbol contiene presentaciones completas en espanol.
 

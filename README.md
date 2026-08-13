@@ -1,4 +1,5 @@
 # repo-harness-builder
+<!-- doc-role:repository-harness -->
 
 <!-- README-I18N:START -->
 
