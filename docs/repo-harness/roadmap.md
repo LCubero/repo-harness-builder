@@ -47,16 +47,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | User-reported Spanish session-stop occurrence; canonical conflict at `skill/repo-harness-builder/scripts/harness_tool.py` in the commit-only question contract |
 | Priority | P1: the defect violates the active conversation-language contract at a mandatory approval boundary, but does not cause data loss, unsafe mutation, or an unrecoverable workflow |
 | Dependencies | none |
-| Status | ready |
-| Completed work | Recorded the observed language leak, reconciled it with the exact canonical contract, and made the correction scope durable. |
-| Remaining work | Preserve the exact semantic approval scope, paths, and proposed commit message while localizing the human-facing commit-only sentence in the active conversation language. |
-| Additions | Add focused coverage for a non-English active conversation at the commit-only approval boundary when implementation begins. |
-| Exclusions | No correction in this work unit, no change to approval semantics, no broader session-stop rewrite, and no Git or provider mutation. |
+| Status | completed |
+| Completed work | Passed the normalized conversation language into the generated session-stop contract and localized only the commit-only approval sentence for Spanish while retaining the English sentence for English. |
+| Remaining work | none |
+| Additions | Added focused Spanish coverage that requires exact-path wording and the unchanged `<message>` placeholder while rejecting the hardcoded English sentence. |
+| Exclusions | No change to approval semantics, no broader session-stop rewrite or language expansion, and no Git or provider mutation. |
 | Deferrals | none |
 | Rejections | Rejected keeping the exact English wording as mandatory when the surrounding contract requires the active conversation language. |
-| Evidence | During an active Spanish conversation, session-stop ended with `May I stage exactly these paths and create this proposed commit: ...?`; the canonical contract hardcodes that English sentence while also requiring conversational language continuity. |
-| Decision history | 2026-08-13: user reported the occurrence and requested durable stop continuity; classified P1 and ready because the cause and bounded correction are known and dependency-free. |
-| Next advancement condition | Start with a failing session-stop contract test for a Spanish commit-only close, then implement localized human-facing wording without changing approval scope, paths, or commit message. |
+| Evidence | The focused regression failed against the hardcoded English sentence, then passed after the bounded localization; the complete canonical suite passed 230 tests with 6 skips. |
+| Decision history | 2026-08-13: user reported the occurrence and requested durable stop continuity; classified P1 and ready because the cause and bounded correction were known and dependency-free. 2026-08-14: completed with one localized sentence and no approval-scope change. |
+| Next advancement condition | Reopen only if a generated commit-only question stops following the active conversation language or loses its exact paths or proposed message. |
 
 ### RH-W-0018
 | Field | Value |

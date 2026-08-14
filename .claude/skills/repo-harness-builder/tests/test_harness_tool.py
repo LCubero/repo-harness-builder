@@ -1657,6 +1657,20 @@ class GeneratedCoreTests(unittest.TestCase):
             self.assertIn("Skills, contracts, documentation, and every other generated artifact stay in English", text)
             self.assertNotIn("Skills al día", text)
 
+    def test_spanish_session_stop_localizes_the_commit_only_approval_question(self):
+        stop = TOOL.render("Example", [], conversation_language="espanol")[
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md"
+        ]
+
+        self.assertIn(
+            "¿Puedo agregar exactamente estas rutas al área de preparación y crear este commit propuesto: <message>?",
+            stop,
+        )
+        self.assertNotIn(
+            "May I stage exactly these paths and create this proposed commit: <message>?",
+            stop,
+        )
+
     def test_session_start_defines_git_state_matrix(self):
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         for phrase in (
