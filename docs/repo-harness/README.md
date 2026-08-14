@@ -8,11 +8,13 @@
 | Document | Ownership |
 |---|---|
 | [README.md](../../README.md) | Product guide, development entry point, and self-hosting source model |
+| [CONTRIBUTING.md](../../CONTRIBUTING.md) | Issue-first contribution workflow, verification, review, and merge rules |
 | [usage.md](usage.md) | Human workflow, integration availability checks, and approval boundaries |
 | [current-state.md](current-state.md) | Verified current state, recent completed work, pending work, and next step |
 | [decisions.md](decisions.md) | Durable decisions and constraints with evidence |
 | [i18n-maintenance.md](i18n-maintenance.md) | Bilingual ownership, synchronization, and link contract |
 | [i18n-research.md](i18n-research.md) | Primary-source research and architecture tradeoffs |
+| [contribution-workflow-research.md](contribution-workflow-research.md) | Primary-source comparison and recommendation for contribution policy |
 | [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |
 | [CHANGELOG.md](../../CHANGELOG.md) | Factual, dated, concise completed changes; never future plans |
 
