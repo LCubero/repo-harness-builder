@@ -147,18 +147,18 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Field | Value |
 |---|---|
 | Origin | Two failing self-hosted tests found during session close on 2026-08-14 |
-| Priority | P1: the canonical suite is red, so it can no longer prove a regression, and it goes red again on every legitimate roadmap growth |
+| Priority | P1: brittle self-hosted assertions blocked canonical regression evidence and failed again on legitimate roadmap growth |
 | Dependencies | none |
-| Status | ready |
-| Completed work | Confirmed both failures predate this session, confirmed no product behavior is broken, and confirmed all 22 lifecycle records satisfy every structural rule the same test enforces. |
-| Remaining work | Replace the hardcoded record count with a structural assertion, and replace the pinned advancement sentence with a check that does not encode which unit is currently next. |
+| Status | completed |
+| Completed work | Replaced the hardcoded record count with exact parser-to-heading structural parity and replaced the obsolete next-work sentence with an ordering assertion for the P0 priority override. |
+| Remaining work | none |
 | Additions | Keep asserting unique IDs, the complete required field set, allowed priorities and statuses, and the terminal, blocked, and deferred conditions. Those are the checks that carry value. |
 | Exclusions | No test framework change, no new dependency, and no weakening of lifecycle validation. |
 | Deferrals | none |
 | Rejections | Rejected bumping the literal from 17 to the current count. That repeats the defect and makes the next record fail again. |
-| Evidence | `skill/repo-harness-builder/tests/test_harness_tool.py:1002` asserts `len(records) == 17` against this repository's live roadmap, which held 18 records at commit `71ad881` before this session and holds 22 now. `test_repository_roadmap_preserves_existing_units_and_priority_override` at line 1047 requires the literal `RH-W-0003 remains the next product behavior`, which was already absent at `71ad881` because `RH-W-0003` completed and `RH-W-0004` became the next unit. An independent structural replay of the same rules over all 22 records reports zero violations. |
-| Decision history | 2026-08-14: found while collecting fresh close evidence. Recorded rather than fixed because this session is documentation and planning only. |
-| Next advancement condition | Start by making both assertions fail for the right reason, then assert structure instead of a magic number and a pinned sentence. |
+| Evidence | The focused roadmap tests and the full canonical suite pass: 197 tests with 6 skips. The lifecycle test now compares parsed record IDs with every roadmap heading while retaining unique-ID, field, priority, status, and lifecycle-condition checks; the priority-override test asserts `RH-W-0016` appears before `RH-W-0003` without naming the current next unit. |
+| Decision history | 2026-08-14: found while collecting close evidence and recorded for a later bounded correction. 2026-08-14: completed as a test-only work unit without changing product behavior or weakening lifecycle validation. |
+| Next advancement condition | Reopen only if roadmap structure or priority-override coverage regresses. |
 
 ### RH-W-0003
 | Field | Value |
