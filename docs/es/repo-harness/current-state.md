@@ -43,6 +43,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 <!-- doc-role:pending-work -->
 
 - Proyeccion activa: `RH-W-0021`, `RH-W-0017`, `RH-W-0004`, `RH-W-0006` y `RH-W-0019` estan `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009` y `RH-W-0010` estan bloqueados por prerrequisitos.
+- Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
 - Proyeccion aplazada: `RH-W-0011` a `RH-W-0015` y la idea de mantenimiento interno desatendido `RH-W-0018` conservan condiciones explicitas en [roadmap.md](roadmap.md).
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
 - IDs completados recientemente: `RH-W-0020`, `RH-W-0003`, `RH-W-0016`, `RH-W-0007`, `RH-W-0002`.

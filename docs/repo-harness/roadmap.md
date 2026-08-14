@@ -126,6 +126,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Decision history | 2026-08-14: a hypothetical global-installation collision was raised, then withdrawn as speculative under the proportionality rule; the user confirmed the fixed prefix. |
 | Next advancement condition | Start with failing tests asserting `repo-harness-session-start`, `repo-harness-session-stop`, and `repo-harness-documentation`, then rename in canonical source before regenerating this repository's projections and manifest. |
 
+### RH-W-0022
+| Field | Value |
+|---|---|
+| Origin | User-requested capability: a documentation relationship map so an agent can see what a change affects before making it |
+| Priority | P2: reconciliation is currently carried by human attention and prose rules, which is the failure mode this repository keeps hitting |
+| Dependencies | Design approval on scope, because an unbounded version of this becomes a graph engine the harness must not own |
+| Status | proposed |
+| Completed work | Recorded the request and the concrete evidence that manual reconciliation fails in practice. |
+| Remaining work | Design the smallest declared-relationship format, decide where it lives, and define what the checker verifies. Then implement it test-first. |
+| Additions | Make document relationships declared and machine-checked, so touching a canonical owner reports the peers, projections, and mirrors that must move in the same work unit. |
+| Exclusions | No code-symbol graph, no call-path analysis, and no dependency engine. CodeGraph already owns code structure and is ignored at the repository root by design. This unit covers documentation relationships only. No daemon, no scheduler, no external service, no new runtime dependency, and no change to the Python 3.10+ standard-library-only constraint. |
+| Deferrals | none |
+| Rejections | Rejected inferring relationships by scanning link graphs or filename patterns. Inference produces confident wrong answers; a declared edge that the checker verifies produces a correction. |
+| Evidence | The `RH-W-0020` work unit required eight coordinated files across four owner/peer pairs, and every edge was resolved by hand from the rulebook gate table. `.repo-harness/check.py` verifies runtime projection parity only; no check covers the English-owner-to-Spanish-peer or roadmap-to-current-state-projection relationships, which are exactly the ones that drifted before. |
+| Decision history | 2026-08-14: requested after the README drift showed that documentation reconciliation rules exist only as prose that a reader can miss. Recorded as `proposed` rather than `ready` because the scope boundary is the whole risk in this unit. |
+| Next advancement condition | Approve a design that names the declared-edge format, its single owner file, and the exact checker output, and that keeps the map small enough to be maintained by hand. Reference material for the design: `https://github.com/Gentleman-Programming/gentle-ai` and `https://github.com/Gentleman-Programming/engram`. |
+
 ### RH-W-0003
 | Field | Value |
 |---|---|
@@ -392,5 +409,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 - The user-reported session-stop language leak is `RH-W-0017`; it is ready independently and does not displace the already selected RH-W-0004 product unit.
 - The unattended internal-maintenance idea is `RH-W-0018`; it remains deferred until its two consent scopes and safety tests are designed, and it does not change the interactive default.
 - The wrapper provenance cost is `RH-W-0019`, the product README drift is `RH-W-0020`, and the fixed `repo-harness-` skill prefix is `RH-W-0021`. `RH-W-0020` was documentation-only and closed in the same session; the other two are ready and independent.
+- The documentation relationship map is `RH-W-0022` and stays `proposed`, not `ready`. Its scope boundary is the entire risk: declared documentation edges are the request, a code or dependency graph is not, and CodeGraph already owns code structure.
+- English is mandatory as the primary documentation locale, and the reason is now a standing decision rather than a bare `require()`. See [decisions.md](decisions.md).
 - A speculative cross-repository name collision was raised against `RH-W-0021` and withdrawn. Generated skills are repository-scoped and there is no global installation, so the risk was a future problem that is not real. Solve the problem in front of you.
 - Avoided choosing MCP, CLI, binary, third-party, migration-framework, general README rewrite, bulk upgrade, provider mutation, runtime reload, or universal human-doc cap without evidence.
