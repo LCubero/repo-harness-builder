@@ -22,6 +22,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 - Separate durable documentation from temporary session notes. Promote temporary facts only after they remain relevant and are verified.
 - Keep changelog entries factual, dated, concise, and non-duplicated. Link decisions or documentation only when useful.
 - Use `CHANGELOG.md` for completed changes, not future plans. Keep current state and next steps in `docs/repo-harness/current-state.md`.
+- Verify a pending or completed claim against applicable owning evidence before adding, retaining, moving, or removing it.
 - Gentle AI and Engram are required continuity tools. Reconcile Engram with the changelog without blindly overwriting either.
 - Preserve human-owned content and unknown bytes. Never replace them merely to normalize structure.
 

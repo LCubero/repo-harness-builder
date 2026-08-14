@@ -4,6 +4,7 @@
 
 ## 2026-08-13
 
+- Se exigio que los harness generados reconcilien evidencia propietaria aplicable antes de clasificar el estado del repositorio, informen discrepancias, prefieran la evidencia actual sobre la memoria, verifiquen pendientes o completados sin lecturas ni pruebas exhaustivas y continuen de forma organica sin pedir a la persona usuaria que resuelva hechos verificables.
 - Se agregaron la hoja de ruta concisa del harness adaptativo y su espejo completo en espanol, con propiedad de evidencia, unidades acotadas, verificacion, no objetivos y decisiones de integracion aplazadas.
 - Se corrigio el estado actual al registrar la cobertura completada de ampliacion del conjunto de runtimes y eliminar solo su pendiente obsoleto.
 - Se agregaron guias concisas en ingles y espanol con issue primero, ramas enfocadas, PR enlazado, Conventional Commits, pruebas y documentacion por unidad, revision del maintainer y verificacion propia del repositorio, sin prometer automatizacion inexistente.

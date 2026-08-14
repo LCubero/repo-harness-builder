@@ -1074,6 +1074,40 @@ class GeneratedCoreTests(unittest.TestCase):
         text = TOOL.render("A Fairly Long Project Name Here", ["opencode", "claude-code", "pi"])[RULEBOOK]
         self.assertLess(TOOL.token_proxy(text), TOOL.RULEBOOK_TOKEN_BUDGET)
 
+    def test_generated_contracts_reconcile_applicable_owning_evidence(self):
+        outputs = TOOL.render("Example", [])
+        rulebook = outputs[RULEBOOK]
+        start = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
+        documentation = outputs[".repo-harness/skills/example-documentation/SKILL.md"]
+
+        self.assertIn(
+            "Reconcile applicable owning repository evidence before classifying status, pending work, defects, or completion; never rely on one source in isolation.",
+            rulebook,
+        )
+        for phrase in (
+            "Consult only applicable owning evidence, such as current documentation, source, tests, Git state or history, and Engram when available.",
+            "Report discrepancies instead of silently resolving them; current repository evidence wins over memory.",
+            "Do not read every file or run every test indiscriminately.",
+        ):
+            self.assertIn(phrase, start)
+        self.assertIn(
+            "Verify a pending or completed claim against applicable owning evidence before adding, retaining, moving, or removing it.",
+            documentation,
+        )
+        standalone_start = TOOL.render("Example", [], standalone=True)[
+            ".repo-harness/skills/example-session-start/SKILL.md"
+        ]
+        self.assertIn("current documentation, source, tests, and Git state or history", standalone_start)
+        self.assertNotIn("Engram", standalone_start)
+
+    def test_session_start_resolves_facts_without_rigid_questioning(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/example-session-start/SKILL.md"]
+
+        self.assertIn(
+            "Resolve verifiable facts from applicable evidence without asking; ask only when a material choice, authority boundary, unresolved contradiction, or meaningful risk genuinely requires the human; otherwise suggest the next useful action and continue within the user's requested scope.",
+            start,
+        )
+
     def test_decision_gates_route_to_deeper_documents(self):
         text = TOOL.render("Example", [])[RULEBOOK]
         for destination in ("docs/repo-harness/README.md", "docs/repo-harness/current-state.md",
