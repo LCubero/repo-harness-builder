@@ -48,7 +48,7 @@
 <!-- doc-role:pending-work -->
 
 - Active projection: `RH-W-0004`, `RH-W-0006`, and the session-stop language defect `RH-W-0017` are `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, and `RH-W-0010` are prerequisite-blocked.
-- Deferred projection: `RH-W-0011` through `RH-W-0015` retain explicit advancement conditions in [roadmap.md](roadmap.md).
+- Deferred projection: `RH-W-0011` through `RH-W-0015` and the unattended internal-maintenance idea `RH-W-0018` retain explicit advancement conditions in [roadmap.md](roadmap.md).
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
 - Recently completed IDs: `RH-W-0003`, `RH-W-0016`, `RH-W-0007`, `RH-W-0002`, `RH-W-0001`.
 

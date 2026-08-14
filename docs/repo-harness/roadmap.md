@@ -39,7 +39,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | Rejected treating Engram or current-state.md as backlog owner. |
 | Evidence | Focused RED/GREEN lifecycle tests and full repository verification for branch `feat/pending-lifecycle`. |
 | Decision history | 2026-08-13: approved design selected roadmap ownership and lightweight records; priority override placed this foundation before old unit 3. |
-| Next advancement condition | Maintain this contract whenever any tracked reality changes; RH-W-0003 remains the next product behavior. |
+| Next advancement condition | Maintain this contract whenever any tracked reality changes; RH-W-0004 is the next product behavior. |
 
 ### RH-W-0017
 | Field | Value |
@@ -57,6 +57,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Evidence | During an active Spanish conversation, session-stop ended with `May I stage exactly these paths and create this proposed commit: ...?`; the canonical contract hardcodes that English sentence while also requiring conversational language continuity. |
 | Decision history | 2026-08-13: user reported the occurrence and requested durable stop continuity; classified P1 and ready because the cause and bounded correction are known and dependency-free. |
 | Next advancement condition | Start with a failing session-stop contract test for a Spanish commit-only close, then implement localized human-facing wording without changing approval scope, paths, or commit message. |
+
+### RH-W-0018
+| Field | Value |
+|---|---|
+| Origin | User-requested unattended-mode idea for internal harness maintenance and documentation |
+| Priority | P2: repeated low-risk approval questions add friction, but the current interactive contract remains safe and functional |
+| Dependencies | Session-start consent design, repository-scoped preference storage design, and focused safety tests |
+| Status | deferred |
+| Completed work | Recorded one autonomy policy with two consent scopes: the normal choice lasts only for the current session, while an explicit remember option persists for that repository until the user changes it. |
+| Remaining work | Design the exact session-start question, remembered-preference lifecycle, precedence rules, and tests that prove excluded actions still require interaction. |
+| Additions | At each session start, ask whether unattended mode is wanted for internal harness maintenance and documentation. Default to the current interactive behavior. |
+| Exclusions | Unattended mode never covers product code, Git, commit, push, pull requests, publication, secrets, providers, destructive actions, or ambiguous decisions. |
+| Deferrals | Deferred until the preference lifecycle and safety boundary have an approved design and focused test plan. |
+| Rejections | Rejected global or implicit autonomy, silent opt-in, and expansion beyond internal harness maintenance and documentation. |
+| Evidence | Current session contracts are interactive; no approved design or tests yet establish a safe repository-persistent preference. |
+| Decision history | 2026-08-14: recorded as a pending idea only, preserving the current interactive default and existing approval contract. |
+| Next advancement condition | Advance after approving a design that defines both consent scopes and repository preference changes, with tests for the default and every excluded action class. |
 
 ### RH-W-0003
 | Field | Value |
@@ -321,5 +338,6 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 - Issue numbers remain origins only. They are never lifecycle IDs or presentation order.
 - Existing Roadmap units retain IDs `RH-W-0001` through `RH-W-0015`; issue #7 is `RH-W-0016` and its P0 priority override does not renumber them.
-- The user-reported session-stop language leak is `RH-W-0017`; it is ready independently and does not displace the already selected RH-W-0003 product unit.
+- The user-reported session-stop language leak is `RH-W-0017`; it is ready independently and does not displace the already selected RH-W-0004 product unit.
+- The unattended internal-maintenance idea is `RH-W-0018`; it remains deferred until its two consent scopes and safety tests are designed, and it does not change the interactive default.
 - Avoided choosing MCP, CLI, binary, third-party, migration-framework, general README rewrite, bulk upgrade, provider mutation, runtime reload, or universal human-doc cap without evidence.
