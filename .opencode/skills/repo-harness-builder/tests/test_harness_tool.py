@@ -3027,6 +3027,49 @@ class LegacyManifestLanguageTests(unittest.TestCase):
             self.assertEqual(entries[missing_path]["state"], "missing")
 
 
+class LanguageFlagCliTests(unittest.TestCase):
+    def test_check_rejects_render_only_language_flags(self):
+        cases = (
+            ("--report-language", "espanol"),
+            ("--documentation-language", "en"),
+            ("--conversation-language", "espanol"),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            for flag, value in cases:
+                with self.subTest(flag=flag):
+                    result = subprocess.run(
+                        [
+                            sys.executable, "-B", str(SCRIPT), "check", "--root", directory,
+                            "--project-name", "Example", flag, value,
+                        ],
+                        capture_output=True,
+                        text=True,
+                    )
+                    self.assertEqual(result.returncode, 2)
+                    self.assertIn("unrecognized arguments", result.stderr)
+                    self.assertIn(f"{flag} {value}", result.stderr)
+
+    def test_render_accepts_language_flags_with_existing_semantics(self):
+        cases = (
+            ("--report-language", "espanol", "reportLanguage", "espanol"),
+            ("--documentation-language", "en", "documentation", {"readme": "README.md", "usage": "docs/repo-harness/usage.md"}),
+            ("--conversation-language", "espanol", "documentation", {"readme": "README.md", "usage": "docs/repo-harness/usage.md"}),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            for flag, value, field, expected in cases:
+                with self.subTest(flag=flag):
+                    result = subprocess.run(
+                        [
+                            sys.executable, "-B", str(SCRIPT), "render", "--root", directory,
+                            "--project-name", "Example", flag, value,
+                        ],
+                        capture_output=True,
+                        text=True,
+                    )
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    self.assertEqual(json.loads(result.stdout)[field], expected)
+
+
 class PackagePortabilityTests(unittest.TestCase):
     """The suite must pass wherever the skill package is installed on its own."""
 

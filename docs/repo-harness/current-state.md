@@ -6,7 +6,7 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes.
-- Canonical suite green: 230 tests passed with 6 skips. `RH-W-0017` localizes the commit-only approval sentence for Spanish while preserving exact paths and the proposed message; issue #19 adds generated cross-platform LF protection for the checker and manifest.
+- Canonical suite green: 232 tests passed with 6 skips. `RH-W-0004` makes all three language flags render-only; `check` rejects them because installed declarations own checking inputs.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Generator 3.0, skill package 3.1.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
 - Licensed MIT in `LICENSE` and in both `SKILL.md` copies.
@@ -15,6 +15,7 @@
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
+- Completed `RH-W-0004`: `--report-language`, `--documentation-language`, and `--conversation-language` remain accepted by `render` and are rejected by `check` with argparse exit 2.
 - Expanded issue #19 into generated cross-platform behavior with exact checker and manifest LF attributes, byte-preserving integration into human-owned `.gitattributes`, conflict blocking, bounded checking, and real `core.autocrlf=true` checkout verification.
 - Split from `skills-pack-ld9` into this repository and bootstrapped its harness.
 - Added the MIT license and aligned the builder skill frontmatter to it.
@@ -54,13 +55,13 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Active projection: `RH-W-0004`, `RH-W-0006`, and `RH-W-0019` are `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, `RH-W-0010`, and the capability-aware Gentle AI and Engram contract `RH-W-0025` are prerequisite-blocked. RH-W-0025 waits for RH-W-0008 content-bound replacement and integration.
+- Active projection: `RH-W-0005`, `RH-W-0006`, and `RH-W-0019` are `ready`; `RH-W-0008`, `RH-W-0009`, `RH-W-0010`, and the capability-aware Gentle AI and Engram contract `RH-W-0025` are prerequisite-blocked. RH-W-0025 waits for RH-W-0008 content-bound replacement and integration.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015` and the unattended internal-maintenance idea `RH-W-0018` retain explicit advancement conditions in [roadmap.md](roadmap.md).
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
-- Recently completed IDs: `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`, `RH-W-0003`, `RH-W-0016`, `RH-W-0007`.
+- Recently completed IDs: `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`, `RH-W-0003`, `RH-W-0016`.
 
 ## Next Step
 <!-- doc-role:next-step -->
 
-Advance `RH-W-0004` next by resolving the ignored language flags through its bounded CLI contract. The other ready units are `RH-W-0006` and `RH-W-0019`. RH-W-0025 advances only after RH-W-0008 completes, then starts with failing capability and authority-boundary contract tests. Each carries its own starting condition in [roadmap.md](roadmap.md). Take one unit per branch and do not bundle them.
+Advance `RH-W-0005` next because completion of `RH-W-0004` cleared its final language-contract prerequisite. The other ready units are `RH-W-0006` and `RH-W-0019`. RH-W-0025 advances only after RH-W-0008 completes. Take one unit per branch and do not bundle them.

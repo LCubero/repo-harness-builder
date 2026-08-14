@@ -39,7 +39,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | Rejected treating Engram or current-state.md as backlog owner. |
 | Evidence | Focused RED/GREEN lifecycle tests and full repository verification for branch `feat/pending-lifecycle`. |
 | Decision history | 2026-08-13: approved design selected roadmap ownership and lightweight records; priority override placed this foundation before old unit 3. |
-| Next advancement condition | Maintain this contract whenever any tracked reality changes; RH-W-0004 is the next product behavior. |
+| Next advancement condition | Maintain this contract whenever any tracked reality changes; RH-W-0005 is the next product behavior. |
 
 ### RH-W-0017
 | Field | Value |
@@ -217,16 +217,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 4; Judgment Day round-1 finding |
 | Priority | P1: advertised ignored flags create an ambiguous read-only contract |
 | Dependencies | RH-W-0003 locale-tree behavior should establish the language-check contract first |
-| Status | ready |
-| Completed work | The ignored report, conversation, and documentation language flags are identified. |
-| Remaining work | Remove or honor the flags through one unambiguous contract and test CLI behavior and help. |
+| Status | completed |
+| Completed work | Made report, documentation, and conversation language flags render-only; `check` now rejects each as an unrecognized argument while render behavior remains unchanged. |
+| Remaining work | none |
 | Additions | none |
 | Exclusions | No broader CLI redesign. |
 | Deferrals | none |
-| Rejections | none |
-| Evidence | Current `check` accepts three language flags without using them. |
-| Decision history | 2026-08-13: ordered after legacy locale preservation. |
-| Next advancement condition | Start with focused CLI tests that expose the ignored language flags. |
+| Rejections | Rejected honoring the flags during checking because installed manifest declarations own documentation and conversation languages, while report language is not a machine-JSON check input. |
+| Evidence | Focused public CLI RED/GREEN coverage proves argparse exit 2 for all three flags on `check` and unchanged acceptance on `render`; canonical and projected suites verify the synchronized package. |
+| Decision history | 2026-08-13: ordered after legacy locale preservation. 2026-08-14: completed with a parser-only behavior correction and no broader CLI redesign. |
+| Next advancement condition | Reopen only if `check` accepts render-only language input or render loses any language flag. |
 
 ### RH-W-0005
 | Field | Value |
@@ -234,8 +234,8 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 5; Judgment Day round-1 finding |
 | Priority | P1: invalid installed declarations fail with misleading diagnostics |
 | Dependencies | RH-W-0003 and RH-W-0004 language contract |
-| Status | blocked |
-| Completed work | Invalid read-time declarations and wrong-field diagnostics are identified. |
+| Status | ready |
+| Completed work | Invalid read-time declarations and wrong-field diagnostics are identified; RH-W-0003 established installed language discovery and RH-W-0004 completed the render-only CLI language contract. |
 | Remaining work | Normalize or reject declarations consistently with field-specific diagnostics and a regression matrix. |
 | Additions | none |
 | Exclusions | No new locale support. |
@@ -243,7 +243,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | none |
 | Evidence | `declared_languages` passes invalid values through to a hard check failure. |
 | Decision history | 2026-08-13: kept behind the language contract prerequisites. |
-| Next advancement condition | Blocker clears after RH-W-0003 and RH-W-0004 settle discovery and CLI semantics. |
+| Next advancement condition | Start with a focused failing diagnostic matrix for invalid installed language declarations, without adding locale support. |
 
 ### RH-W-0006
 | Field | Value |
