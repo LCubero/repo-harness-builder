@@ -35,6 +35,7 @@ Canonical source of `repo-harness-builder`, an agent skill that builds or inspec
 | Sizing a change, deciding when to stop, how work is done | `.repo-harness/rules/working-agreements.md` |
 | Saving or recalling across sessions, memory unavailable | `.repo-harness/rules/memory.md` |
 | Creating, moving, or deleting a document | [documentation map](docs/repo-harness/README.md) |
+| Planning, implementing, reviewing, or merging a contribution | [CONTRIBUTING.md](CONTRIBUTING.md) |
 | Where the project stands and what shipped | [current state](docs/repo-harness/current-state.md), then [CHANGELOG.md](CHANGELOG.md) |
 | Why something was decided, or a standing constraint | [decisions](docs/repo-harness/decisions.md) |
 

@@ -4,6 +4,8 @@
 
 ## 2026-08-13
 
+- Se agregaron guias concisas en ingles y espanol con issue primero, ramas enfocadas, PR enlazado, Conventional Commits, pruebas y documentacion por unidad, revision del maintainer y verificacion propia del repositorio, sin prometer automatizacion inexistente.
+- Se registro la comparacion de fuentes primarias y el limite futuro del producto para harnesses de contribucion conscientes de las capacidades reales del repositorio consumidor.
 - Se hizo accionable la remediacion ante fallos de transporte: una sesion generada ahora debe comprobar si existe una via de credenciales alternativa y nombrarla, prefiriendo la herramienta del proveedor usada como asistente de credenciales de un solo comando que no altera la configuracion global, y devolviendo el comando exacto a la persona cuando la via restante necesita un secreto que el agente no puede aportar.
 - Se ligo la respuesta de las sesiones generadas al idioma preferido declarado por la persona usuaria o, en su defecto, al idioma en que escribe, y se eliminaron los literales en espanol fijos del informe del verificador que imponian un unico idioma sin importar quien leyera.
 - El idioma de la documentacion pasa a ser una eleccion declarada y no una suposicion universal: un repositorio es solo en ingles salvo que declare mas idiomas, asi que uno monolingue ya no hereda nueve archivos en espanol, un contrato de mantenimiento i18n y un selector de README que nunca pidio.

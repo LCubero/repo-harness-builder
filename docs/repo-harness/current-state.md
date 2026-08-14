@@ -36,6 +36,7 @@
 - Limited the human-owned locale check to untranslated English, which is a defect at any age, instead of pinning seeded template sentences that forbade legitimate rewriting.
 - Brought the repository to full congruence: `doc-role` markers back-filled into its own durable documents, `repo-harness-help` wrappers refreshed, and both the builder check and the generated checker reporting `current`.
 - Closed the language-contract gaps: command and skill contracts now collect report, conversation, and documentation languages independently; routing helpers validate declarations like `render`; and CLI previews omit blocked documentation entry points.
+- Added a bilingual, issue-first contribution workflow with focused branches, linked PRs, work-unit verification, Conventional Commits, and maintainer review before merge.
 
 ## Pending Work
 <!-- doc-role:pending-work -->
@@ -47,6 +48,7 @@ Judgment Day round 2 is incomplete: judge A returned, judge B terminated on a se
 - Make runtime-set widening update or invalidate stale manifest and checker coverage.
 - Carry over the review report from `skills-pack-ld9`.
 - Define how a consumer repository detects a stale installed copy of the builder itself, distinct from an installed generated harness.
+- Design a future builder capability that discovers a consumer repository's contribution policy and real provider capabilities before proposing or managing `CONTRIBUTING`, issue-first work, branches, PRs, templates, labels, or checks.
 - Decide the five round-1 findings only one judge raised, none of them auto-fixable under the dual-confirmation rule. The most serious: `check` stops inspecting the Spanish tree of any harness installed before the language field existed, because its manifest has no `language` and `declared_languages` falls back to English only, so deleting a Spanish file still reports `current`. The others: the `check` subcommand advertises three language flags and ignores them; `declared_languages` passes invalid values through and makes read-only checking exit hard with an error naming the wrong field; two checked-in documentation tests error instead of skipping in a monolingual layout; and `missing_sections` leaves the promised-roles against actual-no-roles direction uncovered, which is pre-existing and flags every older installed harness.
 
 ## Next Step

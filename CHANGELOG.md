@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-13
 
+- Added concise English and Spanish contribution guides with issue-first planning, focused branches, linked PRs, Conventional Commits, work-unit tests and docs, maintainer review, repository-specific verification, and no false claims about automation.
+- Recorded the primary-source contribution-workflow comparison and the future product boundary for capability-aware contribution harnesses in consumer repositories.
 - Made transport-failure remediation actionable: a generated session must now check whether an alternate credential path exists and name it, preferring provider tooling used as a single-command credential helper that changes no global configuration, and handing the exact command back to the human when the remaining path needs a secret the agent cannot supply.
 - Bound generated session replies to the user's stated preferred language, otherwise to the language they are writing in, and removed the hardcoded Spanish checker report literals that forced one locale regardless of the reader.
 - Made documentation language a declared choice instead of a universal assumption: a repository is English-only unless it declares more locales, so a monolingual repository no longer inherits nine Spanish files, an i18n maintenance contract, and a README selector it never asked for.

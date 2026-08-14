@@ -30,6 +30,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - Se limito la comprobacion de idioma en documentos de propiedad humana al ingles sin traducir, que es un defecto a cualquier edad, en lugar de fijar frases sembradas que prohibian reescribir legitimamente.
 - El repositorio quedo en congruencia total: marcadores `doc-role` incorporados a sus propios documentos durables, envoltorios `repo-harness-help` actualizados, y tanto el check del constructor como el verificador generado en `current`.
 - Se cerraron las brechas del contrato de idiomas: los contratos de comando y skill ahora obtienen por separado los idiomas del informe, de conversacion y de documentacion; los ayudantes de ruteo validan las declaraciones igual que `render`; y la vista previa de CLI omite puntos de entrada documentales bloqueados.
+- Se agrego un flujo bilingue de contribucion con issue primero, ramas enfocadas, PR enlazado, verificacion por unidad de trabajo, Conventional Commits y revision del maintainer antes del merge.
 
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
@@ -43,6 +44,7 @@ La ronda 2 de Judgment Day quedo incompleta: el juez A respondio y el juez B ter
 - Integrar selectores en README existentes mediante una accion acotada y aprobada; hasta entonces, la creacion del par se bloquea de forma segura.
 - Trasladar el informe de revision de `skills-pack-ld9`.
 - Definir como detectar una copia instalada obsoleta del propio constructor.
+- Disenar una capacidad futura del builder que descubra la politica de contribucion y las capacidades reales del proveedor antes de proponer o gestionar `CONTRIBUTING`, issues, ramas, PR, templates, labels o checks.
 
 ## Siguiente paso
 <!-- doc-role:next-step -->
