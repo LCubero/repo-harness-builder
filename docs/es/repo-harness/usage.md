@@ -6,9 +6,9 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 ## Flujo diario
 <!-- doc-role:daily-workflow -->
 
-1. Inicie o reanude con `repo-harness-builder-session-start` y declare el objetivo.
-2. Use `repo-harness-builder-documentation` cuando cambien hechos durables o el estado visible.
-3. Cierre con `repo-harness-builder-session-stop`, que verifica evidencia y guarda continuidad antes de evaluar Git.
+1. Inicie o reanude con `repo-harness-session-start` y declare el objetivo.
+2. Use `repo-harness-documentation` cuando cambien hechos durables o el estado visible.
+3. Cierre con `repo-harness-session-stop`, que verifica evidencia y guarda continuidad antes de evaluar Git.
 
 ## Disponibilidad integrada
 <!-- doc-role:availability -->

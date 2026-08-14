@@ -10,9 +10,11 @@ Root `README.md` is the product-facing guide and part of a complete empty-reposi
 
 ## Generated Skills
 
-- `<project>-session-start`: read-only repository and documentation recovery, discrepancies, remaining work, and next step. Integrated mode requires Engram recovery and reconciliation; standalone mode uses repository files only.
-- `<project>-session-stop`: evidence-based handoff, path validation, approval-gated documentation and meaningful changelog updates, and separate optional external gates. Integrated mode requires significant observations and a session summary saved to Engram with visible failure semantics; standalone mode records continuity only in repository files.
-- `<project>-documentation`: ownership, maps, links, freshness, duplication control, factual changelog maintenance, and durable versus temporary state.
+- `session-start` maps explicitly to `repo-harness-session-start`: read-only repository and documentation recovery, discrepancies, remaining work, and next step. Integrated mode requires Engram recovery and reconciliation; standalone mode uses repository files only.
+- `session-stop` maps explicitly to `repo-harness-session-stop`: evidence-based handoff, path validation, approval-gated documentation and meaningful changelog updates, and separate optional external gates. Integrated mode requires significant observations and a session summary saved to Engram with visible failure semantics; standalone mode records continuity only in repository files.
+- `documentation` maps explicitly to `repo-harness-documentation`: ownership, maps, links, freshness, duplication control, factual changelog maintenance, and durable versus temporary state.
+
+Generated skill names are fixed across repositories. Repository identity remains in the manifest and generated content, but command names are never derived by removing a project prefix.
 
 Session skills use conversational questions for ordinary continuation and documentation choices. They never inherit the builder's strict language-scoped digest protocol, while external mutations still require explicit approval.
 
@@ -40,4 +42,4 @@ There is one builder operation with repository-sensitive planning. A new or effe
 
 Generated markers can bound generated material, but ownership metadata never replaces analysis of existing content. An upgrade audit compares the installed manifest, generator versions, managed bytes, and runtime projections against the current render. It classifies exact outputs as `current`, current-generation drift as `stale`, absent outputs as `missing`, structurally valid human-owned changes as `human-evolved`, and proven older generated outputs as `legacy`. The approved plan is the authority for each mutation.
 
-Upgrade analysis is proposal-only. Proven generated `stale` or `legacy` files may be proposed for replacement. `human-evolved` files receive integration or archive/start-clean choices. Replacement, archive, and deletion remain absent from automatic apply actions until the user explicitly approves the exact planned action.
+Upgrade analysis is proposal-only except for the fixed-name transition. When the installed manifest declares the exact three legacy project-prefixed skills and every exact manifest-owned canonical and runtime byte matches its deterministic legacy render, normal render preview includes one digest-bound `migrate-generated-skills` action. Approved apply creates fixed destinations, replaces the manifest and checker, and removes only the exact legacy sources in one rollback-safe transaction. Mixed or unverifiable state is blocked, and unrelated similarly prefixed skills provide no ownership evidence.
