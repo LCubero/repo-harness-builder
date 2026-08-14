@@ -34,11 +34,11 @@ Origen: ocurrencia informada por la persona usuaria durante un cierre en espanol
 
 ### RH-W-0003
 
-Origen: unidad 3 y hallazgo de Judgment Day. Prioridad: `P1`, un harness bilingue heredado puede perder comprobacion en espanol. Dependencia: RH-W-0016. Estado: `ready`. Completado: problema, resultado, fixture y no objetivo definidos. Restante: conservar y comprobar arboles localizados si falta `language`. Adicion: conservar la ronda 2 incompleta como evidencia. Exclusion: sin framework de migracion. Aplazamientos y rechazos: ninguno. Evidencia: borrar un archivo espanol puede seguir informando `current`. Historial: se mantiene como proximo comportamiento. Siguiente condicion: issue enfocado y fixture bilingue heredado en rojo.
+Origen: unidad 3 y hallazgo de Judgment Day. Prioridad: `P1`, un harness bilingue heredado puede perder comprobacion en espanol. Dependencia: RH-W-0016. Estado: `completed`. Completado: se agrego la regresion canonica y se infieren solo arboles localizados conocidos ya instalados cuando un manifest heredado carece de `language`; las declaraciones modernas explicitas siguen siendo autoritativas. Restante: `none`. Adicion: conservar la ronda 2 incompleta como evidencia. Exclusion: sin framework de migracion. Aplazamientos y rechazos: ninguno. Evidencia: issue #11 en `fix/legacy-bilingual-manifest`; la regresion focal fallo porque la ruta espanola ausente no estaba en los outputs esperados, luego paso con la inferencia minima; la suite canonica paso 197 pruebas con 6 omisiones. Historial: se mantuvo como proximo comportamiento el 2026-08-13 y se completo el 2026-08-14 sin migracion ni rediseno del CLI. Siguiente condicion: conservar la regresion cuando evolucionen los arboles conocidos o las declaraciones explicitas.
 
 ### RH-W-0004
 
-Origen: unidad 4 y hallazgo de Judgment Day. Prioridad: `P1`, flags ignorados vuelven ambiguo el contrato. Dependencia: RH-W-0003. Estado: `blocked`. Completado: se identificaron los tres flags ignorados. Restante: eliminarlos o respetarlos y probar CLI y ayuda. Adiciones: ninguna. Exclusion: sin rediseno amplio del CLI. Aplazamientos y rechazos: ninguno. Evidencia: `check` acepta flags sin usarlos. Historial: ordenado despues de locale heredado. Siguiente condicion: el bloqueo termina cuando RH-W-0003 define el descubrimiento de idiomas.
+Origen: unidad 4 y hallazgo de Judgment Day. Prioridad: `P1`, flags ignorados vuelven ambiguo el contrato. Dependencia: RH-W-0003. Estado: `ready`. Completado: se identificaron los tres flags ignorados y RH-W-0003 establecio el descubrimiento heredado. Restante: eliminarlos o respetarlos y probar CLI y ayuda. Adiciones: ninguna. Exclusion: sin rediseno amplio del CLI. Aplazamientos y rechazos: ninguno. Evidencia: `check` acepta flags sin usarlos. Historial: ordenado despues de locale heredado. Siguiente condicion: comenzar con pruebas focales del CLI que expongan los flags de idioma ignorados.
 
 ### RH-W-0005
 
@@ -46,7 +46,7 @@ Origen: unidad 5 y hallazgo de Judgment Day. Prioridad: `P1`, declaraciones inva
 
 ### RH-W-0006
 
-Origen: unidad 6 y hallazgo de Judgment Day. Prioridad: `P2`, pruebas validas fallan en layout monolingue. Dependencia: RH-W-0003. Estado: `blocked`. Completado: dos pruebas que suponen espanol identificadas. Restante: respetar idiomas declarados y probar modos ingles y bilingue. Adiciones: ninguna. Exclusion: no debilitar controles bilingues. Aplazamientos y rechazos: ninguno. Evidencia: las pruebas fallan en vez de omitirse. Historial: correccion enfocada. Siguiente condicion: RH-W-0003 define descubrimiento instalado.
+Origen: unidad 6 y hallazgo de Judgment Day. Prioridad: `P2`, pruebas validas fallan en layout monolingue. Dependencia: RH-W-0003. Estado: `ready`. Completado: dos pruebas que suponen espanol identificadas y RH-W-0003 establecio el descubrimiento instalado. Restante: respetar idiomas declarados y probar modos ingles y bilingue. Adiciones: ninguna. Exclusion: no debilitar controles bilingues. Aplazamientos y rechazos: ninguno. Evidencia: las pruebas fallan en vez de omitirse. Historial: correccion enfocada. Siguiente condicion: comenzar con fixtures focales solo en ingles y conservar comprobaciones bilingues cuando se declara espanol.
 
 ### RH-W-0008
 

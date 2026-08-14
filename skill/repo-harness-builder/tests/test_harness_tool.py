@@ -2338,6 +2338,39 @@ class RecordedRuntimeSetTests(unittest.TestCase):
                 self.assertIn("blind", text.lower(), f"{name}: does not name the consequence")
 
 
+class LegacyManifestLanguageTests(unittest.TestCase):
+    def test_explicit_modern_language_declaration_remains_authoritative(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", documentation_languages=["en"])
+            (root / "docs/es/repo-harness").mkdir(parents=True)
+
+            report = TOOL.check(root, "Example", [])
+
+            self.assertNotIn(
+                "docs/es/repo-harness/usage.md",
+                {entry["path"] for entry in report["files"]},
+            )
+
+    def test_check_preserves_installed_spanish_outputs_when_manifest_lacks_language(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", documentation_languages=["en", "es"])
+            manifest_path = root / TOOL.MANIFEST_PATH
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            del manifest["language"]
+            manifest_path.write_text(TOOL.dump_json(manifest), encoding="utf-8", newline="\n")
+            missing_path = "docs/es/repo-harness/usage.md"
+            (root / missing_path).unlink()
+
+            report = TOOL.check(root, "Example", [])
+            entries = {entry["path"]: entry for entry in report["files"]}
+
+            self.assertEqual(report["status"], "drift")
+            self.assertIn(missing_path, entries)
+            self.assertEqual(entries[missing_path]["state"], "missing")
+
+
 class PackagePortabilityTests(unittest.TestCase):
     """The suite must pass wherever the skill package is installed on its own."""
 

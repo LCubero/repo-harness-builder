@@ -64,16 +64,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 3; Judgment Day round-1 finding |
 | Priority | P1: legacy bilingual harnesses can silently lose Spanish checking |
 | Dependencies | RH-W-0016 lifecycle foundation |
-| Status | ready |
-| Completed work | Problem, bounded outcome, verification fixture, and non-goal are defined. |
-| Remaining work | Preserve and check known installed locale trees when a legacy manifest lacks language. |
+| Status | completed |
+| Completed work | Added canonical regression coverage and inferred only installed known locale trees for legacy manifests without `language`; explicit modern declarations remain authoritative. |
+| Remaining work | none |
 | Additions | Track the incomplete Judgment Day round 2 as evidence, not as permission to lose the finding. |
 | Exclusions | No manifest migration framework. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | Legacy manifests lack `language`; deleting an installed Spanish file can still report `current`. |
-| Decision history | 2026-08-13: retained as the next product behavior after lifecycle control. |
-| Next advancement condition | Start a focused issue and failing legacy bilingual fixture test. |
+| Evidence | Issue #11 on `fix/legacy-bilingual-manifest`; the focused regression failed because the missing Spanish path was absent from expected outputs, then passed with the minimal inference; the 197-test canonical suite passed with 6 skips. |
+| Decision history | 2026-08-13: retained as the next product behavior after lifecycle control. 2026-08-14: completed with bounded legacy inference and no manifest migration or CLI redesign. |
+| Next advancement condition | Maintain the regression while known installed locale trees or explicit language declarations evolve. |
 
 ### RH-W-0004
 | Field | Value |
@@ -81,7 +81,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 4; Judgment Day round-1 finding |
 | Priority | P1: advertised ignored flags create an ambiguous read-only contract |
 | Dependencies | RH-W-0003 locale-tree behavior should establish the language-check contract first |
-| Status | blocked |
+| Status | ready |
 | Completed work | The ignored report, conversation, and documentation language flags are identified. |
 | Remaining work | Remove or honor the flags through one unambiguous contract and test CLI behavior and help. |
 | Additions | none |
@@ -90,7 +90,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | none |
 | Evidence | Current `check` accepts three language flags without using them. |
 | Decision history | 2026-08-13: ordered after legacy locale preservation. |
-| Next advancement condition | Blocker clears when RH-W-0003 defines legacy language discovery behavior. |
+| Next advancement condition | Start with focused CLI tests that expose the ignored language flags. |
 
 ### RH-W-0005
 | Field | Value |
@@ -115,7 +115,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 6; Judgment Day round-1 finding |
 | Priority | P2: checked-in tests fail in valid monolingual layouts |
 | Dependencies | RH-W-0003 locale discovery |
-| Status | blocked |
+| Status | ready |
 | Completed work | Two Spanish-assuming documentation tests are identified. |
 | Remaining work | Make tests respect declared locales and verify English-only and bilingual runs. |
 | Additions | none |
@@ -124,7 +124,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | none |
 | Evidence | Existing tests error instead of skipping when Spanish is not declared. |
 | Decision history | 2026-08-13: retained as a focused test-contract correction. |
-| Next advancement condition | Blocker clears when RH-W-0003 establishes installed locale discovery. |
+| Next advancement condition | Start with focused English-only fixtures and preserve bilingual checks where Spanish is declared. |
 
 ### RH-W-0008
 | Field | Value |
