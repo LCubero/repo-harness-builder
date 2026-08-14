@@ -6,6 +6,7 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes.
+- Canonical suite red: 197 tests, 2 failures, 6 skips. Both failures are self-hosted roadmap assertions tracked as `RH-W-0023`; no product behavior is broken and every lifecycle record is structurally valid.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Generator 3.0, skill package 3.1.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
 - Licensed MIT in `LICENSE` and in both `SKILL.md` copies.
@@ -48,7 +49,7 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Active projection: `RH-W-0021`, `RH-W-0017`, `RH-W-0004`, `RH-W-0006`, and `RH-W-0019` are `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, and `RH-W-0010` are prerequisite-blocked.
+- Active projection: `RH-W-0023`, `RH-W-0021`, `RH-W-0017`, `RH-W-0004`, `RH-W-0006`, and `RH-W-0019` are `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, and `RH-W-0010` are prerequisite-blocked.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015` and the unattended internal-maintenance idea `RH-W-0018` retain explicit advancement conditions in [roadmap.md](roadmap.md).
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
@@ -57,9 +58,11 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Advance `RH-W-0021`: rename the generated skills to the fixed `repo-harness-` prefix.
+Advance `RH-W-0023` first: the canonical suite is red, so it cannot prove any later unit did not regress. Fix the two self-hosted roadmap assertions before touching anything else.
 
-The four ready units after it, in recommended order, are `RH-W-0017`, `RH-W-0004`, `RH-W-0006`, and `RH-W-0019`. Each one carries its own starting condition in [roadmap.md](roadmap.md). Take one unit per branch and do not bundle them.
+Then advance `RH-W-0021`: rename the generated skills to the fixed `repo-harness-` prefix.
+
+The four ready units after those, in recommended order, are `RH-W-0017`, `RH-W-0004`, `RH-W-0006`, and `RH-W-0019`. Each one carries its own starting condition in [roadmap.md](roadmap.md). Take one unit per branch and do not bundle them.
 
 ### Starting `RH-W-0021`
 
