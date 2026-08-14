@@ -6,7 +6,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 <!-- doc-role:verified-state -->
 
 - El harness esta presente y el verificador generado informa `current`, salida 0 y 0 escrituras.
-- La suite canonica esta en verde: pasaron 229 pruebas con 6 omisiones. `RH-W-0021` usa nombres fijos e integra la migracion acotada RH-W-0024 para instalaciones heredadas exactas; el issue #19 agrega proteccion LF multiplataforma generada para checker y manifiesto.
+- La suite canonica esta en verde: pasaron 230 pruebas con 6 omisiones. `RH-W-0017` localiza la frase de aprobacion para solo commit en espanol sin cambiar las rutas exactas ni el mensaje propuesto; el issue #19 agrega proteccion LF multiplataforma generada para checker y manifiesto.
 - El conjunto de entornos es `claude-code` y `opencode`; el modo es `integrated`, el generador es 3.0 y el paquete de habilidad es 3.1.
 - La suite cubre estados Git generados, consentimiento por intencion, comparacion exacta del alcance preparado, separacion del indice previo, invalidacion por cambios materiales, resultados delimitados, deteccion sensible, recibos de transporte acotados y contratos de cache del entorno.
 - La licencia MIT figura en `LICENSE` y en ambas copias de `SKILL.md`.
@@ -43,19 +43,18 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - Se completo `RH-W-0023`: las pruebas autoalojadas de la hoja de ruta ahora afirman paridad estructural entre parser y encabezados, y el orden de la excepcion de prioridad P0, en lugar de un conteo magico y una frase que nombraba la siguiente unidad.
 - Se completo `RH-W-0024` bajo issue #16: una accion tipada y ligada por digest verifica propiedad y bytes instalados, liga reemplazos y eliminaciones, aplica atomicamente con rollback, conserva check de solo lectura y es idempotente.
 - Se completo `RH-W-0021`: las habilidades generadas usan nombres fijos en todos los repositorios, los comandos conservan sus nombres mediante mapeo explicito, preview y apply normales migran solo bytes heredados exactos propiedad del manifiesto, y este repositorio usa los nombres fijos en su manifiesto y proyecciones.
+- Se completo `RH-W-0017`: los contratos generados de session-stop en espanol ahora usan una frase localizada para la aprobacion de solo commit y conservan el alcance de preparacion por rutas exactas y el marcador del mensaje propuesto sin cambios.
 
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
-- Proyeccion activa: `RH-W-0017`, `RH-W-0004`, `RH-W-0006` y `RH-W-0019` estan `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009` y `RH-W-0010` estan bloqueados por prerrequisitos.
+- Proyeccion activa: `RH-W-0004`, `RH-W-0006` y `RH-W-0019` estan `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009` y `RH-W-0010` estan bloqueados por prerrequisitos.
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
 - Proyeccion aplazada: `RH-W-0011` a `RH-W-0015` y la idea de mantenimiento interno desatendido `RH-W-0018` conservan condiciones explicitas en [roadmap.md](roadmap.md).
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
-- IDs completados recientemente: `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`, `RH-W-0003`, `RH-W-0016`, `RH-W-0007`.
+- IDs completados recientemente: `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`, `RH-W-0003`, `RH-W-0016`, `RH-W-0007`.
 
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Avanzar `RH-W-0017` a continuacion: localizar la frase de aprobacion de commit sin cambiar su alcance semantico, rutas ni mensaje propuesto.
-
-Las unidades listas restantes, en orden recomendado, son `RH-W-0004`, `RH-W-0006` y `RH-W-0019`. Cada una conserva su condicion de arranque en [roadmap.md](roadmap.md). Se toma una unidad por rama y no se agrupan.
+Avanzar `RH-W-0004` a continuacion resolviendo los flags de idioma ignorados mediante su contrato CLI acotado. Las unidades listas restantes, en orden recomendado, son `RH-W-0006` y `RH-W-0019`. Cada una conserva su condicion de arranque en [roadmap.md](roadmap.md). Se toma una unidad por rama y no se agrupan.

@@ -538,6 +538,7 @@ def session_stop_skill(
     rulebook_path: str,
     license_id: str,
     standalone: bool,
+    conversation_language: str,
     name: str = COMMAND_TO_SKILL["session-stop"],
 ) -> str:
     """Render the runtime-neutral session-stop contract."""
@@ -561,6 +562,11 @@ def session_stop_skill(
     )
     output_continuity = "continuity result" if standalone else "memory result"
     lifecycle_mirror = "repository continuity record keyed by `RH-W-####`" if standalone else "Engram topic `work/RH-W-####`"
+    commit_only_question = (
+        "¿Puedo agregar exactamente estas rutas al área de preparación y crear este commit propuesto: <message>?"
+        if conversation_language == "espanol"
+        else "May I stage exactly these paths and create this proposed commit: <message>?"
+    )
     return frontmatter(name, description, source, license_id) + f"""<!-- {GENERATED_MARKER}; source: {source} -->
 ## Activation Contract
 
@@ -604,7 +610,7 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 6. A session summary saved before an approved mutation is provisional. Save or update a final session summary that includes the approved mutation only after refreshed evidence and verification.
 7. {save_step.split('. ', 1)[1]}
 8. Only after documentation and continuity are complete, classify staged paths, unstaged tracked paths, untracked paths, renamed paths, deleted paths, unrelated pre-existing paths, excluded private, tool, and cache paths, and sensitive-looking paths. Perform mandatory per-path sensitive screening before any proposed staging. Filename screening is a warning baseline, not proof of safety. A sensitive candidate must pause before any staging.
-9. For each proposed reviewable work-unit grouping show exact paths, why they belong together, a proposed Conventional Commit message, explicit exclusions, and already-staged paths. Record pre-existing staged paths before staging and keep them outside the proposed work unit. Ask conversationally for the intended outcome. For commit-only, the final user-facing line must ask: `May I stage exactly these paths and create this proposed commit: <message>?` For commit and push, include the exact upstream and ask once for that complete bounded outcome. Resume the same session-stop invocation after approval and stage only those paths. Immediately before commit, perform one read-only staged-scope check comparing workflow-staged path names and status/modes with the approved scope and confirming that no excluded, sensitive, unrelated, extra, or missing path entered the workflow scope. If it matches, continue silently under existing consent. If it differs or a hook changed content or mode unexpectedly, invalidate consent, report the concise difference, and ask one new approval. Unstage only paths staged by this workflow when selective unstage is proven safe and supported without disturbing pre-existing staged work; otherwise stop, leave the index unchanged, and provide remediation evidence. Then create the commit exactly once, refresh status after the commit, and only then evaluate push under the same consent scope.
+9. For each proposed reviewable work-unit grouping show exact paths, why they belong together, a proposed Conventional Commit message, explicit exclusions, and already-staged paths. Record pre-existing staged paths before staging and keep them outside the proposed work unit. Ask conversationally for the intended outcome. For commit-only, the final user-facing line must ask: `{commit_only_question}` For commit and push, include the exact upstream and ask once for that complete bounded outcome. Resume the same session-stop invocation after approval and stage only those paths. Immediately before commit, perform one read-only staged-scope check comparing workflow-staged path names and status/modes with the approved scope and confirming that no excluded, sensitive, unrelated, extra, or missing path entered the workflow scope. If it matches, continue silently under existing consent. If it differs or a hook changed content or mode unexpectedly, invalidate consent, report the concise difference, and ask one new approval. Unstage only paths staged by this workflow when selective unstage is proven safe and supported without disturbing pre-existing staged work; otherwise stop, leave the index unchanged, and provide remediation evidence. Then create the commit exactly once, refresh status after the commit, and only then evaluate push under the same consent scope.
 10. Existing unpushed commits trigger a push offer without an empty commit. Commit approval never implies push. If the local branch is ahead and push preflight is safe, show the upstream and ahead count, then end with: `May I push these existing local commits to <upstream>?`
 11. A detached HEAD, unborn branch, no upstream, missing remote, missing remote branch, or ahead-behind divergence blocks only the optional push branch and must include actionable safely-local evidence. Pause and invalidate consent for changed path scope or commit message; a newly detected sensitive or unrelated file; remote advanced or integration needed; missing or changed upstream or destination; authentication or provider ambiguity requiring a different credential path; destructive action, force, merge, rebase, reset, conflict resolution; verification failure; or commit hooks mutate content.
 12. Inspect the upstream remote URL, host, and scheme read-only. Native Git is the core transport. Recognized provider tooling is only an alternate credential path if installed and covered by unchanged consent. Before push, fetch and compare under commit-and-push or push consent. If the remote is ahead or the branch has diverged, stop the optional push branch. Record each authorized substep and its evidence without turning substeps into questions. For every authentication, transport, comparison, fetch, commit, or push failure, preserve the attempted command, exit status, stderr, and safely-local state. Make at most 2 distinct transport attempts, then stop without indefinite retries. After an authentication or transport failure, check read-only whether an alternate credential path is actually available and name it in remediation instead of stopping with none: prefer installed and authenticated provider tooling used as a single-command credential helper that changes no global configuration, and when the only remaining path needs a passphrase or secret the agent cannot supply, hand the exact command to the human to run.
@@ -1574,7 +1580,7 @@ def render_with_skill_mapping(
             project_id, rulebook_path, license_id, standalone, skill_mapping["session-start"]
         ),
         skill_mapping["session-stop"]: session_stop_skill(
-            project_id, rulebook_path, license_id, standalone, skill_mapping["session-stop"]
+            project_id, rulebook_path, license_id, standalone, conversation, skill_mapping["session-stop"]
         ),
         skill_mapping["documentation"]: documentation_skill(
             project_id, rulebook_path, license_id, standalone, skill_mapping["documentation"]
