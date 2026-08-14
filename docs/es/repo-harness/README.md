@@ -9,6 +9,7 @@
 | [CONTRIBUTING.es.md](../../../CONTRIBUTING.es.md) | Flujo de contribucion, verificacion, revision y merge |
 | [usage.md](usage.md) | Flujo humano y limites de aprobacion |
 | [current-state.md](current-state.md) | Presentacion del estado canonico |
+| [roadmap.md](roadmap.md) | Presentacion completa de la hoja de ruta canonica |
 | [decisions.md](decisions.md) | Presentacion de decisiones y restricciones |
 | [i18n-maintenance.md](i18n-maintenance.md) | Contrato de mantenimiento bilingue |
 | [Investigacion](../../repo-harness/i18n-research.md) | Fuentes y decisiones de arquitectura bilingue |

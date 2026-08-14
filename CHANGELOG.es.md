@@ -4,6 +4,8 @@
 
 ## 2026-08-13
 
+- Se agregaron la hoja de ruta concisa del harness adaptativo y su espejo completo en espanol, con propiedad de evidencia, unidades acotadas, verificacion, no objetivos y decisiones de integracion aplazadas.
+- Se corrigio el estado actual al registrar la cobertura completada de ampliacion del conjunto de runtimes y eliminar solo su pendiente obsoleto.
 - Se agregaron guias concisas en ingles y espanol con issue primero, ramas enfocadas, PR enlazado, Conventional Commits, pruebas y documentacion por unidad, revision del maintainer y verificacion propia del repositorio, sin prometer automatizacion inexistente.
 - Se registro la comparacion de fuentes primarias y el limite futuro del producto para harnesses de contribucion conscientes de las capacidades reales del repositorio consumidor.
 - Se hizo accionable la remediacion ante fallos de transporte: una sesion generada ahora debe comprobar si existe una via de credenciales alternativa y nombrarla, prefiriendo la herramienta del proveedor usada como asistente de credenciales de un solo comando que no altera la configuracion global, y devolviendo el comando exacto a la persona cuando la via restante necesita un secreto que el agente no puede aportar.
