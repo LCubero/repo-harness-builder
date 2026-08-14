@@ -41,20 +41,17 @@
 - Added the [adaptive harness roadmap](roadmap.md) as the ordered owner of bounded future work.
 - Completed roadmap unit 1 by requiring generated rulebook, session-start, and documentation guidance to reconcile applicable owning evidence, report discrepancies, prefer current repository evidence without exhaustive reads or test runs, and continue organically without asking users to resolve verifiable facts.
 - Completed roadmap unit 2, tracked by issue #8, with a default exact `.codegraph/` root ignore, persistent `--no-codegraph-ignore` opt-out, manifest-driven checking, byte-preserving `.gitignore` integration, and changed-plan rejection.
+- Completed `RH-W-0016` under issue #7: the roadmap now durably owns immutable lifecycle records while this file remains only the concise active projection.
 
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-Judgment Day round 2 is incomplete: judge A returned, judge B terminated on a session limit before reporting. The fix delta below is verified but unjudged by a second reader, and the round budget has one round left.
-
-- Make approved upgrade replacement and integration plans executable without weakening preservation guarantees.
-- Add a bounded, exact approved existing-README selector integration executor; current behavior deliberately fails closed instead of creating a one-way peer.
-- Carry over the review report from `skills-pack-ld9`.
-- Define how a consumer repository detects a stale installed copy of the builder itself, distinct from an installed generated harness.
-- Design a future builder capability that discovers a consumer repository's contribution policy and real provider capabilities before proposing or managing `CONTRIBUTING`, issue-first work, branches, PRs, templates, labels, or checks.
-- Decide the five round-1 findings only one judge raised, none of them auto-fixable under the dual-confirmation rule. The most serious: `check` stops inspecting the Spanish tree of any harness installed before the language field existed, because its manifest has no `language` and `declared_languages` falls back to English only, so deleting a Spanish file still reports `current`. The others: the `check` subcommand advertises three language flags and ignores them; `declared_languages` passes invalid values through and makes read-only checking exit hard with an error naming the wrong field; two checked-in documentation tests error instead of skipping in a monolingual layout; and `missing_sections` leaves the promised-roles against actual-no-roles direction uncovered, which is pre-existing and flags every older installed harness.
+- Active projection: `RH-W-0003` and the newly reported session-stop language defect `RH-W-0017` are `ready`; `RH-W-0004`, `RH-W-0005`, `RH-W-0006`, `RH-W-0008`, `RH-W-0009`, and `RH-W-0010` are prerequisite-blocked.
+- Deferred projection: `RH-W-0011` through `RH-W-0015` retain explicit advancement conditions in [roadmap.md](roadmap.md).
+- Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
+- Recently completed IDs: `RH-W-0016`, `RH-W-0007`, `RH-W-0002`, `RH-W-0001`.
 
 ## Next Step
 <!-- doc-role:next-step -->
 
-Start roadmap unit 3: preserve and check known installed locale trees when a legacy manifest has no language field.
+Advance `RH-W-0003`: start a focused issue and failing legacy bilingual fixture test. It remains the next product behavior after issue #7's priority override.

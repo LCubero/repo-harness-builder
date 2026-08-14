@@ -957,6 +957,95 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertFalse(any("ai-harness" in path.split("/") for path in outputs))
         self.assertNotIn("ai-harness", "\n".join(outputs.values()))
 
+    def test_generated_docs_define_bilingual_lifecycle_ownership(self):
+        outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
+        pairs = {
+            "docs/repo-harness/roadmap.md": "docs/es/repo-harness/roadmap.md",
+            "docs/repo-harness/current-state.md": "docs/es/repo-harness/current-state.md",
+        }
+        for english, spanish in pairs.items():
+            with self.subTest(english=english):
+                self.assertIn(english, outputs)
+                self.assertIn(spanish, outputs)
+                self.assertEqual(
+                    TOOL.semantic_sections(english, outputs[english]),
+                    TOOL.semantic_sections(spanish, outputs[spanish]),
+                )
+        self.assertIn("canonical lifecycle owner", outputs["docs/repo-harness/roadmap.md"])
+        self.assertIn("propietario canonico del ciclo de vida", outputs["docs/es/repo-harness/roadmap.md"])
+
+    def test_lifecycle_guidance_requires_same_work_unit_reconciliation(self):
+        outputs = TOOL.render("Example", [])
+        scoped = "\n".join(
+            outputs[path]
+            for path in (
+                ".repo-harness/skills/example-documentation/SKILL.md",
+                ".repo-harness/skills/example-session-start/SKILL.md",
+                ".repo-harness/skills/example-session-stop/SKILL.md",
+            )
+        )
+        for phrase in (
+            "same work unit",
+            "docs/repo-harness/roadmap.md",
+            "docs/repo-harness/current-state.md",
+            "localized peers",
+            "work/RH-W-####",
+        ):
+            self.assertIn(phrase, scoped)
+
+    def test_repository_roadmap_records_have_valid_lifecycle_fields(self):
+        path = ROOT.parents[1] / "docs/repo-harness/roadmap.md"
+        if not path.is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        roadmap = path.read_text(encoding="utf-8")
+        records = re.findall(r"^### (RH-W-\d{4})\n(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S)
+        self.assertEqual(len(records), 17)
+        self.assertEqual(len({record_id for record_id, _ in records}), len(records))
+        required = {
+            "Origin", "Priority", "Dependencies", "Status", "Completed work",
+            "Remaining work", "Additions", "Exclusions", "Deferrals", "Rejections",
+            "Evidence", "Decision history", "Next advancement condition",
+        }
+        allowed_priorities = {"P0", "P1", "P2", "P3"}
+        allowed_statuses = {
+            "proposed", "ready", "active", "blocked", "deferred", "completed",
+            "excluded", "rejected",
+        }
+        for record_id, body in records:
+            fields = dict(re.findall(r"^\| ([^|]+) \| (.*?) \|$", body, re.M))
+            fields.pop("Field", None)
+            with self.subTest(record_id=record_id):
+                self.assertEqual(set(fields), required)
+                priority, justification = fields["Priority"].split(":", 1)
+                self.assertIn(priority.strip(), allowed_priorities)
+                self.assertTrue(justification.strip())
+                self.assertIn(fields["Status"], allowed_statuses)
+                if fields["Status"] == "blocked":
+                    self.assertRegex(fields["Next advancement condition"], r"(?i)blocker")
+                if fields["Status"] == "deferred":
+                    self.assertNotEqual(fields["Next advancement condition"], "none")
+                if fields["Status"] in {"completed", "excluded", "rejected"}:
+                    self.assertEqual(fields["Remaining work"], "none")
+
+    def test_repository_roadmap_preserves_existing_units_and_priority_override(self):
+        path = ROOT.parents[1] / "docs/repo-harness/roadmap.md"
+        if not path.is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        roadmap = path.read_text(encoding="utf-8")
+        for unit in range(1, 16):
+            self.assertIn(f"Roadmap unit {unit}", roadmap)
+            self.assertIn(f"### RH-W-{unit:04d}", roadmap)
+        for fact in (
+            "No manifest migration framework.",
+            "No broader CLI redesign.",
+            "No document parser rewrite.",
+            "No current architecture commitment.",
+            "issue #7",
+            "priority override",
+            "RH-W-0003 remains the next product behavior",
+        ):
+            self.assertIn(fact, roadmap)
+
     def test_runtime_projections_use_the_current_canonical_contract(self):
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])
         canonical = ".repo-harness/skills/example-session-start/SKILL.md"

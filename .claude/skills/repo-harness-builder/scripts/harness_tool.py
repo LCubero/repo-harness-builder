@@ -387,6 +387,7 @@ def session_start_skill(project_id: str, rulebook_path: str, license_id: str, st
         if standalone
         else "current documentation, source, tests, Git state or history, and Engram when available"
     )
+    lifecycle_mirror = "repository continuity record keyed by `RH-W-####`" if standalone else "Engram topic `work/RH-W-####`"
     return frontmatter(name, description, source, license_id) + f"""<!-- {GENERATED_MARKER}; source: {source} -->
 ## Activation Contract
 
@@ -398,6 +399,7 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 - Resolve and inspect only the selected repository. Do not follow links, aliases, sibling repositories, or external references.
 - Read `{rulebook_path}` first, then only documentation relevant to the requested work.
 - Read only the latest relevant entries in `CHANGELOG.md` after the rulebook and current-state documentation.
+- Read `docs/repo-harness/roadmap.md` when the objective involves pending, blocked, deferred, excluded, rejected, or completed tracked work; do not infer the lifecycle from current state alone.
 - Consult only applicable owning evidence, such as {evidence_sources}.
 - Report discrepancies instead of silently resolving them; current repository evidence wins over memory.
 - Do not read every file or run every test indiscriminately.
@@ -427,7 +429,7 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 3. Detect whether the root is a Git repository. If it is, inspect branch, worktree, index, upstream, remotes, and each upstream remote URL, host, and scheme read-only before suggesting network access. Provider recognition is optional and must not require provider tooling.
 4. Run `python .repo-harness/check.py` and retain its status and any drifted runtime projection paths.
 {recovery_step}
-6. Identify completed work, remaining work, constraints, and the next recommended step.
+6. Identify completed work, remaining work, constraints, and the next recommended step. Reconcile any changed `RH-W-####` lifecycle with the roadmap, current-state projection, localized peers, and {lifecycle_mirror} in the same work unit.
 7. Report stale links, contradictions, or missing evidence before proceeding.
 
 ## Optional Git Synchronization Gate
@@ -481,6 +483,7 @@ def session_stop_skill(project_id: str, rulebook_path: str, license_id: str, sta
         else "6. Save significant decisions, discoveries, fixes, and the session summary to Engram; report every save result."
     )
     output_continuity = "continuity result" if standalone else "memory result"
+    lifecycle_mirror = "repository continuity record keyed by `RH-W-####`" if standalone else "Engram topic `work/RH-W-####`"
     return frontmatter(name, description, source, license_id) + f"""<!-- {GENERATED_MARKER}; source: {source} -->
 ## Activation Contract
 
@@ -495,6 +498,7 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 - Propose updates to `{rulebook_path}` and canonical documentation, but write them only after explicit approval.
 - Keep the rulebook inside its budget. Move durable detail down into its owned deeper document.
 - Propose one concise `CHANGELOG.md` entry for meaningful completed work under the existing documentation approval. Avoid an entry for a trivial or no-op session.
+- Reconcile every changed `RH-W-####` record in `docs/repo-harness/roadmap.md`, the concise current-state projection, localized peers, and {lifecycle_mirror} in the same work unit.
 {continuity.rstrip()}
 - Git, commit, push, provider, backup, and publication actions are separate optional gates and are never implied by session stop.
 - Keep ordinary handoff and continuation questions conversational. Do not use the builder's exact digest-bound approval vocabulary.
@@ -517,7 +521,7 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 
 1. Inspect the selected repository state read-only and collect fresh verification evidence.
 2. Summarize completed work, decisions, unresolved issues, and next steps.
-3. Validate referenced paths and reconcile the summary with `{rulebook_path}` and deeper documentation.
+3. Validate referenced paths and reconcile the summary with `{rulebook_path}` and deeper documentation, including lifecycle records and their current-state projection.
 4. Present the exact documentation changes and any meaningful completed-work changelog entry for conversational approval, one blocking question per turn, then pause.
 5. After the user answers, resume the same session-stop invocation from the next unfinished step. If approved, execute that exact approved action once, update only the canonical owners, refresh repository evidence, and verify paths, links, and claims. If documentation is declined, continue the close protocol without writing and record the proposal as declined or pending as appropriate.
 6. A session summary saved before an approved mutation is provisional. Save or update a final session summary that includes the approved mutation only after refreshed evidence and verification.
@@ -559,6 +563,7 @@ def documentation_skill(project_id: str, rulebook_path: str, license_id: str, st
     temporary_owner = "Session output, not durable docs by default" if standalone else (
         "Session output or memory, not durable docs by default"
     )
+    lifecycle_mirror = "repository continuity record keyed by `RH-W-####`" if standalone else "the small Engram topic `work/RH-W-####`"
     return frontmatter(name, description, source, license_id) + f"""<!-- {GENERATED_MARKER}; source: {source} -->
 ## Activation Contract
 
@@ -574,6 +579,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 - Keep changelog entries factual, dated, concise, and non-duplicated. Link decisions or documentation only when useful.
 - Use `CHANGELOG.md` for completed changes, not future plans. Keep current state and next steps in `docs/repo-harness/current-state.md`.
 - Verify a pending or completed claim against applicable owning evidence before adding, retaining, moving, or removing it.
+- Treat `docs/repo-harness/roadmap.md` as the canonical lifecycle owner. When reality changes, reconcile its `RH-W-####` record, the concise current-state projection, localized peers, and {lifecycle_mirror} in the same work unit.
 {continuity}
 - Preserve human-owned content and unknown bytes. Never replace them merely to normalize structure.
 
@@ -584,6 +590,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 | How work is done here: purpose, hard rules, gate routing | `{rulebook_path}` |
 | Documentation ownership and map | `docs/repo-harness/README.md` |
 | Detailed current state and recent completed work | `docs/repo-harness/current-state.md` |
+| Pending, deferred, excluded, rejected, or completed lifecycle records | `docs/repo-harness/roadmap.md` |
 | Durable decisions and constraints | `docs/repo-harness/decisions.md` |
 | Chronological completed changes | `CHANGELOG.md` |
 | Temporary session observations | {temporary_owner} |
@@ -592,7 +599,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 
 1. Read the rulebook and documentation map before editing.
 2. Validate referenced paths and identify stale, duplicated, contradictory, or ownerless claims.
-3. Update the smallest canonical owner and repair inbound links when needed.
+3. Update the smallest canonical owner and repair inbound links when needed. For tracked lifecycle changes, reconcile roadmap, current state, localized peers, and continuity in the same work unit.
 4. Keep summaries short and move detail downward into the documentation map.
 5. Re-read changed files and report unresolved ambiguity.
 
@@ -800,6 +807,7 @@ def docs_outputs(
 |---|---|
 | `usage.md` | Human workflow, integration availability checks, and approval boundaries |
 | `current-state.md` | Verified current state, recent completed work, pending work, and next step |
+| `roadmap.md` | Canonical lifecycle records for pending and resolved work |
 | `decisions.md` | Durable decisions and constraints with evidence |
 {multilingual_rows}| `../../CHANGELOG.md` | Factual, dated, concise completed changes; never future plans |
 
@@ -861,25 +869,51 @@ The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `
 
 <!-- doc-role:verified-state -->
 
-The minimal repository AI harness exists. Project-specific state is pending review.
+The minimal repository AI harness exists. This file is only the concise projection of active lifecycle records, blockers, recently completed IDs, and the next actionable condition. The canonical lifecycle owner is [roadmap.md](roadmap.md).
 
 ## Recent Completed Work
 
 <!-- doc-role:recent-work -->
 
-- Bootstrapped canonical project documentation and operational session skills.
+- `RH-W-0001`: bootstrapped canonical project documentation and operational session skills.
 
 ## Pending Work
 
 <!-- doc-role:pending-work -->
 
-- Replace placeholders with verified project facts.
+- Track every non-trivial pending item in [roadmap.md](roadmap.md); never maintain a second backlog here.
 
 ## Next Step
 
 <!-- doc-role:next-step -->
 
 Review `{rulebook_path}` and this document together, then update only supported claims.
+"""
+    roadmap = f"""# Work Lifecycle Roadmap
+
+{marker}
+
+<!-- doc-role:lifecycle-owner -->
+
+This roadmap is the canonical lifecycle owner. Track only non-trivial work with immutable `RH-W-####` IDs. Each record keeps origin, justified `P0` to `P3` priority, dependencies, status, completed and remaining work, additions, exclusions, deferrals, rejections, evidence, decision history, and an observable next advancement condition.
+
+## Lifecycle Rules
+<!-- doc-role:lifecycle-rules -->
+
+- Status is one of `proposed`, `ready`, `active`, `blocked`, `deferred`, `completed`, `excluded`, or `rejected`.
+- `blocked` names its blocker, `deferred` names its advancement condition, and terminal records use remaining work `none`.
+- `excluded` is reconsiderable outside current scope. `rejected` is intentionally declined until an explicit later decision supersedes it.
+- Update this owner, current-state projection, localized peers, and Engram topic `work/RH-W-####` in the same work unit when reality changes.
+
+## Active Records
+<!-- doc-role:active-records -->
+
+No project-specific records have been added.
+
+## Resolved Records
+<!-- doc-role:resolved-records -->
+
+No project-specific records have been resolved.
 """
     continuity_decision = (
         "- Continuity uses repository files only."
@@ -985,6 +1019,7 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
 |---|---|
 | `usage.md` | Flujo humano, disponibilidad y limites de aprobacion |
 | `current-state.md` | Presentacion en espanol del estado canonico en `../../../repo-harness/current-state.md` |
+| `roadmap.md` | Espejo humano del propietario canonico del ciclo de vida |
 | `decisions.md` | Presentacion en espanol de decisiones y restricciones |
 | `i18n-maintenance.md` | Contrato de mantenimiento bilingue |
 | `../../../repo-harness/README.md` | Mapa canonico en ingles |
@@ -1041,25 +1076,51 @@ Las habilidades diarias inspeccionan en modo de solo lectura por defecto. Los re
 
 <!-- doc-role:verified-state -->
 
-El harness minimo de IA del repositorio existe. El estado especifico del proyecto esta pendiente de revision.
+El harness minimo de IA del repositorio existe. Este archivo proyecta solo hechos verificados del proyecto: registros activos, bloqueos, IDs completados recientemente y la siguiente condicion accionable. El propietario canonico es [roadmap.md](roadmap.md).
 
 ## Trabajo reciente completado
 
 <!-- doc-role:recent-work -->
 
-- Se crearon la documentacion canonica del proyecto y las habilidades operativas de sesion.
+- `RH-W-0001`: se crearon la documentacion canonica del proyecto y las habilidades operativas de sesion.
 
 ## Trabajo pendiente
 
 <!-- doc-role:pending-work -->
 
-- Sustituir los marcadores de posicion por hechos verificados del proyecto.
+- Registrar todo pendiente no trivial en [roadmap.md](roadmap.md), sin mantener un segundo backlog aqui.
 
 ## Siguiente paso
 
 <!-- doc-role:next-step -->
 
 Revise `REPO-HARNESS.md` junto con este documento y actualice solo afirmaciones respaldadas por evidencia.
+"""
+    roadmap_es = f"""# Hoja de ruta del ciclo de vida
+
+{marker}
+
+<!-- doc-role:lifecycle-owner -->
+
+Esta hoja de ruta es el propietario canonico del ciclo de vida. Registre solo trabajo no trivial con IDs inmutables `RH-W-####`. Cada registro conserva origen, prioridad justificada de `P0` a `P3`, dependencias, estado, trabajo completado y restante, adiciones, exclusiones, aplazamientos, rechazos, evidencia, historial de decisiones y una Condicion del siguiente avance observable.
+
+## Reglas del ciclo de vida
+<!-- doc-role:lifecycle-rules -->
+
+- El estado es `proposed`, `ready`, `active`, `blocked`, `deferred`, `completed`, `excluded` o `rejected`.
+- `blocked` nombra su bloqueo, `deferred` su condicion de avance y los registros terminales usan trabajo restante `none`.
+- `excluded` puede reconsiderarse fuera del alcance actual. `rejected` se declina intencionalmente hasta que una decision posterior explicita lo reemplace.
+- Actualice este propietario, la proyeccion de estado actual, los pares localizados y el tema de Engram `work/RH-W-####` en la misma unidad de trabajo cuando cambie la realidad.
+
+## Registros activos
+<!-- doc-role:active-records -->
+
+No se han agregado registros especificos del proyecto.
+
+## Registros resueltos
+<!-- doc-role:resolved-records -->
+
+No se han resuelto registros especificos del proyecto.
 """
     continuity_decision_es = "- La continuidad usa solo archivos del repositorio." if standalone else "- Gentle AI y Engram son obligatorios para la continuidad integrada, pero nunca reemplazan la evidencia actual del repositorio."
     decisions_es = f"""# Decisiones y restricciones
@@ -1122,6 +1183,7 @@ Actualice este par cuando cambie una regla o ruta en `{rulebook_path}`. El archi
         "docs/repo-harness/README.md": index,
         "docs/repo-harness/usage.md": usage,
         "docs/repo-harness/current-state.md": state,
+        "docs/repo-harness/roadmap.md": roadmap,
         "docs/repo-harness/decisions.md": decisions,
     }
     if not multilingual:
@@ -1135,6 +1197,7 @@ Actualice este par cuando cambie una regla o ruta en `{rulebook_path}`. El archi
             "docs/es/repo-harness/README.md": index_es,
             "docs/es/repo-harness/usage.md": usage_es,
             "docs/es/repo-harness/current-state.md": state_es,
+            "docs/es/repo-harness/roadmap.md": roadmap_es,
             "docs/es/repo-harness/decisions.md": decisions_es,
             "docs/es/repo-harness/i18n-maintenance.md": maintenance_es,
         }

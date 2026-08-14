@@ -37,6 +37,7 @@ Canonical source of `repo-harness-builder`, an agent skill that builds or inspec
 | Creating, moving, or deleting a document | [documentation map](docs/repo-harness/README.md) |
 | Planning, implementing, reviewing, or merging a contribution | [CONTRIBUTING.md](CONTRIBUTING.md) |
 | Where the project stands and what shipped | [current state](docs/repo-harness/current-state.md), then [CHANGELOG.md](CHANGELOG.md) |
+| Tracking or changing non-trivial pending or resolved work | [roadmap](docs/repo-harness/roadmap.md); reconcile its current-state projection, localized peer, and `work/RH-W-####` Engram mirror in the same work unit |
 | Why something was decided, or a standing constraint | [decisions](docs/repo-harness/decisions.md) |
 
 ## Updating This File
