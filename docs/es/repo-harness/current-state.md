@@ -48,7 +48,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
-- Proyeccion activa: `RH-W-0004`, `RH-W-0006` y `RH-W-0019` estan `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009` y `RH-W-0010` estan bloqueados por prerrequisitos.
+- Proyeccion activa: `RH-W-0004`, `RH-W-0006` y `RH-W-0019` estan `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, `RH-W-0010` y el contrato consciente de capacidades `RH-W-0025` estan bloqueados por prerrequisitos. RH-W-0025 espera el reemplazo y la integracion ligados al contenido de RH-W-0008.
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
 - Proyeccion aplazada: `RH-W-0011` a `RH-W-0015` y la idea de mantenimiento interno desatendido `RH-W-0018` conservan condiciones explicitas en [roadmap.md](roadmap.md).
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
@@ -57,4 +57,4 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Avanzar `RH-W-0004` a continuacion resolviendo los flags de idioma ignorados mediante su contrato CLI acotado. Las unidades listas restantes, en orden recomendado, son `RH-W-0006` y `RH-W-0019`. Cada una conserva su condicion de arranque en [roadmap.md](roadmap.md). Se toma una unidad por rama y no se agrupan.
+Avanzar `RH-W-0004` a continuacion resolviendo los flags de idioma ignorados mediante su contrato CLI acotado. Las otras unidades listas son `RH-W-0006` y `RH-W-0019`. RH-W-0025 solo avanza despues de completar RH-W-0008 y comienza entonces con pruebas fallidas de capacidades y limites de autoridad. Cada unidad conserva su condicion en [roadmap.md](roadmap.md) y se trabaja en una rama separada.

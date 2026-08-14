@@ -14,5 +14,7 @@
 | [i18n-maintenance.md](i18n-maintenance.md) | Contrato de mantenimiento bilingue |
 | [Investigacion](../../repo-harness/i18n-research.md) | Fuentes y decisiones de arquitectura bilingue |
 | [Investigacion del flujo de contribucion](contribution-workflow-research.md) | Comparacion primaria y recomendacion en espanol |
+| [Investigacion de integracion](integration-research.md) | Espejo humano completo de la investigacion canonica sobre Gentle AI y Engram |
+| [Plan de implementacion RH-W-0025](rh-w-0025-implementation-plan.md) | Espejo humano completo del plan canonico de coordinacion consciente de capacidades |
 | [Mapa canonico en ingles](../../repo-harness/README.md) | Propiedad documental canonica |
 | [CHANGELOG.md](../../../CHANGELOG.md) | Historial cronologico canonico |
