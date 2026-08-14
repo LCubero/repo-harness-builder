@@ -1,5 +1,5 @@
 ---
-name: repo-harness-builder-session-start
+name: repo-harness-session-start
 description: "Start a work session for repo-harness-builder from current repository evidence."
 license: "MIT"
 metadata:

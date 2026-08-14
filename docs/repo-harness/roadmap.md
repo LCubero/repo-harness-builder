@@ -115,16 +115,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | User decision on generated skill naming |
 | Priority | P2: the current names are correct and unambiguous, so this is a naming contract change rather than a defect |
 | Dependencies | RH-W-0024 bounded generated-output migration |
-| Status | blocked |
-| Completed work | Confirmed the current contract is `{project_id}-<skill>`, that the observed name is not a regression, that generated command names are already unprefixed, and that existing installations require RH-W-0024 before this rename can apply safely. |
-| Remaining work | Change generated skill names to the fixed `repo-harness-` prefix across canonical source, tests, this repository's own projections and manifest, and every English and Spanish document that names them. |
-| Additions | Align skill names with the command layer, which already strips the project prefix. |
+| Status | completed |
+| Completed work | Replaced project-derived generated skill names with the fixed `repo-harness-session-start`, `repo-harness-session-stop`, and `repo-harness-documentation` names; preserved commands through explicit mapping; integrated the bounded RH-W-0024 action into normal preview and apply; migrated this self-hosted manifest; and proved arbitrary project IDs and unrelated prefixed user skills remain safe. |
+| Remaining work | none |
+| Additions | Align skill names with the command layer while preserving command names through the explicit `COMMAND_TO_SKILL` mapping. |
 | Exclusions | No change to command names, wrapper contents, or the harness directory layout. |
 | Deferrals | none |
 | Rejections | Rejected blocking this change on cross-repository name collision. The skills are repository-scoped, live inside each repository, and no global installation exists. |
-| Evidence | Names are built at `harness_tool.py:365, 466, 555, 1455-1457` and consumed at `harness_tool.py:657-658, 842-844, 1049-1051, 1161-1162`; `harness_tool.py:1475` derives command names with `removeprefix(f"{project_id}-")`, which already yields `session-start`, `session-stop`, and `documentation`. |
-| Decision history | 2026-08-14: a hypothetical global-installation collision was raised, then withdrawn as speculative under the proportionality rule; the user confirmed the fixed prefix. |
-| Next advancement condition | The blocker clears when the completed RH-W-0024 capability is explicitly integrated into the RH-W-0021 naming plan; then start with failing tests for the three fixed names. |
+| Evidence | Focused RED/GREEN naming and migration tests, canonical and projected suites, self-hosted normal CLI migration, fixed manifest and command assertions, and read-only checker reporting `current` with 0 writes. |
+| Decision history | 2026-08-14: a hypothetical global-installation collision was withdrawn as speculative; the user confirmed the fixed prefix. 2026-08-14: completed with exact manifest-owned migration and unchanged commands. |
+| Next advancement condition | Reopen only if generated skill naming, explicit command mapping, exact ownership, rollback, or projection parity regresses. |
 
 ### RH-W-0022
 | Field | Value |
@@ -174,7 +174,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Deferrals | none |
 | Rejections | Rejected extending the additive planner or implementing RH-W-0021 naming inside this prerequisite slice. |
 | Evidence | Issue #16; 5 focused migration tests and the complete 202-test canonical suite pass with 6 skips. |
-| Decision history | 2026-08-14: implemented as the smallest independently verified prerequisite slice of RH-W-0008; RH-W-0021 remains blocked until this completed capability is integrated into its naming work unit. |
+| Decision history | 2026-08-14: implemented as the smallest independently verified prerequisite slice of RH-W-0008; RH-W-0021 then integrated this capability into its naming work unit and completed. |
 | Next advancement condition | Use this bounded action in RH-W-0021 without widening it into a general upgrade executor. |
 
 ### RH-W-0003
@@ -442,7 +442,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 - Existing Roadmap units retain IDs `RH-W-0001` through `RH-W-0015`; issue #7 is `RH-W-0016` and its P0 priority override does not renumber them.
 - The user-reported session-stop language leak is `RH-W-0017`; it is ready independently and does not displace the already selected RH-W-0004 product unit.
 - The unattended internal-maintenance idea is `RH-W-0018`; it remains deferred until its two consent scopes and safety tests are designed, and it does not change the interactive default.
-- The wrapper provenance cost is `RH-W-0019`, the product README drift is `RH-W-0020`, and the fixed `repo-harness-` skill prefix is `RH-W-0021`. `RH-W-0020` was documentation-only and closed in the same session; `RH-W-0019` is ready, while `RH-W-0021` is blocked on integrating RH-W-0024.
+- The wrapper provenance cost is `RH-W-0019`, the product README drift is `RH-W-0020`, and the fixed `repo-harness-` skill prefix is `RH-W-0021`. `RH-W-0020` was documentation-only, `RH-W-0019` is ready, and `RH-W-0021` completed through the bounded RH-W-0024 action.
 - The documentation relationship map is `RH-W-0022` and stays `proposed`, not `ready`. Its scope boundary is the entire risk: declared documentation edges are the request, a code or dependency graph is not, and CodeGraph already owns code structure.
 - The bounded generated-output migration is `RH-W-0024`, the completed issue #16 prerequisite slice of RH-W-0008. It unblocks the safe mechanism required by RH-W-0021 without completing the rename itself.
 - English is mandatory as the primary documentation locale, and the reason is now a standing decision rather than a bare `require()`. See [decisions.md](decisions.md).

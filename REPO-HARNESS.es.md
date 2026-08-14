@@ -22,8 +22,8 @@ Este repositorio contiene las fuentes canonicas de `repo-harness-builder`. Edite
 
 | Situacion | Lea o ejecute |
 |---|---|
-| Iniciar o reanudar trabajo | `.repo-harness/skills/repo-harness-builder-session-start/SKILL.md` |
-| Pausar o cerrar trabajo | `.repo-harness/skills/repo-harness-builder-session-stop/SKILL.md` |
+| Iniciar o reanudar trabajo | `.repo-harness/skills/repo-harness-session-start/SKILL.md` |
+| Pausar o cerrar trabajo | `.repo-harness/skills/repo-harness-session-stop/SKILL.md` |
 | Usar el harness como persona | [guia de uso](docs/es/repo-harness/usage.md) |
 | Cambio una habilidad canonica | `python .repo-harness/check.py` |
 | Planificar, implementar, revisar o integrar una contribucion | [CONTRIBUTING.es.md](CONTRIBUTING.es.md) |

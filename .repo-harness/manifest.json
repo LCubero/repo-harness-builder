@@ -1,8 +1,8 @@
 {
   "canonicalSkills": {
-    "repo-harness-builder-documentation": ".repo-harness/skills/repo-harness-builder-documentation/SKILL.md",
-    "repo-harness-builder-session-start": ".repo-harness/skills/repo-harness-builder-session-start/SKILL.md",
-    "repo-harness-builder-session-stop": ".repo-harness/skills/repo-harness-builder-session-stop/SKILL.md"
+    "repo-harness-documentation": ".repo-harness/skills/repo-harness-documentation/SKILL.md",
+    "repo-harness-session-start": ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+    "repo-harness-session-stop": ".repo-harness/skills/repo-harness-session-stop/SKILL.md"
   },
   "generator": {
     "name": "repo-harness-builder",
@@ -10,7 +10,7 @@
   },
   "integrationMode": "integrated",
   "language": {
-    "conversation": "espanol",
+    "conversation": "english",
     "documentation": [
       "en",
       "es"

@@ -28,8 +28,8 @@ Canonical source of `repo-harness-builder`, an agent skill that builds or inspec
 
 | Situation | Read or run |
 |---|---|
-| Starting or resuming work | `.repo-harness/skills/repo-harness-builder-session-start/SKILL.md` |
-| Pausing or closing work | `.repo-harness/skills/repo-harness-builder-session-stop/SKILL.md` |
+| Starting or resuming work | `.repo-harness/skills/repo-harness-session-start/SKILL.md` |
+| Pausing or closing work | `.repo-harness/skills/repo-harness-session-stop/SKILL.md` |
 | How to use the harness as a human | [usage guide](docs/repo-harness/usage.md) |
 | A canonical skill changed, or a runtime copy may be stale | `python .repo-harness/check.py` |
 | Sizing a change, deciding when to stop, how work is done | `.repo-harness/rules/working-agreements.md` |

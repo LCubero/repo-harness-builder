@@ -13,7 +13,7 @@ import re
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
-MANIFEST_SHA256 = "6d3b0fe687c1578847ec1c7fed72abe332d79099c7f91d778242046c9cfbb861"
+MANIFEST_SHA256 = "3869d005331126c2d5800a28d102e2effa0218103f1c5ea82eb0ea54a43cbb72"
 MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "writeSemantics", "integrationMode", "language"}
 REPORT_LANGUAGES = {"english", "espanol"}
 DOCUMENTATION_LANGUAGES = {"en", "es"}

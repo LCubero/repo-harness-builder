@@ -8,9 +8,9 @@ Use the three generated skills as a loop: recover context, keep durable document
 ## Daily Workflow
 <!-- doc-role:daily-workflow -->
 
-1. Start or resume with `repo-harness-builder-session-start` and state the objective. It reports a scoped outcome, reconciles context with repository evidence, inspects Git read-only, and ends with one concrete remote-check question when safe.
-2. Use `repo-harness-builder-documentation` when durable documentation or visible project state needs updating.
-3. Pause or close with `repo-harness-builder-session-stop`. It completes documentation and Engram continuity first, screens each changed path, then may request one outcome-scoped approval for an exact commit, push, or combined commit and push.
+1. Start or resume with `repo-harness-session-start` and state the objective. It reports a scoped outcome, reconciles context with repository evidence, inspects Git read-only, and ends with one concrete remote-check question when safe.
+2. Use `repo-harness-documentation` when durable documentation or visible project state needs updating.
+3. Pause or close with `repo-harness-session-stop`. It completes documentation and Engram continuity first, screens each changed path, then may request one outcome-scoped approval for an exact commit, push, or combined commit and push.
 
 ## Integrated Availability
 <!-- doc-role:availability -->

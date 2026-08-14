@@ -353,7 +353,7 @@ class ProductWorkflowTests(unittest.TestCase):
     def test_session_skills_use_conversational_approval_not_builder_protocol(self):
         outputs = TOOL.render("Example", [])
         for suffix in ("session-start", "session-stop"):
-            text = outputs[f".repo-harness/skills/example-{suffix}/SKILL.md"]
+            text = outputs[f".repo-harness/skills/repo-harness-{suffix}/SKILL.md"]
             self.assertIn("conversational", text)
             self.assertNotIn("APROBAR", text)
             self.assertNotIn("DENEGAR", text)
@@ -393,6 +393,56 @@ def install(
     )
     TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
     return outputs
+
+
+class FixedGeneratedSkillNameTests(unittest.TestCase):
+    EXPECTED_SKILLS = {
+        "repo-harness-session-start",
+        "repo-harness-session-stop",
+        "repo-harness-documentation",
+    }
+    EXPECTED_COMMANDS = {"session-start", "session-stop", "documentation"}
+
+    def test_arbitrary_project_ids_render_the_same_fixed_skill_names(self):
+        for project_name in ("Example", "Acme API", "project-42"):
+            with self.subTest(project_name=project_name):
+                outputs = TOOL.render(project_name, ["opencode", "claude-code", "pi"])
+                manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+                self.assertEqual(set(manifest["canonicalSkills"]), self.EXPECTED_SKILLS)
+                self.assertEqual(
+                    {
+                        path.split("/")[2]
+                        for path in outputs
+                        if path.startswith(".repo-harness/skills/")
+                    },
+                    self.EXPECTED_SKILLS,
+                )
+                self.assertFalse(
+                    any(
+                        path.startswith(f".repo-harness/skills/{manifest['project']['id']}-")
+                        for path in outputs
+                    )
+                )
+
+    def test_commands_stay_unchanged_and_target_fixed_skills(self):
+        outputs = TOOL.render("Acme API", ["opencode", "claude-code", "pi"])
+        for runtime, prefix in (
+            ("opencode", ".opencode/commands"),
+            ("claude-code", ".claude/commands"),
+            ("pi", ".pi/prompts"),
+        ):
+            for command, skill_name in TOOL.COMMAND_TO_SKILL.items():
+                with self.subTest(runtime=runtime, command=command):
+                    path = f"{prefix}/{command}.md"
+                    self.assertIn(path, outputs)
+                    self.assertIn(f"`{skill_name}`", outputs[path])
+        emitted = {
+            path.rsplit("/", 1)[-1].removesuffix(".md")
+            for path in outputs
+            if path.startswith((".opencode/commands/", ".claude/commands/", ".pi/prompts/"))
+            and not path.endswith("repo-harness-help.md")
+        }
+        self.assertEqual(emitted, self.EXPECTED_COMMANDS)
 
 
 class AdditiveWriteTests(unittest.TestCase):
@@ -615,28 +665,276 @@ class AdditiveWriteTests(unittest.TestCase):
 
 
 class GeneratedOutputMigrationTests(unittest.TestCase):
-    def migration_fixture(self, root: Path):
-        installed = install(root, runtimes=("opencode",))
-        desired = dict(installed)
-        replacements = {}
-        for old_name, new_name in (
-            ("example-session-start", "repo-harness-session-start"),
-            ("example-session-stop", "repo-harness-session-stop"),
-            ("example-documentation", "repo-harness-documentation"),
-        ):
-            for prefix in (".repo-harness/skills", ".opencode/skills"):
-                source = f"{prefix}/{old_name}/SKILL.md"
-                destination = f"{prefix}/{new_name}/SKILL.md"
-                desired[destination] = desired.pop(source).replace(old_name, new_name)
-                replacements[source] = destination
-        manifest = json.loads(desired[TOOL.MANIFEST_PATH])
-        manifest["canonicalSkills"] = {
-            name.replace("example-", "repo-harness-"): path.replace("example-", "repo-harness-")
-            for name, path in manifest["canonicalSkills"].items()
-        }
-        desired[TOOL.MANIFEST_PATH] = TOOL.dump_json(manifest)
-        desired[".repo-harness/check.py"] = TOOL.check_script(TOOL.digest_text(desired[TOOL.MANIFEST_PATH]))
+    def migration_fixture(
+        self,
+        root: Path,
+        project: str = "Example",
+        runtimes: tuple[str, ...] = ("opencode",),
+    ):
+        project_id = TOOL.normalize_project_name(project)
+        legacy_mapping = TOOL.legacy_command_to_skill(project_id)
+        installed = TOOL.render_with_skill_mapping(
+            project,
+            list(runtimes),
+            TOOL.DEFAULT_LICENSE,
+            False,
+            TOOL.DEFAULT_REPORT_LANGUAGE,
+            None,
+            None,
+            True,
+            legacy_mapping,
+        )
+        TOOL.write_outputs(root, installed, TOOL.plan_changes(root, installed))
+        desired = TOOL.render(project, list(runtimes))
+        replacements = TOOL.generated_skill_replacements(
+            json.loads(installed[TOOL.MANIFEST_PATH]),
+            json.loads(desired[TOOL.MANIFEST_PATH]),
+        )
         return installed, desired, replacements
+
+    def test_legacy_mapping_is_exact_for_arbitrary_project_ids(self):
+        for project in ("Example", "Acme API", "project-42"):
+            with self.subTest(project=project), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                _, desired, replacements = self.migration_fixture(root, project, ("opencode", "claude-code"))
+                project_id = TOOL.normalize_project_name(project)
+                expected_sources = {
+                    f"{prefix}/{project_id}-{suffix}/SKILL.md"
+                    for prefix in (".repo-harness/skills", ".opencode/skills", ".claude/skills")
+                    for suffix in ("session-start", "session-stop", "documentation")
+                }
+                self.assertEqual(set(replacements), expected_sources)
+                self.assertEqual(
+                    set(replacements.values()),
+                    TOOL.generated_skill_paths(json.loads(desired[TOOL.MANIFEST_PATH])),
+                )
+
+    def test_legacy_reconstruction_requires_exact_three_manifest_skills(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, replacements = self.migration_fixture(root, "Acme API")
+            manifest_path = root / TOOL.MANIFEST_PATH
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["canonicalSkills"]["acme-api-release"] = ".repo-harness/skills/acme-api-release/SKILL.md"
+            manifest_path.write_text(TOOL.dump_json(manifest), encoding="utf-8", newline="\n")
+            with self.assertRaisesRegex(TOOL.ContractError, "exact legacy generated skills"):
+                TOOL.legacy_migration_inputs(root, desired)
+            self.assertTrue(all((root / source).is_file() for source in replacements))
+
+    def test_normal_preview_emits_one_typed_migration_for_legacy_install(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode", "claude-code"))
+            plan = TOOL.plan_changes(root, desired)
+            self.assertEqual(len(plan["migrate"]), 1)
+            migration = plan["migrate"][0]
+            self.assertEqual(migration["action"], "migrate-generated-skills")
+            self.assertEqual({item["sourcePath"] for item in migration["moves"]}, set(replacements))
+            self.assertEqual({item["destinationPath"] for item in migration["moves"]}, set(replacements.values()))
+            self.assertFalse(set(replacements.values()) & {item["path"] for item in plan["create"]})
+            self.assertFalse(set(replacements) & set(plan["identical"]))
+
+    def test_fresh_install_is_additive_and_has_no_migration_action(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            desired = TOOL.render("Acme API", ["opencode", "claude-code"])
+            plan = TOOL.plan_changes(root, desired)
+            self.assertEqual(plan["migrate"], [])
+            self.assertTrue(
+                {item["path"] for item in plan["create"]}
+                >= TOOL.generated_skill_paths(json.loads(desired[TOOL.MANIFEST_PATH]))
+            )
+
+    def test_migration_fields_are_bound_into_plan_digest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, _ = self.migration_fixture(root)
+            plan = TOOL.plan_changes(root, desired)
+            original_digest = TOOL.plan_digest(plan)
+            for field, value in (
+                ("sourceSha256", "0" * 64),
+                ("destinationSha256", "1" * 64),
+                ("sourcePath", ".repo-harness/skills/other/SKILL.md"),
+                ("destinationPath", ".repo-harness/skills/other/SKILL.md"),
+            ):
+                changed = json.loads(TOOL.dump_json(plan))
+                changed["migrate"][0]["moves"][0][field] = value
+                self.assertNotEqual(TOOL.plan_digest(changed), original_digest)
+            changed = json.loads(TOOL.dump_json(plan))
+            changed["migrate"][0]["remove"].append(".repo-harness/skills/other/SKILL.md")
+            self.assertNotEqual(TOOL.plan_digest(changed), original_digest)
+
+    def test_normal_render_cli_previews_and_applies_legacy_migration(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode",))
+            command = [
+                "python", "-B", str(SCRIPT), "render",
+                "--root", str(root),
+                "--project-name", "Acme API",
+                "--runtime", "opencode",
+            ]
+            preview = json.loads(subprocess.run(command, check=True, capture_output=True, text=True).stdout)
+            self.assertEqual(preview["status"], "plan")
+            self.assertEqual(len(preview["migrate"]), 1)
+            applied = json.loads(
+                subprocess.run(
+                    [
+                        *command,
+                        "--apply",
+                        "--approved-plan-sha256", preview["planSha256"],
+                        "--approval", "APPROVE",
+                    ],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                ).stdout
+            )
+            self.assertEqual(applied["status"], "VALIDATED")
+            self.assertTrue(all(not (root / source).exists() for source in replacements))
+            self.assertTrue(all(not (root / source).parent.exists() for source in replacements))
+            self.assertTrue(all((root / destination).is_file() for destination in replacements.values()))
+            self.assertEqual((root / TOOL.MANIFEST_PATH).read_text(encoding="utf-8"), desired[TOOL.MANIFEST_PATH])
+            second = json.loads(subprocess.run(command, check=True, capture_output=True, text=True).stdout)
+            self.assertEqual(second["migrate"], [])
+
+    def test_normal_apply_rejects_changed_legacy_bytes_before_any_mutation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, _, replacements = self.migration_fixture(root, "Acme API", ("opencode",))
+            command = [
+                "python", "-B", str(SCRIPT), "render",
+                "--root", str(root), "--project-name", "Acme API", "--runtime", "opencode",
+            ]
+            preview = json.loads(subprocess.run(command, check=True, capture_output=True, text=True).stdout)
+            source = sorted(replacements)[0]
+            changed = b"user changed generated bytes\n"
+            (root / source).write_bytes(changed)
+            result = subprocess.run(
+                [
+                    *command,
+                    "--apply",
+                    "--approved-plan-sha256", preview["planSha256"],
+                    "--approval", "APPROVE",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("FAILED_CLOSED", result.stderr)
+            self.assertTrue(all(not (root / destination).exists() for destination in replacements.values()))
+            self.assertEqual((root / source).read_bytes(), changed)
+
+    def test_migration_leaves_unrelated_prefixed_user_skills_byte_for_byte_unchanged(self):
+        for project in ("Acme API", "project-42"):
+            with self.subTest(project=project), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                _, desired, replacements = self.migration_fixture(root, project, ("opencode", "claude-code"))
+                project_id = TOOL.normalize_project_name(project)
+                unrelated = {
+                    f".repo-harness/skills/{project_id}-release/SKILL.md": b"user release skill\r\n",
+                    f".opencode/skills/{project_id}-session-start-user/SKILL.md": b"user shadow outside manifest\n",
+                    f".claude/skills/{project_id}-anything/SKILL.md": b"user arbitrary skill\x00bytes",
+                }
+                for path, content in unrelated.items():
+                    target = root / path
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes(content)
+                plan = TOOL.plan_changes(root, desired)
+                TOOL.write_outputs(root, desired, plan)
+                for path, content in unrelated.items():
+                    self.assertEqual((root / path).read_bytes(), content)
+                self.assertTrue(all(not (root / source).exists() for source in replacements))
+
+    def test_modified_manifest_owned_legacy_bytes_block_without_touching_user_skills(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode",))
+            user_path = root / ".repo-harness/skills/acme-api-release/SKILL.md"
+            user_path.parent.mkdir(parents=True, exist_ok=True)
+            user_bytes = b"human-owned\r\n"
+            user_path.write_bytes(user_bytes)
+            owned_source = sorted(replacements)[0]
+            changed_owned_bytes = b"modified generated contract\n"
+            (root / owned_source).write_bytes(changed_owned_bytes)
+            with self.assertRaisesRegex(TOOL.ContractError, "source bytes"):
+                TOOL.plan_changes(root, desired)
+            self.assertEqual(user_path.read_bytes(), user_bytes)
+            self.assertEqual((root / owned_source).read_bytes(), changed_owned_bytes)
+            self.assertTrue(all(not (root / destination).exists() for destination in replacements.values()))
+
+    def test_manifest_owned_set_cannot_authorize_an_extra_removal(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, replacements = self.migration_fixture(root, "project-42")
+            user_path = ".repo-harness/skills/project-42-release/SKILL.md"
+            target = root / user_path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(b"user release bytes\n")
+            expanded = dict(replacements)
+            expanded[user_path] = ".repo-harness/skills/repo-harness-release/SKILL.md"
+            with self.assertRaisesRegex(TOOL.ContractError, "every obsolete generated skill path"):
+                TOOL.plan_generated_output_migration(root, installed, desired, expanded)
+            self.assertEqual(target.read_bytes(), b"user release bytes\n")
+
+    def test_normal_apply_rolls_back_every_mutating_phase(self):
+        phases = ("destination-write", "control-replace", "source-remove")
+        for phase in phases:
+            with self.subTest(phase=phase), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                installed, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode",))
+                plan = TOOL.plan_changes(root, desired)
+                original_open = Path.open
+                original_write_text = Path.write_text
+                original_unlink = Path.unlink
+
+                def fail_open(path, *args, **kwargs):
+                    if phase == "destination-write" and path.relative_to(root).as_posix() in replacements.values():
+                        raise OSError("forced destination-write failure")
+                    return original_open(path, *args, **kwargs)
+
+                def fail_write_text(path, *args, **kwargs):
+                    if phase == "control-replace" and path == root / TOOL.MANIFEST_PATH:
+                        raise OSError("forced control-replace failure")
+                    return original_write_text(path, *args, **kwargs)
+
+                def fail_unlink(path, *args, **kwargs):
+                    if phase == "source-remove" and path.relative_to(root).as_posix() in replacements:
+                        raise OSError("forced source-remove failure")
+                    return original_unlink(path, *args, **kwargs)
+
+                with mock.patch.object(Path, "open", fail_open), mock.patch.object(
+                    Path, "write_text", fail_write_text
+                ), mock.patch.object(Path, "unlink", fail_unlink), self.assertRaisesRegex(
+                    OSError, f"forced {phase} failure"
+                ):
+                    TOOL.write_outputs(root, desired, plan)
+
+                for path, content in installed.items():
+                    self.assertEqual((root / path).read_text(encoding="utf-8"), content)
+                self.assertTrue(all(not (root / destination).exists() for destination in replacements.values()))
+
+    def test_preview_and_check_are_read_only_for_legacy_install(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, _ = self.migration_fixture(root, "Acme API", ("opencode",))
+            before = {path: (root / path).read_bytes() for path in installed}
+            plan = TOOL.plan_changes(root, desired)
+            report = TOOL.check(root, "Acme API", ["opencode"])
+            after = {path: (root / path).read_bytes() for path in installed}
+            self.assertEqual(len(plan["migrate"]), 1)
+            self.assertEqual(report["writes"], 0)
+            self.assertEqual(after, before)
+
+    def test_fixed_install_reports_current_without_migration(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = install(root, "Acme API", ("opencode",))
+            plan = TOOL.plan_changes(root, outputs)
+            self.assertEqual(plan["migrate"], [])
+            self.assertEqual(TOOL.write_outputs(root, outputs, plan), [])
+            self.assertEqual(TOOL.check(root, "Acme API", ["opencode"])["status"], "current")
 
     def test_plan_binds_sources_destinations_manifest_checker_and_removals(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -1017,7 +1315,7 @@ class CheckTests(unittest.TestCase):
             legacy.write_text(legacy.read_text(encoding="utf-8").replace(":3.0 -->", ":2.0 -->", 1), encoding="utf-8")
             human = root / "docs/repo-harness/current-state.md"
             human.write_text(human.read_text(encoding="utf-8") + "\nHuman project detail.\n", encoding="utf-8")
-            missing = root / ".repo-harness/skills/example-session-stop/SKILL.md"
+            missing = root / ".repo-harness/skills/repo-harness-session-stop/SKILL.md"
             missing.unlink()
 
             entries = {item["path"]: item for item in TOOL.check(root, "Example", ["opencode"])["files"]}
@@ -1025,7 +1323,7 @@ class CheckTests(unittest.TestCase):
             self.assertEqual(entries[".opencode/commands/repo-harness-help.md"]["state"], "stale")
             self.assertEqual(entries[".opencode/commands/session-start.md"]["state"], "legacy")
             self.assertEqual(entries["docs/repo-harness/current-state.md"]["state"], "human-evolved")
-            self.assertEqual(entries[".repo-harness/skills/example-session-stop/SKILL.md"]["state"], "missing")
+            self.assertEqual(entries[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]["state"], "missing")
             self.assertEqual(entries[".repo-harness/manifest.json"]["state"], "current")
 
     def test_upgrade_plan_never_schedules_replacement_archive_or_deletion(self):
@@ -1051,10 +1349,10 @@ class CheckTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             install(root, runtimes=("opencode",))
-            (root / ".repo-harness/skills/example-session-start/SKILL.md").write_text("gutted\n", encoding="utf-8")
+            (root / ".repo-harness/skills/repo-harness-session-start/SKILL.md").write_text("gutted\n", encoding="utf-8")
             report = TOOL.check(root, "Example", ["opencode"])
             states = {item["path"]: item["state"] for item in report["files"]}
-            self.assertEqual(states[".repo-harness/skills/example-session-start/SKILL.md"], "stale")
+            self.assertEqual(states[".repo-harness/skills/repo-harness-session-start/SKILL.md"], "stale")
             self.assertEqual(report["status"], "drift")
 
     def test_human_owned_files_are_compared_by_heading_presence(self):
@@ -1120,9 +1418,9 @@ class GeneratedCoreTests(unittest.TestCase):
             ".repo-harness/manifest.json",
             ".repo-harness/rules/memory.md",
             ".repo-harness/rules/working-agreements.md",
-            ".repo-harness/skills/example-documentation/SKILL.md",
-            ".repo-harness/skills/example-session-start/SKILL.md",
-            ".repo-harness/skills/example-session-stop/SKILL.md",
+            ".repo-harness/skills/repo-harness-documentation/SKILL.md",
+            ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
             "docs/repo-harness/README.md",
             "docs/repo-harness/current-state.md",
             "docs/repo-harness/decisions.md",
@@ -1153,9 +1451,9 @@ class GeneratedCoreTests(unittest.TestCase):
         scoped = "\n".join(
             outputs[path]
             for path in (
-                ".repo-harness/skills/example-documentation/SKILL.md",
-                ".repo-harness/skills/example-session-start/SKILL.md",
-                ".repo-harness/skills/example-session-stop/SKILL.md",
+                ".repo-harness/skills/repo-harness-documentation/SKILL.md",
+                ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+                ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
             )
         )
         for phrase in (
@@ -1223,12 +1521,12 @@ class GeneratedCoreTests(unittest.TestCase):
 
     def test_runtime_projections_use_the_current_canonical_contract(self):
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])
-        canonical = ".repo-harness/skills/example-session-start/SKILL.md"
+        canonical = ".repo-harness/skills/repo-harness-session-start/SKILL.md"
         for runtime in (".opencode", ".claude"):
-            projected = outputs[f"{runtime}/skills/example-session-start/SKILL.md"]
+            projected = outputs[f"{runtime}/skills/repo-harness-session-start/SKILL.md"]
             self.assertIn(f"canonical-source: {canonical}#core/", projected)
         self.assertIn(".pi/prompts/session-start.md", outputs)
-        self.assertIn("Load the `example-session-start` skill by registered name", outputs[".pi/prompts/session-start.md"])
+        self.assertIn("Load the `repo-harness-session-start` skill by registered name", outputs[".pi/prompts/session-start.md"])
 
     def test_changelog_is_simple_completed_history(self):
         changelog = TOOL.render("Example", [])["CHANGELOG.md"]
@@ -1238,9 +1536,9 @@ class GeneratedCoreTests(unittest.TestCase):
 
     def test_session_skills_treat_changelog_as_completed_history_only(self):
         outputs = TOOL.render("Example", [])
-        start = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
-        stop = outputs[".repo-harness/skills/example-session-stop/SKILL.md"]
-        docs = outputs[".repo-harness/skills/example-documentation/SKILL.md"]
+        start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        docs = outputs[".repo-harness/skills/repo-harness-documentation/SKILL.md"]
         self.assertIn("latest relevant entries", start)
         self.assertIn("meaningful completed work", stop)
         self.assertIn("Avoid an entry for a trivial or no-op session", stop)
@@ -1248,7 +1546,7 @@ class GeneratedCoreTests(unittest.TestCase):
 
     def test_session_start_reports_runtime_skill_freshness(self):
         start = TOOL.render("Example", ["opencode", "claude-code"])[
-            ".repo-harness/skills/example-session-start/SKILL.md"
+            ".repo-harness/skills/repo-harness-session-start/SKILL.md"
         ]
         self.assertIn("Run `python .repo-harness/check.py`", start)
         self.assertIn("Report the checker result in the reply language", start)
@@ -1350,8 +1648,8 @@ class GeneratedCoreTests(unittest.TestCase):
         """A contract that hardcodes one locale answers the wrong human."""
         outputs = TOOL.render("Example", [])
         for path in (
-            ".repo-harness/skills/example-session-start/SKILL.md",
-            ".repo-harness/skills/example-session-stop/SKILL.md",
+            ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
         ):
             text = outputs[path]
             self.assertIn("Answer in the conversation language recorded in `.repo-harness/manifest.json`", text)
@@ -1360,7 +1658,7 @@ class GeneratedCoreTests(unittest.TestCase):
             self.assertNotIn("Skills al día", text)
 
     def test_session_start_defines_git_state_matrix(self):
-        start = TOOL.render("Example", [])[".repo-harness/skills/example-session-start/SKILL.md"]
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         for phrase in (
             "not a Git repository",
             "dirty worktree or index",
@@ -1379,7 +1677,7 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertIn("Never use git pull, git rebase, git reset", start)
 
     def test_session_start_requires_one_resumable_network_approval(self):
-        start = TOOL.render("Example", [])[".repo-harness/skills/example-session-start/SKILL.md"]
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         for phrase in (
             "one conversational approval before network access",
             "resume the same session-start invocation",
@@ -1392,8 +1690,8 @@ class GeneratedCoreTests(unittest.TestCase):
 
     def test_session_contracts_define_outcomes_by_scope(self):
         outputs = TOOL.render("Example", [])
-        start = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
-        stop = outputs[".repo-harness/skills/example-session-stop/SKILL.md"]
+        start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         for outcome in ("`ready`", "`paused`", "`blocked`", "`failed`", "`completed`", "`degraded`"):
             self.assertIn(outcome, start + stop)
         self.assertIn("startup outcome", start)
@@ -1402,7 +1700,7 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertIn("must not make the whole session `failed`", start + stop)
 
     def test_session_start_requires_actionable_terminal_questions_and_remediation(self):
-        start = TOOL.render("Example", [])[".repo-harness/skills/example-session-start/SKILL.md"]
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         for phrase in (
             "final user-facing line",
             "May I run `git fetch <remote> <branch>`",
@@ -1418,8 +1716,8 @@ class GeneratedCoreTests(unittest.TestCase):
 
     def test_transport_diagnostics_are_bounded_and_preserve_receipts(self):
         outputs = TOOL.render("Example", [])
-        scoped = outputs[".repo-harness/skills/example-session-start/SKILL.md"] + outputs[
-            ".repo-harness/skills/example-session-stop/SKILL.md"
+        scoped = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"] + outputs[
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md"
         ]
         for phrase in (
             "remote URL, host, and scheme",
@@ -1435,8 +1733,8 @@ class GeneratedCoreTests(unittest.TestCase):
     def test_transport_failure_offers_an_available_alternate_credential_path(self):
         """Naming a failure without naming its available exit is not remediation."""
         outputs = TOOL.render("Example", [])
-        scoped = outputs[".repo-harness/skills/example-session-start/SKILL.md"] + outputs[
-            ".repo-harness/skills/example-session-stop/SKILL.md"
+        scoped = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"] + outputs[
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md"
         ]
         for phrase in (
             "name it in remediation instead of stopping with none",
@@ -1468,8 +1766,8 @@ class GeneratedCoreTests(unittest.TestCase):
     def test_generated_contracts_reconcile_applicable_owning_evidence(self):
         outputs = TOOL.render("Example", [])
         rulebook = outputs[RULEBOOK]
-        start = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
-        documentation = outputs[".repo-harness/skills/example-documentation/SKILL.md"]
+        start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        documentation = outputs[".repo-harness/skills/repo-harness-documentation/SKILL.md"]
 
         self.assertIn(
             "Reconcile applicable owning repository evidence before classifying status, pending work, defects, or completion; never rely on one source in isolation.",
@@ -1486,13 +1784,13 @@ class GeneratedCoreTests(unittest.TestCase):
             documentation,
         )
         standalone_start = TOOL.render("Example", [], standalone=True)[
-            ".repo-harness/skills/example-session-start/SKILL.md"
+            ".repo-harness/skills/repo-harness-session-start/SKILL.md"
         ]
         self.assertIn("current documentation, source, tests, and Git state or history", standalone_start)
         self.assertNotIn("Engram", standalone_start)
 
     def test_session_start_resolves_facts_without_rigid_questioning(self):
-        start = TOOL.render("Example", [])[".repo-harness/skills/example-session-start/SKILL.md"]
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
 
         self.assertIn(
             "Resolve verifiable facts from applicable evidence without asking; ask only when a material choice, authority boundary, unresolved contradiction, or meaningful risk genuinely requires the human; otherwise suggest the next useful action and continue within the user's requested scope.",
@@ -1507,7 +1805,7 @@ class GeneratedCoreTests(unittest.TestCase):
 
     def test_core_skills_inherit_discipline_instead_of_copying_it(self):
         outputs = TOOL.render("Example", [])
-        for name in ("example-session-start", "example-session-stop", "example-documentation"):
+        for name in ("repo-harness-session-start", "repo-harness-session-stop", "repo-harness-documentation"):
             text = outputs[f".repo-harness/skills/{name}/SKILL.md"]
             self.assertIn(f"Load and follow the canonical rulebook at `{RULEBOOK}`, including its execution discipline.", text)
             self.assertFalse(all(rule in text for rule in DISCIPLINE))
@@ -1515,8 +1813,8 @@ class GeneratedCoreTests(unittest.TestCase):
     def test_default_integrated_mode_requires_gentle_ai_and_engram(self):
         outputs = TOOL.render("Example", [])
         manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
-        start = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
-        stop = outputs[".repo-harness/skills/example-session-stop/SKILL.md"]
+        start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         self.assertEqual(manifest["integrationMode"], "integrated")
         for phrase in ("Gentle AI", "Engram", "Repository evidence remains authoritative"):
             self.assertIn(phrase, start)
@@ -1525,8 +1823,8 @@ class GeneratedCoreTests(unittest.TestCase):
 
     def test_integrated_engram_failures_are_explicit_and_cannot_claim_continuity(self):
         outputs = TOOL.render("Example", [])
-        start = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
-        stop = outputs[".repo-harness/skills/example-session-stop/SKILL.md"]
+        start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         self.assertIn("If Engram is unavailable or recovery fails", start)
         self.assertIn("must not claim successful continuity", start)
         self.assertIn("If any Engram save fails", stop)
@@ -1534,7 +1832,7 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertNotIn("Continue without failure when it is absent", start + stop)
 
     def test_session_stop_approval_is_a_resumable_checkpoint(self):
-        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
 
         for phrase in (
             "resumable intermediate checkpoint",
@@ -1548,7 +1846,7 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertNotIn("DENEGAR", stop)
 
     def test_session_stop_refreshes_final_continuity_after_approved_documentation(self):
-        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
 
         for phrase in (
             "refresh repository evidence",
@@ -1610,7 +1908,7 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertEqual(result["pre_existing_changed"], (("existing.txt", "M  100644", "M  100755"),))
 
     def test_session_stop_defines_intent_scoped_commit_and_push_consent(self):
-        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         for phrase in (
             "Commit approval does not approve push",
             "commit and push",
@@ -1626,14 +1924,14 @@ class GeneratedCoreTests(unittest.TestCase):
             self.assertIn(phrase, stop)
 
     def test_session_stop_excludes_unsafe_staging_paths_and_commands(self):
-        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         for phrase in ("`.ld9/`", "`.codegraph/`", "secrets", "unknown generated caches", "unrelated pre-existing work"):
             self.assertIn(phrase, stop)
         self.assertIn("Never use `git add .`", stop)
         self.assertNotIn("force-push", stop.lower().replace("never force-push", ""))
 
     def test_session_stop_requires_classified_screened_commit_proposals(self):
-        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         for phrase in (
             "staged paths",
             "unstaged tracked paths",
@@ -1657,7 +1955,7 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertIn("final user-facing line", stop)
 
     def test_session_stop_invalidates_consent_on_material_change(self):
-        stop = TOOL.render("Example", [])[".repo-harness/skills/example-session-stop/SKILL.md"]
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         for phrase in (
             "refresh status after the commit",
             "only then evaluate push",
@@ -1676,7 +1974,7 @@ class GeneratedCoreTests(unittest.TestCase):
             self.assertIn(phrase, stop)
 
     def test_session_start_combines_safe_sync_fetch_and_fast_forward_consent(self):
-        start = TOOL.render("Example", [])[".repo-harness/skills/example-session-start/SKILL.md"]
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         for phrase in (
             "sync or update safely",
             "bounded fetch plus fast-forward-only integration",
@@ -1687,8 +1985,8 @@ class GeneratedCoreTests(unittest.TestCase):
 
     def test_happy_path_does_not_repeat_git_approval_questions(self):
         outputs = TOOL.render("Example", [])
-        start = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
-        stop = outputs[".repo-harness/skills/example-session-stop/SKILL.md"]
+        start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         self.assertNotIn("Every Git or network action requires its own separate conversational approval", stop)
         self.assertNotIn("Fetch or comparison before push requires explicit network approval scoped to that exact operation", stop)
         self.assertIn("Record each authorized substep and its evidence", stop)
@@ -1697,8 +1995,8 @@ class GeneratedCoreTests(unittest.TestCase):
 
     def test_generated_session_skills_classify_same_process_skill_cache_without_false_failure(self):
         outputs = TOOL.render("Example", ["claude-code", "opencode"])
-        start = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
-        stop = outputs[".repo-harness/skills/example-session-stop/SKILL.md"]
+        start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         combined = start + stop
 
         for phrase in (
@@ -1861,12 +2159,12 @@ class GeneratedCoreTests(unittest.TestCase):
         for license_id in ("true", "null", "123"):
             with self.subTest(license_id=license_id):
                 outputs = TOOL.render("Example", [], license_id)
-                generated = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
+                generated = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
                 self.assertIn(f'license: "{license_id}"\n', generated)
 
     def test_colon_bearing_license_is_structurally_quoted(self):
         outputs = TOOL.render("Example", [], "MIT: injected")
-        generated = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
+        generated = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         self.assertIn('license: "MIT: injected"\n', generated)
 
     def test_safe_project_filename(self):
@@ -1881,11 +2179,11 @@ class UsageGuideTests(unittest.TestCase):
         guide = outputs["docs/repo-harness/usage.md"]
 
         for phrase in (
-            "`example-session-start`",
+            "`repo-harness-session-start`",
             "recovers relevant context",
             "reconciles it with current repository evidence",
-            "`example-documentation`",
-            "`example-session-stop`",
+            "`repo-harness-documentation`",
+            "`repo-harness-session-stop`",
             "## Integrated Availability",
             "Gentle AI and Engram are available",
             "## Congruence And Ownership",
@@ -1903,10 +2201,10 @@ class UsageGuideTests(unittest.TestCase):
             "docs/repo-harness/usage.md"
         ]
 
-        self.assertIn("`example-session-start`", guide)
+        self.assertIn("`repo-harness-session-start`", guide)
         self.assertIn("repository continuity", guide)
         self.assertIn("current repository evidence", guide)
-        self.assertIn("`example-session-stop`", guide)
+        self.assertIn("`repo-harness-session-stop`", guide)
         self.assertIn("repository files remain authoritative", guide)
         self.assertIn("## Approval Boundaries", guide)
         self.assertNotRegex(guide, r"(?i)engram|gentle ai|cloud")
@@ -2194,27 +2492,27 @@ class GeneratedCheckScriptTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             install(root, runtimes=self.RUNTIMES)
-            stale = root / ".claude/skills/example-session-start/SKILL.md"
+            stale = root / ".claude/skills/repo-harness-session-start/SKILL.md"
             stale.write_text(stale.read_text(encoding="utf-8").replace("read-only", "READ ONLY"), encoding="utf-8")
             report = self.loaded(root).check_projections(root)
             self.assertEqual(report["status"], "drift")
-            entry = next(item for item in report["files"] if item["path"] == ".claude/skills/example-session-start/SKILL.md")
+            entry = next(item for item in report["files"] if item["path"] == ".claude/skills/repo-harness-session-start/SKILL.md")
             self.assertEqual(entry["state"], "stale")
 
     def test_detects_a_missing_runtime_copy(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             install(root, runtimes=self.RUNTIMES)
-            (root / ".opencode/skills/example-documentation/SKILL.md").unlink()
+            (root / ".opencode/skills/repo-harness-documentation/SKILL.md").unlink()
             report = self.loaded(root).check_projections(root)
             states = {item["path"]: item["state"] for item in report["files"]}
-            self.assertEqual(states[".opencode/skills/example-documentation/SKILL.md"], "missing")
+            self.assertEqual(states[".opencode/skills/repo-harness-documentation/SKILL.md"], "missing")
 
     def test_provenance_rewrite_alone_is_not_drift(self):
         """A projection legitimately differs from its canonical only in the canonical-source line."""
         outputs = TOOL.render("Example", ["opencode"])
-        canonical = outputs[".repo-harness/skills/example-session-start/SKILL.md"]
-        projected = outputs[".opencode/skills/example-session-start/SKILL.md"]
+        canonical = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        projected = outputs[".opencode/skills/repo-harness-session-start/SKILL.md"]
         self.assertNotEqual(canonical, projected)
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -2288,6 +2586,23 @@ class SelfTestTests(unittest.TestCase):
 
 class RuntimeSelectionContractTests(unittest.TestCase):
     """A runtime the user never chose must never be reported as selected."""
+
+    def test_builder_contract_names_fixed_skills_and_bounded_legacy_migration(self):
+        files = (
+            ROOT / "SKILL.md",
+            ROOT / "references" / "architecture.md",
+            ROOT / "references" / "audit-and-interview.md",
+            ROOT / "references" / "preservation-and-safety.md",
+            ROOT / "references" / "validation.md",
+        )
+        combined = "\n".join(path.read_text(encoding="utf-8") for path in files)
+        for skill_name in TOOL.COMMAND_TO_SKILL.values():
+            self.assertIn(skill_name, combined)
+        self.assertIn("migrate-generated-skills", combined)
+        self.assertIn("exact manifest-owned", combined)
+        self.assertIn("normal render preview", combined)
+        self.assertIn("unrelated", combined)
+        self.assertNotIn("derive command names by removing the project prefix", combined)
 
     def test_audit_resolves_the_runtime_set_in_a_stated_order(self):
         audit = (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")
