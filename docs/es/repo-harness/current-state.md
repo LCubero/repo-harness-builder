@@ -31,16 +31,17 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - El repositorio quedo en congruencia total: marcadores `doc-role` incorporados a sus propios documentos durables, envoltorios `repo-harness-help` actualizados, y tanto el check del constructor como el verificador generado en `current`.
 - Se cerraron las brechas del contrato de idiomas: los contratos de comando y skill ahora obtienen por separado los idiomas del informe, de conversacion y de documentacion; los ayudantes de ruteo validan las declaraciones igual que `render`; y la vista previa de CLI omite puntos de entrada documentales bloqueados.
 - Se agrego un flujo bilingue de contribucion con issue primero, ramas enfocadas, PR enlazado, verificacion por unidad de trabajo, Conventional Commits y revision del maintainer antes del merge.
+- Se completo el informe de ampliacion del conjunto de runtimes: `runtime_set_report()` ahora devuelve runtimes `unrecorded` y `staleManifest`, con cobertura de `RecordedRuntimeSetTests`.
+- Se agrego la [hoja de ruta del harness adaptativo](roadmap.md) como propietaria ordenada del trabajo futuro acotado.
 
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
 La ronda 2 de Judgment Day quedo incompleta: el juez A respondio y el juez B termino por limite de sesion antes de informar. El delta de correccion esta verificado pero sin segunda lectura, y queda una ronda de presupuesto.
 
-- Decidir los cinco hallazgos de la ronda 1 que planteo un solo juez, ninguno auto-corregible bajo la regla de doble confirmacion. El mas serio: `check` deja de inspeccionar el arbol en espanol de cualquier harness instalado antes de que existiera el campo `language`, porque su manifiesto no lo tiene y `declared_languages` cae a solo ingles, asi que borrar un archivo en espanol sigue informando `current`.
+- Decidir los cinco hallazgos de la ronda 1 que planteo un solo juez, ninguno auto-corregible bajo la regla de doble confirmacion. El mas serio: `check` deja de inspeccionar el arbol en espanol de cualquier harness instalado antes de que existiera el campo `language`, porque su manifiesto no lo tiene y `declared_languages` cae a solo ingles, asi que borrar un archivo en espanol sigue informando `current`. Los otros: el subcomando `check` anuncia tres flags de idioma y los ignora; `declared_languages` deja pasar valores invalidos y hace que la comprobacion de solo lectura termine con un error que nombra el campo equivocado; dos pruebas documentales incluidas fallan en vez de omitirse en una disposicion monolingue; y `missing_sections` no cubre la direccion entre roles prometidos y contenido real sin roles, que es anterior y marca todos los harness instalados mas antiguos.
 
 - Hacer ejecutables los planes aprobados de reemplazo e integracion sin debilitar la preservacion.
-- Resolver la ampliacion del conjunto de entornos sin dejar manifiestos obsoletos.
 - Integrar selectores en README existentes mediante una accion acotada y aprobada; hasta entonces, la creacion del par se bloquea de forma segura.
 - Trasladar el informe de revision de `skills-pack-ld9`.
 - Definir como detectar una copia instalada obsoleta del propio constructor.
@@ -49,4 +50,4 @@ La ronda 2 de Judgment Day quedo incompleta: el juez A respondio y el juez B ter
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Hacer ejecutables los planes aprobados de reemplazo e integracion sin debilitar las garantias de preservacion.
+Iniciar la unidad 1 de la hoja de ruta: definir y verificar la [regla de reconciliacion de evidencia](roadmap.md#unidades-de-trabajo-ordenadas).

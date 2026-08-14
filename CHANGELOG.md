@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-13
 
+- Added the concise adaptive harness roadmap and its complete Spanish mirror, with evidence ownership, bounded work units, verification, non-goals, and deferred integration decisions.
+- Corrected current state by recording completed runtime-set widening coverage and removing only its stale pending entry.
 - Added concise English and Spanish contribution guides with issue-first planning, focused branches, linked PRs, Conventional Commits, work-unit tests and docs, maintainer review, repository-specific verification, and no false claims about automation.
 - Recorded the primary-source contribution-workflow comparison and the future product boundary for capability-aware contribution harnesses in consumer repositories.
 - Made transport-failure remediation actionable: a generated session must now check whether an alternate credential path exists and name it, preferring provider tooling used as a single-command credential helper that changes no global configuration, and handing the exact command back to the human when the remaining path needs a secret the agent cannot supply.

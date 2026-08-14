@@ -37,6 +37,8 @@
 - Brought the repository to full congruence: `doc-role` markers back-filled into its own durable documents, `repo-harness-help` wrappers refreshed, and both the builder check and the generated checker reporting `current`.
 - Closed the language-contract gaps: command and skill contracts now collect report, conversation, and documentation languages independently; routing helpers validate declarations like `render`; and CLI previews omit blocked documentation entry points.
 - Added a bilingual, issue-first contribution workflow with focused branches, linked PRs, work-unit verification, Conventional Commits, and maintainer review before merge.
+- Completed runtime-set widening reporting: `runtime_set_report()` now returns `unrecorded` runtimes and `staleManifest`, with `RecordedRuntimeSetTests` coverage.
+- Added the [adaptive harness roadmap](roadmap.md) as the ordered owner of bounded future work.
 
 ## Pending Work
 <!-- doc-role:pending-work -->
@@ -45,7 +47,6 @@ Judgment Day round 2 is incomplete: judge A returned, judge B terminated on a se
 
 - Make approved upgrade replacement and integration plans executable without weakening preservation guarantees.
 - Add a bounded, exact approved existing-README selector integration executor; current behavior deliberately fails closed instead of creating a one-way peer.
-- Make runtime-set widening update or invalidate stale manifest and checker coverage.
 - Carry over the review report from `skills-pack-ld9`.
 - Define how a consumer repository detects a stale installed copy of the builder itself, distinct from an installed generated harness.
 - Design a future builder capability that discovers a consumer repository's contribution policy and real provider capabilities before proposing or managing `CONTRIBUTING`, issue-first work, branches, PRs, templates, labels, or checks.
@@ -54,4 +55,4 @@ Judgment Day round 2 is incomplete: judge A returned, judge B terminated on a se
 ## Next Step
 <!-- doc-role:next-step -->
 
-Make approved upgrade replacement and integration plans executable without weakening preservation guarantees.
+Start roadmap unit 1: define and verify the [evidence reconciliation rule](roadmap.md#ordered-work-units).
