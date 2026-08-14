@@ -6,7 +6,7 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes.
-- Canonical suite green: 197 tests passed with 6 skips. `RH-W-0023` replaced both brittle self-hosted roadmap assertions without changing product behavior or weakening lifecycle validation.
+- Canonical suite green: 202 tests passed with 6 skips. `RH-W-0024` added the bounded generated-output migration required before existing installations can adopt renamed skills.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Generator 3.0, skill package 3.1.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
 - Licensed MIT in `LICENSE` and in both `SKILL.md` copies.
@@ -46,20 +46,21 @@
 - Completed `RH-W-0003` under issue #11: legacy manifests without language metadata now preserve known installed English and Spanish locale expectations while explicit modern declarations remain authoritative.
 - Completed `RH-W-0020`: the product `README.md` and `README.es.md` stopped promising unconditional bilingual output. They now state the declared-locale contract, record that an existing repository never gains a locale it lacks, and the Spanish peer is faithful to the English owner again.
 - Completed `RH-W-0023`: self-hosted roadmap tests now assert parser-to-heading structural parity and the P0 priority-override order instead of a magic record count and a sentence naming the next unit.
+- Completed `RH-W-0024` under issue #16: one typed, digest-bound generated-skill migration action now verifies installed ownership and bytes, binds replacements and removals, applies atomically with rollback, preserves read-only checking, and is idempotent.
 
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Active projection: `RH-W-0021`, `RH-W-0017`, `RH-W-0004`, `RH-W-0006`, and `RH-W-0019` are `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, and `RH-W-0010` are prerequisite-blocked.
+- Active projection: `RH-W-0017`, `RH-W-0004`, `RH-W-0006`, and `RH-W-0019` are `ready`; `RH-W-0021`, `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, and `RH-W-0010` are prerequisite-blocked.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015` and the unattended internal-maintenance idea `RH-W-0018` retain explicit advancement conditions in [roadmap.md](roadmap.md).
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
-- Recently completed IDs: `RH-W-0023`, `RH-W-0020`, `RH-W-0003`, `RH-W-0016`, `RH-W-0007`, `RH-W-0002`.
+- Recently completed IDs: `RH-W-0024`, `RH-W-0023`, `RH-W-0020`, `RH-W-0003`, `RH-W-0016`, `RH-W-0007`.
 
 ## Next Step
 <!-- doc-role:next-step -->
 
-Advance `RH-W-0021`: rename the generated skills to the fixed `repo-harness-` prefix.
+Advance `RH-W-0021` only after integrating its completed `RH-W-0024` migration prerequisite: rename the generated skills to the fixed `repo-harness-` prefix without widening the migration action.
 
 The four ready units after it, in recommended order, are `RH-W-0017`, `RH-W-0004`, `RH-W-0006`, and `RH-W-0019`. Each one carries its own starting condition in [roadmap.md](roadmap.md). Take one unit per branch and do not bundle them.
 

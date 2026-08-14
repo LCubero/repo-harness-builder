@@ -6,7 +6,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 <!-- doc-role:verified-state -->
 
 - El harness esta presente y el verificador generado informa `current`, salida 0 y 0 escrituras.
-- La suite canonica esta en verde: pasaron 197 pruebas con 6 omisiones. `RH-W-0023` reemplazo ambas afirmaciones fragiles de la hoja de ruta sin cambiar comportamiento de producto ni debilitar la validacion del ciclo de vida.
+- La suite canonica esta en verde: pasaron 202 pruebas con 6 omisiones. `RH-W-0024` agrego la migracion acotada de salida generada necesaria antes de renombrar habilidades en instalaciones existentes.
 - El conjunto de entornos es `claude-code` y `opencode`; el modo es `integrated`, el generador es 3.0 y el paquete de habilidad es 3.1.
 - La suite cubre estados Git generados, consentimiento por intencion, comparacion exacta del alcance preparado, separacion del indice previo, invalidacion por cambios materiales, resultados delimitados, deteccion sensible, recibos de transporte acotados y contratos de cache del entorno.
 - La licencia MIT figura en `LICENSE` y en ambas copias de `SKILL.md`.
@@ -40,20 +40,21 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - Se completo `RH-W-0003` bajo issue #11: los manifests heredados sin metadata de idioma conservan expectativas conocidas instaladas en ingles y espanol, mientras las declaraciones modernas explicitas siguen siendo autoritativas.
 - Se completo `RH-W-0020`: el `README.md` y el `README.es.md` de producto dejaron de prometer salida bilingue incondicional. Ahora expresan el contrato de locales declarados, registran que un repositorio existente nunca gana un locale que no tenia, y el par espanol volvio a ser fiel al propietario en ingles.
 - Se completo `RH-W-0023`: las pruebas autoalojadas de la hoja de ruta ahora afirman paridad estructural entre parser y encabezados, y el orden de la excepcion de prioridad P0, en lugar de un conteo magico y una frase que nombraba la siguiente unidad.
+- Se completo `RH-W-0024` bajo issue #16: una accion tipada y ligada por digest verifica propiedad y bytes instalados, liga reemplazos y eliminaciones, aplica atomicamente con rollback, conserva check de solo lectura y es idempotente.
 
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
-- Proyeccion activa: `RH-W-0021`, `RH-W-0017`, `RH-W-0004`, `RH-W-0006` y `RH-W-0019` estan `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009` y `RH-W-0010` estan bloqueados por prerrequisitos.
+- Proyeccion activa: `RH-W-0017`, `RH-W-0004`, `RH-W-0006` y `RH-W-0019` estan `ready`; `RH-W-0021`, `RH-W-0005`, `RH-W-0008`, `RH-W-0009` y `RH-W-0010` estan bloqueados por prerrequisitos.
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
 - Proyeccion aplazada: `RH-W-0011` a `RH-W-0015` y la idea de mantenimiento interno desatendido `RH-W-0018` conservan condiciones explicitas en [roadmap.md](roadmap.md).
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
-- IDs completados recientemente: `RH-W-0023`, `RH-W-0020`, `RH-W-0003`, `RH-W-0016`, `RH-W-0007`, `RH-W-0002`.
+- IDs completados recientemente: `RH-W-0024`, `RH-W-0023`, `RH-W-0020`, `RH-W-0003`, `RH-W-0016`, `RH-W-0007`.
 
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Avanzar `RH-W-0021`: renombrar las habilidades generadas al prefijo fijo `repo-harness-`.
+Avanzar `RH-W-0021` solo despues de integrar su prerrequisito completado `RH-W-0024`: renombrar las habilidades al prefijo fijo `repo-harness-` sin ampliar la accion de migracion.
 
 Las cuatro unidades listas despues de ella, en orden recomendado, son `RH-W-0017`, `RH-W-0004`, `RH-W-0006` y `RH-W-0019`. Cada una conserva su condicion de arranque en [roadmap.md](roadmap.md). Se toma una unidad por rama y no se agrupan.
 
