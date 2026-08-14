@@ -14,7 +14,7 @@
 
 1. Proyecte la habilidad y el comando del constructor en un entorno compatible.
 2. Abra el repositorio objetivo e invoque `/repo-harness-builder`.
-3. Seleccione proyecciones y licencia.
+3. Responda la entrevista: proyecciones de entorno, licencia, idioma de conversacion y locales de documentacion. La documentacion queda solo en ingles salvo que declare otro locale.
 4. Mantenga el ignore predeterminado de `.codegraph/` en la raiz o use `--no-codegraph-ignore` para registrar el opt-out.
 5. Revise el plan exacto. En espanol, la aprobacion estricta usa `APROBAR` o `DENEGAR`.
 6. Inicie el trabajo normal con la habilidad generada `<proyecto>-session-start`.
@@ -24,12 +24,14 @@ Sin operacion explicita, el constructor realiza una auditoria de solo lectura. N
 ## Que genera
 <!-- doc-role:outputs -->
 
-- `REPO-HARNESS.md` como entrada operativa canonica y `REPO-HARNESS.es.md` como presentacion completa en espanol.
-- `README.md` y `README.es.md` con selectores reciprocos.
-- Documentacion durable en ingles bajo `docs/repo-harness/` y pares en espanol bajo `docs/es/repo-harness/`.
+- `REPO-HARNESS.md` como entrada operativa canonica.
+- `README.md` en la raiz cuando falta, con una seccion acotada administrada por el constructor.
+- Documentacion durable completa en ingles bajo `docs/repo-harness/`.
 - Habilidades neutrales bajo `.repo-harness/skills/` y proyecciones para Claude Code, OpenCode o Pi.
 - `.repo-harness/check.py` para comprobaciones de congruencia sin escritura.
 - Una unica directiva `.codegraph/` en `.gitignore` raiz, salvo opt-out explicito.
+
+Un harness es solo en ingles salvo que se declaren mas locales de documentacion. Consulte [Idioma de la documentacion](#idioma-de-la-documentacion).
 
 | Parte | Aporte |
 |---|---|
@@ -87,18 +89,32 @@ Cargue my-project-documentation y actualice el estado y el historial.
 Cargue my-project-session-stop y prepare la transferencia.
 ```
 
-Los nombres de comandos dependen del entorno. La ayuda generada lee `docs/es/repo-harness/usage.md` cuando el idioma resuelto es espanol. Los resultados son `ready`, `paused`, `blocked`, `failed`, `completed` y `degraded`.
+Los nombres de comandos dependen del entorno, asi que las habilidades se invocan por su nombre registrado. La ayuda generada lee `docs/repo-harness/usage.md`, y lee `docs/es/repo-harness/usage.md` solo cuando el espanol es un locale de documentacion declarado y el idioma de conversacion es espanol. Nunca nombra una guia que ese mismo render no creo. Los resultados son `ready`, `paused`, `blocked`, `failed`, `completed` y `degraded`.
 
 ## Comportamiento del repositorio
 <!-- doc-role:repository-behavior -->
 
 ### Repositorios nuevos
 
-Los repositorios nuevos reciben una base bilingue completa despues de aprobar el plan. Los repositorios existentes reciben analisis y una propuesta de integracion; nunca se sobrescriben documentos evolucionados por personas solo para normalizar su estructura.
+Un repositorio nuevo o practicamente vacio recibe una base util completa despues de aprobar el plan: README raiz, libro de reglas, documentacion durable, habilidades diarias, proyecciones seleccionadas, manifiesto y checker.
 
 ### Repositorios existentes
 
-Si ya existe `README.md` y falta su par, el plan debe incluir integracion reciproca ejecutable o bloquear la creacion de `README.es.md`. No se permite afirmar un estado bilingue completo con un selector unilateral.
+El constructor analiza el contenido existente relevante y propone una integracion informada. Preserva bytes desconocidos y nunca entiende la preservacion como congelar el repositorio. Si el contenido esta obsoleto o es estructuralmente incompatible, archivar y partir de una base limpia es una eleccion distinta que igual requiere aprobacion explicita.
+
+Un repositorio existente nunca recibe un locale de documentacion que no tenga ya. Un harness heredado cuyo manifiesto es anterior a los metadatos de idioma conserva los arboles de locale realmente instalados, de modo que un repositorio bilingue antiguo no pierde en silencio su comprobacion en espanol y un repositorio solo en ingles no gana en silencio archivos en espanol.
+
+### Idioma de la documentacion
+
+El ingles es el locale primario de documentacion. Siempre se genera completo y siempre posee la verdad operativa.
+
+Cualquier otro locale existe solo si se declara. Se declara con `--documentation-language`, repetido una vez por locale. Si se omite la bandera, el harness queda solo en ingles: sin `README.es.md`, sin selectores de idioma, sin arbol `docs/es/repo-harness/` y sin contrato de mantenimiento bilingue.
+
+Cuando se declara un segundo locale, se genera completo, no parcial. Sus documentos son espejos humanos completos que presentan los mismos hechos y enlazan a los propietarios en ingles. Nunca se convierten en propietarios factuales independientes.
+
+El idioma de conversacion es una eleccion aparte. Define el idioma en que las habilidades de sesion generadas le hablan a usted. No agrega ni quita locales de documentacion.
+
+Los selectores reciprocos de README son una sola integracion atomica. Si el repositorio ya tiene `README.md` y el plan ejecutable exacto no puede actualizarlo, `README.es.md` se clasifica como bloqueado en vez de crearse. Nunca se produce un selector unilateral que afirme un repositorio bilingue.
 
 ### Actualizaciones seguras
 
@@ -106,7 +122,7 @@ Los harness anteriores se auditan, no se reemplazan a ciegas. Las rutas se clasi
 
 El `.gitignore` raiz sigue siendo propiedad humana. El plan aprobado crea el archivo si falta o agrega exactamente `.codegraph/` si no existe esa linea, preservando BOM, bytes, comentarios, lineas vacias, finales de linea y reglas ajenas. `--no-codegraph-ignore` registra el opt-out en el manifiesto y no modifica el archivo.
 
-`REPO-HARNESS.md`, `CHANGELOG.md` y los propietarios en ingles del estado durable conservan la verdad operativa unica. Los pares en espanol son presentaciones completas y enlazan a esas fuentes. Consulte el [contrato de mantenimiento bilingue](docs/es/repo-harness/i18n-maintenance.md).
+`REPO-HARNESS.md`, `CHANGELOG.md` y los propietarios en ingles del estado durable conservan la verdad operativa unica. Cuando se declara otro locale, sus pares son presentaciones completas que enlazan a esas fuentes. Consulte el [contrato de mantenimiento bilingue](docs/es/repo-harness/i18n-maintenance.md), que aplica solo a un repositorio que declaro mas de un locale.
 
 ## Desarrollo
 <!-- doc-role:development -->

@@ -999,7 +999,8 @@ class GeneratedCoreTests(unittest.TestCase):
             self.skipTest("repository lifecycle fixture is outside the portable package")
         roadmap = path.read_text(encoding="utf-8")
         records = re.findall(r"^### (RH-W-\d{4})\n(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S)
-        self.assertEqual(len(records), 17)
+        headings = re.findall(r"^### (RH-W-\d{4})$", roadmap, re.M)
+        self.assertEqual([record_id for record_id, _ in records], headings)
         self.assertEqual(len({record_id for record_id, _ in records}), len(records))
         required = {
             "Origin", "Priority", "Dependencies", "Status", "Completed work",
@@ -1042,9 +1043,9 @@ class GeneratedCoreTests(unittest.TestCase):
             "No current architecture commitment.",
             "issue #7",
             "priority override",
-            "RH-W-0003 remains the next product behavior",
         ):
             self.assertIn(fact, roadmap)
+        self.assertLess(roadmap.index("### RH-W-0016"), roadmap.index("### RH-W-0003"))
 
     def test_runtime_projections_use_the_current_canonical_contract(self):
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])

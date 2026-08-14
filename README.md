@@ -16,7 +16,7 @@ The result is less context loss between sessions, safer repository evolution, cl
 
 1. Install or project the builder skill and command into a supported runtime.
 2. Open the target repository and invoke `/repo-harness-builder`.
-3. Choose the runtime projections and license when asked.
+3. Answer the interview: runtime projections, license, conversation language, and documentation locales. Documentation stays English-only unless you declare another locale.
 4. Keep the default root `.codegraph/` ignore, or pass `--no-codegraph-ignore` to persistently opt out.
 5. Review the exact plan and use its language-scoped digest-bound approval: `APPROVE` or `DENY` in English, `APROBAR` or `DENEGAR` in Spanish.
 6. Start normal work with the generated `<project>-session-start` skill.
@@ -27,12 +27,14 @@ With no operation, the builder performs a read-only audit. It does not initializ
 <!-- doc-role:outputs -->
 
 - Root `REPO-HARNESS.md` as the concise working entry point.
-- Root `README.md` and `README.es.md` when absent, with reciprocal language selectors and bounded builder-managed sections.
-- Complete English durable documentation under `docs/repo-harness/` and Spanish peers under `docs/es/repo-harness/`.
+- Root `README.md` when absent, with a bounded builder-managed section.
+- Complete English durable documentation under `docs/repo-harness/`.
 - Runtime-neutral session and documentation skills under `.repo-harness/skills/`.
 - Selected Claude Code, OpenCode, or Pi runtime projections.
 - `.repo-harness/check.py` for read-only projection drift checks.
 - One exact root `.gitignore` directive, `.codegraph/`, unless explicitly disabled.
+
+A harness is English-only unless you declare more documentation locales. See [Documentation Language](#documentation-language).
 
 | Part | What it contributes |
 |---|---|
@@ -106,6 +108,20 @@ A new or effectively empty repository receives a complete useful baseline after 
 
 The builder analyzes relevant existing content and proposes informed integration. It preserves unknown bytes and never treats preservation as freezing the repository. If content is obsolete or structurally incompatible, archive and clean-baseline work is a distinct choice that still requires explicit approval.
 
+An existing repository is never given a documentation locale it does not already have. A legacy harness whose manifest predates language metadata keeps the locale trees it actually has installed, so an older bilingual repository does not silently lose its Spanish checks and an English-only repository does not silently gain Spanish files.
+
+### Documentation Language
+
+English is the primary documentation locale. It is always generated complete, and it always owns the operational truth.
+
+Any other locale exists only when you declare it. Declare one with `--documentation-language`, repeated once per locale. Omit the flag and the harness is English-only: no `README.es.md`, no language selectors, no `docs/es/repo-harness/` tree, and no bilingual maintenance contract.
+
+When a second locale is declared, it is generated complete, not partially. Its documents are full human mirrors that present the same facts and link back to the English owners. They never become independent factual owners.
+
+The conversation language is a separate choice. It sets the language the generated session skills speak to you in. It does not add or remove documentation locales.
+
+Reciprocal README selectors are one atomic integration. If a repository already has `README.md` and the exact executable plan cannot update it, `README.es.md` is classified as blocked rather than created. A one-way selector that claims a bilingual repository is never produced.
+
 ### Safe Upgrades
 
 Older harnesses are audited rather than blindly replaced. Managed paths are classified as `current`, `stale`, `missing`, `human-evolved`, or `legacy`. Replacement, integration, archive, and deletion remain proposal-only until explicitly approved.
@@ -114,7 +130,7 @@ The README is human-owned after creation. Its bounded builder section identifies
 
 Root `.gitignore` is also human-owned. By default, the approved plan creates it when absent or appends exactly `.codegraph/` when that exact line is missing, preserving BOM, existing bytes, comments, blank lines, line endings, and unrelated rules. `--no-codegraph-ignore` records the opt-out in the manifest and performs no ignore-file mutation.
 
-Operational facts remain single-owned. `REPO-HARNESS.md`, `CHANGELOG.md`, and the English current-state owners are canonical; complete Spanish peers provide localized presentation and link back to those owners. See the [bilingual maintenance contract](docs/repo-harness/i18n-maintenance.md).
+Operational facts remain single-owned. `REPO-HARNESS.md`, `CHANGELOG.md`, and the English durable state owners are canonical. When another locale is declared, its peers are complete localized presentations that link back to those owners. See the [bilingual maintenance contract](docs/repo-harness/i18n-maintenance.md), which applies only to a repository that declared more than one locale.
 
 ## Development
 <!-- doc-role:development -->

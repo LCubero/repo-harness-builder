@@ -6,6 +6,11 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-14
 
+- Completed `RH-W-0023`: replaced the self-hosted roadmap magic-count assertion with exact parser-to-heading structural parity and replaced the obsolete next-work sentence with an ordering assertion for the P0 priority override. The canonical suite passes 197 tests with 6 skips, with no product behavior change or weakened lifecycle validation.
+- Completed `RH-W-0020`: corrected the product `README.md` and `README.es.md`, which still promised unconditional bilingual output after documentation language became a declared choice. Both now list only what an English-only harness produces, carry a `Documentation Language` section stating the declared-locale contract, record that an existing repository never gains a locale it lacks, and the Spanish peer is faithful to the English owner again.
+- Registered `RH-W-0023` after session-close verification found the canonical suite red at 197 tests with 2 failures and 6 skips. Both failures are self-hosted roadmap assertions that predate the session: a hardcoded record count of 17 against a live roadmap that already held 18, and a pinned sentence naming `RH-W-0003` as the next unit after it completed. No product behavior is broken and an independent structural replay reports zero violations across all lifecycle records.
+- Recorded the language surface split as a standing decision: English is the mandatory primary documentation locale because everything an agent reads is an English surface and it is the cheaper one in tokens, while the conversation language governs only what the agent says back and follows the live conversation over the stored default. The rule previously existed only inside a `require()`.
+- Registered `RH-W-0019` for the prompt-visible wrapper provenance line, `RH-W-0021` for the fixed `repo-harness-` generated skill prefix, and `RH-W-0022` as a proposed declared documentation relationship map bounded away from any code or dependency graph, with a guided starting path for `RH-W-0021` in current state.
 - Completed `RH-W-0003` under issue #11: legacy manifests without language metadata infer only known installed locale trees, preserving English and Spanish expected outputs when Spanish evidence exists while explicit modern declarations remain authoritative.
 
 ## 2026-08-13
