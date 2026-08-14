@@ -19,6 +19,7 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Resolve and inspect only the selected repository. Do not follow links, aliases, sibling repositories, or external references.
 - Read `REPO-HARNESS.md` first, then only documentation relevant to the requested work.
 - Read only the latest relevant entries in `CHANGELOG.md` after the rulebook and current-state documentation.
+- Read `docs/repo-harness/roadmap.md` when the objective involves pending, blocked, deferred, excluded, rejected, or completed tracked work; do not infer the lifecycle from current state alone.
 - Consult only applicable owning evidence, such as current documentation, source, tests, Git state or history, and Engram when available.
 - Report discrepancies instead of silently resolving them; current repository evidence wins over memory.
 - Do not read every file or run every test indiscriminately.
@@ -51,7 +52,7 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 3. Detect whether the root is a Git repository. If it is, inspect branch, worktree, index, upstream, remotes, and each upstream remote URL, host, and scheme read-only before suggesting network access. Provider recognition is optional and must not require provider tooling.
 4. Run `python .repo-harness/check.py` and retain its status and any drifted runtime projection paths.
 5. Recover relevant recent context from Engram, label it as memory evidence, and reconcile it with repository evidence.
-6. Identify completed work, remaining work, constraints, and the next recommended step.
+6. Identify completed work, remaining work, constraints, and the next recommended step. Reconcile any changed `RH-W-####` lifecycle with the roadmap, current-state projection, localized peers, and Engram topic `work/RH-W-####` in the same work unit.
 7. Report stale links, contradictions, or missing evidence before proceeding.
 
 ## Optional Git Synchronization Gate

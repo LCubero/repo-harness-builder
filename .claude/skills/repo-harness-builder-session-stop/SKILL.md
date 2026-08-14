@@ -22,6 +22,7 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 - Propose updates to `REPO-HARNESS.md` and canonical documentation, but write them only after explicit approval.
 - Keep the rulebook inside its budget. Move durable detail down into its owned deeper document.
 - Propose one concise `CHANGELOG.md` entry for meaningful completed work under the existing documentation approval. Avoid an entry for a trivial or no-op session.
+- Reconcile every changed `RH-W-####` record in `docs/repo-harness/roadmap.md`, the concise current-state projection, localized peers, and Engram topic `work/RH-W-####` in the same work unit.
 - Gentle AI and Engram are required for integrated session continuity.
 - Save significant decisions, discoveries, fixes, and a session summary to Engram.
 - If any Engram save fails, surface the failure and must not claim successful continuity.
@@ -47,7 +48,7 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 
 1. Inspect the selected repository state read-only and collect fresh verification evidence.
 2. Summarize completed work, decisions, unresolved issues, and next steps.
-3. Validate referenced paths and reconcile the summary with `REPO-HARNESS.md` and deeper documentation.
+3. Validate referenced paths and reconcile the summary with `REPO-HARNESS.md` and deeper documentation, including lifecycle records and their current-state projection.
 4. Present the exact documentation changes and any meaningful completed-work changelog entry for conversational approval, one blocking question per turn, then pause.
 5. After the user answers, resume the same session-stop invocation from the next unfinished step. If approved, execute that exact approved action once, update only the canonical owners, refresh repository evidence, and verify paths, links, and claims. If documentation is declined, continue the close protocol without writing and record the proposal as declined or pending as appropriate.
 6. A session summary saved before an approved mutation is provisional. Save or update a final session summary that includes the approved mutation only after refreshed evidence and verification.

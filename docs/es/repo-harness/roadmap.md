@@ -1,67 +1,104 @@
 # Hoja de ruta del harness adaptativo
 
-La fuente factual canonica de esta hoja de ruta es [`../../repo-harness/roadmap.md`](../../repo-harness/roadmap.md). Esta presentacion completa ordena las unidades revisables mas pequenas para hacer adaptable `repo-harness-builder` sin comprometer prematuramente una arquitectura de integracion. Cada unidad usa su propio issue, rama, PR, pruebas, revision y actualizacion documental.
+<!-- doc-role:lifecycle-owner -->
 
-## Resultado y principios
+La fuente factual canonica es [`../../repo-harness/roadmap.md`](../../repo-harness/roadmap.md). Este es su espejo humano completo en espanol. La hoja canonica controla todo pendiente no trivial, deseo, capacidad aplazada, exclusion, rechazo y resultado completado. `current-state.md` solo proyecta actividad concisa y Engram solo refleja resultados bajo `work/RH-W-####`.
 
-- Reconciliar la evidencia del repositorio antes de cambiar planes. Ningun pendiente se agrega, conserva o elimina desde una sola fuente.
-- Mantener un propietario factual claro, usar revelacion progresiva y preferir unidades cortas revisables de forma independiente.
-- Actualizar el estado actual y cada espejo localizado afectado en la misma unidad que cambia la realidad.
-- La guia dirigida a IA lee solo el ingles canonico para evitar contexto duplicado. Los documentos localizados son presentaciones humanas completas mantenidas por la skill de documentacion para los idiomas declarados por la persona usuaria en el repositorio.
-- Responder en el idioma indicado por la persona usuaria o, en su defecto, en el idioma que esta usando.
-- Adaptarse a la evidencia del repositorio, preguntar solo ante decisiones reales y advertir contradicciones en vez de imponer estructura rigidamente.
-- Limitar la mejora propia a una friccion verificada y un cambio minimo revisable por vez. Nunca iniciar mejora recursiva ni cambiar silenciosamente politicas de comportamiento; las reglas de aprobacion existentes del repositorio mantienen la autoridad.
-- Evitar sobreingenieria, desviacion de alcance y acciones conocidas como no permitidas.
-- Usar Engram cuando este disponible para continuidad durable y luego revalidarlo contra la evidencia actual del repositorio.
-- Colocar reglas criticas concisas en el `REPO-HARNESS.md` generado, detalle operativo en skills, continuidad en Engram y explicaciones humanas en la documentacion.
+## Contrato del ciclo de vida
 
-## Autoridad y ubicacion
+<!-- doc-role:lifecycle-rules -->
 
-| Informacion | Propietario |
-|---|---|
-| Comportamiento actual | Codigo fuente y pruebas, reconciliados con documentos propietarios e historial Git |
-| Estado actual y siguiente paso | [current-state.md](current-state.md) |
-| Trabajo futuro ordenado | Esta hoja de ruta |
-| Justificacion y restricciones permanentes | [decisions.md](decisions.md) |
-| Cronologia completada | [CHANGELOG.md](../../../CHANGELOG.md) |
-| Reglas operativas generadas criticas | `REPO-HARNESS.md` generado |
-| Operaciones detalladas | Skills generadas y canonicas |
-| Continuidad entre sesiones | Engram, reconciliado antes de promover hechos |
-| Presentacion humana en espanol | Espejos completos bajo [`docs/es/`](README.md), enlazados a propietarios factuales en ingles |
+- Los IDs son inmutables e independientes del orden, issue y prioridad.
+- La prioridad es `P0`, `P1`, `P2` o `P3` con justificacion. El estado es `proposed`, `ready`, `active`, `blocked`, `deferred`, `completed`, `excluded` o `rejected`.
+- `blocked` nombra el bloqueo, `deferred` una condicion observable, y los registros terminales usan trabajo restante `none`.
+- `excluded` puede reconsiderarse fuera del alcance actual. `rejected` se declina hasta que una decision explicita posterior lo reemplace.
+- Cuando cambie la realidad, se reconcilian en la misma unidad la hoja canonica, estado actual, pares localizados y la observacion pequena de Engram. Las observaciones triviales no necesitan registro.
 
-## Base verificada
+## Autoridad y base
 
-- `python .repo-harness/check.py` informa `current`, salida 0 y 0 escrituras.
-- El PR #2 se integro en `main` como `ec56b1b` y enlazo el issue #1.
-- La ampliacion del conjunto de runtimes esta completa: `runtime_set_report()` informa runtimes `unrecorded` y `staleManifest`, con cobertura de `RecordedRuntimeSetTests`.
-- La ronda 2 de Judgment Day permanece incompleta segun la evidencia disponible.
-- Cinco hallazgos de la ronda 1 siguen abiertos: los manifiestos heredados pueden omitir comprobaciones en espanol; `check` acepta pero ignora flags de idioma; las declaraciones de idioma instaladas invalidas no se normalizan al leer; dos pruebas documentales suponen archivos en espanol; y falta cobertura de compatibilidad entre roles prometidos y cabeceras reales.
-- Siguen abiertos la ejecucion de reemplazo e integracion aprobados, la integracion de selectores en README existentes, la migracion de la revision historica, la deteccion de un builder instalado obsoleto y el diseno del harness de contribucion para consumidores.
-- La unidad 2 completo la unica excepcion explicita de `.gitignore`: `.codegraph/` exacto por defecto, opt-out persistente y ninguna escritura dentro del directorio de CodeGraph.
+Codigo y pruebas poseen el comportamiento; la hoja canonica posee el ciclo de vida; [estado actual](current-state.md) posee la proyeccion activa; [decisiones](decisions.md) posee razones permanentes; [CHANGELOG.md](../../../CHANGELOG.md) posee la cronologia.
 
-## Unidades de trabajo ordenadas
+Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 integrado como `ec56b1b` para issue #1; ampliacion de runtimes completa; issue #8 completo para `.codegraph/`; ronda 2 de Judgment Day incompleta por limite de sesion del juez B; cinco hallazgos de ronda 1 y capacidades posteriores identificados.
 
-| # | Problema y evidencia | Resultado acotado | Verificacion | No objetivos explicitos |
-|---|---|---|---|---|
-| 1 | Los hechos pendientes pueden desviarse cuando se confia en una sola fuente. | Completa: se definio la regla de reconciliacion entre documentos propietarios, codigo, pruebas, historial, Git y Engram segun corresponda. | Pruebas de contrato y actualizaciones de estado en ingles y espanol en la misma unidad. | No cambiar el backlog sin evidencia reconciliada. |
-| 2 | `.codegraph/` estaba sin seguimiento mientras las pruebas prohibian gestionar `.gitignore`. | Completa bajo el issue #8: ignore exacto predeterminado, opt-out persistente con `--no-codegraph-ignore` y comprobacion desde el manifiesto. | Pruebas rojo-verde cubren valor predeterminado, opt-out, idempotencia, coincidencia exacta, preservacion de bytes y planes cambiados. | Ninguna politica de ignore ajena ni escritura dentro de `.codegraph/`. |
-| 3 | Los manifiestos heredados sin idioma pueden omitir comprobaciones en espanol. | Conservar y comprobar arboles de idiomas instalados conocidos cuando falta el campo de idioma. | Prueba de regresion con fixture bilingue heredado. | Ningun framework de migracion de manifiestos. |
-| 4 | `check` anuncia flags de idioma pero los ignora. | Eliminarlos o respetarlos mediante un unico contrato de solo lectura sin ambiguedad. | Pruebas de comportamiento y ayuda CLI. | Ningun rediseno amplio del CLI. |
-| 5 | Las declaraciones de idioma instaladas invalidas fallan sin normalizacion de lectura. | Normalizarlas o rechazarlas de manera uniforme con diagnosticos del campo correcto. | Matriz de regresion de manifiestos invalidos. | Ningun idioma nuevo. |
-| 6 | Dos pruebas documentales incluidas suponen que existen archivos en espanol. | Hacer que respeten los idiomas de documentacion declarados. | Ejecuciones solo en ingles y bilingues. | No debilitar comprobaciones bilingues cuando se declara espanol. |
-| 7 | `missing_sections` no cubre compatibilidad entre roles prometidos y cabeceras reales. | Especificar y probar esa direccion y aplicar la correccion compatible mas pequena. | Pruebas unitarias enfocadas en ambas direcciones de vocabulario. | Ninguna reescritura del parser documental. |
-| 8 | Las opciones aprobadas de reemplazo e integracion son descriptivas, no ejecutables. | Ejecutar una accion aprobada ligada al contenido, preservando bytes desconocidos y cierre seguro. | TDD para digest de aprobacion, bytes cambiados, limite de rollback y vista previa sin escrituras. | Ningun motor masivo de actualizacion. |
-| 9 | Los selectores de idioma en README existentes siguen cerrandose de forma segura sin ejecutor. | Agregar el caso reciproco acotado mediante el ejecutor de integracion aprobado. | Pruebas LF, CRLF, reciprocidad, duplicados y cambio de plan. | Ninguna reescritura general de README. |
-| 10 | Los consumidores no distinguen un builder instalado obsoleto de deriva del harness generado. | Definir y detectar por separado la vigencia del paquete del builder. | Fixtures vigente, obsoleto, ausente y no verificable. | Ninguna promesa de recarga del runtime. |
-| 11 | El informe de revision de `skills-pack-ld9` no se traslado de forma durable. | Reconciliar y migrar hallazgos aun relevantes con evidencia publica del repositorio. | Trazar cada hallazgo conservado o cerrado a evidencia actual. | Ninguna importacion ciega de notas privadas u obsoletas. |
-| 12 | La investigacion externa necesita un limite seguro y reproducible. | Documentar investigacion primero con fuentes primarias; permitir clones temporales solo en un area ignorada tras revisar licencia y revision, sin ejecutar codigo. Los documentos publicos usan redaccion independiente y citas publicas, y la persona usuaria decide la retencion. | Comprobacion de enlaces, revision de citas y pruebas del limite de clones cuando pueda imponerse. | Ninguna dependencia publicada de rutas privadas, ignoradas o locales. |
-| 13 | Los contratos siempre cargados pueden crecer sin limites medidos. | Agregar presupuestos medidos, advertencias, indices, referencias y revelacion progresiva para `REPO-HARNESS.md`, skills y contratos operativos, con excepciones pequenas justificadas cuando dividir cueste mas. La documentacion humana general usa indice y lectura selectiva, no un limite universal. | Pruebas de limites y mediciones documentadas. | Ningun limite arbitrario para toda documentacion humana. |
-| 14 | El soporte de contribucion para consumidores carece de un diseno consciente de capacidades. | Disenar el descubrimiento de politica del repositorio y capacidades reales del proveedor antes de proponer `CONTRIBUTING`, issues, ramas, PR, templates, labels o checks. | Escenarios de diseno revisables y criterios neutrales al proveedor. | Ninguna mutacion de proveedor ni implementacion. |
-| 15 | MCP, CLI, binarios e integraciones de terceros podrian ser utiles despues. | Reconsiderarlos solo cuando las unidades anteriores aporten evidencia y limites estables. | Registro de decision que compare necesidades medidas y compromisos. | Ningun compromiso arquitectonico actual. |
+## Registros activos
+
+<!-- doc-role:active-records -->
+
+### RH-W-0016
+
+Origen: issue #7. Prioridad: `P0`, excepcion porque el control durable debe existir antes de acumular deseos. Dependencia: RH-W-0001. Estado: `completed`. Trabajo completado: IDs, registros, proyeccion concisa, propiedad bilingue, contratos y validacion. Trabajo restante: `none`. Adicion: issue #7 se presenta antes de la antigua unidad 3 sin renumerar. Exclusiones: sin base de datos, daemon, scheduler, sync de issues, motor generico, API de transiciones, calculo automatico ni registro trivial. Aplazamientos: ninguno. Rechazo: Engram y estado actual no son propietarios. Evidencia: TDD y verificacion de `feat/pending-lifecycle`. Historial: diseno aprobado el 2026-08-13. Siguiente condicion: mantener el contrato; RH-W-0003 sigue como proximo comportamiento.
+
+### RH-W-0017
+
+Origen: ocurrencia informada por la persona usuaria durante un cierre en espanol y conflicto canonico en `skill/repo-harness-builder/scripts/harness_tool.py`, dentro del contrato de la pregunta para solo commit. Prioridad: `P1`, el defecto viola el idioma activo en una compuerta obligatoria de aprobacion, pero no causa perdida de datos, mutacion insegura ni un flujo irrecuperable. Dependencias: ninguna. Estado: `ready`. Trabajo completado: se registro la fuga observada, se reconcilio con el contrato canonico exacto y se hizo durable el alcance de la correccion. Trabajo restante: conservar exactamente el alcance semantico de la aprobacion, las rutas y el mensaje de commit propuesto mientras se localiza la frase visible para la persona en el idioma activo de la conversacion. Adicion: agregar cobertura enfocada para una conversacion activa que no este en ingles en la compuerta de aprobacion de solo commit cuando comience la implementacion. Exclusiones: sin corregir el defecto en esta unidad, sin cambiar la semantica de aprobacion, sin reescribir ampliamente session-stop y sin mutar Git ni el proveedor. Aplazamientos: ninguno. Rechazo: se rechazo mantener la redaccion inglesa exacta como obligatoria cuando el contrato circundante exige el idioma activo. Evidencia: durante una conversacion activa en espanol, session-stop termino con `May I stage exactly these paths and create this proposed commit: ...?`; el contrato canonico fija esa frase inglesa y a la vez exige continuidad en el idioma conversacional. Historial: el 2026-08-13 la persona usuaria informo la ocurrencia y pidio continuidad durable; se clasifico P1 y listo porque la causa y la correccion acotada se conocen y no tienen dependencias. Siguiente condicion: comenzar con una prueba fallida del contrato de session-stop para un cierre de solo commit en espanol y despues localizar la frase visible sin cambiar alcance, rutas ni mensaje.
+
+### RH-W-0003
+
+Origen: unidad 3 y hallazgo de Judgment Day. Prioridad: `P1`, un harness bilingue heredado puede perder comprobacion en espanol. Dependencia: RH-W-0016. Estado: `ready`. Completado: problema, resultado, fixture y no objetivo definidos. Restante: conservar y comprobar arboles localizados si falta `language`. Adicion: conservar la ronda 2 incompleta como evidencia. Exclusion: sin framework de migracion. Aplazamientos y rechazos: ninguno. Evidencia: borrar un archivo espanol puede seguir informando `current`. Historial: se mantiene como proximo comportamiento. Siguiente condicion: issue enfocado y fixture bilingue heredado en rojo.
+
+### RH-W-0004
+
+Origen: unidad 4 y hallazgo de Judgment Day. Prioridad: `P1`, flags ignorados vuelven ambiguo el contrato. Dependencia: RH-W-0003. Estado: `blocked`. Completado: se identificaron los tres flags ignorados. Restante: eliminarlos o respetarlos y probar CLI y ayuda. Adiciones: ninguna. Exclusion: sin rediseno amplio del CLI. Aplazamientos y rechazos: ninguno. Evidencia: `check` acepta flags sin usarlos. Historial: ordenado despues de locale heredado. Siguiente condicion: el bloqueo termina cuando RH-W-0003 define el descubrimiento de idiomas.
+
+### RH-W-0005
+
+Origen: unidad 5 y hallazgo de Judgment Day. Prioridad: `P1`, declaraciones invalidas fallan con diagnostico enganoso. Dependencias: RH-W-0003 y RH-W-0004. Estado: `blocked`. Completado: valores invalidos y campo incorrecto identificados. Restante: normalizar o rechazar con matriz de regresion. Adiciones: ninguna. Exclusion: sin nuevos idiomas. Aplazamientos y rechazos: ninguno. Evidencia: `declared_languages` deja pasar valores invalidos. Historial: queda tras el contrato de idiomas. Siguiente condicion: completar las dos dependencias.
+
+### RH-W-0006
+
+Origen: unidad 6 y hallazgo de Judgment Day. Prioridad: `P2`, pruebas validas fallan en layout monolingue. Dependencia: RH-W-0003. Estado: `blocked`. Completado: dos pruebas que suponen espanol identificadas. Restante: respetar idiomas declarados y probar modos ingles y bilingue. Adiciones: ninguna. Exclusion: no debilitar controles bilingues. Aplazamientos y rechazos: ninguno. Evidencia: las pruebas fallan en vez de omitirse. Historial: correccion enfocada. Siguiente condicion: RH-W-0003 define descubrimiento instalado.
+
+### RH-W-0008
+
+Origen: unidad 8, brecha de reemplazo e integracion. Prioridad: `P1`, planes aprobados no ejecutan. Dependencias: RH-W-0003 a RH-W-0007. Estado: `blocked`. Completado: limites de aprobacion ligada al contenido, preservacion, cambio de plan y rollback especificados. Restante: ejecutar una accion con digest, bytes, rollback y preview. Adiciones: ninguna. Exclusion: sin motor masivo. Aplazamientos y rechazos: ninguno. Evidencia: el planner solo describe. Historial: primera mutacion tras corregir prerrequisitos. Siguiente condicion: completar o demostrar irrelevantes esas dependencias.
+
+### RH-W-0009
+
+Origen: unidad 9, selector README existente. Prioridad: `P1`, la reciprocidad localizada sigue bloqueada. Dependencia: RH-W-0008. Estado: `blocked`. Completado: cierre seguro y casos LF, CRLF, reciproco, duplicado y plan cambiado especificados. Restante: accion reciproca acotada. Adiciones: ninguna. Exclusion: sin reescritura general de README. Aplazamientos y rechazos: ninguno. Evidencia: hoy no existe integracion segura. Historial: dependencia explicita para que la idea no desaparezca. Siguiente condicion: RH-W-0008 entrega el ejecutor.
+
+### RH-W-0010
+
+Origen: unidad 10, builder instalado obsoleto. Prioridad: `P2`, no se distingue paquete de proyeccion. Dependencia: RH-W-0008. Estado: `blocked`. Completado: fixtures vigente, obsoleto, ausente y no verificable especificados. Restante: detectar vigencia del paquete por separado. Adiciones: ninguna. Exclusion: sin promesa de recarga. Aplazamientos y rechazos: ninguno. Evidencia: el checker generado no prueba la vigencia del builder. Historial: concepto separado de drift. Siguiente condicion: RH-W-0008 define evolucion segura.
+
+### RH-W-0011
+
+Origen: unidad 11, revision de `skills-pack-ld9`. Prioridad: `P2`, hallazgos vigentes requieren evidencia publica o cierre. Dependencias: RH-W-0003 a RH-W-0010. Estado: `deferred`. Completado: se prohibio importar notas privadas u obsoletas a ciegas. Restante: trazar cada hallazgo. Adicion: recibo incompleto de ronda 2. Exclusion: sin importacion ciega. Aplazamiento: hasta reducir hallazgos obsoletos. Rechazos: ninguno. Evidencia: informe externo y juez B ausente. Historial: umbral observable. Siguiente condicion: resolver dependencias o hallar un riesgo urgente independiente.
+
+### RH-W-0012
+
+Origen: unidad 12, investigacion externa segura. Prioridad: `P2`, reproducibilidad sin ejecutar codigo ajeno. Dependencia: RH-W-0011. Estado: `deferred`. Completado: fuentes primarias, clones ignorados, licencia, revision, no ejecucion, citas y retencion definidos. Restante: documentar, probar limites y validar enlaces. Adiciones: ninguna. Exclusion: sin dependencia publicada de rutas privadas, ignoradas o locales. Aplazamiento: hasta una necesidad concreta. Rechazos: ninguno. Evidencia: diseno anterior. Historial: capacidad condicional. Siguiente condicion: RH-W-0011 identifica una pregunta externa.
+
+### RH-W-0013
+
+Origen: unidad 13, presupuesto de contexto. Prioridad: `P2`, contratos cargados siempre necesitan limites medidos. Dependencia: crecimiento medido. Estado: `deferred`. Completado: presupuesto del rulebook y direccion de indices, referencias y revelacion progresiva. Restante: presupuestos medidos para skills y contratos. Adiciones: ninguna. Exclusion: sin limite arbitrario a toda documentacion humana. Aplazamiento: hasta medir friccion. Rechazos: ninguno. Evidencia: solo `REPO-HARNESS.md` tiene proxy de 700 tokens. Historial: medir antes. Siguiente condicion: acercarse a un limite acordado o demostrar friccion.
+
+### RH-W-0014
+
+Origen: unidad 14, contribucion en consumidores. Prioridad: `P3`, falta evidencia de consumidores y proveedor. Dependencia: RH-W-0012. Estado: `deferred`. Completado: escenarios neutrales y conscientes de capacidades. Restante: disenar descubrimiento antes de proponer archivos, issues, ramas, PR, templates, labels o checks. Adiciones: ninguna. Exclusion: sin mutacion ni implementacion del proveedor. Aplazamiento: hasta un consumidor real. Rechazos: ninguno. Evidencia: este repo tiene flujo propio, no descubrimiento. Historial: disenar antes de implementar. Siguiente condicion: caso real y capacidades verificadas.
+
+### RH-W-0015
+
+Origen: unidad 15, ideas MCP, CLI, binario y terceros. Prioridad: `P3`, comprometer arquitectura sin necesidad seria sobreingenieria. Dependencias: RH-W-0010, RH-W-0012, RH-W-0013 y RH-W-0014. Estado: `deferred`. Completado: formas candidatas y comparacion requerida registradas. Restante: reevaluar necesidades y compromisos. Adiciones: ninguna. Exclusion: sin compromiso actual. Aplazamiento: hasta evidencia medida. Rechazos: ninguno. Evidencia: el paquete Python actual resuelve el uso presente. Historial: aplazado explicitamente, no descartado. Siguiente condicion: demostrar una necesidad que el paquete actual no resuelve limpiamente.
+
+## Registros resueltos
+
+<!-- doc-role:resolved-records -->
+
+### RH-W-0001
+
+Origen: unidad 1, deriva de evidencia. Prioridad: `P0`, todo depende de verdad reconciliada. Dependencias: ninguna. Estado: `completed`. Completado: reconciliacion entre docs, fuente, pruebas, historial, Git y Engram. Restante: `none`. Adicion: resolucion organica sin lecturas exhaustivas. Exclusion: sin cambiar backlog desde una fuente. Aplazamientos: ninguno. Rechazo: confiar en una fuente. Evidencia: contratos y pares bilingues. Historial: completado el 2026-08-13. Siguiente condicion: reabrir solo ante regresion.
+
+### RH-W-0002
+
+Origen: unidad 2, issue #8. Prioridad: `P1`, conflicto de `.codegraph/`. Dependencia: RH-W-0001. Estado: `completed`. Completado: ignore exacto, opt-out persistente, manifiesto, bytes y cambio de plan. Restante: `none`. Adicion: `project.ignoreCodegraph`. Exclusion: sin politica ajena ni escrituras internas. Aplazamientos: ninguno. Rechazo: correccion solo documental. Evidencia: TDD de todos los casos. Historial: completado el 2026-08-13. Siguiente condicion: reabrir ante regresion.
+
+### RH-W-0007
+
+Origen: unidad 7 y hallazgo de Judgment Day. Prioridad: `P2`, falsos faltantes en documentos antiguos. Dependencia: RH-W-0001. Estado: `completed`. Completado: el documento prometido elige vocabulario y ambas direcciones tienen cobertura. Restante: `none`. Adicion: prueba de seccion realmente perdida. Exclusion: sin reescribir parser. Aplazamientos: ninguno. Rechazo: extraer vocabularios independientes. Evidencia: pruebas `test_section_comparison_*`. Historial: evidencia actual reemplazo la fila obsoleta. Siguiente condicion: reabrir ante regresion.
 
 ## Registro de decisiones
 
-- Se evito suponer que Engram, un documento, una prueba o un informe historico pueden establecer por si solos la verdad actual.
-- Se evito tratar el ignore de `.codegraph/` como correccion solo documental porque contradice la politica ejecutable actual.
-- Se evito elegir arquitectura MCP, CLI, binaria o de terceros antes de contar con evidencia fundamentada de consumidores.
-- Resuelto: `.codegraph/` esta activo por defecto, `--no-codegraph-ignore` realiza el opt-out y `project.ignoreCodegraph` conserva la eleccion. Sin resolver: regla de inferencia de idiomas heredados, destino de los flags de `check`, esquema de acciones de integracion aprobadas, umbrales de presupuesto de contexto y forma futura de integracion.
+- Los issues son solo origen, nunca ID ni orden.
+- Las unidades antiguas conservan `RH-W-0001` a `RH-W-0015`; issue #7 es `RH-W-0016` y su excepcion P0 no renumera.
+- La fuga de idioma de session-stop informada por la persona usuaria es `RH-W-0017`; esta lista de forma independiente y no desplaza la unidad de producto RH-W-0003 ya seleccionada.
+- Se evitaron MCP, CLI, binario, terceros, framework de migracion, reescritura general, motor masivo, mutacion de proveedor, promesa de recarga y limite universal sin evidencia.

@@ -23,6 +23,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 - Keep changelog entries factual, dated, concise, and non-duplicated. Link decisions or documentation only when useful.
 - Use `CHANGELOG.md` for completed changes, not future plans. Keep current state and next steps in `docs/repo-harness/current-state.md`.
 - Verify a pending or completed claim against applicable owning evidence before adding, retaining, moving, or removing it.
+- Treat `docs/repo-harness/roadmap.md` as the canonical lifecycle owner. When reality changes, reconcile its `RH-W-####` record, the concise current-state projection, localized peers, and the small Engram topic `work/RH-W-####` in the same work unit.
 - Gentle AI and Engram are required continuity tools. Reconcile Engram with the changelog without blindly overwriting either.
 - Preserve human-owned content and unknown bytes. Never replace them merely to normalize structure.
 
@@ -33,6 +34,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 | How work is done here: purpose, hard rules, gate routing | `REPO-HARNESS.md` |
 | Documentation ownership and map | `docs/repo-harness/README.md` |
 | Detailed current state and recent completed work | `docs/repo-harness/current-state.md` |
+| Pending, deferred, excluded, rejected, or completed lifecycle records | `docs/repo-harness/roadmap.md` |
 | Durable decisions and constraints | `docs/repo-harness/decisions.md` |
 | Chronological completed changes | `CHANGELOG.md` |
 | Temporary session observations | Session output or memory, not durable docs by default |
@@ -41,7 +43,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 
 1. Read the rulebook and documentation map before editing.
 2. Validate referenced paths and identify stale, duplicated, contradictory, or ownerless claims.
-3. Update the smallest canonical owner and repair inbound links when needed.
+3. Update the smallest canonical owner and repair inbound links when needed. For tracked lifecycle changes, reconcile roadmap, current state, localized peers, and continuity in the same work unit.
 4. Keep summaries short and move detail downward into the documentation map.
 5. Re-read changed files and report unresolved ambiguity.
 

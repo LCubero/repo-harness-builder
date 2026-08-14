@@ -8,8 +8,8 @@
 | [README.es.md](../../../README.es.md) | Guia del producto en espanol |
 | [CONTRIBUTING.es.md](../../../CONTRIBUTING.es.md) | Flujo de contribucion, verificacion, revision y merge |
 | [usage.md](usage.md) | Flujo humano y limites de aprobacion |
-| [current-state.md](current-state.md) | Presentacion del estado canonico |
-| [roadmap.md](roadmap.md) | Presentacion completa de la hoja de ruta canonica |
+| [current-state.md](current-state.md) | Proyeccion concisa de actividad, bloqueos, IDs completados y siguiente condicion |
+| [roadmap.md](roadmap.md) | Espejo completo del propietario canonico del ciclo de vida |
 | [decisions.md](decisions.md) | Presentacion de decisiones y restricciones |
 | [i18n-maintenance.md](i18n-maintenance.md) | Contrato de mantenimiento bilingue |
 | [Investigacion](../../repo-harness/i18n-research.md) | Fuentes y decisiones de arquitectura bilingue |

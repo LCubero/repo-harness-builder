@@ -35,21 +35,17 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - Se agrego la [hoja de ruta del harness adaptativo](roadmap.md) como propietaria ordenada del trabajo futuro acotado.
 - Se completo la unidad 1 de la hoja de ruta al exigir que la guia generada del rulebook, inicio de sesion y documentacion reconcilie evidencia propietaria aplicable, informe discrepancias, prefiera la evidencia actual del repositorio sin lecturas ni ejecuciones de pruebas exhaustivas y continue de forma organica sin pedir a la persona usuaria que resuelva hechos verificables.
 - Se completo la unidad 2, seguida por el issue #8, con ignore raiz exacto de `.codegraph/` por defecto, opt-out persistente mediante `--no-codegraph-ignore`, comprobacion desde el manifiesto, integracion de `.gitignore` que preserva bytes y rechazo de planes cambiados.
+- Se completo `RH-W-0016` bajo issue #7: la hoja de ruta posee los registros inmutables y este archivo queda solo como proyeccion activa concisa.
 
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
-La ronda 2 de Judgment Day quedo incompleta: el juez A respondio y el juez B termino por limite de sesion antes de informar. El delta de correccion esta verificado pero sin segunda lectura, y queda una ronda de presupuesto.
-
-- Decidir los cinco hallazgos de la ronda 1 que planteo un solo juez, ninguno auto-corregible bajo la regla de doble confirmacion. El mas serio: `check` deja de inspeccionar el arbol en espanol de cualquier harness instalado antes de que existiera el campo `language`, porque su manifiesto no lo tiene y `declared_languages` cae a solo ingles, asi que borrar un archivo en espanol sigue informando `current`. Los otros: el subcomando `check` anuncia tres flags de idioma y los ignora; `declared_languages` deja pasar valores invalidos y hace que la comprobacion de solo lectura termine con un error que nombra el campo equivocado; dos pruebas documentales incluidas fallan en vez de omitirse en una disposicion monolingue; y `missing_sections` no cubre la direccion entre roles prometidos y contenido real sin roles, que es anterior y marca todos los harness instalados mas antiguos.
-
-- Hacer ejecutables los planes aprobados de reemplazo e integracion sin debilitar la preservacion.
-- Integrar selectores en README existentes mediante una accion acotada y aprobada; hasta entonces, la creacion del par se bloquea de forma segura.
-- Trasladar el informe de revision de `skills-pack-ld9`.
-- Definir como detectar una copia instalada obsoleta del propio constructor.
-- Disenar una capacidad futura del builder que descubra la politica de contribucion y las capacidades reales del proveedor antes de proponer o gestionar `CONTRIBUTING`, issues, ramas, PR, templates, labels o checks.
+- Proyeccion activa: `RH-W-0003` y el defecto de idioma de session-stop recien informado `RH-W-0017` estan `ready`; `RH-W-0004`, `RH-W-0005`, `RH-W-0006`, `RH-W-0008`, `RH-W-0009` y `RH-W-0010` estan bloqueados por prerrequisitos.
+- Proyeccion aplazada: `RH-W-0011` a `RH-W-0015` conservan condiciones explicitas en [roadmap.md](roadmap.md).
+- Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
+- IDs completados recientemente: `RH-W-0016`, `RH-W-0007`, `RH-W-0002`, `RH-W-0001`.
 
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Iniciar la unidad 3: conservar y comprobar arboles de idiomas instalados conocidos cuando un manifiesto heredado no contiene el campo de idioma.
+Avanzar `RH-W-0003`: crear un issue enfocado y una prueba roja con fixture bilingue heredado. Sigue siendo el proximo comportamiento tras la excepcion de prioridad del issue #7.

@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-13
 
+- Completed `RH-W-0016` under issue #7: added lightweight immutable lifecycle records, prerequisite-safe dependencies and advancement conditions, a concise current-state projection, complete Spanish mirrors, same-work-unit documentation/session/Engram reconciliation, and generated contract coverage.
 - Completed roadmap unit 2 under issue #8: default exact `.codegraph/` ignore, persistent `--no-codegraph-ignore` opt-out, manifest-driven checking, byte-preserving root `.gitignore` integration, idempotence, and changed-plan rejection.
 - Required generated harnesses to reconcile applicable owning evidence before classifying repository state, report discrepancies, prefer current repository evidence over memory, verify pending or completed claims without exhaustive reading or testing, and continue organically without asking users to resolve verifiable facts.
 - Added the concise adaptive harness roadmap and its complete Spanish mirror, with evidence ownership, bounded work units, verification, non-goals, and deferred integration decisions.
