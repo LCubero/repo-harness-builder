@@ -30,6 +30,8 @@
 - Confirm apply refuses an existing managed directory or indirect target before creating any file.
 - Confirm the generated `.repo-harness/check.py` is standard-library only, embeds the SHA-256 of exact manifest bytes, reports `current` on a fresh install, treats the `canonical-source:` rewrite as expected rather than drift, and reports a stale or missing runtime copy while writing nothing.
 - Confirm the generated checker rejects malformed JSON, wrong digest, missing or unexpected checker schema fields, invalid integration mode, absolute paths, drive-qualified paths, parent traversal, symlink or reparse ancestors, and outside-resolving paths without outside reads.
+- Confirm every render includes root `.gitattributes` with only `.repo-harness/check.py text eol=lf` and `.repo-harness/manifest.json text eol=lf`; existing human rules remain byte-identical, only missing exact rules append with preserved line endings, matching incompatible text or EOL rules block before writes, and `check` reports only this bounded protection.
+- Confirm a real Git checkout with `core.autocrlf=true` retains LF bytes for both protected files and the generated checker reports `current`; deterministic matching uses repository-relative POSIX paths without host-platform assumptions.
 - Confirm a human-owned file with edited prose reads as `current`, and one missing a promised section reads as `sections-missing` naming that section.
 - Confirm every generated skill carries `license`, `metadata.author`, `metadata.version`, a `References` section, and no automatic discovery trigger.
 - Confirm excluded methodologies, cloud behavior, specialized agents, project branding, and automatic external actions are absent.
@@ -71,7 +73,7 @@ python -B DIR/.repo-harness/check.py
 
 The external command wrapper lives outside this package. Its three contract checks run only when `REPO_HARNESS_COMMAND_PATH` names the wrapper file, and skip otherwise. The path is never inferred from a host directory convention.
 
-`check` and `render` without `--apply` are read-only. Preview prints the exact localized approval prompt, domain, and current digest. Direct CLI calls default to English. Apply requires the newly approved digest plus the exact active-domain approval, creates only `create` entries, and appends only approved exact root pointer or `.codegraph/` ignore directives.
+`check` and `render` without `--apply` are read-only. Preview prints the exact localized approval prompt, domain, and current digest. Direct CLI calls default to English. Apply requires the newly approved digest plus the exact active-domain approval, creates only `create` entries, and appends only approved exact root pointers, the `.codegraph/` ignore directive, or missing generated-contract `.gitattributes` rules.
 
 ## Limitations
 

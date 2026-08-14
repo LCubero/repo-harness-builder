@@ -6,7 +6,7 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes.
-- Canonical suite green: 220 tests passed with 6 skips. `RH-W-0021` now uses fixed generated skill names and integrates the bounded RH-W-0024 migration for exact legacy installations.
+- Canonical suite green: 229 tests passed with 6 skips. `RH-W-0021` uses fixed generated skill names and integrates the bounded RH-W-0024 migration for exact legacy installations; issue #19 adds generated cross-platform LF protection for the checker and manifest.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Generator 3.0, skill package 3.1.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
 - Licensed MIT in `LICENSE` and in both `SKILL.md` copies.
@@ -15,6 +15,7 @@
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
+- Expanded issue #19 into generated cross-platform behavior with exact checker and manifest LF attributes, byte-preserving integration into human-owned `.gitattributes`, conflict blocking, bounded checking, and real `core.autocrlf=true` checkout verification.
 - Split from `skills-pack-ld9` into this repository and bootstrapped its harness.
 - Added the MIT license and aligned the builder skill frontmatter to it.
 - Added the root product guide and documented the recursive self-hosting source model.

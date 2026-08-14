@@ -6,7 +6,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 <!-- doc-role:verified-state -->
 
 - El harness esta presente y el verificador generado informa `current`, salida 0 y 0 escrituras.
-- La suite canonica esta en verde: pasaron 220 pruebas con 6 omisiones. `RH-W-0021` usa nombres fijos e integra la migracion acotada RH-W-0024 para instalaciones heredadas exactas.
+- La suite canonica esta en verde: pasaron 229 pruebas con 6 omisiones. `RH-W-0021` usa nombres fijos e integra la migracion acotada RH-W-0024 para instalaciones heredadas exactas; el issue #19 agrega proteccion LF multiplataforma generada para checker y manifiesto.
 - El conjunto de entornos es `claude-code` y `opencode`; el modo es `integrated`, el generador es 3.0 y el paquete de habilidad es 3.1.
 - La suite cubre estados Git generados, consentimiento por intencion, comparacion exacta del alcance preparado, separacion del indice previo, invalidacion por cambios materiales, resultados delimitados, deteccion sensible, recibos de transporte acotados y contratos de cache del entorno.
 - La licencia MIT figura en `LICENSE` y en ambas copias de `SKILL.md`.
@@ -15,6 +15,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo reciente completado
 <!-- doc-role:recent-work -->
 
+- Se amplio el issue #19 a comportamiento multiplataforma generado con atributos LF exactos para checker y manifiesto, integracion que preserva bytes en `.gitattributes` humano, bloqueo de conflictos, comprobacion acotada y verificacion real de checkout con `core.autocrlf=true`.
 - Se separo el proyecto de `skills-pack-ld9`, se creo su harness y se alineo la licencia MIT.
 - Se agregaron la guia del producto, el modelo recursivo autoalojado y la diferencia entre repositorios vacios y existentes.
 - Se agregaron punteros raiz con preservacion exacta de bytes, clasificacion de actualizaciones previas y el ciclo operativo completo.
