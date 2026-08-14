@@ -13,7 +13,7 @@ import re
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
-MANIFEST_SHA256 = "0a355c943b3657502ff5d61b3fabb696281747ea7b40881764eadd679b0c93ce"
+MANIFEST_SHA256 = "6d3b0fe687c1578847ec1c7fed72abe332d79099c7f91d778242046c9cfbb861"
 MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "writeSemantics", "integrationMode", "language"}
 REPORT_LANGUAGES = {"english", "espanol"}
 DOCUMENTATION_LANGUAGES = {"en", "es"}
@@ -78,15 +78,17 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
     if manifest["generator"] != {"name": "repo-harness-builder", "version": "3.0"}:
         raise ValueError("unexpected manifest generator")
     project = manifest["project"]
-    if not isinstance(project, dict) or set(project) != {"id", "rulebook"}:
+    if not isinstance(project, dict) or set(project) != {"id", "ignoreCodegraph", "rulebook"}:
         raise ValueError("unexpected project schema")
+    if not isinstance(project["ignoreCodegraph"], bool):
+        raise ValueError("unexpected CodeGraph ignore choice")
     safe_relative(project["rulebook"])
     runtimes = manifest["runtimes"]
     if not isinstance(runtimes, list) or len(runtimes) != len(set(runtimes)) or not set(runtimes) <= RUNTIMES:
         raise ValueError("unexpected runtimes")
     if manifest["integrationMode"] not in {"integrated", "standalone"}:
         raise ValueError("unexpected integration mode")
-    if manifest["writeSemantics"] != "additive-create-with-runtime-pointer-append":
+    if manifest["writeSemantics"] != "additive-create-with-bounded-root-append":
         raise ValueError("unexpected write semantics")
     language = manifest["language"]
     if not isinstance(language, dict) or set(language) != {"conversation", "documentation"}:

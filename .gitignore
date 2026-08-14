@@ -3,3 +3,4 @@ __pycache__/
 
 # Gentle AI owns and regenerates this directory
 .atl/
+.codegraph/

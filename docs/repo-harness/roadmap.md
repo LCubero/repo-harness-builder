@@ -37,14 +37,14 @@ This roadmap orders the smallest reviewable work units needed to make `repo-harn
 - Judgment Day round 2 remains incomplete on available evidence.
 - Five round-1 findings remain open: legacy manifests can omit Spanish checks; `check` accepts but ignores language flags; invalid installed language declarations are not normalized when read; two documentation tests assume Spanish files; and promised-role to actual-heading compatibility lacks coverage.
 - Approved replacement and integration execution, existing README selector integration, historical review migration, stale installed builder detection, and consumer contribution harness design remain open.
-- Current tests and validation prohibit `.gitignore` management, so default `.codegraph/` ignoring requires an explicit policy change and its own TDD unit.
+- Roadmap unit 2 completed the one explicit `.gitignore` exception: exact `.codegraph/` by default with a persistent opt-out and no writes inside CodeGraph's directory.
 
 ## Ordered Work Units
 
 | # | Problem and evidence | Bounded outcome | Verification | Explicit non-goals |
 |---|---|---|---|---|
 | 1 | Pending facts can drift when one source is trusted alone. | Complete: defined the evidence reconciliation rule across owning docs, source, tests, history, Git, and Engram as applicable. | Contract tests and same-unit English and Spanish state updates. | No implementation backlog changes without reconciled evidence. |
-| 2 | `.codegraph/` is currently untracked, while tests and validation prohibit `.gitignore` management. | TDD an explicit default-ignore policy with a persistent, checkable user opt-out. | Red-green tests for default, opt-out, idempotence, and preservation. | No silent `.gitignore` edit and no unrelated ignore policy. |
+| 2 | `.codegraph/` was untracked while tests prohibited `.gitignore` management. | Complete under issue #8: default exact ignore with persistent `--no-codegraph-ignore` opt-out and manifest-driven checking. | Red-green tests cover default, opt-out, idempotence, exact matching, byte preservation, and changed plans. | No unrelated ignore policy and no writes inside `.codegraph/`. |
 | 3 | Legacy manifests without language can omit Spanish checking. | Preserve and check known installed locale trees when the language field is absent. | Regression test from a legacy bilingual fixture. | No manifest migration framework. |
 | 4 | `check` advertises language flags but ignores them. | Remove or honor the flags through one unambiguous read-only contract. | CLI behavior and help tests. | No broader CLI redesign. |
 | 5 | Invalid installed language declarations fail without read-time normalization. | Normalize or reject them consistently with correct field-specific diagnostics. | Invalid manifest regression matrix. | No new locale support. |
@@ -64,4 +64,4 @@ This roadmap orders the smallest reviewable work units needed to make `repo-harn
 - Avoided assuming that Engram, one document, one test, or one historical report can establish current truth alone.
 - Avoided treating `.codegraph/` ignore behavior as a documentation-only correction because it contradicts current executable policy.
 - Avoided choosing MCP, CLI, binary, or third-party integration architecture before grounded consumer evidence exists.
-- Unresolved: exact `.codegraph/` opt-out representation, legacy locale inference rule, `check` flag disposition, approved integration action schema, context budget thresholds, and future integration form.
+- Resolved: `.codegraph/` defaults on, `--no-codegraph-ignore` opts out, and `project.ignoreCodegraph` persists the choice. Unresolved: legacy locale inference rule, `check` flag disposition, approved integration action schema, context budget thresholds, and future integration form.

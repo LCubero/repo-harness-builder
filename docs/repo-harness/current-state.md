@@ -40,6 +40,7 @@
 - Completed runtime-set widening reporting: `runtime_set_report()` now returns `unrecorded` runtimes and `staleManifest`, with `RecordedRuntimeSetTests` coverage.
 - Added the [adaptive harness roadmap](roadmap.md) as the ordered owner of bounded future work.
 - Completed roadmap unit 1 by requiring generated rulebook, session-start, and documentation guidance to reconcile applicable owning evidence, report discrepancies, prefer current repository evidence without exhaustive reads or test runs, and continue organically without asking users to resolve verifiable facts.
+- Completed roadmap unit 2, tracked by issue #8, with a default exact `.codegraph/` root ignore, persistent `--no-codegraph-ignore` opt-out, manifest-driven checking, byte-preserving `.gitignore` integration, and changed-plan rejection.
 
 ## Pending Work
 <!-- doc-role:pending-work -->
@@ -56,4 +57,4 @@ Judgment Day round 2 is incomplete: judge A returned, judge B terminated on a se
 ## Next Step
 <!-- doc-role:next-step -->
 
-Start roadmap unit 2: TDD the bounded [default `.codegraph/` ignore policy and persistent opt-out](roadmap.md#ordered-work-units).
+Start roadmap unit 3: preserve and check known installed locale trees when a legacy manifest has no language field.

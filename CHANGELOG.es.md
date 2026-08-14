@@ -4,6 +4,7 @@
 
 ## 2026-08-13
 
+- Se completo la unidad 2 bajo el issue #8: ignore exacto de `.codegraph/` por defecto, opt-out persistente mediante `--no-codegraph-ignore`, comprobacion desde el manifiesto, integracion raiz de `.gitignore` con preservacion de bytes, idempotencia y rechazo de planes cambiados.
 - Se exigio que los harness generados reconcilien evidencia propietaria aplicable antes de clasificar el estado del repositorio, informen discrepancias, prefieran la evidencia actual sobre la memoria, verifiquen pendientes o completados sin lecturas ni pruebas exhaustivas y continuen de forma organica sin pedir a la persona usuaria que resuelva hechos verificables.
 - Se agregaron la hoja de ruta concisa del harness adaptativo y su espejo completo en espanol, con propiedad de evidencia, unidades acotadas, verificacion, no objetivos y decisiones de integracion aplazadas.
 - Se corrigio el estado actual al registrar la cobertura completada de ampliacion del conjunto de runtimes y eliminar solo su pendiente obsoleto.

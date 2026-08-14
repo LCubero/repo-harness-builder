@@ -18,7 +18,7 @@ Do not commit directly to `main`. A maintainer may explicitly authorize an emerg
 
 - Use Python 3.10+ and the standard library. Do not add dependencies without an agreed issue and clear need.
 - Follow [REPO-HARNESS.md](REPO-HARNESS.md). Repository evidence overrides Engram or Gentle AI continuity when they differ.
-- Preserve `.codegraph/` as untracked tool state. Never include it in a commit or PR.
+- Preserve `.codegraph/` as ignored tool state. Never include it in a commit or PR.
 - Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), for example `docs: add contribution workflow` or `fix(checker): detect stale projection`.
 - Commit by deliverable work unit, not by file type. Tests and docs belong with the behavior they verify or explain.
 - Keep PRs easy to review. Around 400 changed lines is a useful target, not an automated gate in this repository. Split work when one reviewer cannot understand it comfortably.

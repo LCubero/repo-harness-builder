@@ -20,9 +20,13 @@ Scope planning evidence to intended write paths, relevant existing ancestors, an
 | Present but obsolete or incompatible | Offer archive and clean-baseline generation separately |
 | Selected root pointer missing its exact directive | Append only the smallest newline-delimited directive |
 | Selected root pointer already containing its exact directive | Leave every byte unchanged |
+| Root `.gitignore` missing exact `.codegraph/` with default enabled | Create it or append only that directive; preserve all existing bytes and line endings |
+| `--no-codegraph-ignore` selected | Record `project.ignoreCodegraph: false`; do not create or edit `.gitignore` |
 | Present as a directory or indirect target | Refuse apply before creating anything |
 
 Root pointer detection matches the exact directive as a complete line. Substrings, comments, prefixes, suffixes, and near-matches do not count. Append preserves every existing byte, uses the file's consistent CRLF convention when present, otherwise uses LF, and adds only the separator needed plus the directive and its terminating newline.
+
+The same byte-preserving integration applies narrowly to root `.gitignore`. Default render records `project.ignoreCodegraph: true` and manages exactly one line, `.codegraph/`. `--no-codegraph-ignore` records false and omits `.gitignore` entirely. `check` reads that manifest boolean so an explicit opt-out is never reinterpreted. The builder never creates or writes anything inside `.codegraph/` and manages no other ignore rule.
 
 ## Prior-Version Upgrades
 
@@ -47,7 +51,7 @@ README language selectors are atomic across peers. If an existing `README.md` do
 After creation, two kinds of file behave differently under `check`:
 
 - **Generated**: canonical skills, runtime projections, wrappers, and the manifest. Compared byte for byte. A difference is reported as `modified`.
-- **Human-owned**: root `README.md`, the rulebook, `CHANGELOG.md`, and everything under `docs/repo-harness/`. Compared only by the level-two sections they promise, ignoring dated entries. This checker tolerance supports project-specific evolution; it does not freeze content or remove the builder's duty to analyze and propose improvements.
+- **Human-owned**: root `README.md`, `.gitignore`, the rulebook, `CHANGELOG.md`, and everything under `docs/repo-harness/`. `.gitignore` keeps every existing byte and only receives the exact approved `.codegraph/` append. Other human-owned files are compared by the sections they promise. This tolerance supports project-specific evolution; it does not freeze content or remove the builder's duty to analyze and propose improvements.
 
 This is the distinction that keeps the check useful. Comparing a rulebook by content would flag every real project as broken on day one.
 
