@@ -1675,10 +1675,20 @@ def declared_languages(root: Path) -> tuple[list[str] | None, str | None]:
     """Read the languages an installed harness declared, tolerating an absent one."""
     try:
         manifest = json.loads((root / MANIFEST_PATH).read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError):
+        return None, None
+    if not isinstance(manifest, dict):
+        return None, None
+    if "language" not in manifest:
+        documentation = [PRIMARY_DOCUMENTATION_LANGUAGE]
+        if (root / "docs/es/repo-harness").is_dir():
+            documentation.append("es")
+        return documentation, None
+    try:
         language = manifest["language"]
         documentation = language["documentation"]
         conversation = language["conversation"]
-    except (OSError, ValueError, KeyError, TypeError):
+    except (KeyError, TypeError):
         return None, None
     if not isinstance(documentation, list) or not isinstance(conversation, str):
         return None, None

@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-08-14
+
+- Completed `RH-W-0003` under issue #11: legacy manifests without language metadata infer only known installed locale trees, preserving English and Spanish expected outputs when Spanish evidence exists while explicit modern declarations remain authoritative.
+
 ## 2026-08-13
 
 - Completed `RH-W-0016` under issue #7: added lightweight immutable lifecycle records, prerequisite-safe dependencies and advancement conditions, a concise current-state projection, complete Spanish mirrors, same-work-unit documentation/session/Engram reconciliation, and generated contract coverage.

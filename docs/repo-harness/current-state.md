@@ -42,16 +42,17 @@
 - Completed roadmap unit 1 by requiring generated rulebook, session-start, and documentation guidance to reconcile applicable owning evidence, report discrepancies, prefer current repository evidence without exhaustive reads or test runs, and continue organically without asking users to resolve verifiable facts.
 - Completed roadmap unit 2, tracked by issue #8, with a default exact `.codegraph/` root ignore, persistent `--no-codegraph-ignore` opt-out, manifest-driven checking, byte-preserving `.gitignore` integration, and changed-plan rejection.
 - Completed `RH-W-0016` under issue #7: the roadmap now durably owns immutable lifecycle records while this file remains only the concise active projection.
+- Completed `RH-W-0003` under issue #11: legacy manifests without language metadata now preserve known installed English and Spanish locale expectations while explicit modern declarations remain authoritative.
 
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Active projection: `RH-W-0003` and the newly reported session-stop language defect `RH-W-0017` are `ready`; `RH-W-0004`, `RH-W-0005`, `RH-W-0006`, `RH-W-0008`, `RH-W-0009`, and `RH-W-0010` are prerequisite-blocked.
+- Active projection: `RH-W-0004`, `RH-W-0006`, and the session-stop language defect `RH-W-0017` are `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, and `RH-W-0010` are prerequisite-blocked.
 - Deferred projection: `RH-W-0011` through `RH-W-0015` retain explicit advancement conditions in [roadmap.md](roadmap.md).
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
-- Recently completed IDs: `RH-W-0016`, `RH-W-0007`, `RH-W-0002`, `RH-W-0001`.
+- Recently completed IDs: `RH-W-0003`, `RH-W-0016`, `RH-W-0007`, `RH-W-0002`, `RH-W-0001`.
 
 ## Next Step
 <!-- doc-role:next-step -->
 
-Advance `RH-W-0003`: start a focused issue and failing legacy bilingual fixture test. It remains the next product behavior after issue #7's priority override.
+Advance `RH-W-0004`: define and test unambiguous behavior for the currently ignored language flags without redesigning the CLI.

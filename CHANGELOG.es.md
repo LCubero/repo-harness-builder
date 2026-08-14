@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-08-14
+
+- Se completo `RH-W-0003` bajo issue #11: los manifests heredados sin metadata de idioma infieren solo arboles localizados conocidos ya instalados, conservando outputs esperados en ingles y espanol cuando existe evidencia espanola, mientras las declaraciones modernas explicitas siguen siendo autoritativas.
+
 ## 2026-08-13
 
 - Se completo `RH-W-0016` bajo issue #7: registros inmutables ligeros, dependencias y condiciones que preservan ideas bloqueadas, proyeccion concisa de estado, espejos completos, reconciliacion documental, de sesiones y Engram en la misma unidad, y cobertura generada.
