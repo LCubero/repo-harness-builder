@@ -18,7 +18,7 @@ No haga commits directos a `main`. Un maintainer puede autorizar explicitamente 
 
 - Use Python 3.10+ y la biblioteca estandar. No agregue dependencias sin un issue acordado y una necesidad clara.
 - Siga [REPO-HARNESS.es.md](REPO-HARNESS.es.md). La evidencia del repositorio prevalece sobre la continuidad de Engram o Gentle AI cuando difieren.
-- Preserve `.codegraph/` como estado de herramienta sin seguimiento. Nunca lo incluya en un commit o PR.
+- Preserve `.codegraph/` como estado de herramienta ignorado. Nunca lo incluya en un commit o PR.
 - Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), por ejemplo `docs: add contribution workflow` o `fix(checker): detect stale projection`.
 - Haga commits por unidad entregable, no por tipo de archivo. Las pruebas y la documentacion pertenecen al comportamiento que verifican o explican.
 - Mantenga los PR faciles de revisar. Unas 400 lineas cambiadas son un objetivo util, no una compuerta automatica de este repositorio. Divida el trabajo cuando una persona no pueda comprenderlo comodamente.

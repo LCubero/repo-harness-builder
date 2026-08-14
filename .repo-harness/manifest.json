@@ -18,6 +18,7 @@
   },
   "project": {
     "id": "repo-harness-builder",
+    "ignoreCodegraph": true,
     "rulebook": "REPO-HARNESS.md"
   },
   "runtimes": [
@@ -25,5 +26,5 @@
     "opencode"
   ],
   "schemaVersion": "3.0",
-  "writeSemantics": "additive-create-with-runtime-pointer-append"
+  "writeSemantics": "additive-create-with-bounded-root-append"
 }

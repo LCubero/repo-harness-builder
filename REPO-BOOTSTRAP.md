@@ -53,7 +53,7 @@ Seed these into `docs/repo-harness/decisions.md` in the new repository.
 - **Historical preservation policy, superseded.** The original additive-create-only rule was replaced by the repository-sensitive policy in `docs/repo-harness/decisions.md`.
 - **Version control is the safety net.** The tool is not presented as a boundary against a hostile filesystem.
 - **Wrappers load by registered name, never by path.** This applies to generated wrappers and to the external command wrapper.
-- **Tool-owned path boundary.** The builder claims no path under `.atl`, `.codegraph`, or `.engram`, and generates no ignore file.
+- **Tool-owned path boundary.** The builder claims no path under `.atl`, `.codegraph`, or `.engram`; its sole ignore-file behavior is the approved exact root `.codegraph/` directive.
 - **Runtime selection is never inferred.** A runtime set is never derived from surfaces found on disk. The CLI takes a repeatable `--runtime` form, and naming a runtime set is itself the permission to plan.
 - **Root pointer attribution.** `CLAUDE.md` counts with `claude-code`. `AGENTS.md` counts with `opencode` or `pi`. Only `REPO-HARNESS.md` and `CHANGELOG.md` are common to every runtime.
 - **Integrated preflight is local.** Defined as `gentle-ai version` plus one successful local Engram MCP call. It does not require Engram Cloud health or sync.
@@ -75,7 +75,7 @@ These entries currently sit in the `skills-pack-ld9` changelog but describe the 
 - Corrected root pointer attribution in both the audit and the plan summary.
 - Replaced the compound runtime question with a single blocking decision.
 - Added a runtime selection contract, plus the repeatable `--runtime` form in the CLI help and the validation reference.
-- Locked the tool-owned path boundary and confirmed no ignore file is generated.
+- Locked the tool-owned path boundary; roadmap unit 2 later added the bounded root `.codegraph/` ignore exception without writing inside the tool directory.
 - Decoupled the packaged test suite from a host-specific command path, so it passes wherever the skill is installed.
 - Bumped the skill package to version 3.1 while the generator version stayed 3.0.
 - Closed eight defects and locked each with tests.

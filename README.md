@@ -17,8 +17,9 @@ The result is less context loss between sessions, safer repository evolution, cl
 1. Install or project the builder skill and command into a supported runtime.
 2. Open the target repository and invoke `/repo-harness-builder`.
 3. Choose the runtime projections and license when asked.
-4. Review the exact plan and use its language-scoped digest-bound approval: `APPROVE` or `DENY` in English, `APROBAR` or `DENEGAR` in Spanish.
-5. Start normal work with the generated `<project>-session-start` skill.
+4. Keep the default root `.codegraph/` ignore, or pass `--no-codegraph-ignore` to persistently opt out.
+5. Review the exact plan and use its language-scoped digest-bound approval: `APPROVE` or `DENY` in English, `APROBAR` or `DENEGAR` in Spanish.
+6. Start normal work with the generated `<project>-session-start` skill.
 
 With no operation, the builder performs a read-only audit. It does not initialize Git, mutate remotes, commit, push, or publish unless those separate actions are later requested and approved.
 
@@ -31,6 +32,7 @@ With no operation, the builder performs a read-only audit. It does not initializ
 - Runtime-neutral session and documentation skills under `.repo-harness/skills/`.
 - Selected Claude Code, OpenCode, or Pi runtime projections.
 - `.repo-harness/check.py` for read-only projection drift checks.
+- One exact root `.gitignore` directive, `.codegraph/`, unless explicitly disabled.
 
 | Part | What it contributes |
 |---|---|
@@ -109,6 +111,8 @@ The builder analyzes relevant existing content and proposes informed integration
 Older harnesses are audited rather than blindly replaced. Managed paths are classified as `current`, `stale`, `missing`, `human-evolved`, or `legacy`. Replacement, integration, archive, and deletion remain proposal-only until explicitly approved.
 
 The README is human-owned after creation. Its bounded builder section identifies the initial harness entry points, while maintainers may evolve the full product guide. Existing `CLAUDE.md` and `AGENTS.md` files are byte-preserved: the builder appends only an exact missing pointer line, and repeated runs are idempotent.
+
+Root `.gitignore` is also human-owned. By default, the approved plan creates it when absent or appends exactly `.codegraph/` when that exact line is missing, preserving BOM, existing bytes, comments, blank lines, line endings, and unrelated rules. `--no-codegraph-ignore` records the opt-out in the manifest and performs no ignore-file mutation.
 
 Operational facts remain single-owned. `REPO-HARNESS.md`, `CHANGELOG.md`, and the English current-state owners are canonical; complete Spanish peers provide localized presentation and link back to those owners. See the [bilingual maintenance contract](docs/repo-harness/i18n-maintenance.md).
 

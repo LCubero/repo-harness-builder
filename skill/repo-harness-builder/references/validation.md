@@ -16,7 +16,7 @@
 - Confirm `docs/repo-harness/usage.md` explains start and resume, repository evidence, the generated congruence check, session stop, integrated availability, durable documentation ownership, and approval boundaries; standalone output must remain repository-only.
 - Generate wrappers only for enabled profiles. Each enabled profile receives a thin read-only `repo-harness-help` wrapper that reads `docs/repo-harness/usage.md`, presents concise help, never loads the builder, never duplicates the guide, never modifies files, and reports a missing guide as an incomplete or outdated harness. Claude Code receives only root `CLAUDE.md`; OpenCode and Pi receive only root `AGENTS.md`; combinations receive the union without duplicate directives.
 - Confirm absent pointers are created minimally, exact existing directives preserve every byte, missing directives append minimally, and unrelated existing files remain unchanged.
-- Confirm preview distinguishes `create`, `append`, `existing`, `identical`, and `blocked`; localizes the complete strict domain; accepts only `APPROVE` or `DENY` for English and only `APROBAR` or `DENEGAR` for Spanish; rejects lowercase, mixed-case, aliases, prose, and cross-language tokens with localized errors; preserves one plan digest across languages; and rejects apply after relevant pointer bytes change.
+- Confirm preview distinguishes `create`, `append`, `existing`, `identical`, and `blocked`; localizes the complete strict domain; accepts only `APPROVE` or `DENY` for English and only `APROBAR` or `DENEGAR` for Spanish; rejects lowercase, mixed-case, aliases, prose, and cross-language tokens with localized errors; preserves one plan digest across languages; and rejects apply after relevant root append bytes change.
 - Confirm Spanish usage, current-state, and decisions contain their required locale phrases, reject known English body leakage, and retain every required semantic role. Treat this as a proportional completeness baseline, never as proof that machine checks establish semantic equivalence.
 - For a repository that declared more than one documentation locale, confirm an empty repository receives reciprocal README selectors, and if `README.md` already exists without a reciprocal `README.es.md` link, require an exact executable integration action or classify Spanish peer creation as blocked and fail apply closed. A repository that declared English only creates no Spanish peer, so this reciprocal requirement does not apply to it.
 - Confirm each selected runtime receives help routed through full render integration, not only direct `help_wrapper` tests, to a usage guide the same render actually creates. Routing follows the declared documentation locales and the conversation language; English and Spanish previews of the same declaration retain the same `planSha256`.
@@ -30,7 +30,7 @@
 - Confirm every generated skill carries `license`, `metadata.author`, `metadata.version`, a `References` section, and no automatic discovery trigger.
 - Confirm excluded methodologies, cloud behavior, specialized agents, project branding, and automatic external actions are absent.
 - Confirm Python 3.10+ standard-library-only operation and absence of forbidden Unicode.
-- Confirm the builder claims no path owned by another tool. `.atl` belongs to Gentle AI, `.codegraph` to CodeGraph, and `.engram` to Engram. No ignore file is generated, and an existing `.gitignore` keeps every byte.
+- Confirm the builder claims no path inside another tool's directory. `.atl` belongs to Gentle AI, `.codegraph` to CodeGraph, and `.engram` to Engram. The sole ignore-file exception is the exact root `.codegraph/` directive, enabled by default and disabled only by the persisted `--no-codegraph-ignore` choice. An existing `.gitignore` keeps every byte and receives only the smallest line-ending-preserving append when that exact line is absent.
 - Confirm the packaged suite passes when the skill directory is installed on its own, with no host directory outside the package required.
 - Confirm the runtime set is never inferred. With none supplied, the audit reports every supported profile and its absent paths, names the set as the open decision, and an empty selection renders the core with no wrapper for any profile.
 
@@ -67,7 +67,7 @@ python -B DIR/.repo-harness/check.py
 
 The external command wrapper lives outside this package. Its three contract checks run only when `REPO_HARNESS_COMMAND_PATH` names the wrapper file, and skip otherwise. The path is never inferred from a host directory convention.
 
-`check` and `render` without `--apply` are read-only. Preview prints the exact localized approval prompt, domain, and current digest. Direct CLI calls default to English. Apply requires the newly approved digest plus the exact active-domain approval, creates only `create` entries, and appends only approved exact root pointer directives.
+`check` and `render` without `--apply` are read-only. Preview prints the exact localized approval prompt, domain, and current digest. Direct CLI calls default to English. Apply requires the newly approved digest plus the exact active-domain approval, creates only `create` entries, and appends only approved exact root pointer or `.codegraph/` ignore directives.
 
 ## Limitations
 

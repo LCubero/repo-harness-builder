@@ -381,17 +381,22 @@ def install(
     runtimes: tuple[str, ...] = (),
     standalone: bool = False,
     documentation_languages: list[str] | None = None,
+    ignore_codegraph: bool = True,
 ) -> dict[str, str]:
     """Render and apply the whole core into an empty root."""
     outputs = TOOL.render(
-        project, list(runtimes), standalone=standalone, documentation_languages=documentation_languages
+        project,
+        list(runtimes),
+        standalone=standalone,
+        documentation_languages=documentation_languages,
+        ignore_codegraph=ignore_codegraph,
     )
     TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
     return outputs
 
 
 class AdditiveWriteTests(unittest.TestCase):
-    """Writes create absent files, with only the exact root pointer append exception."""
+    """Writes create absent files, with exact bounded root append exceptions."""
 
     def test_render_emits_no_ownership_record(self):
         outputs = TOOL.render("Example", ["opencode"])
@@ -399,7 +404,7 @@ class AdditiveWriteTests(unittest.TestCase):
         self.assertFalse(hasattr(TOOL, "OWNERSHIP_PATH"))
 
     def test_render_claims_no_path_owned_by_another_tool(self):
-        """Gentle AI owns `.atl`, CodeGraph owns `.codegraph`, and Git owns ignore files."""
+        """The builder may name CodeGraph's root path but never write inside it."""
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])
         for path in outputs:
             for owned in TOOL_OWNED_PATHS:
@@ -407,23 +412,145 @@ class AdditiveWriteTests(unittest.TestCase):
                     path == owned or path.startswith(f"{owned}/"),
                     f"{path} belongs to {owned}, which this builder must not manage",
                 )
-            self.assertNotIn(".gitignore", path)
 
-    def test_install_writes_no_ignore_file_and_no_tool_owned_directory(self):
+    def test_default_install_creates_only_the_codegraph_ignore_directive(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             install(root, runtimes=("opencode", "claude-code", "pi"))
-            self.assertEqual([str(found) for found in root.rglob(".gitignore")], [])
+            self.assertEqual((root / ".gitignore").read_bytes(), b".codegraph/\n")
             for owned in TOOL_OWNED_PATHS:
                 self.assertFalse((root / owned).exists(), f"{owned} must stay untouched")
 
-    def test_install_preserves_an_ignore_file_that_already_exists(self):
+    def test_codegraph_ignore_append_preserves_bytes_and_line_endings(self):
+        cases = (
+            (b"node_modules", b"node_modules\n.codegraph/\n"),
+            (b"node_modules\n", b"node_modules\n.codegraph/\n"),
+            (b"node_modules\r\n", b"node_modules\r\n.codegraph/\r\n"),
+            (b"\xef\xbb\xbf# keep\r\n\r\nnode_modules", b"\xef\xbb\xbf# keep\r\n\r\nnode_modules\r\n.codegraph/\r\n"),
+        )
+        for original, expected in cases:
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root / ".gitignore"
+                target.write_bytes(original)
+                outputs = TOOL.render("Example", [])
+                plan = TOOL.plan_changes(root, outputs)
+                self.assertEqual([item["path"] for item in plan["append"]], [".gitignore"])
+                TOOL.write_outputs(root, outputs, plan)
+                self.assertEqual(target.read_bytes(), expected)
+
+    def test_exact_codegraph_ignore_line_is_idempotent(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            existing = root / ".gitignore"
-            existing.write_bytes(b"node_modules\n")
-            install(root, runtimes=("opencode",))
-            self.assertEqual(existing.read_bytes(), b"node_modules\n")
+            target = root / ".gitignore"
+            original = b"# human\r\n.codegraph/\r\nnode_modules\r\n"
+            target.write_bytes(original)
+            outputs = TOOL.render("Example", [])
+            plan = TOOL.plan_changes(root, outputs)
+            self.assertIn(".gitignore", [item["path"] for item in plan["existing"]])
+            self.assertNotIn(".gitignore", [item["path"] for item in plan["append"]])
+            TOOL.write_outputs(root, outputs, plan)
+            self.assertEqual(target.read_bytes(), original)
+
+    def test_codegraph_ignore_near_matches_do_not_count(self):
+        for original in (b".codegraph", b"/.codegraph/", b"!.codegraph/", b"# .codegraph/", b"prefix.codegraph/suffix"):
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root / ".gitignore"
+                target.write_bytes(original)
+                outputs = TOOL.render("Example", [])
+                TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+                self.assertEqual(target.read_bytes(), original + b"\n.codegraph/\n")
+
+    def test_opt_out_writes_no_gitignore_and_persists_choice(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = install(root, ignore_codegraph=False)
+            manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+            self.assertFalse(manifest["project"]["ignoreCodegraph"])
+            self.assertNotIn(".gitignore", outputs)
+            self.assertFalse((root / ".gitignore").exists())
+            self.assertEqual(TOOL.check(root, "Example", [])["status"], "current")
+
+    def test_historical_manifest_without_codegraph_choice_uses_default_for_upgrade(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root)
+            manifest_path = root / TOOL.MANIFEST_PATH
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            del manifest["project"]["ignoreCodegraph"]
+            manifest_path.write_text(TOOL.dump_json(manifest), encoding="utf-8", newline="\n")
+            (root / ".gitignore").unlink()
+
+            report = TOOL.check(root, "Example", [])
+            entries = {item["path"]: item["state"] for item in report["files"]}
+            upgrade = TOOL.upgrade_plan(root, "Example", [])
+
+            self.assertEqual(entries[".gitignore"], "missing")
+            self.assertEqual(entries[TOOL.MANIFEST_PATH], "stale")
+            self.assertIn(".gitignore", [item["path"] for item in upgrade["proposals"]])
+            self.assertIn(TOOL.MANIFEST_PATH, [item["path"] for item in upgrade["proposals"]])
+
+    def test_present_non_boolean_codegraph_choice_fails_with_field_diagnostic(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root)
+            manifest_path = root / TOOL.MANIFEST_PATH
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["project"]["ignoreCodegraph"] = "true"
+            manifest_path.write_text(TOOL.dump_json(manifest), encoding="utf-8", newline="\n")
+
+            with self.assertRaisesRegex(TOOL.ContractError, "manifest project.ignoreCodegraph must be boolean"):
+                TOOL.check(root, "Example", [])
+
+    def test_malformed_manifest_keeps_existing_tolerant_default_behavior(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root)
+            (root / TOOL.MANIFEST_PATH).write_bytes(b"not json")
+
+            report = TOOL.check(root, "Example", [])
+
+            self.assertEqual(report["status"], "drift")
+            self.assertEqual(
+                next(item["state"] for item in report["files"] if item["path"] == ".gitignore"),
+                "present",
+            )
+
+    def test_cli_exposes_one_clear_codegraph_opt_out(self):
+        help_result = subprocess.run(
+            ["python", "-B", str(SCRIPT), "render", "--help"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        self.assertIn("--no-codegraph-ignore", help_result.stdout)
+        self.assertNotIn("--codegraph-ignore", help_result.stdout)
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run(
+                [
+                    "python", "-B", str(SCRIPT), "render", "--root", directory,
+                    "--project-name", "Example", "--no-codegraph-ignore",
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            plan = json.loads(result.stdout)
+            self.assertNotIn(".gitignore", [item["path"] for item in plan["create"]])
+
+    def test_apply_rejects_gitignore_changed_after_preview_before_any_write(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / ".gitignore"
+            target.write_bytes(b"previewed\n")
+            outputs = TOOL.render("Example", [])
+            plan = TOOL.plan_changes(root, outputs)
+            target.write_bytes(b"changed after approval\n")
+            with self.assertRaises(TOOL.ContractError):
+                TOOL.write_outputs(root, outputs, plan)
+            self.assertEqual(target.read_bytes(), b"changed after approval\n")
+            self.assertFalse((root / RULEBOOK).exists())
 
     def test_plan_classifies_absent_identical_and_existing(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -1393,7 +1520,7 @@ class GeneratedCoreTests(unittest.TestCase):
             manifest = TOOL.load_json(root / TOOL.MANIFEST_PATH)
             self.assertEqual(manifest["project"]["rulebook"], RULEBOOK)
             self.assertEqual(manifest["runtimes"], ["claude-code", "opencode", "pi"])
-            self.assertEqual(manifest["writeSemantics"], "additive-create-with-runtime-pointer-append")
+            self.assertEqual(manifest["writeSemantics"], "additive-create-with-bounded-root-append")
 
     def test_excluded_methods_and_branding_are_absent(self):
         combined = "\n".join(TOOL.render("Example", ["opencode", "claude-code", "pi"]).values())

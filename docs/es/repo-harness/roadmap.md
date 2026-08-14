@@ -37,14 +37,14 @@ La fuente factual canonica de esta hoja de ruta es [`../../repo-harness/roadmap.
 - La ronda 2 de Judgment Day permanece incompleta segun la evidencia disponible.
 - Cinco hallazgos de la ronda 1 siguen abiertos: los manifiestos heredados pueden omitir comprobaciones en espanol; `check` acepta pero ignora flags de idioma; las declaraciones de idioma instaladas invalidas no se normalizan al leer; dos pruebas documentales suponen archivos en espanol; y falta cobertura de compatibilidad entre roles prometidos y cabeceras reales.
 - Siguen abiertos la ejecucion de reemplazo e integracion aprobados, la integracion de selectores en README existentes, la migracion de la revision historica, la deteccion de un builder instalado obsoleto y el diseno del harness de contribucion para consumidores.
-- Las pruebas y la validacion actuales prohiben gestionar `.gitignore`, por lo que ignorar `.codegraph/` por defecto exige un cambio explicito de politica y su propia unidad TDD.
+- La unidad 2 completo la unica excepcion explicita de `.gitignore`: `.codegraph/` exacto por defecto, opt-out persistente y ninguna escritura dentro del directorio de CodeGraph.
 
 ## Unidades de trabajo ordenadas
 
 | # | Problema y evidencia | Resultado acotado | Verificacion | No objetivos explicitos |
 |---|---|---|---|---|
 | 1 | Los hechos pendientes pueden desviarse cuando se confia en una sola fuente. | Completa: se definio la regla de reconciliacion entre documentos propietarios, codigo, pruebas, historial, Git y Engram segun corresponda. | Pruebas de contrato y actualizaciones de estado en ingles y espanol en la misma unidad. | No cambiar el backlog sin evidencia reconciliada. |
-| 2 | `.codegraph/` esta sin seguimiento, mientras las pruebas y validacion prohiben gestionar `.gitignore`. | Desarrollar con TDD una politica explicita para ignorarlo por defecto con opt-out persistente y comprobable. | Pruebas rojo-verde para valor por defecto, opt-out, idempotencia y preservacion. | Ninguna edicion silenciosa de `.gitignore` ni politica general de ignorados. |
+| 2 | `.codegraph/` estaba sin seguimiento mientras las pruebas prohibian gestionar `.gitignore`. | Completa bajo el issue #8: ignore exacto predeterminado, opt-out persistente con `--no-codegraph-ignore` y comprobacion desde el manifiesto. | Pruebas rojo-verde cubren valor predeterminado, opt-out, idempotencia, coincidencia exacta, preservacion de bytes y planes cambiados. | Ninguna politica de ignore ajena ni escritura dentro de `.codegraph/`. |
 | 3 | Los manifiestos heredados sin idioma pueden omitir comprobaciones en espanol. | Conservar y comprobar arboles de idiomas instalados conocidos cuando falta el campo de idioma. | Prueba de regresion con fixture bilingue heredado. | Ningun framework de migracion de manifiestos. |
 | 4 | `check` anuncia flags de idioma pero los ignora. | Eliminarlos o respetarlos mediante un unico contrato de solo lectura sin ambiguedad. | Pruebas de comportamiento y ayuda CLI. | Ningun rediseno amplio del CLI. |
 | 5 | Las declaraciones de idioma instaladas invalidas fallan sin normalizacion de lectura. | Normalizarlas o rechazarlas de manera uniforme con diagnosticos del campo correcto. | Matriz de regresion de manifiestos invalidos. | Ningun idioma nuevo. |
@@ -64,4 +64,4 @@ La fuente factual canonica de esta hoja de ruta es [`../../repo-harness/roadmap.
 - Se evito suponer que Engram, un documento, una prueba o un informe historico pueden establecer por si solos la verdad actual.
 - Se evito tratar el ignore de `.codegraph/` como correccion solo documental porque contradice la politica ejecutable actual.
 - Se evito elegir arquitectura MCP, CLI, binaria o de terceros antes de contar con evidencia fundamentada de consumidores.
-- Sin resolver: representacion exacta del opt-out de `.codegraph/`, regla de inferencia de idiomas heredados, destino de los flags de `check`, esquema de acciones de integracion aprobadas, umbrales de presupuesto de contexto y forma futura de integracion.
+- Resuelto: `.codegraph/` esta activo por defecto, `--no-codegraph-ignore` realiza el opt-out y `project.ignoreCodegraph` conserva la eleccion. Sin resolver: regla de inferencia de idiomas heredados, destino de los flags de `check`, esquema de acciones de integracion aprobadas, umbrales de presupuesto de contexto y forma futura de integracion.

@@ -15,8 +15,9 @@
 1. Proyecte la habilidad y el comando del constructor en un entorno compatible.
 2. Abra el repositorio objetivo e invoque `/repo-harness-builder`.
 3. Seleccione proyecciones y licencia.
-4. Revise el plan exacto. En espanol, la aprobacion estricta usa `APROBAR` o `DENEGAR`.
-5. Inicie el trabajo normal con la habilidad generada `<proyecto>-session-start`.
+4. Mantenga el ignore predeterminado de `.codegraph/` en la raiz o use `--no-codegraph-ignore` para registrar el opt-out.
+5. Revise el plan exacto. En espanol, la aprobacion estricta usa `APROBAR` o `DENEGAR`.
+6. Inicie el trabajo normal con la habilidad generada `<proyecto>-session-start`.
 
 Sin operacion explicita, el constructor realiza una auditoria de solo lectura. No inicializa Git ni modifica remotos, crea commits, publica o envia cambios.
 
@@ -28,6 +29,7 @@ Sin operacion explicita, el constructor realiza una auditoria de solo lectura. N
 - Documentacion durable en ingles bajo `docs/repo-harness/` y pares en espanol bajo `docs/es/repo-harness/`.
 - Habilidades neutrales bajo `.repo-harness/skills/` y proyecciones para Claude Code, OpenCode o Pi.
 - `.repo-harness/check.py` para comprobaciones de congruencia sin escritura.
+- Una unica directiva `.codegraph/` en `.gitignore` raiz, salvo opt-out explicito.
 
 | Parte | Aporte |
 |---|---|
@@ -101,6 +103,8 @@ Si ya existe `README.md` y falta su par, el plan debe incluir integracion recipr
 ### Actualizaciones seguras
 
 Los harness anteriores se auditan, no se reemplazan a ciegas. Las rutas se clasifican como `current`, `stale`, `missing`, `human-evolved` o `legacy`; reemplazo, integracion, archivo y eliminacion requieren propuesta y aprobacion explicitas.
+
+El `.gitignore` raiz sigue siendo propiedad humana. El plan aprobado crea el archivo si falta o agrega exactamente `.codegraph/` si no existe esa linea, preservando BOM, bytes, comentarios, lineas vacias, finales de linea y reglas ajenas. `--no-codegraph-ignore` registra el opt-out en el manifiesto y no modifica el archivo.
 
 `REPO-HARNESS.md`, `CHANGELOG.md` y los propietarios en ingles del estado durable conservan la verdad operativa unica. Los pares en espanol son presentaciones completas y enlazan a esas fuentes. Consulte el [contrato de mantenimiento bilingue](docs/es/repo-harness/i18n-maintenance.md).
 

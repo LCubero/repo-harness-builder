@@ -34,6 +34,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - Se completo el informe de ampliacion del conjunto de runtimes: `runtime_set_report()` ahora devuelve runtimes `unrecorded` y `staleManifest`, con cobertura de `RecordedRuntimeSetTests`.
 - Se agrego la [hoja de ruta del harness adaptativo](roadmap.md) como propietaria ordenada del trabajo futuro acotado.
 - Se completo la unidad 1 de la hoja de ruta al exigir que la guia generada del rulebook, inicio de sesion y documentacion reconcilie evidencia propietaria aplicable, informe discrepancias, prefiera la evidencia actual del repositorio sin lecturas ni ejecuciones de pruebas exhaustivas y continue de forma organica sin pedir a la persona usuaria que resuelva hechos verificables.
+- Se completo la unidad 2, seguida por el issue #8, con ignore raiz exacto de `.codegraph/` por defecto, opt-out persistente mediante `--no-codegraph-ignore`, comprobacion desde el manifiesto, integracion de `.gitignore` que preserva bytes y rechazo de planes cambiados.
 
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
@@ -51,4 +52,4 @@ La ronda 2 de Judgment Day quedo incompleta: el juez A respondio y el juez B ter
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Iniciar la unidad 2 de la hoja de ruta: desarrollar con TDD la [politica acotada para ignorar `.codegraph/` por defecto y su opt-out persistente](roadmap.md#unidades-de-trabajo-ordenadas).
+Iniciar la unidad 3: conservar y comprobar arboles de idiomas instalados conocidos cuando un manifiesto heredado no contiene el campo de idioma.
