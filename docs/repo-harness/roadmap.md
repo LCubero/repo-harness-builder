@@ -39,7 +39,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | Rejected treating Engram or current-state.md as backlog owner. |
 | Evidence | Focused RED/GREEN lifecycle tests and full repository verification for branch `feat/pending-lifecycle`. |
 | Decision history | 2026-08-13: approved design selected roadmap ownership and lightweight records; priority override placed this foundation before old unit 3. |
-| Next advancement condition | Maintain this contract whenever any tracked reality changes; RH-W-0005 is the next product behavior. |
+| Next advancement condition | Maintain this contract whenever any tracked reality changes; RH-W-0006 is the next product behavior. |
 
 ### RH-W-0017
 | Field | Value |
@@ -234,16 +234,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 5; Judgment Day round-1 finding |
 | Priority | P1: invalid installed declarations fail with misleading diagnostics |
 | Dependencies | RH-W-0003 and RH-W-0004 language contract |
-| Status | ready |
-| Completed work | Invalid read-time declarations and wrong-field diagnostics are identified; RH-W-0003 established installed language discovery and RH-W-0004 completed the render-only CLI language contract. |
-| Remaining work | Normalize or reject declarations consistently with field-specific diagnostics and a regression matrix. |
+| Status | completed |
+| Completed work | Explicit installed `language` declarations now validate object shape, documentation locales through `normalize_documentation_languages()`, and conversation language through `APPROVAL_DOMAINS`, with field-specific diagnostics; absent legacy declarations retain RH-W-0003 inference. |
+| Remaining work | none |
 | Additions | none |
 | Exclusions | No new locale support. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | `declared_languages` passes invalid values through to a hard check failure. |
-| Decision history | 2026-08-13: kept behind the language contract prerequisites. |
-| Next advancement condition | Start with a focused failing diagnostic matrix for invalid installed language declarations, without adding locale support. |
+| Evidence | A 13-row focused RED/GREEN matrix covers valid explicit and missing legacy declarations plus 10 invalid structure, documentation, and conversation cases; canonical and projected package verification preserve exact parity. |
+| Decision history | 2026-08-13: kept behind the language contract prerequisites. 2026-08-14: completed with local installed-declaration validation and no locale, migration, CLI, or RH-W-0006 change. |
+| Next advancement condition | Reopen only if explicit invalid declarations stop failing at their owning manifest field or legacy inference regresses. |
 
 ### RH-W-0006
 | Field | Value |

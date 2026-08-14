@@ -1292,6 +1292,38 @@ class RootPointerTests(unittest.TestCase):
 class CheckTests(unittest.TestCase):
     """Check reports congruence without writing, strict on generated files and lenient on human-owned ones."""
 
+    def test_installed_language_declaration_matrix(self):
+        valid = (
+            ({"language": {"documentation": ["en"], "conversation": "english"}}, (["en"], "english")),
+            ({"language": {"documentation": ["en", "es"], "conversation": "espanol"}}, (["en", "es"], "espanol")),
+            ({"project": {"id": "legacy"}}, (["en"], None)),
+        )
+        invalid = (
+            ({"language": []}, "manifest language must be an object"),
+            ({"language": {"conversation": "english"}}, "manifest language.documentation is required"),
+            ({"language": {"documentation": "en", "conversation": "english"}}, "manifest language.documentation must be a list"),
+            ({"language": {"documentation": [], "conversation": "english"}}, "manifest language.documentation: documentation languages must not be empty"),
+            ({"language": {"documentation": ["en", "en"], "conversation": "english"}}, "manifest language.documentation: duplicate documentation language: ['en', 'en']"),
+            ({"language": {"documentation": ["en", "fr"], "conversation": "english"}}, "manifest language.documentation: unsupported documentation language: ['fr']"),
+            ({"language": {"documentation": ["es"], "conversation": "english"}}, "manifest language.documentation: English is the AI-read surface and stays the primary documentation language, not es"),
+            ({"language": {"documentation": ["en"]}}, "manifest language.conversation is required"),
+            ({"language": {"documentation": ["en"], "conversation": ["english"]}}, "manifest language.conversation must be a string"),
+            ({"language": {"documentation": ["en"], "conversation": "francais"}}, "manifest language.conversation: unsupported conversation language: francais"),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest_path = root / TOOL.MANIFEST_PATH
+            manifest_path.parent.mkdir(parents=True)
+            for manifest, expected in valid:
+                with self.subTest(manifest=manifest):
+                    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+                    self.assertEqual(TOOL.declared_languages(root), expected)
+            for manifest, expected in invalid:
+                with self.subTest(manifest=manifest):
+                    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+                    with self.assertRaisesRegex(TOOL.ContractError, f"^{re.escape(expected)}$"):
+                        TOOL.declared_languages(root)
+
     def test_check_writes_nothing(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -1505,6 +1537,7 @@ class GeneratedCoreTests(unittest.TestCase):
         if not path.is_file():
             self.skipTest("repository lifecycle fixture is outside the portable package")
         roadmap = path.read_text(encoding="utf-8")
+        spanish_roadmap = (ROOT.parents[1] / "docs/es/repo-harness/roadmap.md").read_text(encoding="utf-8")
         for unit in range(1, 16):
             self.assertIn(f"Roadmap unit {unit}", roadmap)
             self.assertIn(f"### RH-W-{unit:04d}", roadmap)
@@ -1518,6 +1551,10 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(fact, roadmap)
         self.assertLess(roadmap.index("### RH-W-0016"), roadmap.index("### RH-W-0003"))
+        self.assertIn("RH-W-0006 is the next product behavior", roadmap)
+        self.assertNotIn("RH-W-0005 is the next product behavior", roadmap)
+        self.assertIn("RH-W-0006 sigue como proximo comportamiento", spanish_roadmap)
+        self.assertNotIn("RH-W-0005 sigue como proximo comportamiento", spanish_roadmap)
 
     def test_runtime_projections_use_the_current_canonical_contract(self):
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])

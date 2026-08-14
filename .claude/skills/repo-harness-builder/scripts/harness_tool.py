@@ -2127,15 +2127,23 @@ def declared_languages(root: Path) -> tuple[list[str] | None, str | None]:
         if (root / "docs/es/repo-harness").is_dir():
             documentation.append("es")
         return documentation, None
+    language = manifest["language"]
+    require(isinstance(language, dict), "manifest language must be an object")
+    require("documentation" in language, "manifest language.documentation is required")
+    documentation = language["documentation"]
+    require(isinstance(documentation, list), "manifest language.documentation must be a list")
     try:
-        language = manifest["language"]
-        documentation = language["documentation"]
-        conversation = language["conversation"]
-    except (KeyError, TypeError):
-        return None, None
-    if not isinstance(documentation, list) or not isinstance(conversation, str):
-        return None, None
-    return documentation, conversation
+        normalized_documentation = normalize_documentation_languages(documentation)
+    except ContractError as error:
+        raise ContractError(f"manifest language.documentation: {error}") from error
+    require("conversation" in language, "manifest language.conversation is required")
+    conversation = language["conversation"]
+    require(isinstance(conversation, str), "manifest language.conversation must be a string")
+    require(
+        conversation in APPROVAL_DOMAINS,
+        f"manifest language.conversation: unsupported conversation language: {conversation}",
+    )
+    return list(normalized_documentation), conversation
 
 
 def declared_codegraph_ignore(root: Path) -> bool:

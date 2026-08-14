@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-14
 
+- Completed `RH-W-0005`: explicit installed manifest language declarations now fail closed with field-specific diagnostics for invalid structure, documentation locales, and conversation language, while missing legacy declarations retain installed-locale inference.
 - Completed `RH-W-0004`: language selection flags are now render-only, so `check` rejects report, documentation, and conversation language arguments instead of silently ignoring them, while render semantics remain unchanged.
 - Completed `RH-W-0017`: generated Spanish session-stop contracts now localize the human-facing commit-only approval sentence while preserving exact-path staging scope and the unchanged proposed commit message placeholder.
 - Expanded issue #19 from a self-hosted Windows hotfix into generated product behavior: every render now includes exact LF attributes for the checker and manifest, existing human `.gitattributes` receives only missing byte-preserving rules, conflicting matches block before writes, and checkout-level coverage proves the digest contract under `core.autocrlf=true` without a repository-wide line-ending policy.
