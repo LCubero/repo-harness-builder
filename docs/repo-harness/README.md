@@ -16,6 +16,8 @@
 | [i18n-maintenance.md](i18n-maintenance.md) | Bilingual ownership, synchronization, and link contract |
 | [i18n-research.md](i18n-research.md) | Primary-source research and architecture tradeoffs |
 | [contribution-workflow-research.md](contribution-workflow-research.md) | Primary-source comparison and recommendation for contribution policy |
+| [integration-research.md](integration-research.md) | Canonical primary-source research owner for generic Gentle AI and Engram integration |
+| [rh-w-0025-implementation-plan.md](rh-w-0025-implementation-plan.md) | Canonical executable implementation plan for capability-aware Gentle AI and Engram coordination |
 | [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |
 | [CHANGELOG.md](../../CHANGELOG.md) | Factual, dated, concise completed changes; never future plans |
 

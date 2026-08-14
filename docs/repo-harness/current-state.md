@@ -54,7 +54,7 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Active projection: `RH-W-0004`, `RH-W-0006`, and `RH-W-0019` are `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, and `RH-W-0010` are prerequisite-blocked.
+- Active projection: `RH-W-0004`, `RH-W-0006`, and `RH-W-0019` are `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, `RH-W-0010`, and the capability-aware Gentle AI and Engram contract `RH-W-0025` are prerequisite-blocked. RH-W-0025 waits for RH-W-0008 content-bound replacement and integration.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015` and the unattended internal-maintenance idea `RH-W-0018` retain explicit advancement conditions in [roadmap.md](roadmap.md).
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
@@ -63,4 +63,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Advance `RH-W-0004` next by resolving the ignored language flags through its bounded CLI contract. The remaining ready units, in recommended order, are `RH-W-0006` and `RH-W-0019`. Each carries its own starting condition in [roadmap.md](roadmap.md). Take one unit per branch and do not bundle them.
+Advance `RH-W-0004` next by resolving the ignored language flags through its bounded CLI contract. The other ready units are `RH-W-0006` and `RH-W-0019`. RH-W-0025 advances only after RH-W-0008 completes, then starts with failing capability and authority-boundary contract tests. Each carries its own starting condition in [roadmap.md](roadmap.md). Take one unit per branch and do not bundle them.

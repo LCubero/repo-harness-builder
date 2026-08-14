@@ -177,6 +177,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Decision history | 2026-08-14: implemented as the smallest independently verified prerequisite slice of RH-W-0008; RH-W-0021 then integrated this capability into its naming work unit and completed. |
 | Next advancement condition | Use this bounded action in RH-W-0021 without widening it into a general upgrade executor. |
 
+### RH-W-0025
+| Field | Value |
+|---|---|
+| Origin | Approved capability-aware Gentle AI and Engram integration design, supported by [primary-source integration research](integration-research.md) |
+| Priority | P2: capability loss and authority drift need explicit behavior, but current repository workflows remain functional and no active unsafe mutation or data-loss defect is demonstrated |
+| Dependencies | RH-W-0008 approved replacement and integration executor; RH-W-0022 remains related and independent |
+| Status | blocked |
+| Completed work | Completed primary-source research and approved a generic coordination contract with repository, Engram, Gentle AI, integrated, standalone, promotion, and component-degradation boundaries. |
+| Remaining work | After RH-W-0008 provides content-bound replacement and integration for existing generated outputs, implement bounded coordination in canonical builder sources, synchronize checked-in builder package projections, and run a separate approved regeneration follow-up for existing self-hosted consumer owners. |
+| Additions | The repository owns durable truth, source, tests, policy, backlog, and approvals. Engram owns semantic memory, relations and conflicts, review-age metadata, and session continuity. Gentle AI optionally owns routing, exact-candidate review and receipts, and delivery gates when enabled. The harness composes available capabilities without another state machine. Integrated mode uses Gentle AI and Engram together. Standalone mode applies when neither is available and uses repository evidence plus approved repository continuity only. Generated consumer harnesses stay generic; this self-hosted repository applies that same rule to its own product source. Durable reusable discoveries are promoted selectively to canonical repository owners after human approval, changing external facts are marked current and revalidated, and incidental noise is not persisted. Component failure degrades only that component unless repository policy makes it mandatory. |
+| Exclusions | No auto-enabling review, fabricated approval, copied authority, synthetic SDD, duplicate lifecycle, receipt, or conflict stores, loop-until-clean behavior, third state machine, product-specific consumer wording, or implementation in this documentation work unit. |
+| Deferrals | none |
+| Rejections | Rejected making memory authoritative, treating disabled capabilities as approval or denial, persisting incidental noise, and coupling this work to RH-W-0022 without an implementation need. |
+| Evidence | The approved design and pinned-source analysis are recorded in [integration-research.md](integration-research.md). Current `plan_changes()` classifies non-identical existing outputs as `existing`; `write_outputs()` writes only create/append plus the narrow RH-W-0024 migration; that migration owns legacy skill renaming and manifest/checker replacement only. |
+| Decision history | 2026-08-14: research completed and the user explicitly approved the conceptual design. Registered as ready because scope, non-goals, implementation surfaces, start condition, and required tests were bounded. 2026-08-14: changed to blocked after verified executor evidence showed self-hosted regeneration requires RH-W-0008; widening RH-W-0025 would duplicate that owner's approved responsibility. |
+| Next advancement condition | Blocker clears when RH-W-0008 completes with an approved content-bound replacement/integration executor for existing generated outputs. Then begin RH-W-0025 with failing contract tests and require a separate digest-bound, human-approved self-hosted regeneration follow-up; RH-W-0022 remains independent. |
+
 ### RH-W-0003
 | Field | Value |
 |---|---|
@@ -445,6 +462,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 - The wrapper provenance cost is `RH-W-0019`, the product README drift is `RH-W-0020`, and the fixed `repo-harness-` skill prefix is `RH-W-0021`. `RH-W-0020` was documentation-only, `RH-W-0019` is ready, and `RH-W-0021` completed through the bounded RH-W-0024 action.
 - The documentation relationship map is `RH-W-0022` and stays `proposed`, not `ready`. Its scope boundary is the entire risk: declared documentation edges are the request, a code or dependency graph is not, and CodeGraph already owns code structure.
 - The bounded generated-output migration is `RH-W-0024`, the completed issue #16 prerequisite slice of RH-W-0008. It unblocks the safe mechanism required by RH-W-0021 without completing the rename itself.
+- The generic capability-aware Gentle AI and Engram coordination contract is `RH-W-0025` at `P2` and is blocked on `RH-W-0008`, which owns content-bound replacement and integration for existing generated outputs. It keeps repository authority primary, composes optional owners without a third state machine, and remains separate from but related to `RH-W-0022`.
 - English is mandatory as the primary documentation locale, and the reason is now a standing decision rather than a bare `require()`. See [decisions.md](decisions.md).
 - A speculative cross-repository name collision was raised against `RH-W-0021` and withdrawn. Generated skills are repository-scoped and there is no global installation, so the risk was a future problem that is not real. Solve the problem in front of you.
 - Avoided choosing MCP, CLI, binary, third-party, migration-framework, general README rewrite, bulk upgrade, provider mutation, runtime reload, or universal human-doc cap without evidence.
