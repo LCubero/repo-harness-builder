@@ -43,16 +43,30 @@
 - Completed roadmap unit 2, tracked by issue #8, with a default exact `.codegraph/` root ignore, persistent `--no-codegraph-ignore` opt-out, manifest-driven checking, byte-preserving `.gitignore` integration, and changed-plan rejection.
 - Completed `RH-W-0016` under issue #7: the roadmap now durably owns immutable lifecycle records while this file remains only the concise active projection.
 - Completed `RH-W-0003` under issue #11: legacy manifests without language metadata now preserve known installed English and Spanish locale expectations while explicit modern declarations remain authoritative.
+- Completed `RH-W-0020`: the product `README.md` and `README.es.md` stopped promising unconditional bilingual output. They now state the declared-locale contract, record that an existing repository never gains a locale it lacks, and the Spanish peer is faithful to the English owner again.
 
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Active projection: `RH-W-0004`, `RH-W-0006`, and the session-stop language defect `RH-W-0017` are `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, and `RH-W-0010` are prerequisite-blocked.
+- Active projection: `RH-W-0021`, `RH-W-0017`, `RH-W-0004`, `RH-W-0006`, and `RH-W-0019` are `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, and `RH-W-0010` are prerequisite-blocked.
 - Deferred projection: `RH-W-0011` through `RH-W-0015` and the unattended internal-maintenance idea `RH-W-0018` retain explicit advancement conditions in [roadmap.md](roadmap.md).
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
-- Recently completed IDs: `RH-W-0003`, `RH-W-0016`, `RH-W-0007`, `RH-W-0002`, `RH-W-0001`.
+- Recently completed IDs: `RH-W-0020`, `RH-W-0003`, `RH-W-0016`, `RH-W-0007`, `RH-W-0002`.
 
 ## Next Step
 <!-- doc-role:next-step -->
 
-Advance `RH-W-0004`: define and test unambiguous behavior for the currently ignored language flags without redesigning the CLI.
+Advance `RH-W-0021`: rename the generated skills to the fixed `repo-harness-` prefix.
+
+The four ready units after it, in recommended order, are `RH-W-0017`, `RH-W-0004`, `RH-W-0006`, and `RH-W-0019`. Each one carries its own starting condition in [roadmap.md](roadmap.md). Take one unit per branch and do not bundle them.
+
+### Starting `RH-W-0021`
+
+The full record, evidence, and exclusions live in [roadmap.md](roadmap.md). The ordered path is:
+
+1. Write failing tests asserting the generated names `repo-harness-session-start`, `repo-harness-session-stop`, and `repo-harness-documentation`.
+2. Rename in the canonical source only: `skill/repo-harness-builder/scripts/harness_tool.py`. Names are built at lines 365, 466, 555, and 1455-1457, consumed at 657-658, 842-844, 1049-1051, and 1161-1162, and stripped for command names at 1475.
+3. Keep command names unchanged. `removeprefix` must still yield `session-start`, `session-stop`, and `documentation`.
+4. Regenerate this repository's own harness: rename the directories under `.repo-harness/skills/`, `.claude/skills/`, and `.opencode/skills/`, and update `.repo-harness/manifest.json` in the same step. The checker fails until the manifest and the directories agree.
+5. Update every document that names a skill, English and Spanish, including `REPO-HARNESS.md`, `README.md`, `CONTRIBUTING.md`, `AGENTS.md`, `CLAUDE.md`, and the `docs/` trees.
+6. Run the canonical suite and `python .repo-harness/check.py`, then reconcile the `RH-W-0021` record, this projection, its Spanish peer, and the Engram topic in the same work unit.

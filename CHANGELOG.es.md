@@ -4,6 +4,8 @@
 
 ## 2026-08-14
 
+- Se completo `RH-W-0020`: se corrigieron el `README.md` y el `README.es.md` de producto, que seguian prometiendo salida bilingue incondicional despues de que el idioma de documentacion paso a ser una eleccion declarada. Ambos listan ahora solo lo que produce un harness en ingles, incorporan una seccion de idioma de la documentacion con el contrato de locales declarados, registran que un repositorio existente nunca gana un locale que no tenia, y el par espanol volvio a ser fiel al propietario en ingles.
+- Se registraron `RH-W-0019` por la linea de procedencia visible al prompt en los wrappers y `RH-W-0021` por el prefijo fijo `repo-harness-` en las habilidades generadas, con un camino de arranque guiado para `RH-W-0021` en el estado actual.
 - Se completo `RH-W-0003` bajo issue #11: los manifests heredados sin metadata de idioma infieren solo arboles localizados conocidos ya instalados, conservando outputs esperados en ingles y espanol cuando existe evidencia espanola, mientras las declaraciones modernas explicitas siguen siendo autoritativas.
 
 ## 2026-08-13

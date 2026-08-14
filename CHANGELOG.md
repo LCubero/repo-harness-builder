@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-14
 
+- Completed `RH-W-0020`: corrected the product `README.md` and `README.es.md`, which still promised unconditional bilingual output after documentation language became a declared choice. Both now list only what an English-only harness produces, carry a `Documentation Language` section stating the declared-locale contract, record that an existing repository never gains a locale it lacks, and the Spanish peer is faithful to the English owner again.
+- Registered `RH-W-0019` for the prompt-visible wrapper provenance line and `RH-W-0021` for the fixed `repo-harness-` generated skill prefix, with a guided starting path for `RH-W-0021` in current state.
 - Completed `RH-W-0003` under issue #11: legacy manifests without language metadata infer only known installed locale trees, preserving English and Spanish expected outputs when Spanish evidence exists while explicit modern declarations remain authoritative.
 
 ## 2026-08-13
