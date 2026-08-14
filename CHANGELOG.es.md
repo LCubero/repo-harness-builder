@@ -12,6 +12,7 @@
 - Se corrigio la comparacion por secciones para que el documento prometido elija el vocabulario de ambos lados, terminando con un informe falso que nombraba todas las secciones de un documento que demostrablemente las conservaba.
 - Se limito la comprobacion de idioma en documentos de propiedad humana al ingles sin traducir en lugar de fijar frases sembradas que hacian que reescribir legitimamente se leyera como deriva, mientras la salida generada conserva su base requerida completa.
 - Se incorporaron los marcadores `doc-role` y se actualizaron los envoltorios `repo-harness-help` de este repositorio, dejando en `current` tanto el check del constructor como el verificador generado.
+- Se enruto la ayuda generada y los puntos de entrada de la vista previa por los idiomas de documentacion declarados y el idioma de conversacion en lugar del idioma del informe, de modo que un artefacto generado ya no puede nombrar una guia que esa misma corrida no crea, y ningun byte renderizado depende del idioma del informe.
 
 ## 2026-08-12
 

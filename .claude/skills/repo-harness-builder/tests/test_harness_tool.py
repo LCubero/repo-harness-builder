@@ -171,8 +171,8 @@ class ProductWorkflowTests(unittest.TestCase):
         self.assertNotEqual(TOOL.structural_headings(outputs["docs/repo-harness/usage.md"]), TOOL.structural_headings(outputs["docs/es/repo-harness/usage.md"]))
 
     def test_help_routes_to_the_active_language_without_mixed_approval_tokens(self):
-        english = TOOL.help_wrapper("opencode", "english")
-        spanish = TOOL.help_wrapper("opencode", "espanol")
+        english = TOOL.help_wrapper("opencode", "english", ["en", "es"])
+        spanish = TOOL.help_wrapper("opencode", "espanol", ["en", "es"])
         self.assertIn("docs/repo-harness/usage.md", english)
         self.assertNotIn("docs/es/repo-harness/usage.md", english)
         self.assertIn("docs/es/repo-harness/usage.md", spanish)
@@ -181,20 +181,72 @@ class ProductWorkflowTests(unittest.TestCase):
         self.assertNotIn("APROBAR", english)
         self.assertNotIn("DENEGAR", english)
 
-    def test_render_routes_generated_help_to_the_resolved_report_language(self):
-        outputs = TOOL.render("Example", ["opencode"], report_language="espanol")
-        text = outputs[".opencode/commands/repo-harness-help.md"]
-        self.assertIn("docs/es/repo-harness/usage.md", text)
-        self.assertNotIn("docs/repo-harness/usage.md", text)
+    def test_render_routes_generated_help_to_a_guide_the_same_render_creates(self):
+        """Whatever guide the wrapper names, that exact file must be in the outputs."""
+        for documentation, conversation in ((["en", "es"], "espanol"), (["en"], "english")):
+            with self.subTest(documentation=documentation, conversation=conversation):
+                outputs = TOOL.render(
+                    "Example", ["opencode"], documentation_languages=documentation, conversation_language=conversation
+                )
+                text = outputs[".opencode/commands/repo-harness-help.md"]
+                named = [path for path in ("docs/es/repo-harness/usage.md", "docs/repo-harness/usage.md") if path in text]
+                self.assertEqual(len(named), 1)
+                self.assertIn(named[0], outputs)
+        spanish = TOOL.render(
+            "Example", ["opencode"], documentation_languages=["en", "es"], conversation_language="espanol"
+        )[".opencode/commands/repo-harness-help.md"]
+        self.assertIn("docs/es/repo-harness/usage.md", spanish)
 
-    def test_report_language_exposes_localized_documentation_entry_points(self):
+    def test_documentation_entry_points_name_only_files_the_plan_creates(self):
+        """The preview never advertises a reader document the render does not emit."""
         with tempfile.TemporaryDirectory() as directory:
             base = ["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example"]
             english = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
-            spanish = json.loads(subprocess.run([*base, "--report-language", "espanol"], check=True, capture_output=True, text=True).stdout)
+            bilingual = json.loads(subprocess.run([*base, "--documentation-language", "en", "--documentation-language", "es", "--conversation-language", "espanol"], check=True, capture_output=True, text=True).stdout)
             self.assertEqual(english["documentation"], {"readme": "README.md", "usage": "docs/repo-harness/usage.md"})
-            self.assertEqual(spanish["documentation"], {"readme": "README.es.md", "usage": "docs/es/repo-harness/usage.md"})
-            self.assertEqual(english["planSha256"], spanish["planSha256"])
+            self.assertEqual(bilingual["documentation"], {"readme": "README.es.md", "usage": "docs/es/repo-harness/usage.md"})
+            for payload, outputs in (
+                (english, TOOL.render("Example", [])),
+                (bilingual, TOOL.render("Example", [], documentation_languages=["en", "es"], conversation_language="espanol")),
+            ):
+                for path in payload["documentation"].values():
+                    self.assertIn(path, outputs)
+
+    def test_preview_omits_documentation_entry_points_blocked_by_the_plan(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "README.md").write_text("# Human product guide\n", encoding="utf-8")
+            command = [
+                "python", "-B", str(SCRIPT), "render", "--root", str(root),
+                "--project-name", "Example", "--documentation-language", "en",
+                "--documentation-language", "es", "--conversation-language", "espanol",
+            ]
+            payload = json.loads(subprocess.run(command, check=True, capture_output=True, text=True).stdout)
+            self.assertIn("README.es.md", [item["path"] for item in payload["blocked"]])
+            self.assertNotIn("README.es.md", payload["documentation"].values())
+            self.assertEqual(payload["documentation"]["usage"], "docs/es/repo-harness/usage.md")
+
+    def test_spanish_conversation_without_spanish_documentation_routes_to_an_existing_guide(self):
+        """The defect: conversation language alone must never promise an unbuilt locale."""
+        outputs = TOOL.render("Example", ["opencode", "claude-code"], conversation_language="espanol")
+        self.assertNotIn("docs/es/repo-harness/usage.md", outputs)
+        for path in (".opencode/commands/repo-harness-help.md", ".claude/commands/repo-harness-help.md"):
+            with self.subTest(path=path):
+                text = outputs[path]
+                self.assertIn("docs/repo-harness/usage.md", text)
+                self.assertNotIn("docs/es/repo-harness/usage.md", text)
+        self.assertEqual(
+            TOOL.documentation_entry_points("espanol", ("en",)),
+            {"readme": "README.md", "usage": "docs/repo-harness/usage.md"},
+        )
+
+    def test_documentation_routing_rejects_declarations_render_would_reject(self):
+        invalid = (("es",), ("en", "en"), ("en", "fr"), ())
+        for languages in invalid:
+            with self.subTest(languages=languages), self.assertRaises(TOOL.ContractError):
+                TOOL.localized_documentation("espanol", languages)
+            with self.subTest(languages=languages), self.assertRaises(TOOL.ContractError):
+                TOOL.documentation_entry_points("espanol", languages)
 
     def test_checker_accepts_human_evolved_localized_headings_by_semantic_contract(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -265,6 +317,22 @@ class ProductWorkflowTests(unittest.TestCase):
         self.assertIn("analyze", combined)
         self.assertIn("archive", combined)
         self.assertIn("must not require `APROBAR`", combined)
+
+    def test_builder_collects_language_dimensions_without_a_shared_placeholder(self):
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("ask for the conversation language", skill)
+        self.assertIn("ask for the documentation languages", skill)
+        self.assertIn("--report-language REPORT_LANGUAGE", skill)
+        self.assertIn("--conversation-language CONVERSATION_LANGUAGE", skill)
+        self.assertNotIn("--report-language LANGUAGE", skill)
+
+    def test_command_keeps_report_conversation_and_documentation_languages_separate(self):
+        command = external_command_text()
+        self.assertIn("report language", command)
+        self.assertIn("conversation language", command)
+        self.assertIn("documentation languages", command)
+        self.assertIn("only when Spanish documentation is declared", command)
+        self.assertNotIn("binding for every user-facing word, documentation entry point", command)
 
     def test_existing_repository_policy_offers_integration_or_clean_baseline(self):
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -869,10 +937,14 @@ class GeneratedCoreTests(unittest.TestCase):
         """How the builder talks while building never changes what it builds."""
         english = TOOL.render("Example", ["claude-code"], report_language="english")
         spanish = TOOL.render("Example", ["claude-code"], report_language="espanol")
-        self.assertEqual(
-            json.loads(english[".repo-harness/manifest.json"])["language"],
-            json.loads(spanish[".repo-harness/manifest.json"])["language"],
+        self.assertEqual(english, spanish)
+        bilingual_english = TOOL.render(
+            "Example", ["claude-code"], report_language="english", documentation_languages=["en", "es"], conversation_language="espanol"
         )
+        bilingual_spanish = TOOL.render(
+            "Example", ["claude-code"], report_language="espanol", documentation_languages=["en", "es"], conversation_language="espanol"
+        )
+        self.assertEqual(bilingual_english, bilingual_spanish)
 
     def test_documentation_languages_reject_unknown_or_non_english_primary(self):
         """English is the AI-read surface, so it stays the primary documentation language."""

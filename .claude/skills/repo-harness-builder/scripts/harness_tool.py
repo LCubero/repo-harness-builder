@@ -16,6 +16,7 @@ import json
 import re
 import sys
 import tempfile
+from collections.abc import Sequence
 from datetime import date
 from pathlib import Path, PurePosixPath
 from typing import Any, Optional
@@ -102,10 +103,30 @@ def approval_granted(answer: str, report_language: str = DEFAULT_REPORT_LANGUAGE
     return answer == domain["approve"]
 
 
-def documentation_entry_points(report_language: str = DEFAULT_REPORT_LANGUAGE) -> dict[str, str]:
-    """Return reader-first documentation paths for one resolved interaction language."""
-    approval_domain(report_language)
-    if report_language == "espanol":
+def localized_documentation(
+    conversation_language: str,
+    documentation_languages: Sequence[str] = (PRIMARY_DOCUMENTATION_LANGUAGE,),
+) -> bool:
+    """Report whether the harness contains Spanish reader documentation to route to.
+
+    Routing follows what the harness actually emits: the conversation language alone
+    never promises a locale the declared documentation languages do not create.
+    """
+    languages = normalize_documentation_languages(list(documentation_languages))
+    return conversation_language == "espanol" and "es" in languages
+
+
+def documentation_entry_points(
+    conversation_language: str = DEFAULT_REPORT_LANGUAGE,
+    documentation_languages: Sequence[str] = (PRIMARY_DOCUMENTATION_LANGUAGE,),
+) -> dict[str, str]:
+    """Return reader-first documentation paths the harness actually contains.
+
+    A locale is named only when it is declared and therefore emitted; the entry
+    points never advertise a file the plan does not create.
+    """
+    approval_domain(conversation_language)
+    if localized_documentation(conversation_language, documentation_languages):
         return {"readme": "README.es.md", "usage": "docs/es/repo-harness/usage.md"}
     return {"readme": "README.md", "usage": "docs/repo-harness/usage.md"}
 
@@ -1136,10 +1157,22 @@ def wrapper(runtime: str, skill_name: str) -> str:
     )
 
 
-def help_wrapper(runtime: str, report_language: str = DEFAULT_REPORT_LANGUAGE) -> str:
-    """Render the thin read-only harness help command."""
+def help_wrapper(
+    runtime: str,
+    conversation_language: str = DEFAULT_REPORT_LANGUAGE,
+    documentation_languages: Sequence[str] = (PRIMARY_DOCUMENTATION_LANGUAGE,),
+) -> str:
+    """Render the thin read-only harness help command.
+
+    The guide it names is routed by what the harness contains, so the wrapper can
+    never point at a locale the same render did not emit.
+    """
     source = f"wrapper/{runtime}/repo-harness-help:{VERSION}"
-    guide = "docs/es/repo-harness/usage.md" if report_language == "espanol" else "docs/repo-harness/usage.md"
+    guide = (
+        "docs/es/repo-harness/usage.md"
+        if localized_documentation(conversation_language, documentation_languages)
+        else "docs/repo-harness/usage.md"
+    )
     return (
         f"<!-- {GENERATED_MARKER}; source: {source} -->\n"
         f"Read `{guide}` and present concise help in its language. Work read-only: do not modify files, load skills, or invoke commands.\n"
@@ -1375,7 +1408,7 @@ def render(
             if runtime == "pi"
             else f"{'.opencode' if runtime == 'opencode' else '.claude'}/commands/repo-harness-help.md"
         )
-        outputs[help_path] = help_wrapper(runtime, report_language)
+        outputs[help_path] = help_wrapper(runtime, conversation, languages)
     if "claude-code" in selected:
         outputs["CLAUDE.md"] = POINTER_DIRECTIVES["CLAUDE.md"] + "\n"
     if {"opencode", "pi"} & set(selected):
@@ -1448,12 +1481,12 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
 
 
 def plan_digest(plan: dict[str, Any]) -> str:
-    """Bind approval to one deterministic serialized plan."""
-    stable = json.loads(dump_json(plan))
-    for item in stable["create"]:
-        if item["path"].endswith("repo-harness-help.md"):
-            item["sha256"] = digest_text(help_wrapper("stable", "english") + help_wrapper("stable", "espanol"))
-    return digest_text(dump_json(stable))
+    """Bind approval to one deterministic serialized plan.
+
+    No plan byte depends on the report language, so the digest needs no stabilization:
+    it binds approval to the exact content the apply step will write.
+    """
+    return digest_text(dump_json(json.loads(dump_json(plan))))
 
 
 def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> list[str]:
@@ -1730,8 +1763,14 @@ def main(argv: Optional[list[str]] = None) -> int:
         plan = plan_changes(root, outputs)
         digest = plan_digest(plan)
         domain = approval_domain(args.report_language)
+        entry_points = documentation_entry_points(
+            args.conversation_language or DEFAULT_REPORT_LANGUAGE,
+            normalize_documentation_languages(args.documentation_languages),
+        )
+        blocked_paths = {item["path"] for item in plan["blocked"]}
+        entry_points = {name: path for name, path in entry_points.items() if path not in blocked_paths}
         if not args.apply:
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": documentation_entry_points(args.report_language), "approvalPrompt": domain["prompt"], "approvalAnswers": [domain["approve"], domain["deny"]], "planSha256": digest, **plan, "runtimeSet": runtime_set_report(root, selected), "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, "approvalPrompt": domain["prompt"], "approvalAnswers": [domain["approve"], domain["deny"]], "planSha256": digest, **plan, "runtimeSet": runtime_set_report(root, selected), "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")

@@ -23,5 +23,5 @@ La fuente canonica es [`../../repo-harness/decisions.md`](../../repo-harness/dec
 - La verificacion autoalojada separa paridad en disco, vigencia registrada del proceso y capacidad de recarga.
 - `REPO-HARNESS.md`, `CHANGELOG.md` y los documentos durables en ingles conservan la propiedad factual unica. Los pares en espanol son presentaciones completas.
 - La validacion bilingue combina roles semanticos y bases proporcionales de contenido por idioma, sin afirmar que una maquina prueba equivalencia semantica.
-- El idioma resuelto controla la ruta de ayuda generada, pero se normaliza fuera del digest del plan.
+- Los idiomas de documentacion declarados y el idioma de conversacion controlan la ruta de ayuda generada, por lo que solo puede nombrar una guia que la misma generacion crea. El idioma del informe es presentacional y no cambia ningun byte generado, asi que el digest del plan es identico entre idiomas sin normalizacion.
 - Los selectores README son atomicos: sin integracion reciproca ejecutable, `README.es.md` queda bloqueado y toda aplicacion falla de forma segura.

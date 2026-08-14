@@ -27,7 +27,7 @@
 - Added one lightweight pre-commit staged-scope guard that continues silently on an exact match and pauses on extra, missing, or changed path status/mode without absorbing pre-existing staged work.
 - Localized strict builder approval by resolved report language and made executable apply require both the current digest and exact active-domain token while keeping session skills conversational.
 - Replaced chained Spanish heading substitutions with complete usage, current-state, and decisions templates; added locale-aware content baselines and semantic-role checks.
-- Routed generated help through the resolved report language while preserving a language-independent action-plan digest.
+- Routed generated help through the declared documentation locales and the conversation language, never the report language, so it never names a guide the same render does not create.
 - Made one-sided README selector plans fail closed by blocking Spanish peer creation until reciprocal existing-file integration is executable.
 - Made transport-failure remediation name an available alternate credential path, preferring a single-command provider credential helper that changes no global configuration and handing back the exact command when a secret the agent cannot supply is required.
 - Bound generated session replies to the user's stated preferred language, otherwise to the language they are writing in, and replaced the hardcoded Spanish checker report literals that contradicted that rule.
@@ -35,16 +35,19 @@
 - Fixed section comparison so the promised document chooses the vocabulary for both sides; reading each side independently compared roles against headings and reported a document that added role markers as having lost every section.
 - Limited the human-owned locale check to untranslated English, which is a defect at any age, instead of pinning seeded template sentences that forbade legitimate rewriting.
 - Brought the repository to full congruence: `doc-role` markers back-filled into its own durable documents, `repo-harness-help` wrappers refreshed, and both the builder check and the generated checker reporting `current`.
+- Closed the language-contract gaps: command and skill contracts now collect report, conversation, and documentation languages independently; routing helpers validate declarations like `render`; and CLI previews omit blocked documentation entry points.
 
 ## Pending Work
 <!-- doc-role:pending-work -->
+
+Judgment Day round 2 is incomplete: judge A returned, judge B terminated on a session limit before reporting. The fix delta below is verified but unjudged by a second reader, and the round budget has one round left.
 
 - Make approved upgrade replacement and integration plans executable without weakening preservation guarantees.
 - Add a bounded, exact approved existing-README selector integration executor; current behavior deliberately fails closed instead of creating a one-way peer.
 - Make runtime-set widening update or invalidate stale manifest and checker coverage.
 - Carry over the review report from `skills-pack-ld9`.
 - Define how a consumer repository detects a stale installed copy of the builder itself, distinct from an installed generated harness.
-- Make the builder ask for the conversation language and the documentation locales during the interview, so the recorded values come from a human choice rather than a default.
+- Decide the five round-1 findings only one judge raised, none of them auto-fixable under the dual-confirmation rule. The most serious: `check` stops inspecting the Spanish tree of any harness installed before the language field existed, because its manifest has no `language` and `declared_languages` falls back to English only, so deleting a Spanish file still reports `current`. The others: the `check` subcommand advertises three language flags and ignores them; `declared_languages` passes invalid values through and makes read-only checking exit hard with an error naming the wrong field; two checked-in documentation tests error instead of skipping in a monolingual layout; and `missing_sections` leaves the promised-roles against actual-no-roles direction uncovered, which is pre-existing and flags every older installed harness.
 
 ## Next Step
 <!-- doc-role:next-step -->

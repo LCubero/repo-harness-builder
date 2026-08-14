@@ -14,6 +14,7 @@ This file records meaningful completed changes in chronological order, newest fi
 - Fixed section comparison so the promised document chooses the vocabulary for both sides, ending a false report that named every section of a document that demonstrably still had them.
 - Limited the human-owned locale check to untranslated English instead of pinning seeded template sentences that made legitimate rewriting read as drift, while the generated output keeps its complete required baseline.
 - Back-filled the `doc-role` markers and refreshed the `repo-harness-help` wrappers in this repository, bringing both the builder check and the generated checker to `current`.
+- Routed generated help and the preview entry points by the declared documentation locales and the conversation language instead of the report language, so a generated artifact can no longer name a guide the same render never creates, and no rendered byte depends on the report language.
 
 ## 2026-08-12
 
