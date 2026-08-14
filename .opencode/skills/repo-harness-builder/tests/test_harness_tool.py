@@ -614,6 +614,180 @@ class AdditiveWriteTests(unittest.TestCase):
             self.assertFalse((root / RULEBOOK).exists())
 
 
+class GeneratedOutputMigrationTests(unittest.TestCase):
+    def migration_fixture(self, root: Path):
+        installed = install(root, runtimes=("opencode",))
+        desired = dict(installed)
+        replacements = {}
+        for old_name, new_name in (
+            ("example-session-start", "repo-harness-session-start"),
+            ("example-session-stop", "repo-harness-session-stop"),
+            ("example-documentation", "repo-harness-documentation"),
+        ):
+            for prefix in (".repo-harness/skills", ".opencode/skills"):
+                source = f"{prefix}/{old_name}/SKILL.md"
+                destination = f"{prefix}/{new_name}/SKILL.md"
+                desired[destination] = desired.pop(source).replace(old_name, new_name)
+                replacements[source] = destination
+        manifest = json.loads(desired[TOOL.MANIFEST_PATH])
+        manifest["canonicalSkills"] = {
+            name.replace("example-", "repo-harness-"): path.replace("example-", "repo-harness-")
+            for name, path in manifest["canonicalSkills"].items()
+        }
+        desired[TOOL.MANIFEST_PATH] = TOOL.dump_json(manifest)
+        desired[".repo-harness/check.py"] = TOOL.check_script(TOOL.digest_text(desired[TOOL.MANIFEST_PATH]))
+        return installed, desired, replacements
+
+    def test_plan_binds_sources_destinations_manifest_checker_and_removals(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, replacements = self.migration_fixture(root)
+
+            plan = TOOL.plan_generated_output_migration(root, installed, desired, replacements)
+
+            self.assertEqual(plan["action"], "migrate-generated-skills")
+            self.assertEqual({item["sourcePath"] for item in plan["moves"]}, set(replacements))
+            self.assertEqual({item["destinationPath"] for item in plan["moves"]}, set(replacements.values()))
+            self.assertEqual([item["path"] for item in plan["replace"]], [".repo-harness/check.py", TOOL.MANIFEST_PATH])
+            self.assertEqual(plan["remove"], sorted(replacements))
+            self.assertEqual(plan, TOOL.plan_generated_output_migration(root, installed, desired, replacements))
+
+    def test_plan_rejects_unknown_source_bytes_and_unverifiable_manifest_ownership(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, replacements = self.migration_fixture(root)
+            source = next(iter(replacements))
+            (root / source).write_text("unknown\n", encoding="utf-8")
+            with self.assertRaisesRegex(TOOL.ContractError, "source bytes"):
+                TOOL.plan_generated_output_migration(root, installed, desired, replacements)
+
+            (root / source).write_text(installed[source], encoding="utf-8", newline="\n")
+            manifest_path = root / TOOL.MANIFEST_PATH
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["canonicalSkills"] = {}
+            manifest_path.write_text(TOOL.dump_json(manifest), encoding="utf-8", newline="\n")
+            with self.assertRaisesRegex(TOOL.ContractError, "manifest ownership"):
+                TOOL.plan_generated_output_migration(root, installed, desired, replacements)
+
+    def test_plan_rejects_unsafe_paths_and_destination_collisions(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, replacements = self.migration_fixture(root)
+            source = next(iter(replacements))
+            with self.assertRaisesRegex(TOOL.ContractError, "generated skill path"):
+                TOOL.plan_generated_output_migration(root, installed, desired, {source: "../escape/SKILL.md"})
+
+            destination = replacements[source]
+            (root / destination).parent.mkdir(parents=True)
+            (root / destination).write_text("collision\n", encoding="utf-8")
+            with self.assertRaisesRegex(TOOL.ContractError, "destination collision"):
+                TOOL.plan_generated_output_migration(root, installed, desired, replacements)
+
+    def test_apply_rejects_a_stale_plan_before_mutation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, replacements = self.migration_fixture(root)
+            plan = TOOL.plan_generated_output_migration(root, installed, desired, replacements)
+            source = next(iter(replacements))
+            (root / source).write_text("changed\n", encoding="utf-8")
+
+            with self.assertRaisesRegex(TOOL.ContractError, "stale"):
+                TOOL.apply_generated_output_migration(root, installed, desired, replacements, plan)
+
+            self.assertFalse((root / replacements[source]).exists())
+            self.assertEqual((root / TOOL.MANIFEST_PATH).read_text(encoding="utf-8"), installed[TOOL.MANIFEST_PATH])
+
+    def test_apply_preserves_a_source_changed_immediately_before_unlink(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, replacements = self.migration_fixture(root)
+            plan = TOOL.plan_generated_output_migration(root, installed, desired, replacements)
+            source = next(iter(replacements))
+            changed = b"concurrent change\n"
+            original_write_text = Path.write_text
+
+            def change_source_after_validation(path, *args, **kwargs):
+                result = original_write_text(path, *args, **kwargs)
+                if path == root / ".repo-harness/check.py":
+                    (root / source).write_bytes(changed)
+                return result
+
+            with mock.patch.object(Path, "write_text", change_source_after_validation), self.assertRaisesRegex(
+                TOOL.ContractError, "source bytes"
+            ):
+                TOOL.apply_generated_output_migration(root, installed, desired, replacements, plan)
+
+            self.assertEqual((root / source).read_bytes(), changed)
+            self.assertFalse(any((root / path).exists() for path in replacements.values()))
+
+    def test_apply_cleans_up_a_destination_when_close_fails(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, replacements = self.migration_fixture(root)
+            plan = TOOL.plan_generated_output_migration(root, installed, desired, replacements)
+            destination = plan["moves"][0]["destinationPath"]
+            original_open = Path.open
+
+            class CloseFailure:
+                def __init__(self, handle):
+                    self.handle = handle
+
+                def __enter__(self):
+                    return self.handle
+
+                def __exit__(self, *args):
+                    self.handle.close()
+                    raise OSError("forced close failure")
+
+                def write(self, content):
+                    return self.handle.write(content)
+
+            def fail_destination_close(path, *args, **kwargs):
+                handle = original_open(path, *args, **kwargs)
+                if path == root / destination:
+                    return CloseFailure(handle)
+                return handle
+
+            with mock.patch.object(Path, "open", fail_destination_close), self.assertRaisesRegex(
+                OSError, "forced close failure"
+            ):
+                TOOL.apply_generated_output_migration(root, installed, desired, replacements, plan)
+
+            self.assertFalse((root / destination).exists())
+
+    def test_apply_is_atomic_and_second_application_is_idempotent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, replacements = self.migration_fixture(root)
+            plan = TOOL.plan_generated_output_migration(root, installed, desired, replacements)
+            original_unlink = Path.unlink
+            removals = 0
+
+            def fail_second_source(path, *args, **kwargs):
+                nonlocal removals
+                if path.as_posix().endswith("/SKILL.md") and path.relative_to(root).as_posix() in replacements:
+                    removals += 1
+                    if removals == 2:
+                        raise OSError("forced partial failure")
+                return original_unlink(path, *args, **kwargs)
+
+            with mock.patch.object(Path, "unlink", fail_second_source), self.assertRaisesRegex(OSError, "forced partial failure"):
+                TOOL.apply_generated_output_migration(root, installed, desired, replacements, plan)
+
+            for path, content in installed.items():
+                self.assertEqual((root / path).read_text(encoding="utf-8"), content)
+            self.assertFalse(any((root / path).exists() for path in replacements.values()))
+
+            plan = TOOL.plan_generated_output_migration(root, installed, desired, replacements)
+            changed = TOOL.apply_generated_output_migration(root, installed, desired, replacements, plan)
+            self.assertEqual(set(changed), set(replacements) | set(replacements.values()) | {TOOL.MANIFEST_PATH, ".repo-harness/check.py"})
+            self.assertEqual(TOOL.check(root, "Example", ["opencode"])["writes"], 0)
+            self.assertEqual(
+                TOOL.apply_generated_output_migration(root, installed, desired, replacements, plan),
+                [],
+            )
+
+
 class RootPointerTests(unittest.TestCase):
     def test_runtime_mapping_is_exact_for_each_profile_and_union(self):
         cases = {
@@ -999,7 +1173,8 @@ class GeneratedCoreTests(unittest.TestCase):
             self.skipTest("repository lifecycle fixture is outside the portable package")
         roadmap = path.read_text(encoding="utf-8")
         records = re.findall(r"^### (RH-W-\d{4})\n(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S)
-        self.assertEqual(len(records), 17)
+        headings = re.findall(r"^### (RH-W-\d{4})$", roadmap, re.M)
+        self.assertEqual([record_id for record_id, _ in records], headings)
         self.assertEqual(len({record_id for record_id, _ in records}), len(records))
         required = {
             "Origin", "Priority", "Dependencies", "Status", "Completed work",
@@ -1042,9 +1217,9 @@ class GeneratedCoreTests(unittest.TestCase):
             "No current architecture commitment.",
             "issue #7",
             "priority override",
-            "RH-W-0003 remains the next product behavior",
         ):
             self.assertIn(fact, roadmap)
+        self.assertLess(roadmap.index("### RH-W-0016"), roadmap.index("### RH-W-0003"))
 
     def test_runtime_projections_use_the_current_canonical_contract(self):
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])

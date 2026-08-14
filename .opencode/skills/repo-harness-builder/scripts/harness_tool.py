@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """Render and check the minimal repository AI harness using Python stdlib only.
 
-Write model: additive create only, except for one exact runtime directive appended
-to selected root pointer files. Existing bytes are never replaced or deleted. This
-bounded exception needs no migration system or generalized patch engine. Version
-control is the safety net for everything the tool does not touch. Bounded failure
-cleanup may remove only files created by that run.
+Write model: additive create only, except for exact runtime directives appended to
+selected root pointer files and one explicit generated-skill migration action.
+Human-owned bytes are never replaced or deleted. The migration verifies manifest
+ownership and source bytes, and rolls its complete transaction back on failure.
 """
 
 from __future__ import annotations
@@ -19,7 +18,7 @@ import tempfile
 from collections.abc import Sequence
 from datetime import date
 from pathlib import Path, PurePosixPath
-from typing import Any, Optional
+from typing import Any, Optional, TypedDict
 
 VERSION = "3.0"
 MIN_PYTHON = (3, 10)
@@ -1565,6 +1564,163 @@ def plan_digest(plan: dict[str, Any]) -> str:
     it binds approval to the exact content the apply step will write.
     """
     return digest_text(dump_json(json.loads(dump_json(plan))))
+
+
+class GeneratedSkillMove(TypedDict):
+    sourcePath: str
+    sourceSha256: str
+    destinationPath: str
+    destinationSha256: str
+
+
+class GeneratedReplacement(TypedDict):
+    path: str
+    sourceSha256: str
+    destinationSha256: str
+
+
+class GeneratedOutputMigrationPlan(TypedDict):
+    action: str
+    moves: list[GeneratedSkillMove]
+    replace: list[GeneratedReplacement]
+    remove: list[str]
+
+
+def generated_skill_paths(manifest: dict[str, Any]) -> set[str]:
+    """Return the exact generated skill files owned by one installed manifest."""
+    canonical = manifest.get("canonicalSkills")
+    runtimes = manifest.get("runtimes")
+    generator = manifest.get("generator")
+    require(isinstance(generator, dict) and generator.get("name") == "repo-harness-builder", "manifest ownership is unverifiable")
+    require(isinstance(canonical, dict) and isinstance(runtimes, list), "manifest ownership is unverifiable")
+    paths: set[str] = set()
+    for name, path in canonical.items():
+        require(isinstance(name, str) and isinstance(path, str), "manifest ownership is unverifiable")
+        require(path == f".repo-harness/skills/{name}/SKILL.md", "manifest ownership is unverifiable")
+        paths.add(path)
+        for runtime in runtimes:
+            require(runtime in RUNTIMES, "manifest ownership is unverifiable")
+            if runtime == "pi":
+                continue
+            base = ".opencode" if runtime == "opencode" else ".claude"
+            paths.add(f"{base}/skills/{name}/SKILL.md")
+    return paths
+
+
+def plan_generated_output_migration(
+    root: Path,
+    installed_outputs: dict[str, str],
+    desired_outputs: dict[str, str],
+    replacements: dict[str, str],
+) -> GeneratedOutputMigrationPlan:
+    """Plan one exact old-to-new generated skill migration."""
+    manifest_target = guarded_target(root, MANIFEST_PATH)
+    checker_target = guarded_target(root, ".repo-harness/check.py")
+    require(manifest_target.is_file() and not is_indirect(manifest_target), "manifest ownership is unverifiable")
+    require(checker_target.is_file() and not is_indirect(checker_target), "installed checker is unverifiable")
+    require(MANIFEST_PATH in installed_outputs and MANIFEST_PATH in desired_outputs, "manifest content is required")
+    require(".repo-harness/check.py" in installed_outputs and ".repo-harness/check.py" in desired_outputs, "checker content is required")
+    require(digest_bytes(manifest_target.read_bytes()) == digest_text(installed_outputs[MANIFEST_PATH]), "manifest ownership or bytes are unverifiable")
+    require(digest_bytes(checker_target.read_bytes()) == digest_text(installed_outputs[".repo-harness/check.py"]), "installed checker bytes changed")
+
+    installed_manifest = json.loads(installed_outputs[MANIFEST_PATH])
+    desired_manifest = json.loads(desired_outputs[MANIFEST_PATH])
+    require(installed_outputs[".repo-harness/check.py"] == check_script(digest_text(installed_outputs[MANIFEST_PATH])), "installed checker ownership is unverifiable")
+    owned_sources = generated_skill_paths(installed_manifest)
+    owned_destinations = generated_skill_paths(desired_manifest)
+    source_paths = set(replacements)
+    destination_paths = set(replacements.values())
+    require(source_paths == owned_sources - owned_destinations, "migration must include every obsolete generated skill path")
+    require(destination_paths == owned_destinations - owned_sources, "migration must include every new generated skill path")
+    require(len(destination_paths) == len(replacements), "generated skill destination collision")
+    require(desired_outputs[".repo-harness/check.py"] == check_script(digest_text(desired_outputs[MANIFEST_PATH])), "desired checker does not match desired manifest")
+
+    moves: list[GeneratedSkillMove] = []
+    for source, destination in sorted(replacements.items()):
+        require(re.fullmatch(r"\.(?:repo-harness|opencode|claude)/skills/[^/]+/SKILL\.md", source) is not None, "invalid generated skill path")
+        require(re.fullmatch(r"\.(?:repo-harness|opencode|claude)/skills/[^/]+/SKILL\.md", destination) is not None, "invalid generated skill path")
+        require(source in installed_outputs and destination in desired_outputs, "unknown generated skill content")
+        require(generated_version(installed_outputs[source].encode("utf-8")) is not None, f"generated source ownership is unverifiable: {source}")
+        require(generated_version(desired_outputs[destination].encode("utf-8")) is not None, f"generated destination content is unverifiable: {destination}")
+        source_target = guarded_target(root, source)
+        destination_target = guarded_target(root, destination)
+        require(source_target.is_file() and not is_indirect(source_target), f"invalid generated source: {source}")
+        require(digest_bytes(source_target.read_bytes()) == digest_text(installed_outputs[source]), f"generated source bytes changed: {source}")
+        require(not destination_target.exists() and not destination_target.is_symlink(), f"generated skill destination collision: {destination}")
+        moves.append({
+            "sourcePath": source,
+            "sourceSha256": digest_text(installed_outputs[source]),
+            "destinationPath": destination,
+            "destinationSha256": digest_text(desired_outputs[destination]),
+        })
+
+    replace: list[GeneratedReplacement] = []
+    for path in (".repo-harness/check.py", MANIFEST_PATH):
+        replace.append({
+            "path": path,
+            "sourceSha256": digest_text(installed_outputs[path]),
+            "destinationSha256": digest_text(desired_outputs[path]),
+        })
+    return {"action": "migrate-generated-skills", "moves": moves, "replace": replace, "remove": sorted(source_paths)}
+
+
+def apply_generated_output_migration(
+    root: Path,
+    installed_outputs: dict[str, str],
+    desired_outputs: dict[str, str],
+    replacements: dict[str, str],
+    plan: GeneratedOutputMigrationPlan,
+) -> list[str]:
+    """Apply one unchanged generated-skill migration as a rollback-safe transaction."""
+    if all(not guarded_target(root, source).exists() for source in replacements) and all(
+        guarded_target(root, destination).is_file()
+        and digest_bytes(guarded_target(root, destination).read_bytes()) == digest_text(desired_outputs[destination])
+        for destination in replacements.values()
+    ) and all(
+        digest_bytes(guarded_target(root, path).read_bytes()) == digest_text(desired_outputs[path])
+        for path in (MANIFEST_PATH, ".repo-harness/check.py")
+    ):
+        return []
+
+    try:
+        current_plan = plan_generated_output_migration(root, installed_outputs, desired_outputs, replacements)
+    except ContractError as error:
+        raise ContractError("approved migration plan is stale; preview again") from error
+    require(plan == current_plan, "approved migration plan is stale; preview again")
+    created: list[Path] = []
+    removed: dict[Path, bytes] = {}
+    originals = {guarded_target(root, path): guarded_target(root, path).read_bytes() for path in (MANIFEST_PATH, ".repo-harness/check.py")}
+    try:
+        for move in plan["moves"]:
+            target = guarded_target(root, move["destinationPath"])
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target = guarded_target(root, move["destinationPath"])
+            handle = target.open("x", encoding="utf-8", newline="\n")
+            created.append(target)
+            with handle:
+                handle.write(desired_outputs[move["destinationPath"]])
+            require(digest_bytes(target.read_bytes()) == move["destinationSha256"], f"migration destination mismatch: {move['destinationPath']}")
+        for item in plan["replace"]:
+            guarded_target(root, item["path"]).write_text(desired_outputs[item["path"]], encoding="utf-8", newline="\n")
+        for source in plan["remove"]:
+            target = guarded_target(root, source)
+            move = next(item for item in plan["moves"] if item["sourcePath"] == source)
+            require(target.is_file() and not is_indirect(target), f"invalid generated source: {source}")
+            source_bytes = target.read_bytes()
+            require(digest_bytes(source_bytes) == move["sourceSha256"], f"generated source bytes changed: {source}")
+            target.unlink()
+            removed[target] = source_bytes
+        return sorted(set(plan["remove"]) | set(replacements.values()) | {MANIFEST_PATH, ".repo-harness/check.py"})
+    except (OSError, ContractError):
+        for target, content in removed.items():
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(content)
+        for target, content in originals.items():
+            target.write_bytes(content)
+        for target in reversed(created):
+            if target.is_file():
+                target.unlink()
+        raise
 
 
 def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> list[str]:
