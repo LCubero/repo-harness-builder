@@ -2306,10 +2306,10 @@ def main(argv: Optional[list[str]] = None) -> int:
         child.add_argument("--runtime", action="append", choices=sorted(RUNTIMES), default=[], help="runtime profile; repeat the flag to select several, omit it for the core only")
         child.add_argument("--license", dest="license_id", default=DEFAULT_LICENSE, help="SPDX identifier for generated skills")
         child.add_argument("--standalone", action="store_true", help="generate repository-only continuity without Gentle AI or Engram")
-        child.add_argument("--report-language", choices=sorted(APPROVAL_DOMAINS), default=DEFAULT_REPORT_LANGUAGE, help="language for builder approval output; defaults to english")
-        child.add_argument("--documentation-language", action="append", dest="documentation_languages", choices=sorted(DOCUMENTATION_LANGUAGES), help="documentation locale; repeat the flag for a multilingual repository, omit it for English only")
-        child.add_argument("--conversation-language", choices=sorted(APPROVAL_DOMAINS), help="language the generated sessions converse in; ask the human, defaults to english")
         if name == "render":
+            child.add_argument("--report-language", choices=sorted(APPROVAL_DOMAINS), default=DEFAULT_REPORT_LANGUAGE, help="language for builder approval output; defaults to english")
+            child.add_argument("--documentation-language", action="append", dest="documentation_languages", choices=sorted(DOCUMENTATION_LANGUAGES), help="documentation locale; repeat the flag for a multilingual repository, omit it for English only")
+            child.add_argument("--conversation-language", choices=sorted(APPROVAL_DOMAINS), help="language the generated sessions converse in; ask the human, defaults to english")
             child.add_argument("--no-codegraph-ignore", dest="ignore_codegraph", action="store_false", help="do not add .codegraph/ to the root .gitignore")
             child.add_argument("--apply", action="store_true", help="create the absent files listed in the plan")
             child.add_argument("--approved-plan-sha256", help="digest printed by the approved preview")

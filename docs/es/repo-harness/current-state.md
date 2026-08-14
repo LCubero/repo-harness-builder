@@ -6,7 +6,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 <!-- doc-role:verified-state -->
 
 - El harness esta presente y el verificador generado informa `current`, salida 0 y 0 escrituras.
-- La suite canonica esta en verde: pasaron 230 pruebas con 6 omisiones. `RH-W-0017` localiza la frase de aprobacion para solo commit en espanol sin cambiar las rutas exactas ni el mensaje propuesto; el issue #19 agrega proteccion LF multiplataforma generada para checker y manifiesto.
+- La suite canonica esta en verde: pasaron 232 pruebas con 6 omisiones. `RH-W-0004` hace exclusivos de `render` los tres flags de idioma; `check` los rechaza porque las declaraciones instaladas poseen sus entradas.
 - El conjunto de entornos es `claude-code` y `opencode`; el modo es `integrated`, el generador es 3.0 y el paquete de habilidad es 3.1.
 - La suite cubre estados Git generados, consentimiento por intencion, comparacion exacta del alcance preparado, separacion del indice previo, invalidacion por cambios materiales, resultados delimitados, deteccion sensible, recibos de transporte acotados y contratos de cache del entorno.
 - La licencia MIT figura en `LICENSE` y en ambas copias de `SKILL.md`.
@@ -15,6 +15,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo reciente completado
 <!-- doc-role:recent-work -->
 
+- Se completo `RH-W-0004`: `--report-language`, `--documentation-language` y `--conversation-language` siguen aceptados por `render`, mientras `check` los rechaza con salida argparse 2.
 - Se amplio el issue #19 a comportamiento multiplataforma generado con atributos LF exactos para checker y manifiesto, integracion que preserva bytes en `.gitattributes` humano, bloqueo de conflictos, comprobacion acotada y verificacion real de checkout con `core.autocrlf=true`.
 - Se separo el proyecto de `skills-pack-ld9`, se creo su harness y se alineo la licencia MIT.
 - Se agregaron la guia del producto, el modelo recursivo autoalojado y la diferencia entre repositorios vacios y existentes.
@@ -48,13 +49,13 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
-- Proyeccion activa: `RH-W-0004`, `RH-W-0006` y `RH-W-0019` estan `ready`; `RH-W-0005`, `RH-W-0008`, `RH-W-0009`, `RH-W-0010` y el contrato consciente de capacidades `RH-W-0025` estan bloqueados por prerrequisitos. RH-W-0025 espera el reemplazo y la integracion ligados al contenido de RH-W-0008.
+- Proyeccion activa: `RH-W-0005`, `RH-W-0006` y `RH-W-0019` estan `ready`; `RH-W-0008`, `RH-W-0009`, `RH-W-0010` y el contrato consciente de capacidades `RH-W-0025` estan bloqueados por prerrequisitos. RH-W-0025 espera el reemplazo y la integracion ligados al contenido de RH-W-0008.
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
 - Proyeccion aplazada: `RH-W-0011` a `RH-W-0015` y la idea de mantenimiento interno desatendido `RH-W-0018` conservan condiciones explicitas en [roadmap.md](roadmap.md).
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
-- IDs completados recientemente: `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`, `RH-W-0003`, `RH-W-0016`, `RH-W-0007`.
+- IDs completados recientemente: `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`, `RH-W-0003`, `RH-W-0016`.
 
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Avanzar `RH-W-0004` a continuacion resolviendo los flags de idioma ignorados mediante su contrato CLI acotado. Las otras unidades listas son `RH-W-0006` y `RH-W-0019`. RH-W-0025 solo avanza despues de completar RH-W-0008 y comienza entonces con pruebas fallidas de capacidades y limites de autoridad. Cada unidad conserva su condicion en [roadmap.md](roadmap.md) y se trabaja en una rama separada.
+Avanzar `RH-W-0005` a continuacion porque completar `RH-W-0004` libero su ultimo prerrequisito del contrato de idiomas. Las otras unidades listas son `RH-W-0006` y `RH-W-0019`. RH-W-0025 solo avanza despues de completar RH-W-0008. Cada unidad se trabaja en una rama separada.
