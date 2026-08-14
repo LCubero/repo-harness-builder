@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-13
 
+- Required generated harnesses to reconcile applicable owning evidence before classifying repository state, report discrepancies, prefer current repository evidence over memory, verify pending or completed claims without exhaustive reading or testing, and continue organically without asking users to resolve verifiable facts.
 - Added the concise adaptive harness roadmap and its complete Spanish mirror, with evidence ownership, bounded work units, verification, non-goals, and deferred integration decisions.
 - Corrected current state by recording completed runtime-set widening coverage and removing only its stale pending entry.
 - Added concise English and Spanish contribution guides with issue-first planning, focused branches, linked PRs, Conventional Commits, work-unit tests and docs, maintainer review, repository-specific verification, and no false claims about automation.

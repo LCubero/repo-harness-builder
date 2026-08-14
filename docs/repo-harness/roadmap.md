@@ -43,7 +43,7 @@ This roadmap orders the smallest reviewable work units needed to make `repo-harn
 
 | # | Problem and evidence | Bounded outcome | Verification | Explicit non-goals |
 |---|---|---|---|---|
-| 1 | Pending facts can drift when one source is trusted alone. | Define the evidence reconciliation rule across owning docs, source, tests, history, Git, and Engram as applicable. | Contract tests and same-unit English and Spanish state updates. | No implementation backlog changes without reconciled evidence. |
+| 1 | Pending facts can drift when one source is trusted alone. | Complete: defined the evidence reconciliation rule across owning docs, source, tests, history, Git, and Engram as applicable. | Contract tests and same-unit English and Spanish state updates. | No implementation backlog changes without reconciled evidence. |
 | 2 | `.codegraph/` is currently untracked, while tests and validation prohibit `.gitignore` management. | TDD an explicit default-ignore policy with a persistent, checkable user opt-out. | Red-green tests for default, opt-out, idempotence, and preservation. | No silent `.gitignore` edit and no unrelated ignore policy. |
 | 3 | Legacy manifests without language can omit Spanish checking. | Preserve and check known installed locale trees when the language field is absent. | Regression test from a legacy bilingual fixture. | No manifest migration framework. |
 | 4 | `check` advertises language flags but ignores them. | Remove or honor the flags through one unambiguous read-only contract. | CLI behavior and help tests. | No broader CLI redesign. |

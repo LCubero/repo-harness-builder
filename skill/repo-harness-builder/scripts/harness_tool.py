@@ -380,6 +380,11 @@ def session_start_skill(project_id: str, rulebook_path: str, license_id: str, st
         if standalone
         else "5. Recover relevant recent context from Engram, label it as memory evidence, and reconcile it with repository evidence."
     )
+    evidence_sources = (
+        "current documentation, source, tests, and Git state or history"
+        if standalone
+        else "current documentation, source, tests, Git state or history, and Engram when available"
+    )
     return frontmatter(name, description, source, license_id) + f"""<!-- {GENERATED_MARKER}; source: {source} -->
 ## Activation Contract
 
@@ -391,11 +396,15 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 - Resolve and inspect only the selected repository. Do not follow links, aliases, sibling repositories, or external references.
 - Read `{rulebook_path}` first, then only documentation relevant to the requested work.
 - Read only the latest relevant entries in `CHANGELOG.md` after the rulebook and current-state documentation.
+- Consult only applicable owning evidence, such as {evidence_sources}.
+- Report discrepancies instead of silently resolving them; current repository evidence wins over memory.
+- Do not read every file or run every test indiscriminately.
 - Inspect repository state read-only. Do not pull, commit, push, publish, or mutate by default.
 {continuity.rstrip()}
 - Report discrepancies and uncertainty instead of inventing certainty.
 - Answer in the conversation language recorded in `.repo-harness/manifest.json`, and in its absence in the language the user is writing in. A live conversation is stronger evidence than a stored default, so the language the user is actually writing in wins over the recorded value. Skills, contracts, documentation, and every other generated artifact stay in English regardless of that choice.
 - Keep ordinary continuation questions conversational and low-friction. Do not use the builder's exact digest-bound approval vocabulary.
+- Resolve verifiable facts from applicable evidence without asking; ask only when a material choice, authority boundary, unresolved contradiction, or meaningful risk genuinely requires the human; otherwise suggest the next useful action and continue within the user's requested scope.
 - Ask for explicit conversational approval before any external mutation.
 - Treat every network approval as a resumable checkpoint: resume the same session-start invocation and execute the approved synchronization branch once.
 - A clean worktree and index with a usable upstream requires one conversational approval before network access.
@@ -562,6 +571,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 - Separate durable documentation from temporary session notes. Promote temporary facts only after they remain relevant and are verified.
 - Keep changelog entries factual, dated, concise, and non-duplicated. Link decisions or documentation only when useful.
 - Use `CHANGELOG.md` for completed changes, not future plans. Keep current state and next steps in `docs/repo-harness/current-state.md`.
+- Verify a pending or completed claim against applicable owning evidence before adding, retaining, moving, or removing it.
 {continuity}
 - Preserve human-owned content and unknown bytes. Never replace them merely to normalize structure.
 
@@ -598,9 +608,7 @@ def rulebook(project_id: str, standalone: bool) -> str:
     it carries a budget and a gate table instead of the detail itself.
     """
     evidence_rule = (
-        "- Verify continuity claims against current repository files. Current files win."
-        if standalone
-        else "- Verify current repository evidence before trusting prior memory. Current files win."
+        "- Reconcile applicable owning repository evidence before classifying status, pending work, defects, or completion; never rely on one source in isolation."
     )
     integration_rule = "- Use repository files only for continuity." if standalone else (
         "- Gentle AI and Engram are required for integrated continuity; repository evidence remains authoritative."

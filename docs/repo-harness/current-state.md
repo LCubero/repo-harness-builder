@@ -39,6 +39,7 @@
 - Added a bilingual, issue-first contribution workflow with focused branches, linked PRs, work-unit verification, Conventional Commits, and maintainer review before merge.
 - Completed runtime-set widening reporting: `runtime_set_report()` now returns `unrecorded` runtimes and `staleManifest`, with `RecordedRuntimeSetTests` coverage.
 - Added the [adaptive harness roadmap](roadmap.md) as the ordered owner of bounded future work.
+- Completed roadmap unit 1 by requiring generated rulebook, session-start, and documentation guidance to reconcile applicable owning evidence, report discrepancies, prefer current repository evidence without exhaustive reads or test runs, and continue organically without asking users to resolve verifiable facts.
 
 ## Pending Work
 <!-- doc-role:pending-work -->
@@ -55,4 +56,4 @@ Judgment Day round 2 is incomplete: judge A returned, judge B terminated on a se
 ## Next Step
 <!-- doc-role:next-step -->
 
-Start roadmap unit 1: define and verify the [evidence reconciliation rule](roadmap.md#ordered-work-units).
+Start roadmap unit 2: TDD the bounded [default `.codegraph/` ignore policy and persistent opt-out](roadmap.md#ordered-work-units).

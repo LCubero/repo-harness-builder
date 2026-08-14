@@ -19,6 +19,9 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Resolve and inspect only the selected repository. Do not follow links, aliases, sibling repositories, or external references.
 - Read `REPO-HARNESS.md` first, then only documentation relevant to the requested work.
 - Read only the latest relevant entries in `CHANGELOG.md` after the rulebook and current-state documentation.
+- Consult only applicable owning evidence, such as current documentation, source, tests, Git state or history, and Engram when available.
+- Report discrepancies instead of silently resolving them; current repository evidence wins over memory.
+- Do not read every file or run every test indiscriminately.
 - Inspect repository state read-only. Do not pull, commit, push, publish, or mutate by default.
 - Gentle AI and Engram are required for integrated session continuity.
 - Recover relevant recent context from Engram and reconcile every recalled claim with current repository evidence.
@@ -27,6 +30,7 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Report discrepancies and uncertainty instead of inventing certainty.
 - Answer in the conversation language recorded in `.repo-harness/manifest.json`, and in its absence in the language the user is writing in. A live conversation is stronger evidence than a stored default, so the language the user is actually writing in wins over the recorded value. Skills, contracts, documentation, and every other generated artifact stay in English regardless of that choice.
 - Keep ordinary continuation questions conversational and low-friction. Do not use the builder's exact digest-bound approval vocabulary.
+- Resolve verifiable facts from applicable evidence without asking; ask only when a material choice, authority boundary, unresolved contradiction, or meaningful risk genuinely requires the human; otherwise suggest the next useful action and continue within the user's requested scope.
 - Ask for explicit conversational approval before any external mutation.
 - Treat every network approval as a resumable checkpoint: resume the same session-start invocation and execute the approved synchronization branch once.
 - A clean worktree and index with a usable upstream requires one conversational approval before network access.
