@@ -33,6 +33,11 @@ MANIFEST_PATH = ".repo-harness/manifest.json"
 RULEBOOK_PATH = "REPO-HARNESS.md"
 GITIGNORE_PATH = ".gitignore"
 CODEGRAPH_IGNORE_DIRECTIVE = ".codegraph/"
+GITATTRIBUTES_PATH = ".gitattributes"
+GIT_ATTRIBUTE_RULES = (
+    ".repo-harness/check.py text eol=lf",
+    ".repo-harness/manifest.json text eol=lf",
+)
 POINTER_DIRECTIVES = {
     "CLAUDE.md": "@REPO-HARNESS.md",
     "AGENTS.md": "Read and follow REPO-HARNESS.md before working in this repository.",
@@ -208,6 +213,64 @@ def pointer_addition(current: bytes, directive: str) -> bytes:
 def has_pointer_line(current: bytes, directive: str) -> bool:
     """Match the required ASCII directive as one exact line with any line ending."""
     return directive.encode("utf-8") in current.splitlines()
+
+
+def missing_attribute_rules(current: bytes) -> tuple[str, ...]:
+    """Return only exact required rules absent from a human-owned attributes file."""
+    return tuple(rule for rule in GIT_ATTRIBUTE_RULES if not has_pointer_line(current, rule))
+
+
+def attribute_pattern_matches(pattern: str, path: str) -> bool:
+    """Evaluate the bounded root attribute patterns against repository-relative paths."""
+    if not pattern or pattern.startswith(("#", "!", "[attr]")) or pattern.endswith("/"):
+        return False
+    return PurePosixPath(path).match(pattern.removeprefix("/"))
+
+
+def conflicting_attribute_paths(current: bytes) -> set[str]:
+    """Return protected paths touched by a text or eol assignment incompatible with LF."""
+    conflicts: set[str] = set()
+    lines = current.decode("utf-8", errors="replace").splitlines()
+    macros = {
+        fields[0].removeprefix("[attr]"): fields[1:]
+        for raw_line in lines
+        if len(fields := raw_line.split()) >= 2 and fields[0].startswith("[attr]")
+    }
+
+    def expand(assignments: list[str], seen: set[str] | None = None) -> list[str]:
+        expanded: list[str] = []
+        visited = set() if seen is None else seen
+        for assignment in assignments:
+            if assignment in macros and assignment not in visited:
+                expanded.extend(expand(macros[assignment], visited | {assignment}))
+            else:
+                expanded.append(assignment)
+        return expanded
+
+    for raw_line in lines:
+        fields = raw_line.split()
+        if len(fields) < 2:
+            continue
+        pattern, assignments = fields[0], expand(fields[1:])
+        incompatible = any(
+            assignment == "binary"
+            or assignment == "eol"
+            or assignment.startswith(("-text", "!text", "text=", "-eol", "!eol"))
+            or (assignment.startswith("eol=") and assignment != "eol=lf")
+            for assignment in assignments
+        )
+        if not incompatible:
+            continue
+        conflicts.update(path for path in (".repo-harness/check.py", MANIFEST_PATH) if attribute_pattern_matches(pattern, path))
+    return conflicts
+
+
+def pointer_additions(current: bytes, directives: Sequence[str]) -> bytes:
+    """Return exact newline-preserving append bytes for an ordered directive set."""
+    addition = b""
+    for directive in directives:
+        addition += pointer_addition(current + addition, directive)
+    return addition
 
 
 def generated_version(current: bytes) -> Optional[str]:
@@ -872,7 +935,7 @@ Use the three generated skills as a loop: recover context, keep durable document
 
 <!-- doc-role:ownership -->
 
-Run `python .repo-harness/check.py` after canonical skills or runtime projections change. The checker is read-only and reports whether generated runtime copies still match their canonical skills. {continuity_owner}
+Run `python .repo-harness/check.py` after canonical skills or runtime projections change. The checker is read-only and reports whether generated runtime copies still match their canonical skills. Root `.gitattributes` must preserve LF checkout bytes with exact `.repo-harness/check.py text eol=lf` and `.repo-harness/manifest.json text eol=lf` rules. {continuity_owner}
 
 ## Approval Boundaries
 
@@ -1079,7 +1142,7 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 
 <!-- doc-role:ownership -->
 
-Ejecute `python .repo-harness/check.py` despues de cambiar habilidades canonicas o proyecciones de ejecucion. El verificador es de solo lectura e informa si las copias generadas coinciden con sus habilidades canonicas. {ownership_es}
+Ejecute `python .repo-harness/check.py` despues de cambiar habilidades canonicas o proyecciones de ejecucion. El verificador es de solo lectura e informa si las copias generadas coinciden con sus habilidades canonicas. El archivo raiz `.gitattributes` debe preservar bytes LF al hacer checkout mediante las reglas exactas `.repo-harness/check.py text eol=lf` y `.repo-harness/manifest.json text eol=lf`. {ownership_es}
 
 ## Limites de aprobacion
 
@@ -1520,6 +1583,7 @@ def render_with_skill_mapping(
     outputs = {
         rulebook_path: rulebook(project_id, standalone),
         "CHANGELOG.md": changelog(),
+        GITATTRIBUTES_PATH: "".join(f"{rule}\n" for rule in GIT_ATTRIBUTE_RULES),
         **rule_outputs(rulebook_path, standalone),
         **docs_outputs(project_id, rulebook_path, standalone, languages),
     }
@@ -1612,6 +1676,31 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
                     "action": "append",
                     "sha256": digest_bytes(current),
                     "resultSha256": digest_bytes(current + addition),
+                })
+        elif relative == GITATTRIBUTES_PATH and target.is_file() and not target.is_symlink():
+            current = target.read_bytes()
+            conflicts = sorted(conflicting_attribute_paths(current))
+            missing = missing_attribute_rules(current)
+            if conflicts:
+                blocked.append({
+                    "path": relative,
+                    "reason": "existing attributes conflict with required LF protection",
+                    "conflicts": conflicts,
+                })
+            elif missing:
+                addition = pointer_additions(current, missing)
+                append.append({
+                    "path": relative,
+                    "action": "append",
+                    "sha256": digest_bytes(current),
+                    "resultSha256": digest_bytes(current + addition),
+                    "content": addition.decode("utf-8"),
+                })
+            else:
+                existing.append({
+                    "path": relative,
+                    "reason": "required LF attribute rules already present; left untouched",
+                    "sha256": digest_bytes(current),
                 })
         else:
             reason = (
@@ -1921,8 +2010,11 @@ def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> 
                 target = guarded_target(root, relative)
                 current = target.read_bytes()
                 appended[target] = current
-                directive = CODEGRAPH_IGNORE_DIRECTIVE if relative == GITIGNORE_PATH else POINTER_DIRECTIVES[relative]
-                addition = pointer_addition(current, directive)
+                if relative == GITATTRIBUTES_PATH:
+                    addition = item["content"].encode("utf-8")
+                else:
+                    directive = CODEGRAPH_IGNORE_DIRECTIVE if relative == GITIGNORE_PATH else POINTER_DIRECTIVES[relative]
+                    addition = pointer_addition(current, directive)
                 with target.open("ab") as handle:
                     handle.write(addition)
                 require(digest_bytes(target.read_bytes()) == item["resultSha256"], f"append mismatch: {relative}")
@@ -2093,6 +2185,18 @@ def check(
         elif relative in (*POINTER_DIRECTIVES, GITIGNORE_PATH):
             directive = CODEGRAPH_IGNORE_DIRECTIVE if relative == GITIGNORE_PATH else POINTER_DIRECTIVES[relative]
             entry["state"] = "present" if has_pointer_line(target.read_bytes(), directive) else "directive-missing"
+        elif relative == GITATTRIBUTES_PATH:
+            current = target.read_bytes()
+            conflicts = sorted(conflicting_attribute_paths(current))
+            missing = missing_attribute_rules(current)
+            if conflicts:
+                entry["state"] = "attribute-conflict"
+                entry["conflicts"] = conflicts
+            elif missing:
+                entry["state"] = "directive-missing"
+                entry["missing"] = list(missing)
+            else:
+                entry["state"] = "present"
         elif human_owned(relative, rulebook_path):
             current_bytes = target.read_bytes()
             current_text = current_bytes.decode("utf-8", errors="replace")

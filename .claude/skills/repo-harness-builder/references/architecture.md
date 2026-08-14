@@ -28,6 +28,8 @@ Canonical and projected files carry generator provenance in their frontmatter an
 
 `.repo-harness/check.py` ships inside the generated harness because the builder does not. It embeds the SHA-256 of the exact generated manifest bytes, authenticates those bytes before JSON parsing, validates the strict checker schema and every path, then compares each canonical skill against its `.claude/` and `.opencode/` projections. It ignores only the `canonical-source:` line a projection is allowed to rewrite and exits non-zero on invalid input, a stale copy, or a missing copy. Pi carries prompts rather than skill copies, so it has nothing to compare.
 
+Root `.gitattributes` protects that exact-byte contract on every platform with only `.repo-harness/check.py text eol=lf` and `.repo-harness/manifest.json text eol=lf`. The builder creates the minimal file when absent, preserves human-owned attributes, appends only missing exact rules through the content-bound plan, and blocks matching text or EOL assignments that conflict with LF.
+
 ## Integration Modes
 
 Integrated mode is the default and requires Gentle AI plus Engram. The builder workflow validates the Gentle AI CLI through an available status, doctor, or version capability and validates Engram through MCP or CLI before approval or apply. Generated Python does not invent runtime dependency detection because Engram may be exposed only through MCP.

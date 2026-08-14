@@ -30,6 +30,7 @@ Sin operacion explicita, el constructor realiza una auditoria de solo lectura. N
 - Habilidades neutrales bajo `.repo-harness/skills/` y proyecciones para Claude Code, OpenCode o Pi.
 - `.repo-harness/check.py` para comprobaciones de congruencia sin escritura.
 - Una unica directiva `.codegraph/` en `.gitignore` raiz, salvo opt-out explicito.
+- `.gitattributes` raiz con proteccion LF exacta para `.repo-harness/check.py` y `.repo-harness/manifest.json`.
 
 Un harness es solo en ingles salvo que se declaren mas locales de documentacion. Consulte [Idioma de la documentacion](#idioma-de-la-documentacion).
 
@@ -121,6 +122,8 @@ Los selectores reciprocos de README son una sola integracion atomica. Si el repo
 Los harness anteriores se auditan, no se reemplazan a ciegas. Las rutas se clasifican como `current`, `stale`, `missing`, `human-evolved` o `legacy`; reemplazo, integracion, archivo y eliminacion requieren propuesta y aprobacion explicitas.
 
 El `.gitignore` raiz sigue siendo propiedad humana. El plan aprobado crea el archivo si falta o agrega exactamente `.codegraph/` si no existe esa linea, preservando BOM, bytes, comentarios, lineas vacias, finales de linea y reglas ajenas. `--no-codegraph-ignore` registra el opt-out en el manifiesto y no modifica el archivo.
+
+El `.gitattributes` raiz tambien sigue siendo propiedad humana. El constructor crea o agrega solo `.repo-harness/check.py text eol=lf` y `.repo-harness/manifest.json text eol=lf`, preservando reglas ajenas y finales de linea existentes. Una regla coincidente que asigne comportamiento incompatible de texto o EOL bloquea el plan en vez de crear semantica ambigua de checkout.
 
 `REPO-HARNESS.md`, `CHANGELOG.md` y los propietarios en ingles del estado durable conservan la verdad operativa unica. Cuando se declara otro locale, sus pares son presentaciones completas que enlazan a esas fuentes. Consulte el [contrato de mantenimiento bilingue](docs/es/repo-harness/i18n-maintenance.md), que aplica solo a un repositorio que declaro mas de un locale.
 

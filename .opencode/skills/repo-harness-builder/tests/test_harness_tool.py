@@ -2028,6 +2028,20 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(phrase, skill)
 
+    def test_product_guidance_documents_bounded_line_ending_protection(self):
+        outputs = TOOL.render("Example", [])
+        usage = outputs["docs/repo-harness/usage.md"]
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        references = "\n".join(
+            (ROOT / "references" / name).read_text(encoding="utf-8")
+            for name in ("architecture.md", "preservation-and-safety.md", "validation.md")
+        )
+
+        for text in (usage, skill, references):
+            self.assertIn(".gitattributes", text)
+            self.assertIn(".repo-harness/check.py text eol=lf", text)
+            self.assertIn(".repo-harness/manifest.json text eol=lf", text)
+
     def test_explicit_standalone_mode_uses_repository_files_only(self):
         outputs = TOOL.render("Example", [], standalone=True)
         manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
@@ -2327,6 +2341,144 @@ class RuleFileTests(unittest.TestCase):
         text = TOOL.render("Example", [])[".repo-harness/rules/memory.md"]
         for phrase in ("repository evidence remains authoritative", "never claim successful continuity"):
             self.assertIn(phrase, text)
+
+
+class RepositoryLineEndingContractTests(unittest.TestCase):
+    EXPECTED = (
+        ".repo-harness/check.py text eol=lf\n"
+        ".repo-harness/manifest.json text eol=lf\n"
+    )
+
+    def test_fresh_render_includes_only_the_bounded_attributes(self):
+        self.assertEqual(TOOL.render("Example", [])[".gitattributes"], self.EXPECTED)
+
+    def test_existing_attributes_preserve_bytes_and_append_only_missing_rules(self):
+        cases = (
+            (
+                b"*.md text\n",
+                b"*.md text\n.repo-harness/check.py text eol=lf\n.repo-harness/manifest.json text eol=lf\n",
+            ),
+            (
+                b"*.md text\r\n.repo-harness/check.py text eol=lf\r\n",
+                b"*.md text\r\n.repo-harness/check.py text eol=lf\r\n.repo-harness/manifest.json text eol=lf\r\n",
+            ),
+        )
+        for original, expected in cases:
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root / ".gitattributes"
+                target.write_bytes(original)
+                outputs = TOOL.render("Example", [])
+                plan = TOOL.plan_changes(root, outputs)
+
+                self.assertEqual([item["path"] for item in plan["append"]], [".gitattributes"])
+                TOOL.write_outputs(root, outputs, plan)
+                self.assertEqual(target.read_bytes(), expected)
+
+    def test_existing_exact_rules_are_byte_identical_and_require_no_write(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / ".gitattributes"
+            original = b"# human\r\n.repo-harness/check.py text eol=lf\r\n.repo-harness/manifest.json text eol=lf\r\n*.md text\r\n"
+            target.write_bytes(original)
+            outputs = TOOL.render("Example", [])
+            plan = TOOL.plan_changes(root, outputs)
+
+            self.assertIn(".gitattributes", [item["path"] for item in plan["existing"]])
+            self.assertNotIn(".gitattributes", [item["path"] for item in plan["append"]])
+            self.assertEqual(TOOL.write_outputs(root, outputs, plan), sorted(set(outputs) - {".gitattributes"}))
+            self.assertEqual(target.read_bytes(), original)
+
+    def test_matching_non_lf_attributes_block_without_writes(self):
+        cases = (
+            b".repo-harness/check.py text eol=crlf\n",
+            b".repo-harness/* text eol=crlf\n",
+            b"* text=auto\n",
+            b".repo-harness/check.py text eol=lf\n.repo-harness/** eol=crlf\n",
+            b"[attr]windows text eol=crlf\n.repo-harness/* windows\n",
+        )
+        for original in cases:
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root / ".gitattributes"
+                target.write_bytes(original)
+                outputs = TOOL.render("Example", [])
+                plan = TOOL.plan_changes(root, outputs)
+
+                blocked = [item for item in plan["blocked"] if item["path"] == ".gitattributes"]
+                self.assertEqual(len(blocked), 1)
+                self.assertNotIn(".gitattributes", [item["path"] for item in plan["append"]])
+                with self.assertRaises(TOOL.ContractError):
+                    TOOL.write_outputs(root, outputs, plan)
+                self.assertEqual(target.read_bytes(), original)
+                self.assertFalse((root / RULEBOOK).exists())
+
+    def test_compatible_broader_attributes_do_not_block_exact_rule_append(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / ".gitattributes"
+            target.write_bytes(b"* text eol=lf\n")
+            outputs = TOOL.render("Example", [])
+            plan = TOOL.plan_changes(root, outputs)
+
+            self.assertFalse([item for item in plan["blocked"] if item["path"] == ".gitattributes"])
+            TOOL.write_outputs(root, outputs, plan)
+            self.assertEqual(target.read_text(encoding="utf-8"), "* text eol=lf\n" + self.EXPECTED)
+
+    def test_check_reports_only_bounded_attribute_protection(self):
+        cases = (
+            (b"# human\n" + self.EXPECTED.encode(), "present"),
+            (b".repo-harness/check.py text eol=lf\n", "directive-missing"),
+            (b".repo-harness/* text eol=crlf\n", "attribute-conflict"),
+        )
+        for attributes, expected_state in cases:
+            with self.subTest(expected_state=expected_state), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                install(root)
+                (root / ".gitattributes").write_bytes(attributes)
+
+                report = TOOL.check(root, "Example", [])
+                entry = next(item for item in report["files"] if item["path"] == ".gitattributes")
+
+                self.assertEqual(entry["state"], expected_state)
+                self.assertEqual(report["status"], "current" if expected_state == "present" else "drift")
+
+    def test_autocrlf_checkout_preserves_generated_manifest_checker_contract(self):
+        attributes = TOOL.render("Example", [])[".gitattributes"]
+
+        with tempfile.TemporaryDirectory() as directory:
+            checkout = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=checkout, check=True)
+            subprocess.run(
+                ["git", "config", "core.autocrlf", "true"], cwd=checkout, check=True
+            )
+            (checkout / ".gitattributes").write_text(
+                attributes, encoding="utf-8", newline="\n"
+            )
+            install(checkout, runtimes=("claude-code", "opencode"))
+            subprocess.run(["git", "add", "."], cwd=checkout, check=True)
+            for relative in (".repo-harness/check.py", TOOL.MANIFEST_PATH):
+                (checkout / relative).unlink()
+            subprocess.run(
+                ["git", "checkout-index", "--all", "--force"], cwd=checkout, check=True
+            )
+
+            for relative in (".repo-harness/check.py", TOOL.MANIFEST_PATH):
+                self.assertNotIn(b"\r\n", (checkout / relative).read_bytes())
+            result = subprocess.run(
+                [sys.executable, ".repo-harness/check.py"],
+                cwd=checkout,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_attribute_evaluation_uses_posix_paths_on_every_platform(self):
+        current = b".repo-harness/** text eol=crlf\n"
+        self.assertEqual(
+            TOOL.conflicting_attribute_paths(current),
+            {".repo-harness/check.py", ".repo-harness/manifest.json"},
+        )
 
 
 class GeneratedCheckScriptTests(unittest.TestCase):

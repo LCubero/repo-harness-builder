@@ -1,0 +1,2 @@
+.repo-harness/check.py text eol=lf
+.repo-harness/manifest.json text eol=lf
