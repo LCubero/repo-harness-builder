@@ -1896,11 +1896,13 @@ class GeneratedCoreTests(unittest.TestCase):
         rh_w_0025 = roadmap.split("### RH-W-0025", 1)[1].split("### RH-W-0003", 1)[0]
         for path in historical_paths:
             self.assertIn(path, rh_w_0008)
-        for section in (rh_w_0008, rh_w_0025):
-            self.assertIn("historical evidence only", section)
-            self.assertIn("old digest is stale", section)
-            self.assertIn("freshly generated", section)
-            self.assertIn("current repository bytes", section)
+        # RH-W-0008 keeps the stale-digest warning as immutable history.
+        self.assertIn("historical evidence only", rh_w_0008)
+        self.assertIn("old digest is stale", rh_w_0008)
+        # RH-W-0025 must record that the prerequisite was actually satisfied,
+        # never a stale-preview warning that would block it again.
+        self.assertIn("applied and verified", rh_w_0025)
+        self.assertNotIn("| Status | blocked |", rh_w_0025)
 
     def test_runtime_projections_use_the_current_canonical_contract(self):
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])

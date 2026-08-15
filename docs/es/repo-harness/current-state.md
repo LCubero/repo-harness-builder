@@ -54,7 +54,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
-- Proyeccion activa: `RH-W-0009`, `RH-W-0010` y `RH-W-0019` estan `ready`. El contrato consciente de capacidades `RH-W-0025` sigue bloqueado hasta que un plan autoalojado exacto y ligado al digest, generado de nuevo desde los bytes actuales, reciba aprobacion, se aplique y se verifique.
+- Proyeccion activa: `RH-W-0009`, `RH-W-0010`, `RH-W-0019` y `RH-W-0025` estan `ready`. `RH-W-0025` volvio a `ready` tras aplicar y verificar su prerrequisito RH-W-0008 y tras resolver su probe de deteccion abierto contra `gentle-ai version`. Se rechazo partirla en una mitad de Engram y una mitad de Gentle AI bloqueada, porque fragmentaria la matriz de cuatro combinaciones entre dos unidades.
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
 - Proyeccion aplazada: `RH-W-0011` a `RH-W-0015` y la idea de mantenimiento interno desatendido `RH-W-0018` conservan condiciones explicitas en [roadmap.md](roadmap.md).
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
@@ -63,4 +63,4 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Generar desde los bytes actuales un nuevo plan autoalojado RH-W-0008 exacto y ligado al digest, obtener aprobacion, aplicarlo y verificarlo antes de iniciar RH-W-0025. El preview anterior de 17 rutas es solo evidencia historica y su digest esta obsoleto. RH-W-0009, RH-W-0010 y RH-W-0019 estan listas; cada unidad se trabaja en una rama separada.
+Iniciar `RH-W-0025`, el contrato consciente de capacidades de Gentle AI y Engram. Comenzar con pruebas de contrato que fallen para las cuatro combinaciones de disponibilidad y tratar solo un resultado `verified` como autoridad para usar una capacidad. RH-W-0009, RH-W-0010 y RH-W-0019 tambien estan listas; cada unidad se trabaja en una rama separada.

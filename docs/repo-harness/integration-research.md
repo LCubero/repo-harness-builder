@@ -96,7 +96,7 @@ This contract is related to, but separate from, `RH-W-0022`. That work unit owns
 ## Unresolved Questions and Confidence
 
 - Should Engram be required only when a generated repository explicitly selects integrated continuity? Confidence: medium.
-- Which read-only Gentle AI capability probe is stable and independent of installation layout? Confidence: medium.
+- Which read-only Gentle AI capability probe is stable and independent of installation layout? Resolved 2026-08-15: `gentle-ai version` returns `gentle-ai <version>` with exit 0, resolves through PATH rather than a known directory, and returns before system detection, configuration reads, or update checks. Treat a validated exit code and output shape as `verified`; presence on PATH alone stays `found_on_path` and never authorizes a capability, because this document forbids executable presence as a detection basis. Confidence: high.
 - Should the public result expose an aggregate status at all? Recommendation: repository outcome plus component outcomes. Confidence: high.
 
 Confidence is high for authority boundaries, availability behavior, promotion rules, anti-patterns, and degradation semantics. It is medium for future discovery interfaces because the pinned sources define owner contracts but not a generic harness probe.
