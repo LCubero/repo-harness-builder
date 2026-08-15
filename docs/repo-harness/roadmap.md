@@ -202,14 +202,14 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Dependencies | RH-W-0008 approved replacement and integration executor; RH-W-0022 remains related and independent |
 | Status | blocked |
 | Completed work | Completed primary-source research and approved a generic coordination contract with repository, Engram, Gentle AI, integrated, standalone, promotion, and component-degradation boundaries. |
-| Remaining work | After RH-W-0008 provides content-bound replacement and integration for existing generated outputs, implement bounded coordination in canonical builder sources, synchronize checked-in builder package projections, and run a separate approved regeneration follow-up for existing self-hosted consumer owners. |
+| Remaining work | Obtain separate digest-bound approval and update the existing self-hosted generated owners through RH-W-0008, then implement bounded coordination in canonical builder sources, synchronize checked-in builder package projections, and run its own approved consumer regeneration follow-up. |
 | Additions | The repository owns durable truth, source, tests, policy, backlog, and approvals. Engram owns semantic memory, relations and conflicts, review-age metadata, and session continuity. Gentle AI optionally owns routing, exact-candidate review and receipts, and delivery gates when enabled. The harness composes available capabilities without another state machine. Integrated mode uses Gentle AI and Engram together. Standalone mode applies when neither is available and uses repository evidence plus approved repository continuity only. Generated consumer harnesses stay generic; this self-hosted repository applies that same rule to its own product source. Durable reusable discoveries are promoted selectively to canonical repository owners after human approval, changing external facts are marked current and revalidated, and incidental noise is not persisted. Component failure degrades only that component unless repository policy makes it mandatory. |
 | Exclusions | No auto-enabling review, fabricated approval, copied authority, synthetic SDD, duplicate lifecycle, receipt, or conflict stores, loop-until-clean behavior, third state machine, product-specific consumer wording, or implementation in this documentation work unit. |
 | Deferrals | none |
 | Rejections | Rejected making memory authoritative, treating disabled capabilities as approval or denial, persisting incidental noise, and coupling this work to RH-W-0022 without an implementation need. |
-| Evidence | The approved design and pinned-source analysis are recorded in [integration-research.md](integration-research.md). Current `plan_changes()` classifies non-identical existing outputs as `existing`; `write_outputs()` writes only create/append plus the narrow RH-W-0024 migration; that migration owns legacy skill renaming and manifest/checker replacement only. |
+| Evidence | The approved design and pinned-source analysis are recorded in [integration-research.md](integration-research.md). RH-W-0008 now provides authenticated content-bound generated replacement, but this repository's separately previewed 17-path action set has not received exact digest approval or been applied. |
 | Decision history | 2026-08-14: research completed and the user explicitly approved the conceptual design. Registered as ready because scope, non-goals, implementation surfaces, start condition, and required tests were bounded. 2026-08-14: changed to blocked after verified executor evidence showed self-hosted regeneration requires RH-W-0008; widening RH-W-0025 would duplicate that owner's approved responsibility. |
-| Next advancement condition | Blocker clears when RH-W-0008 completes with an approved content-bound replacement/integration executor for existing generated outputs. Then begin RH-W-0025 with failing contract tests and require a separate digest-bound, human-approved self-hosted regeneration follow-up; RH-W-0022 remains independent. |
+| Next advancement condition | The blocker clears when the separately previewed self-hosted replacement action set receives exact digest approval and is applied and verified. Then begin RH-W-0025 with failing contract tests and retain its separate post-implementation consumer regeneration follow-up; RH-W-0022 remains independent. |
 
 ### RH-W-0003
 | Field | Value |
@@ -285,16 +285,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 8; approved replacement and integration gap |
 | Priority | P1: approved plans remain descriptive and cannot safely execute |
 | Dependencies | RH-W-0003 through RH-W-0007 language and section compatibility corrections |
-| Status | ready |
-| Completed work | Content-bound approval, preservation, changed-plan, and rollback boundaries are specified. |
-| Remaining work | Execute one approved action with digest, byte preservation, rollback boundary, and no-write preview tests. |
-| Additions | none |
+| Status | completed |
+| Completed work | Added typed replacement actions for exact authenticated manifest-owned current-version generated outputs, including human-modified bytes retaining valid current-version provenance. Each action binds path, kind, exact source and destination SHA-256 values, and plan digest; apply recomputes the plan, rejects post-preview changes, and executes replace, create, and append atomically with full rollback. Preview and check remain read-only, second apply is idempotent, human-owned and unverifiable paths remain proposal-only, desired checker bytes must match the desired manifest digest, and RH-W-0024 migration behavior remains separate. |
+| Remaining work | none |
+| Additions | Added RED/GREEN coverage for typed actions, human-modified current-version generated bytes, ownership refusal, digest binding, stale source and plan rejection, atomic manifest/checker pairing, rollback after mixed writes, read-only preview/check, and idempotence. |
 | Exclusions | No bulk upgrade engine. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | Current planner describes replacement and integration choices without an executor. RH-W-0003 through RH-W-0007 are now completed. The manifest-matched owner check reports drift with 0 writes and exactly these 17 `stale` paths: `.claude/commands/documentation.md`, `.claude/commands/repo-harness-help.md`, `.claude/commands/session-start.md`, `.claude/commands/session-stop.md`, `.claude/skills/repo-harness-documentation/SKILL.md`, `.claude/skills/repo-harness-session-start/SKILL.md`, `.claude/skills/repo-harness-session-stop/SKILL.md`, `.opencode/commands/documentation.md`, `.opencode/commands/repo-harness-help.md`, `.opencode/commands/session-start.md`, `.opencode/commands/session-stop.md`, `.opencode/skills/repo-harness-documentation/SKILL.md`, `.opencode/skills/repo-harness-session-start/SKILL.md`, `.opencode/skills/repo-harness-session-stop/SKILL.md`, `.repo-harness/skills/repo-harness-documentation/SKILL.md`, `.repo-harness/skills/repo-harness-session-start/SKILL.md`, and `.repo-harness/skills/repo-harness-session-stop/SKILL.md`. RH-W-0027 changed none of them. |
-| Decision history | 2026-08-13: retained as the first mutation capability after prerequisite correctness. 2026-08-14: moved to ready after RH-W-0006 completed the final prerequisite. |
-| Next advancement condition | Start with failing no-write preview, content-bound replacement or integration, changed-plan, byte-preservation, and rollback tests. |
+| Evidence | Initial RED failed with 3 failures and 2 errors; correction RED then exposed checker/manifest pairing with 2 focused failures. GREEN passes 9 focused replacement tests, the validation contract regression, and the 251-test canonical suite with 7 skips. Self-hosted preview reports 0 writes and exactly these 17 replacement paths without applying them: `.claude/commands/documentation.md`, `.claude/commands/repo-harness-help.md`, `.claude/commands/session-start.md`, `.claude/commands/session-stop.md`, `.claude/skills/repo-harness-documentation/SKILL.md`, `.claude/skills/repo-harness-session-start/SKILL.md`, `.claude/skills/repo-harness-session-stop/SKILL.md`, `.opencode/commands/documentation.md`, `.opencode/commands/repo-harness-help.md`, `.opencode/commands/session-start.md`, `.opencode/commands/session-stop.md`, `.opencode/skills/repo-harness-documentation/SKILL.md`, `.opencode/skills/repo-harness-session-start/SKILL.md`, `.opencode/skills/repo-harness-session-stop/SKILL.md`, `.repo-harness/skills/repo-harness-documentation/SKILL.md`, `.repo-harness/skills/repo-harness-session-start/SKILL.md`, and `.repo-harness/skills/repo-harness-session-stop/SKILL.md`. Manifest and checker are absent because their current bytes already equal the deterministic desired pair; a future changed valid pair is planned and applied together. |
+| Decision history | 2026-08-13: retained as the first mutation capability after prerequisite correctness. 2026-08-14: moved to ready after RH-W-0006 completed the final prerequisite. 2026-08-14: completed with the smallest authenticated generated-output replacement executor; live self-hosted replacement remains a separate approval-bound follow-up. |
+| Next advancement condition | Reopen only if exact ownership, digest binding, rollback, read-only preview/check, or idempotence regresses. |
 
 ### RH-W-0009
 | Field | Value |
@@ -302,7 +302,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 9; existing README selector gap |
 | Priority | P1: reciprocal localized documentation remains safely blocked |
 | Dependencies | RH-W-0008 approved integration executor |
-| Status | blocked |
+| Status | ready |
 | Completed work | One-sided selector plans fail closed and LF, CRLF, reciprocal, duplicate, and changed-plan cases are specified. |
 | Remaining work | Add the bounded reciprocal selector action through the approved executor. |
 | Additions | none |
@@ -311,7 +311,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | none |
 | Evidence | Existing README selectors cannot be integrated safely today. |
 | Decision history | 2026-08-13: prerequisite dependency on RH-W-0008 made explicit so the idea cannot disappear. |
-| Next advancement condition | Blocker clears when RH-W-0008 provides the bounded executor. |
+| Next advancement condition | Begin with failing reciprocal selector integration tests through the RH-W-0008 executor. |
 
 ### RH-W-0010
 | Field | Value |
@@ -319,7 +319,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 10; stale installed builder gap |
 | Priority | P2: consumers cannot distinguish package staleness from projection drift |
 | Dependencies | RH-W-0008 executable upgrade boundary |
-| Status | blocked |
+| Status | ready |
 | Completed work | Fresh, stale, absent, and unverifiable fixture outcomes are specified. |
 | Remaining work | Define and detect builder package freshness separately. |
 | Additions | none |
@@ -328,7 +328,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | none |
 | Evidence | Generated harness checking does not establish installed builder package freshness. |
 | Decision history | 2026-08-13: retained as a separate concept from runtime projection drift. |
-| Next advancement condition | Blocker clears when RH-W-0008 defines safe package evolution boundaries. |
+| Next advancement condition | Begin with failing package freshness classification tests while preserving the RH-W-0008 mutation boundary. |
 
 ### RH-W-0011
 | Field | Value |

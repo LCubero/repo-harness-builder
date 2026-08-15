@@ -664,6 +664,192 @@ class AdditiveWriteTests(unittest.TestCase):
             self.assertFalse((root / RULEBOOK).exists())
 
 
+class ApprovedGeneratedOutputReplacementTests(unittest.TestCase):
+    def replacement_fixture(self, root: Path):
+        installed = install(root, "Example", ("opencode",))
+        desired = dict(installed)
+        paths = (
+            ".opencode/commands/session-start.md",
+            ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+        )
+        for path in paths:
+            desired[path] = installed[path] + "\nApproved generated update.\n"
+        return installed, desired, paths
+
+    def test_preview_emits_typed_digest_bound_replacements(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, paths = self.replacement_fixture(root)
+
+            plan = TOOL.plan_changes(root, desired)
+            digest = TOOL.plan_digest(plan)
+
+            self.assertEqual({item["path"] for item in plan["replace"]}, set(paths))
+            for item in plan["replace"]:
+                self.assertEqual(item["action"], "replace-generated-output")
+                self.assertEqual(item["sourceSha256"], TOOL.digest_text(installed[item["path"]]))
+                self.assertEqual(item["destinationSha256"], TOOL.digest_text(desired[item["path"]]))
+                self.assertEqual(item["planSha256"], digest)
+
+    def test_unowned_and_human_evolved_paths_remain_proposal_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", ("opencode",))
+            command = ".opencode/commands/session-start.md"
+            human = "docs/repo-harness/usage.md"
+            (root / command).write_bytes(b"unverifiable command\n")
+            (root / human).write_text(installed[human] + "\nHuman addition.\n", encoding="utf-8")
+            desired = dict(installed)
+            desired[command] += "\nDesired command.\n"
+            desired[human] += "\nDesired documentation.\n"
+
+            plan = TOOL.plan_changes(root, desired)
+
+            self.assertFalse({command, human} & {item["path"] for item in plan["replace"]})
+            self.assertTrue({command, human} <= {item["path"] for item in plan["existing"]})
+
+    def test_human_modified_current_generated_bytes_require_exact_approved_replacement(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", ("opencode",))
+            path = ".opencode/commands/session-start.md"
+            modified = installed[path] + "\nHuman modification retaining generated provenance.\n"
+            (root / path).write_text(modified, encoding="utf-8", newline="\n")
+            desired = dict(installed)
+            desired[path] += "\nApproved generated replacement.\n"
+
+            plan = TOOL.plan_changes(root, desired)
+            action = next(item for item in plan["replace"] if item["path"] == path)
+
+            self.assertEqual(action["action"], "replace-generated-output")
+            self.assertEqual(action["sourceSha256"], TOOL.digest_text(modified))
+            self.assertEqual(action["destinationSha256"], TOOL.digest_text(desired[path]))
+            self.assertEqual(action["planSha256"], TOOL.plan_digest(plan))
+            self.assertEqual(TOOL.write_outputs(root, desired, plan), [path])
+            self.assertEqual((root / path).read_text(encoding="utf-8"), desired[path])
+
+    def test_post_preview_edit_of_modified_generated_bytes_rejects_without_mutation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", ("opencode",))
+            path = ".opencode/commands/session-start.md"
+            (root / path).write_text(
+                installed[path] + "\nHuman modification retaining generated provenance.\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            desired = dict(installed)
+            desired[path] += "\nApproved generated replacement.\n"
+            plan = TOOL.plan_changes(root, desired)
+            changed_after_preview = installed[path] + "\nChanged again after preview.\n"
+            (root / path).write_text(changed_after_preview, encoding="utf-8", newline="\n")
+
+            with self.assertRaisesRegex(TOOL.ContractError, "stale|changed"):
+                TOOL.write_outputs(root, desired, plan)
+
+            self.assertEqual((root / path).read_text(encoding="utf-8"), changed_after_preview)
+
+    def test_manifest_and_checker_change_as_one_consistent_replacement_pair(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", ("opencode",))
+            desired = dict(installed)
+            manifest = json.loads(installed[TOOL.MANIFEST_PATH])
+            manifest["integrationMode"] = "standalone"
+            desired[TOOL.MANIFEST_PATH] = TOOL.dump_json(manifest)
+            desired[".repo-harness/check.py"] = TOOL.check_script(
+                TOOL.digest_text(desired[TOOL.MANIFEST_PATH])
+            )
+
+            plan = TOOL.plan_changes(root, desired)
+
+            self.assertEqual(
+                {item["path"] for item in plan["replace"]},
+                {TOOL.MANIFEST_PATH, ".repo-harness/check.py"},
+            )
+            TOOL.write_outputs(root, desired, plan)
+            self.assertEqual(
+                (root / TOOL.MANIFEST_PATH).read_text(encoding="utf-8"),
+                desired[TOOL.MANIFEST_PATH],
+            )
+            self.assertEqual(
+                (root / ".repo-harness/check.py").read_text(encoding="utf-8"),
+                desired[".repo-harness/check.py"],
+            )
+            result = subprocess.run(
+                [sys.executable, "-B", str(root / ".repo-harness/check.py")],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_inconsistent_desired_checker_and_manifest_are_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", ("opencode",))
+            desired = dict(installed)
+            desired[".repo-harness/check.py"] += "\n# inconsistent desired checker\n"
+
+            with self.assertRaisesRegex(TOOL.ContractError, "desired checker"):
+                TOOL.plan_changes(root, desired)
+
+    def test_apply_rejects_stale_source_or_changed_plan_before_writes(self):
+        for change in ("source", "plan"):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                installed, desired, paths = self.replacement_fixture(root)
+                plan = TOOL.plan_changes(root, desired)
+                if change == "source":
+                    (root / paths[0]).write_bytes(b"changed after preview\n")
+                else:
+                    desired[paths[0]] += "changed after preview\n"
+
+                with self.assertRaisesRegex(TOOL.ContractError, "stale|changed"):
+                    TOOL.write_outputs(root, desired, plan)
+
+                untouched = paths[1]
+                self.assertEqual((root / untouched).read_text(encoding="utf-8"), installed[untouched])
+
+    def test_replacement_transaction_rolls_back_create_append_and_replace(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, paths = self.replacement_fixture(root)
+            created = ".opencode/commands/new-generated.md"
+            desired[created] = "<!-- Generated by repo-harness-builder; source: wrapper/opencode:3.0 -->\n"
+            pointer = root / "AGENTS.md"
+            pointer.write_bytes(b"human preface\r\n")
+            before = {path: (root / path).read_bytes() for path in paths}
+            original_verify = TOOL.verify_outputs
+
+            def fail_after_writes(*args, **kwargs):
+                original_verify(*args, **kwargs)
+                raise TOOL.ContractError("forced continuation failure")
+
+            with mock.patch.object(TOOL, "verify_outputs", fail_after_writes), self.assertRaisesRegex(
+                TOOL.ContractError, "forced continuation failure"
+            ):
+                TOOL.write_outputs(root, desired, TOOL.plan_changes(root, desired))
+
+            self.assertFalse((root / created).exists())
+            self.assertEqual(pointer.read_bytes(), b"human preface\r\n")
+            self.assertEqual({path: (root / path).read_bytes() for path in paths}, before)
+
+    def test_preview_check_and_second_application_are_zero_write(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, paths = self.replacement_fixture(root)
+            before = {path: (root / path).read_bytes() for path in paths}
+
+            plan = TOOL.plan_changes(root, desired)
+            report = TOOL.check(root, "Example", ["opencode"])
+
+            self.assertEqual({path: (root / path).read_bytes() for path in paths}, before)
+            self.assertEqual(report["writes"], 0)
+            self.assertEqual(set(TOOL.write_outputs(root, desired, plan)), set(paths))
+            self.assertEqual(TOOL.write_outputs(root, desired, TOOL.plan_changes(root, desired)), [])
+
+
 class GeneratedOutputMigrationTests(unittest.TestCase):
     def migration_fixture(
         self,
@@ -3058,6 +3244,19 @@ class RuntimeSelectionContractTests(unittest.TestCase):
         """A singular example is why agents run check once per profile."""
         commands = (ROOT / "references" / "validation.md").read_text(encoding="utf-8")
         self.assertRegex(commands, r"--runtime [a-z-]+ --runtime [a-z-]+")
+
+    def test_validation_documents_approved_generated_replacement_boundary(self):
+        validation = (ROOT / "references" / "validation.md").read_text(encoding="utf-8")
+        for phrase in (
+            "human-modified current-version generated",
+            "source and destination SHA-256",
+            "plan digest",
+            "rolls back every replacement, create, and append",
+            "human-owned paths remain proposal-only",
+            "preview and check write nothing",
+        ):
+            self.assertIn(phrase, validation)
+        self.assertNotIn("cannot repair an existing file", validation)
 
     def test_help_states_that_the_runtime_flag_repeats(self):
         """An agent reads --help before the references, so the help text has to say it."""

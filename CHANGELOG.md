@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-14
 
+- Completed `RH-W-0008`: added typed, plan-digest-bound replacement for exact authenticated manifest-owned current-version generated outputs, including human-modified bytes retaining valid provenance; stale-plan and byte rejection; atomic rollback across replace/create/append; manifest/checker pair consistency; read-only preview/check; idempotence; and proposal-only refusal for human-owned or unverifiable paths. The owner-derived live preview remains 17 actions because manifest and checker already match desired bytes; no live action was applied.
 - Completed `RH-W-0027`: corrected bilingual product README skill names, restored missing recent Spanish chronology, removed stale completed-work lifecycle claims, recorded the 17 stale self-hosted generated surfaces reported by the manifest-matched owner check as RH-W-0008 evidence without changing them, and added focused documentation regressions.
 - Completed `RH-W-0006`: checked-in documentation tests now consult installed manifest locale declarations, avoid Spanish-specific paths in valid English-only layouts, and preserve complete link and semantic-role assertions when Spanish is declared.
 - Completed `RH-W-0005`: explicit installed manifest language declarations now fail closed with field-specific diagnostics for invalid structure, documentation locales, and conversation language, while missing legacy declarations retain installed-locale inference.

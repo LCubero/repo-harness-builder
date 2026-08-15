@@ -1653,13 +1653,47 @@ def desired_skill_license(outputs: dict[str, str]) -> str:
     return license_id
 
 
+def manifest_owned_generated_paths(root: Path) -> set[str]:
+    """Return generated paths authorized by an authenticated installed manifest."""
+    manifest_target = guarded_target(root, MANIFEST_PATH)
+    checker_target = guarded_target(root, ".repo-harness/check.py")
+    if not manifest_target.is_file() or is_indirect(manifest_target):
+        return set()
+    if not checker_target.is_file() or is_indirect(checker_target):
+        return set()
+    manifest_bytes = manifest_target.read_bytes()
+    if checker_target.read_text(encoding="utf-8") != check_script(digest_bytes(manifest_bytes)):
+        return set()
+    try:
+        manifest = json.loads(manifest_bytes)
+        paths = generated_skill_paths(manifest)
+    except (ContractError, json.JSONDecodeError):
+        return set()
+    for runtime in manifest["runtimes"]:
+        if runtime == "pi":
+            paths.update(f".pi/prompts/{command}.md" for command in COMMAND_TO_SKILL)
+            paths.add(".pi/prompts/repo-harness-help.md")
+            continue
+        base = ".opencode" if runtime == "opencode" else ".claude"
+        paths.update(f"{base}/commands/{command}.md" for command in COMMAND_TO_SKILL)
+        paths.add(f"{base}/commands/repo-harness-help.md")
+    return paths | {MANIFEST_PATH, ".repo-harness/check.py"}
+
+
 def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
     """Classify outputs, including the two bounded root pointer append cases."""
+    require(MANIFEST_PATH in outputs and ".repo-harness/check.py" in outputs, "desired manifest and checker are required")
+    require(
+        outputs[".repo-harness/check.py"] == check_script(digest_text(outputs[MANIFEST_PATH])),
+        "desired checker does not match desired manifest",
+    )
     create: list[dict[str, str]] = []
     append: list[dict[str, str]] = []
+    replace: list[dict[str, str]] = []
     identical: list[str] = []
     existing: list[dict[str, str]] = []
     blocked: list[dict[str, str]] = []
+    generated_paths = manifest_owned_generated_paths(root)
     for relative, content in sorted(outputs.items()):
         target = guarded_target(root, relative)
         if not target.exists() and not target.is_symlink():
@@ -1708,6 +1742,18 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
                     "reason": "required LF attribute rules already present; left untouched",
                     "sha256": digest_bytes(current),
                 })
+        elif (
+            relative in generated_paths
+            and target.is_file()
+            and not target.is_symlink()
+            and (relative == MANIFEST_PATH or generated_version(target.read_bytes()) == VERSION)
+        ):
+            replace.append({
+                "path": relative,
+                "action": "replace-generated-output",
+                "sourceSha256": digest_bytes(target.read_bytes()),
+                "destinationSha256": digest_text(content),
+            })
         else:
             reason = (
                 "already present; analyze content and include only approved evolution in the apply plan"
@@ -1733,14 +1779,21 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
         create = [item for item in create if item["path"] not in migrating_destinations]
         identical = [path for path in identical if path not in replacements]
         existing = [item for item in existing if item["path"] not in replacements]
-    return {
+        migration_replacements = {item["path"] for item in migrate[0]["replace"]}
+        replace = [item for item in replace if item["path"] not in migration_replacements]
+    plan = {
         "create": create,
         "append": append,
+        "replace": replace,
         "identical": identical,
         "existing": existing,
         "blocked": blocked,
         "migrate": migrate,
     }
+    digest = plan_digest(plan)
+    for item in replace:
+        item["planSha256"] = digest
+    return plan
 
 
 def plan_digest(plan: dict[str, Any]) -> str:
@@ -1749,7 +1802,10 @@ def plan_digest(plan: dict[str, Any]) -> str:
     No plan byte depends on the report language, so the digest needs no stabilization:
     it binds approval to the exact content the apply step will write.
     """
-    return digest_text(dump_json(json.loads(dump_json(plan))))
+    canonical = json.loads(dump_json(plan))
+    for item in canonical.get("replace", []):
+        item.pop("planSha256", None)
+    return digest_text(dump_json(canonical))
 
 
 class GeneratedSkillMove(TypedDict):
@@ -1998,9 +2054,20 @@ def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> 
     for item in plan["create"]:
         target = guarded_target(root, item["path"])
         require(not target.exists() and not target.is_symlink(), f"approved create target changed: {item['path']}")
+    digest = plan_digest(plan)
+    for item in plan["replace"]:
+        relative = item["path"]
+        target = guarded_target(root, relative)
+        require(item["action"] == "replace-generated-output", f"invalid replacement action: {relative}")
+        require(item["planSha256"] == digest, f"approved replacement plan changed: {relative}")
+        require(relative in outputs, f"unknown replacement output: {relative}")
+        require(target.is_file() and not is_indirect(target), f"invalid generated replacement target: {relative}")
+        require(digest_bytes(target.read_bytes()) == item["sourceSha256"], f"generated source bytes changed: {relative}")
+        require(digest_text(outputs[relative]) == item["destinationSha256"], f"generated destination bytes changed: {relative}")
     def apply_additive() -> list[str]:
         written: list[Path] = []
         appended: dict[Path, bytes] = {}
+        replaced: dict[Path, bytes] = {}
         try:
             for item in plan["create"]:
                 relative = item["path"]
@@ -2024,9 +2091,15 @@ def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> 
                 with target.open("ab") as handle:
                     handle.write(addition)
                 require(digest_bytes(target.read_bytes()) == item["resultSha256"], f"append mismatch: {relative}")
+            for item in plan["replace"]:
+                relative = item["path"]
+                target = guarded_target(root, relative)
+                replaced[target] = target.read_bytes()
+                target.write_text(outputs[relative], encoding="utf-8", newline="\n")
+                require(digest_bytes(target.read_bytes()) == item["destinationSha256"], f"replacement mismatch: {relative}")
             result = sorted(
                 path.relative_to(root.resolve(strict=True)).as_posix()
-                for path in [*written, *appended]
+                for path in [*written, *appended, *replaced]
             )
             verify_outputs(
                 root,
@@ -2035,6 +2108,8 @@ def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> 
             )
             return result
         except (OSError, ContractError):
+            for target, content in replaced.items():
+                target.write_bytes(content)
             for target, content in appended.items():
                 target.write_bytes(content)
             for target in reversed(written):

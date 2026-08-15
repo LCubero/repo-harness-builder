@@ -5,6 +5,7 @@ La fuente canonica es [`../../repo-harness/decisions.md`](../../repo-harness/dec
 ## Decisiones permanentes
 <!-- doc-role:standing-decisions -->
 
+- Las salidas generadas existentes de la version actual solo pueden reemplazarse cuando el par autenticado de manifest y checker instalado prueba la ruta exacta de su propiedad y los bytes actuales conservan procedencia generada. Esto incluye modificaciones humanas que retienen un marcador valido de la version actual. El preview liga ruta, tipo de accion, SHA-256 exacto de origen y destino y digest del plan; apply rechaza ediciones posteriores al preview y revierte cada create, append y replace ante cualquier fallo. Las rutas de propiedad humana, evolucionadas por humanos, heredadas o no verificables permanecen solo como propuesta. El checker deseado debe coincidir con el digest del manifest deseado y un par valido cambiado se reemplaza atomicamente.
 - La evidencia actual del repositorio prevalece sobre memoria previa.
 - Gentle AI y Engram son obligatorios en modo integrado, pero no reemplazan evidencia actual.
 - `skill/repo-harness-builder/` y `command/repo-harness-builder.md` son fuentes editables; `.claude/` y `.opencode/` son proyecciones.
