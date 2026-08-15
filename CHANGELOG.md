@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-14
 
+- Completed `RH-W-0006`: checked-in documentation tests now consult installed manifest locale declarations, avoid Spanish-specific paths in valid English-only layouts, and preserve complete link and semantic-role assertions when Spanish is declared.
 - Completed `RH-W-0005`: explicit installed manifest language declarations now fail closed with field-specific diagnostics for invalid structure, documentation locales, and conversation language, while missing legacy declarations retain installed-locale inference.
 - Completed `RH-W-0004`: language selection flags are now render-only, so `check` rejects report, documentation, and conversation language arguments instead of silently ignoring them, while render semantics remain unchanged.
 - Completed `RH-W-0017`: generated Spanish session-stop contracts now localize the human-facing commit-only approval sentence while preserving exact-path staging scope and the unchanged proposed commit message placeholder.
