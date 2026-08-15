@@ -370,16 +370,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 9; existing README selector gap |
 | Priority | P1: reciprocal localized documentation remains safely blocked |
 | Dependencies | RH-W-0008 approved integration executor |
-| Status | ready |
-| Completed work | One-sided selector plans fail closed and LF, CRLF, reciprocal, duplicate, and changed-plan cases are specified. |
-| Remaining work | Add the bounded reciprocal selector action through the approved executor. |
-| Additions | none |
-| Exclusions | No general README rewriting. |
+| Status | completed |
+| Completed work | One-sided selector plans fail closed, and the bounded reciprocal selector action now runs through the approved executor. When an existing `README.md` lacks the reciprocal link, the plan binds one append of the exact selector block with its current and result digests and creates the Spanish peer in the same apply. |
+| Remaining work | none |
+| Additions | Three regressions: LF and CRLF selector integration with digest-bound append, idempotence on a second run, and fail-closed behavior when the existing README is not a regular file. |
+| Exclusions | No general README rewriting. The append adds only the selector block, preserves every existing byte and the file's newline convention, and never reorders content. |
 | Deferrals | none |
-| Rejections | none |
-| Evidence | Existing README selectors cannot be integrated safely today. |
-| Decision history | 2026-08-13: prerequisite dependency on RH-W-0008 made explicit so the idea cannot disappear. |
-| Next advancement condition | Begin with failing reciprocal selector integration tests through the RH-W-0008 executor. |
+| Rejections | Rejected keeping the block now that the executor exists, because it left declared bilingual repositories permanently one-sided. Rejected rewriting or reformatting the human README to place the selector. |
+| Evidence | The canonical suite passes 263 tests with 7 skips. The retargeted invariant asserts a Spanish peer never appears without a reciprocal link: either the plan appends the selector and creates the peer, or it blocks and apply fails closed with no peer on disk. |
+| Decision history | 2026-08-13: prerequisite dependency on RH-W-0008 made explicit so the idea cannot disappear. 2026-08-15: completed once that executor was applied and verified; blocking became the wrong default because the capability to integrate safely now exists. |
+| Next advancement condition | Reopen only if a Spanish peer can be created without a reciprocal link, or if the selector append stops preserving existing bytes or the newline convention. |
 
 ### RH-W-0010
 | Field | Value |

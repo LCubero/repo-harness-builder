@@ -227,7 +227,8 @@ class ProductWorkflowTests(unittest.TestCase):
     def test_preview_omits_documentation_entry_points_blocked_by_the_plan(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "README.md").write_text("# Human product guide\n", encoding="utf-8")
+            # A README that cannot be appended keeps the Spanish peer blocked.
+            (root / "README.md").mkdir()
             command = [
                 "python", "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--documentation-language", "en",
@@ -297,21 +298,35 @@ class ProductWorkflowTests(unittest.TestCase):
             entry = next(item for item in plan["existing"] if item["path"] == "README.md")
             self.assertIn("analyze", entry["reason"])
             self.assertIn("approved", entry["reason"])
-            with self.assertRaisesRegex(TOOL.ContractError, "blocked plan actions"):
-                TOOL.write_outputs(root, outputs, plan)
-            self.assertEqual(readme.read_bytes(), original)
+            # The selector append is the only sanctioned change; existing bytes are never rewritten.
+            TOOL.write_outputs(root, outputs, plan)
+            current = readme.read_bytes()
+            self.assertTrue(current.startswith(original))
+            self.assertEqual(current[len(original):].strip().splitlines()[0], b"<!-- README-I18N:START -->")
 
-    def test_existing_readme_without_reciprocal_selector_blocks_spanish_peer_creation(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            (root / "README.md").write_text("# Human product guide\n", encoding="utf-8")
-            outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
-            plan = TOOL.plan_changes(root, outputs)
-            self.assertNotIn("README.es.md", [item["path"] for item in plan["create"]])
-            self.assertEqual(plan["blocked"][0]["path"], "README.es.md")
-            with self.assertRaisesRegex(TOOL.ContractError, "blocked plan actions"):
-                TOOL.write_outputs(root, outputs, plan)
-            self.assertFalse((root / "README.es.md").exists())
+    def test_a_spanish_peer_never_appears_without_a_reciprocal_link(self):
+        """The peer is created only alongside a selector, or not at all."""
+        for build in (
+            lambda root: (root / "README.md").write_bytes(b"# Human product guide\n"),
+            lambda root: (root / "README.md").mkdir(),
+        ):
+            with self.subTest(build=build), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                build(root)
+                outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
+                plan = TOOL.plan_changes(root, outputs)
+                creates_peer = "README.es.md" in [item["path"] for item in plan["create"]]
+
+                if creates_peer:
+                    self.assertEqual(plan["blocked"], [])
+                    TOOL.write_outputs(root, outputs, plan)
+                    self.assertIn(b"README.es.md", (root / "README.md").read_bytes())
+                    self.assertTrue((root / "README.es.md").is_file())
+                else:
+                    self.assertEqual([item["path"] for item in plan["blocked"]], ["README.es.md"])
+                    with self.assertRaisesRegex(TOOL.ContractError, "blocked plan actions"):
+                        TOOL.write_outputs(root, outputs, plan)
+                    self.assertFalse((root / "README.es.md").exists())
 
     def test_existing_readme_with_reciprocal_selector_allows_spanish_peer_creation(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -320,6 +335,59 @@ class ProductWorkflowTests(unittest.TestCase):
             plan = TOOL.plan_changes(root, TOOL.render("Example", [], documentation_languages=["en", "es"]))
             self.assertIn("README.es.md", [item["path"] for item in plan["create"]])
             self.assertEqual(plan["blocked"], [])
+
+    def test_existing_readme_gains_the_reciprocal_selector_instead_of_blocking(self):
+        for original in (b"# Human product guide\n", b"# Human product guide\r\n"):
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                readme = root / "README.md"
+                readme.write_bytes(original)
+                outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
+                plan = TOOL.plan_changes(root, outputs)
+
+                self.assertEqual(plan["blocked"], [])
+                self.assertIn("README.es.md", [item["path"] for item in plan["create"]])
+                appended = [item for item in plan["append"] if item["path"] == "README.md"]
+                self.assertEqual(len(appended), 1)
+                self.assertEqual(appended[0]["sha256"], TOOL.digest_bytes(original))
+
+                TOOL.write_outputs(root, outputs, plan)
+                current = readme.read_bytes()
+                self.assertTrue(current.startswith(original))
+                self.assertIn(b"README.es.md", current)
+                self.assertIn(b"README-I18N:START", current)
+                self.assertEqual(TOOL.digest_bytes(current), appended[0]["resultSha256"])
+                newline = b"\r\n" if b"\r\n" in original else b"\n"
+                self.assertNotIn(b"\r\n" if newline == b"\n" else b"\x00", current)
+                self.assertTrue((root / "README.es.md").is_file())
+
+    def test_an_existing_selector_needs_no_append_and_stays_byte_identical(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            readme = root / "README.md"
+            outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
+            readme.write_bytes(b"# Guide\n")
+            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+            integrated = readme.read_bytes()
+
+            replan = TOOL.plan_changes(root, outputs)
+            self.assertEqual(replan["blocked"], [])
+            self.assertNotIn("README.md", [item["path"] for item in replan["append"]])
+            TOOL.write_outputs(root, outputs, replan)
+            self.assertEqual(readme.read_bytes(), integrated)
+
+    def test_an_unappendable_readme_still_fails_closed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "README.md").mkdir()
+            outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
+            plan = TOOL.plan_changes(root, outputs)
+
+            self.assertNotIn("README.es.md", [item["path"] for item in plan["create"]])
+            self.assertEqual([item["path"] for item in plan["blocked"]], ["README.es.md"])
+            with self.assertRaisesRegex(TOOL.ContractError, "blocked plan actions"):
+                TOOL.write_outputs(root, outputs, plan)
+            self.assertFalse((root / "README.es.md").exists())
 
     def test_builder_documents_repository_sensitive_readme_maintenance(self):
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")

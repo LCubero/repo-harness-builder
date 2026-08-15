@@ -6,7 +6,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 <!-- doc-role:verified-state -->
 
 - El harness esta presente y el verificador generado informa `current`, salida 0 y 0 escrituras. El check propietario ajustado al manifest tambien informa `current`, con 21 `current`, 18 `human-evolved`, 4 `present` y 0 obsoletas.
-- La suite canonica esta en verde: pasaron 260 pruebas con 7 omisiones. `RH-W-0030` agrega cobertura del gating de activacion en la CLI, `RH-W-0029` agrega cobertura de la proteccion derivada de fin de linea, `RH-W-0028` agrega cobertura del limite de activacion estricto del constructor, RH-W-0008 conserva cobertura para reemplazo aprobado y consistencia entre manifest y checker, y RH-W-0006 conserva las comprobaciones incorporadas conscientes de locales.
+- La suite canonica esta en verde: pasaron 263 pruebas con 7 omisiones. `RH-W-0009` agrega cobertura de integracion del selector reciproco, `RH-W-0030` agrega cobertura del gating de activacion en la CLI, `RH-W-0029` agrega cobertura de la proteccion derivada de fin de linea, `RH-W-0028` agrega cobertura del limite de activacion estricto del constructor, RH-W-0008 conserva cobertura para reemplazo aprobado y consistencia entre manifest y checker, y RH-W-0006 conserva las comprobaciones incorporadas conscientes de locales.
 - El archivo raiz `.gitattributes` protege 19 rutas generadas comparadas byte a byte, derivadas de las salidas del render en vez de un par fijo.
 - El conjunto de entornos es `claude-code` y `opencode`; el modo es `integrated`. El idioma de conversacion es `espanol` y los locales documentales son `en` y `es`. El generador es 3.0, el paquete de habilidad es 3.1 y el checker y manifest incorporados conservan consistencia como par.
 - La suite cubre estados Git generados, consentimiento por intencion, comparacion exacta del alcance preparado, separacion del indice previo, invalidacion por cambios materiales, resultados delimitados, deteccion sensible, recibos de transporte acotados y contratos de cache del entorno.
@@ -16,6 +16,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo reciente completado
 <!-- doc-role:recent-work -->
 
+- Se completo `RH-W-0009`: un `README.md` existente sin el enlace reciproco recibe ahora un unico append acotado y ligado a digest del bloque exacto de selector, y el par espanol se crea en la misma aplicacion. El append preserva cada byte existente y la convencion LF o CRLF, y no agrega nada mas. Un README que no es un archivo regular sigue bloqueando el par y cierra la aplicacion en falso.
 - Se completo `RH-W-0030`: el limite de activacion vive ahora en la CLI, no solo en la prosa. `render --activation` usa `maintenance` por defecto, que omite por completo el dominio estricto de la salida, rechaza `--approval` y aplica unicamente con el digest coincidente; `--activation builder` conserva el dominio localizado y la exigencia de digest mas token, con digest de plan identico.
 - Se completo `RH-W-0029`: el archivo raiz `.gitattributes` se deriva de las salidas del render y protege cada ruta generada comparada byte a byte con una regla exacta `text eol=lf`, excluyendo rutas de puntero, de ignore, de atributos y de propiedad humana. La deteccion de conflictos cubre el mismo conjunto y evalua patrones recursivos `dir/**`. Aplicarlo resolvio las 15 superficies obsoletas informadas: 12 eran solo fin de linea y 3 llevaban la frase localizada de commit de `repo-harness-session-stop`.
 - Se resolvio el probe de deteccion de Gentle AI que la investigacion habia dejado abierto con confianza media: `gentle-ai version` es una superficie anunciada de solo lectura, independiente del layout porque se resuelve por PATH. Solo un resultado `verified` autoriza usar la capacidad; `found_on_path` por si solo no autoriza nada. `RH-W-0025` volvio a `ready` como una sola unidad.
@@ -62,7 +63,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
 - Proyeccion aplazada: `RH-W-0011` a `RH-W-0015`, la idea de mantenimiento interno desatendido `RH-W-0018` y la capacidad opcional de CodeGraph `RH-W-0026` conservan condiciones explicitas de avance en [roadmap.md](roadmap.md). `RH-W-0026` requiere aprobacion futura explicita de diseno o investigacion y revision de fuente primaria antes de avanzar.
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
-- IDs completados recientemente: `RH-W-0030`, `RH-W-0029`, `RH-W-0028`, `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
+- IDs completados recientemente: `RH-W-0009`, `RH-W-0030`, `RH-W-0029`, `RH-W-0028`, `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
 
 ## Siguiente paso
 <!-- doc-role:next-step -->
