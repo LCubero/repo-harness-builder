@@ -63,7 +63,7 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Active projection: `RH-W-0009`, `RH-W-0010`, and `RH-W-0019` are `ready`. `RH-W-0025` is unblocked: the fresh self-hosted plan was generated from current bytes, approved, applied, and verified, and both checkers report `current`.
+- Active projection: `RH-W-0009`, `RH-W-0010`, `RH-W-0019`, and `RH-W-0025` are `ready`. `RH-W-0025` returned to ready after its RH-W-0008 prerequisite was applied and verified and its open detection probe was resolved against `gentle-ai version`. A proposed split into an Engram half and a blocked Gentle AI half was rejected, because it would fragment the four-combination availability matrix across two units.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015` and the unattended internal-maintenance idea `RH-W-0018` retain explicit advancement conditions in [roadmap.md](roadmap.md).
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
@@ -72,4 +72,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Start `RH-W-0025`, the capability-aware Gentle AI and Engram contract, now that its RH-W-0008 prerequisite is applied and verified. `RH-W-0009`, `RH-W-0010`, and `RH-W-0019` are also ready; take one unit per branch and do not bundle them.
+Start `RH-W-0025`, the capability-aware Gentle AI and Engram contract. Begin with failing contract tests for the four availability combinations, and treat only a `verified` probe result as authority to use a capability. `RH-W-0009`, `RH-W-0010`, and `RH-W-0019` are also ready; take one unit per branch and do not bundle them.
