@@ -10,7 +10,9 @@
 
 **Entradas canónicas:** [investigación de integración](integration-research.md), [RH-W-0025](roadmap.md#rh-w-0025) y [decisiones permanentes](decisions.md). El [plan en inglés](../../repo-harness/rh-w-0025-implementation-plan.md) es el propietario canónico.
 
-**Prerrequisito de ejecución:** RH-W-0025 está bloqueado por RH-W-0008. No ejecutar este plan hasta que RH-W-0008 entregue el ejecutor aprobado de reemplazo e integración ligado al contenido para salidas generadas existentes.
+**Prerrequisito de ejecución:** cumplido. RH-W-0008 entregó el ejecutor aprobado de reemplazo e integración ligado al contenido, y se aplicó y verificó el 2026-08-15. RH-W-0025 está `ready`.
+
+**Contrato de detección:** detectar Gentle AI mediante `gentle-ai version`, una superficie anunciada de solo lectura que devuelve `gentle-ai <version>` con salida 0 y se resuelve por PATH, por lo que es independiente del layout de instalación. La detección tiene tres estados: `not_found`, `found_on_path` y `verified`. Solo `verified`, un código de salida validado más la forma de la salida, autoriza usar la capacidad. `found_on_path` no autoriza nada, porque la presencia de un ejecutable no prueba que sea el CLI auténtico y funcional, y la investigación lo prohíbe como base de detección.
 
 **Evidencia del bloqueo:** `plan_changes()` clasifica salidas existentes no idénticas como `existing`, y `write_outputs()` escribe solo acciones create/append más la migración acotada RH-W-0024 de nombres heredados. Esa migración no puede regenerar propietarios consumidores existentes arbitrarios. Ampliar RH-W-0025 duplicaría RH-W-0008 y crearía un tercer mecanismo de reemplazo.
 
@@ -23,8 +25,8 @@
 - [ ] Promover conocimiento operativo reutilizable solo después de verificarlo en el repositorio y obtener aprobación humana.
 - [ ] No agregar tercer estado, habilitación automática de revisión, aprobación fabricada, SDD sintético, copias de almacenes de recibos, conflictos o intentos, ni reintentos hasta quedar limpio.
 - [ ] Mantener RH-W-0022 relacionado e independiente. No agregar dependencia salvo evidencia de implementación.
-- [ ] Tratar RH-W-0008 como prerrequisito obligatorio. No iniciar RH-W-0025 hasta que RH-W-0008 entregue el ejecutor aprobado de reemplazo e integración ligado al contenido.
-- [ ] No agregar dependencia de runtime, daemon, scheduler, cliente de red, mutación de proveedor ni detección basada en layout privado o presencia de ejecutable.
+- [x] Prerrequisito RH-W-0008 cumplido: el ejecutor aprobado de reemplazo e integración ligado al contenido se entregó, aplicó y verificó.
+- [ ] No agregar dependencia de runtime, daemon, scheduler, cliente de red, mutación de proveedor ni detección basada en layout privado o presencia de ejecutable. Invocar `gentle-ai version` no es ninguna de esas cosas: es la superficie anunciada de solo lectura de la propia herramienta, y un resultado `found_on_path` nunca autoriza por sí solo una capacidad.
 - [ ] Preservar archivos humanos y trabajo no confirmado ajeno. Preparar solo rutas del commit acotado actual.
 
 ## Mapa de archivos previsto
@@ -130,7 +132,7 @@ El conjunto consumidor exacto debe provenir de `TOOL.render(...)` después de co
 **Archivos:** `usage.md` y `decisions.md` con sus pares solo después del seguimiento de regeneración; `roadmap.md`, `current-state.md`, pares españoles y `CHANGELOG.md` al cierre verificado; preservar ambas investigaciones.
 
 - [ ] No editar a mano propietarios durables generados. Después de RH-W-0008, el seguimiento aprobado debe regenerar selección, modos, degradación, promoción y siguiente acción, con inglés propietario y español espejo completo.
-- [ ] Solo después de completar RH-W-0008, verificar RH-W-0025 y terminar el seguimiento de regeneración, cambiar RH-W-0025 de `blocked` a `completed`, usar trabajo restante `none`, agregar evidencia, actualizar estado y changelog. No cambiar RH-W-0022.
+- [ ] Solo después de verificar RH-W-0025 y terminar el seguimiento de regeneración, cambiar RH-W-0025 de `ready` a `completed`, usar trabajo restante `none`, agregar evidencia, actualizar estado y changelog. No cambiar RH-W-0022.
 - [ ] Actualizar Engram `work/RH-W-0025` solo con implementación y regeneración verificadas. No marcar completo mientras RH-W-0008 siga incompleto.
 - [ ] Ejecutar suite canónica y `python .repo-harness/check.py`. Esperar pruebas aprobadas, checker `current`, salida 0 y `writes: 0`.
 
