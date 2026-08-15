@@ -4,8 +4,17 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-08-15
+
+- Completed `RH-W-0030`: moved the builder approval activation boundary from prose into the CLI. `render` now takes `--activation builder|maintenance` and defaults to `maintenance`, which omits `approvalPrompt` and `approvalAnswers` from preview output entirely, rejects `--approval` with exit 2, and applies on the matching digest alone. Builder activation keeps the complete localized strict domain and the digest-plus-token requirement, and the plan digest is identical under both. Previously every read-only render printed the strict envelope, so the contract forbade an interface the tool kept manufacturing.
+- Completed `RH-W-0029`: derived root `.gitattributes` from render outputs, protecting all 19 byte-compared generated paths with exact `text eol=lf` rules instead of a fixed pair, excluding pointer, ignore, attribute, and human-owned paths. Conflict detection covers the same derived set and now evaluates recursive `dir/**` patterns. Applying it resolved the 15 stale surfaces the fresh RH-W-0008 plan reported: byte-level comparison proved 12 differed only in line endings from a Windows checkout and 3 carried the localized `repo-harness-session-stop` commit sentence.
+- Applied the fresh `RH-W-0008` self-hosted plan generated from current repository bytes, unblocking `RH-W-0025`. Both the generated checker and the manifest-matched owner check report `current` with 0 stale.
+
 ## 2026-08-14
 
+- Completed `RH-W-0028`: restricted strict digest-bound builder approval to explicitly active `repo-harness-builder` execution, kept ordinary repository maintenance and direct questions conversational, and synchronized the product contract, references, tests, and checked-in OpenCode and Claude projections.
+- Changed this repository's declared conversation language to `espanol` while retaining English and Spanish documentation locales and checker/manifest consistency.
+- Completed `RH-W-0008`: added typed, plan-digest-bound replacement for exact authenticated manifest-owned current-version generated outputs, including human-modified bytes retaining valid provenance; stale-plan and byte rejection; atomic rollback across replace/create/append; manifest/checker pair consistency; read-only preview/check; idempotence; and proposal-only refusal for human-owned or unverifiable paths. The owner-derived live preview remains 17 actions because manifest and checker already match desired bytes; no live action was applied.
 - Completed `RH-W-0027`: corrected bilingual product README skill names, restored missing recent Spanish chronology, removed stale completed-work lifecycle claims, recorded the 17 stale self-hosted generated surfaces reported by the manifest-matched owner check as RH-W-0008 evidence without changing them, and added focused documentation regressions.
 - Completed `RH-W-0006`: checked-in documentation tests now consult installed manifest locale declarations, avoid Spanish-specific paths in valid English-only layouts, and preserve complete link and semantic-role assertions when Spanish is declared.
 - Completed `RH-W-0005`: explicit installed manifest language declarations now fail closed with field-specific diagnostics for invalid structure, documentation locales, and conversation language, while missing legacy declarations retain installed-locale inference.

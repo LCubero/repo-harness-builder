@@ -24,6 +24,57 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0030
+| Field | Value |
+|---|---|
+| Origin | The strict builder approval envelope was relayed during an ordinary session-start maintenance turn, and the user identified that the interface must not exist outside an active builder execution |
+| Priority | P1: `RH-W-0028` bound the boundary in prose while the CLI kept manufacturing the interface, so the contract and the tool contradicted each other at a human approval boundary |
+| Dependencies | RH-W-0028 activation boundary |
+| Status | completed |
+| Completed work | Added `render --activation builder\|maintenance`, defaulting to `maintenance`. Maintenance omits `approvalPrompt` and `approvalAnswers` from preview output entirely, rejects `--approval` with exit 2, and applies on the matching digest alone. Builder activation keeps the complete localized strict domain and the digest-plus-token requirement. The plan digest is identical under both activations. Synchronized the product contract, three references, this repository's bilingual usage and decisions, and both checked-in builder projections. |
+| Remaining work | none |
+| Additions | Two CLI regressions proving maintenance withholds the domain and applies on the digest alone, and that builder activation still enforces the exact token. |
+| Exclusions | No change to digest computation, plan semantics, apply atomicity, rollback, generated harness content, session-skill consent, or the generated daily skills, which already contained no strict tokens. |
+| Deferrals | none |
+| Rejections | Rejected leaving the boundary as prose plus tests that only assert the prose, because a preview that always printed the envelope invited every caller to relay it. Rejected removing the token from builder apply, which would weaken the builder's own gate. |
+| Evidence | `harness_tool.py` previously emitted `approvalPrompt` and `approvalAnswers` unconditionally on every read-only render. After the change, a maintenance preview of this repository yields zero strict-token matches and a builder-activation preview still yields them. The canonical suite passes 260 tests with 7 skips; both checkers report `current`. |
+| Decision history | 2026-08-15: registered and completed after the leak recurred in practice; the fix moved the boundary from prose into the tool that manufactures the interface. |
+| Next advancement condition | Reopen only if the strict domain appears in any output path outside `--activation builder`, or if builder activation loses the digest-plus-token requirement. |
+
+### RH-W-0029
+| Field | Value |
+|---|---|
+| Origin | Fresh `RH-W-0008` self-hosted plan reported 15 stale generated surfaces, of which byte-level comparison proved 12 differed only in line endings |
+| Priority | P1: the checker reported drift no apply could durably resolve, which made real content drift indistinguishable from a Windows checkout artifact |
+| Dependencies | RH-W-0008 approved replacement executor |
+| Status | completed |
+| Completed work | Derived root `.gitattributes` from the actual render outputs: one exact `<path> text eol=lf` rule for every byte-compared generated path, excluding pointer, ignore, attribute, and human-owned paths. Extended conflict detection to the same derived set and taught attribute matching to evaluate recursive `dir/**` patterns, which nested generated paths need. Applied the resulting plan to this repository. |
+| Remaining work | none |
+| Additions | Four regressions covering derived rule coverage per runtime set, runtime projection and wrapper protection, the exclusion of human-owned and pointer paths, and recursive pattern conflict detection. |
+| Exclusions | No repository-wide line-ending policy, no `core.autocrlf` change, no normalization of unrelated paths, and no pinning of human-owned documents. |
+| Deferrals | none |
+| Rejections | Rejected broad `.claude/**` and `.opencode/**` rules, which would claim control over human files the harness does not own. Rejected applying the replacement alone, which writes LF that the next checkout would undo. |
+| Evidence | `.gitattributes` grew from 2 to 19 protected paths. `git diff` after apply showed real content changes in exactly the three `repo-harness-session-stop` copies, confirming the other 12 were line endings only. Blob and worktree sizes differed by exactly the CRLF count before the fix. Both checkers now report `current` with 0 stale. |
+| Decision history | 2026-08-15: the `RH-W-0008` plan surfaced 15 stale paths; byte-level classification proved the cause was incomplete attribute coverage from the issue #19 work, not generated content drift. |
+| Next advancement condition | Reopen only if a byte-compared generated path is added without a matching rule, or if a CRLF checkout reports drift again. |
+
+### RH-W-0028
+| Field | Value |
+|---|---|
+| Origin | Strict builder approval activation-boundary defect found during close verification after the repository conversation language changed to `espanol` |
+| Priority | P1: strict digest-bound tokens could leak from builder-only execution into ordinary repository maintenance and direct questions, creating an incorrect human approval boundary |
+| Dependencies | none |
+| Status | completed |
+| Completed work | Restricted the strict builder approval protocol to explicitly active `repo-harness-builder` skill execution; clarified that repository identity, self-hosting, generated-file ownership, session skills, ordinary maintenance, and direct questions do not activate it; retained ordinary conversational approval outside that boundary; synchronized canonical product contracts and checked-in OpenCode and Claude projections. |
+| Remaining work | none |
+| Additions | Added focused product-contract tests for explicit builder activation and for the four approval-bearing references, plus repository lifecycle, current-state, changelog, and projection reconciliation. |
+| Exclusions | No change to digest validation, approval tokens, apply semantics, session-skill consent, generated self-hosted outputs unrelated to the checked-in builder package, SDD, Git operations, or network access. |
+| Deferrals | none |
+| Rejections | Rejected inferring builder activation from repository identity, self-hosting, generated ownership, or the presence of builder files. |
+| Evidence | Focused activation-boundary tests pass in the canonical package and both checked-in runtime projections. Full canonical, projection, checker, documentation, and diff verification is recorded in the same close work unit. |
+| Decision history | 2026-08-14: completed as the strict approval activation-boundary correction and synchronized across product contract, references, tests, lifecycle documentation, and checked-in projections. |
+| Next advancement condition | Reopen only if strict builder tokens or digest-bound approval rules apply outside explicitly active `repo-harness-builder` execution, or active builder execution loses that strict boundary. |
+
 ### RH-W-0027
 | Field | Value |
 |---|---|
@@ -202,14 +253,14 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Dependencies | RH-W-0008 approved replacement and integration executor; RH-W-0022 remains related and independent |
 | Status | blocked |
 | Completed work | Completed primary-source research and approved a generic coordination contract with repository, Engram, Gentle AI, integrated, standalone, promotion, and component-degradation boundaries. |
-| Remaining work | After RH-W-0008 provides content-bound replacement and integration for existing generated outputs, implement bounded coordination in canonical builder sources, synchronize checked-in builder package projections, and run a separate approved regeneration follow-up for existing self-hosted consumer owners. |
+| Remaining work | Generate a new exact digest-bound self-hosted plan from current repository bytes, obtain approval for that fresh plan, apply and verify it through RH-W-0008, then implement bounded coordination in canonical builder sources, synchronize checked-in builder package projections, and run its own approved consumer regeneration follow-up. |
 | Additions | The repository owns durable truth, source, tests, policy, backlog, and approvals. Engram owns semantic memory, relations and conflicts, review-age metadata, and session continuity. Gentle AI optionally owns routing, exact-candidate review and receipts, and delivery gates when enabled. The harness composes available capabilities without another state machine. Integrated mode uses Gentle AI and Engram together. Standalone mode applies when neither is available and uses repository evidence plus approved repository continuity only. Generated consumer harnesses stay generic; this self-hosted repository applies that same rule to its own product source. Durable reusable discoveries are promoted selectively to canonical repository owners after human approval, changing external facts are marked current and revalidated, and incidental noise is not persisted. Component failure degrades only that component unless repository policy makes it mandatory. |
 | Exclusions | No auto-enabling review, fabricated approval, copied authority, synthetic SDD, duplicate lifecycle, receipt, or conflict stores, loop-until-clean behavior, third state machine, product-specific consumer wording, or implementation in this documentation work unit. |
 | Deferrals | none |
 | Rejections | Rejected making memory authoritative, treating disabled capabilities as approval or denial, persisting incidental noise, and coupling this work to RH-W-0022 without an implementation need. |
-| Evidence | The approved design and pinned-source analysis are recorded in [integration-research.md](integration-research.md). Current `plan_changes()` classifies non-identical existing outputs as `existing`; `write_outputs()` writes only create/append plus the narrow RH-W-0024 migration; that migration owns legacy skill renaming and manifest/checker replacement only. |
+| Evidence | The approved design and pinned-source analysis are recorded in [integration-research.md](integration-research.md). RH-W-0008 now provides authenticated content-bound generated replacement. The old 17-path preview is historical evidence only, its old digest is stale, and it is not an executable description of current repository state. |
 | Decision history | 2026-08-14: research completed and the user explicitly approved the conceptual design. Registered as ready because scope, non-goals, implementation surfaces, start condition, and required tests were bounded. 2026-08-14: changed to blocked after verified executor evidence showed self-hosted regeneration requires RH-W-0008; widening RH-W-0025 would duplicate that owner's approved responsibility. |
-| Next advancement condition | Blocker clears when RH-W-0008 completes with an approved content-bound replacement/integration executor for existing generated outputs. Then begin RH-W-0025 with failing contract tests and require a separate digest-bound, human-approved self-hosted regeneration follow-up; RH-W-0022 remains independent. |
+| Next advancement condition | The blocker clears only after a freshly generated exact action set and digest based on current repository bytes receives approval, is applied, and is verified. Then begin RH-W-0025 with failing contract tests and retain its separate post-implementation consumer regeneration follow-up; RH-W-0022 remains independent. |
 
 ### RH-W-0003
 | Field | Value |
@@ -285,16 +336,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 8; approved replacement and integration gap |
 | Priority | P1: approved plans remain descriptive and cannot safely execute |
 | Dependencies | RH-W-0003 through RH-W-0007 language and section compatibility corrections |
-| Status | ready |
-| Completed work | Content-bound approval, preservation, changed-plan, and rollback boundaries are specified. |
-| Remaining work | Execute one approved action with digest, byte preservation, rollback boundary, and no-write preview tests. |
-| Additions | none |
+| Status | completed |
+| Completed work | Added typed replacement actions for exact authenticated manifest-owned current-version generated outputs, including human-modified bytes retaining valid current-version provenance. Each action binds path, kind, exact source and destination SHA-256 values, and plan digest; apply recomputes the plan, rejects post-preview changes, and executes replace, create, and append atomically with full rollback. Preview and check remain read-only, second apply is idempotent, human-owned and unverifiable paths remain proposal-only, desired checker bytes must match the desired manifest digest, and RH-W-0024 migration behavior remains separate. |
+| Remaining work | none |
+| Additions | Added RED/GREEN coverage for typed actions, human-modified current-version generated bytes, ownership refusal, digest binding, stale source and plan rejection, atomic manifest/checker pairing, rollback after mixed writes, read-only preview/check, and idempotence. |
 | Exclusions | No bulk upgrade engine. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | Current planner describes replacement and integration choices without an executor. RH-W-0003 through RH-W-0007 are now completed. The manifest-matched owner check reports drift with 0 writes and exactly these 17 `stale` paths: `.claude/commands/documentation.md`, `.claude/commands/repo-harness-help.md`, `.claude/commands/session-start.md`, `.claude/commands/session-stop.md`, `.claude/skills/repo-harness-documentation/SKILL.md`, `.claude/skills/repo-harness-session-start/SKILL.md`, `.claude/skills/repo-harness-session-stop/SKILL.md`, `.opencode/commands/documentation.md`, `.opencode/commands/repo-harness-help.md`, `.opencode/commands/session-start.md`, `.opencode/commands/session-stop.md`, `.opencode/skills/repo-harness-documentation/SKILL.md`, `.opencode/skills/repo-harness-session-start/SKILL.md`, `.opencode/skills/repo-harness-session-stop/SKILL.md`, `.repo-harness/skills/repo-harness-documentation/SKILL.md`, `.repo-harness/skills/repo-harness-session-start/SKILL.md`, and `.repo-harness/skills/repo-harness-session-stop/SKILL.md`. RH-W-0027 changed none of them. |
-| Decision history | 2026-08-13: retained as the first mutation capability after prerequisite correctness. 2026-08-14: moved to ready after RH-W-0006 completed the final prerequisite. |
-| Next advancement condition | Start with failing no-write preview, content-bound replacement or integration, changed-plan, byte-preservation, and rollback tests. |
+| Evidence | Initial RED failed with 3 failures and 2 errors; correction RED then exposed checker/manifest pairing with 2 focused failures. GREEN passes 9 focused replacement tests, the validation contract regression, and the 251-test canonical suite with 7 skips. Self-hosted preview reports 0 writes and exactly these 17 replacement paths without applying them: `.claude/commands/documentation.md`, `.claude/commands/repo-harness-help.md`, `.claude/commands/session-start.md`, `.claude/commands/session-stop.md`, `.claude/skills/repo-harness-documentation/SKILL.md`, `.claude/skills/repo-harness-session-start/SKILL.md`, `.claude/skills/repo-harness-session-stop/SKILL.md`, `.opencode/commands/documentation.md`, `.opencode/commands/repo-harness-help.md`, `.opencode/commands/session-start.md`, `.opencode/commands/session-stop.md`, `.opencode/skills/repo-harness-documentation/SKILL.md`, `.opencode/skills/repo-harness-session-start/SKILL.md`, `.opencode/skills/repo-harness-session-stop/SKILL.md`, `.repo-harness/skills/repo-harness-documentation/SKILL.md`, `.repo-harness/skills/repo-harness-session-start/SKILL.md`, and `.repo-harness/skills/repo-harness-session-stop/SKILL.md`. Manifest and checker are absent because their current bytes already equal the deterministic desired pair; a future changed valid pair is planned and applied together. |
+| Decision history | 2026-08-13: retained as the first mutation capability after prerequisite correctness. 2026-08-14: moved to ready after RH-W-0006 completed the final prerequisite. 2026-08-14: completed with the smallest authenticated generated-output replacement executor; live self-hosted replacement remains a separate approval-bound follow-up. |
+| Next advancement condition | Reopen if exact ownership, digest binding, rollback, read-only preview/check, or idempotence regresses. The old 17-path preview is historical evidence only and its old digest is stale. Any future self-hosted follow-up must use a freshly generated exact set and digest from current repository bytes, followed by approval, apply, and verification. |
 
 ### RH-W-0009
 | Field | Value |
@@ -302,7 +353,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 9; existing README selector gap |
 | Priority | P1: reciprocal localized documentation remains safely blocked |
 | Dependencies | RH-W-0008 approved integration executor |
-| Status | blocked |
+| Status | ready |
 | Completed work | One-sided selector plans fail closed and LF, CRLF, reciprocal, duplicate, and changed-plan cases are specified. |
 | Remaining work | Add the bounded reciprocal selector action through the approved executor. |
 | Additions | none |
@@ -311,7 +362,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | none |
 | Evidence | Existing README selectors cannot be integrated safely today. |
 | Decision history | 2026-08-13: prerequisite dependency on RH-W-0008 made explicit so the idea cannot disappear. |
-| Next advancement condition | Blocker clears when RH-W-0008 provides the bounded executor. |
+| Next advancement condition | Begin with failing reciprocal selector integration tests through the RH-W-0008 executor. |
 
 ### RH-W-0010
 | Field | Value |
@@ -319,7 +370,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 10; stale installed builder gap |
 | Priority | P2: consumers cannot distinguish package staleness from projection drift |
 | Dependencies | RH-W-0008 executable upgrade boundary |
-| Status | blocked |
+| Status | ready |
 | Completed work | Fresh, stale, absent, and unverifiable fixture outcomes are specified. |
 | Remaining work | Define and detect builder package freshness separately. |
 | Additions | none |
@@ -328,7 +379,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | none |
 | Evidence | Generated harness checking does not establish installed builder package freshness. |
 | Decision history | 2026-08-13: retained as a separate concept from runtime projection drift. |
-| Next advancement condition | Blocker clears when RH-W-0008 defines safe package evolution boundaries. |
+| Next advancement condition | Begin with failing package freshness classification tests while preserving the RH-W-0008 mutation boundary. |
 
 ### RH-W-0011
 | Field | Value |

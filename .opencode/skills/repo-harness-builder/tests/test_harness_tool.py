@@ -80,7 +80,7 @@ class ApprovalUxTests(unittest.TestCase):
     def test_preview_exposes_the_localized_approval_domain(self):
         with tempfile.TemporaryDirectory() as directory:
             for language, answers in (("english", ["APPROVE", "DENY"]), ("espanol", ["APROBAR", "DENEGAR"])):
-                result = subprocess.run(["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--runtime", "opencode", "--report-language", language], check=True, capture_output=True, text=True)
+                result = subprocess.run(["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--runtime", "opencode", "--report-language", language, "--activation", "builder"], check=True, capture_output=True, text=True)
                 payload = json.loads(result.stdout)
                 self.assertEqual(payload["approvalPrompt"], TOOL.approval_prompt(language))
                 self.assertEqual(payload["approvalAnswers"], answers)
@@ -94,11 +94,23 @@ class ApprovalUxTests(unittest.TestCase):
             self.assertEqual(default["reportLanguage"], "english")
             self.assertEqual(default["planSha256"], spanish["planSha256"])
 
-    def test_generated_session_skills_do_not_contain_builder_tokens(self):
+    def test_generated_operational_skills_do_not_contain_builder_approval_protocol(self):
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])
-        session_contracts = "\n".join(content for path, content in outputs.items() if "session-start" in path or "session-stop" in path)
-        for token in ("APPROVE", "DENY", "APROBAR", "DENEGAR"):
-            self.assertNotIn(token, session_contracts)
+        operational_contracts = "\n".join(
+            content
+            for path, content in outputs.items()
+            if path.startswith(".repo-harness/skills/") and path.endswith("/SKILL.md")
+        )
+        for strict_builder_term in (
+            "APPROVE",
+            "DENY",
+            "APROBAR",
+            "DENEGAR",
+            "content-bound apply plan",
+            "planSha256",
+            "--approval",
+        ):
+            self.assertNotIn(strict_builder_term, operational_contracts)
 
 
 class ProductWorkflowTests(unittest.TestCase):
@@ -349,6 +361,27 @@ class ProductWorkflowTests(unittest.TestCase):
         combined = skill + interview
         self.assertIn("content-bound apply plan", combined)
         self.assertIn("conversational", combined)
+
+    def test_builder_approval_protocol_requires_explicit_skill_activation(self):
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        for phrase in (
+            "explicitly active `repo-harness-builder` skill execution",
+            "Repository identity, self-hosting, ordinary repository maintenance, generated-file ownership, session skills, and direct questions do not activate",
+            "Outside an active builder skill execution, use ordinary conversational approval rules.",
+        ):
+            self.assertIn(phrase, skill)
+
+    def test_strict_approval_references_require_active_builder_execution(self):
+        for name in (
+            "audit-and-interview.md",
+            "preservation-and-safety.md",
+            "architecture.md",
+            "validation.md",
+        ):
+            with self.subTest(name=name):
+                text = (ROOT / "references" / name).read_text(encoding="utf-8")
+                self.assertIn("active `repo-harness-builder` skill execution", text)
+                self.assertIn("ordinary conversational approval rules", text)
 
     def test_session_skills_use_conversational_approval_not_builder_protocol(self):
         outputs = TOOL.render("Example", [])
@@ -664,6 +697,192 @@ class AdditiveWriteTests(unittest.TestCase):
             self.assertFalse((root / RULEBOOK).exists())
 
 
+class ApprovedGeneratedOutputReplacementTests(unittest.TestCase):
+    def replacement_fixture(self, root: Path):
+        installed = install(root, "Example", ("opencode",))
+        desired = dict(installed)
+        paths = (
+            ".opencode/commands/session-start.md",
+            ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+        )
+        for path in paths:
+            desired[path] = installed[path] + "\nApproved generated update.\n"
+        return installed, desired, paths
+
+    def test_preview_emits_typed_digest_bound_replacements(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, paths = self.replacement_fixture(root)
+
+            plan = TOOL.plan_changes(root, desired)
+            digest = TOOL.plan_digest(plan)
+
+            self.assertEqual({item["path"] for item in plan["replace"]}, set(paths))
+            for item in plan["replace"]:
+                self.assertEqual(item["action"], "replace-generated-output")
+                self.assertEqual(item["sourceSha256"], TOOL.digest_text(installed[item["path"]]))
+                self.assertEqual(item["destinationSha256"], TOOL.digest_text(desired[item["path"]]))
+                self.assertEqual(item["planSha256"], digest)
+
+    def test_unowned_and_human_evolved_paths_remain_proposal_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", ("opencode",))
+            command = ".opencode/commands/session-start.md"
+            human = "docs/repo-harness/usage.md"
+            (root / command).write_bytes(b"unverifiable command\n")
+            (root / human).write_text(installed[human] + "\nHuman addition.\n", encoding="utf-8")
+            desired = dict(installed)
+            desired[command] += "\nDesired command.\n"
+            desired[human] += "\nDesired documentation.\n"
+
+            plan = TOOL.plan_changes(root, desired)
+
+            self.assertFalse({command, human} & {item["path"] for item in plan["replace"]})
+            self.assertTrue({command, human} <= {item["path"] for item in plan["existing"]})
+
+    def test_human_modified_current_generated_bytes_require_exact_approved_replacement(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", ("opencode",))
+            path = ".opencode/commands/session-start.md"
+            modified = installed[path] + "\nHuman modification retaining generated provenance.\n"
+            (root / path).write_text(modified, encoding="utf-8", newline="\n")
+            desired = dict(installed)
+            desired[path] += "\nApproved generated replacement.\n"
+
+            plan = TOOL.plan_changes(root, desired)
+            action = next(item for item in plan["replace"] if item["path"] == path)
+
+            self.assertEqual(action["action"], "replace-generated-output")
+            self.assertEqual(action["sourceSha256"], TOOL.digest_text(modified))
+            self.assertEqual(action["destinationSha256"], TOOL.digest_text(desired[path]))
+            self.assertEqual(action["planSha256"], TOOL.plan_digest(plan))
+            self.assertEqual(TOOL.write_outputs(root, desired, plan), [path])
+            self.assertEqual((root / path).read_text(encoding="utf-8"), desired[path])
+
+    def test_post_preview_edit_of_modified_generated_bytes_rejects_without_mutation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", ("opencode",))
+            path = ".opencode/commands/session-start.md"
+            (root / path).write_text(
+                installed[path] + "\nHuman modification retaining generated provenance.\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            desired = dict(installed)
+            desired[path] += "\nApproved generated replacement.\n"
+            plan = TOOL.plan_changes(root, desired)
+            changed_after_preview = installed[path] + "\nChanged again after preview.\n"
+            (root / path).write_text(changed_after_preview, encoding="utf-8", newline="\n")
+
+            with self.assertRaisesRegex(TOOL.ContractError, "stale|changed"):
+                TOOL.write_outputs(root, desired, plan)
+
+            self.assertEqual((root / path).read_text(encoding="utf-8"), changed_after_preview)
+
+    def test_manifest_and_checker_change_as_one_consistent_replacement_pair(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", ("opencode",))
+            desired = dict(installed)
+            manifest = json.loads(installed[TOOL.MANIFEST_PATH])
+            manifest["integrationMode"] = "standalone"
+            desired[TOOL.MANIFEST_PATH] = TOOL.dump_json(manifest)
+            desired[".repo-harness/check.py"] = TOOL.check_script(
+                TOOL.digest_text(desired[TOOL.MANIFEST_PATH])
+            )
+
+            plan = TOOL.plan_changes(root, desired)
+
+            self.assertEqual(
+                {item["path"] for item in plan["replace"]},
+                {TOOL.MANIFEST_PATH, ".repo-harness/check.py"},
+            )
+            TOOL.write_outputs(root, desired, plan)
+            self.assertEqual(
+                (root / TOOL.MANIFEST_PATH).read_text(encoding="utf-8"),
+                desired[TOOL.MANIFEST_PATH],
+            )
+            self.assertEqual(
+                (root / ".repo-harness/check.py").read_text(encoding="utf-8"),
+                desired[".repo-harness/check.py"],
+            )
+            result = subprocess.run(
+                [sys.executable, "-B", str(root / ".repo-harness/check.py")],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_inconsistent_desired_checker_and_manifest_are_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", ("opencode",))
+            desired = dict(installed)
+            desired[".repo-harness/check.py"] += "\n# inconsistent desired checker\n"
+
+            with self.assertRaisesRegex(TOOL.ContractError, "desired checker"):
+                TOOL.plan_changes(root, desired)
+
+    def test_apply_rejects_stale_source_or_changed_plan_before_writes(self):
+        for change in ("source", "plan"):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                installed, desired, paths = self.replacement_fixture(root)
+                plan = TOOL.plan_changes(root, desired)
+                if change == "source":
+                    (root / paths[0]).write_bytes(b"changed after preview\n")
+                else:
+                    desired[paths[0]] += "changed after preview\n"
+
+                with self.assertRaisesRegex(TOOL.ContractError, "stale|changed"):
+                    TOOL.write_outputs(root, desired, plan)
+
+                untouched = paths[1]
+                self.assertEqual((root / untouched).read_text(encoding="utf-8"), installed[untouched])
+
+    def test_replacement_transaction_rolls_back_create_append_and_replace(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed, desired, paths = self.replacement_fixture(root)
+            created = ".opencode/commands/new-generated.md"
+            desired[created] = "<!-- Generated by repo-harness-builder; source: wrapper/opencode:3.0 -->\n"
+            pointer = root / "AGENTS.md"
+            pointer.write_bytes(b"human preface\r\n")
+            before = {path: (root / path).read_bytes() for path in paths}
+            original_verify = TOOL.verify_outputs
+
+            def fail_after_writes(*args, **kwargs):
+                original_verify(*args, **kwargs)
+                raise TOOL.ContractError("forced continuation failure")
+
+            with mock.patch.object(TOOL, "verify_outputs", fail_after_writes), self.assertRaisesRegex(
+                TOOL.ContractError, "forced continuation failure"
+            ):
+                TOOL.write_outputs(root, desired, TOOL.plan_changes(root, desired))
+
+            self.assertFalse((root / created).exists())
+            self.assertEqual(pointer.read_bytes(), b"human preface\r\n")
+            self.assertEqual({path: (root / path).read_bytes() for path in paths}, before)
+
+    def test_preview_check_and_second_application_are_zero_write(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, paths = self.replacement_fixture(root)
+            before = {path: (root / path).read_bytes() for path in paths}
+
+            plan = TOOL.plan_changes(root, desired)
+            report = TOOL.check(root, "Example", ["opencode"])
+
+            self.assertEqual({path: (root / path).read_bytes() for path in paths}, before)
+            self.assertEqual(report["writes"], 0)
+            self.assertEqual(set(TOOL.write_outputs(root, desired, plan)), set(paths))
+            self.assertEqual(TOOL.write_outputs(root, desired, TOOL.plan_changes(root, desired)), [])
+
+
 class GeneratedOutputMigrationTests(unittest.TestCase):
     def migration_fixture(
         self,
@@ -773,6 +992,7 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
                 "--root", str(root),
                 "--project-name", "Acme API",
                 "--runtime", "opencode",
+                "--activation", "builder",
             ]
             preview = json.loads(subprocess.run(command, check=True, capture_output=True, text=True).stdout)
             self.assertEqual(preview["status"], "plan")
@@ -1259,12 +1479,56 @@ class RootPointerTests(unittest.TestCase):
             self.assertEqual(pointer.read_bytes(), b"changed after preview\n")
             self.assertFalse((root / RULEBOOK).exists())
 
+    def test_preview_withholds_the_strict_domain_unless_the_builder_is_active(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base = [
+                "python", "-B", str(SCRIPT), "render", "--root", str(root),
+                "--project-name", "Example", "--report-language", "espanol",
+            ]
+            ordinary = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
+            active = json.loads(
+                subprocess.run([*base, "--activation", "builder"], check=True, capture_output=True, text=True).stdout
+            )
+
+            self.assertNotIn("approvalPrompt", ordinary)
+            self.assertNotIn("approvalAnswers", ordinary)
+            self.assertNotIn("APROBAR", json.dumps(ordinary))
+            self.assertNotIn("DENEGAR", json.dumps(ordinary))
+            self.assertEqual(active["approvalAnswers"], ["APROBAR", "DENEGAR"])
+            self.assertIn("APROBAR", active["approvalPrompt"])
+            self.assertEqual(ordinary["planSha256"], active["planSha256"])
+
+    def test_ordinary_maintenance_applies_on_the_digest_alone(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base = [
+                "python", "-B", str(SCRIPT), "render", "--root", str(root),
+                "--project-name", "Example", "--report-language", "espanol",
+            ]
+            digest = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)["planSha256"]
+            rejected = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", digest, "--approval", "APROBAR"],
+                check=False, capture_output=True, text=True,
+            )
+
+            self.assertEqual(rejected.returncode, 2)
+            self.assertFalse((root / RULEBOOK).exists())
+
+            applied = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", digest],
+                check=True, capture_output=True, text=True,
+            )
+            self.assertEqual(json.loads(applied.stdout)["status"], "VALIDATED")
+            self.assertTrue((root / RULEBOOK).is_file())
+
     def test_cli_apply_requires_matching_digest_and_exact_language_approval(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             base = [
                 "python", "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--report-language", "espanol",
+                "--activation", "builder",
             ]
             preview = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
             digest = preview["planSha256"]
@@ -1603,21 +1867,12 @@ class GeneratedCoreTests(unittest.TestCase):
             decision_log = roadmap.split("## Decision Log", 1)[-1] if "## Decision Log" in roadmap else roadmap.split("## Registro de decisiones", 1)[-1]
             self.assertNotRegex(decision_log, r"RH-W-0017[^\n]*(?:is ready|esta lista)")
 
-    def test_rh_w_0008_records_exact_manifest_matched_stale_paths(self):
+    def test_rh_w_0008_preserves_history_and_requires_a_fresh_executable_plan(self):
         repository = ROOT.parents[1]
         roadmap_path = repository / "docs/repo-harness/roadmap.md"
         if not roadmap_path.is_file():
             self.skipTest("repository lifecycle fixture is outside the portable package")
-        result = subprocess.run(
-            ["python", "-B", str(SCRIPT), "check", "--root", ".", "--project-name", "repo-harness-builder"],
-            cwd=repository,
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        payload = json.loads(result.stdout)
-        stale_paths = {item["path"] for item in payload["files"] if item["state"] == "stale"}
-        expected = {
+        historical_paths = {
             ".claude/commands/documentation.md",
             ".claude/commands/repo-harness-help.md",
             ".claude/commands/session-start.md",
@@ -1636,14 +1891,16 @@ class GeneratedCoreTests(unittest.TestCase):
             ".repo-harness/skills/repo-harness-session-start/SKILL.md",
             ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
         }
-        self.assertEqual(payload["status"], "drift")
-        self.assertEqual(payload["writes"], 0)
-        self.assertEqual(stale_paths, expected)
         roadmap = roadmap_path.read_text(encoding="utf-8")
         rh_w_0008 = roadmap.split("### RH-W-0008", 1)[1].split("### RH-W-0009", 1)[0]
-        self.assertNotIn("21", rh_w_0008)
-        for path in expected:
+        rh_w_0025 = roadmap.split("### RH-W-0025", 1)[1].split("### RH-W-0003", 1)[0]
+        for path in historical_paths:
             self.assertIn(path, rh_w_0008)
+        for section in (rh_w_0008, rh_w_0025):
+            self.assertIn("historical evidence only", section)
+            self.assertIn("old digest is stale", section)
+            self.assertIn("freshly generated", section)
+            self.assertIn("current repository bytes", section)
 
     def test_runtime_projections_use_the_current_canonical_contract(self):
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])
@@ -2179,8 +2436,8 @@ class GeneratedCoreTests(unittest.TestCase):
 
         for text in (usage, skill, references):
             self.assertIn(".gitattributes", text)
-            self.assertIn(".repo-harness/check.py text eol=lf", text)
-            self.assertIn(".repo-harness/manifest.json text eol=lf", text)
+            self.assertIn("text eol=lf", text)
+            self.assertIn("byte-compared generated path", text)
 
     def test_explicit_standalone_mode_uses_repository_files_only(self):
         outputs = TOOL.render("Example", [], standalone=True)
@@ -2559,20 +2816,78 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
     EXPECTED = (
         ".repo-harness/check.py text eol=lf\n"
         ".repo-harness/manifest.json text eol=lf\n"
+        ".repo-harness/skills/repo-harness-documentation/SKILL.md text eol=lf\n"
+        ".repo-harness/skills/repo-harness-session-start/SKILL.md text eol=lf\n"
+        ".repo-harness/skills/repo-harness-session-stop/SKILL.md text eol=lf\n"
     )
 
     def test_fresh_render_includes_only_the_bounded_attributes(self):
         self.assertEqual(TOOL.render("Example", [])[".gitattributes"], self.EXPECTED)
 
+    def test_every_byte_compared_generated_path_is_protected(self):
+        for runtimes in ([], ["claude-code"], ["claude-code", "opencode"], ["pi"]):
+            with self.subTest(runtimes=runtimes):
+                outputs = TOOL.render("Example", runtimes)
+                rules = set(outputs[".gitattributes"].splitlines())
+                expected = {
+                    f"{path} text eol=lf"
+                    for path in TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH)
+                }
+
+                self.assertEqual(rules, expected)
+                self.assertIn(".repo-harness/check.py text eol=lf", rules)
+                for name in TOOL.COMMAND_TO_SKILL.values():
+                    self.assertIn(f".repo-harness/skills/{name}/SKILL.md text eol=lf", rules)
+
+    def test_runtime_projections_and_wrappers_are_protected(self):
+        outputs = TOOL.render("Example", ["claude-code", "opencode"])
+        rules = set(outputs[".gitattributes"].splitlines())
+
+        for base in (".claude", ".opencode"):
+            for command, name in TOOL.COMMAND_TO_SKILL.items():
+                self.assertIn(f"{base}/skills/{name}/SKILL.md text eol=lf", rules)
+                self.assertIn(f"{base}/commands/{command}.md text eol=lf", rules)
+            self.assertIn(f"{base}/commands/repo-harness-help.md text eol=lf", rules)
+
+    def test_human_owned_and_pointer_paths_are_never_pinned(self):
+        outputs = TOOL.render("Example", ["claude-code", "opencode"])
+        rules = outputs[".gitattributes"]
+        unpinned = (
+            TOOL.RULEBOOK_PATH,
+            "CHANGELOG.md",
+            "README.md",
+            "CLAUDE.md",
+            "AGENTS.md",
+            ".gitignore",
+            ".gitattributes",
+            ".repo-harness/rules/memory.md",
+            ".repo-harness/rules/working-agreements.md",
+            "docs/repo-harness/current-state.md",
+        )
+        for path in unpinned:
+            self.assertNotIn(f"{path} text eol=lf", rules)
+
+    def test_conflicting_attributes_report_every_protected_path(self):
+        outputs = TOOL.render("Example", ["claude-code"])
+        conflicts = TOOL.conflicting_attribute_paths(
+            b".claude/** text eol=crlf\n", TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH)
+        )
+
+        self.assertIn(".claude/commands/session-start.md", conflicts)
+        self.assertNotIn(".repo-harness/check.py", conflicts)
+
     def test_existing_attributes_preserve_bytes_and_append_only_missing_rules(self):
+        remainder = self.EXPECTED.split(".repo-harness/manifest.json text eol=lf\n", 1)[1]
         cases = (
             (
                 b"*.md text\n",
-                b"*.md text\n.repo-harness/check.py text eol=lf\n.repo-harness/manifest.json text eol=lf\n",
+                b"*.md text\n" + self.EXPECTED.encode(),
             ),
             (
                 b"*.md text\r\n.repo-harness/check.py text eol=lf\r\n",
-                b"*.md text\r\n.repo-harness/check.py text eol=lf\r\n.repo-harness/manifest.json text eol=lf\r\n",
+                b"*.md text\r\n.repo-harness/check.py text eol=lf\r\n"
+                + b".repo-harness/manifest.json text eol=lf\r\n"
+                + remainder.replace("\n", "\r\n").encode(),
             ),
         )
         for original, expected in cases:
@@ -2591,7 +2906,7 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             target = root / ".gitattributes"
-            original = b"# human\r\n.repo-harness/check.py text eol=lf\r\n.repo-harness/manifest.json text eol=lf\r\n*.md text\r\n"
+            original = b"# human\r\n" + self.EXPECTED.replace("\n", "\r\n").encode() + b"*.md text\r\n"
             target.write_bytes(original)
             outputs = TOOL.render("Example", [])
             plan = TOOL.plan_changes(root, outputs)
@@ -2687,10 +3002,18 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
 
     def test_attribute_evaluation_uses_posix_paths_on_every_platform(self):
         current = b".repo-harness/** text eol=crlf\n"
-        self.assertEqual(
-            TOOL.conflicting_attribute_paths(current),
-            {".repo-harness/check.py", ".repo-harness/manifest.json"},
-        )
+        outputs = TOOL.render("Example", [])
+        protected = TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH)
+
+        self.assertEqual(TOOL.conflicting_attribute_paths(current, protected), set(protected))
+
+    def test_recursive_patterns_reach_nested_protected_paths(self):
+        outputs = TOOL.render("Example", ["claude-code"])
+        protected = TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH)
+        conflicts = TOOL.conflicting_attribute_paths(b".claude/** text eol=crlf\n", protected)
+
+        self.assertIn(".claude/skills/repo-harness-session-start/SKILL.md", conflicts)
+        self.assertNotIn(".repo-harness/check.py", conflicts)
 
 
 class GeneratedCheckScriptTests(unittest.TestCase):
@@ -3058,6 +3381,19 @@ class RuntimeSelectionContractTests(unittest.TestCase):
         """A singular example is why agents run check once per profile."""
         commands = (ROOT / "references" / "validation.md").read_text(encoding="utf-8")
         self.assertRegex(commands, r"--runtime [a-z-]+ --runtime [a-z-]+")
+
+    def test_validation_documents_approved_generated_replacement_boundary(self):
+        validation = (ROOT / "references" / "validation.md").read_text(encoding="utf-8")
+        for phrase in (
+            "human-modified current-version generated",
+            "source and destination SHA-256",
+            "plan digest",
+            "rolls back every replacement, create, and append",
+            "human-owned paths remain proposal-only",
+            "preview and check write nothing",
+        ):
+            self.assertIn(phrase, validation)
+        self.assertNotIn("cannot repair an existing file", validation)
 
     def test_help_states_that_the_runtime_flag_repeats(self):
         """An agent reads --help before the references, so the help text has to say it."""

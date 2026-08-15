@@ -11,6 +11,8 @@ metadata:
 
 Invoke deliberately through `/repo-harness-builder`. This skill never activates on its own.
 
+The exact approval UI and strict builder rules exist only during an explicitly active `repo-harness-builder` skill execution. Repository identity, self-hosting, ordinary repository maintenance, generated-file ownership, session skills, and direct questions do not activate this interface. Outside an active builder skill execution, use ordinary conversational approval rules.
+
 Build or inspect root `REPO-HARNESS.md`, durable documentation, operational skills, and selected-runtime wrappers. Default integrated mode requires Gentle AI and Engram. Use `--standalone` for repository-only continuity. With no operation, check read-only and report gaps.
 
 An optional argument sets the report language to `español` or `english`; otherwise follow runtime preference, then the language the user is writing in. Resolve the conversation language and documentation languages independently during the interview.
@@ -24,7 +26,8 @@ An optional argument sets the report language to `español` or `english`; otherw
 - Version control is the safety net. Do not present this tool as a boundary against a hostile filesystem.
 - Resolve and inspect only the selected repository. Never traverse links, siblings, aliases, or external references.
 - Show four action sets. Approve only the current digest; never reuse it.
-- Only the builder's content-bound apply plan uses strict answers. English accepts exactly `APPROVE` or `DENY`; Spanish accepts exactly `APROBAR` or `DENEGAR`.
+- Only an explicitly active builder execution's content-bound apply plan uses strict answers, declared to the CLI with `--activation builder`. English accepts exactly `APPROVE` or `DENY`; Spanish accepts exactly `APROBAR` or `DENEGAR`.
+- The CLI defaults to `--activation maintenance`: it withholds the strict domain from preview output entirely and applies on the current digest alone, so ordinary maintenance cannot relay an approval interface it must not present.
 - Keep wrappers thin and path-free: they load a generated skill by registered name, and Pi-like runtimes use their prompt mechanism.
 - Generate `repo-harness-session-start`, `repo-harness-session-stop`, and `repo-harness-documentation` in every repository. Keep `session-start`, `session-stop`, and `documentation` commands unchanged through explicit mapping, never prefix removal.
 - Keep repository evidence authoritative. Integrated mode requires Gentle AI and Engram; standalone mode must contain neither requirement.
@@ -37,7 +40,7 @@ An optional argument sets the report language to `español` or `english`; otherw
 - Validate localized human-owned documents with semantic roles plus proportional locale baselines for required content and known cross-language leakage. These checks detect incompleteness; they do not claim automated proof of translation equivalence.
 - For an existing repository that declared more than one documentation locale, analyze every expected localized path and propose integration. Never overwrite human-evolved documentation merely to install or normalize localization.
 - Use Python 3.10+ and the standard library only.
-- Generate exact `.repo-harness/check.py text eol=lf` and `.repo-harness/manifest.json text eol=lf` rules in root `.gitattributes`; preserve unrelated attributes, append only missing rules, and block conflicting matches.
+- Generate one exact `<path> text eol=lf` rule in root `.gitattributes` for every byte-compared generated path; preserve unrelated attributes, append only missing rules, and block conflicting matches.
 
 ## Decision Gates
 
@@ -49,7 +52,7 @@ An optional argument sets the report language to `español` or `english`; otherw
 | Required root pointer exists without its exact directive | Append only that newline-delimited directive |
 | Required root pointer already contains its exact directive | Leave every byte unchanged |
 | Generated file matches rendered bytes | Report `current` |
-| Current-version generated file differs from rendered bytes | Report `stale`; propose replacement only after explicit approval |
+| Exact manifest-owned current-version generated file differs from rendered bytes | Emit a digest-bound replacement action; apply only after explicit approval |
 | Proven older generated file differs from rendered bytes | Report `legacy`; propose replacement only after explicit approval |
 | Human-owned file differs while retaining its contract | Report `human-evolved`; propose integration or an explicit archive/start-clean choice |
 | Human-owned file lost a promised section | Report the missing sections; never rewrite it |
@@ -77,7 +80,7 @@ An optional argument sets the report language to `español` or `english`; otherw
 1. Read `references/audit-and-interview.md`, resolve the report language, ask for the conversation language, ask for the documentation languages, and check the repository without writes. Keep all three values distinct even when the user chooses the same language for more than one purpose.
 2. Report what is absent across every runtime profile inspected, then ask one question: which profiles to include. That answer is the permission to plan. Stop for it.
 3. Read `references/architecture.md`. For integrated mode, validate the Gentle AI CLI with its available status, doctor, or version capability and validate the Engram MCP or CLI before approving or applying. Refuse on failure. Skip this dependency preflight only for `--standalone`.
-4. Read `references/license-selection.md` and resolve the license choice. Read `references/preservation-and-safety.md`. If a prior harness exists, audit its manifest, generator markers, managed files, and runtime projections, then classify paths as `current`, `stale`, `missing`, `human-evolved`, or `legacy`. A verifiable project-prefixed harness receives one bounded migration action; mixed, modified, or unverifiable installations are blocked. If the repository is existing, analyze relevant content and conversationally resolve integrate/update versus archive/start clean before forming the apply plan.
+4. Read `references/license-selection.md` and resolve the license choice. Read `references/preservation-and-safety.md`. If a prior harness exists, audit its manifest, generator markers, managed files, and runtime projections, then classify paths as `current`, `stale`, `missing`, `human-evolved`, or `legacy`. Exact manifest-owned current-version generated outputs may receive digest-bound replacement actions even when a human modified their bytes while retaining valid current-version provenance; human-owned, human-evolved, and unverifiable paths remain proposal-only. A verifiable project-prefixed legacy harness receives one bounded migration action; mixed, modified, or unverifiable legacy installations are blocked. If the repository is existing, analyze relevant content and conversationally resolve integrate/update versus archive/start clean before forming the apply plan.
 5. Show the content-bound apply plan and `planSha256`, then follow the resolved language domain in `references/audit-and-interview.md`.
 6. Run `scripts/harness_tool.py render --report-language REPORT_LANGUAGE --documentation-language en [--documentation-language es] --conversation-language CONVERSATION_LANGUAGE --apply --approved-plan-sha256 HASH --approval TOKEN` with the independently resolved values, exact approval, approved digest, and resolved `--license`, then `check`. Repeat `--documentation-language` once per declared documentation locale, omit it for English only, and use `--conversation-language` for the language the generated sessions converse in. The conversation language and documentation languages, not the report language, route generated runtime help; the report language stays presentational and the action-plan digest is language-independent. Confirm changed bytes, resolved links, and zero writes from the check.
 7. Validate with `references/validation.md` and report limitations, including deferred registered-name validation when the active process retained older registered content.
