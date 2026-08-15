@@ -24,6 +24,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0031
+| Field | Value |
+|---|---|
+| Origin | A conversation-language audit found that generated session and help contracts can treat English artifacts as switch evidence and can emit fixed English approval wording into a Spanish conversation |
+| Priority | P1: direct human approval and help replies can use the wrong language at active workflow boundaries, recurring beyond the bounded RH-W-0017 sentence correction |
+| Dependencies | none |
+| Status | ready |
+| Completed work | Verified the root cause across `session_start_skill()`, `session_stop_skill()`, `help_wrapper()`, `render_with_skill_mapping()`, CLI wording, references, and prose-fragment tests; created the executable [implementation plan](rh-w-0031-implementation-plan.md). |
+| Remaining work | Implement one shared conversation-language contract, remove fixed-language direct-reply literals, decouple help guide locale from reply language, align CLI fallback wording, add the behavioral TDD matrix, synchronize package projections, and apply generated consumer projections through the existing approved executor. |
+| Additions | Define explicit human preference as strongest evidence, then established human conversation, a clear genuine-switch rule, artifact exclusions, manifest persistent default, and deterministic fallback last. Keep report, conversation, documentation, and artifact languages independent. |
+| Exclusions | No natural-language detector, new locale, translation service, approval-scope change, strict builder-token change, network, external mutation, SDD, or implementation in this planning work unit. |
+| Deferrals | none |
+| Rejections | Rejected another piecemeal literal translation because RH-W-0017 proved that approach does not close the defect class. Rejected letting documentation locale own direct reply language. |
+| Evidence | Canonical source embeds exact English fetch and existing-commit push questions, localizes only the commit question with one Python branch, tells help to reply in the guide language, defaults omitted conversation input to English, and has CLI help that says to ask while direct execution silently falls back. Existing tests mostly assert phrases and do not exercise precedence or artifact exclusions. `references/architecture.md` still says help follows report language, contradicting current code and validation. |
+| Decision history | 2026-08-15: registered as the next immutable ID after confirming RH-W-0030 is the highest existing record. Kept as one unit because start, stop, help, fallback, and tests share one policy boundary and cannot be released safely with conflicting precedence. |
+| Next advancement condition | Begin with the RED `ConversationLanguageBoundaryTests` matrix in the implementation plan, then change only canonical generator behavior and directly related references. |
+
 ### RH-W-0030
 | Field | Value |
 |---|---|

@@ -59,6 +59,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
+- Proyeccion P1 lista: `RH-W-0031` posee el defecto del limite del idioma de conversacion en inicio, cierre, ayuda, fallback directo y cobertura conductual. Su [plan tecnico](../../repo-harness/rh-w-0031-implementation-plan.md) conserva una sola unidad de producto y exige primero pruebas RED de precedencia y fuga de literales.
 - Proyeccion activa: `RH-W-0010`, `RH-W-0019` y `RH-W-0025` estan `ready`. `RH-W-0025` volvio a `ready` tras aplicar y verificar su prerrequisito RH-W-0008 y tras resolver su probe de deteccion abierto contra `gentle-ai version`. Se rechazo partirla en una mitad de Engram y una mitad de Gentle AI bloqueada, porque fragmentaria la matriz de cuatro combinaciones entre dos unidades.
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
 - Proyeccion aplazada: `RH-W-0011` a `RH-W-0015`, la idea de mantenimiento interno desatendido `RH-W-0018` y la capacidad opcional de CodeGraph `RH-W-0026` conservan condiciones explicitas de avance en [roadmap.md](roadmap.md). `RH-W-0026` requiere aprobacion futura explicita de diseno o investigacion y revision de fuente primaria antes de avanzar.
@@ -68,4 +69,4 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Iniciar `RH-W-0025`, el contrato consciente de capacidades de Gentle AI y Engram. Comenzar con pruebas de contrato que fallen para las cuatro combinaciones de disponibilidad y tratar solo un resultado `verified` como autoridad para usar una capacidad. RH-W-0010 y RH-W-0019 tambien estan listas; cada unidad se trabaja en una rama separada. No queda trabajo `P1`.
+Iniciar `RH-W-0031`, la correccion P1 del limite del idioma de conversacion. Comenzar con la matriz RED `ConversationLanguageBoundaryTests` y mantener separados los requisitos del contrato generado y el comportamiento de Python. `RH-W-0025`, `RH-W-0010` y `RH-W-0019` siguen listas, pero no deben agruparse con esta unidad.

@@ -65,6 +65,7 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
+- P1 ready projection: `RH-W-0031` owns the conversation-language boundary defect across session-start, session-stop, help, direct fallback, and behavioral coverage. Its [implementation plan](rh-w-0031-implementation-plan.md) keeps the remediation as one product unit and requires RED precedence and literal-leakage tests first.
 - Active projection: `RH-W-0010`, `RH-W-0019`, and `RH-W-0025` are `ready`. `RH-W-0025` returned to ready after its RH-W-0008 prerequisite was applied and verified and its open detection probe was resolved against `gentle-ai version`. A proposed split into an Engram half and a blocked Gentle AI half was rejected, because it would fragment the four-combination availability matrix across two units.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015`, the unattended internal-maintenance idea `RH-W-0018`, and the optional CodeGraph capability `RH-W-0026` retain explicit advancement conditions in [roadmap.md](roadmap.md). `RH-W-0026` requires explicit future design or research approval and primary-source review before advancement.
@@ -74,4 +75,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Start `RH-W-0025`, the capability-aware Gentle AI and Engram contract. Begin with failing contract tests for the four availability combinations, and treat only a `verified` probe result as authority to use a capability. `RH-W-0010` and `RH-W-0019` are also ready; take one unit per branch and do not bundle them. No `P1` work remains.
+Start `RH-W-0031`, the P1 conversation-language boundary remediation. Begin with the RED `ConversationLanguageBoundaryTests` matrix and keep generated contract requirements separate from Python behavior. `RH-W-0025`, `RH-W-0010`, and `RH-W-0019` remain ready but must not be bundled with it.
