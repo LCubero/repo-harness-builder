@@ -60,7 +60,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 
 - Proyeccion activa: `RH-W-0009`, `RH-W-0010`, `RH-W-0019` y `RH-W-0025` estan `ready`. `RH-W-0025` volvio a `ready` tras aplicar y verificar su prerrequisito RH-W-0008 y tras resolver su probe de deteccion abierto contra `gentle-ai version`. Se rechazo partirla en una mitad de Engram y una mitad de Gentle AI bloqueada, porque fragmentaria la matriz de cuatro combinaciones entre dos unidades.
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
-- Proyeccion aplazada: `RH-W-0011` a `RH-W-0015` y la idea de mantenimiento interno desatendido `RH-W-0018` conservan condiciones explicitas en [roadmap.md](roadmap.md).
+- Proyeccion aplazada: `RH-W-0011` a `RH-W-0015`, la idea de mantenimiento interno desatendido `RH-W-0018` y la capacidad opcional de CodeGraph `RH-W-0026` conservan condiciones explicitas de avance en [roadmap.md](roadmap.md). `RH-W-0026` requiere aprobacion futura explicita de diseno o investigacion y revision de fuente primaria antes de avanzar.
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
 - IDs completados recientemente: `RH-W-0030`, `RH-W-0029`, `RH-W-0028`, `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
 

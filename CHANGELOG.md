@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-15
 
+- Ported the `RH-W-0026` optional CodeGraph record onto `main`, closing the ID gap between `RH-W-0025` and `RH-W-0027`. The record was written fresh rather than merged: its branch was 13 commits behind, conflicted in both roadmaps, and its `current-state` context still described `RH-W-0008` and `RH-W-0025` as prerequisite-blocked, which merging would have reintroduced. Status stays `deferred` and its advancement condition is unchanged.
+
 - Returned `RH-W-0025` to `ready` and resolved the detection question its research left open at medium confidence. `gentle-ai version` is an advertised read-only surface that returns `gentle-ai <version>` with exit 0 and resolves through PATH, so it is independent of installation layout. Only a `verified` result authorizes using the capability; presence on PATH alone remains `found_on_path` and authorizes nothing. Rejected splitting the unit into an Engram half and a blocked Gentle AI half, which would have fragmented the four-combination availability matrix.
 
 - Completed `RH-W-0030`: moved the builder approval activation boundary from prose into the CLI. `render` now takes `--activation builder|maintenance` and defaults to `maintenance`, which omits `approvalPrompt` and `approvalAnswers` from preview output entirely, rejects `--approval` with exit 2, and applies on the matching digest alone. Builder activation keeps the complete localized strict domain and the digest-plus-token requirement, and the plan digest is identical under both. Previously every read-only render printed the strict envelope, so the contract forbade an interface the tool kept manufacturing.
