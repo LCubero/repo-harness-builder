@@ -6,7 +6,7 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes. The manifest-matched owner check also reports `current` with 21 current, 18 human-evolved, 4 present, and 0 stale.
-- Canonical suite green: 260 tests passed with 7 skips. `RH-W-0030` adds CLI activation-gating coverage, `RH-W-0029` adds derived line-ending protection coverage, `RH-W-0028` adds strict builder activation-boundary coverage, RH-W-0008 preserves approved generated-output replacement and manifest/checker consistency coverage, and RH-W-0006 preserves locale-aware checked-in documentation checks.
+- Canonical suite green: 263 tests passed with 7 skips. `RH-W-0009` adds reciprocal selector integration coverage, `RH-W-0030` adds CLI activation-gating coverage, `RH-W-0029` adds derived line-ending protection coverage, `RH-W-0028` adds strict builder activation-boundary coverage, RH-W-0008 preserves approved generated-output replacement and manifest/checker consistency coverage, and RH-W-0006 preserves locale-aware checked-in documentation checks.
 - Root `.gitattributes` protects 19 byte-compared generated paths, derived from render outputs rather than a fixed pair.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1. The checked-in checker and manifest remain a consistent pair.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
@@ -16,6 +16,7 @@
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
+- Completed `RH-W-0009`: an existing `README.md` without the reciprocal link now receives one bounded, digest-bound append of the exact selector block, and the Spanish peer is created in the same apply. The append preserves every existing byte and the LF or CRLF convention and adds nothing else. A README that is not a regular file still blocks the peer and fails apply closed.
 - Resolved the Gentle AI detection probe that the research left open at medium confidence: `gentle-ai version` is an advertised read-only surface, independent of installation layout because it resolves through PATH. Only a `verified` result authorizes using a capability; `found_on_path` alone authorizes nothing. `RH-W-0025` returned to `ready` as one unit, and a proposed split into an Engram half and a blocked Gentle AI half was rejected.
 - Completed `RH-W-0030`: the activation boundary now lives in the CLI, not only in prose. `render --activation` defaults to `maintenance`, which omits the strict approval domain from output entirely, rejects `--approval`, and applies on the matching digest alone; `--activation builder` keeps the localized strict domain and the digest-plus-token requirement, with an identical plan digest.
 - Completed `RH-W-0029`: root `.gitattributes` is derived from render outputs, protecting every byte-compared generated path with an exact `text eol=lf` rule, excluding pointer, ignore, attribute, and human-owned paths. Conflict detection covers the same set and now evaluates recursive `dir/**` patterns. Applied to this repository, which resolved the 15 reported stale surfaces: 12 were line endings only and 3 were the localized `repo-harness-session-stop` commit sentence.
@@ -64,11 +65,11 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Active projection: `RH-W-0009`, `RH-W-0010`, `RH-W-0019`, and `RH-W-0025` are `ready`. `RH-W-0025` returned to ready after its RH-W-0008 prerequisite was applied and verified and its open detection probe was resolved against `gentle-ai version`. A proposed split into an Engram half and a blocked Gentle AI half was rejected, because it would fragment the four-combination availability matrix across two units.
+- Active projection: `RH-W-0010`, `RH-W-0019`, and `RH-W-0025` are `ready`. `RH-W-0025` returned to ready after its RH-W-0008 prerequisite was applied and verified and its open detection probe was resolved against `gentle-ai version`. A proposed split into an Engram half and a blocked Gentle AI half was rejected, because it would fragment the four-combination availability matrix across two units.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015`, the unattended internal-maintenance idea `RH-W-0018`, and the optional CodeGraph capability `RH-W-0026` retain explicit advancement conditions in [roadmap.md](roadmap.md). `RH-W-0026` requires explicit future design or research approval and primary-source review before advancement.
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
-- Recently completed IDs: `RH-W-0030`, `RH-W-0029`, `RH-W-0028`, `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
+- Recently completed IDs: `RH-W-0009`, `RH-W-0030`, `RH-W-0029`, `RH-W-0028`, `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
 
 ## Next Step
 <!-- doc-role:next-step -->

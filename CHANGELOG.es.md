@@ -4,6 +4,8 @@
 
 ## 2026-08-15
 
+- Se completo `RH-W-0009`: un `README.md` existente sin enlace reciproco a `README.es.md` recibe ahora un unico append acotado del bloque exacto de selector mediante el ejecutor ligado al contenido, con digests actual y resultante coincidentes, y el par espanol se crea en la misma aplicacion. El append preserva cada byte existente y la convencion LF o CRLF del archivo, y no agrega nada mas. El bloqueo permanece solo cuando el README existente no es un archivo regular, donde el append no puede verificarse. Los repositorios bilingues declarados ya no quedan permanentemente unilaterales.
+
 - Se registro como decision permanente la convencion de borrar ramas mergeadas y se activo `deleteBranchOnMerge`; luego se borraron 16 ramas mergeadas obsoletas y la redundante `docs/record-optional-codegraph`. Los conjuntos de ramas local y remota son ahora solo `main`, y cada pull request mergeada conserva su nombre de rama, diff, commits y conversacion.
 
 - Se porto a `main` el registro `RH-W-0026` de CodeGraph opcional, cerrando el hueco de IDs entre `RH-W-0025` y `RH-W-0027`. El registro se escribio de nuevo en vez de mergearse: su rama estaba 13 commits atras, generaba conflictos en ambos roadmaps y su contexto de `current-state` seguia describiendo `RH-W-0008` y `RH-W-0025` como bloqueados por prerrequisito, algo que el merge habria reintroducido. El estado sigue siendo `deferred` y su condicion de avance no cambia.

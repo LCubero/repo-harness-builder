@@ -34,6 +34,15 @@ RULEBOOK_PATH = "REPO-HARNESS.md"
 GITIGNORE_PATH = ".gitignore"
 CODEGRAPH_IGNORE_DIRECTIVE = ".codegraph/"
 GITATTRIBUTES_PATH = ".gitattributes"
+README_PATH = "README.md"
+SPANISH_README_PATH = "README.es.md"
+README_SELECTOR_LINES = (
+    "<!-- README-I18N:START -->",
+    "",
+    "**English** | [Español](./README.es.md)",
+    "",
+    "<!-- README-I18N:END -->",
+)
 POINTER_DIRECTIVES = {
     "CLAUDE.md": "@REPO-HARNESS.md",
     "AGENTS.md": "Read and follow REPO-HARNESS.md before working in this repository.",
@@ -1779,15 +1788,28 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
                 else "already present; analyze compatibility before an approved update or archive choice"
             )
             existing.append({"path": relative, "reason": reason})
-    readme = root / "README.md"
-    spanish_create = next((item for item in create if item["path"] == "README.es.md"), None)
-    if spanish_create and readme.is_file() and not readme.is_symlink() and b"README.es.md" not in readme.read_bytes():
-        create.remove(spanish_create)
-        blocked.append({
-            "path": "README.es.md",
-            "requires": "README.md",
-            "reason": "reciprocal language selector integration is required before creating the Spanish peer",
-        })
+    readme = guarded_target(root, README_PATH)
+    spanish_create = next((item for item in create if item["path"] == SPANISH_README_PATH), None)
+    readme_exists = readme.exists() or readme.is_symlink()
+    if spanish_create and readme_exists:
+        if not readme.is_file() or is_indirect(readme):
+            create.remove(spanish_create)
+            blocked.append({
+                "path": SPANISH_README_PATH,
+                "requires": README_PATH,
+                "reason": "the existing README is not a regular file, so the reciprocal language selector cannot be appended safely",
+            })
+        else:
+            current = readme.read_bytes()
+            if SPANISH_README_PATH.encode("utf-8") not in current:
+                addition = pointer_additions(current, README_SELECTOR_LINES)
+                append.append({
+                    "path": README_PATH,
+                    "action": "append",
+                    "content": addition.decode("utf-8"),
+                    "sha256": digest_bytes(current),
+                    "resultSha256": digest_bytes(current + addition),
+                })
     migrate: list[GeneratedOutputMigrationPlan] = []
     migration_inputs = legacy_migration_inputs(root, outputs)
     if migration_inputs is not None:
@@ -2101,7 +2123,7 @@ def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> 
                 target = guarded_target(root, relative)
                 current = target.read_bytes()
                 appended[target] = current
-                if relative == GITATTRIBUTES_PATH:
+                if relative in (GITATTRIBUTES_PATH, README_PATH):
                     addition = item["content"].encode("utf-8")
                 else:
                     directive = CODEGRAPH_IGNORE_DIRECTIVE if relative == GITIGNORE_PATH else POINTER_DIRECTIVES[relative]

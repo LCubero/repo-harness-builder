@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-15
 
+- Completed `RH-W-0009`: an existing `README.md` without a reciprocal `README.es.md` link now receives one bounded append of the exact selector block through the content-bound executor, with matching current and result digests, and the Spanish peer is created in the same apply. The append preserves every existing byte and the file's LF or CRLF convention and adds nothing else. Blocking remains only when the existing README is not a regular file, where the append cannot be verified. Declared bilingual repositories are no longer left permanently one-sided.
+
 - Recorded the merged-branch deletion convention as a standing decision and enabled `deleteBranchOnMerge`, then deleted 16 stale merged branches and the redundant `docs/record-optional-codegraph`. Local and remote branch sets are now `main` alone, and every merged pull request retains its branch name, diff, commits, and conversation.
 
 - Ported the `RH-W-0026` optional CodeGraph record onto `main`, closing the ID gap between `RH-W-0025` and `RH-W-0027`. The record was written fresh rather than merged: its branch was 13 commits behind, conflicted in both roadmaps, and its `current-state` context still described `RH-W-0008` and `RH-W-0025` as prerequisite-blocked, which merging would have reintroduced. Status stays `deferred` and its advancement condition is unchanged.
