@@ -16,7 +16,7 @@ Root `README.md` is the product-facing guide and part of a complete empty-reposi
 
 Generated skill names are fixed across repositories. Repository identity remains in the manifest and generated content, but command names are never derived by removing a project prefix.
 
-Session skills use conversational questions for ordinary continuation and documentation choices. They never inherit the builder's strict language-scoped digest protocol, while external mutations still require explicit approval.
+The strict language-scoped digest protocol exists only during an active `repo-harness-builder` skill execution. Repository identity, self-hosting, ordinary maintenance, generated-file ownership, session skills, and direct questions do not activate it. Outside that active execution, use ordinary conversational approval rules, while external mutations still require explicit approval.
 
 ## Runtime Projection
 

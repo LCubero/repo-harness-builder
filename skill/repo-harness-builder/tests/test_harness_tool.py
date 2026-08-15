@@ -94,11 +94,23 @@ class ApprovalUxTests(unittest.TestCase):
             self.assertEqual(default["reportLanguage"], "english")
             self.assertEqual(default["planSha256"], spanish["planSha256"])
 
-    def test_generated_session_skills_do_not_contain_builder_tokens(self):
+    def test_generated_operational_skills_do_not_contain_builder_approval_protocol(self):
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])
-        session_contracts = "\n".join(content for path, content in outputs.items() if "session-start" in path or "session-stop" in path)
-        for token in ("APPROVE", "DENY", "APROBAR", "DENEGAR"):
-            self.assertNotIn(token, session_contracts)
+        operational_contracts = "\n".join(
+            content
+            for path, content in outputs.items()
+            if path.startswith(".repo-harness/skills/") and path.endswith("/SKILL.md")
+        )
+        for strict_builder_term in (
+            "APPROVE",
+            "DENY",
+            "APROBAR",
+            "DENEGAR",
+            "content-bound apply plan",
+            "planSha256",
+            "--approval",
+        ):
+            self.assertNotIn(strict_builder_term, operational_contracts)
 
 
 class ProductWorkflowTests(unittest.TestCase):
@@ -349,6 +361,27 @@ class ProductWorkflowTests(unittest.TestCase):
         combined = skill + interview
         self.assertIn("content-bound apply plan", combined)
         self.assertIn("conversational", combined)
+
+    def test_builder_approval_protocol_requires_explicit_skill_activation(self):
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        for phrase in (
+            "explicitly active `repo-harness-builder` skill execution",
+            "Repository identity, self-hosting, ordinary repository maintenance, generated-file ownership, session skills, and direct questions do not activate",
+            "Outside an active builder skill execution, use ordinary conversational approval rules.",
+        ):
+            self.assertIn(phrase, skill)
+
+    def test_strict_approval_references_require_active_builder_execution(self):
+        for name in (
+            "audit-and-interview.md",
+            "preservation-and-safety.md",
+            "architecture.md",
+            "validation.md",
+        ):
+            with self.subTest(name=name):
+                text = (ROOT / "references" / name).read_text(encoding="utf-8")
+                self.assertIn("active `repo-harness-builder` skill execution", text)
+                self.assertIn("ordinary conversational approval rules", text)
 
     def test_session_skills_use_conversational_approval_not_builder_protocol(self):
         outputs = TOOL.render("Example", [])
@@ -1789,21 +1822,12 @@ class GeneratedCoreTests(unittest.TestCase):
             decision_log = roadmap.split("## Decision Log", 1)[-1] if "## Decision Log" in roadmap else roadmap.split("## Registro de decisiones", 1)[-1]
             self.assertNotRegex(decision_log, r"RH-W-0017[^\n]*(?:is ready|esta lista)")
 
-    def test_rh_w_0008_records_exact_manifest_matched_stale_paths(self):
+    def test_rh_w_0008_preserves_history_and_requires_a_fresh_executable_plan(self):
         repository = ROOT.parents[1]
         roadmap_path = repository / "docs/repo-harness/roadmap.md"
         if not roadmap_path.is_file():
             self.skipTest("repository lifecycle fixture is outside the portable package")
-        result = subprocess.run(
-            ["python", "-B", str(SCRIPT), "check", "--root", ".", "--project-name", "repo-harness-builder"],
-            cwd=repository,
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        payload = json.loads(result.stdout)
-        stale_paths = {item["path"] for item in payload["files"] if item["state"] == "stale"}
-        expected = {
+        historical_paths = {
             ".claude/commands/documentation.md",
             ".claude/commands/repo-harness-help.md",
             ".claude/commands/session-start.md",
@@ -1822,14 +1846,16 @@ class GeneratedCoreTests(unittest.TestCase):
             ".repo-harness/skills/repo-harness-session-start/SKILL.md",
             ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
         }
-        self.assertEqual(payload["status"], "drift")
-        self.assertEqual(payload["writes"], 0)
-        self.assertEqual(stale_paths, expected)
         roadmap = roadmap_path.read_text(encoding="utf-8")
         rh_w_0008 = roadmap.split("### RH-W-0008", 1)[1].split("### RH-W-0009", 1)[0]
-        self.assertNotIn("21", rh_w_0008)
-        for path in expected:
+        rh_w_0025 = roadmap.split("### RH-W-0025", 1)[1].split("### RH-W-0003", 1)[0]
+        for path in historical_paths:
             self.assertIn(path, rh_w_0008)
+        for section in (rh_w_0008, rh_w_0025):
+            self.assertIn("historical evidence only", section)
+            self.assertIn("old digest is stale", section)
+            self.assertIn("freshly generated", section)
+            self.assertIn("current repository bytes", section)
 
     def test_runtime_projections_use_the_current_canonical_contract(self):
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])

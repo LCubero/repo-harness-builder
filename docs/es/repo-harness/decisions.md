@@ -13,7 +13,7 @@ La fuente canonica es [`../../repo-harness/decisions.md`](../../repo-harness/dec
 - Inicializacion Git y publicacion son limites opcionales con aprobaciones separadas y eleccion explicita de visibilidad.
 - Los repositorios nuevos reciben una base completa; los existentes reciben analisis e integracion propuesta, nunca sobrescritura automatica.
 - Los marcadores generados delimitan material, pero no eximen documentos humanos del analisis.
-- Solo la aplicacion del constructor usa tokens estrictos localizados y digest del plan.
+- Solo una ejecucion explicitamente activa de la habilidad `repo-harness-builder` usa tokens estrictos localizados y ligados al digest para su plan de aplicacion ligado al contenido: en ingles, `APPROVE` o `DENY`; en espanol, `APROBAR` o `DENEGAR`. La aplicacion exige tanto el digest como el token exacto. Las llamadas directas a la CLI usan ingles de forma predeterminada y el idioma nunca forma parte del digest del plan. La identidad del repositorio, el autoalojamiento, el mantenimiento ordinario del repositorio, la propiedad de archivos generados, las habilidades de sesion y las preguntas directas no activan esta interfaz. Fuera de una ejecucion activa de la habilidad del constructor, la aprobacion sigue siendo conversacional.
 - Los punteros raiz preservan bytes y agregan solo una directiva exacta faltante.
 - Los harness anteriores se clasifican antes de proponer reemplazo, archivo o eliminacion.
 - Las aprobaciones de cierre son puntos reanudables; la transferencia final sigue evidencia renovada y continuidad guardada.

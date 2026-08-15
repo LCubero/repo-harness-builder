@@ -11,6 +11,8 @@ metadata:
 
 Invoke deliberately through `/repo-harness-builder`. This skill never activates on its own.
 
+The exact approval UI and strict builder rules exist only during an explicitly active `repo-harness-builder` skill execution. Repository identity, self-hosting, ordinary repository maintenance, generated-file ownership, session skills, and direct questions do not activate this interface. Outside an active builder skill execution, use ordinary conversational approval rules.
+
 Build or inspect root `REPO-HARNESS.md`, durable documentation, operational skills, and selected-runtime wrappers. Default integrated mode requires Gentle AI and Engram. Use `--standalone` for repository-only continuity. With no operation, check read-only and report gaps.
 
 An optional argument sets the report language to `español` or `english`; otherwise follow runtime preference, then the language the user is writing in. Resolve the conversation language and documentation languages independently during the interview.
@@ -24,7 +26,7 @@ An optional argument sets the report language to `español` or `english`; otherw
 - Version control is the safety net. Do not present this tool as a boundary against a hostile filesystem.
 - Resolve and inspect only the selected repository. Never traverse links, siblings, aliases, or external references.
 - Show four action sets. Approve only the current digest; never reuse it.
-- Only the builder's content-bound apply plan uses strict answers. English accepts exactly `APPROVE` or `DENY`; Spanish accepts exactly `APROBAR` or `DENEGAR`.
+- Only an explicitly active builder execution's content-bound apply plan uses strict answers. English accepts exactly `APPROVE` or `DENY`; Spanish accepts exactly `APROBAR` or `DENEGAR`.
 - Keep wrappers thin and path-free: they load a generated skill by registered name, and Pi-like runtimes use their prompt mechanism.
 - Generate `repo-harness-session-start`, `repo-harness-session-stop`, and `repo-harness-documentation` in every repository. Keep `session-start`, `session-stop`, and `documentation` commands unchanged through explicit mapping, never prefix removal.
 - Keep repository evidence authoritative. Integrated mode requires Gentle AI and Engram; standalone mode must contain neither requirement.

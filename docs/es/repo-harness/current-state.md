@@ -6,8 +6,8 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 <!-- doc-role:verified-state -->
 
 - El harness esta presente y el verificador generado informa `current`, salida 0 y 0 escrituras.
-- La suite canonica esta en verde: pasaron 251 pruebas con 7 omisiones. `RH-W-0008` agrega cobertura para reemplazo aprobado de salidas generadas y consistencia entre manifest y checker, mientras RH-W-0006 conserva las comprobaciones incorporadas conscientes de locales.
-- El conjunto de entornos es `claude-code` y `opencode`; el modo es `integrated`, el generador es 3.0 y el paquete de habilidad es 3.1.
+- La suite canonica esta en verde: pasaron 253 pruebas con 7 omisiones. `RH-W-0028` agrega cobertura del limite de activacion estricto del constructor, RH-W-0008 conserva cobertura para reemplazo aprobado y consistencia entre manifest y checker, y RH-W-0006 conserva las comprobaciones incorporadas conscientes de locales.
+- El conjunto de entornos es `claude-code` y `opencode`; el modo es `integrated`. El idioma de conversacion es `espanol` y los locales documentales son `en` y `es`. El generador es 3.0, el paquete de habilidad es 3.1 y el checker y manifest incorporados conservan consistencia como par.
 - La suite cubre estados Git generados, consentimiento por intencion, comparacion exacta del alcance preparado, separacion del indice previo, invalidacion por cambios materiales, resultados delimitados, deteccion sensible, recibos de transporte acotados y contratos de cache del entorno.
 - La licencia MIT figura en `LICENSE` y en ambas copias de `SKILL.md`.
 - El repositorio privado esta publicado y `main` sigue `origin/main`.
@@ -15,7 +15,8 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo reciente completado
 <!-- doc-role:recent-work -->
 
-- Se completo `RH-W-0008`: las salidas generadas de la version actual cuya propiedad exacta prueba el manifest autenticado, incluso bytes modificados por humanos que retienen procedencia valida de la version actual, reciben acciones tipadas ligadas por digest. Apply rechaza ediciones posteriores al preview y ejecuta replace con create y append de forma atomica; las rutas de propiedad humana o no verificables permanecen solo como propuesta y los pares cambiados de manifest y checker conservan consistencia y atomicidad. El preview vivo derivado del propietario permanece en 17 acciones porque los bytes actuales de manifest y checker ya coinciden con los deseados; esas 17 superficies siguen sin cambios hasta recibir aprobacion separada del digest exacto.
+- Se completo `RH-W-0028`: la aprobacion estricta del constructor ligada al digest se aplica solo durante una ejecucion explicitamente activa de `repo-harness-builder`. La identidad del repositorio, el autoalojamiento, la propiedad generada, las habilidades de sesion, el mantenimiento ordinario y las preguntas directas no la activan; fuera de ese limite se usa aprobacion conversacional. Los contratos, referencias, pruebas y proyecciones incorporadas de OpenCode y Claude estan sincronizados.
+- Se completo `RH-W-0008`: las salidas generadas de la version actual cuya propiedad exacta prueba el manifest autenticado, incluso bytes modificados por humanos que retienen procedencia valida de la version actual, reciben acciones tipadas ligadas por digest. Apply rechaza ediciones posteriores al preview y ejecuta replace con create y append de forma atomica; las rutas de propiedad humana o no verificables permanecen solo como propuesta y los pares cambiados de manifest y checker conservan consistencia y atomicidad. El preview anterior de 17 rutas es solo evidencia historica y su digest esta obsoleto; todo plan autoalojado ejecutable futuro debe generarse desde los bytes actuales del repositorio.
 - Se completo `RH-W-0027`: se corrigieron los nombres fijos de habilidades diarias en ambos README del producto, se restauraron entradas recientes faltantes del historial espanol, se eliminaron afirmaciones obsoletas sobre trabajo completado y se registraron las 17 superficies generadas autoalojadas obsoletas informadas por el check propietario ajustado al manifest como evidencia de RH-W-0008 sin modificarlas.
 - Se completo `RH-W-0006`: las dos pruebas de documentacion incorporada ahora usan las declaraciones de idioma del manifest instalado, evitan rutas espanolas en layouts validos solo en ingles y conservan la deteccion completa de enlaces rotos y roles semanticos en layouts bilingues declarados.
 - Se completo `RH-W-0005`: las declaraciones explicitas `language` del manifest ahora validan la forma del objeto, los locales de documentacion y el idioma de conversacion en el limite de la declaracion instalada con errores exactos por campo; los manifests sin `language` conservan la inferencia de RH-W-0003.
@@ -53,13 +54,13 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
-- Proyeccion activa: `RH-W-0009`, `RH-W-0010` y `RH-W-0019` estan `ready`. El contrato consciente de capacidades `RH-W-0025` sigue bloqueado hasta que la aprobacion separada del digest exacto aplique y verifique el conjunto autoalojado de 17 rutas previsto por RH-W-0008.
+- Proyeccion activa: `RH-W-0009`, `RH-W-0010` y `RH-W-0019` estan `ready`. El contrato consciente de capacidades `RH-W-0025` sigue bloqueado hasta que un plan autoalojado exacto y ligado al digest, generado de nuevo desde los bytes actuales, reciba aprobacion, se aplique y se verifique.
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
 - Proyeccion aplazada: `RH-W-0011` a `RH-W-0015` y la idea de mantenimiento interno desatendido `RH-W-0018` conservan condiciones explicitas en [roadmap.md](roadmap.md).
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
-- IDs completados recientemente: `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
+- IDs completados recientemente: `RH-W-0028`, `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
 
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Obtener aprobacion del digest exacto para el conjunto autoalojado de 17 rutas previsto por RH-W-0008 antes de iniciar RH-W-0025. RH-W-0009, RH-W-0010 y RH-W-0019 estan listas; cada unidad se trabaja en una rama separada.
+Generar desde los bytes actuales un nuevo plan autoalojado RH-W-0008 exacto y ligado al digest, obtener aprobacion, aplicarlo y verificarlo antes de iniciar RH-W-0025. El preview anterior de 17 rutas es solo evidencia historica y su digest esta obsoleto. RH-W-0009, RH-W-0010 y RH-W-0019 estan listas; cada unidad se trabaja en una rama separada.

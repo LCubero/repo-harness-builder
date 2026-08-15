@@ -6,8 +6,8 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes.
-- Canonical suite green: 251 tests passed with 7 skips. `RH-W-0008` adds approved generated-output replacement and manifest/checker consistency coverage while RH-W-0006 preserves locale-aware checked-in documentation checks.
-- Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Generator 3.0, skill package 3.1.
+- Canonical suite green: 253 tests passed with 7 skips. `RH-W-0028` adds strict builder activation-boundary coverage, RH-W-0008 preserves approved generated-output replacement and manifest/checker consistency coverage, and RH-W-0006 preserves locale-aware checked-in documentation checks.
+- Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1. The checked-in checker and manifest remain a consistent pair.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
 - Licensed MIT in `LICENSE` and in both `SKILL.md` copies.
 - Published as a private GitHub repository; `main` tracks `origin/main`.
@@ -15,7 +15,8 @@
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
-- Completed `RH-W-0008`: exact authenticated manifest-owned current-version generated outputs, including human-modified bytes retaining valid current-version provenance, receive typed digest-bound replacement actions. Apply rejects post-preview edits and executes replacement with create and append atomically; human-owned or unverifiable paths remain proposal-only, and changed manifest/checker pairs stay consistent and atomic. The owner-derived live preview remains 17 actions because current manifest and checker bytes already match desired bytes; those 17 surfaces remain unchanged pending separate exact digest approval.
+- Completed `RH-W-0028`: strict digest-bound builder approval now applies only during explicitly active `repo-harness-builder` skill execution. Repository identity, self-hosting, generated ownership, session skills, ordinary maintenance, and direct questions do not activate it; ordinary conversational approval applies outside that boundary. Canonical contracts, references, tests, and checked-in OpenCode and Claude projections are synchronized.
+- Completed `RH-W-0008`: exact authenticated manifest-owned current-version generated outputs, including human-modified bytes retaining valid current-version provenance, receive typed digest-bound replacement actions. Apply rejects post-preview edits and executes replacement with create and append atomically; human-owned or unverifiable paths remain proposal-only, and changed manifest/checker pairs stay consistent and atomic. The old 17-path preview is historical evidence only and its old digest is stale; any future executable self-hosted plan must be generated from current repository bytes.
 - Completed `RH-W-0027`: corrected fixed daily skill names in both product READMEs, restored missing recent Spanish changelog entries, removed stale completed-work lifecycle claims, and recorded the 17 stale self-hosted generated surfaces reported by the manifest-matched owner check as RH-W-0008 evidence without changing them.
 - Completed `RH-W-0006`: the two checked-in documentation tests now use installed manifest language declarations, avoid Spanish paths in valid English-only layouts, and retain full broken-link and semantic-role enforcement in declared bilingual layouts.
 - Completed `RH-W-0005`: explicit manifest `language` declarations now validate object shape, documentation locales, and conversation language at the installed declaration boundary with exact field-specific errors; manifests without `language` retain RH-W-0003 inference.
@@ -59,13 +60,13 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Active projection: `RH-W-0009`, `RH-W-0010`, and `RH-W-0019` are `ready`. The capability-aware Gentle AI and Engram contract `RH-W-0025` remains blocked until the separate exact digest approval applies and verifies RH-W-0008's previewed 17-path self-hosted replacement set.
+- Active projection: `RH-W-0009`, `RH-W-0010`, and `RH-W-0019` are `ready`. The capability-aware Gentle AI and Engram contract `RH-W-0025` remains blocked until a newly generated exact digest-bound self-hosted plan based on current repository bytes receives approval, is applied, and is verified.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015` and the unattended internal-maintenance idea `RH-W-0018` retain explicit advancement conditions in [roadmap.md](roadmap.md).
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
-- Recently completed IDs: `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
+- Recently completed IDs: `RH-W-0028`, `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
 
 ## Next Step
 <!-- doc-role:next-step -->
 
-Obtain exact digest approval for the previewed 17-path self-hosted RH-W-0008 replacement set before starting RH-W-0025. RH-W-0009, RH-W-0010, and RH-W-0019 are otherwise ready; take one unit per branch and do not bundle them.
+Generate a new exact digest-bound self-hosted RH-W-0008 plan from current repository bytes, then obtain approval, apply it, and verify it before starting RH-W-0025. The old 17-path preview is historical evidence only and its digest is stale. RH-W-0009, RH-W-0010, and RH-W-0019 are otherwise ready; take one unit per branch and do not bundle them.
