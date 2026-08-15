@@ -89,7 +89,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Deferrals | none |
 | Rejections | Rejected replacing RH-W-0016's stale transient next-work sentence with another changing work ID; current state owns selected next work. |
 | Evidence | Focused tests failed against each confirmed drift before the bilingual documentation-only correction. `python -B skill/repo-harness-builder/scripts/harness_tool.py check --root . --project-name repo-harness-builder` reports drift with exactly 17 paths classified `stale` and 0 writes, and this unit changed none of them. |
-| Decision history | 2026-08-14: registered and completed as one bounded audit-correction lifecycle unit; RH-W-0026 remained reserved on its separate branch, making RH-W-0027 the next immutable ID. |
+| Decision history | 2026-08-14: registered and completed as one bounded audit-correction lifecycle unit; RH-W-0026 remained reserved on its separate branch, making RH-W-0027 the next immutable ID; its record was ported onto main on 2026-08-15. |
 | Next advancement condition | Reopen only if the product README naming, recent bilingual chronology, or completed lifecycle projections drift again. |
 
 ### RH-W-0016
@@ -261,6 +261,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Evidence | The approved design and pinned-source analysis are recorded in [integration-research.md](integration-research.md). The RH-W-0008 prerequisite was applied and verified, and both checkers report `current` with 0 stale. The open detection question is resolved: `gentle-ai version` is an advertised read-only surface that returns `gentle-ai <version>` with exit 0 and resolves through PATH, so it is independent of installation layout. Observed locally as `gentle-ai 2.4.0-rc.3`. |
 | Decision history | 2026-08-14: research completed and the user explicitly approved the conceptual design. Registered as ready because scope, non-goals, implementation surfaces, start condition, and required tests were bounded. 2026-08-14: changed to blocked after verified executor evidence showed self-hosted regeneration requires RH-W-0008; widening RH-W-0025 would duplicate that owner's approved responsibility. 2026-08-15: returned to ready. RH-W-0008 was applied and verified, and the detection probe left open at medium confidence was resolved against the Gentle AI CLI surface. A proposed split into an Engram half and a blocked Gentle AI half was rejected once the probe existed, because splitting would fragment the four-combination availability matrix across two units. |
 | Next advancement condition | Begin with failing contract tests for the four availability combinations, treating only a `verified` probe result as authority to use a capability and never `found_on_path` alone, which `integration-research.md` forbids as executable presence. Retain the separate post-implementation consumer regeneration follow-up; RH-W-0022 remains independent. |
+
+### RH-W-0026
+| Field | Value |
+|---|---|
+| Origin | User-deferred optional CodeGraph integration idea; reference: https://github.com/LCubero/codegraph |
+| Priority | P3: the current harness remains functional without this optional capability, and no approved integration design exists |
+| Dependencies | Explicit future design or research approval and primary-source review of the pinned or current CodeGraph contract |
+| Status | deferred |
+| Completed work | Recorded the optional capability, authority boundary, fallback, ownership boundaries, and advancement condition without researching or implementing it. |
+| Remaining work | After explicit approval, review the primary source and design whether and how the harness may consume available CodeGraph capabilities. |
+| Additions | When available, the harness may optionally use CodeGraph for code structure, symbols, call paths, dependencies, and impact analysis. Repository evidence remains authoritative, and the harness falls back organically when CodeGraph is unavailable. |
+| Exclusions | CodeGraph is never required. No implementation, clone, dependency, initialization policy, command contract, or integration design belongs to this unit. The harness must not duplicate a code graph, index, parser, or lifecycle. This remains separate from RH-W-0022, which owns declared documentation relationships, and RH-W-0025, which owns Gentle AI and Engram coordination. |
+| Deferrals | Deferred because the user explicitly reserved the idea for another time and no design or research has been approved. |
+| Rejections | Rejected making CodeGraph required or treating it as repository authority. |
+| Evidence | The user supplied the reference and bounded capability request; this documentation unit did not access or research the external repository. |
+| Decision history | 2026-08-14: recorded as a deferred optional capability only, with no implementation or integration commitment. |
+| Next advancement condition | Advance only after explicit future design or research approval and primary-source review of the pinned or current CodeGraph contract. |
 
 ### RH-W-0003
 | Field | Value |
