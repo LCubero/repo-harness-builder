@@ -10,7 +10,9 @@
 
 **Canonical inputs:** [integration research](integration-research.md), [RH-W-0025](roadmap.md#rh-w-0025), and [standing decisions](decisions.md). The [Spanish plan](../es/repo-harness/rh-w-0025-implementation-plan.md) is a human mirror, not a second owner.
 
-**Execution prerequisite:** RH-W-0025 is blocked on RH-W-0008. Do not execute this plan until RH-W-0008 delivers the approved content-bound replacement and integration executor for existing generated outputs.
+**Execution prerequisite:** satisfied. RH-W-0008 delivered the approved content-bound replacement and integration executor, and it was applied and verified on 2026-08-15. RH-W-0025 is `ready`.
+
+**Detection contract:** detect Gentle AI through `gentle-ai version`, an advertised read-only surface that returns `gentle-ai <version>` with exit 0 and resolves through PATH, so it is independent of installation layout. Detection is three-state: `not_found`, `found_on_path`, and `verified`. Only `verified`, a validated exit code plus output shape, authorizes using the capability. `found_on_path` authorizes nothing, because executable presence is not proof of an authentic working CLI and `integration-research.md` forbids it as a detection basis.
 
 **Blocker evidence:** Current `plan_changes()` classifies non-identical existing outputs as `existing`, and `write_outputs()` writes only create/append actions plus the narrow RH-W-0024 legacy-name migration. That migration cannot regenerate arbitrary existing consumer owners. Widening RH-W-0025 would duplicate RH-W-0008 and create a third replacement mechanism.
 
@@ -23,8 +25,8 @@
 - [ ] Promote reusable operational knowledge only after repository verification and human approval.
 - [ ] Do not add a third state machine, auto-enable review, fabricate approval, synthesize SDD, copy receipt/conflict/attempt stores, or retry until clean.
 - [ ] Keep RH-W-0022 related and independent. Do not add a dependency unless implementation evidence proves its declared relationship map is required.
-- [ ] Treat RH-W-0008 as a hard prerequisite. Do not begin RH-W-0025 implementation until RH-W-0008 provides the approved content-bound replacement and integration executor for existing generated outputs.
-- [ ] Add no runtime dependency, daemon, scheduler, network client, provider mutation, installation probe, private-layout probe, or executable-presence probe.
+- [x] RH-W-0008 hard prerequisite satisfied: the approved content-bound replacement and integration executor was delivered, applied, and verified.
+- [ ] Add no runtime dependency, daemon, scheduler, network client, provider mutation, installation probe, private-layout probe, or executable-presence probe. Invoking `gentle-ai version` is none of these: it is the tool's own advertised read-only surface, and a `found_on_path` result never authorizes a capability on its own.
 - [ ] Preserve human-owned files and unrelated uncommitted work. Stage only paths named by the current bounded commit.
 
 ## Planned File Map
@@ -44,7 +46,7 @@
 | `.repo-harness/**`, generated runtime session projections, `.repo-harness/manifest.json`, `.repo-harness/check.py`, `REPO-HARNESS.md`, and generated durable docs | Excluded from direct RH-W-0025 edits; regenerate only in the explicit post-RH-W-0008 follow-up through its approved content-bound executor |
 | `docs/repo-harness/{roadmap,current-state}.md`, `docs/es/repo-harness/{roadmap,current-state}.md`, `CHANGELOG.md` | Lifecycle reconciliation only after implementation and verification succeed |
 
-The exact generated consumer file set must come from `TOOL.render(...)` after RH-W-0008 is complete. Do not hand-maintain a second list, delete existing owners to force creation, or edit generated owners independently. RH-W-0025 remains blocked until that executor exists.
+The exact generated consumer file set must come from `TOOL.render(...)`. Do not hand-maintain a second list, delete existing owners to force creation, or edit generated owners independently. The RH-W-0008 executor prerequisite was completed, applied, and verified on 2026-08-15, so RH-W-0025 is `ready`.
 
 ## Task 1: Characterize Current Behavior With Failing Contract Tests
 
@@ -339,7 +341,7 @@ Do not hand-edit generated durable owners to simulate regeneration. After RH-W-0
 
 - [ ] **Step 2: Reconcile lifecycle owners in one unit**
 
-Only after RH-W-0008 completes, RH-W-0025 implementation passes, and the dependency-bound regeneration follow-up verifies every generated owner, change RH-W-0025 from `blocked` to `completed`, set remaining work to `none`, cite exact tests/checks, update current-state projections, and add one concise dated changelog entry. Do not change RH-W-0022 status or dependency.
+Only after RH-W-0025 implementation passes and the dependency-bound regeneration follow-up verifies every generated owner, change RH-W-0025 from `ready` to `completed`, set remaining work to `none`, cite exact tests/checks, update current-state projections, and add one concise dated changelog entry. Do not change RH-W-0022 status or dependency.
 
 - [ ] **Step 3: Reconcile Engram without transferring authority**
 
