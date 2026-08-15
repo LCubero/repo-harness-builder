@@ -22,7 +22,7 @@ Scope planning evidence to intended write paths, relevant existing ancestors, an
 | Selected root pointer already containing its exact directive | Leave every byte unchanged |
 | Root `.gitignore` missing exact `.codegraph/` with default enabled | Create it or append only that directive; preserve all existing bytes and line endings |
 | `--no-codegraph-ignore` selected | Record `project.ignoreCodegraph: false`; do not create or edit `.gitignore` |
-| Root `.gitattributes` lacks an exact generated-contract LF rule | Append only `.repo-harness/check.py text eol=lf` or `.repo-harness/manifest.json text eol=lf`, preserving all existing bytes and line endings |
+| Root `.gitattributes` lacks an exact generated-contract LF rule | Append only the missing `<path> text eol=lf` rules for byte-compared generated paths, preserving all existing bytes and line endings |
 | A matching `.gitattributes` rule assigns incompatible text or EOL behavior | Block the plan before any write |
 | Present as a directory or indirect target | Refuse apply before creating anything |
 
@@ -30,7 +30,7 @@ Root pointer detection matches the exact directive as a complete line. Substring
 
 The same byte-preserving integration applies narrowly to root `.gitignore`. Default render records `project.ignoreCodegraph: true` and manages exactly one line, `.codegraph/`. `--no-codegraph-ignore` records false and omits `.gitignore` entirely. `check` reads that manifest boolean so an explicit opt-out is never reinterpreted. The builder never creates or writes anything inside `.codegraph/` and manages no other ignore rule.
 
-Root `.gitattributes` is also human-owned. The builder manages only exact `.repo-harness/check.py text eol=lf` and `.repo-harness/manifest.json text eol=lf` lines because the checker and manifest form one exact-byte digest contract. It creates those two lines when the file is absent, appends only missing lines with the existing newline convention, leaves a correct file byte-identical, and blocks any matching rule that assigns incompatible `text` or `eol` behavior. It neither normalizes nor claims control over unrelated paths.
+Root `.gitattributes` is also human-owned. The builder manages only one exact `<path> text eol=lf` line per byte-compared generated path, because those paths form the exact-byte contract that checking compares. It creates exactly those lines when the file is absent, appends only missing lines with the existing newline convention, leaves a correct file byte-identical, and blocks any matching rule that assigns incompatible `text` or `eol` behavior. It neither normalizes nor claims control over unrelated paths, and never pins human-owned documents.
 
 ## Prior-Version Upgrades
 

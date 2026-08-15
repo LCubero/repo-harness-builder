@@ -26,7 +26,8 @@ An optional argument sets the report language to `español` or `english`; otherw
 - Version control is the safety net. Do not present this tool as a boundary against a hostile filesystem.
 - Resolve and inspect only the selected repository. Never traverse links, siblings, aliases, or external references.
 - Show four action sets. Approve only the current digest; never reuse it.
-- Only an explicitly active builder execution's content-bound apply plan uses strict answers. English accepts exactly `APPROVE` or `DENY`; Spanish accepts exactly `APROBAR` or `DENEGAR`.
+- Only an explicitly active builder execution's content-bound apply plan uses strict answers, declared to the CLI with `--activation builder`. English accepts exactly `APPROVE` or `DENY`; Spanish accepts exactly `APROBAR` or `DENEGAR`.
+- The CLI defaults to `--activation maintenance`: it withholds the strict domain from preview output entirely and applies on the current digest alone, so ordinary maintenance cannot relay an approval interface it must not present.
 - Keep wrappers thin and path-free: they load a generated skill by registered name, and Pi-like runtimes use their prompt mechanism.
 - Generate `repo-harness-session-start`, `repo-harness-session-stop`, and `repo-harness-documentation` in every repository. Keep `session-start`, `session-stop`, and `documentation` commands unchanged through explicit mapping, never prefix removal.
 - Keep repository evidence authoritative. Integrated mode requires Gentle AI and Engram; standalone mode must contain neither requirement.
@@ -39,7 +40,7 @@ An optional argument sets the report language to `español` or `english`; otherw
 - Validate localized human-owned documents with semantic roles plus proportional locale baselines for required content and known cross-language leakage. These checks detect incompleteness; they do not claim automated proof of translation equivalence.
 - For an existing repository that declared more than one documentation locale, analyze every expected localized path and propose integration. Never overwrite human-evolved documentation merely to install or normalize localization.
 - Use Python 3.10+ and the standard library only.
-- Generate exact `.repo-harness/check.py text eol=lf` and `.repo-harness/manifest.json text eol=lf` rules in root `.gitattributes`; preserve unrelated attributes, append only missing rules, and block conflicting matches.
+- Generate one exact `<path> text eol=lf` rule in root `.gitattributes` for every byte-compared generated path; preserve unrelated attributes, append only missing rules, and block conflicting matches.
 
 ## Decision Gates
 

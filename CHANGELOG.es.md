@@ -2,6 +2,12 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-08-15
+
+- Se completo `RH-W-0030`: se movio el limite de activacion de la aprobacion del constructor desde la prosa hacia la CLI. `render` ahora acepta `--activation builder|maintenance` con valor predeterminado `maintenance`, que omite por completo `approvalPrompt` y `approvalAnswers` de la salida de preview, rechaza `--approval` con salida 2 y aplica unicamente con el digest coincidente. La activacion del constructor conserva el dominio estricto localizado completo y la exigencia de digest mas token, y el digest del plan es identico en ambas. Antes, cada render de solo lectura imprimia el sobre estricto, de modo que el contrato prohibia una interfaz que la herramienta seguia fabricando.
+- Se completo `RH-W-0029`: el archivo raiz `.gitattributes` ahora se deriva de las salidas del render y protege las 19 rutas generadas comparadas byte a byte con reglas exactas `text eol=lf`, en lugar de un par fijo, excluyendo rutas de puntero, de ignore, de atributos y de propiedad humana. La deteccion de conflictos cubre el mismo conjunto derivado y ahora evalua patrones recursivos `dir/**`. Aplicarlo resolvio las 15 superficies obsoletas que informaba el plan nuevo de RH-W-0008: la comparacion byte a byte probo que 12 diferian solo en fin de linea por un checkout de Windows y que 3 llevaban la frase de commit localizada de `repo-harness-session-stop`.
+- Se aplico el plan autoalojado nuevo de `RH-W-0008` generado desde los bytes actuales del repositorio, lo que desbloqueo `RH-W-0025`. Tanto el verificador generado como el check propietario ajustado al manifest informan `current` con 0 obsoletas.
+
 ## 2026-08-14
 
 - Se completo `RH-W-0028`: se restringio la aprobacion estricta del constructor ligada al digest a una ejecucion explicitamente activa de `repo-harness-builder`, se conservaron como conversacionales el mantenimiento ordinario y las preguntas directas, y se sincronizaron contrato, referencias, pruebas y proyecciones incorporadas de OpenCode y Claude.

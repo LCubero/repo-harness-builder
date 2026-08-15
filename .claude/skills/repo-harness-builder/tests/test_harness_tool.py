@@ -80,7 +80,7 @@ class ApprovalUxTests(unittest.TestCase):
     def test_preview_exposes_the_localized_approval_domain(self):
         with tempfile.TemporaryDirectory() as directory:
             for language, answers in (("english", ["APPROVE", "DENY"]), ("espanol", ["APROBAR", "DENEGAR"])):
-                result = subprocess.run(["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--runtime", "opencode", "--report-language", language], check=True, capture_output=True, text=True)
+                result = subprocess.run(["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--runtime", "opencode", "--report-language", language, "--activation", "builder"], check=True, capture_output=True, text=True)
                 payload = json.loads(result.stdout)
                 self.assertEqual(payload["approvalPrompt"], TOOL.approval_prompt(language))
                 self.assertEqual(payload["approvalAnswers"], answers)
@@ -992,6 +992,7 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
                 "--root", str(root),
                 "--project-name", "Acme API",
                 "--runtime", "opencode",
+                "--activation", "builder",
             ]
             preview = json.loads(subprocess.run(command, check=True, capture_output=True, text=True).stdout)
             self.assertEqual(preview["status"], "plan")
@@ -1478,12 +1479,56 @@ class RootPointerTests(unittest.TestCase):
             self.assertEqual(pointer.read_bytes(), b"changed after preview\n")
             self.assertFalse((root / RULEBOOK).exists())
 
+    def test_preview_withholds_the_strict_domain_unless_the_builder_is_active(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base = [
+                "python", "-B", str(SCRIPT), "render", "--root", str(root),
+                "--project-name", "Example", "--report-language", "espanol",
+            ]
+            ordinary = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
+            active = json.loads(
+                subprocess.run([*base, "--activation", "builder"], check=True, capture_output=True, text=True).stdout
+            )
+
+            self.assertNotIn("approvalPrompt", ordinary)
+            self.assertNotIn("approvalAnswers", ordinary)
+            self.assertNotIn("APROBAR", json.dumps(ordinary))
+            self.assertNotIn("DENEGAR", json.dumps(ordinary))
+            self.assertEqual(active["approvalAnswers"], ["APROBAR", "DENEGAR"])
+            self.assertIn("APROBAR", active["approvalPrompt"])
+            self.assertEqual(ordinary["planSha256"], active["planSha256"])
+
+    def test_ordinary_maintenance_applies_on_the_digest_alone(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base = [
+                "python", "-B", str(SCRIPT), "render", "--root", str(root),
+                "--project-name", "Example", "--report-language", "espanol",
+            ]
+            digest = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)["planSha256"]
+            rejected = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", digest, "--approval", "APROBAR"],
+                check=False, capture_output=True, text=True,
+            )
+
+            self.assertEqual(rejected.returncode, 2)
+            self.assertFalse((root / RULEBOOK).exists())
+
+            applied = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", digest],
+                check=True, capture_output=True, text=True,
+            )
+            self.assertEqual(json.loads(applied.stdout)["status"], "VALIDATED")
+            self.assertTrue((root / RULEBOOK).is_file())
+
     def test_cli_apply_requires_matching_digest_and_exact_language_approval(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             base = [
                 "python", "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--report-language", "espanol",
+                "--activation", "builder",
             ]
             preview = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
             digest = preview["planSha256"]
@@ -2391,8 +2436,8 @@ class GeneratedCoreTests(unittest.TestCase):
 
         for text in (usage, skill, references):
             self.assertIn(".gitattributes", text)
-            self.assertIn(".repo-harness/check.py text eol=lf", text)
-            self.assertIn(".repo-harness/manifest.json text eol=lf", text)
+            self.assertIn("text eol=lf", text)
+            self.assertIn("byte-compared generated path", text)
 
     def test_explicit_standalone_mode_uses_repository_files_only(self):
         outputs = TOOL.render("Example", [], standalone=True)
@@ -2771,20 +2816,78 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
     EXPECTED = (
         ".repo-harness/check.py text eol=lf\n"
         ".repo-harness/manifest.json text eol=lf\n"
+        ".repo-harness/skills/repo-harness-documentation/SKILL.md text eol=lf\n"
+        ".repo-harness/skills/repo-harness-session-start/SKILL.md text eol=lf\n"
+        ".repo-harness/skills/repo-harness-session-stop/SKILL.md text eol=lf\n"
     )
 
     def test_fresh_render_includes_only_the_bounded_attributes(self):
         self.assertEqual(TOOL.render("Example", [])[".gitattributes"], self.EXPECTED)
 
+    def test_every_byte_compared_generated_path_is_protected(self):
+        for runtimes in ([], ["claude-code"], ["claude-code", "opencode"], ["pi"]):
+            with self.subTest(runtimes=runtimes):
+                outputs = TOOL.render("Example", runtimes)
+                rules = set(outputs[".gitattributes"].splitlines())
+                expected = {
+                    f"{path} text eol=lf"
+                    for path in TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH)
+                }
+
+                self.assertEqual(rules, expected)
+                self.assertIn(".repo-harness/check.py text eol=lf", rules)
+                for name in TOOL.COMMAND_TO_SKILL.values():
+                    self.assertIn(f".repo-harness/skills/{name}/SKILL.md text eol=lf", rules)
+
+    def test_runtime_projections_and_wrappers_are_protected(self):
+        outputs = TOOL.render("Example", ["claude-code", "opencode"])
+        rules = set(outputs[".gitattributes"].splitlines())
+
+        for base in (".claude", ".opencode"):
+            for command, name in TOOL.COMMAND_TO_SKILL.items():
+                self.assertIn(f"{base}/skills/{name}/SKILL.md text eol=lf", rules)
+                self.assertIn(f"{base}/commands/{command}.md text eol=lf", rules)
+            self.assertIn(f"{base}/commands/repo-harness-help.md text eol=lf", rules)
+
+    def test_human_owned_and_pointer_paths_are_never_pinned(self):
+        outputs = TOOL.render("Example", ["claude-code", "opencode"])
+        rules = outputs[".gitattributes"]
+        unpinned = (
+            TOOL.RULEBOOK_PATH,
+            "CHANGELOG.md",
+            "README.md",
+            "CLAUDE.md",
+            "AGENTS.md",
+            ".gitignore",
+            ".gitattributes",
+            ".repo-harness/rules/memory.md",
+            ".repo-harness/rules/working-agreements.md",
+            "docs/repo-harness/current-state.md",
+        )
+        for path in unpinned:
+            self.assertNotIn(f"{path} text eol=lf", rules)
+
+    def test_conflicting_attributes_report_every_protected_path(self):
+        outputs = TOOL.render("Example", ["claude-code"])
+        conflicts = TOOL.conflicting_attribute_paths(
+            b".claude/** text eol=crlf\n", TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH)
+        )
+
+        self.assertIn(".claude/commands/session-start.md", conflicts)
+        self.assertNotIn(".repo-harness/check.py", conflicts)
+
     def test_existing_attributes_preserve_bytes_and_append_only_missing_rules(self):
+        remainder = self.EXPECTED.split(".repo-harness/manifest.json text eol=lf\n", 1)[1]
         cases = (
             (
                 b"*.md text\n",
-                b"*.md text\n.repo-harness/check.py text eol=lf\n.repo-harness/manifest.json text eol=lf\n",
+                b"*.md text\n" + self.EXPECTED.encode(),
             ),
             (
                 b"*.md text\r\n.repo-harness/check.py text eol=lf\r\n",
-                b"*.md text\r\n.repo-harness/check.py text eol=lf\r\n.repo-harness/manifest.json text eol=lf\r\n",
+                b"*.md text\r\n.repo-harness/check.py text eol=lf\r\n"
+                + b".repo-harness/manifest.json text eol=lf\r\n"
+                + remainder.replace("\n", "\r\n").encode(),
             ),
         )
         for original, expected in cases:
@@ -2803,7 +2906,7 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             target = root / ".gitattributes"
-            original = b"# human\r\n.repo-harness/check.py text eol=lf\r\n.repo-harness/manifest.json text eol=lf\r\n*.md text\r\n"
+            original = b"# human\r\n" + self.EXPECTED.replace("\n", "\r\n").encode() + b"*.md text\r\n"
             target.write_bytes(original)
             outputs = TOOL.render("Example", [])
             plan = TOOL.plan_changes(root, outputs)
@@ -2899,10 +3002,18 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
 
     def test_attribute_evaluation_uses_posix_paths_on_every_platform(self):
         current = b".repo-harness/** text eol=crlf\n"
-        self.assertEqual(
-            TOOL.conflicting_attribute_paths(current),
-            {".repo-harness/check.py", ".repo-harness/manifest.json"},
-        )
+        outputs = TOOL.render("Example", [])
+        protected = TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH)
+
+        self.assertEqual(TOOL.conflicting_attribute_paths(current, protected), set(protected))
+
+    def test_recursive_patterns_reach_nested_protected_paths(self):
+        outputs = TOOL.render("Example", ["claude-code"])
+        protected = TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH)
+        conflicts = TOOL.conflicting_attribute_paths(b".claude/** text eol=crlf\n", protected)
+
+        self.assertIn(".claude/skills/repo-harness-session-start/SKILL.md", conflicts)
+        self.assertNotIn(".repo-harness/check.py", conflicts)
 
 
 class GeneratedCheckScriptTests(unittest.TestCase):

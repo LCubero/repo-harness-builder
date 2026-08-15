@@ -15,7 +15,7 @@ import json
 import re
 import sys
 import tempfile
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from datetime import date
 from pathlib import Path, PurePosixPath
 from typing import Any, Callable, Optional, TypedDict
@@ -34,10 +34,6 @@ RULEBOOK_PATH = "REPO-HARNESS.md"
 GITIGNORE_PATH = ".gitignore"
 CODEGRAPH_IGNORE_DIRECTIVE = ".codegraph/"
 GITATTRIBUTES_PATH = ".gitattributes"
-GIT_ATTRIBUTE_RULES = (
-    ".repo-harness/check.py text eol=lf",
-    ".repo-harness/manifest.json text eol=lf",
-)
 POINTER_DIRECTIVES = {
     "CLAUDE.md": "@REPO-HARNESS.md",
     "AGENTS.md": "Read and follow REPO-HARNESS.md before working in this repository.",
@@ -215,19 +211,40 @@ def has_pointer_line(current: bytes, directive: str) -> bool:
     return directive.encode("utf-8") in current.splitlines()
 
 
-def missing_attribute_rules(current: bytes) -> tuple[str, ...]:
+def byte_compared_paths(outputs: Mapping[str, str], rulebook_path: str) -> tuple[str, ...]:
+    """Return generated paths whose exact bytes checking compares.
+
+    Pointer, ignore, and attribute files carry directives rather than exact
+    bytes, and human-owned documents are checked structurally, so none of them
+    depend on preserved LF checkout bytes.
+    """
+    excluded = {*POINTER_DIRECTIVES, GITIGNORE_PATH, GITATTRIBUTES_PATH}
+    return tuple(
+        path for path in sorted(outputs) if path not in excluded and not human_owned(path, rulebook_path)
+    )
+
+
+def git_attribute_rules(outputs: Mapping[str, str], rulebook_path: str) -> tuple[str, ...]:
+    """Return the exact LF rules protecting every byte-compared generated path."""
+    return tuple(f"{path} text eol=lf" for path in byte_compared_paths(outputs, rulebook_path))
+
+
+def missing_attribute_rules(current: bytes, rules: Sequence[str]) -> tuple[str, ...]:
     """Return only exact required rules absent from a human-owned attributes file."""
-    return tuple(rule for rule in GIT_ATTRIBUTE_RULES if not has_pointer_line(current, rule))
+    return tuple(rule for rule in rules if not has_pointer_line(current, rule))
 
 
 def attribute_pattern_matches(pattern: str, path: str) -> bool:
     """Evaluate the bounded root attribute patterns against repository-relative paths."""
     if not pattern or pattern.startswith(("#", "!", "[attr]")) or pattern.endswith("/"):
         return False
-    return PurePosixPath(path).match(pattern.removeprefix("/"))
+    normalized = pattern.removeprefix("/")
+    if normalized.endswith("/**"):
+        return path.startswith(normalized.removesuffix("**"))
+    return PurePosixPath(path).match(normalized)
 
 
-def conflicting_attribute_paths(current: bytes) -> set[str]:
+def conflicting_attribute_paths(current: bytes, protected: Sequence[str]) -> set[str]:
     """Return protected paths touched by a text or eol assignment incompatible with LF."""
     conflicts: set[str] = set()
     lines = current.decode("utf-8", errors="replace").splitlines()
@@ -261,7 +278,7 @@ def conflicting_attribute_paths(current: bytes) -> set[str]:
         )
         if not incompatible:
             continue
-        conflicts.update(path for path in (".repo-harness/check.py", MANIFEST_PATH) if attribute_pattern_matches(pattern, path))
+        conflicts.update(path for path in protected if attribute_pattern_matches(pattern, path))
     return conflicts
 
 
@@ -941,7 +958,7 @@ Use the three generated skills as a loop: recover context, keep durable document
 
 <!-- doc-role:ownership -->
 
-Run `python .repo-harness/check.py` after canonical skills or runtime projections change. The checker is read-only and reports whether generated runtime copies still match their canonical skills. Root `.gitattributes` must preserve LF checkout bytes with exact `.repo-harness/check.py text eol=lf` and `.repo-harness/manifest.json text eol=lf` rules. {continuity_owner}
+Run `python .repo-harness/check.py` after canonical skills or runtime projections change. The checker is read-only and reports whether generated runtime copies still match their canonical skills. Root `.gitattributes` must preserve LF checkout bytes with one exact `text eol=lf` rule for every byte-compared generated path, including the checker, the manifest, canonical skills, and runtime projections. Without them a CRLF checkout reports drift the checker cannot resolve. {continuity_owner}
 
 ## Approval Boundaries
 
@@ -1148,7 +1165,7 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 
 <!-- doc-role:ownership -->
 
-Ejecute `python .repo-harness/check.py` despues de cambiar habilidades canonicas o proyecciones de ejecucion. El verificador es de solo lectura e informa si las copias generadas coinciden con sus habilidades canonicas. El archivo raiz `.gitattributes` debe preservar bytes LF al hacer checkout mediante las reglas exactas `.repo-harness/check.py text eol=lf` y `.repo-harness/manifest.json text eol=lf`. {ownership_es}
+Ejecute `python .repo-harness/check.py` despues de cambiar habilidades canonicas o proyecciones de ejecucion. El verificador es de solo lectura e informa si las copias generadas coinciden con sus habilidades canonicas. El archivo raiz `.gitattributes` debe preservar bytes LF al hacer checkout mediante una regla exacta `text eol=lf` por cada ruta generada comparada byte a byte, incluidos el verificador, el manifest, las habilidades canonicas y las proyecciones de ejecucion. Sin ellas, un checkout CRLF informa una deriva que el verificador no puede resolver. {ownership_es}
 
 ## Limites de aprobacion
 
@@ -1589,7 +1606,6 @@ def render_with_skill_mapping(
     outputs = {
         rulebook_path: rulebook(project_id, standalone),
         "CHANGELOG.md": changelog(),
-        GITATTRIBUTES_PATH: "".join(f"{rule}\n" for rule in GIT_ATTRIBUTE_RULES),
         **rule_outputs(rulebook_path, standalone),
         **docs_outputs(project_id, rulebook_path, standalone, languages),
     }
@@ -1633,6 +1649,7 @@ def render_with_skill_mapping(
     })
     outputs[MANIFEST_PATH] = manifest
     outputs[".repo-harness/check.py"] = check_script(digest_text(manifest))
+    outputs[GITATTRIBUTES_PATH] = "".join(f"{rule}\n" for rule in git_attribute_rules(outputs, rulebook_path))
     for path, content in outputs.items():
         safe_relative(path)
         require(chr(0x2013) not in content and chr(0x2014) not in content, f"forbidden Unicode in {path}")
@@ -1719,8 +1736,9 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
                 })
         elif relative == GITATTRIBUTES_PATH and target.is_file() and not target.is_symlink():
             current = target.read_bytes()
-            conflicts = sorted(conflicting_attribute_paths(current))
-            missing = missing_attribute_rules(current)
+            protected = byte_compared_paths(outputs, RULEBOOK_PATH)
+            conflicts = sorted(conflicting_attribute_paths(current, protected))
+            missing = missing_attribute_rules(current, git_attribute_rules(outputs, RULEBOOK_PATH))
             if conflicts:
                 blocked.append({
                     "path": relative,
@@ -2276,8 +2294,9 @@ def check(
             entry["state"] = "present" if has_pointer_line(target.read_bytes(), directive) else "directive-missing"
         elif relative == GITATTRIBUTES_PATH:
             current = target.read_bytes()
-            conflicts = sorted(conflicting_attribute_paths(current))
-            missing = missing_attribute_rules(current)
+            protected = byte_compared_paths(expected, rulebook_path)
+            conflicts = sorted(conflicting_attribute_paths(current, protected))
+            missing = missing_attribute_rules(current, git_attribute_rules(expected, rulebook_path))
             if conflicts:
                 entry["state"] = "attribute-conflict"
                 entry["conflicts"] = conflicts
@@ -2394,9 +2413,10 @@ def main(argv: Optional[list[str]] = None) -> int:
             child.add_argument("--documentation-language", action="append", dest="documentation_languages", choices=sorted(DOCUMENTATION_LANGUAGES), help="documentation locale; repeat the flag for a multilingual repository, omit it for English only")
             child.add_argument("--conversation-language", choices=sorted(APPROVAL_DOMAINS), help="language the generated sessions converse in; ask the human, defaults to english")
             child.add_argument("--no-codegraph-ignore", dest="ignore_codegraph", action="store_false", help="do not add .codegraph/ to the root .gitignore")
+            child.add_argument("--activation", choices=("builder", "maintenance"), default="maintenance", help="declare an explicitly active repo-harness-builder skill execution; only that activation uses the strict approval domain")
             child.add_argument("--apply", action="store_true", help="create the absent files listed in the plan")
             child.add_argument("--approved-plan-sha256", help="digest printed by the approved preview")
-            child.add_argument("--approval", help="exact approval answer from the active report-language domain")
+            child.add_argument("--approval", help="exact approval answer from the active report-language domain; builder activation only")
     self_test = sub.add_parser("self-test", help="bootstrap and verify a temporary empty project")
     self_test.add_argument("--standalone", action="store_true", help="test repository-only continuity")
     args = parser.parse_args(argv)
@@ -2429,15 +2449,26 @@ def main(argv: Optional[list[str]] = None) -> int:
         )
         blocked_paths = {item["path"] for item in plan["blocked"]}
         entry_points = {name: path for name, path in entry_points.items() if path not in blocked_paths}
+        builder_active = args.activation == "builder"
         if not args.apply:
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, "approvalPrompt": domain["prompt"], "approvalAnswers": [domain["approve"], domain["deny"]], "planSha256": digest, **plan, "runtimeSet": runtime_set_report(root, selected), "writes": 0}), end="")
+            strict = (
+                {"approvalPrompt": domain["prompt"], "approvalAnswers": [domain["approve"], domain["deny"]]}
+                if builder_active
+                else {}
+            )
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **plan, "runtimeSet": runtime_set_report(root, selected), "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")
-            require(bool(args.approval), "--approval is required with --apply")
-            if not approval_granted(args.approval, args.report_language):
-                print(dump_json({"status": "DENIED", "changed": [], "planSha256": digest, "reportLanguage": args.report_language}), end="")
-                return 0
+            require(
+                builder_active or not args.approval,
+                "--approval belongs to an explicitly active builder execution; ordinary maintenance approves conversationally",
+            )
+            if builder_active:
+                require(bool(args.approval), "--approval is required with --apply")
+                if not approval_granted(args.approval, args.report_language):
+                    print(dump_json({"status": "DENIED", "changed": [], "planSha256": digest, "reportLanguage": args.report_language}), end="")
+                    return 0
             changed = write_outputs(root, outputs, plan)
             print(dump_json({"status": "VALIDATED", "changed": changed, "planSha256": digest, "reportLanguage": args.report_language, "plan": plan}), end="")
         return 0

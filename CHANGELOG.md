@@ -4,6 +4,12 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-08-15
+
+- Completed `RH-W-0030`: moved the builder approval activation boundary from prose into the CLI. `render` now takes `--activation builder|maintenance` and defaults to `maintenance`, which omits `approvalPrompt` and `approvalAnswers` from preview output entirely, rejects `--approval` with exit 2, and applies on the matching digest alone. Builder activation keeps the complete localized strict domain and the digest-plus-token requirement, and the plan digest is identical under both. Previously every read-only render printed the strict envelope, so the contract forbade an interface the tool kept manufacturing.
+- Completed `RH-W-0029`: derived root `.gitattributes` from render outputs, protecting all 19 byte-compared generated paths with exact `text eol=lf` rules instead of a fixed pair, excluding pointer, ignore, attribute, and human-owned paths. Conflict detection covers the same derived set and now evaluates recursive `dir/**` patterns. Applying it resolved the 15 stale surfaces the fresh RH-W-0008 plan reported: byte-level comparison proved 12 differed only in line endings from a Windows checkout and 3 carried the localized `repo-harness-session-stop` commit sentence.
+- Applied the fresh `RH-W-0008` self-hosted plan generated from current repository bytes, unblocking `RH-W-0025`. Both the generated checker and the manifest-matched owner check report `current` with 0 stale.
+
 ## 2026-08-14
 
 - Completed `RH-W-0028`: restricted strict digest-bound builder approval to explicitly active `repo-harness-builder` execution, kept ordinary repository maintenance and direct questions conversational, and synchronized the product contract, references, tests, and checked-in OpenCode and Claude projections.
