@@ -6,7 +6,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 <!-- doc-role:verified-state -->
 
 - El harness esta presente y el verificador generado informa `current`, salida 0 y 0 escrituras.
-- La suite canonica esta en verde: pasaron 237 pruebas con 7 omisiones. `RH-W-0006` hace que las pruebas de documentacion incorporada sigan los locales declarados en el manifest instalado y conserva controles bilingues completos cuando se declara espanol.
+- La suite canonica esta en verde: pasaron 241 pruebas con 7 omisiones. `RH-W-0027` agrega regresiones enfocadas para documentos del repositorio y RH-W-0006 conserva las comprobaciones incorporadas conscientes de locales.
 - El conjunto de entornos es `claude-code` y `opencode`; el modo es `integrated`, el generador es 3.0 y el paquete de habilidad es 3.1.
 - La suite cubre estados Git generados, consentimiento por intencion, comparacion exacta del alcance preparado, separacion del indice previo, invalidacion por cambios materiales, resultados delimitados, deteccion sensible, recibos de transporte acotados y contratos de cache del entorno.
 - La licencia MIT figura en `LICENSE` y en ambas copias de `SKILL.md`.
@@ -15,6 +15,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo reciente completado
 <!-- doc-role:recent-work -->
 
+- Se completo `RH-W-0027`: se corrigieron los nombres fijos de habilidades diarias en ambos README del producto, se restauraron entradas recientes faltantes del historial espanol, se eliminaron afirmaciones obsoletas sobre trabajo completado y se registraron las 17 superficies generadas autoalojadas obsoletas informadas por el check propietario ajustado al manifest como evidencia de RH-W-0008 sin modificarlas.
 - Se completo `RH-W-0006`: las dos pruebas de documentacion incorporada ahora usan las declaraciones de idioma del manifest instalado, evitan rutas espanolas en layouts validos solo en ingles y conservan la deteccion completa de enlaces rotos y roles semanticos en layouts bilingues declarados.
 - Se completo `RH-W-0005`: las declaraciones explicitas `language` del manifest ahora validan la forma del objeto, los locales de documentacion y el idioma de conversacion en el limite de la declaracion instalada con errores exactos por campo; los manifests sin `language` conservan la inferencia de RH-W-0003.
 - Se completo `RH-W-0004`: `--report-language`, `--documentation-language` y `--conversation-language` siguen aceptados por `render`, mientras `check` los rechaza con salida argparse 2.
@@ -51,11 +52,11 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
-- Proyeccion activa: `RH-W-0008` y `RH-W-0019` estan `ready`; `RH-W-0009`, `RH-W-0010` y el contrato consciente de capacidades `RH-W-0025` siguen bloqueados por prerrequisitos. RH-W-0025 espera el reemplazo y la integracion ligados al contenido de RH-W-0008.
+- Proyeccion activa: `RH-W-0008` y `RH-W-0019` estan `ready`; `RH-W-0009`, `RH-W-0010` y el contrato consciente de capacidades `RH-W-0025` siguen bloqueados por prerrequisitos. RH-W-0008 permanece seleccionado como siguiente trabajo. Su bloqueo registrado son las 17 rutas generadas autoalojadas obsoletas exactas del check propietario ajustado al manifest, enumeradas en [roadmap.md](roadmap.md), con `status: drift` y 0 escrituras. RH-W-0027 no cambio ninguna.
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
 - Proyeccion aplazada: `RH-W-0011` a `RH-W-0015` y la idea de mantenimiento interno desatendido `RH-W-0018` conservan condiciones explicitas en [roadmap.md](roadmap.md).
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
-- IDs completados recientemente: `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
+- IDs completados recientemente: `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
 
 ## Siguiente paso
 <!-- doc-role:next-step -->

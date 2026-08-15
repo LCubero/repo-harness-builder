@@ -19,7 +19,7 @@ The result is less context loss between sessions, safer repository evolution, cl
 3. Answer the interview: runtime projections, license, conversation language, and documentation locales. Documentation stays English-only unless you declare another locale.
 4. Keep the default root `.codegraph/` ignore, or pass `--no-codegraph-ignore` to persistently opt out.
 5. Review the exact plan and use its language-scoped digest-bound approval: `APPROVE` or `DENY` in English, `APROBAR` or `DENEGAR` in Spanish.
-6. Start normal work with the generated `<project>-session-start` skill.
+6. Start normal work with the generated `repo-harness-session-start` skill.
 
 With no operation, the builder performs a read-only audit. It does not initialize Git, mutate remotes, commit, push, or publish unless those separate actions are later requested and approved.
 
@@ -54,9 +54,9 @@ The builder is the installer and upgrader. The three repository skills are the d
 | Skill | Use it when | Outcome |
 |---|---|---|
 | `repo-harness-builder` | Creating, auditing, or safely upgrading a harness | A planned, approved, verified repository harness |
-| `<project>-session-start` | Starting or resuming work | A scoped outcome, current evidence, local Git state, and one concrete remote-check question when safe |
-| `<project>-documentation` | Durable facts or visible state changed | Canonical docs updated without duplication or stale ownership |
-| `<project>-session-stop` | Pausing or ending work | Verified continuity, screened exact-path work units, and one outcome-scoped Git question when needed |
+| `repo-harness-session-start` | Starting or resuming work | A scoped outcome, current evidence, local Git state, and one concrete remote-check question when safe |
+| `repo-harness-documentation` | Durable facts or visible state changed | Canonical docs updated without duplication or stale ownership |
+| `repo-harness-session-stop` | Pausing or ending work | Verified continuity, screened exact-path work units, and one outcome-scoped Git question when needed |
 
 ## Lifecycle
 <!-- doc-role:lifecycle -->
@@ -86,15 +86,15 @@ In integrated mode, Gentle AI and Engram must be available for continuity. Engra
 /repo-harness-builder
 # Review the audit, answer one choice at a time, inspect the plan, then approve.
 
-Load my-project-session-start and continue the API migration.
+Load repo-harness-session-start and continue the API migration.
 # Work, test, and verify.
 
-Load my-project-documentation and update current state and the changelog.
+Load repo-harness-documentation and update current state and the changelog.
 
-Load my-project-session-stop and prepare the handoff.
+Load repo-harness-session-stop and prepare the handoff.
 ```
 
-Runtime command names vary, so invoke skills by their registered names through the runtime's skill mechanism. The generated help command reads `docs/repo-harness/usage.md` for concise repository-specific guidance.
+The builder command remains `/repo-harness-builder`; the daily skills have the fixed registered names shown above. Runtime command syntax varies, so invoke skills through the runtime's skill mechanism. The generated help command reads `docs/repo-harness/usage.md` for concise repository-specific guidance.
 
 Generated session outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, and `degraded`. They are scoped: optional Git failure can degrade a successful local session without falsely failing continuity. Explicit `commit and push` consent covers the unchanged safe sequence through one push; commit-only never implies push, and material changes pause for renewed consent.
 

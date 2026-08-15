@@ -17,7 +17,7 @@
 3. Responda la entrevista: proyecciones de entorno, licencia, idioma de conversacion y locales de documentacion. La documentacion queda solo en ingles salvo que declare otro locale.
 4. Mantenga el ignore predeterminado de `.codegraph/` en la raiz o use `--no-codegraph-ignore` para registrar el opt-out.
 5. Revise el plan exacto. En espanol, la aprobacion estricta usa `APROBAR` o `DENEGAR`.
-6. Inicie el trabajo normal con la habilidad generada `<proyecto>-session-start`.
+6. Inicie el trabajo normal con la habilidad generada `repo-harness-session-start`.
 
 Sin operacion explicita, el constructor realiza una auditoria de solo lectura. No inicializa Git ni modifica remotos, crea commits, publica o envia cambios.
 
@@ -51,9 +51,9 @@ El constructor instala o actualiza. Las tres habilidades del repositorio forman 
 | Habilidad | Cuando usarla | Resultado |
 |---|---|---|
 | `repo-harness-builder` | Crear, auditar o actualizar con seguridad un harness | Un harness planificado, aprobado y verificado |
-| `<proyecto>-session-start` | Iniciar o reanudar trabajo | Resultado acotado, evidencia actual y estado Git local |
-| `<proyecto>-documentation` | Cambiaron hechos durables o estado visible | Documentos canonicos actualizados sin duplicacion |
-| `<proyecto>-session-stop` | Pausar o terminar | Continuidad verificada y unidades de trabajo revisables |
+| `repo-harness-session-start` | Iniciar o reanudar trabajo | Resultado acotado, evidencia actual y estado Git local |
+| `repo-harness-documentation` | Cambiaron hechos durables o estado visible | Documentos canonicos actualizados sin duplicacion |
+| `repo-harness-session-stop` | Pausar o terminar | Continuidad verificada y unidades de trabajo revisables |
 
 ## Ciclo de vida
 <!-- doc-role:lifecycle -->
@@ -82,15 +82,15 @@ En modo integrado, Gentle AI y Engram deben estar disponibles. Engram conecta se
 /repo-harness-builder
 # Revise la auditoria y el plan, luego apruebe.
 
-Cargue my-project-session-start y continue la migracion de API.
+Cargue repo-harness-session-start y continue la migracion de API.
 # Trabaje, pruebe y verifique.
 
-Cargue my-project-documentation y actualice el estado y el historial.
+Cargue repo-harness-documentation y actualice el estado y el historial.
 
-Cargue my-project-session-stop y prepare la transferencia.
+Cargue repo-harness-session-stop y prepare la transferencia.
 ```
 
-Los nombres de comandos dependen del entorno, asi que las habilidades se invocan por su nombre registrado. La ayuda generada lee `docs/repo-harness/usage.md`, y lee `docs/es/repo-harness/usage.md` solo cuando el espanol es un locale de documentacion declarado y el idioma de conversacion es espanol. Nunca nombra una guia que ese mismo render no creo. Los resultados son `ready`, `paused`, `blocked`, `failed`, `completed` y `degraded`.
+El comando del constructor sigue siendo `/repo-harness-builder`; las habilidades diarias usan los nombres registrados fijos mostrados arriba. La sintaxis de comandos depende del entorno, asi que las habilidades se invocan mediante el mecanismo de habilidades del entorno. La ayuda generada lee `docs/repo-harness/usage.md`, y lee `docs/es/repo-harness/usage.md` solo cuando el espanol es un locale de documentacion declarado y el idioma de conversacion es espanol. Nunca nombra una guia que ese mismo render no creo. Los resultados son `ready`, `paused`, `blocked`, `failed`, `completed` y `degraded`.
 
 ## Comportamiento del repositorio
 <!-- doc-role:repository-behavior -->
