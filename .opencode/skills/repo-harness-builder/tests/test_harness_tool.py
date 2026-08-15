@@ -2162,11 +2162,80 @@ class GeneratedCoreTests(unittest.TestCase):
             outputs = install(root, runtimes=("claude-code",))
             TOOL.verify_outputs(root, outputs)
 
+    def checked_in_layout_fixture(self, root, documentation_languages, broken_spanish=None):
+        manifest = root / TOOL.MANIFEST_PATH
+        manifest.parent.mkdir(parents=True)
+        manifest.write_text(
+            json.dumps(
+                {
+                    "language": {
+                        "documentation": documentation_languages,
+                        "conversation": "english",
+                    }
+                }
+            ),
+            encoding="utf-8",
+        )
+        links = []
+        for index in range(6):
+            target = root / "docs/repo-harness" / f"target-{index}.md"
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(f"# Target {index}\n", encoding="utf-8")
+            links.append(f"[Target {index}](target-{index}.md)")
+        (root / "docs/repo-harness/README.md").write_text("\n".join(links), encoding="utf-8")
+        for english, spanish in (("README.md", "README.es.md"), ("REPO-HARNESS.md", "REPO-HARNESS.es.md"), ("CHANGELOG.md", "CHANGELOG.es.md")):
+            (root / english).write_text("# English\n\n<!-- doc-role:shared -->\n", encoding="utf-8")
+            if "es" in documentation_languages:
+                spanish_roles = "" if broken_spanish == "roles" else "\n<!-- doc-role:shared -->"
+                (root / spanish).write_text(f"# Espanol{spanish_roles}\n", encoding="utf-8")
+        if "es" in documentation_languages:
+            spanish_map = root / "docs/es/repo-harness/README.md"
+            spanish_map.parent.mkdir(parents=True)
+            spanish_links = [f"[Destino {index}](../../repo-harness/target-{index}.md)" for index in range(6)]
+            if broken_spanish == "link":
+                spanish_links[-1] = "[Roto](missing.md)"
+            spanish_map.write_text("\n".join(spanish_links), encoding="utf-8")
+
+    def test_checked_in_documentation_maps_skip_spanish_when_manifest_declares_english_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            repository = Path(directory)
+            self.checked_in_layout_fixture(repository, ["en"])
+            with mock.patch.dict(globals(), {"ROOT": repository / "skill/repo-harness-builder"}):
+                self.test_checked_in_documentation_maps_use_resolving_markdown_links()
+
+    def test_checked_in_root_peers_skip_spanish_when_manifest_declares_english_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            repository = Path(directory)
+            self.checked_in_layout_fixture(repository, ["en"])
+            with mock.patch.dict(globals(), {"ROOT": repository / "skill/repo-harness-builder"}):
+                self.test_checked_in_root_peers_cover_equivalent_semantic_roles()
+
+    def test_checked_in_documentation_maps_still_reject_broken_declared_spanish_peer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            repository = Path(directory)
+            self.checked_in_layout_fixture(repository, ["en", "es"], broken_spanish="link")
+            with mock.patch.dict(globals(), {"ROOT": repository / "skill/repo-harness-builder"}):
+                result = unittest.TestResult()
+                GeneratedCoreTests("test_checked_in_documentation_maps_use_resolving_markdown_links").run(result)
+            self.assertGreaterEqual(len(result.failures), 1)
+
+    def test_checked_in_root_peers_still_reject_broken_declared_spanish_roles(self):
+        with tempfile.TemporaryDirectory() as directory:
+            repository = Path(directory)
+            self.checked_in_layout_fixture(repository, ["en", "es"], broken_spanish="roles")
+            with mock.patch.dict(globals(), {"ROOT": repository / "skill/repo-harness-builder"}):
+                result = unittest.TestResult()
+                GeneratedCoreTests("test_checked_in_root_peers_cover_equivalent_semantic_roles").run(result)
+            self.assertGreaterEqual(len(result.failures), 1)
+
     def test_checked_in_documentation_maps_use_resolving_markdown_links(self):
         repository = ROOT.parents[1]
         if not (repository / "docs/repo-harness/README.md").is_file():
             self.skipTest("checked-in product documentation is outside the standalone package")
-        maps = (repository / "docs/repo-harness/README.md", repository / "docs/es/repo-harness/README.md")
+        documentation_languages, _ = TOOL.declared_languages(repository)
+        maps = [repository / "docs/repo-harness/README.md"]
+        if "es" in (documentation_languages or []):
+            maps.append(repository / "docs/es/repo-harness/README.md")
         for document in maps:
             text = document.read_text(encoding="utf-8")
             links = re.findall(r"\[[^]]+\]\(([^)#]+)(?:#[^)]+)?\)", text)
@@ -2179,6 +2248,9 @@ class GeneratedCoreTests(unittest.TestCase):
         repository = ROOT.parents[1]
         if not (repository / "README.md").is_file():
             self.skipTest("checked-in root peers are outside the standalone package")
+        documentation_languages, _ = TOOL.declared_languages(repository)
+        if "es" not in (documentation_languages or []):
+            self.skipTest("Spanish root peers are not declared")
         pairs = (("README.md", "README.es.md"), ("REPO-HARNESS.md", "REPO-HARNESS.es.md"), ("CHANGELOG.md", "CHANGELOG.es.md"))
         for english, spanish in pairs:
             english_roles = TOOL.semantic_sections(english, (repository / english).read_text(encoding="utf-8"))

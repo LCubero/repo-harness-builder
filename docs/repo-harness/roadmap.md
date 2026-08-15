@@ -251,16 +251,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 6; Judgment Day round-1 finding |
 | Priority | P2: checked-in tests fail in valid monolingual layouts |
 | Dependencies | RH-W-0003 locale discovery |
-| Status | ready |
-| Completed work | Two Spanish-assuming documentation tests are identified. |
-| Remaining work | Make tests respect declared locales and verify English-only and bilingual runs. |
+| Status | completed |
+| Completed work | Made both checked-in documentation tests consult the installed manifest through `declared_languages()`: English maps remain checked in English-only layouts, Spanish map and root-peer assertions run only when `es` is declared, and focused fixtures cover both layouts. |
+| Remaining work | none |
 | Additions | none |
 | Exclusions | No weakening of bilingual checks when Spanish is declared. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | Existing tests error instead of skipping when Spanish is not declared. |
-| Decision history | 2026-08-13: retained as a focused test-contract correction. |
-| Next advancement condition | Start with focused English-only fixtures and preserve bilingual checks where Spanish is declared. |
+| Evidence | Focused RED reproduced missing Spanish map and root-peer errors in explicit English-only fixtures; GREEN passes those fixtures while bilingual controls still fail on a broken Spanish link and missing semantic roles. The canonical suite passes 237 tests with 7 skips. |
+| Decision history | 2026-08-13: retained as a focused test-contract correction. 2026-08-14: completed with a test-only declared-locale conditional and no generator, manifest, inference, locale, or production behavior change. |
+| Next advancement condition | Reopen only if checked-in tests infer Spanish from English files, or declared bilingual layouts stop enforcing complete link and semantic-role checks. |
 
 ### RH-W-0008
 | Field | Value |
@@ -268,16 +268,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 8; approved replacement and integration gap |
 | Priority | P1: approved plans remain descriptive and cannot safely execute |
 | Dependencies | RH-W-0003 through RH-W-0007 language and section compatibility corrections |
-| Status | blocked |
+| Status | ready |
 | Completed work | Content-bound approval, preservation, changed-plan, and rollback boundaries are specified. |
 | Remaining work | Execute one approved action with digest, byte preservation, rollback boundary, and no-write preview tests. |
 | Additions | none |
 | Exclusions | No bulk upgrade engine. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | Current planner describes replacement and integration choices without an executor. |
-| Decision history | 2026-08-13: retained as the first mutation capability after prerequisite correctness. |
-| Next advancement condition | Blocker clears when RH-W-0003 through RH-W-0007 are completed or explicitly shown irrelevant. |
+| Evidence | Current planner describes replacement and integration choices without an executor. RH-W-0003 through RH-W-0007 are now completed. |
+| Decision history | 2026-08-13: retained as the first mutation capability after prerequisite correctness. 2026-08-14: moved to ready after RH-W-0006 completed the final prerequisite. |
+| Next advancement condition | Start with failing no-write preview, content-bound replacement or integration, changed-plan, byte-preservation, and rollback tests. |
 
 ### RH-W-0009
 | Field | Value |
