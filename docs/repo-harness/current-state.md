@@ -74,4 +74,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Start `RH-W-0025`, the capability-aware Gentle AI and Engram contract. Begin with failing contract tests for the four availability combinations, and treat only a `verified` probe result as authority to use a capability. `RH-W-0009`, `RH-W-0010`, and `RH-W-0019` are also ready; take one unit per branch and do not bundle them.
+Start `RH-W-0025`, the capability-aware Gentle AI and Engram contract. Begin with failing contract tests for the four availability combinations, and treat only a `verified` probe result as authority to use a capability. `RH-W-0010` and `RH-W-0019` are also ready; take one unit per branch and do not bundle them. No `P1` work remains.
