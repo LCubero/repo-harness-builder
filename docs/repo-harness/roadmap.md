@@ -24,6 +24,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0027
+| Field | Value |
+|---|---|
+| Origin | Full harness audit after RH-W-0006 found confirmed documentation drift |
+| Priority | P1: user-facing contracts and lifecycle evidence contradicted completed behavior and chronology |
+| Dependencies | none |
+| Status | completed |
+| Completed work | Corrected fixed daily skill names in both product READMEs, restored RH-W-0004 and RH-W-0005 in the Spanish changelog, removed stale RH-W-0006 next-work and RH-W-0017 ready claims, and recorded the 17 stale self-hosted generated surfaces reported by the manifest-matched owner check as RH-W-0008 evidence without changing them. |
+| Remaining work | none |
+| Additions | Added focused repository-document assertions for README naming, recent changelog parity, and completed lifecycle status. |
+| Exclusions | No generator or product behavior change, no generated self-hosted surface update, no RH-W-0008 implementation, and no change to RH-W-0026. |
+| Deferrals | none |
+| Rejections | Rejected replacing RH-W-0016's stale transient next-work sentence with another changing work ID; current state owns selected next work. |
+| Evidence | Focused tests failed against each confirmed drift before the bilingual documentation-only correction. `python -B skill/repo-harness-builder/scripts/harness_tool.py check --root . --project-name repo-harness-builder` reports drift with exactly 17 paths classified `stale` and 0 writes, and this unit changed none of them. |
+| Decision history | 2026-08-14: registered and completed as one bounded audit-correction lifecycle unit; RH-W-0026 remained reserved on its separate branch, making RH-W-0027 the next immutable ID. |
+| Next advancement condition | Reopen only if the product README naming, recent bilingual chronology, or completed lifecycle projections drift again. |
+
 ### RH-W-0016
 | Field | Value |
 |---|---|
@@ -39,7 +56,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | Rejected treating Engram or current-state.md as backlog owner. |
 | Evidence | Focused RED/GREEN lifecycle tests and full repository verification for branch `feat/pending-lifecycle`. |
 | Decision history | 2026-08-13: approved design selected roadmap ownership and lightweight records; priority override placed this foundation before old unit 3. |
-| Next advancement condition | Maintain this contract whenever any tracked reality changes; RH-W-0006 is the next product behavior. |
+| Next advancement condition | Maintain this contract whenever any tracked reality changes. |
 
 ### RH-W-0017
 | Field | Value |
@@ -275,7 +292,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Exclusions | No bulk upgrade engine. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | Current planner describes replacement and integration choices without an executor. RH-W-0003 through RH-W-0007 are now completed. |
+| Evidence | Current planner describes replacement and integration choices without an executor. RH-W-0003 through RH-W-0007 are now completed. The manifest-matched owner check reports drift with 0 writes and exactly these 17 `stale` paths: `.claude/commands/documentation.md`, `.claude/commands/repo-harness-help.md`, `.claude/commands/session-start.md`, `.claude/commands/session-stop.md`, `.claude/skills/repo-harness-documentation/SKILL.md`, `.claude/skills/repo-harness-session-start/SKILL.md`, `.claude/skills/repo-harness-session-stop/SKILL.md`, `.opencode/commands/documentation.md`, `.opencode/commands/repo-harness-help.md`, `.opencode/commands/session-start.md`, `.opencode/commands/session-stop.md`, `.opencode/skills/repo-harness-documentation/SKILL.md`, `.opencode/skills/repo-harness-session-start/SKILL.md`, `.opencode/skills/repo-harness-session-stop/SKILL.md`, `.repo-harness/skills/repo-harness-documentation/SKILL.md`, `.repo-harness/skills/repo-harness-session-start/SKILL.md`, and `.repo-harness/skills/repo-harness-session-stop/SKILL.md`. RH-W-0027 changed none of them. |
 | Decision history | 2026-08-13: retained as the first mutation capability after prerequisite correctness. 2026-08-14: moved to ready after RH-W-0006 completed the final prerequisite. |
 | Next advancement condition | Start with failing no-write preview, content-bound replacement or integration, changed-plan, byte-preservation, and rollback tests. |
 
@@ -457,12 +474,13 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 - Issue numbers remain origins only. They are never lifecycle IDs or presentation order.
 - Existing Roadmap units retain IDs `RH-W-0001` through `RH-W-0015`; issue #7 is `RH-W-0016` and its P0 priority override does not renumber them.
-- The user-reported session-stop language leak is `RH-W-0017`; it is ready independently and does not displace the already selected RH-W-0004 product unit.
+- The user-reported session-stop language leak is `RH-W-0017`; it completed independently without displacing the product work selected at the time.
 - The unattended internal-maintenance idea is `RH-W-0018`; it remains deferred until its two consent scopes and safety tests are designed, and it does not change the interactive default.
 - The wrapper provenance cost is `RH-W-0019`, the product README drift is `RH-W-0020`, and the fixed `repo-harness-` skill prefix is `RH-W-0021`. `RH-W-0020` was documentation-only, `RH-W-0019` is ready, and `RH-W-0021` completed through the bounded RH-W-0024 action.
 - The documentation relationship map is `RH-W-0022` and stays `proposed`, not `ready`. Its scope boundary is the entire risk: declared documentation edges are the request, a code or dependency graph is not, and CodeGraph already owns code structure.
 - The bounded generated-output migration is `RH-W-0024`, the completed issue #16 prerequisite slice of RH-W-0008. It unblocks the safe mechanism required by RH-W-0021 without completing the rename itself.
 - The generic capability-aware Gentle AI and Engram coordination contract is `RH-W-0025` at `P2` and is blocked on `RH-W-0008`, which owns content-bound replacement and integration for existing generated outputs. It keeps repository authority primary, composes optional owners without a third state machine, and remains separate from but related to `RH-W-0022`.
+- The full harness audit correction is `RH-W-0027`; it completed as documentation and test work while leaving all 17 stale self-hosted generated surfaces unchanged for RH-W-0008.
 - English is mandatory as the primary documentation locale, and the reason is now a standing decision rather than a bare `require()`. See [decisions.md](decisions.md).
 - A speculative cross-repository name collision was raised against `RH-W-0021` and withdrawn. Generated skills are repository-scoped and there is no global installation, so the risk was a future problem that is not real. Solve the problem in front of you.
 - Avoided choosing MCP, CLI, binary, third-party, migration-framework, general README rewrite, bulk upgrade, provider mutation, runtime reload, or universal human-doc cap without evidence.

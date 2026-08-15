@@ -1551,10 +1551,99 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(fact, roadmap)
         self.assertLess(roadmap.index("### RH-W-0016"), roadmap.index("### RH-W-0003"))
-        self.assertIn("RH-W-0006 is the next product behavior", roadmap)
-        self.assertNotIn("RH-W-0005 is the next product behavior", roadmap)
-        self.assertIn("RH-W-0006 sigue como proximo comportamiento", spanish_roadmap)
-        self.assertNotIn("RH-W-0005 sigue como proximo comportamiento", spanish_roadmap)
+
+    def test_repository_product_readmes_use_fixed_daily_skill_names(self):
+        repository = ROOT.parents[1]
+        if not (repository / "README.md").is_file():
+            self.skipTest("repository documentation fixture is outside the portable package")
+        readmes = (
+            (repository / "README.md").read_text(encoding="utf-8"),
+            (repository / "README.es.md").read_text(encoding="utf-8"),
+        )
+        for readme in readmes:
+            with self.subTest(readme=readme[:20]):
+                self.assertIn("/repo-harness-builder", readme)
+                for skill_name in (
+                    "repo-harness-session-start",
+                    "repo-harness-session-stop",
+                    "repo-harness-documentation",
+                ):
+                    self.assertIn(skill_name, readme)
+                self.assertNotRegex(readme, r"<(?:project|proyecto)>-(?:session-start|session-stop|documentation)")
+                self.assertNotRegex(readme, r"my-project-(?:session-start|session-stop|documentation)")
+
+    def test_recent_changelog_peers_cover_language_contract_completion_chain(self):
+        repository = ROOT.parents[1]
+        if not (repository / "CHANGELOG.md").is_file():
+            self.skipTest("repository documentation fixture is outside the portable package")
+        changelogs = (
+            (repository / "CHANGELOG.md").read_text(encoding="utf-8"),
+            (repository / "CHANGELOG.es.md").read_text(encoding="utf-8"),
+        )
+        for changelog in changelogs:
+            for record_id in ("RH-W-0004", "RH-W-0005", "RH-W-0006"):
+                with self.subTest(record_id=record_id, changelog=changelog[:20]):
+                    self.assertEqual(changelog.count(record_id), 1)
+
+    def test_completed_records_are_not_current_next_work_or_ready_decisions(self):
+        repository = ROOT.parents[1]
+        if not (repository / "docs/repo-harness/roadmap.md").is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        for relative in ("docs/repo-harness/roadmap.md", "docs/es/repo-harness/roadmap.md"):
+            roadmap = (repository / relative).read_text(encoding="utf-8")
+            completed = {
+                record_id
+                for record_id, body in re.findall(r"^### (RH-W-\d{4})\n(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S)
+                if re.search(r"(?:\| Status \| completed \||Estado: `completed`)", body)
+            }
+            for record_id in completed:
+                with self.subTest(relative=relative, record_id=record_id):
+                    self.assertNotRegex(roadmap, rf"{record_id} is the next product behavior")
+                    self.assertNotRegex(roadmap, rf"{record_id} sigue como proximo comportamiento")
+            decision_log = roadmap.split("## Decision Log", 1)[-1] if "## Decision Log" in roadmap else roadmap.split("## Registro de decisiones", 1)[-1]
+            self.assertNotRegex(decision_log, r"RH-W-0017[^\n]*(?:is ready|esta lista)")
+
+    def test_rh_w_0008_records_exact_manifest_matched_stale_paths(self):
+        repository = ROOT.parents[1]
+        roadmap_path = repository / "docs/repo-harness/roadmap.md"
+        if not roadmap_path.is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        result = subprocess.run(
+            ["python", "-B", str(SCRIPT), "check", "--root", ".", "--project-name", "repo-harness-builder"],
+            cwd=repository,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        payload = json.loads(result.stdout)
+        stale_paths = {item["path"] for item in payload["files"] if item["state"] == "stale"}
+        expected = {
+            ".claude/commands/documentation.md",
+            ".claude/commands/repo-harness-help.md",
+            ".claude/commands/session-start.md",
+            ".claude/commands/session-stop.md",
+            ".claude/skills/repo-harness-documentation/SKILL.md",
+            ".claude/skills/repo-harness-session-start/SKILL.md",
+            ".claude/skills/repo-harness-session-stop/SKILL.md",
+            ".opencode/commands/documentation.md",
+            ".opencode/commands/repo-harness-help.md",
+            ".opencode/commands/session-start.md",
+            ".opencode/commands/session-stop.md",
+            ".opencode/skills/repo-harness-documentation/SKILL.md",
+            ".opencode/skills/repo-harness-session-start/SKILL.md",
+            ".opencode/skills/repo-harness-session-stop/SKILL.md",
+            ".repo-harness/skills/repo-harness-documentation/SKILL.md",
+            ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+        }
+        self.assertEqual(payload["status"], "drift")
+        self.assertEqual(payload["writes"], 0)
+        self.assertEqual(stale_paths, expected)
+        roadmap = roadmap_path.read_text(encoding="utf-8")
+        rh_w_0008 = roadmap.split("### RH-W-0008", 1)[1].split("### RH-W-0009", 1)[0]
+        self.assertNotIn("21", rh_w_0008)
+        for path in expected:
+            self.assertIn(path, rh_w_0008)
 
     def test_runtime_projections_use_the_current_canonical_contract(self):
         outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])
