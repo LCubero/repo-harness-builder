@@ -4,6 +4,8 @@
 
 ## 2026-08-15
 
+- Se registro como decision permanente la convencion de borrar ramas mergeadas y se activo `deleteBranchOnMerge`; luego se borraron 16 ramas mergeadas obsoletas y la redundante `docs/record-optional-codegraph`. Los conjuntos de ramas local y remota son ahora solo `main`, y cada pull request mergeada conserva su nombre de rama, diff, commits y conversacion.
+
 - Se porto a `main` el registro `RH-W-0026` de CodeGraph opcional, cerrando el hueco de IDs entre `RH-W-0025` y `RH-W-0027`. El registro se escribio de nuevo en vez de mergearse: su rama estaba 13 commits atras, generaba conflictos en ambos roadmaps y su contexto de `current-state` seguia describiendo `RH-W-0008` y `RH-W-0025` como bloqueados por prerrequisito, algo que el merge habria reintroducido. El estado sigue siendo `deferred` y su condicion de avance no cambia.
 
 - Se devolvio `RH-W-0025` a `ready` y se resolvio la pregunta de deteccion que su investigacion habia dejado abierta con confianza media. `gentle-ai version` es una superficie anunciada de solo lectura que devuelve `gentle-ai <version>` con salida 0 y se resuelve por PATH, por lo que es independiente del layout de instalacion. Solo un resultado `verified` autoriza usar la capacidad; la sola presencia en PATH sigue siendo `found_on_path` y no autoriza nada. Se rechazo partir la unidad en una mitad de Engram y una mitad de Gentle AI bloqueada, que habria fragmentado la matriz de cuatro combinaciones.
