@@ -55,6 +55,22 @@ SPDX_EXPRESSION = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+:() -]*")
 DEFAULT_REPORT_LANGUAGE = "english"
 PRIMARY_DOCUMENTATION_LANGUAGE = "en"
 DOCUMENTATION_LANGUAGES = {"en", "es"}
+CONVERSATION_LANGUAGES = {"english", "espanol"}
+MACHINE_VALUE_KINDS = {
+    "ahead-count",
+    "approval-token",
+    "argument",
+    "branch",
+    "command",
+    "commit-message",
+    "digest",
+    "identifier",
+    "invocation",
+    "path",
+    "permission-scope",
+    "remote",
+    "upstream",
+}
 APPROVAL_DOMAINS = {
     "english": {
         "approve": "APPROVE",
@@ -117,6 +133,86 @@ def approval_granted(answer: str, report_language: str = DEFAULT_REPORT_LANGUAGE
     domain = approval_domain(report_language)
     require(answer in (domain["approve"], domain["deny"]), domain["invalid"])
     return answer == domain["approve"]
+
+
+def validate_conversation_language(value: str, field: str) -> str:
+    """Validate one typed conversation-language value through its owning field."""
+    require(value in CONVERSATION_LANGUAGES, f"{field}: unsupported conversation language: {value}")
+    return value
+
+
+def resolve_conversation_language(
+    *,
+    verified_human_instruction: str | None = None,
+    persisted_preference: str | None = None,
+    established_session_language: str | None = None,
+    manifest_fallback: str | None = None,
+    opaque_context: Sequence[str] = (),
+    provenance_aware: bool,
+) -> dict[str, str | None]:
+    """Resolve typed language evidence without inspecting arbitrary context text."""
+    del opaque_context
+    if verified_human_instruction is not None:
+        language = validate_conversation_language(
+            verified_human_instruction, "verified human language instruction"
+        )
+        return {
+            "language": language,
+            "source": "verified-human-instruction",
+            "persistedPreference": language,
+            "switchDetection": "verified" if provenance_aware else "unavailable",
+        }
+    if persisted_preference is not None:
+        language = validate_conversation_language(persisted_preference, "persisted conversation preference")
+        return {
+            "language": language,
+            "source": "persisted-explicit-preference",
+            "persistedPreference": language,
+            "switchDetection": "verified" if provenance_aware else "unavailable",
+        }
+    if provenance_aware and established_session_language is not None:
+        language = validate_conversation_language(
+            established_session_language, "established session human language"
+        )
+        return {
+            "language": language,
+            "source": "established-session-human-language",
+            "persistedPreference": None,
+            "switchDetection": "verified",
+        }
+    if manifest_fallback is not None:
+        language = validate_conversation_language(manifest_fallback, "manifest language.conversation")
+        return {
+            "language": language,
+            "source": "validated-manifest-fallback",
+            "persistedPreference": None,
+            "switchDetection": "verified" if provenance_aware else "unavailable",
+        }
+    return {
+        "language": DEFAULT_REPORT_LANGUAGE,
+        "source": "deterministic-english-fallback",
+        "persistedPreference": None,
+        "switchDetection": "verified" if provenance_aware else "unavailable",
+    }
+
+
+def render_machine_value(kind: str, value: str) -> str:
+    """Render a typed machine value as exact non-translatable code bytes."""
+    require(kind in MACHINE_VALUE_KINDS, f"unsupported machine value kind: {kind}")
+    require("`" not in value and "\n" not in value and "\r" not in value, f"unsafe {kind} machine value")
+    return f"`{value}`"
+
+
+def conversation_language_contract(provenance_aware: bool = True) -> str:
+    """Render the concise language principle shared by every conversation surface."""
+    principle = (
+        "Follow a current verified human language instruction; otherwise preserve an explicit persisted preference. "
+        "Without one, use verified session language, validated manifest fallback, then deterministic English. "
+        "Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes."
+    )
+    if provenance_aware:
+        return principle
+    return principle + " This flattened host cannot reliably detect language switches; preserve persisted preference."
 
 
 def localized_documentation(
@@ -486,6 +582,7 @@ def session_start_skill(
         else "current documentation, source, tests, Git state or history, and Engram when available"
     )
     lifecycle_mirror = "repository continuity record keyed by `RH-W-####`" if standalone else "Engram topic `work/RH-W-####`"
+    language_contract = conversation_language_contract(False)
     return frontmatter(name, description, source, license_id) + f"""<!-- {GENERATED_MARKER}; source: {source} -->
 ## Activation Contract
 
@@ -504,7 +601,8 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 - Inspect repository state read-only. Do not pull, commit, push, publish, or mutate by default.
 {continuity.rstrip()}
 - Report discrepancies and uncertainty instead of inventing certainty.
-- Answer in the conversation language recorded in `.repo-harness/manifest.json`, and in its absence in the language the user is writing in. A live conversation is stronger evidence than a stored default, so the language the user is actually writing in wins over the recorded value. Skills, contracts, documentation, and every other generated artifact stay in English regardless of that choice.
+- Conversation language: {language_contract}
+- Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
 - Keep ordinary continuation questions conversational and low-friction. Do not use the builder's exact digest-bound approval vocabulary.
 - Resolve verifiable facts from applicable evidence without asking; ask only when a material choice, authority boundary, unresolved contradiction, or meaningful risk genuinely requires the human; otherwise suggest the next useful action and continue within the user's requested scope.
 - Ask for explicit conversational approval before any external mutation.
@@ -541,7 +639,7 @@ Outcomes are scoped. Startup uses `ready`, `paused`, `blocked`, `failed`, or `de
 | detached HEAD or unborn branch | Mark the optional Git branch `blocked`, keep startup `ready`, and give actionable remediation: check out or create the intended branch locally before synchronization. |
 | Missing upstream, missing upstream remote, or missing upstream branch | Mark the optional Git branch `blocked`, keep startup `ready`, and name the exact local configuration or remote branch evidence that is missing. Do not guess a target. |
 | multiple remotes make the target ambiguous | Mark the optional Git branch `paused`, keep startup `ready`, show the candidates, and ask which remote is intended as the final user-facing line. |
-| Clean Git with a usable upstream | Show branch, upstream, clean status, remote URL host and scheme, then end with: `May I run `git fetch <remote> <branch>` to check remote state?` Substitute the exact values and keep network approval mandatory. |
+| Clean Git with a usable upstream | Show branch, upstream, clean status, remote URL host and scheme, then ask one localized approval question using semantic fields `command`, `remote`, `branch`, and `permission scope`. Render their exact values as non-translatable code and keep network approval mandatory. |
 | Equal | Report synchronization healthy and continue. |
 | ahead-only | Report synchronization healthy, including exact local unpushed commit evidence. |
 | behind-only | After approval, use `git fetch`, compare ahead and behind, then use fast-forward-only integration. |
@@ -588,11 +686,8 @@ def session_stop_skill(
     )
     output_continuity = "continuity result" if standalone else "memory result"
     lifecycle_mirror = "repository continuity record keyed by `RH-W-####`" if standalone else "Engram topic `work/RH-W-####`"
-    commit_only_question = (
-        "¿Puedo agregar exactamente estas rutas al área de preparación y crear este commit propuesto: <message>?"
-        if conversation_language == "espanol"
-        else "May I stage exactly these paths and create this proposed commit: <message>?"
-    )
+    del conversation_language
+    language_contract = conversation_language_contract(False)
     return frontmatter(name, description, source, license_id) + f"""<!-- {GENERATED_MARKER}; source: {source} -->
 ## Activation Contract
 
@@ -602,7 +697,8 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 
 - Load and follow the canonical rulebook at `{rulebook_path}`, including its execution discipline.
 - Summarize only work supported by current repository evidence and verified command results.
-- Answer in the conversation language recorded in `.repo-harness/manifest.json`, and in its absence in the language the user is writing in. A live conversation is stronger evidence than a stored default, so the language the user is actually writing in wins over the recorded value. Skills, contracts, documentation, and every other generated artifact stay in English regardless of that choice.
+- Conversation language: {language_contract}
+- Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
 - Validate every referenced repository path and avoid stale claims.
 - Propose updates to `{rulebook_path}` and canonical documentation, but write them only after explicit approval.
 - Keep the rulebook inside its budget. Move durable detail down into its owned deeper document.
@@ -636,8 +732,8 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 6. A session summary saved before an approved mutation is provisional. Save or update a final session summary that includes the approved mutation only after refreshed evidence and verification.
 7. {save_step.split('. ', 1)[1]}
 8. Only after documentation and continuity are complete, classify staged paths, unstaged tracked paths, untracked paths, renamed paths, deleted paths, unrelated pre-existing paths, excluded private, tool, and cache paths, and sensitive-looking paths. Perform mandatory per-path sensitive screening before any proposed staging. Filename screening is a warning baseline, not proof of safety. A sensitive candidate must pause before any staging.
-9. For each proposed reviewable work-unit grouping show exact paths, why they belong together, a proposed Conventional Commit message, explicit exclusions, and already-staged paths. Record pre-existing staged paths before staging and keep them outside the proposed work unit. Ask conversationally for the intended outcome. For commit-only, the final user-facing line must ask: `{commit_only_question}` For commit and push, include the exact upstream and ask once for that complete bounded outcome. Resume the same session-stop invocation after approval and stage only those paths. Immediately before commit, perform one read-only staged-scope check comparing workflow-staged path names and status/modes with the approved scope and confirming that no excluded, sensitive, unrelated, extra, or missing path entered the workflow scope. If it matches, continue silently under existing consent. If it differs or a hook changed content or mode unexpectedly, invalidate consent, report the concise difference, and ask one new approval. Unstage only paths staged by this workflow when selective unstage is proven safe and supported without disturbing pre-existing staged work; otherwise stop, leave the index unchanged, and provide remediation evidence. Then create the commit exactly once, refresh status after the commit, and only then evaluate push under the same consent scope.
-10. Existing unpushed commits trigger a push offer without an empty commit. Commit approval never implies push. If the local branch is ahead and push preflight is safe, show the upstream and ahead count, then end with: `May I push these existing local commits to <upstream>?`
+9. For each proposed reviewable work-unit grouping show exact paths, why they belong together, a proposed Conventional Commit message, explicit exclusions, and already-staged paths. Record pre-existing staged paths before staging and keep them outside the proposed work unit. Ask conversationally for the intended outcome. For commit-only, ask one localized question using semantic fields `path`, `commit message`, and `permission scope`, with every exact value rendered as non-translatable code. For commit and push, also include semantic fields `upstream`, `remote`, and `branch`, then ask once for that complete bounded outcome. Resume the same session-stop invocation after approval and stage only those paths. Immediately before commit, perform one read-only staged-scope check comparing workflow-staged path names and status/modes with the approved scope and confirming that no excluded, sensitive, unrelated, extra, or missing path entered the workflow scope. If it matches, continue silently under existing consent. If it differs or a hook changed content or mode unexpectedly, invalidate consent, report the concise difference, and ask one new approval. Unstage only paths staged by this workflow when selective unstage is proven safe and supported without disturbing pre-existing staged work; otherwise stop, leave the index unchanged, and provide remediation evidence. Then create the commit exactly once, refresh status after the commit, and only then evaluate push under the same consent scope.
+10. Existing unpushed commits trigger a push offer without an empty commit. Commit approval never implies push. If the local branch is ahead and push preflight is safe, show semantic fields `upstream`, `ahead count`, and `permission scope`, render exact values as non-translatable code, and ask one localized push question.
 11. A detached HEAD, unborn branch, no upstream, missing remote, missing remote branch, or ahead-behind divergence blocks only the optional push branch and must include actionable safely-local evidence. Pause and invalidate consent for changed path scope or commit message; a newly detected sensitive or unrelated file; remote advanced or integration needed; missing or changed upstream or destination; authentication or provider ambiguity requiring a different credential path; destructive action, force, merge, rebase, reset, conflict resolution; verification failure; or commit hooks mutate content.
 12. Inspect the upstream remote URL, host, and scheme read-only. Native Git is the core transport. Recognized provider tooling is only an alternate credential path if installed and covered by unchanged consent. Before push, fetch and compare under commit-and-push or push consent. If the remote is ahead or the branch has diverged, stop the optional push branch. Record each authorized substep and its evidence without turning substeps into questions. For every authentication, transport, comparison, fetch, commit, or push failure, preserve the attempted command, exit status, stderr, and safely-local state. Make at most 2 distinct transport attempts, then stop without indefinite retries. After an authentication or transport failure, check read-only whether an alternate credential path is actually available and name it in remediation instead of stopping with none: prefer installed and authenticated provider tooling used as a single-command credential helper that changes no global configuration, and when the only remaining path needs a passphrase or secret the agent cannot supply, hand the exact command to the human to run.
 
@@ -1360,9 +1456,10 @@ def help_wrapper(
         if localized_documentation(conversation_language, documentation_languages)
         else "docs/repo-harness/usage.md"
     )
+    language_contract = conversation_language_contract(False)
     return (
         f"<!-- {GENERATED_MARKER}; source: {source} -->\n"
-        f"Read `{guide}` and present concise help in its language. Work read-only: do not modify files, load skills, or invoke commands.\n"
+        f"Read `{guide}` as the available guide, present concise help, and answer in the resolved conversation language. {language_contract} Work read-only: do not modify files, load skills, or invoke commands.\n"
         "Do not duplicate the guide content. If the guide is missing, report that the harness is incomplete or outdated and recommend running the builder in read-only inspection mode.\n"
     )
 
@@ -1596,8 +1693,9 @@ def render_with_skill_mapping(
     require(len(set(skill_mapping.values())) == len(skill_mapping), "skill mapping contains duplicate skill names")
     approval_domain(report_language)
     languages = normalize_documentation_languages(documentation_languages)
-    conversation = conversation_language or DEFAULT_REPORT_LANGUAGE
-    approval_domain(conversation)
+    conversation = validate_conversation_language(
+        conversation_language or DEFAULT_REPORT_LANGUAGE, "manifest language.conversation"
+    )
     selected = sorted(set(runtimes))
     require(set(selected) <= RUNTIMES, f"unsupported runtime: {sorted(set(selected) - RUNTIMES)}")
     rulebook_path = RULEBOOK_PATH

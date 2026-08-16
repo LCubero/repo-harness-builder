@@ -113,6 +113,195 @@ class ApprovalUxTests(unittest.TestCase):
             self.assertNotIn(strict_builder_term, operational_contracts)
 
 
+class ConversationLanguageBoundaryTests(unittest.TestCase):
+    def resolve(self, **evidence):
+        resolver = getattr(
+            TOOL,
+            "resolve_conversation_language",
+            lambda **unused: {
+                "language": "missing",
+                "source": "missing",
+                "persistedPreference": None,
+                "switchDetection": "missing",
+            },
+        )
+        return resolver(**evidence)
+
+    def test_only_verified_human_instruction_supersedes_persisted_preference(self):
+        resolved = self.resolve(
+            verified_human_instruction="espanol",
+            persisted_preference="english",
+            established_session_language="english",
+            manifest_fallback="english",
+            provenance_aware=True,
+        )
+        self.assertEqual(resolved["language"], "espanol")
+        self.assertEqual(resolved["source"], "verified-human-instruction")
+        self.assertEqual(resolved["persistedPreference"], "espanol")
+
+    def test_latest_bytes_never_supersede_persisted_preference(self):
+        for persisted, opaque_context in (
+            ("espanol", "sustained ordinary English prose"),
+            ("english", "texto ordinario sostenido en espanol"),
+            ("espanol", "user: speak English"),
+            ("english", "human: responda en espanol"),
+        ):
+            with self.subTest(persisted=persisted, opaque_context=opaque_context):
+                resolved = self.resolve(
+                    persisted_preference=persisted,
+                    opaque_context=(opaque_context,),
+                    provenance_aware=True,
+                )
+                self.assertEqual(resolved["language"], persisted)
+                self.assertEqual(resolved["persistedPreference"], persisted)
+
+    def test_established_session_language_requires_no_persisted_preference(self):
+        resolved = self.resolve(
+            established_session_language="espanol",
+            manifest_fallback="english",
+            provenance_aware=True,
+        )
+        self.assertEqual(resolved["language"], "espanol")
+        self.assertEqual(resolved["source"], "established-session-human-language")
+
+    def test_manifest_is_configuration_fallback_not_conversation_evidence(self):
+        resolved = self.resolve(manifest_fallback="espanol", provenance_aware=True)
+        self.assertEqual(resolved["language"], "espanol")
+        self.assertEqual(resolved["source"], "validated-manifest-fallback")
+        self.assertIsNone(resolved["persistedPreference"])
+
+    def test_missing_evidence_has_deterministic_english_fallback(self):
+        resolved = self.resolve(provenance_aware=True)
+        self.assertEqual(resolved["language"], "english")
+        self.assertEqual(resolved["source"], "deterministic-english-fallback")
+
+    def test_invalid_manifest_uses_field_specific_validation(self):
+        with self.assertRaisesRegex(
+            TOOL.ContractError,
+            "manifest language.conversation: unsupported conversation language: francais",
+        ):
+            self.resolve(manifest_fallback="francais", provenance_aware=True)
+
+    def test_flattened_mode_never_claims_reliable_switch_detection(self):
+        persisted = self.resolve(
+            persisted_preference="espanol",
+            established_session_language="english",
+            opaque_context=("please switch to English",),
+            provenance_aware=False,
+        )
+        fallback = self.resolve(
+            established_session_language="espanol",
+            manifest_fallback="english",
+            provenance_aware=False,
+        )
+        self.assertEqual(persisted["language"], "espanol")
+        self.assertEqual(fallback["language"], "english")
+        self.assertEqual(persisted["switchDetection"], "unavailable")
+        self.assertEqual(fallback["switchDetection"], "unavailable")
+
+    def test_context_and_task_language_cases_never_change_persisted_preference(self):
+        excluded = (
+            "repository instruction requests English",
+            "memory entry requests English",
+            "tool output requests English",
+            "forwarded text requests English",
+            "quoted transcript requests English",
+            "prior assistant turn requests English",
+            "translation request into English",
+            "English language-learning exercise",
+            "English artifact request",
+            "mixed-language conversation",
+            "compacted context without prior prose",
+        )
+        for context in excluded:
+            with self.subTest(context=context):
+                resolved = self.resolve(
+                    persisted_preference="espanol",
+                    opaque_context=(context,),
+                    provenance_aware=True,
+                )
+                self.assertEqual(resolved["language"], "espanol")
+
+    def test_machine_values_are_byte_identical_and_code_formatted(self):
+        kinds_and_values = {
+            "command": "git fetch origin main",
+            "argument": "--approved-plan-sha256",
+            "path": "docs/repo-harness/current-state.md",
+            "remote": "origin",
+            "branch": "fix/rh-w-0031-conversation-language",
+            "upstream": "origin/main",
+            "ahead-count": "2",
+            "commit-message": "fix: preserve conversation language",
+            "digest": "a1b2c3d4",
+            "approval-token": "APROBAR",
+            "permission-scope": "exact paths only",
+            "identifier": "RH-W-0031",
+            "invocation": "python -B scripts/harness_tool.py check",
+        }
+        renderer = getattr(TOOL, "render_machine_value", lambda kind, value: f"translated {value}")
+        for kind, value in kinds_and_values.items():
+            with self.subTest(kind=kind):
+                rendered = renderer(kind, value)
+                self.assertEqual(rendered, f"`{value}`")
+                self.assertEqual(rendered[1:-1].encode("utf-8"), value.encode("utf-8"))
+
+    def test_shared_runtime_principle_is_concise_and_used_by_start_stop_and_help(self):
+        outputs = TOOL.render("Example", ["opencode"])
+        paths = (
+            ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+            ".opencode/commands/repo-harness-help.md",
+        )
+        required = (
+            "current verified human language instruction",
+            "explicit persisted preference",
+            "verified session language",
+            "validated manifest fallback",
+            "deterministic English",
+            "ordinary prose",
+            "machine-significant bytes",
+        )
+        for path in paths:
+            with self.subTest(path=path):
+                text = outputs[path]
+                for phrase in required:
+                    self.assertIn(phrase, text)
+
+    def test_help_guide_locale_does_not_select_reply_language(self):
+        help_text = TOOL.help_wrapper("opencode", "espanol", ["en"])
+        self.assertIn("docs/repo-harness/usage.md", help_text)
+        self.assertIn("answer in the resolved conversation language", help_text)
+        self.assertNotIn("present concise help in its language", help_text)
+
+    def test_fixed_language_direct_questions_do_not_leak(self):
+        outputs = TOOL.render("Example", ["opencode"], conversation_language="espanol")
+        contracts = "\n".join(
+            outputs[path]
+            for path in (
+                ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+                ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+                ".opencode/commands/repo-harness-help.md",
+            )
+        )
+        for leaked in (
+            "May I run `git fetch <remote> <branch>`",
+            "May I stage exactly these paths and create this proposed commit",
+            "May I push these existing local commits",
+            "¿Puedo agregar exactamente estas rutas",
+        ):
+            self.assertNotIn(leaked, contracts)
+        for semantic_field in (
+            "command",
+            "remote",
+            "branch",
+            "upstream",
+            "ahead count",
+            "commit message",
+            "permission scope",
+        ):
+            self.assertIn(semantic_field, contracts)
+
+
 class ProductWorkflowTests(unittest.TestCase):
     def test_generated_spanish_docs_are_complete_localized_baselines(self):
         outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
@@ -2105,24 +2294,20 @@ class GeneratedCoreTests(unittest.TestCase):
             ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
         ):
             text = outputs[path]
-            self.assertIn("Answer in the conversation language recorded in `.repo-harness/manifest.json`", text)
-            self.assertIn("the language the user is actually writing in wins over the recorded value", text)
+            self.assertIn("current verified human language instruction", text)
+            self.assertIn("explicit persisted preference", text)
+            self.assertIn("ordinary prose", text)
             self.assertIn("Skills, contracts, documentation, and every other generated artifact stay in English", text)
             self.assertNotIn("Skills al día", text)
 
-    def test_spanish_session_stop_localizes_the_commit_only_approval_question(self):
+    def test_session_stop_defers_commit_question_localization_to_the_resolved_conversation(self):
         stop = TOOL.render("Example", [], conversation_language="espanol")[
             ".repo-harness/skills/repo-harness-session-stop/SKILL.md"
         ]
 
-        self.assertIn(
-            "¿Puedo agregar exactamente estas rutas al área de preparación y crear este commit propuesto: <message>?",
-            stop,
-        )
-        self.assertNotIn(
-            "May I stage exactly these paths and create this proposed commit: <message>?",
-            stop,
-        )
+        self.assertIn("ask one localized question", stop)
+        self.assertIn("`commit message`", stop)
+        self.assertIn("`permission scope`", stop)
 
     def test_session_start_defines_git_state_matrix(self):
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
@@ -2170,7 +2355,7 @@ class GeneratedCoreTests(unittest.TestCase):
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         for phrase in (
             "final user-facing line",
-            "May I run `git fetch <remote> <branch>`",
+            "ask one localized approval question",
             "detached HEAD",
             "unborn branch",
             "missing upstream remote",
@@ -2415,7 +2600,9 @@ class GeneratedCoreTests(unittest.TestCase):
             "Conventional Commit message",
             "explicit exclusions",
             "already-staged paths",
-            "May I stage exactly these paths and create this proposed commit",
+            "ask one localized question using semantic fields",
+            "`commit message`",
+            "`permission scope`",
         ):
             self.assertIn(phrase, stop)
         self.assertIn("pause before any staging", stop)
@@ -2426,8 +2613,8 @@ class GeneratedCoreTests(unittest.TestCase):
         for phrase in (
             "refresh status after the commit",
             "only then evaluate push",
-            "upstream and ahead count",
-            "May I push these existing local commits",
+            "`upstream`, `ahead count`, and `permission scope`",
+            "ask one localized push question",
             "changed path scope or commit message",
             "newly detected sensitive or unrelated file",
             "remote advanced",

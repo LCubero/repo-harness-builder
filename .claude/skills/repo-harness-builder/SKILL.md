@@ -15,7 +15,7 @@ The exact approval UI and strict builder rules exist only during an explicitly a
 
 Build or inspect root `REPO-HARNESS.md`, durable documentation, operational skills, and selected-runtime wrappers. Default integrated mode requires Gentle AI and Engram. Use `--standalone` for repository-only continuity. With no operation, check read-only and report gaps.
 
-An optional argument sets the report language to `español` or `english`; otherwise follow runtime preference, then the language the user is writing in. Resolve the conversation language and documentation languages independently during the interview.
+An optional argument sets the report language to `español` or `english`; otherwise follow runtime preference, then the language the user is writing in. Resolve report, conversation, documentation, and artifact language independently. A persisted explicit conversation preference changes only through a later verified explicit human instruction.
 
 ## Hard Rules
 
@@ -34,7 +34,7 @@ An optional argument sets the report language to `español` or `english`; otherw
 - Never perform Git initialization, provider, backup, publication, or specialized methodology behavior automatically.
 - Treat Git initialization and provider publication as separate approval boundaries. Publication visibility is another explicit choice.
 - Ask one blocking decision per turn. Localize user reports and bilingual documentation peers; keep generated technical contracts in English.
-- Declare the documentation locales. English is the default and the primary locale and is always generated complete; any additional locale is generated complete only when it is declared. Route readers to `README.md` and `docs/repo-harness/usage.md`, and to `README.es.md` and `docs/es/repo-harness/usage.md` only when Spanish is a declared documentation locale and the conversation language is Spanish. Never name a document the render does not create.
+- Declare the documentation locales. English is the default and the primary locale and is always generated complete; any additional locale is generated complete only when it is declared. Guide locale selects an available reading surface only and never determines reply language. Route readers to `README.md` and `docs/repo-harness/usage.md`, and to `README.es.md` and `docs/es/repo-harness/usage.md` only when Spanish is declared and selected as the reader surface. Never name a document the render does not create.
 - Keep operational truth single-owned in `REPO-HARNESS.md`, `CHANGELOG.md`, and English durable state owners. Spanish peers are complete localized presentations, not independent factual owners.
 - Treat reciprocal README selectors as one atomic integration. When an existing `README.md` lacks the reciprocal link, append only the exact selector block through the content-bound plan and create the peer in the same apply. If that append is not possible, classify `README.es.md` as blocked. Never create a one-way peer or claim bilingual completeness.
 - Validate localized human-owned documents with semantic roles plus proportional locale baselines for required content and known cross-language leakage. These checks detect incompleteness; they do not claim automated proof of translation equivalence.

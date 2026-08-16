@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-15
 
+- Completed `RH-W-0031`: added typed provenance-aware conversation-language precedence, conservative flattened-host behavior, validated manifest and English fallbacks, independent help guide locale, fixed-language leakage removal, and byte-preserving machine-value isolation. Applied corrected explicit-dimension digest `dff015e12022536ee22060603aece83ce8c5a413aac1c092e4fff98bb086136e` to exactly 13 generated paths; the explicit second preview had zero actions and all canonical, projected, checker, hash, link, diff, character, and path checks passed.
 - Completed `RH-W-0009`: an existing `README.md` without a reciprocal `README.es.md` link now receives one bounded append of the exact selector block through the content-bound executor, with matching current and result digests, and the Spanish peer is created in the same apply. The append preserves every existing byte and the file's LF or CRLF convention and adds nothing else. Blocking remains only when the existing README is not a regular file, where the append cannot be verified. Declared bilingual repositories are no longer left permanently one-sided.
 
 - Recorded the merged-branch deletion convention as a standing decision and enabled `deleteBranchOnMerge`, then deleted 16 stale merged branches and the redundant `docs/record-optional-codegraph`. Local and remote branch sets are now `main` alone, and every merged pull request retains its branch name, diff, commits, and conversation.

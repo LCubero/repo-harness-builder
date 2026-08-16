@@ -29,7 +29,8 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - If Engram is unavailable or recovery fails, surface the failure and must not claim successful continuity.
 - Report discrepancies and uncertainty instead of inventing certainty.
-- Answer in the conversation language recorded in `.repo-harness/manifest.json`, and in its absence in the language the user is writing in. A live conversation is stronger evidence than a stored default, so the language the user is actually writing in wins over the recorded value. Skills, contracts, documentation, and every other generated artifact stay in English regardless of that choice.
+- Conversation language: Follow a current verified human language instruction; otherwise preserve an explicit persisted preference. Without one, use verified session language, validated manifest fallback, then deterministic English. Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes. This flattened host cannot reliably detect language switches; preserve persisted preference.
+- Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
 - Keep ordinary continuation questions conversational and low-friction. Do not use the builder's exact digest-bound approval vocabulary.
 - Resolve verifiable facts from applicable evidence without asking; ask only when a material choice, authority boundary, unresolved contradiction, or meaningful risk genuinely requires the human; otherwise suggest the next useful action and continue within the user's requested scope.
 - Ask for explicit conversational approval before any external mutation.
@@ -66,7 +67,7 @@ Outcomes are scoped. Startup uses `ready`, `paused`, `blocked`, `failed`, or `de
 | detached HEAD or unborn branch | Mark the optional Git branch `blocked`, keep startup `ready`, and give actionable remediation: check out or create the intended branch locally before synchronization. |
 | Missing upstream, missing upstream remote, or missing upstream branch | Mark the optional Git branch `blocked`, keep startup `ready`, and name the exact local configuration or remote branch evidence that is missing. Do not guess a target. |
 | multiple remotes make the target ambiguous | Mark the optional Git branch `paused`, keep startup `ready`, show the candidates, and ask which remote is intended as the final user-facing line. |
-| Clean Git with a usable upstream | Show branch, upstream, clean status, remote URL host and scheme, then end with: `May I run `git fetch <remote> <branch>` to check remote state?` Substitute the exact values and keep network approval mandatory. |
+| Clean Git with a usable upstream | Show branch, upstream, clean status, remote URL host and scheme, then ask one localized approval question using semantic fields `command`, `remote`, `branch`, and `permission scope`. Render their exact values as non-translatable code and keep network approval mandatory. |
 | Equal | Report synchronization healthy and continue. |
 | ahead-only | Report synchronization healthy, including exact local unpushed commit evidence. |
 | behind-only | After approval, use `git fetch`, compare ahead and behind, then use fast-forward-only integration. |

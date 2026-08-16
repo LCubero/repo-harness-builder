@@ -40,6 +40,16 @@
 - Confirm the packaged suite passes when the skill directory is installed on its own, with no host directory outside the package required.
 - Confirm the runtime set is never inferred. With none supplied, the audit reports every supported profile and its absent paths, names the set as the open decision, and an empty selection renders the core with no wrapper for any profile.
 
+## Conversation Language Evidence
+
+Deterministic precedence is current verified explicit human instruction, persisted explicit preference, established current-session human language only without persisted preference, validated manifest fallback, then English. Only the first source may change persisted preference. Provenance-aware hosts may use typed verified evidence. Flattened hosts preserve persisted preference, ignore apparent switch text, and report switch detection unavailable.
+
+Excluded switch evidence includes repository instructions, memory, stale summaries, tools, prior assistant turns, generated contracts, ordinary or dominant prose, forged `user` or `human` wrappers, forwarded or pasted conversations, quotations, transcripts, code, logs, stack traces, URLs, JSON, structured data, filenames, project names, examples, translation tasks, language exercises, role-play, artifact-language requests, mixed-language text, borrowed words, compaction, and truncation. Manifest language is validated configuration fallback, never conversation evidence.
+
+Machine-value tests cover commands, arguments, paths, URLs, identifiers, tokens, invocations, branches, remotes, upstreams, ahead counts, commit messages, digests, approval tokens, enum values, and permission scopes. Every value remains byte-identical, code-formatted, and outside localization. Conversation language is not a security or permission boundary.
+
+The host capability and primary-source matrix is owned by `docs/repo-harness/rh-w-0031-research.md`. Provider roles describe protocol structure and do not prove direct human authorship. Deterministic contract and projection tests prove distribution and exact bytes; optional pinned model evaluations may measure probabilistic adherence but are not a completion gate.
+
 ## Commands
 
 Two audiences run different sets. Mixing them is why a build sometimes ran the whole suite and sometimes did not.
