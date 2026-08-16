@@ -832,6 +832,14 @@ def rulebook(project_id: str, standalone: bool) -> str:
     integration_rule = "- Use repository files only for continuity." if standalone else (
         "- Gentle AI and Engram are required for integrated continuity; repository evidence remains authoritative."
     )
+    verification_rule = (
+        "- Classify each claim as verified fact, supported inference, unknown or unverifiable, or human decision "
+        "required. A verified fact needs applicable, trustworthy, proportionate evidence; an inference names its "
+        "evidence and reasoning; unknown applies when no valid mechanism exists; a human decision applies when "
+        "authority or a criterion is human-owned. Never substitute missing evidence, stale memory, unrelated "
+        "proxies, assumptions, or confidence wording. Verify before asking; if unavailable or contradictory, "
+        "name the missing capability and request only the minimum evidence, criterion, authority, or decision."
+    )
     continuity_gate = (
         "Saving or recalling work across sessions"
         if standalone
@@ -857,6 +865,7 @@ Describe what this project does and who it serves.
 - Do not continue automatically into unrequested tasks.
 - Preserve unknown files and existing work.
 {evidence_rule}
+{verification_rule}
 {integration_rule}
 - Keep Git, provider, backup, and publication operations separately approved. Nothing implies them.
 

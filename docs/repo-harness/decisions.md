@@ -6,6 +6,7 @@
 <!-- doc-role:standing-decisions -->
 
 - Repository documentation remains the visible source of project state.
+- A claim is a verified fact only when applicable, trustworthy, and proportionate evidence supports it. Supported inferences state their evidence and reasoning; claims without a valid mechanism remain unknown or unverifiable; and human decisions are requested only when authority or a criterion belongs to a person. Missing evidence, stale memory, unrelated proxies, assumptions, and confidence wording never substitute for verification. Available verification runs before asking; when it is unavailable or contradictory, the workflow names the missing capability and requests only the minimum evidence, criterion, authority, or decision.
 - Gentle AI and Engram are required for integrated continuity, but never override current repository evidence.
 - Editable product sources are `skill/repo-harness-builder/` and `command/repo-harness-builder.md`; `.opencode/` and `.claude/` are runtime projections for execution and testing.
 - This repository recursively uses its generated harness to improve the builder itself.

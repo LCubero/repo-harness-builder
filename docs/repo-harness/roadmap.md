@@ -24,6 +24,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0032
+| Field | Value |
+|---|---|
+| Origin | Approved issue #48 and the user-owned verification-before-assertion principle |
+| Priority | P1: generated workflows could qualify status evidence yet still present broader assumptions, stale memory, unrelated proxies, or confidence wording as facts |
+| Dependencies | none |
+| Status | completed |
+| Completed work | Added one universal rule to the generated rulebook defining verified fact, supported inference, unknown or unverifiable, and human decision required; required applicable, trustworthy, proportionate evidence; prohibited false substitutes; and required available verification before asking with minimum-evidence escalation when verification is unavailable or contradictory. Session start, session stop, and documentation inherit the rulebook without duplicating the full principle. Synchronized canonical, OpenCode, and Claude package sources and tests byte for byte. |
+| Remaining work | none |
+| Additions | Added one behavioral regression proving canonical ownership, all three inheritance paths, proportional verification, organic operation, the four claim classes, forbidden substitutes, minimum escalation, and exactly one full rule across the generated contract. |
+| Exclusions | No exhaustive reads or test mandate, state machine, runtime dependency, network, external mutation, SDD, or change to RH-W-0031 language behavior beyond natural rulebook inheritance. |
+| Deferrals | none |
+| Rejections | Rejected duplicating the full rule in every skill, treating confidence as evidence, asking humans for facts the repository can verify, and using unrelated or stale proxies. |
+| Evidence | RED ran 1 focused test with the expected missing-rule assertion failure and no import, fixture, or syntax error. GREEN passed 5 focused canonical tests, then 276 canonical tests with 7 skips and 276 tests with 15 skips in each package projection. Package script and test hashes matched byte for byte. The explicit installed-dimension consumer preview reported digest `576584d67fbc636da790384e0d6b83d451103f89151b0657871b5dd787067a2b`, 0 writes, and no create, append, replace, migrate, or blocked actions. |
+| Decision history | 2026-08-15: registered and completed as the smallest universal generated-contract correction after strict RED/GREEN and full package verification. |
+| Next advancement condition | Reopen only if generated workflows present unsupported claims as verified facts, omit a claim class, demand disproportionate verification, ask for facts they can verify, fail to name a missing capability, or duplicate the full principle across skills. |
+
 ### RH-W-0031
 | Field | Value |
 |---|---|
