@@ -61,7 +61,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
-- Proyeccion activa: `RH-W-0010`, `RH-W-0019` y `RH-W-0025` estan `ready`. `RH-W-0025` volvio a `ready` tras aplicar y verificar su prerrequisito RH-W-0008 y tras resolver su probe de deteccion abierto contra `gentle-ai version`. Se rechazo partirla en una mitad de Engram y una mitad de Gentle AI bloqueada, porque fragmentaria la matriz de cuatro combinaciones entre dos unidades.
+- Proyeccion activa: `RH-W-0010`, `RH-W-0019` y `RH-W-0025` estan `ready`. Las tres se analizaron contra el codigo actual el 2026-08-15; [roadmap.md](roadmap.md) posee su alcance verificado, las citas corregidas y las definiciones. `RH-W-0025` volvio a `ready` tras aplicar y verificar su prerrequisito RH-W-0008 y tras resolver su probe de deteccion abierto contra `gentle-ai version`. Se rechazo partirla en una mitad de Engram y una mitad de Gentle AI bloqueada, porque fragmentaria la matriz de cuatro combinaciones entre dos unidades.
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.
 - Proyeccion aplazada: `RH-W-0011` a `RH-W-0015`, la idea de mantenimiento interno desatendido `RH-W-0018` y la capacidad opcional de CodeGraph `RH-W-0026` conservan condiciones explicitas de avance en [roadmap.md](roadmap.md). `RH-W-0026` requiere aprobacion futura explicita de diseno o investigacion y revision de fuente primaria antes de avanzar.
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
@@ -70,4 +70,4 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Seleccionar la siguiente unidad acotada lista entre `RH-W-0025`, `RH-W-0010` y `RH-W-0019`; no deben agruparse.
+Plan sugerido, aun no seleccionado: iniciar `RH-W-0025` a traves de su plan de implementacion canonico, la unica unidad lista con plan ejecutable aprobado. `RH-W-0010` y `RH-W-0019` siguen listas con alcance verificado y no deben agruparse. La eleccion de unidad sigue siendo humana; no ha comenzado ninguna implementacion.

@@ -67,7 +67,7 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Active projection: `RH-W-0010`, `RH-W-0019`, and `RH-W-0025` are `ready`. `RH-W-0025` returned to ready after its RH-W-0008 prerequisite was applied and verified and its open detection probe was resolved against `gentle-ai version`. A proposed split into an Engram half and a blocked Gentle AI half was rejected, because it would fragment the four-combination availability matrix across two units.
+- Active projection: `RH-W-0010`, `RH-W-0019`, and `RH-W-0025` are `ready`. All three were analyzed against current source on 2026-08-15; [roadmap.md](roadmap.md) owns their verified scope, corrected citations, and definitions. `RH-W-0025` returned to ready after its RH-W-0008 prerequisite was applied and verified and its open detection probe was resolved against `gentle-ai version`. A proposed split into an Engram half and a blocked Gentle AI half was rejected, because it would fragment the four-combination availability matrix across two units.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015`, the unattended internal-maintenance idea `RH-W-0018`, and the optional CodeGraph capability `RH-W-0026` retain explicit advancement conditions in [roadmap.md](roadmap.md). `RH-W-0026` requires explicit future design or research approval and primary-source review before advancement.
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
@@ -76,4 +76,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Select the next bounded ready unit from `RH-W-0025`, `RH-W-0010`, and `RH-W-0019`; do not bundle them.
+Suggested plan, not yet selected: start `RH-W-0025` through its canonical implementation plan, which is the only ready unit with an approved executable plan. `RH-W-0010` and `RH-W-0019` remain ready with verified scope and stay unbundled. The unit choice is still the human's; no implementation has begun.
