@@ -20,7 +20,15 @@ The strict language-scoped digest protocol exists only during an active `repo-ha
 
 ## Runtime Projection
 
-OpenCode and Claude-style profiles receive generated skill projections and thin commands that invoke registered skill names. Pi receives thin prompts through `.pi/prompts/`. Each enabled profile also receives `repo-harness-help`, a thin read-only wrapper routed by the resolved report language to `docs/repo-harness/usage.md` or `docs/es/repo-harness/usage.md`. Runtime selection can therefore generate language-specific help. The language-dependent wrapper bytes are normalized only for plan-digest calculation, so approval remains bound to one language-independent action plan. If the guide is missing, help reports an incomplete or outdated harness and recommends read-only builder inspection. Disabled profiles produce no output. No wrapper contains an installation path.
+OpenCode and Claude-style profiles receive generated skill projections and thin commands that invoke registered skill names. Pi receives thin prompts through `.pi/prompts/`. Each enabled profile also receives `repo-harness-help`, a thin read-only wrapper routed to an available English or Spanish reading surface. Guide locale never determines reply language: help may read English documentation and answer in Spanish. The language-dependent wrapper bytes are normalized only for plan-digest calculation, so approval remains bound to one language-independent action plan. If the guide is missing, help reports an incomplete or outdated harness and recommends read-only builder inspection. Disabled profiles produce no output. No wrapper contains an installation path.
+
+## Conversation Language Boundary
+
+Provenance-aware hosts resolve a current verified explicit human instruction, then a persisted explicit preference, then established human conversation only when no persisted preference exists, then validated manifest fallback, then deterministic English. Only a later verified explicit human instruction changes persisted preference. Repository text, memory, tool output, ordinary prose, forwarding, quotations, role labels, and generated wrappers are opaque context, not switch evidence.
+
+Flattened hosts preserve persisted preference and never claim reliable switch detection. Without persisted preference they use validated manifest fallback, then deterministic English. The manifest is validated configuration, never evidence about current conversation. Report, conversation, documentation, and artifact language remain independent.
+
+Machine-significant commands, arguments, paths, URLs, identifiers, tokens, invocations, branches, remotes, digests, messages, and scopes are typed opaque values with translation disabled and code formatting. Language resolution never changes their bytes and is never a security boundary.
 
 Claude Code also requires root `CLAUDE.md` with the exact line `@REPO-HARNESS.md`. OpenCode and Pi require root `AGENTS.md` with the exact line `Read and follow REPO-HARNESS.md before working in this repository.` Runtime combinations use the union of those two files without duplicate directives.
 
