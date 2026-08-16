@@ -7,7 +7,7 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 ## Purpose
 <!-- doc-role:purpose -->
 
-Canonical source of `repo-harness-builder`, an agent skill that builds or inspects a minimal documentation and continuity harness inside a selected repository. Editable product sources are `skill/repo-harness-builder/` and `command/repo-harness-builder.md`; `.opencode/` and `.claude/` are runtime projections for testing. This repository recursively uses its generated harness to improve the builder itself.
+`repo-harness-builder` builds or inspects a minimal documentation and continuity harness inside a selected repository. Editable product sources are `skill/repo-harness-builder/` and `command/repo-harness-builder.md`; `.opencode/` and `.claude/` are runtime projections for testing. This repository recursively uses its generated harness to improve the builder itself.
 
 ## Hard Rules
 <!-- doc-role:hard-rules -->
@@ -19,7 +19,7 @@ Canonical source of `repo-harness-builder`, an agent skill that builds or inspec
 - Do not retry indefinitely. After a repeated failure, stop, present evidence, and request a decision.
 - Do not continue automatically into unrequested tasks.
 - Preserve unknown files and existing work through informed, explicitly approved evolution; never freeze content by default.
-- Reconcile applicable owning repository evidence before classifying status, pending work, defects, or completion; never rely on one source in isolation.
+- Classify each claim as verified fact, supported inference, unknown or unverifiable, or human decision required. A verified fact needs applicable, trustworthy, proportionate evidence; an inference names its evidence and reasoning; unknown applies when no valid mechanism exists; a human decision applies when authority or a criterion is human-owned. Never substitute missing evidence, stale memory, unrelated proxies, assumptions, or confidence wording. Verify before asking; if unavailable or contradictory, name the missing capability and request only the minimum evidence, criterion, authority, or decision.
 - Gentle AI and Engram are required for integrated continuity; repository evidence remains authoritative.
 - Keep Git consent outcome-scoped and conversational. Combined intent may cover unchanged safe prerequisites; provider changes, backup, publication, destructive actions, and material risk changes require their own approval.
 
@@ -43,8 +43,8 @@ Canonical source of `repo-harness-builder`, an agent skill that builds or inspec
 ## Updating This File
 <!-- doc-role:maintenance -->
 
-1. **When.** A rule changes, a gate destination moves, or a statement here stops being true. Same change, not later.
-2. **Where.** A rule that must never be missed goes in Hard Rules. Everything else moves down into a file under `.repo-harness/rules/` and earns at most one gate row here. Detail never moves up. A new rule file gets a gate row and the same budget.
-3. **Budget.** This loads every session. Stay under 700 tokens, measured as `wc -w` times 1.33, never by eye. A section that grows here is the signal to move it down, not to raise the budget.
+1. Update this file in the same change when a rule, gate destination, or statement changes.
+2. Keep never-miss rules here. Move detail to `.repo-harness/rules/` with at most one gate row.
+3. Keep the 700-token budget, measured as `wc -w` times 1.33. Growth moves down; the budget never rises.
 
 No dated status here. Completed changes go to `CHANGELOG.md`, current state and next step to `docs/repo-harness/current-state.md`, decisions and their reasons to `docs/repo-harness/decisions.md`.

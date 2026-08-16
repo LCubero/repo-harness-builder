@@ -12,7 +12,7 @@ Este repositorio contiene las fuentes canonicas de `repo-harness-builder`. Edite
 
 - Trabaje solo dentro del repositorio seleccionado.
 - Preserve archivos desconocidos y trabajo existente.
-- Verifique evidencia actual antes de confiar en memoria.
+- Clasifique cada afirmacion como hecho verificado, inferencia respaldada, desconocida o no verificable, o decision humana requerida. Un hecho verificado necesita evidencia aplicable, confiable y proporcional; una inferencia nombra su evidencia y razonamiento; lo desconocido aplica cuando no existe un mecanismo valido; una decision humana aplica cuando la autoridad o un criterio corresponde a una persona. Nunca sustituya evidencia faltante, memoria obsoleta, indicadores indirectos no relacionados, supuestos ni lenguaje de confianza. Verifique antes de preguntar; si no es posible o hay contradiccion, nombre la capacidad faltante y solicite solo la evidencia, el criterio, la autoridad o la decision minima.
 - No ejecute operaciones Git o remotas sin aprobacion explicita.
 - Use [la guia de uso](docs/es/repo-harness/usage.md), [el estado actual](docs/es/repo-harness/current-state.md) y [las decisiones](docs/es/repo-harness/decisions.md).
 - Ejecute `python .repo-harness/check.py` cuando cambien fuentes canonicas o proyecciones.

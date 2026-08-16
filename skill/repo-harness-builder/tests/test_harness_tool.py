@@ -2441,6 +2441,33 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertIn("current documentation, source, tests, and Git state or history", standalone_start)
         self.assertNotIn("Engram", standalone_start)
 
+    def test_rulebook_owns_proportional_verification_principle_for_all_core_skills(self):
+        outputs = TOOL.render("Example", [])
+        rule = (
+            "Classify each claim as verified fact, supported inference, unknown or unverifiable, or human "
+            "decision required. A verified fact needs applicable, trustworthy, proportionate evidence; an "
+            "inference names its evidence and reasoning; unknown applies when no valid mechanism exists; a "
+            "human decision applies when authority or a criterion is human-owned. Never substitute missing "
+            "evidence, stale memory, unrelated proxies, assumptions, or confidence wording. Verify before "
+            "asking; if unavailable or contradictory, name the missing capability and request only the "
+            "minimum evidence, criterion, authority, or decision."
+        )
+        inherited_paths = (
+            ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+            ".repo-harness/skills/repo-harness-documentation/SKILL.md",
+        )
+
+        self.assertIn(f"- {rule}", outputs[RULEBOOK])
+        for path in inherited_paths:
+            with self.subTest(path=path):
+                self.assertIn(
+                    f"Load and follow the canonical rulebook at `{RULEBOOK}`, including its execution discipline.",
+                    outputs[path],
+                )
+                self.assertNotIn(rule, outputs[path])
+        self.assertEqual(sum(text.count(rule) for text in outputs.values()), 1)
+
     def test_session_start_resolves_facts_without_rigid_questioning(self):
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
 
