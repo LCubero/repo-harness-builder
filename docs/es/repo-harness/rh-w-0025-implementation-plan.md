@@ -1,164 +1,177 @@
-# Plan de implementación de la integración consciente de capacidades RH-W-0025
+# Plan de implementación de integración consciente de capacidades RH-W-0025
 
-> **Para agentes ejecutores:** SUBHABILIDAD OBLIGATORIA: usar `test-driven-development` para cada corte de comportamiento y `verification-before-completion` antes de la entrega. Dar seguimiento a cada paso con su casilla. Trabajar solo en la unidad aprobada RH-W-0025.
+> **Para agentes ejecutores:** usar `test-driven-development` para cada corte de comportamiento y `verification-before-completion` antes de entregar. Trabajar solo en la unidad aprobada RH-W-0025.
 
 **Objetivo:** Generar un harness genérico que coordine la autoridad del repositorio, la continuidad de Engram y las capacidades opcionales de Gentle AI sin copiar estado de propietarios ni crear otro ciclo de vida.
 
-**Arquitectura:** El repositorio conserva la verdad durable. Las funciones existentes de generación emiten contratos acotados para modo integrado e independiente; cada propietario habilitado emite sus propios estados, aprobaciones, recibos, conflictos y transiciones. La implementación no agrega servicio, dependencia, coordinador persistido ni tercer estado. `integrated` significa Gentle AI más Engram, `standalone` significa que ninguno está disponible y la disponibilidad parcial se informa como degradación limitada al componente bajo la política del repositorio.
+**Arquitectura:** El repositorio conserva la verdad durable. La generación `integrated` selecciona Gentle AI más Engram; `standalone` no selecciona ninguno. El preflight del builder durante la instalación valida ambas capacidades antes de seleccionar o aplicar generación integrada. Después de instalar, la pérdida o falla degrada solo el componente afectado, salvo que la política del repositorio lo haga obligatorio. La disponibilidad parcial no es un tercer modo ni un veredicto agregado de autoridad.
 
-**Tecnologías:** Python 3.10+ con biblioteca estándar, `unittest`, contratos Markdown generados, manifiesto JSON y proyecciones autoalojadas `.opencode/` y `.claude/`.
+**Tecnologías:** Python 3.10+ con biblioteca estándar, `unittest`, Markdown generado, manifiesto JSON y proyecciones incorporadas del paquete en `.opencode/` y `.claude/`.
 
-**Entradas canónicas:** [investigación de integración](integration-research.md), [RH-W-0025](roadmap.md#rh-w-0025) y [decisiones permanentes](decisions.md). El [plan en inglés](../../repo-harness/rh-w-0025-implementation-plan.md) es el propietario canónico.
+**Entradas canónicas:** [investigación de integración](integration-research.md), [RH-W-0025](roadmap.md#rh-w-0025) y [decisiones permanentes](decisions.md). El [plan en inglés](../../repo-harness/rh-w-0025-implementation-plan.md) es el propietario canónico; este archivo es su espejo humano completo.
 
-**Prerrequisito de ejecución:** cumplido. RH-W-0008 entregó el ejecutor aprobado de reemplazo e integración ligado al contenido, y se aplicó y verificó el 2026-08-15. RH-W-0025 está `ready`.
+**Prerrequisito de ejecución:** cumplido. RH-W-0008 entregó el ejecutor de reemplazo ligado al contenido, se aplicó y se verificó el 2026-08-15. RH-W-0025 permanece `ready`.
 
-**Contrato de detección:** detectar Gentle AI mediante `gentle-ai version`, una superficie anunciada de solo lectura que devuelve `gentle-ai <version>` con salida 0 y se resuelve por PATH, por lo que es independiente del layout de instalación. La detección tiene tres estados: `not_found`, `found_on_path` y `verified`. Solo `verified`, un código de salida validado más la forma de la salida, autoriza usar la capacidad. `found_on_path` no autoriza nada, porque la presencia de un ejecutable no prueba que sea el CLI auténtico y funcional, y la investigación lo prohíbe como base de detección.
+## Contrato de detección
 
-**Evidencia del bloqueo:** `plan_changes()` clasifica salidas existentes no idénticas como `existing`, y `write_outputs()` escribe solo acciones create/append más la migración acotada RH-W-0024 de nombres heredados. Esa migración no puede regenerar propietarios consumidores existentes arbitrarios. Ampliar RH-W-0025 duplicaría RH-W-0008 y crearía un tercer mecanismo de reemplazo.
+Ejecutar el comando anunciado de solo lectura `gentle-ai version` mediante PATH y con timeout acotado.
+
+| Clasificación | Evidencia | Autorización |
+|---|---|---|
+| `not_found` | La creación del proceso informa que no se encuentra el ejecutable. | Gentle AI no está disponible. |
+| `found_on_path` | El proceso inicia, pero agota el tiempo, termina con salida distinta de cero o devuelve texto fuera de la forma requerida. | Gentle AI no está verificado y no se puede usar. Conservar evidencia exacta del fallo. |
+| `verified` | El proceso termina con salida 0 dentro del límite y stdout normalizado coincide con `gentle-ai <version>` con un token de versión no vacío. | Se puede seleccionar Gentle AI, sujeto a validar Engram y la política del repositorio. |
+
+La mera presencia del ejecutable nunca produce `verified`. La confirmación humana no es la ruta normal de detección y no puede sustituir evidencia del proceso. No inspeccionar layouts privados de instalación, tablas de procesos ni archivos supuestos.
+
+La detección de Engram debe usar su superficie local soportada y conservar evidencia exacta. Definir un adaptador concreto solo después de que la fuente y las pruebas actuales identifiquen el límite existente. No inferir Engram desde archivos no relacionados ni desde contenido de memoria.
+
+Seleccionar y aplicar integrado exige Gentle AI `verified` y Engram verificado. Cualquier otra combinación rechaza generación integrada y puede ofrecer `standalone` solo mediante el límite de selección aprobado existente.
+
+Después de instalar integrado, la pérdida posterior de Gentle AI degrada solo revisión y entrega de Gentle AI. La pérdida posterior de Engram degrada solo continuidad. La política del repositorio puede hacer obligatoria cualquiera de las capacidades y bloquear su flujo propietario.
 
 ## Límites de alcance
 
-- [ ] Mantener genérica la redacción para consumidores. Nunca mencionar mejorar `repo-harness-builder` en la salida generada.
+- [ ] Mantener genérica y centrada en el repositorio la redacción para consumidores.
 - [ ] Preservar la propiedad del repositorio sobre verdad durable, fuente, pruebas, política, backlog y aprobaciones.
-- [ ] Usar Gentle AI y Engram juntos solo en modo `integrated`. Usar `standalone` solo cuando ninguno existe.
-- [ ] Tratar una integración ausente o fallida como degradación del componente, no como modo nuevo ni veredicto agregado.
-- [ ] Promover conocimiento operativo reutilizable solo después de verificarlo en el repositorio y obtener aprobación humana.
-- [ ] No agregar tercer estado, habilitación automática de revisión, aprobación fabricada, SDD sintético, copias de almacenes de recibos, conflictos o intentos, ni reintentos hasta quedar limpio.
-- [ ] Mantener RH-W-0022 relacionado e independiente. No agregar dependencia salvo evidencia de implementación.
-- [x] Prerrequisito RH-W-0008 cumplido: el ejecutor aprobado de reemplazo e integración ligado al contenido se entregó, aplicó y verificó.
-- [ ] No agregar dependencia de runtime, daemon, scheduler, cliente de red, mutación de proveedor ni detección basada en layout privado o presencia de ejecutable. Invocar `gentle-ai version` no es ninguna de esas cosas: es la superficie anunciada de solo lectura de la propia herramienta, y un resultado `found_on_path` nunca autoriza por sí solo una capacidad.
-- [ ] Preservar archivos humanos y trabajo no confirmado ajeno. Preparar solo rutas del commit acotado actual.
+- [ ] Mantener solo los modos de generación `integrated` y `standalone`.
+- [ ] Validar ambas capacidades antes de seleccionar o aplicar generación integrada.
+- [ ] Tratar la pérdida posterior a la instalación como degradación del componente, salvo que la política lo haga obligatorio.
+- [ ] Promover conocimiento reutilizable solo después de verificarlo, elegir propietario canónico y obtener aprobación humana.
+- [ ] No agregar servicio, daemon, scheduler, cliente de red, mutación de proveedor, detección de layout privado, almacén copiado, SDD sintético, aprobación fabricada ni reintento ilimitado.
+- [ ] Mantener RH-W-0022 relacionado e independiente.
+- [ ] Usar el ejecutor de reemplazo completado en RH-W-0008 para propietarios generados existentes y autenticados. No restaurar una limitación de writer aditivo ni inventar otra ruta de reemplazo.
+- [ ] Preservar archivos de propiedad humana y trabajo no relacionado.
 
 ## Mapa de archivos previsto
 
 | Ruta | Responsabilidad |
 |---|---|
-| `skill/repo-harness-builder/tests/test_harness_tool.py` | Pruebas canónicas RED/GREEN para modos, autoridad, promoción, degradación y ausencia de duplicación |
-| `skill/repo-harness-builder/scripts/harness_tool.py` | Funciones canónicas de generación y selección de modo existente |
-| `skill/repo-harness-builder/SKILL.md` | Entrevista del builder y compuerta de capacidades |
-| `skill/repo-harness-builder/references/audit-and-interview.md` | Caracterización de solo lectura y compuerta incierta de Gentle AI |
-| `skill/repo-harness-builder/references/architecture.md` | Límites de propietarios y arquitectura de modos |
+| `skill/repo-harness-builder/tests/test_harness_tool.py` | Pruebas canónicas RED/GREEN de comportamiento y contratos generados |
+| `skill/repo-harness-builder/scripts/harness_tool.py` | Ejecución, clasificación, selección y contratos generados de capacidades |
+| `skill/repo-harness-builder/SKILL.md` | Contrato de preflight y selección del builder |
+| `skill/repo-harness-builder/references/audit-and-interview.md` | Detección de solo lectura y reglas de evidencia |
+| `skill/repo-harness-builder/references/architecture.md` | Límites de propietarios, preflight y degradación en runtime |
 | `skill/repo-harness-builder/references/preservation-and-safety.md` | Restricciones de aprobación, promoción, reintentos y no copia |
-| `skill/repo-harness-builder/references/validation.md` | Validación del harness generado y estados esperados |
-| `command/repo-harness-builder.md` | Proyección canónica del comando si cambia el enrutamiento |
-| `.opencode/skills/repo-harness-builder/**` | Proyección autoalojada de OpenCode |
-| `.claude/skills/repo-harness-builder/**` | Proyección autoalojada de Claude |
-| `.repo-harness/**`, proyecciones de sesión, manifiesto, checker, reglamento y docs durables generadas | Excluidos de edición directa en RH-W-0025; regenerar solo en el seguimiento posterior a RH-W-0008 mediante su ejecutor aprobado |
-| `docs/repo-harness/{roadmap,current-state}.md`, pares españoles y `CHANGELOG.md` | Reconciliación solo después de implementar y verificar |
+| `skill/repo-harness-builder/references/validation.md` | Validación de capacidades y del harness generado |
+| `.opencode/skills/repo-harness-builder/**`, `.claude/skills/repo-harness-builder/**` | Proyecciones exactas de los archivos canónicos modificados |
+| Propietarios consumidores devueltos por `TOOL.render(...)` | Preview y apply mediante el ejecutor RH-W-0008 existente |
+| Roadmap, estado actual, pares españoles y changelog | Reconciliación del ciclo de vida solo después de implementar y aplicar al consumidor con verificación |
 
-El conjunto consumidor exacto debe provenir de `TOOL.render(...)` después de completar RH-W-0008. No mantener otra lista, borrar propietarios para forzar creación ni editar propietarios generados. RH-W-0025 permanece bloqueado hasta que exista ese ejecutor.
+Los nombres de producción siguientes no son obligatorios salvo que se marquen como **objetivos de diseño**. Reutilizar límites existentes cuando correspondan.
 
-## Tarea 1: Caracterizar el comportamiento actual con pruebas fallidas
+## Tarea 1: Caracterizar contratos existentes
 
-**Archivos:** modificar `skill/repo-harness-builder/tests/test_harness_tool.py`; inspeccionar `render()`, `render_with_skill_mapping()`, `session_start_skill()`, `session_stop_skill()`, `documentation_skill()`, `rule_outputs()` y `docs_outputs()`.
+- [ ] Agregar una clase enfocada de pruebas conscientes de capacidades junto a las pruebas existentes de contratos generados.
+- [ ] Probar la redacción ausente o incompleta sobre repositorio, Engram, Gentle AI, modos, promoción, degradación y prohibición de duplicación.
+- [ ] Confirmar el comportamiento existente de `integrationMode` sin agregar entradas de capacidades a `render()` solo para las pruebas.
+- [ ] Ejecutar la clase enfocada. Solo los fallos de afirmación son evidencia RED válida.
 
-- [ ] Agregar `CapabilityAwareIntegrationContractTests(unittest.TestCase)` y `combined(self, standalone: bool = False) -> str`, uniendo los valores de `TOOL.render("Consumer", [], standalone=standalone)`.
-- [ ] Agregar `test_integrated_contract_names_repository_engram_and_gentle_ai_owners`, `test_standalone_contract_uses_repository_evidence_without_integration_claims` y `test_generated_contract_forbids_copied_authority_and_unbounded_retry` con las mismas frases y exclusiones del plan canónico.
-- [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py CapabilityAwareIntegrationContractTests -v`.
-- [ ] Esperar salida distinta de cero por afirmaciones que demuestren la ausencia actual de contratos RH-W-0025. Errores de importación o sintaxis no son RED válido.
-- [ ] Registrar qué rutas renderizadas fallan y confirmar si el manifiesto ya usa `integrated` y `standalone`, sin cambiar comportamiento ni ciclo de vida.
+```powershell
+python -B skill/repo-harness-builder/tests/test_harness_tool.py CapabilityAwareIntegrationContractTests -v
+```
 
-## Tarea 2: Fijar la evidencia de Gentle AI e implementar la compuerta no resuelta
+## Tarea 2: Implementar detección y clasificación
 
-**Archivos:** `skill/repo-harness-builder/references/audit-and-interview.md`, opcionalmente `skill/repo-harness-builder/SKILL.md`, y pruebas canónicas.
+Este es un solo corte conductual RED/GREEN. Inyectar o sustituir la ejecución de procesos, el tiempo y la evidencia de Engram. Las pruebas no deben depender de la máquina, el contenido de PATH, esperas reales, red ni instalaciones reales.
 
-- [ ] Agregar primero `test_unresolved_gentle_ai_probe_requires_explicit_human_confirmation`. Debe afirmar la revisión fijada `4004a0825d03a3d123a3c4f67bf375cb16fd6d8c`, `explicit human confirmation`, `advertised read-only capability` y `never infer from executable presence`, y rechazar comandos, flags, rutas o layouts no verificados.
-- [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py CapabilityAwareIntegrationContractTests.test_unresolved_gentle_ai_probe_requires_explicit_human_confirmation -v`. Resultado esperado: FAIL por ausencia del contrato; errores de importación, sintaxis o fixture no son RED válido.
-- [ ] Actualizar `audit-and-interview.md`: la revisión autoritativa es `4004a0825d03a3d123a3c4f67bf375cb16fd6d8c` y no define una sonda genérica estable. Exigir confirmación humana explícita y prohibir inferencia desde ejecutable, proceso o layout privado.
-- [ ] Ejecutar el mismo comando. Resultado esperado: PASS sin interfaz inventada.
-- [ ] Una sonda posterior solo puede reemplazar esta rama mediante actualización explícita de investigación que adopte y fije una revisión nueva, reemplace la evidencia anterior y haga otro ciclo RED/GREEN. No reinterpretar silenciosamente `current`, `installed` ni `available`.
+- [ ] RED: la ejecución usa exactamente `gentle-ai version`, timeout acotado, captura de stdout y stderr, y ninguna expansión mediante shell.
+- [ ] RED: ejecutable ausente clasifica exactamente como `not_found`.
+- [ ] RED: timeout clasifica exactamente como `found_on_path` y conserva su evidencia.
+- [ ] RED: salida distinta de cero clasifica exactamente como `found_on_path` y conserva código y salida acotada.
+- [ ] RED: salida 0 con stdout vacío, malformado, multilínea o con prefijo incorrecto clasifica exactamente como `found_on_path`.
+- [ ] RED: salida 0 con `gentle-ai <version>` normalizado y token no vacío clasifica exactamente como `verified`.
+- [ ] RED: cobertura parametrizada demuestra que el conjunto exacto es `not_found`, `found_on_path` y `verified`, sin atajo booleano ni cuarto estado.
+- [ ] RED: la detección de Engram cubre evidencia verificada, ausente, fallida y malformada mediante su límite local soportado.
+- [ ] RED: la clasificación combinada selecciona `integrated` solo cuando ambas capacidades se verifican; en otro caso rechaza seleccionar o aplicar integrado y conserva ambos resultados.
+- [ ] RED: los dobles terminan de inmediato, los fixtures de salida son acotados y las pruebas de timeout simulan la excepción sin esperar.
+- [ ] GREEN: implementar el comportamiento mínimo en los límites existentes de procesos y selección.
+- [ ] GREEN: cualquier nombre propuesto para una costura es un **objetivo de diseño**, no una API aprobada. Elegirlo solo tras inspeccionar el código actual y mantenerlo privado salvo exigencia de un contrato público existente.
+- [ ] GREEN: volver a ejecutar el corte enfocado y confirmar resultados deterministas.
 
-## Tarea 3: Agregar reglas y contratos generados mínimos y genéricos
+## Tarea 3: Agregar contratos genéricos de propietarios
 
-**Archivos:** `harness_tool.py`, `architecture.md`, `preservation-and-safety.md` y pruebas canónicas.
+- [ ] Agregar pruebas RED que asignen verdad durable al repositorio, continuidad a Engram y evidencia opcional de revisión y entrega a Gentle AI.
+- [ ] Rechazar redacción específica del producto, almacenes copiados, aprobación fabricada, SDD sintético y reintentos hasta quedar limpio.
+- [ ] Actualizar solo cuerpos existentes del generador y referencias donde pertenezca cada asunto.
+- [ ] Mantener las razones en referencias y no en punteros raíz siempre cargados.
+- [ ] Ejecutar la clase enfocada en GREEN.
 
-- [ ] Agregar RED `test_generated_contract_assigns_each_fact_to_one_owner` y `test_generated_contract_stays_consumer_generic`.
-- [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py CapabilityAwareIntegrationContractTests -v`. Resultado esperado: FAIL solo por lenguaje contractual ausente.
-- [ ] Actualizar los cuerpos existentes de `rule_outputs()`, `docs_outputs()`, `session_start_skill()`, `session_stop_skill()` y `documentation_skill()` donde corresponda. Reutilizar `standalone: bool`; no crear enum de tercer modo ni coordinador persistido.
-- [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py CapabilityAwareIntegrationContractTests -v`. Las pruebas de autoridad y lenguaje genérico deben pasar.
+## Tarea 4: Separar preflight y degradación en runtime
 
-## Tarea 4: Implementar ramas integradas, parciales e independientes
+- [ ] Probar que seleccionar y aplicar integrado exige ambas capacidades durante el preflight del builder.
+- [ ] Cubrir todas las combinaciones posteriores a la instalación: ambas disponibles, solo Gentle AI, solo Engram y ninguna.
+- [ ] Probar que la pérdida posterior afecta solo su componente y nunca fabrica el resultado de otro propietario.
+- [ ] Probar que la política del repositorio puede elevar cualquier componente de degradación opcional a requisito bloqueante.
+- [ ] Mantener exactamente `integrated` y `standalone` como modos del manifiesto; no persistir detección de runtime ni agregar modo parcial.
+- [ ] Ejecutar la clase enfocada en GREEN.
 
-**Archivos:** `harness_tool.py`, `SKILL.md`, `audit-and-interview.md` y pruebas canónicas.
+## Tarea 5: Implementar promoción selectiva
 
-- [ ] Agregar `test_integrated_render_instructs_all_four_runtime_availability_outcomes` sobre una sola llamada `TOOL.render("Consumer", [], standalone=False)`. Afirmar instrucciones estáticas para ambos disponibles, solo Gentle AI, solo Engram y ninguno; no modelarlos como cuatro entradas del generador.
-- [ ] Agregar `test_standalone_render_is_the_neither_available_generated_mode` sobre `TOOL.render("Consumer", [], standalone=True)`. Afirmar manifiesto `standalone`, continuidad solo del repositorio y ninguna promesa de ejecución de Gentle AI o Engram; el render integrado conserva `integrated`.
-- [ ] Agregar `import inspect` con los imports estándar, las pruebas de precedencia y `test_render_accepts_no_runtime_capability_detection_state`, inspeccionando las firmas de `render()` y `render_with_skill_mapping()` para prohibir parámetros o estado persistido de detección.
-- [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py CapabilityAwareIntegrationContractTests -v`. Resultado esperado: RED por instrucciones generadas ausentes.
-- [ ] Describir las cuatro ramas como instrucciones de runtime dentro del contrato integrado. Mantener `standalone: bool` como única entrada de modo y solo `integrated` y `standalone` en el manifiesto. No agregar tercer modo, entrada de disponibilidad, caché, campo de manifiesto ni estado persistido de detección.
-- [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py CapabilityAwareIntegrationContractTests -v`. Resultado esperado: PASS.
+- [ ] Exigir relevancia verificada, propietario canónico del repositorio y aprobación humana antes de promover.
+- [ ] Fechar y revalidar hechos externos cambiantes antes de reutilizarlos.
+- [ ] Rechazar ruido incidental y cualquier backlog o cola de promoción propiedad de memoria.
+- [ ] Implementar cambios mínimos en contratos generados de documentación y memoria, y ejecutar pruebas enfocadas en GREEN.
 
-## Tarea 5: Implementar promoción selectiva de conocimiento
+## Tarea 6: Agregar estado por componente y guía de fallos acotados
 
-**Archivos:** `harness_tool.py`, `preservation-and-safety.md` y pruebas canónicas.
+- [ ] Probar resultados distintos del repositorio, Gentle AI y Engram, evidencia exacta de degradación y una siguiente acción.
+- [ ] Probar que salida malformada de un propietario detiene solo esa rama opcional y nunca se reconstruye como éxito.
+- [ ] Rechazar cachés de recibos, almacenes de conflictos, ledgers de intentos, estado combinado de aprobación y reintentos interminables.
+- [ ] Implementar guía en prosa sin nuevo esquema agregado, salvo exigencia de un contrato propietario actual.
 
-- [ ] Agregar `test_promotion_requires_verification_relevance_owner_and_human_approval` para `verified`, `still relevant`, `canonical owner` y `human approval`.
-- [ ] Agregar `test_incidental_and_changing_external_facts_are_not_durable_truth` para `incidental`, `revalidated` y `current as of`.
-- [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py CapabilityAwareIntegrationContractTests -v`. Resultado esperado: RED.
-- [ ] Actualizar `documentation_skill()` y las reglas de memoria/documentación emitidas por `rule_outputs()` o `docs_outputs()`: recuperar, etiquetar, verificar, identificar propietario, pedir aprobación y actualizar en la misma unidad. Descartar ruido incidental y no crear cola de promoción.
-- [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py CapabilityAwareIntegrationContractTests -v`. Resultado esperado: PASS.
+## Tarea 7: Probar estabilidad
 
-## Tarea 6: Agregar degradación por componente y salida de estado
+- [ ] Afirmar que solo se emiten `integrated` y `standalone`.
+- [ ] Preservar comportamiento de runtimes, locales, punteros, manifiesto y propiedad.
+- [ ] Afirmar renders repetidos idénticos byte a byte y ausencia de U+2013 y U+2014 en texto modificado.
+- [ ] Ejecutar la suite canónica completa y detenerse ante fallos no relacionados.
 
-**Archivos:** `harness_tool.py`, `validation.md` y pruebas canónicas.
+```powershell
+python -B -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"
+```
 
-- [ ] Agregar `test_component_outcomes_remain_distinct_and_offer_one_next_action`, `test_component_failure_never_claims_false_success` y `test_malformed_owner_status_stops_only_that_optional_branch`.
-- [ ] Agregar `test_generated_output_has_no_copied_owner_stores_or_endless_retries` para rechazar caché de recibos, almacén de conflictos, ledger de intentos, aprobación combinada y loops hasta quedar limpio.
-- [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py CapabilityAwareIntegrationContractTests -v`. Resultado esperado: RED.
-- [ ] Actualizar contratos existentes con resultado del repositorio, resultados de Gentle AI y Engram, razones de degradación y una siguiente acción. No agregar esquema agregado salvo que un contrato propietario actual lo exija.
-- [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py CapabilityAwareIntegrationContractTests -v`. Resultado esperado: PASS.
+## Tarea 8: Sincronizar proyecciones del paquete
 
-## Tarea 7: Probar estabilidad del contrato y manifiesto mínimo
+- [ ] Determinar las rutas canónicas modificadas del paquete desde el diff final, no desde una lista fija especulativa.
+- [ ] Probar que al menos una proyección correspondiente difiere antes de copiar.
+- [ ] Copiar cada archivo canónico modificado a las rutas equivalentes de `.opencode/` y `.claude/`.
+- [ ] Verificar igualdad SHA-256 y ejecutar las tres suites con totales iguales y omisiones soportadas.
 
-**Archivos:** pruebas canónicas y `harness_tool.py` solo si las pruebas lo demuestran necesario.
+## Tarea 9: Aplicar reemplazos consumidores
 
-- [ ] Agregar `test_manifest_keeps_only_integrated_and_standalone_modes`, `test_existing_runtime_locale_and_pointer_outputs_remain_stable` y `test_render_is_deterministic_for_each_mode`.
-- [ ] Afirmar ausencia de almacenes copiados, promesas falsas en standalone, caracteres prohibidos y cambios de runtimes, idiomas o punteros.
-- [ ] Ejecutar `python -B -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"`.
-- [ ] Esperar salida 0, todas las pruebas aprobadas y solo omisiones soportadas. Detenerse ante fallos ajenos sin cambiar comportamiento no relacionado.
+RH-W-0008 está completo y aplicado. Su ejecutor de reemplazo es la única ruta de mutación para propietarios generados existentes y autenticados.
 
-## Tarea 8: Sincronizar por copia exacta las proyecciones del paquete del builder
+- [ ] Renderizar la salida consumidora exacta con todas las dimensiones instaladas explícitas.
+- [ ] Generar un preview nuevo ligado al contenido desde los bytes actuales del repositorio.
+- [ ] Revisar acciones exactas create, append, replace, migrate y blocked. No reutilizar listas ni digests históricos.
+- [ ] Obtener la aprobación exigida por el límite activo del builder y aplicar el plan sin cambios mediante el ejecutor existente ligado al digest.
+- [ ] Verificar que un segundo preview idéntico no tenga acciones y que ambos checkers informen `current` con 0 escrituras.
+- [ ] Nunca sustituirlo por ediciones manuales, borrado, copia del paquete ni un writer aditivo nuevo.
 
-**Archivos:** siete rutas exactas: `SKILL.md`, `scripts/harness_tool.py`, `tests/test_harness_tool.py`, `references/architecture.md`, `references/audit-and-interview.md`, `references/preservation-and-safety.md` y `references/validation.md`; fuente `skill/repo-harness-builder/`, destinos equivalentes bajo `.opencode/skills/repo-harness-builder/` y `.claude/skills/repo-harness-builder/`.
+## Tarea 10: Reconciliar y entregar
 
-- [ ] Antes de copiar, ejecutar la comprobación SHA-256 indicada abajo. Debe fallar en al menos una ruta RH-W-0025; salida 0 significa que no hay trabajo de proyección.
-- [ ] Copiar desde la raíz con `$paths = @("SKILL.md", "scripts/harness_tool.py", "tests/test_harness_tool.py", "references/architecture.md", "references/audit-and-interview.md", "references/preservation-and-safety.md", "references/validation.md"); foreach ($path in $paths) { Copy-Item -LiteralPath "skill/repo-harness-builder/$path" -Destination ".opencode/skills/repo-harness-builder/$path" -Force; Copy-Item -LiteralPath "skill/repo-harness-builder/$path" -Destination ".claude/skills/repo-harness-builder/$path" -Force }`.
-- [ ] Verificar bytes con `$paths = @("SKILL.md", "scripts/harness_tool.py", "tests/test_harness_tool.py", "references/architecture.md", "references/audit-and-interview.md", "references/preservation-and-safety.md", "references/validation.md"); foreach ($path in $paths) { if ((Get-FileHash -Algorithm SHA256 -LiteralPath "skill/repo-harness-builder/$path").Hash -ne (Get-FileHash -Algorithm SHA256 -LiteralPath ".opencode/skills/repo-harness-builder/$path").Hash) { throw "OpenCode projection mismatch: $path" }; if ((Get-FileHash -Algorithm SHA256 -LiteralPath "skill/repo-harness-builder/$path").Hash -ne (Get-FileHash -Algorithm SHA256 -LiteralPath ".claude/skills/repo-harness-builder/$path").Hash) { throw "Claude projection mismatch: $path" } }`. Esperar salida 0 sin texto.
-- [ ] Ejecutar las tres suites con `python -B -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"`, y los comandos equivalentes para `.opencode/skills/repo-harness-builder/tests` y `.claude/skills/repo-harness-builder/tests`. Esperar salida 0 y totales coincidentes.
-- [ ] Mantener separada la generación consumidora. No regenerar `.repo-harness/**`, proyecciones de sesión, manifiesto, checker, reglamento ni docs durables con el writer aditivo actual. Después de completar RH-W-0008, abrir un seguimiento acotado que use su interfaz real para preview ligado al contenido, aprobación humana, digest, apply sin cambios y verificación. No inventar ahora comandos futuros ni sustituirlos con `Copy-Item`, borrado o edición manual.
-
-## Tarea 9: Reconciliar documentación bilingüe y ciclo de vida después de implementar
-
-**Archivos:** `usage.md` y `decisions.md` con sus pares solo después del seguimiento de regeneración; `roadmap.md`, `current-state.md`, pares españoles y `CHANGELOG.md` al cierre verificado; preservar ambas investigaciones.
-
-- [ ] No editar a mano propietarios durables generados. Después de RH-W-0008, el seguimiento aprobado debe regenerar selección, modos, degradación, promoción y siguiente acción, con inglés propietario y español espejo completo.
-- [ ] Solo después de verificar RH-W-0025 y terminar el seguimiento de regeneración, cambiar RH-W-0025 de `ready` a `completed`, usar trabajo restante `none`, agregar evidencia, actualizar estado y changelog. No cambiar RH-W-0022.
-- [ ] Actualizar Engram `work/RH-W-0025` solo con implementación y regeneración verificadas. No marcar completo mientras RH-W-0008 siga incompleto.
-- [ ] Ejecutar suite canónica y `python .repo-harness/check.py`. Esperar pruebas aprobadas, checker `current`, salida 0 y `writes: 0`.
-
-## Tarea 10: Verificación completa, rollback y límites de entrega
-
-**Archivos:** verificar todas las rutas cambiadas; no modificar GitHub, sistemas externos, registros ajenos ni consumidores no aprobados.
-
-- [ ] Ejecutar las tres suites, `python .repo-harness/check.py` y `git diff --check`. Esperar suites aprobadas con totales iguales, checker actual y salida vacía de diff check.
-- [ ] Validar enlaces relativos, estructura y semántica bilingüe, pruebas de documentación/roadmap y ausencia de U+2013/U+2014.
-- [ ] Inspeccionar `git status --short`, `git diff --stat` y el diff limitado a rutas RH-W-0025. Rechazar dependencias, secretos, `.codegraph/`, proveedor, comportamiento RH-W-0022 o cambios ajenos.
-- [ ] Ante fallo, restaurar solo ediciones RH-W-0025 desde el patch o snapshot del ejecutor. Nunca usar `git reset --hard` ni `git checkout --`. Usar rollback acotado del apply y detenerse tras fallo repetido.
-- [ ] Límite preferido del commit de implementación: `feat: add capability-aware integration contracts`. Incluir fuente, pruebas y las siete proyecciones del paquete. Excluir propietarios consumidores y docs generadas hasta el seguimiento posterior a RH-W-0008, que mantiene regeneración, verificación, ciclo de vida bilingüe y changelog en su propia unidad. No hacer commit sin solicitud explícita.
+- [ ] Solo después de verificar implementación y apply consumidor, cambiar RH-W-0025 de `ready` a `completed`, usar trabajo restante `none` y reconciliar estado actual, pares españoles, changelog y Engram.
+- [ ] No cambiar estado ni dependencia de RH-W-0022.
+- [ ] Validar enlaces, paridad semántica bilingüe, caracteres prohibidos y rutas exactas modificadas.
+- [ ] Ejecutar todas las suites del paquete, `python .repo-harness/check.py` y `git diff --check`.
+- [ ] Inspeccionar estado, estadística y diff enfocado antes de cualquier acción Git aprobada por separado.
+- [ ] Ante un fallo, restaurar solo esta unidad mediante su patch o rollback del ejecutor. Nunca usar recuperación destructiva de Git.
 
 ## Pronóstico
 
-- Archivos esperados antes de regeneración: 15 a 21 archivos canónicos, de pruebas, referencias y proyecciones del paquete.
-- Líneas esperadas antes de regeneración: 350 a 650. El seguimiento posterior a RH-W-0008 pronostica sus propietarios desde el preview ligado al contenido de ese ejecutor.
-- Riesgos principales: ausencia de sonda estable de Gentle AI, crecimiento contractual, copia accidental de autoridad, deriva de proyecciones y cierre prematuro del ciclo de vida.
-- Unidad de rollback: patch RH-W-0025 completo, usando rollback del apply ante escritura generada parcial.
+- Alcance: fuente canónica, pruebas enfocadas, referencias, proyecciones exactas del paquete y propietarios generados seleccionados por un preview nuevo de RH-W-0008.
+- Riesgos: validación débil de salida, pruebas de procesos no deterministas, confundir preflight de instalación con degradación en runtime, copiar autoridad y completar prematuramente el ciclo de vida.
+- Rollback: patch RH-W-0025 completo más rollback acotado del ejecutor para escrituras generadas.
 
-## Lista de aceptación del plan
+## Lista de aceptación
 
-- [ ] La Tarea 1 demuestra comportamiento actual con RED legítimo antes de editar producto.
-- [ ] La sonda de Gentle AI es una compuerta verificada, nunca una interfaz inventada.
-- [ ] Las cuatro combinaciones tienen cobertura sin tercer modo.
-- [ ] Precedencia del repositorio, promoción selectiva, aprobación humana y degradación por componente están probadas.
-- [ ] No hay aprobación fabricada, SDD sintético, almacenes copiados, veredicto agregado ni reintento infinito.
-- [ ] Fuente, pruebas y siete proyecciones del paquete forman la unidad de implementación; propietarios consumidores y cierre de ciclo de vida permanecen juntos en el seguimiento habilitado por RH-W-0008.
+- [ ] `gentle-ai version` es la única sonda de Gentle AI; `verified` exige salida 0 y `gentle-ai <version>`.
+- [ ] La detección tiene exactamente `not_found`, `found_on_path` y `verified`.
+- [ ] La Tarea 2 cubre ejecución, ejecutable ausente, timeout, salida distinta de cero, salida malformada, Engram y clasificación combinada mediante pruebas deterministas y acotadas.
+- [ ] Seleccionar y aplicar integrado valida ambas capacidades durante la instalación.
+- [ ] La pérdida posterior a la instalación degrada solo su componente, salvo que la política lo haga obligatorio.
+- [ ] El ejecutor de reemplazo completado en RH-W-0008 maneja propietarios generados existentes.
+- [ ] Se prueban precedencia del repositorio, promoción selectiva, aprobación humana y las cuatro combinaciones de runtime sin tercer modo.
+- [ ] Los planes en inglés y español permanecen como espejos semánticos completos.
 - [ ] RH-W-0022 permanece relacionado e independiente.
