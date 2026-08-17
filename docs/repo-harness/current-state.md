@@ -70,6 +70,7 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
+- Active projection: `RH-W-0034` is `ready`. It owns the verified `v3.1-rc.2` consumer defects covering concrete Spanish interview copy, human-only report-language evidence, Spanish-only checker and map parity, and owner-before-provider recovery. Its [canonical implementation plan](rh-w-0034-implementation-plan.md) requires temporary consumer replay and forbids direct changes to `E:/code/VPS`.
 - Active projection: `RH-W-0010` and `RH-W-0019` are `ready`. [roadmap.md](roadmap.md) owns their verified scope, citations, and definitions.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015`, the unattended internal-maintenance idea `RH-W-0018`, and the optional CodeGraph capability `RH-W-0026` retain explicit advancement conditions in [roadmap.md](roadmap.md). `RH-W-0026` requires explicit future design or research approval and primary-source review before advancement.
@@ -79,4 +80,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Reconcile `RH-W-0011` before deciding whether the published candidate can advance: the historical review report was never carried into this repository, so no current evidence proves whether findings remain open. `RH-W-0010` gates a real `3.1.0` rather than the existing candidate. The unit choice remains the human's.
+Implement `RH-W-0034` before recommending a successor to `v3.1-rc.2`. Begin with the plan's RED language-evidence and Spanish-only subprocess fixtures; do not repair `E:/code/VPS` directly or publish a release from the planning unit.

@@ -24,6 +24,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0034
+| Field | Value |
+|---|---|
+| Origin | Verified `v3.1-rc.2` consumer transcript and installed-output evidence from a Spanish-only non-Git consumer |
+| Priority | P1: the published candidate can generate a checker that rejects its own valid Spanish-only manifest, advertise nonexistent documentation, select report language from wrapper prose, and route a builder defect into irrelevant provider reporting |
+| Dependencies | none for implementation; successor release publication remains a separate approval-bound work unit |
+| Status | ready |
+| Completed work | Confirmed the defects against canonical source and tests, selected `RH-W-0034` as the next immutable ID, resolved every implementation decision, and created the canonical executable plan plus complete Spanish peer. |
+| Remaining work | Execute [the implementation plan](rh-w-0034-implementation-plan.md) with strict RED/GREEN coverage; synchronize canonical, OpenCode, and Claude packages; prove owner and generated checker parity in Spanish-only subprocess fixtures; replay the consumer path in a temporary non-Git fixture; and complete lifecycle and release evidence. |
+| Additions | Concrete Spanish interview copy; typed report-language evidence with ask-once fallback; exact owner/generated documentation-locale parity; Spanish-only local map and link validation; owner-before-provider failure classification; safe upgrade and fresh regeneration guidance. |
+| Exclusions | No direct `E:/code/VPS` mutation, consumer checker patch, Gentle AI source change without separate evidence, Git or RDD mutation, provider or GitHub action, repository publication, external service, tag or release alteration, new locale, translation service, dependency, or changelog entry while planned. |
+| Deferrals | Publishing a successor release candidate is deferred until the implementation, all three package suites, temporary consumer replay, explicit-dimension owner check, generated checker, links, lifecycle, and byte audits pass. |
+| Rejections | Rejected patching `.repo-harness/check.py` in the consumer, treating English wrapper prose as human language evidence, requiring English first in a Spanish-only manifest, advertising bilingual-only files, classifying builder-generated mismatch as a Gentle AI defect, attempting clone-scope RDD disable in a non-Git directory, and implying GitHub repository publication. |
+| Evidence | `normalize_documentation_languages()` accepts `("es",)` while generated `check_script().parse_manifest()` rejects `documentation[0] != "en"`; `docs_outputs()` emits nonexistent English-owner and bilingual-maintenance links in Spanish-only mode; the report-language contract already says wrapper prose and tool output are not conversation evidence; verified consumer evidence shows the resulting English report, checker failure, ownership misclassification, provider-consent detour, non-Git directory, and global RDD already off. |
+| Decision history | 2026-08-17: registered as `ready` because the user supplied verified reproduction evidence and explicitly resolved wording, language precedence, preservation behavior, failure ownership, remediation safety, Git/RDD boundaries, release sequencing, exact verification, and non-goals. |
+| Next advancement condition | Move to `active` when implementation begins from T-001 RED coverage. Complete only after every acceptance criterion in the canonical plan passes and Engram topic `work/RH-W-0034` is reconciled. |
+
 ### RH-W-0033
 | Field | Value |
 |---|---|

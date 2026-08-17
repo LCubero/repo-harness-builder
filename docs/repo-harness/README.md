@@ -20,6 +20,7 @@
 | [rh-w-0025-implementation-plan.md](rh-w-0025-implementation-plan.md) | Canonical executable implementation plan for capability-aware Gentle AI and Engram coordination |
 | [rh-w-0031-research.md](rh-w-0031-research.md) | Canonical primary-source evidence owner for conversation-language boundaries |
 | [rh-w-0031-implementation-plan.md](rh-w-0031-implementation-plan.md) | Canonical executable remediation plan for conversation-language boundaries |
+| [rh-w-0034-implementation-plan.md](rh-w-0034-implementation-plan.md) | Canonical executable plan for consumer recovery and Spanish-only correctness |
 | [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |
 | [CHANGELOG.md](../../CHANGELOG.md) | Factual, dated, concise completed changes; never future plans |
 
