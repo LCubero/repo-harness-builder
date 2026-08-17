@@ -6,7 +6,7 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes. The manifest-matched owner check also reports `current` with 21 current, 18 human-evolved, 4 present, and 0 stale.
-- Canonical suite green: 276 tests passed with 7 skips. `RH-W-0032` adds canonical verification-principle ownership and inheritance coverage; both package projections pass 276 tests with 15 skips.
+- Canonical suite green: 290 tests passed with 7 skips. `RH-W-0025` includes deterministic capability classification, CLI-bound integrated preflight, complete-output validation, owner boundaries, integrated selection, and component-degradation coverage.
 - Root `.gitattributes` protects 19 byte-compared generated paths, derived from render outputs rather than a fixed pair.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1. The checked-in checker and manifest remain a consistent pair.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
@@ -16,6 +16,7 @@
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
+- Completed `RH-W-0025`: bounded `gentle-ai version` PATH execution and host-provided Engram MCP or CLI evidence now produce exactly `not_found`, `found_on_path`, or `verified`. The production CLI enforces both verified capabilities before integrated preview or apply, preserves both outcomes on refusal, and validates complete Gentle AI output before bounding retained evidence. Runtime loss remains component-scoped unless repository policy requires that component, owner state is not copied, and reusable knowledge promotion requires repository verification, a canonical owner, and human approval. RH-W-0008 applied the six authenticated generated skill replacements.
 - Completed `RH-W-0032`: one universal generated-rulebook principle now distinguishes verified facts, supported inferences, unknown or unverifiable claims, and required human decisions. It requires applicable, trustworthy, proportionate evidence; forbids missing evidence, stale memory, unrelated proxies, assumptions, and confidence wording as factual substitutes; verifies without asking when possible; and names the missing capability before requesting only the minimum evidence, criterion, authority, or decision. All three daily skills inherit the rulebook without duplicating the full principle.
 - Completed `RH-W-0031`: conversation language follows a verified current human instruction, then persisted explicit preference, verified session language only without a persisted preference, validated manifest fallback, and deterministic English. Flattened hosts preserve persisted preference; help guide locale is independent from reply language; fixed-language direct questions are gone; and machine values remain byte-identical. Corrected explicit-dimension digest `dff015e12022536ee22060603aece83ce8c5a413aac1c092e4fff98bb086136e` applied 13 paths once, and the explicit second preview had zero actions.
 - Completed `RH-W-0009`: an existing `README.md` without the reciprocal link now receives one bounded, digest-bound append of the exact selector block, and the Spanish peer is created in the same apply. The append preserves every existing byte and the LF or CRLF convention and adds nothing else. A README that is not a regular file still blocks the peer and fails apply closed.
@@ -67,13 +68,13 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Active projection: `RH-W-0010`, `RH-W-0019`, and `RH-W-0025` are `ready`. All three were analyzed against current source on 2026-08-15; [roadmap.md](roadmap.md) owns their verified scope, corrected citations, and definitions. `RH-W-0025` returned to ready after its RH-W-0008 prerequisite was applied and verified and its open detection probe was resolved against `gentle-ai version`. A proposed split into an Engram half and a blocked Gentle AI half was rejected, because it would fragment the four-combination availability matrix across two units.
+- Active projection: `RH-W-0010` and `RH-W-0019` are `ready`. [roadmap.md](roadmap.md) owns their verified scope, citations, and definitions.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015`, the unattended internal-maintenance idea `RH-W-0018`, and the optional CodeGraph capability `RH-W-0026` retain explicit advancement conditions in [roadmap.md](roadmap.md). `RH-W-0026` requires explicit future design or research approval and primary-source review before advancement.
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings and records `RH-W-0007` as completed based on current tests.
-- Recently completed IDs: `RH-W-0032`, `RH-W-0031`, `RH-W-0009`, `RH-W-0030`, `RH-W-0029`, `RH-W-0028`, `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
+- Recently completed IDs: `RH-W-0025`, `RH-W-0032`, `RH-W-0031`, `RH-W-0009`, `RH-W-0030`, `RH-W-0029`, `RH-W-0028`, `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
 
 ## Next Step
 <!-- doc-role:next-step -->
 
-Suggested plan, not yet selected: start `RH-W-0025` through its canonical implementation plan, which is the only ready unit with an approved executable plan. `RH-W-0010` and `RH-W-0019` remain ready with verified scope and stay unbundled. The unit choice is still the human's; no implementation has begun.
+Suggested next work remains unselected. `RH-W-0010` and `RH-W-0019` are ready with verified scope and stay unbundled; the unit choice remains the human's.

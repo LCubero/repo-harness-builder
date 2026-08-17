@@ -10,7 +10,7 @@
 
 **Canonical inputs:** [integration research](integration-research.md), [RH-W-0025](roadmap.md#rh-w-0025), and [standing decisions](decisions.md). The [Spanish plan](../es/repo-harness/rh-w-0025-implementation-plan.md) is a complete human mirror.
 
-**Execution prerequisite:** satisfied. RH-W-0008 delivered the content-bound replacement executor, was applied, and was verified on 2026-08-15. RH-W-0025 remains `ready`.
+**Execution result:** completed. RH-W-0008 delivered the content-bound replacement executor and applied the verified RH-W-0025 consumer plan on 2026-08-16.
 
 ## Detection Contract
 

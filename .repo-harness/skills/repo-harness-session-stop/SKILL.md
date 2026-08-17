@@ -28,6 +28,8 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 - Save significant decisions, discoveries, fixes, and a session summary to Engram.
 - If any Engram save fails, surface the failure and must not claim successful continuity.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
+- Promote reusable knowledge only after verifying relevance, selecting its canonical repository owner, and obtaining human approval.
+- Date and revalidate changing external facts before reuse. Leave incidental noise unpromoted.
 - Git, commit, push, provider, backup, and publication actions are separate optional gates and are never implied by session stop.
 - Keep ordinary handoff and continuation questions conversational. Do not use the builder's exact digest-bound approval vocabulary.
 - Ask for explicit conversational approval before any external mutation.

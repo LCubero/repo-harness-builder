@@ -13,6 +13,7 @@ import argparse
 import hashlib
 import json
 import re
+import subprocess
 import sys
 import tempfile
 from collections.abc import Mapping, Sequence
@@ -56,6 +57,8 @@ DEFAULT_REPORT_LANGUAGE = "english"
 PRIMARY_DOCUMENTATION_LANGUAGE = "en"
 DOCUMENTATION_LANGUAGES = {"en", "es"}
 CONVERSATION_LANGUAGES = {"english", "espanol"}
+CAPABILITY_CLASSIFICATIONS = {"not_found", "found_on_path", "verified"}
+CAPABILITY_OUTPUT_LIMIT = 4096
 MACHINE_VALUE_KINDS = {
     "ahead-count",
     "approval-token",
@@ -99,6 +102,121 @@ APPROVAL_DOMAINS = {
         "invalid": "Respuesta no valida. Escriba exactamente APROBAR o DENEGAR en mayusculas.",
     },
 }
+
+
+def bounded_capability_output(value: object) -> str:
+    """Keep exact capability evidence within a deterministic reporting bound."""
+    if isinstance(value, bytes):
+        text = value.decode("utf-8", errors="replace")
+    elif isinstance(value, str):
+        text = value
+    elif value is None:
+        text = ""
+    else:
+        text = str(value)
+    return text[:CAPABILITY_OUTPUT_LIMIT]
+
+
+def detect_gentle_ai(
+    execute: Callable[..., subprocess.CompletedProcess[str]] = subprocess.run,
+    timeout_seconds: float = 2.0,
+) -> dict[str, Any]:
+    """Classify the advertised Gentle AI PATH capability without shell expansion."""
+    command = ("gentle-ai", "version")
+    try:
+        completed = execute(
+            command,
+            capture_output=True,
+            text=True,
+            timeout=timeout_seconds,
+            check=False,
+            shell=False,
+        )
+    except FileNotFoundError as error:
+        return {"classification": "not_found", "evidence": str(error)}
+    except subprocess.TimeoutExpired as error:
+        return {
+            "classification": "found_on_path",
+            "evidence": {
+                "timeoutSeconds": timeout_seconds,
+                "stdout": bounded_capability_output(error.output),
+                "stderr": bounded_capability_output(error.stderr),
+            },
+        }
+
+    if isinstance(completed.stdout, bytes):
+        normalized = completed.stdout.decode("utf-8", errors="replace").strip()
+    elif isinstance(completed.stdout, str):
+        normalized = completed.stdout.strip()
+    else:
+        normalized = "" if completed.stdout is None else str(completed.stdout).strip()
+    stdout = bounded_capability_output(completed.stdout)
+    stderr = bounded_capability_output(completed.stderr)
+    evidence = {"exitCode": completed.returncode, "stdout": stdout, "stderr": stderr}
+    match = re.fullmatch(r"gentle-ai ([^\s]+)", normalized)
+    if completed.returncode == 0 and match is not None:
+        return {"classification": "verified", "version": match.group(1), "evidence": evidence}
+    return {"classification": "found_on_path", "evidence": evidence}
+
+
+def detect_engram(host_evidence: Mapping[str, object] | None) -> dict[str, Any]:
+    """Validate Engram evidence supplied by the existing host MCP or CLI boundary."""
+    if host_evidence is None:
+        return {"classification": "not_found", "evidence": "Engram capability was not exposed by the host"}
+    evidence = dict(host_evidence)
+    surface = evidence.get("surface")
+    status = evidence.get("status")
+    detail = evidence.get("evidence")
+    if surface in {"mcp", "cli"} and status == "missing":
+        return {"classification": "not_found", "evidence": evidence}
+    if surface in {"mcp", "cli"} and status == "verified" and isinstance(detail, str) and bool(detail.strip()):
+        return {"classification": "verified", "evidence": evidence}
+    return {"classification": "found_on_path", "evidence": evidence}
+
+
+def select_integration_mode(
+    requested_mode: str,
+    gentle_ai: Mapping[str, object],
+    engram: Mapping[str, object],
+) -> dict[str, Any]:
+    """Authorize one of the two generation modes from component evidence."""
+    require(requested_mode in {"integrated", "standalone"}, "unsupported integration mode")
+    allowed = requested_mode == "standalone" or (
+        gentle_ai.get("classification") == "verified" and engram.get("classification") == "verified"
+    )
+    return {
+        "mode": requested_mode,
+        "allowed": allowed,
+        "gentleAi": dict(gentle_ai),
+        "engram": dict(engram),
+        "nextAction": (
+            "continue with the selected mode"
+            if allowed
+            else "select standalone or restore the unverified capability"
+        ),
+    }
+
+
+def runtime_capability_status(
+    gentle_ai_available: bool,
+    engram_available: bool,
+    required: Sequence[str] = (),
+) -> dict[str, Any]:
+    """Report post-installation component outcomes without an aggregate authority state."""
+    required_set = set(required)
+
+    def component(available: bool, name: str, unavailable_effect: str) -> dict[str, str]:
+        if available:
+            return {"status": "available", "effect": "component workflow is available"}
+        status = "blocked" if name in required_set else "degraded"
+        return {"status": status, "effect": unavailable_effect}
+
+    return {
+        "repository": "authoritative",
+        "gentleAi": component(gentle_ai_available, "gentle-ai", "review and delivery are unavailable"),
+        "engram": component(engram_available, "engram", "continuity is unavailable"),
+        "nextAction": "restore only the capability required by the affected workflow",
+    }
 GIT_CONSENT_STEPS = {
     "commit-and-push": ("stage", "commit", "checks", "fetch", "push"),
     "commit": ("stage", "commit", "checks"),
@@ -566,9 +684,14 @@ def session_start_skill(
 """
         if standalone
         else """- Gentle AI and Engram are required for integrated session continuity.
+- The repository owns durable truth, source, tests, policy, backlog, and approvals.
+- Engram owns semantic continuity, relations, conflict state, review-age metadata, and session memory.
+- Gentle AI owns routing, exact-candidate review and receipts, and delivery gates when enabled.
 - Recover relevant recent context from Engram and reconcile every recalled claim with current repository evidence.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - If Engram is unavailable or recovery fails, surface the failure and must not claim successful continuity.
+- After installation, Gentle AI loss degrades review and delivery only, while Engram loss degrades continuity only. Block an affected workflow only when repository policy requires its missing component.
+- Report repository, Gentle AI, and Engram outcomes separately with exact failure evidence and one next action. Never reconstruct malformed owner output as success.
 """
     )
     recovery_step = (
@@ -677,6 +800,8 @@ def session_stop_skill(
 - Save significant decisions, discoveries, fixes, and a session summary to Engram.
 - If any Engram save fails, surface the failure and must not claim successful continuity.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
+- Promote reusable knowledge only after verifying relevance, selecting its canonical repository owner, and obtaining human approval.
+- Date and revalidate changing external facts before reuse. Leave incidental noise unpromoted.
 """
     )
     save_step = (
@@ -2546,6 +2671,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             child.add_argument("--apply", action="store_true", help="create the absent files listed in the plan")
             child.add_argument("--approved-plan-sha256", help="digest printed by the approved preview")
             child.add_argument("--approval", help="exact approval answer from the active report-language domain; builder activation only")
+            child.add_argument("--engram-evidence-json", help="exact JSON evidence from the host-supported Engram MCP or CLI boundary")
     self_test = sub.add_parser("self-test", help="bootstrap and verify a temporary empty project")
     self_test.add_argument("--standalone", action="store_true", help="test repository-only continuity")
     args = parser.parse_args(argv)
@@ -2559,6 +2685,25 @@ def main(argv: Optional[list[str]] = None) -> int:
         if args.command == "check":
             print(dump_json(check(root, args.project_name, selected, args.license_id, args.standalone)), end="")
             return 0
+        if not args.standalone:
+            host_evidence = json.loads(args.engram_evidence_json) if args.engram_evidence_json else None
+            require(host_evidence is None or isinstance(host_evidence, dict), "Engram host evidence must be a JSON object")
+            preflight = select_integration_mode(
+                "integrated",
+                detect_gentle_ai(),
+                detect_engram(host_evidence),
+            )
+            if not preflight["allowed"]:
+                print(
+                    dump_json({
+                        "status": "FAILED_CLOSED",
+                        "error": "integrated mode requires verified Gentle AI and Engram capabilities",
+                        "capabilityPreflight": preflight,
+                    }),
+                    end="",
+                    file=sys.stderr,
+                )
+                return 2
         outputs = render(
             args.project_name,
             selected,

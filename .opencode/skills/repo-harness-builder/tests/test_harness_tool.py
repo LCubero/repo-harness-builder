@@ -80,7 +80,7 @@ class ApprovalUxTests(unittest.TestCase):
     def test_preview_exposes_the_localized_approval_domain(self):
         with tempfile.TemporaryDirectory() as directory:
             for language, answers in (("english", ["APPROVE", "DENY"]), ("espanol", ["APROBAR", "DENEGAR"])):
-                result = subprocess.run(["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--runtime", "opencode", "--report-language", language, "--activation", "builder"], check=True, capture_output=True, text=True)
+                result = subprocess.run(["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--runtime", "opencode", "--report-language", language, "--activation", "builder", "--standalone"], check=True, capture_output=True, text=True)
                 payload = json.loads(result.stdout)
                 self.assertEqual(payload["approvalPrompt"], TOOL.approval_prompt(language))
                 self.assertEqual(payload["approvalAnswers"], answers)
@@ -88,7 +88,7 @@ class ApprovalUxTests(unittest.TestCase):
 
     def test_cli_defaults_to_english_and_plan_digest_is_language_independent(self):
         with tempfile.TemporaryDirectory() as directory:
-            base = ["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example"]
+            base = ["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--standalone"]
             default = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
             spanish = json.loads(subprocess.run([*base, "--report-language", "espanol"], check=True, capture_output=True, text=True).stdout)
             self.assertEqual(default["reportLanguage"], "english")
@@ -401,7 +401,7 @@ class ProductWorkflowTests(unittest.TestCase):
     def test_documentation_entry_points_name_only_files_the_plan_creates(self):
         """The preview never advertises a reader document the render does not emit."""
         with tempfile.TemporaryDirectory() as directory:
-            base = ["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example"]
+            base = ["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--standalone"]
             english = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
             bilingual = json.loads(subprocess.run([*base, "--documentation-language", "en", "--documentation-language", "es", "--conversation-language", "espanol"], check=True, capture_output=True, text=True).stdout)
             self.assertEqual(english["documentation"], {"readme": "README.md", "usage": "docs/repo-harness/usage.md"})
@@ -422,6 +422,7 @@ class ProductWorkflowTests(unittest.TestCase):
                 "python", "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--documentation-language", "en",
                 "--documentation-language", "es", "--conversation-language", "espanol",
+                "--standalone",
             ]
             payload = json.loads(subprocess.run(command, check=True, capture_output=True, text=True).stdout)
             self.assertIn("README.es.md", [item["path"] for item in payload["blocked"]])
@@ -870,7 +871,7 @@ class AdditiveWriteTests(unittest.TestCase):
             result = subprocess.run(
                 [
                     "python", "-B", str(SCRIPT), "render", "--root", directory,
-                    "--project-name", "Example", "--no-codegraph-ignore",
+                    "--project-name", "Example", "--no-codegraph-ignore", "--standalone",
                 ],
                 check=True,
                 capture_output=True,
@@ -1146,6 +1147,7 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
         root: Path,
         project: str = "Example",
         runtimes: tuple[str, ...] = ("opencode",),
+        standalone: bool = False,
     ):
         project_id = TOOL.normalize_project_name(project)
         legacy_mapping = TOOL.legacy_command_to_skill(project_id)
@@ -1153,7 +1155,7 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
             project,
             list(runtimes),
             TOOL.DEFAULT_LICENSE,
-            False,
+            standalone,
             TOOL.DEFAULT_REPORT_LANGUAGE,
             None,
             None,
@@ -1161,7 +1163,7 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
             legacy_mapping,
         )
         TOOL.write_outputs(root, installed, TOOL.plan_changes(root, installed))
-        desired = TOOL.render(project, list(runtimes))
+        desired = TOOL.render(project, list(runtimes), standalone=standalone)
         replacements = TOOL.generated_skill_replacements(
             json.loads(installed[TOOL.MANIFEST_PATH]),
             json.loads(desired[TOOL.MANIFEST_PATH]),
@@ -1243,13 +1245,14 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
     def test_normal_render_cli_previews_and_applies_legacy_migration(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode",))
+            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode",), standalone=True)
             command = [
                 "python", "-B", str(SCRIPT), "render",
                 "--root", str(root),
                 "--project-name", "Acme API",
                 "--runtime", "opencode",
                 "--activation", "builder",
+                "--standalone",
             ]
             preview = json.loads(subprocess.run(command, check=True, capture_output=True, text=True).stdout)
             self.assertEqual(preview["status"], "plan")
@@ -1278,10 +1281,10 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
     def test_normal_apply_rejects_changed_legacy_bytes_before_any_mutation(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            _, _, replacements = self.migration_fixture(root, "Acme API", ("opencode",))
+            _, _, replacements = self.migration_fixture(root, "Acme API", ("opencode",), standalone=True)
             command = [
                 "python", "-B", str(SCRIPT), "render",
-                "--root", str(root), "--project-name", "Acme API", "--runtime", "opencode",
+                "--root", str(root), "--project-name", "Acme API", "--runtime", "opencode", "--standalone",
             ]
             preview = json.loads(subprocess.run(command, check=True, capture_output=True, text=True).stdout)
             source = sorted(replacements)[0]
@@ -1721,6 +1724,7 @@ class RootPointerTests(unittest.TestCase):
             base = [
                 "python", "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--runtime", "claude-code",
+                "--standalone",
             ]
             preview = subprocess.run(base, check=True, capture_output=True, text=True)
             approved = json.loads(preview.stdout)["planSha256"]
@@ -1742,6 +1746,7 @@ class RootPointerTests(unittest.TestCase):
             base = [
                 "python", "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--report-language", "espanol",
+                "--standalone",
             ]
             ordinary = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
             active = json.loads(
@@ -1762,6 +1767,7 @@ class RootPointerTests(unittest.TestCase):
             base = [
                 "python", "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--report-language", "espanol",
+                "--standalone",
             ]
             digest = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)["planSha256"]
             rejected = subprocess.run(
@@ -1786,6 +1792,7 @@ class RootPointerTests(unittest.TestCase):
                 "python", "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--report-language", "espanol",
                 "--activation", "builder",
+                "--standalone",
             ]
             preview = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
             digest = preview["planSha256"]
@@ -2940,6 +2947,238 @@ class GeneratedCoreTests(unittest.TestCase):
             TOOL.normalize_project_name("!!!")
 
 
+class CapabilityAwareIntegrationContractTests(unittest.TestCase):
+    def setUp(self):
+        self._missing = []
+        defaults = {
+            "CAPABILITY_OUTPUT_LIMIT": 0,
+            "CAPABILITY_CLASSIFICATIONS": set(),
+            "detect_gentle_ai": lambda **kwargs: {"classification": "missing", "evidence": {}, "version": ""},
+            "detect_engram": lambda evidence: {"classification": "missing", "evidence": evidence},
+            "select_integration_mode": lambda mode, gentle, engram: {
+                "mode": mode, "allowed": False, "gentleAi": gentle, "engram": engram, "nextAction": "missing"
+            },
+            "runtime_capability_status": lambda gentle, engram, required=(): {
+                "repository": "missing",
+                "gentleAi": {"status": "missing"},
+                "engram": {"status": "missing"},
+            },
+        }
+        for name, value in defaults.items():
+            if not hasattr(TOOL, name):
+                self._missing.append(name)
+                setattr(TOOL, name, value)
+
+    def tearDown(self):
+        for name in self._missing:
+            delattr(TOOL, name)
+
+    def test_generated_contract_assigns_each_owner_without_copying_state(self):
+        combined = "\n".join(TOOL.render("Example", []).values())
+        for phrase in (
+            "The repository owns durable truth, source, tests, policy, backlog, and approvals.",
+            "Engram owns semantic continuity, relations, conflict state, review-age metadata, and session memory.",
+            "Gentle AI owns routing, exact-candidate review and receipts, and delivery gates when enabled.",
+            "Promote reusable knowledge only after verifying relevance, selecting its canonical repository owner, and obtaining human approval.",
+            "Date and revalidate changing external facts before reuse.",
+        ):
+            self.assertIn(phrase, combined)
+        for forbidden in (
+            "memory-owned backlog", "promotion queue", "receipt cache", "conflict store",
+            "attempt ledger", "combined approval state", "retry until clean",
+            "fabricate approval", "synthetic SDD", "improving repo-harness-builder",
+        ):
+            self.assertNotIn(forbidden, combined.lower())
+
+    def test_gentle_ai_probe_uses_exact_bounded_path_execution(self):
+        calls = []
+
+        def execute(command, **options):
+            calls.append((command, options))
+            return subprocess.CompletedProcess(command, 0, stdout="gentle-ai 2.4.0\n", stderr="")
+
+        result = TOOL.detect_gentle_ai(execute=execute, timeout_seconds=2.0)
+        self.assertEqual(result["classification"], "verified")
+        self.assertEqual(calls, [(("gentle-ai", "version"), {
+            "capture_output": True, "text": True, "timeout": 2.0, "check": False, "shell": False,
+        })])
+
+    def test_gentle_ai_missing_executable_is_not_found(self):
+        def execute(command, **options):
+            raise FileNotFoundError("gentle-ai")
+
+        result = TOOL.detect_gentle_ai(execute=execute)
+        self.assertEqual(result["classification"], "not_found")
+        self.assertIn("gentle-ai", result["evidence"])
+
+    def test_gentle_ai_timeout_is_found_on_path_with_exact_evidence(self):
+        def execute(command, **options):
+            raise subprocess.TimeoutExpired(command, options["timeout"], output="partial", stderr="slow")
+
+        result = TOOL.detect_gentle_ai(execute=execute, timeout_seconds=0.5)
+        self.assertEqual(result["classification"], "found_on_path")
+        self.assertEqual(result["evidence"]["timeoutSeconds"], 0.5)
+        self.assertEqual(result["evidence"]["stdout"], "partial")
+        self.assertEqual(result["evidence"]["stderr"], "slow")
+
+    def test_gentle_ai_nonzero_is_found_on_path_with_bounded_output(self):
+        result = TOOL.detect_gentle_ai(execute=lambda command, **options: subprocess.CompletedProcess(
+            command, 7, stdout="x" * 5000, stderr="failure" * 1000
+        ))
+        self.assertEqual(result["classification"], "found_on_path")
+        self.assertEqual(result["evidence"]["exitCode"], 7)
+        self.assertLessEqual(len(result["evidence"]["stdout"]), TOOL.CAPABILITY_OUTPUT_LIMIT)
+        self.assertLessEqual(len(result["evidence"]["stderr"]), TOOL.CAPABILITY_OUTPUT_LIMIT)
+
+    def test_gentle_ai_output_shape_is_strict(self):
+        invalid = ("", "gentle-ai", "gentle-ai  ", "gentle 1.0", "gentle-ai 1.0\nextra", "prefix gentle-ai 1.0")
+        for stdout in invalid:
+            with self.subTest(stdout=stdout):
+                result = TOOL.detect_gentle_ai(execute=lambda command, stdout=stdout, **options: subprocess.CompletedProcess(
+                    command, 0, stdout=stdout, stderr=""
+                ))
+                self.assertEqual(result["classification"], "found_on_path")
+        verified = TOOL.detect_gentle_ai(execute=lambda command, **options: subprocess.CompletedProcess(
+            command, 0, stdout="  gentle-ai 2.4.0-rc.3  \n", stderr=""
+        ))
+        self.assertEqual(verified["classification"], "verified")
+        self.assertEqual(verified["version"], "2.4.0-rc.3")
+
+    def test_oversized_malformed_gentle_ai_output_never_verifies(self):
+        stdout = "gentle-ai 2.4.0" + (" " * TOOL.CAPABILITY_OUTPUT_LIMIT) + "malformed"
+        result = TOOL.detect_gentle_ai(execute=lambda command, **options: subprocess.CompletedProcess(
+            command, 0, stdout=stdout, stderr=""
+        ))
+        self.assertEqual(result["classification"], "found_on_path")
+        self.assertLessEqual(len(result["evidence"]["stdout"]), TOOL.CAPABILITY_OUTPUT_LIMIT)
+
+    def test_engram_adapter_classifies_supported_host_evidence(self):
+        cases = (
+            (None, "not_found"),
+            ({"surface": "mcp", "status": "missing", "evidence": "tool unavailable"}, "not_found"),
+            ({"surface": "cli", "status": "failed", "evidence": "exit 1"}, "found_on_path"),
+            ({"surface": "mcp", "status": "verified", "evidence": "project detected"}, "verified"),
+            ({"surface": "unknown", "status": "verified", "evidence": "guess"}, "found_on_path"),
+            ({"surface": "mcp", "status": "verified", "evidence": ""}, "found_on_path"),
+        )
+        for evidence, expected in cases:
+            with self.subTest(evidence=evidence):
+                result = TOOL.detect_engram(evidence)
+                self.assertEqual(result["classification"], expected)
+                self.assertIn("evidence", result)
+
+    def test_capability_classification_has_exactly_three_states(self):
+        def missing(command, **options):
+            raise FileNotFoundError()
+
+        observed = {
+            TOOL.detect_gentle_ai(execute=missing)["classification"],
+            TOOL.detect_gentle_ai(execute=lambda command, **options: subprocess.CompletedProcess(
+                command, 1, stdout="", stderr="x"
+            ))["classification"],
+            TOOL.detect_gentle_ai(execute=lambda command, **options: subprocess.CompletedProcess(
+                command, 0, stdout="gentle-ai 1", stderr=""
+            ))["classification"],
+        }
+        self.assertEqual(observed, {"not_found", "found_on_path", "verified"})
+        self.assertEqual(TOOL.CAPABILITY_CLASSIFICATIONS, observed)
+
+    def test_integrated_selection_requires_both_verified_outcomes(self):
+        verified = {"classification": "verified", "evidence": "ok"}
+        unavailable = {"classification": "not_found", "evidence": "missing"}
+        selected = TOOL.select_integration_mode("integrated", verified, verified)
+        self.assertEqual(selected["mode"], "integrated")
+        self.assertTrue(selected["allowed"])
+        for gentle, engram in ((verified, unavailable), (unavailable, verified), (unavailable, unavailable)):
+            with self.subTest(gentle=gentle, engram=engram):
+                refused = TOOL.select_integration_mode("integrated", gentle, engram)
+                self.assertFalse(refused["allowed"])
+                self.assertEqual(refused["gentleAi"], gentle)
+                self.assertEqual(refused["engram"], engram)
+                self.assertEqual(refused["nextAction"], "select standalone or restore the unverified capability")
+        standalone = TOOL.select_integration_mode("standalone", unavailable, unavailable)
+        self.assertEqual(standalone["mode"], "standalone")
+        self.assertTrue(standalone["allowed"])
+
+    def test_cli_integrated_preview_and_apply_fail_closed_for_every_unverified_pair(self):
+        classifications = ("not_found", "found_on_path", "verified")
+        with tempfile.TemporaryDirectory() as directory:
+            base = [
+                "render", "--root", directory, "--project-name", "Example",
+            ]
+            for gentle_classification in classifications:
+                for engram_classification in classifications:
+                    if gentle_classification == engram_classification == "verified":
+                        continue
+                    gentle = {"classification": gentle_classification, "evidence": f"gentle-{gentle_classification}"}
+                    engram = {"classification": engram_classification, "evidence": f"engram-{engram_classification}"}
+                    for apply_args in ([], ["--apply", "--approved-plan-sha256", "unused"]):
+                        with self.subTest(gentle=gentle_classification, engram=engram_classification, apply=bool(apply_args)):
+                            stdout = unittest.mock.MagicMock()
+                            stderr = unittest.mock.MagicMock()
+                            with mock.patch.object(TOOL, "detect_gentle_ai", return_value=gentle), \
+                                 mock.patch.object(TOOL, "detect_engram", return_value=engram), \
+                                 mock.patch.object(sys, "stdout", stdout), \
+                                 mock.patch.object(sys, "stderr", stderr):
+                                result = TOOL.main([*base, *apply_args])
+                            self.assertEqual(result, 2)
+                            payload = json.loads("".join(call.args[0] for call in stderr.write.call_args_list))
+                            self.assertEqual(payload["capabilityPreflight"]["gentleAi"], gentle)
+                            self.assertEqual(payload["capabilityPreflight"]["engram"], engram)
+                            self.assertFalse((Path(directory) / RULEBOOK).exists())
+
+    def test_cli_integrated_preview_and_apply_proceed_when_both_capabilities_verify(self):
+        verified = {"classification": "verified", "evidence": "verified"}
+        host_evidence = {"surface": "mcp", "status": "verified", "evidence": "project detected"}
+        with tempfile.TemporaryDirectory() as directory, \
+             mock.patch.object(TOOL, "detect_gentle_ai", return_value=verified), \
+             mock.patch.object(TOOL, "detect_engram", return_value=verified) as engram_detector, \
+             mock.patch.object(sys, "stdout", new_callable=unittest.mock.MagicMock) as stdout:
+            base = [
+                "render", "--root", directory, "--project-name", "Example",
+                "--engram-evidence-json", json.dumps(host_evidence),
+            ]
+            preview_result = TOOL.main(base)
+            preview = json.loads("".join(call.args[0] for call in stdout.write.call_args_list))
+            stdout.reset_mock()
+            apply_result = TOOL.main([*base, "--apply", "--approved-plan-sha256", preview["planSha256"]])
+            applied = json.loads("".join(call.args[0] for call in stdout.write.call_args_list))
+            rulebook_exists = (Path(directory) / RULEBOOK).is_file()
+        self.assertEqual(preview_result, 0)
+        self.assertEqual(preview["status"], "plan")
+        self.assertEqual(apply_result, 0)
+        self.assertEqual(applied["status"], "VALIDATED")
+        self.assertTrue(rulebook_exists)
+        self.assertEqual(engram_detector.call_args_list, [mock.call(host_evidence), mock.call(host_evidence)])
+
+    def test_runtime_degradation_is_component_scoped_and_policy_aware(self):
+        cases = (
+            (True, True, (), "available", "available"),
+            (True, False, (), "available", "degraded"),
+            (False, True, (), "degraded", "available"),
+            (False, False, (), "degraded", "degraded"),
+            (False, True, ("gentle-ai",), "blocked", "available"),
+            (True, False, ("engram",), "available", "blocked"),
+        )
+        for gentle, engram, required, gentle_status, engram_status in cases:
+            with self.subTest(gentle=gentle, engram=engram, required=required):
+                result = TOOL.runtime_capability_status(gentle, engram, required)
+                self.assertEqual(result["repository"], "authoritative")
+                self.assertEqual(result["gentleAi"]["status"], gentle_status)
+                self.assertEqual(result["engram"]["status"], engram_status)
+                self.assertNotIn("overall", result)
+
+    def test_manifest_modes_remain_exact_and_detection_is_not_persisted(self):
+        manifests = (
+            json.loads(TOOL.render("Example", [])[TOOL.MANIFEST_PATH]),
+            json.loads(TOOL.render("Example", [], standalone=True)[TOOL.MANIFEST_PATH]),
+        )
+        self.assertEqual({manifest["integrationMode"] for manifest in manifests}, {"integrated", "standalone"})
+        for manifest in manifests:
+            self.assertNotIn("capabilities", manifest)
+            self.assertNotIn("detection", manifest)
+
+
 class UsageGuideTests(unittest.TestCase):
     def test_integrated_guide_routes_the_complete_operational_workflow(self):
         outputs = TOOL.render("Example", ["claude-code", "opencode"])
@@ -3793,7 +4032,7 @@ class RecordedRuntimeSetTests(unittest.TestCase):
             result = subprocess.run(
                 [
                     sys.executable, "-B", str(SCRIPT), "render", "--root", directory,
-                    "--project-name", "Example", "--runtime", "opencode", "--runtime", "claude-code",
+                    "--project-name", "Example", "--runtime", "opencode", "--runtime", "claude-code", "--standalone",
                 ],
                 capture_output=True,
                 text=True,
@@ -3879,7 +4118,7 @@ class LanguageFlagCliTests(unittest.TestCase):
                     result = subprocess.run(
                         [
                             sys.executable, "-B", str(SCRIPT), "render", "--root", directory,
-                            "--project-name", "Example", flag, value,
+                            "--project-name", "Example", flag, value, "--standalone",
                         ],
                         capture_output=True,
                         text=True,

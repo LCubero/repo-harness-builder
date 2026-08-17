@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-08-16
+
+- Completed `RH-W-0025`: added bounded `gentle-ai version` PATH classification, strict Engram host-evidence validation, CLI-bound fail-closed integrated preview and apply, complete-output validation before evidence bounding, component-scoped runtime degradation, selective promotion and owner boundaries, synchronized package projections, and six authenticated self-hosted generated skill replacements through RH-W-0008.
+
 ## 2026-08-15
 
 - Corrected the `RH-W-0025` implementation plan before implementation: standardized the verified `gentle-ai version` probe and three-state classification, separated installation preflight from later component degradation, replaced stale pre-RH-W-0008 executor wording, corrected ready-state projections, and required deterministic behavioral RED/GREEN coverage. `RH-W-0025` remains `ready`; production implementation has not begun.
