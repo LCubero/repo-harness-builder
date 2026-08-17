@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-17
 
+- Completed `RH-W-0033`: fixed language interview resumption so the next required blocking question appears immediately after each answer, and added Spanish-only human repository documentation at canonical paths without localizing technical artifacts.
 - Shipped `LICENSE` inside the skill package. `SKILL.md` declares `license: MIT` while the license text lived only at the repository root, so copying `skill/repo-harness-builder/` into a target repository distributed MIT-declared material without the MIT text. The file is now byte-identical in the canonical package and in both runtime projections. Applied as an explicitly authorized maintainer exception to the issue-and-pull-request workflow.
 - Tagged `v3.1-rc.1`, the first tag in this repository, as a release candidate of skill package `3.1` against generator `3.0`. The tag message records the verification evidence and the two known open gaps, `RH-W-0010` package-freshness detection and the unreconciled historical review report tracked by `RH-W-0011`.
 

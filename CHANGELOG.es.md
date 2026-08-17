@@ -4,6 +4,7 @@
 
 ## 2026-08-17
 
+- Se completo `RH-W-0033`: se corrigio la reanudacion de la entrevista de idiomas para que la siguiente pregunta bloqueante requerida aparezca inmediatamente despues de cada respuesta, y se agrego documentacion humana solo en espanol en rutas canonicas sin localizar artefactos tecnicos.
 - Se incorporo `LICENSE` dentro del paquete de la skill. `SKILL.md` declara `license: MIT` mientras el texto de la licencia vivia solo en la raiz del repositorio, por lo que copiar `skill/repo-harness-builder/` a un repositorio destino distribuia material declarado MIT sin el texto MIT. El archivo queda identico byte a byte en el paquete canonico y en ambas proyecciones de runtime. Se aplico como excepcion de mantenedor explicitamente autorizada al flujo de issue y pull request.
 - Se etiqueto `v3.1-rc.1`, la primera etiqueta de este repositorio, como release candidate del paquete de skill `3.1` frente al generador `3.0`. El mensaje de la etiqueta registra la evidencia de verificacion y los dos huecos abiertos conocidos: la deteccion de vigencia del paquete `RH-W-0010` y el informe historico de revision sin reconciliar que rastrea `RH-W-0011`.
 

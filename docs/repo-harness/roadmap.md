@@ -24,6 +24,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0033
+| Field | Value |
+|---|---|
+| Origin | Completed language-workflow correction found to be non-trivial during pre-commit documentation reconciliation |
+| Priority | P1: the builder could stop after a blocking language answer instead of asking the next required question, and Spanish-only human documentation could be misclassified as a technical artifact and left untranslated |
+| Dependencies | none |
+| Status | completed |
+| Completed work | Made each report, conversation, and documentation language answer resume immediately with the next required blocking question while retaining one question per turn. Distinguished human repository documentation from technical artifacts so declared Spanish documentation receives complete Spanish peers at canonical paths while commands, skills, scripts, tests, identifiers, and machine-significant values remain English. Synchronized canonical, OpenCode, and Claude package projections. |
+| Remaining work | none |
+| Additions | Added focused behavioral coverage for interview resumption and for the human-documentation versus technical-artifact language boundary. |
+| Exclusions | No new locale, natural-language detector, translation service, change to report, conversation, documentation, artifact, or guide-language precedence, localization of technical artifacts, Git mutation, external service, or SDD. |
+| Deferrals | none |
+| Rejections | Rejected requiring a new invocation after each language answer, asking multiple blocking questions in one turn, and treating every repository artifact as technical merely because agents may read it. |
+| Evidence | RED ran 4 tests with 1 failure and 2 errors. Focused GREEN passed 6 tests. Full canonical verification passed 293 tests with 7 skips; OpenCode and Claude each passed 293 tests with 15 skips. The generated checker reports `current` with 0 writes. |
+| Decision history | 2026-08-17: completed both defects as one bounded language-contract work unit because the interview flow selects the language dimensions and the artifact boundary determines which selected documentation locales receive human peers. Added this lifecycle record during the required pre-commit documentation reconciliation. |
+| Next advancement condition | Reopen only if a blocking language answer fails to present the next required question immediately, more than one blocking question appears in a turn, declared Spanish human documentation is absent or incomplete, or technical artifacts become localized. |
+
 ### RH-W-0032
 | Field | Value |
 |---|---|

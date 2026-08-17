@@ -107,9 +107,9 @@ Un repositorio existente nunca recibe un locale de documentacion que no tenga ya
 
 ### Idioma de la documentacion
 
-El ingles es el locale primario de documentacion. Siempre se genera completo y siempre posee la verdad operativa.
+La documentacion humana del repositorio puede quedar solo en ingles, solo en espanol o bilingue. Omita `--documentation-language` para ingles, use `--documentation-language es` para espanol o repita primero `en` y luego `es` para salida bilingue.
 
-Cualquier otro locale existe solo si se declara. Se declara con `--documentation-language`, repetido una vez por locale. Si se omite la bandera, el harness queda solo en ingles: sin `README.es.md`, sin selectores de idioma, sin arbol `docs/es/repo-harness/` y sin contrato de mantenimiento bilingue.
+Los modos monolingues usan rutas canonicas como `README.md`, `CHANGELOG.md` y `docs/repo-harness/`. El modo bilingue conserva el ingles en rutas canonicas y agrega pares completos en espanol. Las habilidades, contratos, wrappers, verificadores, instrucciones y esquema del manifest, codigo, comentarios, instrucciones de runtime y artefactos tecnicos permanecen en ingles.
 
 Cuando se declara un segundo locale, se genera completo, no parcial. Sus documentos son espejos humanos completos que presentan los mismos hechos y enlazan a los propietarios en ingles. Nunca se convierten en propietarios factuales independientes.
 
@@ -125,7 +125,7 @@ El `.gitignore` raiz sigue siendo propiedad humana. El plan aprobado crea el arc
 
 El `.gitattributes` raiz tambien sigue siendo propiedad humana. El constructor crea o agrega solo `.repo-harness/check.py text eol=lf` y `.repo-harness/manifest.json text eol=lf`, preservando reglas ajenas y finales de linea existentes. Una regla coincidente que asigne comportamiento incompatible de texto o EOL bloquea el plan en vez de crear semantica ambigua de checkout.
 
-`REPO-HARNESS.md`, `CHANGELOG.md` y los propietarios en ingles del estado durable conservan la verdad operativa unica. Cuando se declara otro locale, sus pares son presentaciones completas que enlazan a esas fuentes. Consulte el [contrato de mantenimiento bilingue](docs/es/repo-harness/i18n-maintenance.md), que aplica solo a un repositorio que declaro mas de un locale.
+En modo bilingue, los propietarios canonicos en ingles conservan la verdad operativa unica y los pares en espanol son presentaciones completas. Consulte el [contrato de mantenimiento bilingue](docs/es/repo-harness/i18n-maintenance.md), que aplica solo cuando se declaran ambos locales.
 
 ## Desarrollo
 <!-- doc-role:development -->

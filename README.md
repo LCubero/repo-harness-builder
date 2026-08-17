@@ -113,9 +113,9 @@ An existing repository is never given a documentation locale it does not already
 
 ### Documentation Language
 
-English is the primary documentation locale. It is always generated complete, and it always owns the operational truth.
+Human repository documentation may be English-only, Spanish-only, or bilingual. Omit `--documentation-language` for English-only, pass `--documentation-language es` for Spanish-only, or repeat `en` then `es` for bilingual output.
 
-Any other locale exists only when you declare it. Declare one with `--documentation-language`, repeated once per locale. Omit the flag and the harness is English-only: no `README.es.md`, no language selectors, no `docs/es/repo-harness/` tree, and no bilingual maintenance contract.
+English-only and Spanish-only use canonical paths such as `README.md`, `CHANGELOG.md`, and `docs/repo-harness/`. Bilingual output keeps English at canonical paths and adds complete Spanish peers. Skills, contracts, wrappers, checker machinery, manifest instructions and schema, code, comments, runtime instructions, and technical artifacts stay in English in every mode.
 
 When a second locale is declared, it is generated complete, not partially. Its documents are full human mirrors that present the same facts and link back to the English owners. They never become independent factual owners.
 

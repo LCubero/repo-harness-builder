@@ -343,7 +343,7 @@ def localized_documentation(
     never promises a locale the declared documentation languages do not create.
     """
     languages = normalize_documentation_languages(list(documentation_languages))
-    return conversation_language == "espanol" and "es" in languages
+    return conversation_language == "espanol" and languages == ("en", "es")
 
 
 def documentation_entry_points(
@@ -639,6 +639,13 @@ def locale_content_issues(relative: str, text: str) -> list[str]:
     issues = [f"required Spanish content missing: {phrase}" for phrase in baseline["required"] if phrase not in text]
     issues.extend(locale_leakage_issues(relative, text))
     return issues
+
+
+def locale_contract_path(relative: str, documentation_languages: Sequence[str]) -> str:
+    """Map canonical Spanish-only documents to their locale validation contract."""
+    if tuple(documentation_languages) == ("es",) and relative.startswith("docs/repo-harness/"):
+        return relative.replace("docs/repo-harness/", "docs/es/repo-harness/", 1)
+    return relative
 
 
 def frontmatter(name: str, description: str, source: str, license_id: str) -> str:
@@ -1106,10 +1113,7 @@ def normalize_documentation_languages(values: list[str] | None) -> tuple[str, ..
     require(len(languages) == len(set(languages)), f"duplicate documentation language: {list(languages)}")
     unsupported = sorted(set(languages) - DOCUMENTATION_LANGUAGES)
     require(not unsupported, f"unsupported documentation language: {unsupported}")
-    require(
-        languages[0] == PRIMARY_DOCUMENTATION_LANGUAGE,
-        f"English is the AI-read surface and stays the primary documentation language, not {languages[0]}",
-    )
+    require(languages in (("en",), ("es",), ("en", "es")), f"unsupported documentation language order: {list(languages)}")
     return languages
 
 
@@ -1120,7 +1124,8 @@ def docs_outputs(
     documentation_languages: tuple[str, ...] = (PRIMARY_DOCUMENTATION_LANGUAGE,),
 ) -> dict[str, str]:
     """Render durable documentation for the operational core."""
-    multilingual = len(documentation_languages) > 1
+    multilingual = documentation_languages == ("en", "es")
+    spanish_only = documentation_languages == ("es",)
     marker = f"<!-- {GENERATED_MARKER}; source: core/docs:{VERSION} -->"
     continuity = (
         "Session summaries in repository files remain temporary continuity inputs."
@@ -1138,7 +1143,11 @@ def docs_outputs(
         if multilingual
         else ""
     )
-    selector_es = "<!-- README-I18N:START -->\n\n[English](./README.md) | **Español**\n\n<!-- README-I18N:END -->"
+    selector_es = (
+        "<!-- README-I18N:START -->\n\n[English](./README.md) | **Español**\n\n<!-- README-I18N:END -->"
+        if multilingual
+        else ""
+    )
     index = f"""# AI Harness Documentation
 
 {marker}
@@ -1338,6 +1347,7 @@ This repository uses a generated documentation and continuity harness. Start wit
 The content between the `repo-harness-builder` markers is the builder-managed section. Content outside the markers belongs to the repository's maintainers.
 <!-- repo-harness-builder:end -->
 """
+    spanish_usage_path = "docs/repo-harness/usage.md" if spanish_only else "docs/es/repo-harness/usage.md"
     readme_es = f"""# {project_id}
 
 {selector_es}
@@ -1346,18 +1356,28 @@ The content between the `repo-harness-builder` markers is the builder-managed se
 <!-- doc-role:repository-harness -->
 ## Harness del repositorio
 
-Este repositorio usa un harness generado de documentacion y continuidad. Comience con [`{rulebook_path}`]({rulebook_path}) para las reglas operativas y con [`docs/es/repo-harness/usage.md`](docs/es/repo-harness/usage.md) para el flujo humano en espanol.
+Este repositorio usa un harness generado de documentacion y continuidad. Comience con [`{rulebook_path}`]({rulebook_path}) para las reglas operativas y con [`{spanish_usage_path}`]({spanish_usage_path}) para el flujo humano en espanol.
 
 El contenido entre los marcadores `repo-harness-builder` es administrado por el constructor. El contenido fuera de los marcadores pertenece a quienes mantienen el repositorio.
 <!-- repo-harness-builder:end -->
 """
+    spanish_index_intro = (
+        "Este directorio posee la documentacion durable en espanol."
+        if spanish_only
+        else "Este arbol contiene pares completos en espanol de la documentacion durable."
+    )
+    spanish_index_owner_rows = (
+        ""
+        if spanish_only
+        else "| `../../../repo-harness/README.md` | Mapa canonico en ingles |\n| `../../../CHANGELOG.md` | Historial cronologico canonico |"
+    )
     index_es = f"""# Documentacion del harness de IA
 
 {marker}
 
 <!-- doc-role:documentation-map -->
 
-`{rulebook_path}` es la entrada operativa canonica. Este arbol contiene pares completos en espanol de la documentacion durable.
+`{rulebook_path}` es la entrada operativa canonica. {spanish_index_intro}
 
 | Documento | Propiedad |
 |---|---|
@@ -1366,8 +1386,7 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
 | `roadmap.md` | Espejo humano del propietario canonico del ciclo de vida |
 | `decisions.md` | Presentacion en espanol de decisiones y restricciones |
 | `i18n-maintenance.md` | Contrato de mantenimiento bilingue |
-| `../../../repo-harness/README.md` | Mapa canonico en ingles |
-| `../../../CHANGELOG.md` | Historial cronologico canonico |
+{spanish_index_owner_rows}
 """
     availability_es = (
         "Confirme que las habilidades generadas esten disponibles en el entorno seleccionado y que Gentle AI y Engram esten disponibles. Si falta alguna dependencia de continuidad, informelo y no afirme que la continuidad integrada funciona."
@@ -1512,11 +1531,16 @@ El harness mantiene visibles las reglas de trabajo, el estado durable y las ruta
 
 Actualice este par cuando cambie una regla o ruta en `{rulebook_path}`. El archivo canonico en ingles conserva la propiedad operativa. No coloque estado fechado aqui; mantenga el detalle en sus documentos propietarios.
 """
+    spanish_changelog_intro = (
+        "Este archivo registra los cambios completados en orden cronologico."
+        if spanish_only
+        else "[`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este par ofrece la presentacion en espanol y debe actualizarse en la misma unidad de trabajo, sin crear una segunda fuente de verdad."
+    )
     changelog_es = f"""# Historial de cambios
 
 {marker}
 
-[`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este par ofrece la presentacion en espanol y debe actualizarse en la misma unidad de trabajo, sin crear una segunda fuente de verdad.
+{spanish_changelog_intro}
 
 ## {date.today().isoformat()}
 
@@ -1530,6 +1554,16 @@ Actualice este par cuando cambie una regla o ruta en `{rulebook_path}`. El archi
         "docs/repo-harness/roadmap.md": roadmap,
         "docs/repo-harness/decisions.md": decisions,
     }
+    if spanish_only:
+        return {
+            "README.md": readme_es,
+            "CHANGELOG.md": changelog_es,
+            "docs/repo-harness/README.md": index_es,
+            "docs/repo-harness/usage.md": usage_es,
+            "docs/repo-harness/current-state.md": state_es,
+            "docs/repo-harness/roadmap.md": roadmap_es,
+            "docs/repo-harness/decisions.md": decisions_es,
+        }
     if not multilingual:
         return outputs
     outputs.update(
@@ -2563,7 +2597,10 @@ def check(
             current_bytes = target.read_bytes()
             current_text = current_bytes.decode("utf-8", errors="replace")
             absent = missing_sections(content, current_text)
-            locale_issues = locale_leakage_issues(relative, current_text)
+            locale_issues = locale_leakage_issues(
+                locale_contract_path(relative, documentation_languages or [PRIMARY_DOCUMENTATION_LANGUAGE]),
+                current_text,
+            )
             size = token_proxy(current_text)
             if absent:
                 entry["state"] = "sections-missing"
@@ -2664,7 +2701,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         child.add_argument("--standalone", action="store_true", help="generate repository-only continuity without Gentle AI or Engram")
         if name == "render":
             child.add_argument("--report-language", choices=sorted(APPROVAL_DOMAINS), default=DEFAULT_REPORT_LANGUAGE, help="language for builder approval output; defaults to english")
-            child.add_argument("--documentation-language", action="append", dest="documentation_languages", choices=sorted(DOCUMENTATION_LANGUAGES), help="documentation locale; repeat the flag for a multilingual repository, omit it for English only")
+            child.add_argument("--documentation-language", action="append", dest="documentation_languages", choices=sorted(DOCUMENTATION_LANGUAGES), help="human documentation locale; use es alone for Spanish-only, repeat en then es for bilingual, omit for English-only")
             child.add_argument("--conversation-language", choices=sorted(APPROVAL_DOMAINS), help="language the generated sessions converse in; ask the human, defaults to english")
             child.add_argument("--no-codegraph-ignore", dest="ignore_codegraph", action="store_false", help="do not add .codegraph/ to the root .gitignore")
             child.add_argument("--activation", choices=("builder", "maintenance"), default="maintenance", help="declare an explicitly active repo-harness-builder skill execution; only that activation uses the strict approval domain")

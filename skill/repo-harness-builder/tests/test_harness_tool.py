@@ -346,6 +346,35 @@ class ProductWorkflowTests(unittest.TestCase):
         }
         self.assertTrue(required <= set(outputs))
 
+    def test_render_creates_spanish_only_human_documentation_at_canonical_paths(self):
+        outputs = TOOL.render(
+            "Example", ["opencode"], documentation_languages=["es"], conversation_language="espanol"
+        )
+        self.assertIn("Este repositorio usa un harness", outputs["README.md"])
+        self.assertIn("# Historial de cambios", outputs["CHANGELOG.md"])
+        self.assertIn("Use las tres habilidades generadas", outputs["docs/repo-harness/usage.md"])
+        self.assertIn("Este directorio posee la documentacion durable", outputs["docs/repo-harness/README.md"])
+        self.assertNotIn("pares completos", outputs["docs/repo-harness/README.md"])
+        self.assertIn("docs/repo-harness/usage.md", outputs[".opencode/commands/repo-harness-help.md"])
+        self.assertEqual(json.loads(outputs[TOOL.MANIFEST_PATH])["language"]["documentation"], ["es"])
+        self.assertEqual([path for path in outputs if "/es/" in path or path.endswith(".es.md")], [])
+        self.assertIn("Read first. This is how work is done here.", outputs["REPO-HARNESS.md"])
+
+    def test_checker_applies_spanish_leakage_checks_to_canonical_paths(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, documentation_languages=["es"], conversation_language="espanol")
+            usage = root / "docs/repo-harness/usage.md"
+            usage.write_text(
+                usage.read_text(encoding="utf-8").replace(
+                    "Las habilidades diarias inspeccionan", "The daily skills inspect"
+                ),
+                encoding="utf-8",
+            )
+            report = TOOL.check(root, "Example", [])
+            entry = next(item for item in report["files"] if item["path"] == "docs/repo-harness/usage.md")
+            self.assertEqual(entry["state"], "locale-content-incomplete")
+
     def test_readmes_have_one_reciprocal_language_selector(self):
         outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
         english = outputs["README.md"]
@@ -444,7 +473,7 @@ class ProductWorkflowTests(unittest.TestCase):
         )
 
     def test_documentation_routing_rejects_declarations_render_would_reject(self):
-        invalid = (("es",), ("en", "en"), ("en", "fr"), ())
+        invalid = (("en", "en"), ("en", "fr"), ())
         for languages in invalid:
             with self.subTest(languages=languages), self.assertRaises(TOOL.ContractError):
                 TOOL.localized_documentation("espanol", languages)
@@ -596,6 +625,14 @@ class ProductWorkflowTests(unittest.TestCase):
         self.assertIn("--conversation-language CONVERSATION_LANGUAGE", skill)
         self.assertNotIn("--report-language LANGUAGE", skill)
 
+    def test_builder_resumes_language_interview_with_the_next_question(self):
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        interview = (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")
+        combined = skill + interview
+        self.assertIn("After the human answers, immediately ask for the documentation languages in the next turn", combined)
+        self.assertIn("Do not wait for filler input", combined)
+        self.assertIn("one blocking question per turn", combined)
+
     def test_command_keeps_report_conversation_and_documentation_languages_separate(self):
         command = external_command_text()
         self.assertIn("report language", command)
@@ -672,6 +709,7 @@ def install(
     runtimes: tuple[str, ...] = (),
     standalone: bool = False,
     documentation_languages: list[str] | None = None,
+    conversation_language: str | None = None,
     ignore_codegraph: bool = True,
 ) -> dict[str, str]:
     """Render and apply the whole core into an empty root."""
@@ -680,6 +718,7 @@ def install(
         list(runtimes),
         standalone=standalone,
         documentation_languages=documentation_languages,
+        conversation_language=conversation_language,
         ignore_codegraph=ignore_codegraph,
     )
     TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
@@ -1823,6 +1862,7 @@ class CheckTests(unittest.TestCase):
     def test_installed_language_declaration_matrix(self):
         valid = (
             ({"language": {"documentation": ["en"], "conversation": "english"}}, (["en"], "english")),
+            ({"language": {"documentation": ["es"], "conversation": "espanol"}}, (["es"], "espanol")),
             ({"language": {"documentation": ["en", "es"], "conversation": "espanol"}}, (["en", "es"], "espanol")),
             ({"project": {"id": "legacy"}}, (["en"], None)),
         )
@@ -1833,7 +1873,6 @@ class CheckTests(unittest.TestCase):
             ({"language": {"documentation": [], "conversation": "english"}}, "manifest language.documentation: documentation languages must not be empty"),
             ({"language": {"documentation": ["en", "en"], "conversation": "english"}}, "manifest language.documentation: duplicate documentation language: ['en', 'en']"),
             ({"language": {"documentation": ["en", "fr"], "conversation": "english"}}, "manifest language.documentation: unsupported documentation language: ['fr']"),
-            ({"language": {"documentation": ["es"], "conversation": "english"}}, "manifest language.documentation: English is the AI-read surface and stays the primary documentation language, not es"),
             ({"language": {"documentation": ["en"]}}, "manifest language.conversation is required"),
             ({"language": {"documentation": ["en"], "conversation": ["english"]}}, "manifest language.conversation must be a string"),
             ({"language": {"documentation": ["en"], "conversation": "francais"}}, "manifest language.conversation: unsupported conversation language: francais"),
@@ -2284,10 +2323,7 @@ class GeneratedCoreTests(unittest.TestCase):
         )
         self.assertEqual(bilingual_english, bilingual_spanish)
 
-    def test_documentation_languages_reject_unknown_or_non_english_primary(self):
-        """English is the AI-read surface, so it stays the primary documentation language."""
-        with self.assertRaises(ValueError):
-            TOOL.render("Example", ["claude-code"], documentation_languages=["es"])
+    def test_documentation_languages_reject_unknown_duplicates_or_empty_declarations(self):
         with self.assertRaises(ValueError):
             TOOL.render("Example", ["claude-code"], documentation_languages=["en", "en"])
         with self.assertRaises(ValueError):
