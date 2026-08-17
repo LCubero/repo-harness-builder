@@ -70,6 +70,7 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
+- Active projection: `RH-W-0035` is `ready`. The canonical suite invokes a bare `python` in 13 subprocess calls while already using `sys.executable` in 9 others, so the suite cannot start where PATH has no `python`; generated consumer text names `python .repo-harness/check.py` while the generated checker carries a `#!/usr/bin/env python3` shebang. [roadmap.md](roadmap.md) owns the measured evidence and the rejected blanket substitution.
 - Active projection: `RH-W-0034` is `ready`. It owns the verified `v3.1-rc.2` consumer defects covering concrete Spanish interview copy, human-only report-language evidence, Spanish-only checker and map parity, and owner-before-provider recovery. Its [canonical implementation plan](rh-w-0034-implementation-plan.md) requires temporary consumer replay and forbids direct changes to `E:/code/VPS`.
 - Active projection: `RH-W-0010` and `RH-W-0019` are `ready`. [roadmap.md](roadmap.md) owns their verified scope, citations, and definitions.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.

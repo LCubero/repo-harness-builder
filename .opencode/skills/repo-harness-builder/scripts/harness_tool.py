@@ -753,7 +753,7 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 1. Resolve the selected repository root and confirm `{rulebook_path}` belongs to it.
 2. Read the rulebook, follow only the decision gates the current work triggers, then the latest relevant changelog entries.
 3. Detect whether the root is a Git repository. If it is, inspect branch, worktree, index, upstream, remotes, and each upstream remote URL, host, and scheme read-only before suggesting network access. Provider recognition is optional and must not require provider tooling.
-4. Run `python .repo-harness/check.py` and retain its status and any drifted runtime projection paths.
+4. Run `python3 .repo-harness/check.py` (`python` on Windows) and retain its status and any drifted runtime projection paths.
 {recovery_step}
 6. Identify completed work, remaining work, constraints, and the next recommended step. Reconcile any changed `RH-W-####` lifecycle with the roadmap, current-state projection, localized peers, and {lifecycle_mirror} in the same work unit.
 7. Report stale links, contradictions, or missing evidence before proceeding.
@@ -1008,7 +1008,7 @@ Describe what this project does and who it serves.
 | Starting or resuming work | `.repo-harness/skills/repo-harness-session-start/SKILL.md` |
 | Pausing or closing work | `.repo-harness/skills/repo-harness-session-stop/SKILL.md` |
 | How to use the harness as a human | [usage guide](docs/repo-harness/usage.md) |
-| A canonical skill changed, or a runtime copy may be stale | `python .repo-harness/check.py` |
+| A canonical skill changed, or a runtime copy may be stale | `python3 .repo-harness/check.py` (`python` on Windows) |
 | Sizing a change, deciding when to stop, how work is done | `.repo-harness/rules/working-agreements.md` |
 | {continuity_gate} | `.repo-harness/rules/memory.md` |
 | Creating, moving, or deleting a document | [documentation map](docs/repo-harness/README.md) |
@@ -1206,7 +1206,7 @@ Use the three generated skills as a loop: recover context, keep durable document
 
 <!-- doc-role:ownership -->
 
-Run `python .repo-harness/check.py` after canonical skills or runtime projections change. The checker is read-only and reports whether generated runtime copies still match their canonical skills. Root `.gitattributes` must preserve LF checkout bytes with one exact `text eol=lf` rule for every byte-compared generated path, including the checker, the manifest, canonical skills, and runtime projections. Without them a CRLF checkout reports drift the checker cannot resolve. {continuity_owner}
+Run `python3 .repo-harness/check.py` (`python` on Windows) after canonical skills or runtime projections change. The checker is read-only and reports whether generated runtime copies still match their canonical skills. Root `.gitattributes` must preserve LF checkout bytes with one exact `text eol=lf` rule for every byte-compared generated path, including the checker, the manifest, canonical skills, and runtime projections. Without them a CRLF checkout reports drift the checker cannot resolve. {continuity_owner}
 
 ## Approval Boundaries
 
@@ -1303,7 +1303,7 @@ Update the factual owner first, then update its Spanish peer in the same work un
 <!-- doc-role:link-validation -->
 ## Link Validation
 
-Keep one reciprocal language selector in each root README. Validate every relative link from the file that contains it and run `python .repo-harness/check.py` after documentation changes.
+Keep one reciprocal language selector in each root README. Validate every relative link from the file that contains it and run `python3 .repo-harness/check.py` (`python` on Windows) after documentation changes.
 
 <!-- doc-role:freshness -->
 ## Freshness
@@ -1327,7 +1327,7 @@ Actualice primero el propietario factual y luego su par en espanol dentro de la 
 <!-- doc-role:link-validation -->
 ## Validacion de enlaces
 
-Mantenga un selector reciproco de idioma en cada README raiz. Valide cada enlace relativo desde el archivo que lo contiene y ejecute `python .repo-harness/check.py` despues de cambiar la documentacion.
+Mantenga un selector reciproco de idioma en cada README raiz. Valide cada enlace relativo desde el archivo que lo contiene y ejecute `python3 .repo-harness/check.py` (`python` en Windows) despues de cambiar la documentacion.
 
 <!-- doc-role:freshness -->
 ## Vigencia
@@ -1423,7 +1423,7 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 
 <!-- doc-role:ownership -->
 
-Ejecute `python .repo-harness/check.py` despues de cambiar habilidades canonicas o proyecciones de ejecucion. El verificador es de solo lectura e informa si las copias generadas coinciden con sus habilidades canonicas. El archivo raiz `.gitattributes` debe preservar bytes LF al hacer checkout mediante una regla exacta `text eol=lf` por cada ruta generada comparada byte a byte, incluidos el verificador, el manifest, las habilidades canonicas y las proyecciones de ejecucion. Sin ellas, un checkout CRLF informa una deriva que el verificador no puede resolver. {ownership_es}
+Ejecute `python3 .repo-harness/check.py` (`python` en Windows) despues de cambiar habilidades canonicas o proyecciones de ejecucion. El verificador es de solo lectura e informa si las copias generadas coinciden con sus habilidades canonicas. El archivo raiz `.gitattributes` debe preservar bytes LF al hacer checkout mediante una regla exacta `text eol=lf` por cada ruta generada comparada byte a byte, incluidos el verificador, el manifest, las habilidades canonicas y las proyecciones de ejecucion. Sin ellas, un checkout CRLF informa una deriva que el verificador no puede resolver. {ownership_es}
 
 ## Limites de aprobacion
 
@@ -1516,7 +1516,7 @@ El harness mantiene visibles las reglas de trabajo, el estado durable y las ruta
 - Trabaje solo dentro del repositorio seleccionado y preserve archivos desconocidos.
 - Verifique la evidencia actual antes de confiar en memoria previa.
 - Use [la guia de uso](docs/es/repo-harness/usage.md), [el estado actual](docs/es/repo-harness/current-state.md) y [las decisiones](docs/es/repo-harness/decisions.md).
-- Ejecute `python .repo-harness/check.py` para comprobar las proyecciones.
+- Ejecute `python3 .repo-harness/check.py` (`python` en Windows) para comprobar las proyecciones.
 
 ## Compuertas de decision
 <!-- doc-role:decision-gates -->

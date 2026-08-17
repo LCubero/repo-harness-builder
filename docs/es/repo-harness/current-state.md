@@ -64,6 +64,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
+- Proyeccion activa: `RH-W-0035` esta `ready`. La suite canonica invoca `python` a secas en 13 llamadas de subproceso mientras ya usa `sys.executable` en otras 9, por lo que la suite no puede arrancar donde el PATH no tiene `python`; el texto generado para el consumidor nombra `python .repo-harness/check.py` mientras el checker generado lleva un shebang `#!/usr/bin/env python3`. El [roadmap](roadmap.md) posee la evidencia medida y la sustitucion masiva rechazada.
 - Proyeccion activa: `RH-W-0034` esta `ready`. Posee los defectos verificados del consumidor de `v3.1-rc.2` sobre texto concreto de entrevista en espanol, evidencia humana para el idioma del informe, paridad del checker y mapa solo en espanol, y recuperacion por propietario antes del proveedor. Su [plan de implementacion](rh-w-0034-implementation-plan.md) exige replay temporal y prohibe cambios directos en `E:/code/VPS`.
 - Proyeccion activa: `RH-W-0010` y `RH-W-0019` estan `ready`. [roadmap.md](roadmap.md) posee su alcance verificado, sus citas y sus definiciones.
 - Proyeccion propuesta: el mapa de relaciones de documentacion `RH-W-0022` espera un diseno de alcance antes de poder pasar a `ready`.

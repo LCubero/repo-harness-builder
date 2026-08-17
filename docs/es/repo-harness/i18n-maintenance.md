@@ -15,7 +15,7 @@ Actualice cada par afectado en espanol dentro de la misma unidad de trabajo. Se 
 ## Enlaces
 <!-- doc-role:link-validation -->
 
-Mantenga exactamente un selector reciproco en cada README raiz. Resuelva y valide enlaces relativos desde el archivo que los contiene. Ejecute las pruebas canonicas y `python .repo-harness/check.py` despues de cambiar documentacion.
+Mantenga exactamente un selector reciproco en cada README raiz. Resuelva y valide enlaces relativos desde el archivo que los contiene. Ejecute las pruebas canonicas y `python3 .repo-harness/check.py` (`python` en Windows) despues de cambiar documentacion.
 
 ## Vigencia
 <!-- doc-role:freshness -->

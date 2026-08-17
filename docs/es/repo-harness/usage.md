@@ -18,7 +18,7 @@ Confirme que las habilidades, Gentle AI y Engram esten disponibles. Si falla una
 ## Congruencia y propiedad
 <!-- doc-role:ownership -->
 
-Ejecute `python .repo-harness/check.py` despues de cambiar fuentes canonicas o proyecciones. El archivo raiz `.gitattributes` preserva bytes LF mediante las reglas exactas `.repo-harness/check.py text eol=lf` y `.repo-harness/manifest.json text eol=lf`. El control demuestra paridad en disco, no la vigencia de contenido registrado en el proceso activo.
+Ejecute `python3 .repo-harness/check.py` (`python` en Windows) despues de cambiar fuentes canonicas o proyecciones. El archivo raiz `.gitattributes` preserva bytes LF mediante las reglas exactas `.repo-harness/check.py text eol=lf` y `.repo-harness/manifest.json text eol=lf`. El control demuestra paridad en disco, no la vigencia de contenido registrado en el proceso activo.
 
 ## Limites de aprobacion
 <!-- doc-role:approval-boundaries -->

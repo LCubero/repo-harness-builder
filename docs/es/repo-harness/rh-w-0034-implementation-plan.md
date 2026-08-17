@@ -168,7 +168,7 @@ python -B -m unittest discover -s .claude/skills/repo-harness-builder/tests -p "
 ### Fase 6: Verificacion autoalojada y cierre
 
 - [ ] Ejecutar el check propietario autoalojado con dimensiones instaladas explicitas: runtimes `claude-code` y `opencode`, licencia MIT, idioma del informe, locales `en` y `es`, conversacion `espanol` y evidencia de integracion requerida. Exigir `current`, salida 0 y 0 escrituras.
-- [ ] Ejecutar `python .repo-harness/check.py` con el mismo resultado.
+- [ ] Ejecutar `python3 .repo-harness/check.py` (`python` en Windows) con el mismo resultado.
 - [ ] Sincronizar hoja de ruta, estado, pares, mapas si cambia propiedad, decisiones aplicables y Engram `work/RH-W-0034`.
 - [ ] Agregar changelog solo al completar.
 - [ ] Registrar si la prueba completa permite que un candidato sucesor sustituya a `v3.1-rc.2` para instalaciones. Publicar sigue siendo otra unidad aprobada.

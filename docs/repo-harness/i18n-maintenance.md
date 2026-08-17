@@ -15,7 +15,7 @@ Update each affected Spanish peer in the same work unit. Equivalent meaning is r
 ## Links
 <!-- doc-role:link-validation -->
 
-Keep exactly one reciprocal selector in each root README. Resolve and validate relative links from the containing file. Run the canonical tests and `python .repo-harness/check.py` after documentation changes.
+Keep exactly one reciprocal selector in each root README. Resolve and validate relative links from the containing file. Run the canonical tests and `python3 .repo-harness/check.py` (`python` on Windows) after documentation changes.
 
 ## Freshness
 <!-- doc-role:freshness -->

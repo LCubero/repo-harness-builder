@@ -176,7 +176,7 @@ python -B -m unittest discover -s .claude/skills/repo-harness-builder/tests -p "
 ### Phase 6: Self-Hosted Owner Verification And Lifecycle Completion
 
 - [ ] Run the self-hosted owner check with explicit installed dimensions, including `--runtime claude-code`, `--runtime opencode`, `--license MIT`, report language, documentation locales `en` and `es`, conversation language `espanol`, and integration evidence required by the current CLI. Require `current`, exit 0, and 0 writes.
-- [ ] Run `python .repo-harness/check.py`. Require `current`, exit 0, and 0 writes.
+- [ ] Run `python3 .repo-harness/check.py` (`python` on Windows). Require `current`, exit 0, and 0 writes.
 - [ ] Synchronize roadmap, current state, localized peers, documentation maps if ownership changed, applicable decisions, and Engram topic `work/RH-W-0034` in the same completion work unit.
 - [ ] Add a changelog entry only at completion, never during planning or partial implementation.
 - [ ] Record whether the fully proved successor release candidate now supersedes `v3.1-rc.2` for installation guidance. Publishing remains a separate approved work unit.

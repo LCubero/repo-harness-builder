@@ -15,7 +15,7 @@ Este repositorio contiene las fuentes canonicas de `repo-harness-builder`. Edite
 - Clasifique cada afirmacion como hecho verificado, inferencia respaldada, desconocida o no verificable, o decision humana requerida. Un hecho verificado necesita evidencia aplicable, confiable y proporcional; una inferencia nombra su evidencia y razonamiento; lo desconocido aplica cuando no existe un mecanismo valido; una decision humana aplica cuando la autoridad o un criterio corresponde a una persona. Nunca sustituya evidencia faltante, memoria obsoleta, indicadores indirectos no relacionados, supuestos ni lenguaje de confianza. Verifique antes de preguntar; si no es posible o hay contradiccion, nombre la capacidad faltante y solicite solo la evidencia, el criterio, la autoridad o la decision minima.
 - No ejecute operaciones Git o remotas sin aprobacion explicita.
 - Use [la guia de uso](docs/es/repo-harness/usage.md), [el estado actual](docs/es/repo-harness/current-state.md) y [las decisiones](docs/es/repo-harness/decisions.md).
-- Ejecute `python .repo-harness/check.py` cuando cambien fuentes canonicas o proyecciones.
+- Ejecute `python3 .repo-harness/check.py` (`python` en Windows) cuando cambien fuentes canonicas o proyecciones.
 
 ## Compuertas de decision
 <!-- doc-role:decision-gates -->
@@ -25,7 +25,7 @@ Este repositorio contiene las fuentes canonicas de `repo-harness-builder`. Edite
 | Iniciar o reanudar trabajo | `.repo-harness/skills/repo-harness-session-start/SKILL.md` |
 | Pausar o cerrar trabajo | `.repo-harness/skills/repo-harness-session-stop/SKILL.md` |
 | Usar el harness como persona | [guia de uso](docs/es/repo-harness/usage.md) |
-| Cambio una habilidad canonica | `python .repo-harness/check.py` |
+| Cambio una habilidad canonica | `python3 .repo-harness/check.py` (`python` en Windows) |
 | Planificar, implementar, revisar o integrar una contribucion | [CONTRIBUTING.es.md](CONTRIBUTING.es.md) |
 | Consultar el estado y entregas | [estado actual](docs/es/repo-harness/current-state.md) y [CHANGELOG.md](CHANGELOG.md) |
 | Consultar razones o restricciones | [decisiones](docs/es/repo-harness/decisions.md) |
