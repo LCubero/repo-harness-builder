@@ -25,9 +25,14 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Do not read every file or run every test indiscriminately.
 - Inspect repository state read-only. Do not pull, commit, push, publish, or mutate by default.
 - Gentle AI and Engram are required for integrated session continuity.
+- The repository owns durable truth, source, tests, policy, backlog, and approvals.
+- Engram owns semantic continuity, relations, conflict state, review-age metadata, and session memory.
+- Gentle AI owns routing, exact-candidate review and receipts, and delivery gates when enabled.
 - Recover relevant recent context from Engram and reconcile every recalled claim with current repository evidence.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - If Engram is unavailable or recovery fails, surface the failure and must not claim successful continuity.
+- After installation, Gentle AI loss degrades review and delivery only, while Engram loss degrades continuity only. Block an affected workflow only when repository policy requires its missing component.
+- Report repository, Gentle AI, and Engram outcomes separately with exact failure evidence and one next action. Never reconstruct malformed owner output as success.
 - Report discrepancies and uncertainty instead of inventing certainty.
 - Conversation language: Follow a current verified human language instruction; otherwise preserve an explicit persisted preference. Without one, use verified session language, validated manifest fallback, then deterministic English. Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes. This flattened host cannot reliably detect language switches; preserve persisted preference.
 - Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.

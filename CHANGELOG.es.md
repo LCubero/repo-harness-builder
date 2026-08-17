@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-08-16
+
+- Se completo `RH-W-0025`: se agregaron clasificacion acotada por PATH mediante `gentle-ai version`, validacion estricta de evidencia de Engram suministrada por el entorno, preview y apply integrados con cierre en falso en el limite de la CLI, validacion de salida completa antes de acotar evidencia, degradacion por componente durante ejecucion, promocion selectiva y limites de propietarios, proyecciones de paquete sincronizadas y seis reemplazos autenticados de habilidades generadas autoalojadas mediante RH-W-0008.
+
 ## 2026-08-15
 
 - Se corrigio el plan de implementacion de `RH-W-0025` antes de implementarlo: se estandarizaron el probe verificado `gentle-ai version` y la clasificacion de tres estados, se separo el preflight de instalacion de la degradacion posterior de componentes, se reemplazo la redaccion obsoleta del ejecutor anterior a RH-W-0008, se corrigieron las proyecciones del estado `ready` y se exigio cobertura conductual RED/GREEN determinista. `RH-W-0025` permanece `ready`; la implementacion de produccion no ha comenzado.

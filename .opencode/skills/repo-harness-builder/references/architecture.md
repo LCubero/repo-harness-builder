@@ -40,9 +40,11 @@ Root `.gitattributes` protects that exact-byte contract on every platform with o
 
 ## Integration Modes
 
-Integrated mode is the default and requires Gentle AI plus Engram. The builder workflow validates the Gentle AI CLI through an available status, doctor, or version capability and validates Engram through MCP or CLI before approval or apply. Generated Python does not invent runtime dependency detection because Engram may be exposed only through MCP.
+Integrated mode is the default and requires verified Gentle AI plus Engram capabilities before selection, approval, or apply. The production `render` CLI runs Gentle AI detection and accepts exact evidence from the existing host-supported Engram MCP or CLI boundary through `--engram-evidence-json` before rendering or writing. Gentle AI detection runs exactly `gentle-ai version` through PATH with bounded execution and classifies only valid exit-0 `gentle-ai <version>` output as `verified`. Generated Python does not probe unrelated files or invent another Engram discovery surface. Both use exactly `not_found`, `found_on_path`, and `verified`, and both component outcomes remain visible when integrated generation is refused.
 
 `--standalone` is the only mode flag. It preserves the same paths and runtime layouts while rendering repository-only session and rule instructions with no Gentle AI or Engram requirement.
+
+After an integrated installation, capability status is runtime evidence rather than a persisted mode. Gentle AI loss degrades only routing, review, receipts, and delivery; Engram loss degrades only continuity. Repository policy may make either component mandatory and block only its owning workflow. Repository outcome and component outcomes remain separate, with exact failure evidence and one next action rather than an aggregate authority verdict.
 
 ## Repository-Sensitive Operation
 

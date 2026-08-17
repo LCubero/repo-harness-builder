@@ -10,7 +10,7 @@
 
 **Entradas canónicas:** [investigación de integración](integration-research.md), [RH-W-0025](roadmap.md#rh-w-0025) y [decisiones permanentes](decisions.md). El [plan en inglés](../../repo-harness/rh-w-0025-implementation-plan.md) es el propietario canónico; este archivo es su espejo humano completo.
 
-**Prerrequisito de ejecución:** cumplido. RH-W-0008 entregó el ejecutor de reemplazo ligado al contenido, se aplicó y se verificó el 2026-08-15. RH-W-0025 permanece `ready`.
+**Resultado de ejecución:** completado. RH-W-0008 entregó el ejecutor de reemplazo ligado al contenido y aplicó el plan consumidor verificado de RH-W-0025 el 2026-08-16.
 
 ## Contrato de detección
 
