@@ -2,6 +2,11 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-08-17
+
+- Se incorporo `LICENSE` dentro del paquete de la skill. `SKILL.md` declara `license: MIT` mientras el texto de la licencia vivia solo en la raiz del repositorio, por lo que copiar `skill/repo-harness-builder/` a un repositorio destino distribuia material declarado MIT sin el texto MIT. El archivo queda identico byte a byte en el paquete canonico y en ambas proyecciones de runtime. Se aplico como excepcion de mantenedor explicitamente autorizada al flujo de issue y pull request.
+- Se etiqueto `v3.1-rc.1`, la primera etiqueta de este repositorio, como release candidate del paquete de skill `3.1` frente al generador `3.0`. El mensaje de la etiqueta registra la evidencia de verificacion y los dos huecos abiertos conocidos: la deteccion de vigencia del paquete `RH-W-0010` y el informe historico de revision sin reconciliar que rastrea `RH-W-0011`.
+
 ## 2026-08-16
 
 - Se completo `RH-W-0025`: se agregaron clasificacion acotada por PATH mediante `gentle-ai version`, validacion estricta de evidencia de Engram suministrada por el entorno, preview y apply integrados con cierre en falso en el limite de la CLI, validacion de salida completa antes de acotar evidencia, degradacion por componente durante ejecucion, promocion selectiva y limites de propietarios, proyecciones de paquete sincronizadas y seis reemplazos autenticados de habilidades generadas autoalojadas mediante RH-W-0008.

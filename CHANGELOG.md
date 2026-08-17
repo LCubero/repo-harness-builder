@@ -4,6 +4,11 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-08-17
+
+- Shipped `LICENSE` inside the skill package. `SKILL.md` declares `license: MIT` while the license text lived only at the repository root, so copying `skill/repo-harness-builder/` into a target repository distributed MIT-declared material without the MIT text. The file is now byte-identical in the canonical package and in both runtime projections. Applied as an explicitly authorized maintainer exception to the issue-and-pull-request workflow.
+- Tagged `v3.1-rc.1`, the first tag in this repository, as a release candidate of skill package `3.1` against generator `3.0`. The tag message records the verification evidence and the two known open gaps, `RH-W-0010` package-freshness detection and the unreconciled historical review report tracked by `RH-W-0011`.
+
 ## 2026-08-16
 
 - Completed `RH-W-0025`: added bounded `gentle-ai version` PATH classification, strict Engram host-evidence validation, CLI-bound fail-closed integrated preview and apply, complete-output validation before evidence bounding, component-scoped runtime degradation, selective promotion and owner boundaries, synchronized package projections, and six authenticated self-hosted generated skill replacements through RH-W-0008.
