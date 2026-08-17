@@ -10,12 +10,13 @@
 - Root `.gitattributes` protects 19 byte-compared generated paths, derived from render outputs rather than a fixed pair.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1. The checked-in checker and manifest remain a consistent pair.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
-- Licensed MIT in `LICENSE` and in both `SKILL.md` copies.
-- Published as a private GitHub repository; `main` tracks `origin/main`.
+- Licensed MIT in `LICENSE`, in both `SKILL.md` copies, and inside the distributable skill package and both runtime projections.
+- Published as a private GitHub repository; `main` tracks `origin/main` at `7842ad9`. First tag `v3.1-rc.1` published, a release candidate of skill package `3.1` against generator `3.0`.
 
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
+- Shipped `LICENSE` inside the skill package and both runtime projections, then published `v3.1-rc.1`. `SKILL.md` declared `license: MIT` while the text lived only at the repository root, so copying the package into a target repository distributed MIT-declared material without the MIT text.
 - Completed `RH-W-0025`: bounded `gentle-ai version` PATH execution and host-provided Engram MCP or CLI evidence now produce exactly `not_found`, `found_on_path`, or `verified`. The production CLI enforces both verified capabilities before integrated preview or apply, preserves both outcomes on refusal, and validates complete Gentle AI output before bounding retained evidence. Runtime loss remains component-scoped unless repository policy requires that component, owner state is not copied, and reusable knowledge promotion requires repository verification, a canonical owner, and human approval. RH-W-0008 applied the six authenticated generated skill replacements.
 - Completed `RH-W-0032`: one universal generated-rulebook principle now distinguishes verified facts, supported inferences, unknown or unverifiable claims, and required human decisions. It requires applicable, trustworthy, proportionate evidence; forbids missing evidence, stale memory, unrelated proxies, assumptions, and confidence wording as factual substitutes; verifies without asking when possible; and names the missing capability before requesting only the minimum evidence, criterion, authority, or decision. All three daily skills inherit the rulebook without duplicating the full principle.
 - Completed `RH-W-0031`: conversation language follows a verified current human instruction, then persisted explicit preference, verified session language only without a persisted preference, validated manifest fallback, and deterministic English. Flattened hosts preserve persisted preference; help guide locale is independent from reply language; fixed-language direct questions are gone; and machine values remain byte-identical. Corrected explicit-dimension digest `dff015e12022536ee22060603aece83ce8c5a413aac1c092e4fff98bb086136e` applied 13 paths once, and the explicit second preview had zero actions.
@@ -77,4 +78,6 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Suggested next work remains unselected. `RH-W-0010` and `RH-W-0019` are ready with verified scope and stay unbundled; the unit choice remains the human's.
+Publish the pending `v3.1-rc.1` GitHub pre-release. The tag is pushed at `7842ad9`, but three `gh release create` attempts on 2026-08-17 returned `503 Service Unavailable` from the releases endpoint while `gh auth status` and a plain repository API read both succeeded, so the failure is transient and upstream. The exact installable asset is rebuildable from the tag with `git archive v3.1-rc.1` and is also kept, ignored by Git, at `.ld9/release/`: `skills/repo-harness-builder/` plus `commands/repo-harness-builder.md`, 13 files. GitHub always attaches its own full-repository `Source code` archives to any tag or release, which are not the installable package.
+
+Before the candidate leaves the maintainer's hands, `RH-W-0011` matters most: the historical review report was never carried into this repository, so no current evidence proves whether findings remain open. `RH-W-0010` gates a real `3.1.0` rather than the candidate. The unit choice remains the human's.
