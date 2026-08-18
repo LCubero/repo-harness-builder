@@ -1366,10 +1366,18 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
         if spanish_only
         else "Este arbol contiene pares completos en espanol de la documentacion durable."
     )
+    spanish_index_state_row = (
+        "| `current-state.md` | Estado verificado, trabajo reciente y siguiente paso |"
+        if spanish_only
+        else "| `current-state.md` | Presentacion en espanol del estado canonico en `../../repo-harness/current-state.md` |"
+    )
+    spanish_index_maintenance_row = (
+        "" if spanish_only else "\n| `i18n-maintenance.md` | Contrato de mantenimiento bilingue |"
+    )
     spanish_index_owner_rows = (
         ""
         if spanish_only
-        else "| `../../../repo-harness/README.md` | Mapa canonico en ingles |\n| `../../../CHANGELOG.md` | Historial cronologico canonico |"
+        else "| `../../repo-harness/README.md` | Mapa canonico en ingles |\n| `../../../CHANGELOG.md` | Historial cronologico canonico |"
     )
     index_es = f"""# Documentacion del harness de IA
 
@@ -1382,10 +1390,9 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
 | Documento | Propiedad |
 |---|---|
 | `usage.md` | Flujo humano, disponibilidad y limites de aprobacion |
-| `current-state.md` | Presentacion en espanol del estado canonico en `../../../repo-harness/current-state.md` |
+{spanish_index_state_row}
 | `roadmap.md` | Espejo humano del propietario canonico del ciclo de vida |
-| `decisions.md` | Presentacion en espanol de decisiones y restricciones |
-| `i18n-maintenance.md` | Contrato de mantenimiento bilingue |
+| `decisions.md` | Presentacion en espanol de decisiones y restricciones |{spanish_index_maintenance_row}
 {spanish_index_owner_rows}
 """
     availability_es = (
@@ -1742,7 +1749,7 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         or not documentation
         or len(documentation) != len(set(documentation))
         or not set(documentation) <= DOCUMENTATION_LANGUAGES
-        or documentation[0] != "en"
+        or tuple(documentation) not in (("en",), ("es",), ("en", "es"))
     ):
         raise ValueError("unexpected documentation languages")
     skills = manifest["canonicalSkills"]

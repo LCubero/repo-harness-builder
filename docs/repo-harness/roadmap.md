@@ -47,7 +47,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Verified `v3.1-rc.2` consumer transcript and installed-output evidence from a Spanish-only non-Git consumer |
 | Priority | P1: the published candidate can generate a checker that rejects its own valid Spanish-only manifest, advertise nonexistent documentation, select report language from wrapper prose, and route a builder defect into irrelevant provider reporting |
 | Dependencies | none for implementation; successor release publication remains a separate approval-bound work unit |
-| Status | ready |
+| Status | active |
 | Completed work | Confirmed the defects against canonical source and tests, selected `RH-W-0034` as the next immutable ID, resolved every implementation decision, and created the canonical executable plan plus complete Spanish peer. |
 | Remaining work | Execute [the implementation plan](rh-w-0034-implementation-plan.md) with strict RED/GREEN coverage; synchronize canonical, OpenCode, and Claude packages; prove owner and generated checker parity in Spanish-only subprocess fixtures; replay the consumer path in a temporary non-Git fixture; and complete lifecycle and release evidence. |
 | Additions | Concrete Spanish interview copy; typed report-language evidence with ask-once fallback; exact owner/generated documentation-locale parity; Spanish-only local map and link validation; owner-before-provider failure classification; safe upgrade and fresh regeneration guidance. |
