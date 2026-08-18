@@ -81,4 +81,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Implement `RH-W-0034` before recommending a successor to `v3.1-rc.2`. Begin with the plan's RED language-evidence and Spanish-only subprocess fixtures; do not repair `E:/code/VPS` directly or publish a release from the planning unit.
+Run the corrected builder against the `E:/code/VPS` consumer, which still carries the `v3.1-rc.2` harness, and record whether the upgrade completes. A read-only preview there already offers exactly one `replace-generated-output` action for `.repo-harness/check.py`, which is the narrow grant an authentic but stale checker earns, so the upgrade is expected to take two passes: the first restores the checker, the second should offer the remaining generated documentation. If the second pass offers nothing, that is a finding, not a completed upgrade. That consumer now has a local Git repository with a baseline commit, so the run is revertible. Only after that evidence should a successor to `v3.1-rc.2` be recommended, and publishing remains a separate approval-bound work unit.
