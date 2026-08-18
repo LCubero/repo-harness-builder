@@ -24,6 +24,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0036
+| Field | Value |
+|---|---|
+| Origin | Discovered while verifying RH-W-0034 phase 6: the owner check reported `.repo-harness/check.py` stale while the render plan offered zero actions to correct it |
+| Priority | P0: a stale generated checker disables replacement for every manifest-owned generated output, so any future change to `check_script()` permanently freezes every already-installed consumer |
+| Dependencies | none; RH-W-0034 phase 6 cannot close until this is resolved |
+| Status | ready |
+| Completed work | Located the exact gate at `manifest_owned_generated_paths()` in `skill/repo-harness-builder/scripts/harness_tool.py:1964` and confirmed the circular block against live evidence. |
+| Remaining work | Design and implement an update route that lets an authenticated installation receive a corrected checker without weakening manifest authentication, exact-byte verification, or the read-only guarantee. Then prove it on a temporary fixture installed from an older checker. |
+| Additions | A bounded, digest-bound checker refresh path and regression coverage proving a stale checker no longer empties the replaceable set. |
+| Exclusions | No weakening of manifest digest authentication, path safety, exact projection comparison, or zero-write checking. No direct patching of a consumer checker. No change to `E:/code/VPS`. |
+| Deferrals | none |
+| Rejections | Rejected treating this as part of RH-W-0034; the language work is complete and independent, while this is a lifecycle defect in the update mechanism itself. |
+| Evidence | `manifest_owned_generated_paths()` returns an empty set when `checker_target.read_text(...) != check_script(digest_bytes(manifest_bytes))`, so the plan reports 0 replace, create, append, migrate, and blocked actions while the owner check reports `drift` with exactly 1 stale path. Contrast evidence: the same command produced 3 `replace-generated-output` actions earlier in the same session, before `check_script()` changed. |
+| Decision history | 2026-08-17: registered as `ready` after RH-W-0034 phase 2 changed `check_script()` and exposed the circular block. |
+| Next advancement condition | Move to `active` when a failing regression proves a stale checker empties the replaceable set. Complete when a fixture installed with an older checker can receive the corrected one and both checkers report `current` with 0 writes. |
+
 ### RH-W-0035
 | Field | Value |
 |---|---|
@@ -47,9 +64,9 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Verified `v3.1-rc.2` consumer transcript and installed-output evidence from a Spanish-only non-Git consumer |
 | Priority | P1: the published candidate can generate a checker that rejects its own valid Spanish-only manifest, advertise nonexistent documentation, select report language from wrapper prose, and route a builder defect into irrelevant provider reporting |
 | Dependencies | none for implementation; successor release publication remains a separate approval-bound work unit |
-| Status | active |
+| Status | blocked |
 | Completed work | Confirmed the defects against canonical source and tests, selected `RH-W-0034` as the next immutable ID, resolved every implementation decision, and created the canonical executable plan plus complete Spanish peer. Delivered phase 2 on branch `fix/rh-w-0034-spanish-only-parity` as commit `a4ba876`: the generated `parse_manifest()` now accepts exactly the domain `normalize_documentation_languages()` accepts, and the Spanish documentation map advertises only destinations its own render creates. Delivered phase 4 as `5c89470`, synchronizing both runtime projections. Delivered phase 1 as `f3e2b27`: report-language step 3 now requires evidence the host can attribute to the human, a new step 4 asks one localized question and stops instead of falling back silently, and generated contracts, repository text, assistant prose, memory, and tool results join wrapper prose as things that are never evidence. Canonical, OpenCode, and Claude suites each pass 298 tests. |
-| Remaining work | Phase 3 owner-before-provider recovery (T-010 through T-012); phase 5 temporary consumer replay; and phase 6 lifecycle, changelog, release evidence, and the digest-bound regeneration of the stale `.repo-harness/check.py`. Phases 1, 2, and 4 are delivered on the branch, which is not merged and has no pull request. |
+| Remaining work | Phase 6 only, blocked by `RH-W-0036`: the self-hosted `.repo-harness/check.py` cannot be regenerated because a stale checker empties the replaceable set. Phases 1 through 5 are delivered on the branch, which is not merged and has no pull request. Phase 5 proved a Spanish-only fixture where the owner check reports `current` with 0 stale and the generated checker reports `current` with exit 0 and 0 writes, 10 relative links resolve, and no bilingual-only path appears. |
 | Additions | Concrete Spanish interview copy; typed report-language evidence with ask-once fallback; exact owner/generated documentation-locale parity; Spanish-only local map and link validation; owner-before-provider failure classification; safe upgrade and fresh regeneration guidance. |
 | Exclusions | No direct `E:/code/VPS` mutation, consumer checker patch, Gentle AI source change without separate evidence, Git or RDD mutation, provider or GitHub action, repository publication, external service, tag or release alteration, new locale, translation service, dependency, or changelog entry while planned. |
 | Deferrals | Publishing a successor release candidate is deferred until the implementation, all three package suites, temporary consumer replay, explicit-dimension owner check, generated checker, links, lifecycle, and byte audits pass. |
