@@ -3865,6 +3865,18 @@ class ReportTemplateTests(unittest.TestCase):
         for name in self.TEMPLATES:
             yield name, (ROOT / "assets" / name).read_text(encoding="utf-8")
 
+    def test_failure_ownership_is_classified_before_any_provider_handoff(self):
+        """T-010 to T-012: a builder-generated mismatch is a builder defect."""
+        safety = (ROOT / "references" / "preservation-and-safety.md").read_text(encoding="utf-8").lower()
+        for phrase in (
+            "classify the failing owner before any provider handoff",
+            "a mismatch among builder-generated output, manifest, checker, or package projection is a `repo-harness-builder` defect",
+            "never enters provider-defect reporting, issue creation, or repository publication",
+            "a consumer that is not a git repository needs no clone-scope",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, safety)
+
     def test_report_language_precedence_requires_verified_human_evidence(self):
         """T-003 and T-004: only typed human evidence may select the report language."""
         contract = (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")

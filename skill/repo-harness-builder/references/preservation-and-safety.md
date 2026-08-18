@@ -79,6 +79,21 @@ This is proportional containment for a cooperative working copy. It is not a sec
 
 Refuse indirect targets and unsafe paths. Verify created bytes, pointer result digests, replacements, and links after writing. On failure, restore every replaced or appended file to its exact original bytes and remove only files this run created when their bytes still match what this run wrote. The bounded generated-skill migration additionally restores exact source, manifest, checker, and appended bytes and removes fixed destinations if any migration or additive continuation phase fails. Never replace or delete other pre-existing content.
 
+## Failure Ownership
+
+Classify the failing owner before any provider handoff. Work outward from the innermost failing component and name the evidence that decided it.
+
+| Evidence | Owner | Required route |
+|---|---|---|
+| A generated checker rejects a manifest the same builder emitted | `repo-harness-builder` | Preserve the consumer unchanged, capture the reproduction, upgrade the builder, regenerate through a fresh approved plan |
+| Canonical and package projections differ | `repo-harness-builder` | Stop the release and synchronize projections |
+| A provider command itself fails after valid builder output reached its documented boundary | that provider | Offer provider reporting separately from repository publication |
+| The consumer is not a Git repository | absent consumer Git capability | Report locally; never initialize, clone, publish, or alter review mode |
+
+A mismatch among builder-generated output, manifest, checker, or package projection is a `repo-harness-builder` defect. It never enters provider-defect reporting, issue creation, or repository publication, because the failing bytes were written by this builder and the fix belongs at their canonical source. Patching a generated consumer file directly masks the source defect and leaves every future installation exposed.
+
+Builder-owned remediation preserves consumer state, names the exact reproduction, and gives a reproducible upgrade and regeneration path. A consumer that is not a Git repository needs no clone-scope review-mode command and no publication offer; say so plainly instead of implying either. Keep optional provider-defect reporting and repository publication described as separate things, since one creates an issue for a provider and the other creates or pushes a repository.
+
 ## Generated Checker Boundary
 
 The generated checker trusts no mutable manifest field until the exact manifest bytes match its embedded SHA-256. It then requires the exact checker schema, an `integrationMode` of `integrated` or `standalone`, supported runtimes, safe canonical skill names, and repository-relative paths. It rejects absolute, drive-qualified, parent-traversing, symlinked, reparse-point, and outside-resolving paths before content reads. Its scope remains manifest integrity and canonical runtime skill projections only.
