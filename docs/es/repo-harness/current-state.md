@@ -6,7 +6,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 <!-- doc-role:verified-state -->
 
 - El harness esta presente y el verificador generado informa `current`, salida 0 y 0 escrituras. El check propietario ajustado al manifest tambien informa `current`, con 21 `current`, 18 `human-evolved`, 4 `present` y 0 obsoletas.
-- La suite canonica esta en verde: pasaron 300 pruebas con 7 omisiones. `RH-W-0025` incluye clasificacion determinista de capacidades, preflight integrado en el limite de la CLI, validacion de salida completa, limites de propietarios, seleccion integrada y degradacion por componente.
+- La suite canonica esta en verde: pasaron 301 pruebas con 7 omisiones. `RH-W-0025` incluye clasificacion determinista de capacidades, preflight integrado en el limite de la CLI, validacion de salida completa, limites de propietarios, seleccion integrada y degradacion por componente.
 - El archivo raiz `.gitattributes` protege 19 rutas generadas comparadas byte a byte, derivadas de las salidas del render en vez de un par fijo.
 - El conjunto de entornos es `claude-code` y `opencode`; el modo es `integrated`. El idioma de conversacion es `espanol` y los locales documentales son `en` y `es`. El generador es 3.0, el paquete de habilidad es 3.1 y el checker y manifest incorporados conservan consistencia como par.
 - La suite cubre estados Git generados, consentimiento por intencion, comparacion exacta del alcance preparado, separacion del indice previo, invalidacion por cambios materiales, resultados delimitados, deteccion sensible, recibos de transporte acotados y contratos de cache del entorno.
