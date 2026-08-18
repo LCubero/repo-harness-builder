@@ -24,6 +24,40 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0040
+| Field | Value |
+|---|---|
+| Origin | Owner proposal after three rule violations in one session: surface the rules that are actually forgotten instead of the whole rulebook |
+| Priority | P3: it addresses only the residue left after RH-W-0039, and its evidence source is human-fed, so it cannot be trusted as a detector |
+| Dependencies | RH-W-0039; only rules proven unmechanizable belong here, and that set is unknown until the checks exist |
+| Status | proposed |
+| Completed work | Established the counter-evidence that bounds this unit. `REPO-HARNESS.md:22` is injected into agent context every turn and was present throughout the session in which it was violated three times, so surfacing rules earlier is proven insufficient on its own and this unit must not be scoped as a rule reader. |
+| Remaining work | Design what a violation record contains, where it lives, who writes it, and how session start consumes it without becoming another ignored wall of text. |
+| Additions | A bounded record of repeatedly violated unmechanizable rules and a session-start path that surfaces only the top offenders. |
+| Exclusions | No re-reading of the full rulebook at session start, no duplication of rules already enforced by a check, no automatic violation detection claim, and no new state machine or third authority. |
+| Deferrals | none |
+| Rejections | Rejected framing this as a pre-session rule reader, because the violated rule was already in context. Rejected presenting it as automatic detection: it can only record violations a human or a later check noticed, so an empty ledger never proves compliance. |
+| Evidence | In one session the claim-classification rule was violated three times while loaded: an inference about test coverage stated as fact, a corrected restatement that was also wrong, and a stale suite count introduced while correcting stale suite counts. |
+| Decision history | 2026-08-18: registered `proposed` under issue #65 from an owner proposal, deliberately narrowed to the unmechanizable residue after the counter-evidence showed a rule reader would have prevented none of the observed failures. |
+| Next advancement condition | Advance only after RH-W-0039 lands and the remaining violated rules are known to be unmechanizable, so this unit covers a measured residue rather than a guess. |
+
+### RH-W-0039
+| Field | Value |
+|---|---|
+| Origin | Measured during RH-W-0038 delivery: rules that a check could enforce were being defended by prose and were violated anyway, including by the change that fixed them |
+| Priority | P2: a documented fact that drifts silently is the defect class this repository keeps repeating, and each instance costs a session to find while a check would cost one test run |
+| Dependencies | none |
+| Status | ready |
+| Completed work | Identified the mechanizable set from observed violations and confirmed the gap is real: no test compares the suite count documented in `current-state.md` against the actual count, which is why `294` and then `300` both went stale while the suite ran `300` and then `301`. |
+| Remaining work | Add checks for the documented suite count against the real one, for line endings introduced by an edit, and for current-state lifecycle claims that contradict the roadmap status they project. |
+| Additions | Behavioral checks that convert three prose obligations into failures with exit codes. |
+| Exclusions | No attempt to mechanize prose judgment such as evidence class or tone, no repository-wide line-ending policy, no new dependency, and no change to the roadmap as lifecycle owner. |
+| Deferrals | none |
+| Rejections | Rejected relying on reminders for this set. The claim-classification rule was in context every turn and was still violated three times, so a loaded rule is not an enforced rule and a check is the only difference. |
+| Evidence | `grep` for the documented count phrase across `skill/repo-harness-builder/tests` returns nothing, while `current-state.md` asserted `294`, then `300`, against real suite sizes of `300` and `301`. Two stray LF bytes also survived in `decisions.md` working copies from an earlier edit. |
+| Decision history | 2026-08-18: registered `ready` under issue #64 after the owner asked for a control that runs before the work, and the mechanizable half of that request proved cheaper and stronger than the memory half. |
+| Next advancement condition | Reopen only if a documented fact drifts again in a way one of these checks was meant to catch. |
+
 ### RH-W-0038
 | Field | Value |
 |---|---|
