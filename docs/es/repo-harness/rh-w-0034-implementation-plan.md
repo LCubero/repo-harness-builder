@@ -34,13 +34,13 @@ La correccion del producto pertenece a `repo-harness-builder`. Modificar directa
 - **REQ-009:** La recuperacion de un fallo del constructor preserva al consumidor, entrega reproduccion y una ruta de actualizar el constructor y regenerar, y nunca entra en flujos de Gentle AI, issues de GitHub, publicacion, autenticacion o consentimiento del proveedor.
 - **REQ-010:** Un consumidor sin Git y con RDD global desactivado no necesita un intento de desactivacion para el clone. El texto distingue reporte de defectos al proveedor y publicacion de un repositorio sin implicar ninguno.
 - **REQ-011:** Corregir primero las fuentes canonicas, sincronizar proyecciones, probar el paquete sucesor y solo entonces permitir un plan nuevo de regeneracion. Nunca corregir manualmente el checker consumidor.
-- **REQ-012:** `E:/code/VPS` permanece como evidencia historica de solo lectura y nunca es raiz de prueba, destino de mutacion, destino de regeneracion ni espacio de release.
+- **REQ-012:** el consumidor externo permanece como evidencia historica de solo lectura y nunca es raiz de prueba, destino de mutacion, destino de regeneracion ni espacio de release.
 - **REQ-013:** No crear una entrada de changelog hasta completar la implementacion.
 
 ## Fuera de alcance
 
 - Sin implementacion de codigo en esta unidad de planificacion.
-- Sin editar, limpiar, inicializar Git, cambiar RDD ni reparar archivos generados en `E:/code/VPS`.
+- Sin editar, limpiar, inicializar Git, cambiar RDD ni reparar archivos generados en el consumidor externo.
 - Sin cambiar Gentle AI salvo que evidencia posterior demuestre un defecto separado. La evidencia actual no lo demuestra.
 - Sin autenticacion, issue de GitHub, publicacion, release, etiqueta, stage, commit, push ni servicio externo.
 - Sin detector de lenguaje natural, traduccion, locale nuevo, version nueva del esquema, framework generico de incidentes ni dependencia nueva.
@@ -146,7 +146,7 @@ RED solo es valido si falla la asercion del comportamiento ausente. Errores de s
 
 - [ ] Copiar solo archivos canonicos cambiados a OpenCode y Claude byte a byte.
 - [ ] Comparar SHA-256 de cada trio.
-- [ ] No editar salidas de consumidor ni usar `E:/code/VPS` como destino.
+- [ ] No editar salidas de consumidor ni usar el consumidor externo como destino.
 
 ### Fase 5: Verificacion completa y replay temporal
 
@@ -158,12 +158,12 @@ python -B -m unittest discover -s .opencode/skills/repo-harness-builder/tests -p
 python -B -m unittest discover -s .claude/skills/repo-harness-builder/tests -p "test_*.py"
 ```
 
-- [ ] Instalar en un directorio temporal fuera de `E:/code/VPS` con runtimes, licencia, `--report-language espanol`, `--documentation-language es`, `--conversation-language espanol` y modo de integracion explicitos.
+- [ ] Instalar en un directorio temporal fuera del consumidor externo con runtimes, licencia, `--report-language espanol`, `--documentation-language es`, `--conversation-language espanol` y modo de integracion explicitos.
 - [ ] Ejecutar el check propietario con las mismas dimensiones. Exigir `current`, salida 0 y 0 escrituras.
 - [ ] Ejecutar `.repo-harness/check.py` del fixture por subproceso con el mismo resultado.
 - [ ] Resolver cada enlace relativo del mapa desde su directorio y comprobar ausencia de rutas bilingues.
 - [ ] Reproducir en otro fixture: wrapper ingles, conversacion humana en espanol, sin argumento del informe, sin Git, RDD global apagado e incompatibilidad del checker. Exigir seleccion en espanol o una pregunta, propiedad del constructor, bytes sin cambios, sin proveedor ni GitHub, sin RDD de clone y con ruta nueva de regeneracion.
-- [ ] Nunca ejecutar el replay en `E:/code/VPS`.
+- [ ] Nunca ejecutar el replay en el consumidor externo.
 
 ### Fase 6: Verificacion autoalojada y cierre
 
@@ -188,14 +188,14 @@ python -B -m unittest discover -s .claude/skills/repo-harness-builder/tests -p "
 - [ ] Las incompatibilidades generadas permanecen como defectos del constructor.
 - [ ] Sin Git y con RDD apagado no existe accion Git, RDD de clone ni publicacion.
 - [ ] Paquetes y suites canonica, OpenCode y Claude estan sincronizados.
-- [ ] El replay temporal pasa sin leer ni escribir `E:/code/VPS`.
+- [ ] El replay temporal pasa sin leer ni escribir el consumidor externo.
 - [ ] El check propietario incluye runtimes, MIT, informe, locales, conversacion e integracion explicitos.
 - [ ] Ciclo de vida, mapas, estado, pares, Engram, enlaces, whitespace y caracteres estan reconciliados.
 - [ ] `v3.1-rc.2` permanece inmutable y solo se sustituye despues de prueba completa.
 
 ## Limite de rollback
 
-El rollback se limita a archivos canonicos de RH-W-0034, proyecciones exactas de OpenCode y Claude, pruebas y documentacion del ciclo de vida. Revierta el patch o use el ejecutor acotado para proyecciones autoalojadas. Nunca use Git destructivo, altere un release o etiqueta, modifique el checker consumidor ni restaure desde `E:/code/VPS`. Un fixture fallido se elimina solo de su ubicacion temporal despues de conservar evidencia acotada.
+El rollback se limita a archivos canonicos de RH-W-0034, proyecciones exactas de OpenCode y Claude, pruebas y documentacion del ciclo de vida. Revierta el patch o use el ejecutor acotado para proyecciones autoalojadas. Nunca use Git destructivo, altere un release o etiqueta, modifique el checker consumidor ni restaure desde el consumidor externo. Un fixture fallido se elimina solo de su ubicacion temporal despues de conservar evidencia acotada.
 
 ## Pronostico de revision
 
