@@ -11,7 +11,7 @@ import tempfile
 import unittest
 from unittest import mock
 from datetime import date
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -375,6 +375,42 @@ class ProductWorkflowTests(unittest.TestCase):
             report = TOOL.check(root, "Example", [])
             entry = next(item for item in report["files"] if item["path"] == "docs/repo-harness/usage.md")
             self.assertEqual(entry["state"], "locale-content-incomplete")
+
+    def test_documentation_map_advertises_only_paths_the_render_creates(self):
+        """T-009: a map may not name a destination its own render does not emit.
+
+        The offending references sit inside backticks rather than Markdown
+        links, so a link checker alone cannot catch them. Every violation is
+        collected so one defect never hides the next.
+        """
+        modes = ((["en"], "english"), (["es"], "espanol"), (["en", "es"], "espanol"))
+        offenders = []
+        for languages, conversation in modes:
+            outputs = TOOL.render(
+                "Example", ["opencode"], documentation_languages=languages, conversation_language=conversation
+            )
+            for path in sorted(name for name in outputs if name.endswith("repo-harness/README.md")):
+                base = PurePosixPath(path).parent
+                for token in re.findall(r"`([^`]+)`", outputs[path]):
+                    if "/" not in token and not token.endswith(".md"):
+                        continue
+                    if token.startswith(("http://", "https://")):
+                        continue
+                    parts: list[str] = []
+                    for part in (base / token).parts:
+                        if part == "..":
+                            if parts:
+                                parts.pop()
+                            else:
+                                parts.append("..")
+                        elif part != ".":
+                            parts.append(part)
+                    resolved = "/".join(parts)
+                    # The map mixes directory-relative rows with root-anchored
+                    # references such as the rulebook, so either resolution counts.
+                    if resolved not in outputs and token not in outputs:
+                        offenders.append(f"documentation={languages} {path} advertises {token!r} -> {resolved!r}")
+        self.assertEqual(offenders, [], chr(10).join(offenders))
 
     def test_readmes_have_one_reciprocal_language_selector(self):
         outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
@@ -3604,6 +3640,74 @@ class GeneratedCheckScriptTests(unittest.TestCase):
         module.MANIFEST_SHA256 = hashlib.sha256(raw).hexdigest()
         return module
 
+    def test_spanish_only_install_passes_the_generated_checker(self):
+        """T-007: the generated checker must accept the manifest its own builder emitted."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("opencode",), documentation_languages=["es"], conversation_language="espanol")
+            self.assertEqual(json.loads((root / TOOL.MANIFEST_PATH).read_text(encoding="utf-8"))["language"]["documentation"], ["es"])
+            owner = TOOL.check(root, "Example", ["opencode"])
+            self.assertEqual(owner["writes"], 0)
+            result = subprocess.run(
+                [sys.executable, "-B", str(root / ".repo-harness" / "check.py")],
+                cwd=root,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            payload = json.loads(result.stdout)
+            self.assertEqual(payload["status"], "current")
+            self.assertEqual(payload["writes"], 0)
+
+    def test_generated_checker_accepts_exactly_the_owner_locale_domain(self):
+        """T-008: owner and generated validators must share one accepted domain."""
+        accepted = (["en"], ["es"], ["en", "es"])
+        rejected = ([], ["en", "en"], ["fr"], ["es", "en"], ["en", "es", "fr"])
+        for declaration in accepted:
+            with self.subTest(accepted=declaration):
+                self.assertEqual(list(TOOL.normalize_documentation_languages(list(declaration))), declaration)
+        for declaration in rejected:
+            with self.subTest(rejected=declaration):
+                with self.assertRaises(Exception):
+                    TOOL.normalize_documentation_languages(list(declaration))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for declaration in accepted:
+                with self.subTest(generated_accepts=declaration):
+                    module = self.signed_manifest(root, lambda m: m["language"].__setitem__("documentation", list(declaration)))
+                    raw = (root / TOOL.MANIFEST_PATH).read_bytes()
+                    module.parse_manifest(raw, module.MANIFEST_SHA256)
+            for declaration in rejected:
+                with self.subTest(generated_rejects=declaration):
+                    module = self.signed_manifest(root, lambda m: m["language"].__setitem__("documentation", list(declaration)))
+                    raw = (root / TOOL.MANIFEST_PATH).read_bytes()
+                    with self.assertRaises(ValueError):
+                        module.parse_manifest(raw, module.MANIFEST_SHA256)
+
+    def test_a_prior_version_checker_still_authorizes_replacement(self):
+        """RH-W-0036: a stale checker must not disable its own replacement.
+
+        Byte equality with the current template proves freshness, not
+        authenticity. Authenticity is proven by builder provenance plus the
+        embedded manifest digest, and only that may gate the replaceable set.
+        """
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=self.RUNTIMES)
+            checker = root / ".repo-harness" / "check.py"
+            fresh = checker.read_text(encoding="utf-8")
+            self.assertIn("core/check-script:", fresh)
+            aged = fresh.replace("core/check-script:" + TOOL.VERSION, "core/check-script:2.9", 1)
+            self.assertNotEqual(aged, fresh)
+            checker.write_text(aged, encoding="utf-8")
+            self.assertEqual(TOOL.generated_version(aged.encode("utf-8")), "2.9")
+            owned = TOOL.manifest_owned_generated_paths(root)
+            self.assertTrue(owned, "an authentic prior-version checker emptied the replaceable set")
+            # The weaker proof authorizes exactly one repair and nothing else.
+            self.assertEqual(owned, {".repo-harness/check.py"})
+            checker.write_text(aged.replace("MANIFEST_SHA256 = \"", "MANIFEST_SHA256 = \"0"), encoding="utf-8")
+            self.assertEqual(TOOL.manifest_owned_generated_paths(root), set())
+
     def assert_no_outside_read(self, module, root: Path):
         original = Path.read_bytes
         root_resolved = root.resolve()
@@ -3784,6 +3888,31 @@ class ReportTemplateTests(unittest.TestCase):
     def templates(self):
         for name in self.TEMPLATES:
             yield name, (ROOT / "assets" / name).read_text(encoding="utf-8")
+
+    def test_failure_ownership_is_classified_before_any_provider_handoff(self):
+        """T-010 to T-012: a builder-generated mismatch is a builder defect."""
+        safety = (ROOT / "references" / "preservation-and-safety.md").read_text(encoding="utf-8").lower()
+        for phrase in (
+            "classify the failing owner before any provider handoff",
+            "a mismatch among builder-generated output, manifest, checker, or package projection is a `repo-harness-builder` defect",
+            "never enters provider-defect reporting, issue creation, or repository publication",
+            "a consumer that is not a git repository needs no clone-scope",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, safety)
+
+    def test_report_language_precedence_requires_verified_human_evidence(self):
+        """T-003 and T-004: only typed human evidence may select the report language."""
+        contract = (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")
+        section = contract.split("## Report Language", 1)[1].split("##", 1)[0].lower()
+        for phrase in (
+            "verified current human conversation evidence",
+            "ask one localized report-language question and stop",
+            "cannot claim verified conversation evidence",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, section)
+        self.assertNotIn("3. the current conversation language.", section)
 
     def test_every_label_and_title_is_marked_translatable(self):
         for name, text in self.templates():

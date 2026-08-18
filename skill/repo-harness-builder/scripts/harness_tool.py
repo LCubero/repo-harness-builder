@@ -1366,10 +1366,18 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
         if spanish_only
         else "Este arbol contiene pares completos en espanol de la documentacion durable."
     )
+    spanish_index_state_row = (
+        "| `current-state.md` | Estado verificado, trabajo reciente y siguiente paso |"
+        if spanish_only
+        else "| `current-state.md` | Presentacion en espanol del estado canonico en `../../repo-harness/current-state.md` |"
+    )
+    spanish_index_maintenance_row = (
+        "" if spanish_only else "\n| `i18n-maintenance.md` | Contrato de mantenimiento bilingue |"
+    )
     spanish_index_owner_rows = (
         ""
         if spanish_only
-        else "| `../../../repo-harness/README.md` | Mapa canonico en ingles |\n| `../../../CHANGELOG.md` | Historial cronologico canonico |"
+        else "| `../../repo-harness/README.md` | Mapa canonico en ingles |\n| `../../../CHANGELOG.md` | Historial cronologico canonico |"
     )
     index_es = f"""# Documentacion del harness de IA
 
@@ -1382,10 +1390,9 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
 | Documento | Propiedad |
 |---|---|
 | `usage.md` | Flujo humano, disponibilidad y limites de aprobacion |
-| `current-state.md` | Presentacion en espanol del estado canonico en `../../../repo-harness/current-state.md` |
+{spanish_index_state_row}
 | `roadmap.md` | Espejo humano del propietario canonico del ciclo de vida |
-| `decisions.md` | Presentacion en espanol de decisiones y restricciones |
-| `i18n-maintenance.md` | Contrato de mantenimiento bilingue |
+| `decisions.md` | Presentacion en espanol de decisiones y restricciones |{spanish_index_maintenance_row}
 {spanish_index_owner_rows}
 """
     availability_es = (
@@ -1742,7 +1749,7 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         or not documentation
         or len(documentation) != len(set(documentation))
         or not set(documentation) <= DOCUMENTATION_LANGUAGES
-        or documentation[0] != "en"
+        or tuple(documentation) not in (("en",), ("es",), ("en", "es"))
     ):
         raise ValueError("unexpected documentation languages")
     skills = manifest["canonicalSkills"]
@@ -1945,6 +1952,22 @@ def desired_skill_license(outputs: dict[str, str]) -> str:
     return license_id
 
 
+def authentic_installed_checker(checker_bytes: bytes, manifest_bytes: bytes) -> bool:
+    """Prove the installed checker authenticates these exact manifest bytes.
+
+    Byte equality with the current template proves freshness, not authenticity.
+    Gating on freshness made a stale checker disable its own replacement and
+    every other manifest-owned output with it, so an installation could never
+    receive a corrected checker. Authenticity is builder provenance plus the
+    embedded digest naming these manifest bytes, which is exactly what the
+    manifest authentication depends on.
+    """
+    if generated_version(checker_bytes) is None:
+        return False
+    match = re.search(r'MANIFEST_SHA256\s*=\s*"([0-9a-f]{64})"', checker_bytes.decode("utf-8", errors="replace"))
+    return bool(match) and match.group(1) == digest_bytes(manifest_bytes)
+
+
 def manifest_owned_generated_paths(root: Path) -> set[str]:
     """Return generated paths authorized by an authenticated installed manifest."""
     manifest_target = guarded_target(root, MANIFEST_PATH)
@@ -1954,7 +1977,14 @@ def manifest_owned_generated_paths(root: Path) -> set[str]:
     if not checker_target.is_file() or is_indirect(checker_target):
         return set()
     manifest_bytes = manifest_target.read_bytes()
-    if checker_target.read_text(encoding="utf-8") != check_script(digest_bytes(manifest_bytes)):
+    checker_bytes = checker_target.read_bytes()
+    if checker_bytes.decode("utf-8", errors="replace") != check_script(digest_bytes(manifest_bytes)):
+        # A checker that is authentic but not current authorizes exactly one
+        # repair, replacing itself. Widening the set on this weaker proof would
+        # let an edited checker carrying a matching digest line authorize every
+        # other generated path, which byte equality alone previously prevented.
+        if authentic_installed_checker(checker_bytes, manifest_bytes):
+            return {".repo-harness/check.py"}
         return set()
     try:
         manifest = json.loads(manifest_bytes)

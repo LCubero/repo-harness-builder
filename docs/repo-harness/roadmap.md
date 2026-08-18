@@ -24,6 +24,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0036
+| Field | Value |
+|---|---|
+| Origin | Discovered while verifying RH-W-0034 phase 6: the owner check reported `.repo-harness/check.py` stale while the render plan offered zero actions to correct it |
+| Priority | P0: a stale generated checker disables replacement for every manifest-owned generated output, so any future change to `check_script()` permanently freezes every already-installed consumer |
+| Dependencies | none; RH-W-0034 phase 6 cannot close until this is resolved |
+| Status | completed |
+| Completed work | Located the exact gate at `manifest_owned_generated_paths()` in `skill/repo-harness-builder/scripts/harness_tool.py:1964` and confirmed the circular block against live evidence. |
+| Remaining work | none |
+| Additions | A bounded, digest-bound checker refresh path and regression coverage proving a stale checker no longer empties the replaceable set. |
+| Exclusions | No weakening of manifest digest authentication, path safety, exact projection comparison, or zero-write checking. No direct patching of a consumer checker. No change to `E:/code/VPS`. |
+| Deferrals | none |
+| Rejections | Rejected treating this as part of RH-W-0034; the language work is complete and independent, while this is a lifecycle defect in the update mechanism itself. |
+| Evidence | `manifest_owned_generated_paths()` returns an empty set when `checker_target.read_text(...) != check_script(digest_bytes(manifest_bytes))`, so the plan reports 0 replace, create, append, migrate, and blocked actions while the owner check reports `drift` with exactly 1 stale path. Contrast evidence: the same command produced 3 `replace-generated-output` actions earlier in the same session, before `check_script()` changed. |
+| Decision history | 2026-08-17: registered and completed the same day. New `authentic_installed_checker()` separates authenticity from freshness: builder provenance plus the embedded `MANIFEST_SHA256` naming these exact manifest bytes now gates the replaceable set, while byte equality with the current template only decides whether the checker itself needs replacing. RED proved an authentic prior-version checker returned an empty set; after the fix the self-hosted plan offered exactly 1 `replace-generated-output` action, applying digest `fe5fb7041bcff1887a859a15cfc377399bc277d221c75cf1b4f933e8ae14c915` regenerated the checker, and both checkers report `current` with 0 writes and 0 stale. Three suites pass 300 tests. Self-review then found that provenance plus embedded digest is a weaker proof than byte equality, because an editor who changes both the manifest and the checker's digest line would satisfy it. The weaker proof therefore authorizes exactly one repair, replacing the checker itself; every other generated path still requires byte equality with the current template. |
+| Next advancement condition | Reopen only if an authentic installation is again denied a corrected checker, or if provenance and embedded-digest proof stop gating the replaceable set. |
+
 ### RH-W-0035
 | Field | Value |
 |---|---|
@@ -47,16 +64,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Verified `v3.1-rc.2` consumer transcript and installed-output evidence from a Spanish-only non-Git consumer |
 | Priority | P1: the published candidate can generate a checker that rejects its own valid Spanish-only manifest, advertise nonexistent documentation, select report language from wrapper prose, and route a builder defect into irrelevant provider reporting |
 | Dependencies | none for implementation; successor release publication remains a separate approval-bound work unit |
-| Status | ready |
-| Completed work | Confirmed the defects against canonical source and tests, selected `RH-W-0034` as the next immutable ID, resolved every implementation decision, and created the canonical executable plan plus complete Spanish peer. |
-| Remaining work | Execute [the implementation plan](rh-w-0034-implementation-plan.md) with strict RED/GREEN coverage; synchronize canonical, OpenCode, and Claude packages; prove owner and generated checker parity in Spanish-only subprocess fixtures; replay the consumer path in a temporary non-Git fixture; and complete lifecycle and release evidence. |
+| Status | completed |
+| Completed work | Confirmed the defects against canonical source and tests, selected `RH-W-0034` as the next immutable ID, resolved every implementation decision, and created the canonical executable plan plus complete Spanish peer. Delivered phase 2 on branch `fix/rh-w-0034-spanish-only-parity` as commit `a4ba876`: the generated `parse_manifest()` now accepts exactly the domain `normalize_documentation_languages()` accepts, and the Spanish documentation map advertises only destinations its own render creates. Delivered phase 4 as `5c89470`, synchronizing both runtime projections. Delivered phase 1 as `f3e2b27`: report-language step 3 now requires evidence the host can attribute to the human, a new step 4 asks one localized question and stops instead of falling back silently, and generated contracts, repository text, assistant prose, memory, and tool results join wrapper prose as things that are never evidence. Canonical, OpenCode, and Claude suites each pass 298 tests. |
+| Remaining work | none |
 | Additions | Concrete Spanish interview copy; typed report-language evidence with ask-once fallback; exact owner/generated documentation-locale parity; Spanish-only local map and link validation; owner-before-provider failure classification; safe upgrade and fresh regeneration guidance. |
 | Exclusions | No direct `E:/code/VPS` mutation, consumer checker patch, Gentle AI source change without separate evidence, Git or RDD mutation, provider or GitHub action, repository publication, external service, tag or release alteration, new locale, translation service, dependency, or changelog entry while planned. |
 | Deferrals | Publishing a successor release candidate is deferred until the implementation, all three package suites, temporary consumer replay, explicit-dimension owner check, generated checker, links, lifecycle, and byte audits pass. |
 | Rejections | Rejected patching `.repo-harness/check.py` in the consumer, treating English wrapper prose as human language evidence, requiring English first in a Spanish-only manifest, advertising bilingual-only files, classifying builder-generated mismatch as a Gentle AI defect, attempting clone-scope RDD disable in a non-Git directory, and implying GitHub repository publication. |
 | Evidence | `normalize_documentation_languages()` accepts `("es",)` while generated `check_script().parse_manifest()` rejects `documentation[0] != "en"`; `docs_outputs()` emits nonexistent English-owner and bilingual-maintenance links in Spanish-only mode; the report-language contract already says wrapper prose and tool output are not conversation evidence; verified consumer evidence shows the resulting English report, checker failure, ownership misclassification, provider-consent detour, non-Git directory, and global RDD already off. |
 | Decision history | 2026-08-17: registered as `ready` because the user supplied verified reproduction evidence and explicitly resolved wording, language precedence, preservation behavior, failure ownership, remediation safety, Git/RDD boundaries, release sequencing, exact verification, and non-goals. |
-| Next advancement condition | Move to `active` when implementation begins from T-001 RED coverage. Complete only after every acceptance criterion in the canonical plan passes and Engram topic `work/RH-W-0034` is reconciled. |
+| Next advancement condition | Reopen only if a Spanish-only installation is rejected by either checker, a documentation map advertises a destination its render does not create, report language is selected without evidence attributable to the human, or a builder-generated mismatch reaches provider or publication flow. Publishing a successor to `v3.1-rc.2` remains a separate approval-bound work unit. |
 
 ### RH-W-0033
 | Field | Value |
