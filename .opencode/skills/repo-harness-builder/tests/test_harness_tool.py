@@ -3703,7 +3703,10 @@ class GeneratedCheckScriptTests(unittest.TestCase):
             self.assertEqual(TOOL.generated_version(aged.encode("utf-8")), "2.9")
             owned = TOOL.manifest_owned_generated_paths(root)
             self.assertTrue(owned, "an authentic prior-version checker emptied the replaceable set")
-            self.assertIn(".repo-harness/check.py", owned)
+            # The weaker proof authorizes exactly one repair and nothing else.
+            self.assertEqual(owned, {".repo-harness/check.py"})
+            checker.write_text(aged.replace("MANIFEST_SHA256 = \"", "MANIFEST_SHA256 = \"0"), encoding="utf-8")
+            self.assertEqual(TOOL.manifest_owned_generated_paths(root), set())
 
     def assert_no_outside_read(self, module, root: Path):
         original = Path.read_bytes

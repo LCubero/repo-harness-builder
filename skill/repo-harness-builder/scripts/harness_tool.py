@@ -1977,7 +1977,14 @@ def manifest_owned_generated_paths(root: Path) -> set[str]:
     if not checker_target.is_file() or is_indirect(checker_target):
         return set()
     manifest_bytes = manifest_target.read_bytes()
-    if not authentic_installed_checker(checker_target.read_bytes(), manifest_bytes):
+    checker_bytes = checker_target.read_bytes()
+    if checker_bytes.decode("utf-8", errors="replace") != check_script(digest_bytes(manifest_bytes)):
+        # A checker that is authentic but not current authorizes exactly one
+        # repair, replacing itself. Widening the set on this weaker proof would
+        # let an edited checker carrying a matching digest line authorize every
+        # other generated path, which byte equality alone previously prevented.
+        if authentic_installed_checker(checker_bytes, manifest_bytes):
+            return {".repo-harness/check.py"}
         return set()
     try:
         manifest = json.loads(manifest_bytes)
