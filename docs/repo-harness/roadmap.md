@@ -24,6 +24,40 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0038
+| Field | Value |
+|---|---|
+| Origin | Observed live: a session-start report stated an inference about test coverage in assertive form, and the corrected restatement about the same subject was also wrong while sounding equally certain |
+| Priority | P1: the rulebook already forbids confidence wording as a substitute for evidence, but nothing obliges the emitted report to show the class, so an unlabeled inference violates no output contract and can be written into durable documentation as fact |
+| Dependencies | none |
+| Status | completed |
+| Completed work | Confirmed the claim-classification rule exists at `REPO-HARNESS.md:22` and that the generated session-start contract echoes it as a single line, then confirmed all three daily Output Contracts enumerate report topics without requiring any claim to carry its evidence class. Added the requirement to the session-start, session-stop, and documentation Output Contracts in `skill/repo-harness-builder/scripts/harness_tool.py`, proved it RED first with a new rendered-contract regression, and regenerated the nine stale projections through one digest-bound apply. |
+| Remaining work | none |
+| Additions | One Output Contract sentence per daily skill requiring the evidence class, and one behavioral regression asserting it in all three rendered contracts. |
+| Exclusions | No new rulebook rule, no change to the RH-W-0032 classification principle itself, no checker gate, no localization of the clause, no Git or GitHub action, and no release. |
+| Deferrals | none |
+| Rejections | Rejected adding the requirement to session-start alone, because the session-stop handoff is what writes durable current-state text. Rejected promising a mechanical gate, because a prose rule about prose output cannot be enforced by `check.py`; this unit strengthens an obligation and does not create a gate. |
+| Evidence | Digest-bound plan `9d7b979cb9a2936f496eaf286d6c8478ecbd571ffe35a36a6ba9730594eb7d76` offered exactly the nine stale `SKILL.md` paths with zero create, append, migrate, or blocked actions. After apply, the manifest-matched owner check and the generated checker both report `current` with 0 writes, and the canonical suite passes 301 tests with 7 skips. |
+| Decision history | 2026-08-18: registered and completed as one unit after the user identified the pattern directly, because the diagnosis showed a missing output obligation rather than a missing rule. |
+| Next advancement condition | Reopen only if a daily report presents an inference in assertive form again, or if a rendered Output Contract stops requiring the evidence class. |
+
+### RH-W-0037
+| Field | Value |
+|---|---|
+| Origin | Injection experiment run during RH-W-0034 reconciliation: the same completed-with-outstanding-work contradiction failed the suite in the English roadmap and passed it in the Spanish peer |
+| Priority | P1: every lifecycle invariant is enforced against the English roadmap only, so the Spanish peer can carry a self-contradicting record indefinitely and a Spanish-reading maintainer receives false lifecycle state |
+| Dependencies | none |
+| Status | ready |
+| Completed work | Proved the gap by experiment rather than inspection. Injecting `Trabajo restante: quedan las fases 3, 5 y 6 sin entregar.` into the completed Spanish `RH-W-0034` record kept the suite green at 300 tests, while the equivalent English injection failed `test_repository_roadmap_records_have_valid_lifecycle_fields` with `'phases 3, 5 and 6 are still outstanding' != 'none'`. Both files were restored and verified by SHA-256. Measured the structural cause behind it. |
+| Remaining work | Backfill the missing Spanish lifecycle fields, then extend the invariant to the Spanish peer so status and remaining work stay consistent in both languages. |
+| Additions | Spanish-side lifecycle field completeness and one regression enforcing status-to-remaining-work consistency in both roadmaps. |
+| Exclusions | No change to the English roadmap format, no conversion of the Spanish peer into a table without a separate decision, no new locale, no generated product behavior change, and no Git or GitHub action. |
+| Deferrals | none |
+| Rejections | Rejected a gate that skips records missing the label, because partial enforcement is the same defect class this unit exists to remove. |
+| Evidence | The English table parses 504 fields across 36 records while the Spanish prose parses 0 under the same expression, and `test_repository_roadmap_records_have_valid_lifecycle_fields` never opens the Spanish file at all. Only 6 of 36 Spanish records carry all twelve labelled fields: `Rechazos` is absent from 22, `Adiciones` from 21, `Exclusiones` from 15, and `Dependencias`, `Trabajo completado`, and `Trabajo restante` from 13 each. |
+| Decision history | 2026-08-18: registered `ready` after the user challenged an unverified claim about this gap, and the injection experiment converted it from inference into measured fact. |
+| Next advancement condition | Advance once the Spanish backfill scope is approved, because completing it edits 30 lifecycle records and is larger than the defect that exposed it. |
+
 ### RH-W-0036
 | Field | Value |
 |---|---|
@@ -65,10 +99,10 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Priority | P1: the published candidate can generate a checker that rejects its own valid Spanish-only manifest, advertise nonexistent documentation, select report language from wrapper prose, and route a builder defect into irrelevant provider reporting |
 | Dependencies | none for implementation; successor release publication remains a separate approval-bound work unit |
 | Status | completed |
-| Completed work | Confirmed the defects against canonical source and tests, selected `RH-W-0034` as the next immutable ID, resolved every implementation decision, and created the canonical executable plan plus complete Spanish peer. Delivered phase 2 on branch `fix/rh-w-0034-spanish-only-parity` as commit `a4ba876`: the generated `parse_manifest()` now accepts exactly the domain `normalize_documentation_languages()` accepts, and the Spanish documentation map advertises only destinations its own render creates. Delivered phase 4 as `5c89470`, synchronizing both runtime projections. Delivered phase 1 as `f3e2b27`: report-language step 3 now requires evidence the host can attribute to the human, a new step 4 asks one localized question and stops instead of falling back silently, and generated contracts, repository text, assistant prose, memory, and tool results join wrapper prose as things that are never evidence. Canonical, OpenCode, and Claude suites each pass 298 tests. |
+| Completed work | Confirmed the defects against canonical source and tests, selected `RH-W-0034` as the next immutable ID, resolved every implementation decision, and created the canonical executable plan plus complete Spanish peer. Delivered phase 2 on branch `fix/rh-w-0034-spanish-only-parity` as commit `a4ba876`: the generated `parse_manifest()` now accepts exactly the domain `normalize_documentation_languages()` accepts, and the Spanish documentation map advertises only destinations its own render creates. Delivered phase 4 as `5c89470`, synchronizing both runtime projections. Delivered phase 1 as `f3e2b27`: report-language step 3 now requires evidence the host can attribute to the human, a new step 4 asks one localized question and stops instead of falling back silently, and generated contracts, repository text, assistant prose, memory, and tool results join wrapper prose as things that are never evidence. Canonical, OpenCode, and Claude suites each pass 298 tests. Delivered phase 3 as `cfadb19`: a Failure Ownership contract classifies the failing owner from generated-artifact provenance before any provider handoff, so builder-owned output never reaches provider reporting, issue creation, or repository publication. Phase 5 verified a temporary Spanish-only fixture of 33 files with both checkers `current` at 0 writes and 0 stale, 10 resolving links, and no bilingual-only path, and never touched the external consumer; its T-009 map check also exposed two defects the plan had not predicted, both in bilingual mode, where the Spanish map pointed one level too high. Phase 6 was blocked on `RH-W-0036` and closed as `9084918` once the stale-checker gate was corrected; the branch merged into `main` through pull request #57 as `461f625`. |
 | Remaining work | none |
 | Additions | Concrete Spanish interview copy; typed report-language evidence with ask-once fallback; exact owner/generated documentation-locale parity; Spanish-only local map and link validation; owner-before-provider failure classification; safe upgrade and fresh regeneration guidance. |
-| Exclusions | No direct the external consumer mutation, consumer checker patch, Gentle AI source change without separate evidence, Git or RDD mutation, provider or GitHub action, repository publication, external service, tag or release alteration, new locale, translation service, dependency, or changelog entry while planned. |
+| Exclusions | No direct mutation of the external consumer, consumer checker patch, Gentle AI source change without separate evidence, Git or RDD mutation, provider or GitHub action, repository publication, external service, tag or release alteration, new locale, translation service, dependency, or changelog entry while planned. |
 | Deferrals | Publishing a successor release candidate is deferred until the implementation, all three package suites, temporary consumer replay, explicit-dimension owner check, generated checker, links, lifecycle, and byte audits pass. |
 | Rejections | Rejected patching `.repo-harness/check.py` in the consumer, treating English wrapper prose as human language evidence, requiring English first in a Spanish-only manifest, advertising bilingual-only files, classifying builder-generated mismatch as a Gentle AI defect, attempting clone-scope RDD disable in a non-Git directory, and implying GitHub repository publication. |
 | Evidence | `normalize_documentation_languages()` accepts `("es",)` while generated `check_script().parse_manifest()` rejects `documentation[0] != "en"`; `docs_outputs()` emits nonexistent English-owner and bilingual-maintenance links in Spanish-only mode; the report-language contract already says wrapper prose and tool output are not conversation evidence; verified consumer evidence shows the resulting English report, checker failure, ownership misclassification, provider-consent detour, non-Git directory, and global RDD already off. |
