@@ -3865,6 +3865,19 @@ class ReportTemplateTests(unittest.TestCase):
         for name in self.TEMPLATES:
             yield name, (ROOT / "assets" / name).read_text(encoding="utf-8")
 
+    def test_report_language_precedence_requires_verified_human_evidence(self):
+        """T-003 and T-004: only typed human evidence may select the report language."""
+        contract = (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")
+        section = contract.split("## Report Language", 1)[1].split("##", 1)[0].lower()
+        for phrase in (
+            "verified current human conversation evidence",
+            "ask one localized report-language question and stop",
+            "cannot claim verified conversation evidence",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, section)
+        self.assertNotIn("3. the current conversation language.", section)
+
     def test_every_label_and_title_is_marked_translatable(self):
         for name, text in self.templates():
             body = [line for line in text.splitlines() if line.strip() and not line.startswith("<!--")]
