@@ -6,7 +6,7 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes. The manifest-matched owner check also reports `current` with 21 current, 18 human-evolved, 4 present, and 0 stale.
-- Canonical suite green: 293 tests passed with 7 skips. `RH-W-0025` includes deterministic capability classification, CLI-bound integrated preflight, complete-output validation, owner boundaries, integrated selection, and component-degradation coverage.
+- Canonical suite green: 294 tests passed with 7 skips. `RH-W-0025` includes deterministic capability classification, CLI-bound integrated preflight, complete-output validation, owner boundaries, integrated selection, and component-degradation coverage.
 - Root `.gitattributes` protects 19 byte-compared generated paths, derived from render outputs rather than a fixed pair.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1. The checked-in checker and manifest remain a consistent pair.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
@@ -16,6 +16,7 @@
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
+- Completed `RH-W-0035`: the canonical suite spawned a bare `python` in 13 subprocess calls while already using `sys.executable` in 9 others, so it could not start where PATH has no `python`, and generated consumer text named `python .repo-harness/check.py` while the generated checker carried a `#!/usr/bin/env python3` shebang. Every bare literal is now `sys.executable`, one guard scans each test module for interpreter-name constants, generated copy names both the Windows and POSIX cases, and the POSIX-only inline environment assignment in `references/validation.md` is split per shell. A blanket `python3` substitution was rejected because `python3` is absent from a default python.org Windows installation; platform-conditional rendering was rejected because the generated file is committed into a repository that contributors on the other systems clone. Real macOS and Linux execution remains unverified for lack of hardware.
 - Published GitHub pre-release [`v3.1-rc.2`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.2) on 2026-08-17 with the 13-file labeled installable asset. This candidate includes `RH-W-0033`; fresh canonical, OpenCode, and Claude verification passed, and both the generated checker and explicit MIT owner check were current with 0 writes. The changelog retains the distinct factual `v3.1-rc.1` history.
 - Completed `RH-W-0025`: bounded `gentle-ai version` PATH execution and host-provided Engram MCP or CLI evidence now produce exactly `not_found`, `found_on_path`, or `verified`. The production CLI enforces both verified capabilities before integrated preview or apply, preserves both outcomes on refusal, and validates complete Gentle AI output before bounding retained evidence. Runtime loss remains component-scoped unless repository policy requires that component, owner state is not copied, and reusable knowledge promotion requires repository verification, a canonical owner, and human approval. RH-W-0008 applied the six authenticated generated skill replacements.
 - Completed `RH-W-0032`: one universal generated-rulebook principle now distinguishes verified facts, supported inferences, unknown or unverifiable claims, and required human decisions. It requires applicable, trustworthy, proportionate evidence; forbids missing evidence, stale memory, unrelated proxies, assumptions, and confidence wording as factual substitutes; verifies without asking when possible; and names the missing capability before requesting only the minimum evidence, criterion, authority, or decision. All three daily skills inherit the rulebook without duplicating the full principle.
@@ -70,6 +71,7 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
+- Active projection: `RH-W-0034` is `ready`. It owns the verified `v3.1-rc.2` consumer defects covering concrete Spanish interview copy, human-only report-language evidence, Spanish-only checker and map parity, and owner-before-provider recovery. Its [canonical implementation plan](rh-w-0034-implementation-plan.md) requires temporary consumer replay and forbids direct changes to `E:/code/VPS`.
 - Active projection: `RH-W-0010` and `RH-W-0019` are `ready`. [roadmap.md](roadmap.md) owns their verified scope, citations, and definitions.
 - Proposed projection: the documentation relationship map `RH-W-0022` awaits a scope design before it can become `ready`.
 - Deferred projection: `RH-W-0011` through `RH-W-0015`, the unattended internal-maintenance idea `RH-W-0018`, and the optional CodeGraph capability `RH-W-0026` retain explicit advancement conditions in [roadmap.md](roadmap.md). `RH-W-0026` requires explicit future design or research approval and primary-source review before advancement.
@@ -79,4 +81,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Reconcile `RH-W-0011` before deciding whether the published candidate can advance: the historical review report was never carried into this repository, so no current evidence proves whether findings remain open. `RH-W-0010` gates a real `3.1.0` rather than the existing candidate. The unit choice remains the human's.
+Implement `RH-W-0034` before recommending a successor to `v3.1-rc.2`. Begin with the plan's RED language-evidence and Spanish-only subprocess fixtures; do not repair `E:/code/VPS` directly or publish a release from the planning unit.

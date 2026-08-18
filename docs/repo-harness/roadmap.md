@@ -24,6 +24,40 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0035
+| Field | Value |
+|---|---|
+| Origin | Measured interpreter-invocation audit of this repository, prompted by a confirmed `python` versus `python3` failure observed on a macOS collaborator machine in an unrelated repository |
+| Priority | P1: the canonical test suite cannot start on a machine without a bare `python` on PATH, so macOS and PEP 394 Linux contributors cannot verify this builder at all, and every generated harness instructs its consumers to run an interpreter name the same builder does not guarantee |
+| Dependencies | none; independent of `RH-W-0034` and of any release |
+| Status | completed |
+| Completed work | Audited every interpreter invocation in the repository, measured the interpreters actually present on the Windows development machine, classified findings into generated consumer text, test-suite invocations, contributor documentation, and out-of-scope imported material, and confirmed byte parity of the three `harness_tool.py` copies at `f344fca692249d91b7c3c67ec81c54e11a348a3e63a1740b4e41c9b55c60ab12`. |
+| Remaining work | none |
+| Additions | Portable interpreter resolution in tests, one guard covering bare interpreter literals in subprocess argument lists, and generated documentation copy that names the Windows and POSIX cases explicitly instead of assuming either one. |
+| Exclusions | No change to any other repository, no platform-conditional rendering of generated documentation, no interpreter version bump, no new dependency, no `py` launcher requirement, no Git mutation, no external service, no release, and no changelog entry while planned. |
+| Deferrals | Real execution on macOS and Linux hardware is deferred until a collaborator machine is available; Windows evidence is authoritative for this unit and the correction must not depend on a single platform to be valid. |
+| Rejections | Rejected a blanket `python` to `python3` substitution, because `python3` is absent from a default python.org Windows installation and this machine only resolves it through Python Manager. Rejected rendering the generated command from the installing machine's platform, because the generated file is committed into a repository that contributors on the other two systems clone. Rejected touching `unified_ai_brain_jl_i3`, `.ld9/referencia_panda/`, `.ld9/gentle-ai/`, and the historical `docs/superpowers/plans/` record. |
+| Evidence | `skill/repo-harness-builder/tests/test_harness_tool.py` invokes `subprocess.run(["python", ...])` at lines 83, 91, 433, 451, 902, 912, 1289, 1325, 1764, 1786, 1807, 1831, and 2787 while the same file already uses `sys.executable` at lines 1110, 3555, 3961, 3972, 4053, 4070, 4135, 4156, and 4178. `skill/repo-harness-builder/scripts/harness_tool.py` emits `python .repo-harness/check.py` into consumer text at lines 756, 1011, 1209, 1306, 1330, 1426, and 1519, while line 1642 gives the generated checker a `#!/usr/bin/env python3` shebang, so generated output contradicts itself. Measured on the Windows development machine on 2026-08-17: `python` resolves to `C:\Python314\python.exe` reporting 3.14.3, `python3` resolves through Python Manager reporting 3.14.2, and `py -3` reports 3.14.2. Baseline before any change: 293 tests passed with 7 skips. Completion evidence: the guard RED listed exactly those 13 offenders with zero false positives, and after the correction the canonical, OpenCode, and Claude suites each passed 294 tests. Digest-bound maintenance plan `02ec2033010c0ade1e7530399204c880aaaadaa12aa69acc576de65eeff41a17` carried exactly 3 `replace-generated-output` actions and no create, append, migrate, or blocked action; applying it changed 3 files by one line each and returned the owner check to `current` with 0 stale, 21 current, 18 human-evolved, and 4 present. |
+| Decision history | 2026-08-17: registered as `ready` after the user confirmed the standing Windows, Linux, and macOS support requirement already recorded for line endings, and directed that Windows is the current working platform while the correction must keep the other two systems valid. |
+| Next advancement condition | Reopen only if a bare interpreter name returns to a subprocess invocation, generated command copy stops naming both the Windows and POSIX cases, or real macOS or Linux execution contradicts the Windows evidence. |
+
+### RH-W-0034
+| Field | Value |
+|---|---|
+| Origin | Verified `v3.1-rc.2` consumer transcript and installed-output evidence from a Spanish-only non-Git consumer |
+| Priority | P1: the published candidate can generate a checker that rejects its own valid Spanish-only manifest, advertise nonexistent documentation, select report language from wrapper prose, and route a builder defect into irrelevant provider reporting |
+| Dependencies | none for implementation; successor release publication remains a separate approval-bound work unit |
+| Status | ready |
+| Completed work | Confirmed the defects against canonical source and tests, selected `RH-W-0034` as the next immutable ID, resolved every implementation decision, and created the canonical executable plan plus complete Spanish peer. |
+| Remaining work | Execute [the implementation plan](rh-w-0034-implementation-plan.md) with strict RED/GREEN coverage; synchronize canonical, OpenCode, and Claude packages; prove owner and generated checker parity in Spanish-only subprocess fixtures; replay the consumer path in a temporary non-Git fixture; and complete lifecycle and release evidence. |
+| Additions | Concrete Spanish interview copy; typed report-language evidence with ask-once fallback; exact owner/generated documentation-locale parity; Spanish-only local map and link validation; owner-before-provider failure classification; safe upgrade and fresh regeneration guidance. |
+| Exclusions | No direct `E:/code/VPS` mutation, consumer checker patch, Gentle AI source change without separate evidence, Git or RDD mutation, provider or GitHub action, repository publication, external service, tag or release alteration, new locale, translation service, dependency, or changelog entry while planned. |
+| Deferrals | Publishing a successor release candidate is deferred until the implementation, all three package suites, temporary consumer replay, explicit-dimension owner check, generated checker, links, lifecycle, and byte audits pass. |
+| Rejections | Rejected patching `.repo-harness/check.py` in the consumer, treating English wrapper prose as human language evidence, requiring English first in a Spanish-only manifest, advertising bilingual-only files, classifying builder-generated mismatch as a Gentle AI defect, attempting clone-scope RDD disable in a non-Git directory, and implying GitHub repository publication. |
+| Evidence | `normalize_documentation_languages()` accepts `("es",)` while generated `check_script().parse_manifest()` rejects `documentation[0] != "en"`; `docs_outputs()` emits nonexistent English-owner and bilingual-maintenance links in Spanish-only mode; the report-language contract already says wrapper prose and tool output are not conversation evidence; verified consumer evidence shows the resulting English report, checker failure, ownership misclassification, provider-consent detour, non-Git directory, and global RDD already off. |
+| Decision history | 2026-08-17: registered as `ready` because the user supplied verified reproduction evidence and explicitly resolved wording, language precedence, preservation behavior, failure ownership, remediation safety, Git/RDD boundaries, release sequencing, exact verification, and non-goals. |
+| Next advancement condition | Move to `active` when implementation begins from T-001 RED coverage. Complete only after every acceptance criterion in the canonical plan passes and Engram topic `work/RH-W-0034` is reconciled. |
+
 ### RH-W-0033
 | Field | Value |
 |---|---|

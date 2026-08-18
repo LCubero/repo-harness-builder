@@ -20,7 +20,7 @@ Confirm the generated skills are available in the selected runtime and that Gent
 ## Congruence And Ownership
 <!-- doc-role:ownership -->
 
-Run `python .repo-harness/check.py` after canonical skills or runtime projections change. Root `.gitattributes` preserves LF checkout bytes through exact `.repo-harness/check.py text eol=lf` and `.repo-harness/manifest.json text eol=lf` rules. The checker proves on-disk parity, not whether the active process refreshed its registered skill content. Same-process older registered content is an expected cache limitation; defer that optional validation to a fresh process or a supported explicit registry reload without inventing a command. Engram carries temporary cross-session context; repository files remain authoritative.
+Run `python3 .repo-harness/check.py` (`python` on Windows) after canonical skills or runtime projections change. Root `.gitattributes` preserves LF checkout bytes through exact `.repo-harness/check.py text eol=lf` and `.repo-harness/manifest.json text eol=lf` rules. The checker proves on-disk parity, not whether the active process refreshed its registered skill content. Same-process older registered content is an expected cache limitation; defer that optional validation to a fresh process or a supported explicit registry reload without inventing a command. Engram carries temporary cross-session context; repository files remain authoritative.
 
 ## Approval Boundaries
 <!-- doc-role:approval-boundaries -->

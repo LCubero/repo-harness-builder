@@ -31,7 +31,7 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 | Starting or resuming work | `.repo-harness/skills/repo-harness-session-start/SKILL.md` |
 | Pausing or closing work | `.repo-harness/skills/repo-harness-session-stop/SKILL.md` |
 | How to use the harness as a human | [usage guide](docs/repo-harness/usage.md) |
-| A canonical skill changed, or a runtime copy may be stale | `python .repo-harness/check.py` |
+| A canonical skill changed, or a runtime copy may be stale | `python3 .repo-harness/check.py` (`python` on Windows) |
 | Sizing a change, deciding when to stop, how work is done | `.repo-harness/rules/working-agreements.md` |
 | Saving or recalling across sessions, memory unavailable | `.repo-harness/rules/memory.md` |
 | Creating, moving, or deleting a document | [documentation map](docs/repo-harness/README.md) |

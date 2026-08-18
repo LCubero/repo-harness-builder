@@ -1,3 +1,4 @@
+import ast
 import importlib.util
 import hashlib
 import json
@@ -80,7 +81,7 @@ class ApprovalUxTests(unittest.TestCase):
     def test_preview_exposes_the_localized_approval_domain(self):
         with tempfile.TemporaryDirectory() as directory:
             for language, answers in (("english", ["APPROVE", "DENY"]), ("espanol", ["APROBAR", "DENEGAR"])):
-                result = subprocess.run(["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--runtime", "opencode", "--report-language", language, "--activation", "builder", "--standalone"], check=True, capture_output=True, text=True)
+                result = subprocess.run([sys.executable, "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--runtime", "opencode", "--report-language", language, "--activation", "builder", "--standalone"], check=True, capture_output=True, text=True)
                 payload = json.loads(result.stdout)
                 self.assertEqual(payload["approvalPrompt"], TOOL.approval_prompt(language))
                 self.assertEqual(payload["approvalAnswers"], answers)
@@ -88,7 +89,7 @@ class ApprovalUxTests(unittest.TestCase):
 
     def test_cli_defaults_to_english_and_plan_digest_is_language_independent(self):
         with tempfile.TemporaryDirectory() as directory:
-            base = ["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--standalone"]
+            base = [sys.executable, "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--standalone"]
             default = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
             spanish = json.loads(subprocess.run([*base, "--report-language", "espanol"], check=True, capture_output=True, text=True).stdout)
             self.assertEqual(default["reportLanguage"], "english")
@@ -430,7 +431,7 @@ class ProductWorkflowTests(unittest.TestCase):
     def test_documentation_entry_points_name_only_files_the_plan_creates(self):
         """The preview never advertises a reader document the render does not emit."""
         with tempfile.TemporaryDirectory() as directory:
-            base = ["python", "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--standalone"]
+            base = [sys.executable, "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--standalone"]
             english = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
             bilingual = json.loads(subprocess.run([*base, "--documentation-language", "en", "--documentation-language", "es", "--conversation-language", "espanol"], check=True, capture_output=True, text=True).stdout)
             self.assertEqual(english["documentation"], {"readme": "README.md", "usage": "docs/repo-harness/usage.md"})
@@ -448,7 +449,7 @@ class ProductWorkflowTests(unittest.TestCase):
             # A README that cannot be appended keeps the Spanish peer blocked.
             (root / "README.md").mkdir()
             command = [
-                "python", "-B", str(SCRIPT), "render", "--root", str(root),
+                sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--documentation-language", "en",
                 "--documentation-language", "es", "--conversation-language", "espanol",
                 "--standalone",
@@ -899,7 +900,7 @@ class AdditiveWriteTests(unittest.TestCase):
 
     def test_cli_exposes_one_clear_codegraph_opt_out(self):
         help_result = subprocess.run(
-            ["python", "-B", str(SCRIPT), "render", "--help"],
+            [sys.executable, "-B", str(SCRIPT), "render", "--help"],
             check=True,
             capture_output=True,
             text=True,
@@ -909,7 +910,7 @@ class AdditiveWriteTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             result = subprocess.run(
                 [
-                    "python", "-B", str(SCRIPT), "render", "--root", directory,
+                    sys.executable, "-B", str(SCRIPT), "render", "--root", directory,
                     "--project-name", "Example", "--no-codegraph-ignore", "--standalone",
                 ],
                 check=True,
@@ -1286,7 +1287,7 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
             root = Path(directory)
             _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode",), standalone=True)
             command = [
-                "python", "-B", str(SCRIPT), "render",
+                sys.executable, "-B", str(SCRIPT), "render",
                 "--root", str(root),
                 "--project-name", "Acme API",
                 "--runtime", "opencode",
@@ -1322,7 +1323,7 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
             root = Path(directory)
             _, _, replacements = self.migration_fixture(root, "Acme API", ("opencode",), standalone=True)
             command = [
-                "python", "-B", str(SCRIPT), "render",
+                sys.executable, "-B", str(SCRIPT), "render",
                 "--root", str(root), "--project-name", "Acme API", "--runtime", "opencode", "--standalone",
             ]
             preview = json.loads(subprocess.run(command, check=True, capture_output=True, text=True).stdout)
@@ -1761,7 +1762,7 @@ class RootPointerTests(unittest.TestCase):
             pointer = root / "CLAUDE.md"
             pointer.write_bytes(b"previewed\n")
             base = [
-                "python", "-B", str(SCRIPT), "render", "--root", str(root),
+                sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--runtime", "claude-code",
                 "--standalone",
             ]
@@ -1783,7 +1784,7 @@ class RootPointerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             base = [
-                "python", "-B", str(SCRIPT), "render", "--root", str(root),
+                sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--report-language", "espanol",
                 "--standalone",
             ]
@@ -1804,7 +1805,7 @@ class RootPointerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             base = [
-                "python", "-B", str(SCRIPT), "render", "--root", str(root),
+                sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--report-language", "espanol",
                 "--standalone",
             ]
@@ -1828,7 +1829,7 @@ class RootPointerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             base = [
-                "python", "-B", str(SCRIPT), "render", "--root", str(root),
+                sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
                 "--project-name", "Example", "--report-language", "espanol",
                 "--activation", "builder",
                 "--standalone",
@@ -2236,7 +2237,7 @@ class GeneratedCoreTests(unittest.TestCase):
         start = TOOL.render("Example", ["opencode", "claude-code"])[
             ".repo-harness/skills/repo-harness-session-start/SKILL.md"
         ]
-        self.assertIn("Run `python .repo-harness/check.py`", start)
+        self.assertIn("Run `python3 .repo-harness/check.py` (`python` on Windows)", start)
         self.assertIn("Report the checker result in the reply language", start)
         self.assertIn("naming each drifted runtime projection", start)
 
@@ -2784,7 +2785,7 @@ class GeneratedCoreTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             result = subprocess.run(
                 [
-                    "python", "-B", str(SCRIPT), "render", "--root", directory,
+                    sys.executable, "-B", str(SCRIPT), "render", "--root", directory,
                     "--project-name", "Example", "--standalone",
                 ],
                 check=True,
@@ -3229,7 +3230,7 @@ class UsageGuideTests(unittest.TestCase):
             "## Integrated Availability",
             "Gentle AI and Engram are available",
             "## Congruence And Ownership",
-            "python .repo-harness/check.py",
+            "python3 .repo-harness/check.py` (`python` on Windows)",
             "repository files remain authoritative",
             "## Approval Boundaries",
             "Explicit combined commit-and-push consent",
@@ -4182,6 +4183,34 @@ class PackagePortabilityTests(unittest.TestCase):
                 text=True,
             )
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_no_test_module_spawns_a_bare_interpreter_name(self):
+        """A bare interpreter name is absent on macOS and on PEP 394 Linux.
+
+        `python` is not guaranteed to exist outside Windows, and `python3` is
+        absent from a default python.org Windows installation, so neither name
+        is portable. `sys.executable` is the interpreter already running this
+        suite and resolves on every supported system.
+        """
+        forbidden = {"python", "python3", "py", "python.exe", "python3.exe", "py.exe"}
+        offenders = []
+        for module in sorted(Path(__file__).resolve().parent.glob("test_*.py")):
+            tree = ast.parse(module.read_text(encoding="utf-8"), filename=str(module))
+            skip = range(0)
+            for node in ast.walk(tree):
+                if isinstance(node, ast.FunctionDef) and node.name == self._testMethodName:
+                    skip = range(node.lineno, (node.end_lineno or node.lineno) + 1)
+            for node in ast.walk(tree):
+                if not isinstance(node, ast.Constant) or not isinstance(node.value, str):
+                    continue
+                if node.value in forbidden and node.lineno not in skip:
+                    offenders.append(f"{module.name}:{node.lineno}: {node.value!r}")
+        self.assertEqual(
+            offenders,
+            [],
+            "Spawn the running interpreter with sys.executable instead of a bare "
+            "interpreter name:\n" + "\n".join(offenders),
+        )
 
 
 if __name__ == "__main__":

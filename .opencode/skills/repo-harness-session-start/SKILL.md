@@ -56,7 +56,7 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 1. Resolve the selected repository root and confirm `REPO-HARNESS.md` belongs to it.
 2. Read the rulebook, follow only the decision gates the current work triggers, then the latest relevant changelog entries.
 3. Detect whether the root is a Git repository. If it is, inspect branch, worktree, index, upstream, remotes, and each upstream remote URL, host, and scheme read-only before suggesting network access. Provider recognition is optional and must not require provider tooling.
-4. Run `python .repo-harness/check.py` and retain its status and any drifted runtime projection paths.
+4. Run `python3 .repo-harness/check.py` (`python` on Windows) and retain its status and any drifted runtime projection paths.
 5. Recover relevant recent context from Engram, label it as memory evidence, and reconcile it with repository evidence.
 6. Identify completed work, remaining work, constraints, and the next recommended step. Reconcile any changed `RH-W-####` lifecycle with the roadmap, current-state projection, localized peers, and Engram topic `work/RH-W-####` in the same work unit.
 7. Report stale links, contradictions, or missing evidence before proceeding.

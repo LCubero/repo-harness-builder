@@ -61,12 +61,20 @@ Two audiences run different sets. Mixing them is why a build sometimes ran the w
 
 Run when the package itself changes. These prove the builder, not any repository it built.
 
+Every command below is written for POSIX shells. On Windows, substitute `python` for `python3`: a default python.org installation provides `python` and the `py` launcher but not `python3`. Environment prefixes differ too, so the one command that sets a variable is given per shell.
+
 ```text
-python -B -m unittest discover -s tests -v
-REPO_HARNESS_COMMAND_PATH=PATH python -B -m unittest discover -s tests -v
-python -B scripts/harness_tool.py self-test
-python -B scripts/harness_tool.py self-test --standalone
-python -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode --standalone
+python3 -B -m unittest discover -s tests -v
+python3 -B scripts/harness_tool.py self-test
+python3 -B scripts/harness_tool.py self-test --standalone
+python3 -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode --standalone
+```
+
+The wrapper contract checks need `REPO_HARNESS_COMMAND_PATH` set for one run. Inline assignment before a command is POSIX-only and PowerShell parses it as a command name, so use the form that matches the shell:
+
+```text
+POSIX:      REPO_HARNESS_COMMAND_PATH=PATH python3 -B -m unittest discover -s tests -v
+PowerShell: $env:REPO_HARNESS_COMMAND_PATH="PATH"; python -B -m unittest discover -s tests -v
 ```
 
 ### Building a harness in a repository
@@ -74,12 +82,12 @@ python -B scripts/harness_tool.py render --root DIR --project-name NAME --runtim
 Run when creating or inspecting a harness. Run the self-test for the mode being generated, not both. The packaged suite is not part of this set: it tests the builder, which did not change, and the built harness is already proven by the plan digest, `check`, and the generated checker.
 
 ```text
-python -B scripts/harness_tool.py check  --root DIR --project-name NAME --runtime opencode
-python -B scripts/harness_tool.py check  --root DIR --project-name NAME --runtime opencode --runtime claude-code --runtime pi
-python -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode
-python -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode --activation builder --report-language english --apply --approved-plan-sha256 HASH --approval APPROVE
-python -B scripts/harness_tool.py self-test
-python -B DIR/.repo-harness/check.py
+python3 -B scripts/harness_tool.py check  --root DIR --project-name NAME --runtime opencode
+python3 -B scripts/harness_tool.py check  --root DIR --project-name NAME --runtime opencode --runtime claude-code --runtime pi
+python3 -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode
+python3 -B scripts/harness_tool.py render --root DIR --project-name NAME --runtime opencode --activation builder --report-language english --apply --approved-plan-sha256 HASH --approval APPROVE
+python3 -B scripts/harness_tool.py self-test
+python3 -B DIR/.repo-harness/check.py
 ```
 
 `--runtime` is repeatable. One `check` call reports every profile passed to it, so auditing several profiles never needs one invocation per profile. Passing none reports the core only.
