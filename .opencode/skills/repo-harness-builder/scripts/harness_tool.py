@@ -1952,6 +1952,22 @@ def desired_skill_license(outputs: dict[str, str]) -> str:
     return license_id
 
 
+def authentic_installed_checker(checker_bytes: bytes, manifest_bytes: bytes) -> bool:
+    """Prove the installed checker authenticates these exact manifest bytes.
+
+    Byte equality with the current template proves freshness, not authenticity.
+    Gating on freshness made a stale checker disable its own replacement and
+    every other manifest-owned output with it, so an installation could never
+    receive a corrected checker. Authenticity is builder provenance plus the
+    embedded digest naming these manifest bytes, which is exactly what the
+    manifest authentication depends on.
+    """
+    if generated_version(checker_bytes) is None:
+        return False
+    match = re.search(r'MANIFEST_SHA256\s*=\s*"([0-9a-f]{64})"', checker_bytes.decode("utf-8", errors="replace"))
+    return bool(match) and match.group(1) == digest_bytes(manifest_bytes)
+
+
 def manifest_owned_generated_paths(root: Path) -> set[str]:
     """Return generated paths authorized by an authenticated installed manifest."""
     manifest_target = guarded_target(root, MANIFEST_PATH)
@@ -1961,7 +1977,7 @@ def manifest_owned_generated_paths(root: Path) -> set[str]:
     if not checker_target.is_file() or is_indirect(checker_target):
         return set()
     manifest_bytes = manifest_target.read_bytes()
-    if checker_target.read_text(encoding="utf-8") != check_script(digest_bytes(manifest_bytes)):
+    if not authentic_installed_checker(checker_target.read_bytes(), manifest_bytes):
         return set()
     try:
         manifest = json.loads(manifest_bytes)

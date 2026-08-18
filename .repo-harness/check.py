@@ -101,7 +101,7 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         or not documentation
         or len(documentation) != len(set(documentation))
         or not set(documentation) <= DOCUMENTATION_LANGUAGES
-        or documentation[0] != "en"
+        or tuple(documentation) not in (("en",), ("es",), ("en", "es"))
     ):
         raise ValueError("unexpected documentation languages")
     skills = manifest["canonicalSkills"]

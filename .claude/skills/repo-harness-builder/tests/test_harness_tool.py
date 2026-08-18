@@ -3684,6 +3684,27 @@ class GeneratedCheckScriptTests(unittest.TestCase):
                     with self.assertRaises(ValueError):
                         module.parse_manifest(raw, module.MANIFEST_SHA256)
 
+    def test_a_prior_version_checker_still_authorizes_replacement(self):
+        """RH-W-0036: a stale checker must not disable its own replacement.
+
+        Byte equality with the current template proves freshness, not
+        authenticity. Authenticity is proven by builder provenance plus the
+        embedded manifest digest, and only that may gate the replaceable set.
+        """
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=self.RUNTIMES)
+            checker = root / ".repo-harness" / "check.py"
+            fresh = checker.read_text(encoding="utf-8")
+            self.assertIn("core/check-script:", fresh)
+            aged = fresh.replace("core/check-script:" + TOOL.VERSION, "core/check-script:2.9", 1)
+            self.assertNotEqual(aged, fresh)
+            checker.write_text(aged, encoding="utf-8")
+            self.assertEqual(TOOL.generated_version(aged.encode("utf-8")), "2.9")
+            owned = TOOL.manifest_owned_generated_paths(root)
+            self.assertTrue(owned, "an authentic prior-version checker emptied the replaceable set")
+            self.assertIn(".repo-harness/check.py", owned)
+
     def assert_no_outside_read(self, module, root: Path):
         original = Path.read_bytes
         root_resolved = root.resolve()
