@@ -2616,6 +2616,25 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(phrase, stop)
 
+    def test_daily_skill_reports_must_label_every_claim_with_its_evidence_class(self):
+        """The rulebook classifies claims internally; the report must show the class.
+
+        Without this, an agent can classify a claim as inference and still emit it in
+        assertive form without violating any output contract.
+        """
+        outputs = TOOL.render("Example", [])
+        contracts = (
+            ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+            ".repo-harness/skills/repo-harness-documentation/SKILL.md",
+        )
+        for contract in contracts:
+            with self.subTest(contract=contract):
+                body = outputs[contract].split("## Output Contract", 1)[1]
+                self.assertIn("verified fact, supported inference, unknown or unverifiable", body)
+                self.assertIn("names the evidence it rests on", body)
+                self.assertIn("Never present an inference in assertive form", body)
+
     def test_git_consent_scope_covers_only_the_approved_outcome(self):
         cases = (
             ("commit-and-push", (), ("stage", "commit", "checks", "fetch", "push")),
