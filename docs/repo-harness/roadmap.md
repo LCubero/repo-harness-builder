@@ -55,7 +55,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Deferrals | none |
 | Rejections | Rejected a gate that skips records missing the label, because partial enforcement is the same defect class this unit exists to remove. |
 | Evidence | The English table parses 504 fields across 36 records while the Spanish prose parses 0 under the same expression, and `test_repository_roadmap_records_have_valid_lifecycle_fields` never opens the Spanish file at all. Only 6 of 36 Spanish records carry all twelve labelled fields: `Rechazos` is absent from 22, `Adiciones` from 21, `Exclusiones` from 15, and `Dependencias`, `Trabajo completado`, and `Trabajo restante` from 13 each. |
-| Decision history | 2026-08-18: registered `ready` after the user challenged an unverified claim about this gap, and the injection experiment converted it from inference into measured fact. |
+| Decision history | 2026-08-18: registered `ready` under issue #63 after the user challenged an unverified claim about this gap, and the injection experiment converted it from inference into measured fact. |
 | Next advancement condition | Advance once the Spanish backfill scope is approved, because completing it edits 30 lifecycle records and is larger than the defect that exposed it. |
 
 ### RH-W-0036
