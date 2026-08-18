@@ -51,7 +51,7 @@ El constructor instala o actualiza. Las tres habilidades del repositorio forman 
 | Habilidad | Cuando usarla | Resultado |
 |---|---|---|
 | `repo-harness-builder` | Crear, auditar o actualizar con seguridad un harness | Un harness planificado, aprobado y verificado |
-| `repo-harness-session-start` | Iniciar o reanudar trabajo | Resultado acotado, evidencia actual y estado Git local |
+| `repo-harness-session-start` | Iniciar o reanudar trabajo | Resultado acotado, evidencia actual etiquetada con su clase, estado Git local y una pregunta concreta de verificacion remota cuando es seguro |
 | `repo-harness-documentation` | Cambiaron hechos durables o estado visible | Documentos canonicos actualizados sin duplicacion |
 | `repo-harness-session-stop` | Pausar o terminar | Continuidad verificada y unidades de trabajo revisables |
 

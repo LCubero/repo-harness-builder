@@ -6,7 +6,7 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 ## Flujo diario
 <!-- doc-role:daily-workflow -->
 
-1. Inicie o reanude con `repo-harness-session-start` y declare el objetivo.
+1. Inicie o reanude con `repo-harness-session-start` y declare el objetivo. Informa un resultado acotado, reconcilia el contexto con la evidencia del repositorio, inspecciona Git en solo lectura y termina con una pregunta concreta de verificacion remota cuando es seguro. Cada afirmacion que informa lleva su clase de evidencia, de modo que una inferencia sustentada nunca se presenta como hecho verificado.
 2. Use `repo-harness-documentation` cuando cambien hechos durables o el estado visible.
 3. Cierre con `repo-harness-session-stop`, que verifica evidencia y guarda continuidad antes de evaluar Git.
 

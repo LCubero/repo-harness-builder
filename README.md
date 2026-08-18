@@ -54,7 +54,7 @@ The builder is the installer and upgrader. The three repository skills are the d
 | Skill | Use it when | Outcome |
 |---|---|---|
 | `repo-harness-builder` | Creating, auditing, or safely upgrading a harness | A planned, approved, verified repository harness |
-| `repo-harness-session-start` | Starting or resuming work | A scoped outcome, current evidence, local Git state, and one concrete remote-check question when safe |
+| `repo-harness-session-start` | Starting or resuming work | A scoped outcome, current evidence labelled with its class, local Git state, and one concrete remote-check question when safe |
 | `repo-harness-documentation` | Durable facts or visible state changed | Canonical docs updated without duplication or stale ownership |
 | `repo-harness-session-stop` | Pausing or ending work | Verified continuity, screened exact-path work units, and one outcome-scoped Git question when needed |
 
