@@ -76,6 +76,7 @@ Always report required continuity outcome separately from optional Git branch ou
 ## Output Contract
 
 Deliver the complete Output Contract only after continuity is saved successfully. Return close outcome, required continuity outcome, optional Git branch outcome, completed work, decisions, unresolved issues, next steps, verified paths, documentation update result, memory result, classified Git state, proposed or completed work units, commit result, push result, transport receipts, safely-local state, and separately pending optional gates. When safe and relevant, ask exactly one blocking question and make it the final user-facing line.
+Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 If continuity saving fails, surface the failure and do not claim successful continuity or a final handoff.
 
 ## References

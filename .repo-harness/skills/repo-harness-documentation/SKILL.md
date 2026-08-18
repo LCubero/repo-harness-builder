@@ -50,6 +50,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 ## Output Contract
 
 Return canonical owners checked, links validated, stale or duplicate claims resolved, durable documents changed, temporary state left unpromoted, and remaining documentation risks.
+Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 
 ## References
 
