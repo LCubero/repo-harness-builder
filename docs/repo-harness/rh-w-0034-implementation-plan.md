@@ -34,13 +34,13 @@ The product fix belongs in `repo-harness-builder`. Directly patching a generated
 - **REQ-009:** Builder-owned failure remediation preserves consumer state, names a reproducible builder upgrade and regeneration path, and never enters Gentle AI, GitHub issue reporting, repository publication, authentication, or provider-consent flows.
 - **REQ-010:** A non-Git consumer and globally disabled RDD require no clone-scope disable attempt. User copy must distinguish optional provider-defect reporting from repository publication without implying either one.
 - **REQ-011:** Fix canonical sources first, synchronize package projections, prove the successor package, and only then allow a future fresh consumer regeneration plan. Never patch a consumer checker directly.
-- **REQ-012:** `E:/code/VPS` remains read-only historical evidence and is never a test root, mutation target, regeneration target, or release workspace.
+- **REQ-012:** the external consumer remains read-only historical evidence and is never a test root, mutation target, regeneration target, or release workspace.
 - **REQ-013:** No changelog entry is created until implementation is completed.
 
 ## Non-Goals
 
 - No code implementation in this planning work unit.
-- No direct edit, cleanup, Git initialization, RDD change, or generated-file repair in `E:/code/VPS`.
+- No direct edit, cleanup, Git initialization, RDD change, or generated-file repair in the external consumer.
 - No Gentle AI source change unless later builder implementation evidence proves a separate Gentle AI defect. Current evidence does not.
 - No provider authentication, GitHub issue creation, repository publication, release creation, tag mutation, commit, push, or external service access.
 - No natural-language detector, translation service, new locale, manifest schema version change, generic incident framework, or new dependency.
@@ -149,7 +149,7 @@ RED is valid only when assertions fail for the intended missing behavior. Syntax
 
 - [ ] Copy only changed canonical package-relative files byte for byte into `.opencode/skills/repo-harness-builder/` and `.claude/skills/repo-harness-builder/`.
 - [ ] Compare SHA-256 for every canonical, OpenCode, and Claude triple.
-- [ ] Do not hand-edit generated consumer output or use `E:/code/VPS` as a destination.
+- [ ] Do not hand-edit generated consumer output or use the external consumer as a destination.
 
 ### Phase 5: Full Verification And Temporary Consumer Replay
 
@@ -166,12 +166,12 @@ python -B -m unittest discover -s .opencode/skills/repo-harness-builder/tests -p
 python -B -m unittest discover -s .claude/skills/repo-harness-builder/tests -p "test_*.py"
 ```
 
-- [ ] In a temporary directory outside `E:/code/VPS`, install a Spanish-only fixture through the canonical renderer with explicit dimensions: selected runtimes, resolved license, `--report-language espanol`, `--documentation-language es`, `--conversation-language espanol`, and the intended integration mode.
+- [ ] In a temporary directory outside the external consumer, install a Spanish-only fixture through the canonical renderer with explicit dimensions: selected runtimes, resolved license, `--report-language espanol`, `--documentation-language es`, `--conversation-language espanol`, and the intended integration mode.
 - [ ] Run the manifest-matched owner check with those same explicit installed dimensions. Require `status: current`, exit 0, and `writes: 0`.
 - [ ] Run the fixture's generated `.repo-harness/check.py` as a subprocess. Require `status: current`, exit 0, and `writes: 0`.
 - [ ] Resolve every relative Markdown link emitted in `docs/repo-harness/README.md` from that file's directory. Require every target to exist and every bilingual-only path to be absent from both output and map.
 - [ ] Replay the verified consumer sequence against another temporary fixture: English wrapper prose, Spanish human conversation, no explicit report argument, non-Git directory, global RDD already off, and an injected generated-checker mismatch. Require Spanish report selection or one question, builder ownership, unchanged fixture bytes, no provider/GitHub flow, no clone-scope RDD action, and a fresh regeneration route.
-- [ ] Never run the replay in `E:/code/VPS`.
+- [ ] Never run the replay in the external consumer.
 
 ### Phase 6: Self-Hosted Owner Verification And Lifecycle Completion
 
@@ -196,14 +196,14 @@ python -B -m unittest discover -s .claude/skills/repo-harness-builder/tests -p "
 - [ ] Builder-generated mismatches remain builder defects and never enter Gentle AI or GitHub defect machinery.
 - [ ] Non-Git and RDD-off consumer evidence triggers no Git, clone-scope RDD, or publication action.
 - [ ] Canonical, OpenCode, and Claude package files and suites are synchronized and green.
-- [ ] Temporary consumer replay passes without reading from or writing to `E:/code/VPS`.
+- [ ] Temporary consumer replay passes without reading from or writing to the external consumer.
 - [ ] Self-hosted owner check includes explicit runtimes, MIT license, report language, documentation locales, conversation language, and required integration evidence.
 - [ ] Lifecycle, maps, current-state projections, Spanish peers, Engram, links, diff whitespace, and forbidden-character scans are reconciled.
 - [ ] `v3.1-rc.2` remains immutable and is superseded only after complete successor proof.
 
 ## Rollback Boundary
 
-Rollback is limited to RH-W-0034 canonical package files, their exact OpenCode and Claude projections, tests, and lifecycle documentation. Revert the implementation patch or use the existing bounded generated-output executor for self-hosted projections. Never use destructive Git commands, alter a release or tag, patch a consumer checker, or restore from `E:/code/VPS`. A failed temporary fixture is deleted only from its temporary test location after retaining the bounded reproduction evidence.
+Rollback is limited to RH-W-0034 canonical package files, their exact OpenCode and Claude projections, tests, and lifecycle documentation. Revert the implementation patch or use the existing bounded generated-output executor for self-hosted projections. Never use destructive Git commands, alter a release or tag, patch a consumer checker, or restore from the external consumer. A failed temporary fixture is deleted only from its temporary test location after retaining the bounded reproduction evidence.
 
 ## Review Workload Forecast
 
