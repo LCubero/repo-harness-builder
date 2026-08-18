@@ -47,9 +47,9 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Measured during RH-W-0038 delivery: rules that a check could enforce were being defended by prose and were violated anyway, including by the change that fixed them |
 | Priority | P2: a documented fact that drifts silently is the defect class this repository keeps repeating, and each instance costs a session to find while a check would cost one test run |
 | Dependencies | none |
-| Status | ready |
-| Completed work | Identified the mechanizable set from observed violations and confirmed the gap is real: no test compares the suite count documented in `current-state.md` against the actual count, which is why `294` and then `300` both went stale while the suite ran `300` and then `301`. |
-| Remaining work | Add checks for the documented suite count against the real one, for line endings introduced by an edit, and for current-state lifecycle claims that contradict the roadmap status they project. |
+| Status | completed |
+| Completed work | Identified the mechanizable set from observed violations and confirmed the gap is real: no test compares the suite count documented in `current-state.md` against the actual count, which is why `294` and then `300` both went stale while the suite ran `300` and then `301`. Added all three checks. Each was proved to fail on a real defect before being trusted: the count check failed immediately at `301 != 304`, the line-ending check found pre-existing mixed endings in `README.md` and `README.es.md` on its first run, and the projection check was proved by injecting a `completed` claim against a `ready` record and observing `'ready' != 'completed'`. The line-ending check is working-copy scoped: Git normalizes to LF in the blob, so a mixed file is a local hygiene defect rather than a repository defect, and normalizing the two READMEs produced no diff. It still earns its place because a wrong newline written by an edit is exactly what corrupts the byte-exact digest contract on generated paths before any commit happens. |
+| Remaining work | none |
 | Additions | Behavioral checks that convert three prose obligations into failures with exit codes. |
 | Exclusions | No attempt to mechanize prose judgment such as evidence class or tone, no repository-wide line-ending policy, no new dependency, and no change to the roadmap as lifecycle owner. |
 | Deferrals | none |

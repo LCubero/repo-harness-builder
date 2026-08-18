@@ -2156,6 +2156,61 @@ class GeneratedCoreTests(unittest.TestCase):
             self.assertIn(fact, roadmap)
         self.assertLess(roadmap.index("### RH-W-0016"), roadmap.index("### RH-W-0003"))
 
+    def test_documented_suite_count_matches_the_real_suite(self):
+        """A count nobody compares goes stale the moment a test is added."""
+        repository = ROOT.parents[1]
+        state = repository / "docs/repo-harness/current-state.md"
+        if not state.is_file():
+            self.skipTest("repository documentation fixture is outside the portable package")
+        actual = unittest.defaultTestLoader.discover(str(Path(__file__).resolve().parent), pattern="test_*.py").countTestCases()
+        documented = re.search(r"Canonical suite green: (\d+) tests passed", state.read_text(encoding="utf-8"))
+        self.assertIsNotNone(documented, "current-state must state the canonical suite count")
+        self.assertEqual(
+            int(documented.group(1)),
+            actual,
+            "current-state claims a suite size the suite does not have; update it in the same change",
+        )
+
+    def test_checked_in_documents_do_not_mix_line_endings(self):
+        """One edit written with the wrong newline leaves a file half CRLF and half LF."""
+        repository = ROOT.parents[1]
+        if not (repository / "docs/repo-harness/current-state.md").is_file():
+            self.skipTest("repository documentation fixture is outside the portable package")
+        documents = sorted(repository.glob("*.md")) + sorted(repository.glob("docs/**/*.md"))
+        for document in documents:
+            raw = document.read_bytes()
+            crlf = raw.count(bytes((13, 10)))
+            stray_lf = raw.count(bytes((10,))) - crlf
+            with self.subTest(document=document.relative_to(repository).as_posix()):
+                self.assertFalse(
+                    crlf and stray_lf,
+                    f"mixed line endings: {crlf} CRLF and {stray_lf} bare LF",
+                )
+
+    def test_current_state_projection_agrees_with_the_roadmap_owner(self):
+        """The roadmap owns lifecycle; a projection that contradicts it is false evidence."""
+        repository = ROOT.parents[1]
+        roadmap_path = repository / "docs/repo-harness/roadmap.md"
+        state_path = repository / "docs/repo-harness/current-state.md"
+        if not roadmap_path.is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        roadmap = roadmap_path.read_text(encoding="utf-8")
+        owned = {
+            record_id: dict(re.findall(r"^\| ([^|]+) \| (.*?) \|$", body, re.M)).get("Status")
+            for record_id, body in re.findall(r"^### (RH-W-\d{4})\n(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S)
+        }
+        claims = re.findall(r"`(RH-W-\d{4})`(?: and `(RH-W-\d{4})`)? (?:is|are) `([a-z]+)`", state_path.read_text(encoding="utf-8"))
+        self.assertTrue(claims, "current-state must project at least one lifecycle status")
+        for first, second, claimed in claims:
+            for record_id in filter(None, (first, second)):
+                with self.subTest(record_id=record_id):
+                    self.assertIn(record_id, owned, "current-state projects a record the roadmap does not own")
+                    self.assertEqual(
+                        owned[record_id],
+                        claimed,
+                        f"current-state says {record_id} is {claimed}; the roadmap says {owned[record_id]}",
+                    )
+
     def test_repository_product_readmes_use_fixed_daily_skill_names(self):
         repository = ROOT.parents[1]
         if not (repository / "README.md").is_file():
