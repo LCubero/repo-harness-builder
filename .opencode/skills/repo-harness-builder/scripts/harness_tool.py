@@ -2535,9 +2535,14 @@ def package_freshness(root: Path) -> dict[str, Any]:
     only mechanism available without network access.
     """
     running = VERSION
-    manifest = root / MANIFEST_PATH
     # Freshness drives an update decision, so a manifest reached through a link or a
-    # reparse point proves nothing about this repository and is never trusted.
+    # reparse point proves nothing about this repository and is never trusted. The
+    # containment helper rejects an indirect ancestor too, which a check on the final
+    # component alone would miss, and an advisory field answers rather than raising.
+    try:
+        manifest = guarded_target(root, MANIFEST_PATH)
+    except (ContractError, OSError):
+        return {"state": "unverifiable", "installed": None, "running": running}
     if is_indirect(manifest):
         return {"state": "unverifiable", "installed": None, "running": running}
     if not manifest.is_file():

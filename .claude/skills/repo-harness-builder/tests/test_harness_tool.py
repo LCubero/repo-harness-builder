@@ -4380,6 +4380,40 @@ class PackageFreshnessTests(unittest.TestCase):
             self.assertEqual(report["state"], "unverifiable")
             self.assertIsNone(report["installed"])
 
+    def link_directory(self, link: Path, target: Path) -> bool:
+        """Link a directory by any mechanism this platform actually allows."""
+        try:
+            link.symlink_to(target, target_is_directory=True)
+            return True
+        except (OSError, NotImplementedError):
+            pass
+        if os.name == "nt":
+            result = subprocess.run(
+                ["cmd", "/c", "mklink", "/J", str(link), str(target)],
+                capture_output=True,
+                text=True,
+            )
+            return result.returncode == 0
+        return False
+
+    def test_an_indirect_ancestor_is_unverifiable(self):
+        """The link can be the directory, not just the file, and that is just as untrustworthy."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("opencode",))
+            harness = root / ".repo-harness"
+            elsewhere = root / "elsewhere-harness"
+            harness.rename(elsewhere)
+            if not self.link_directory(harness, elsewhere):
+                self.skipTest("this platform allows no directory link")
+            # check() refuses the whole repository here, and rightly so, but the
+            # classification itself must answer instead of raising.
+            with self.assertRaises(TOOL.ContractError):
+                self.freshness(root)
+            report = TOOL.package_freshness(root)
+            self.assertEqual(report["state"], "unverifiable")
+            self.assertIsNone(report["installed"])
+
     def test_freshness_is_reported_separately_from_projection_drift(self):
         """Package staleness and per-file drift are different failures with different fixes."""
         with tempfile.TemporaryDirectory() as directory:
