@@ -1315,6 +1315,36 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
             self.assertEqual(migration["action"], "migrate-generated-skills")
             self.assertEqual({item["sourcePath"] for item in migration["moves"]}, set(replacements))
             self.assertEqual({item["destinationPath"] for item in migration["moves"]}, set(replacements.values()))
+    def age_into_prior_era_template(self, root: Path) -> None:
+        """Give the install a checker no current template can reproduce, but still authentic."""
+        manifest_text = (root / TOOL.MANIFEST_PATH).read_text(encoding="utf-8")
+        checker = root / ".repo-harness/check.py"
+        checker.write_text(
+            TOOL.check_script(TOOL.digest_text(manifest_text)) + "# prior era template tail" + chr(10),
+            encoding="utf-8",
+            newline="",
+        )
+
+    def test_a_prior_era_migration_refreshes_its_command_wrappers_in_the_same_pass(self):
+        """Renaming the skills without regenerating the wrappers leaves the commands dangling."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode", "claude-code"))
+            self.age_into_pre_language_install(root)
+            self.age_into_prior_era_template(root)
+
+            plan = TOOL.plan_changes(root, desired)
+
+            self.assertEqual(len(plan["migrate"]), 1)
+            replaced = {item["path"] for item in plan["replace"]}
+            for runtime in (".opencode", ".claude"):
+                for command in ("session-start", "session-stop", "documentation"):
+                    self.assertIn(f"{runtime}/commands/{command}.md", replaced)
+            # The migration owns the pair, so it must not be offered twice.
+            migrating = {item["path"] for item in plan["migrate"][0]["replace"]}
+            self.assertEqual(migrating, {".repo-harness/check.py", TOOL.MANIFEST_PATH})
+            self.assertFalse(replaced & migrating)
+
     def test_pre_language_legacy_install_still_requires_provenance(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

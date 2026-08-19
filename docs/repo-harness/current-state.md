@@ -6,7 +6,7 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes. The manifest-matched owner check also reports `current` with 21 current, 18 human-evolved, 4 present, and 0 stale.
-- Canonical suite green: 323 tests passed with 8 skips. `RH-W-0025` includes deterministic capability classification, CLI-bound integrated preflight, complete-output validation, owner boundaries, integrated selection, and component-degradation coverage.
+- Canonical suite green: 324 tests passed with 8 skips. `RH-W-0025` includes deterministic capability classification, CLI-bound integrated preflight, complete-output validation, owner boundaries, integrated selection, and component-degradation coverage.
 - Root `.gitattributes` protects 19 byte-compared generated paths, derived from render outputs rather than a fixed pair.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1. The checked-in checker and manifest remain a consistent pair.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
