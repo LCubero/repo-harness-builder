@@ -2525,6 +2525,63 @@ def verify_outputs(root: Path, outputs: dict[str, str], written: Optional[list[s
             require((root / resolved).exists(), f"unresolved generated reference: {relative} -> {link}")
 
 
+def package_freshness(root: Path) -> dict[str, Any]:
+    """Classify the installed harness package against the builder running right now.
+
+    Package staleness and per-file projection drift are different failures with
+    different fixes, so this stays its own field and never enters the file report.
+    The comparison is local and offline: a consumer repository holds no upstream
+    builder copy, so the recorded generator version against the running one is the
+    only mechanism available without network access.
+    """
+    running = VERSION
+    # Freshness drives an update decision, so a manifest reached through a link or a
+    # reparse point proves nothing about this repository and is never trusted. The
+    # containment helper rejects an indirect ancestor too, which a check on the final
+    # component alone would miss, and an advisory field answers rather than raising.
+    try:
+        manifest = guarded_target(root, MANIFEST_PATH)
+    except (ContractError, OSError):
+        return {"state": "unverifiable", "installed": None, "running": running}
+    if is_indirect(manifest):
+        return {"state": "unverifiable", "installed": None, "running": running}
+    if not manifest.is_file():
+        return {"state": "absent", "installed": None, "running": running}
+    try:
+        recorded = json.loads(manifest.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+        return {"state": "unverifiable", "installed": None, "running": running}
+    if not isinstance(recorded, dict):
+        return {"state": "unverifiable", "installed": None, "running": running}
+    generator = recorded.get("generator")
+    if generator is None:
+        return {"state": "absent", "installed": None, "running": running}
+    if not isinstance(generator, dict):
+        return {"state": "unverifiable", "installed": None, "running": running}
+    if "version" not in generator:
+        return {"state": "absent", "installed": None, "running": running}
+    installed = generator["version"]
+    if not isinstance(installed, str) or re.fullmatch(r"\d+\.\d+", installed) is None:
+        return {"state": "unverifiable", "installed": None, "running": running}
+    order = tuple(int(part) for part in installed.split("."))
+    current = tuple(int(part) for part in running.split("."))
+    if order == current:
+        return {"state": "fresh", "installed": installed, "running": running}
+    if order < current:
+        return {"state": "stale", "installed": installed, "running": running}
+    # An older builder cannot validly judge a harness written by a later one, so it
+    # warns instead of passing quietly. Silence here would read as approval.
+    return {
+        "state": "ahead",
+        "installed": installed,
+        "running": running,
+        "warning": (
+            f"the installed harness records generator {installed} while this builder is {running}, "
+            "so you are running an earlier builder than the harness it inspects; continuing is at your own risk"
+        ),
+    }
+
+
 def recorded_runtimes(root: Path) -> Optional[list[str]]:
     """Return the runtime set an existing manifest records, or None when it records none.
 
@@ -2697,6 +2754,7 @@ def check(
         "status": "drift" if drifted else "current",
         "files": entries,
         "runtimeSet": runtime_set_report(root, runtimes),
+        "packageFreshness": package_freshness(root),
         "writes": 0,
     }
 

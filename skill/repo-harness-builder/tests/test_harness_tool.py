@@ -4261,6 +4261,171 @@ class RuntimeSelectionContractTests(unittest.TestCase):
             )
 
 
+class PackageFreshnessTests(unittest.TestCase):
+    """An installed harness cannot learn its builder moved on, so nothing ever reports it."""
+
+    def manifest_path(self, root: Path) -> Path:
+        return root / ".repo-harness/manifest.json"
+
+    def rewrite_generator(self, root: Path, version):
+        """Rewrite only the recorded generator version, leaving every other field intact."""
+        path = self.manifest_path(root)
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        if version is None:
+            manifest.pop("generator", None)
+        else:
+            manifest["generator"]["version"] = version
+        with open(path, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(json.dumps(manifest, indent=2) + "\n")
+
+    def freshness(self, root: Path) -> dict:
+        return TOOL.check(root, "Example", ["opencode"])["packageFreshness"]
+
+    def test_a_package_matching_the_running_builder_is_fresh(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("opencode",))
+            report = self.freshness(root)
+            self.assertEqual(report["state"], "fresh")
+            self.assertEqual(report["installed"], TOOL.VERSION)
+            self.assertEqual(report["running"], TOOL.VERSION)
+            self.assertNotIn("warning", report)
+
+    def test_an_earlier_installed_package_is_stale(self):
+        """This is the whole point: a consumer must be able to learn it is behind."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("opencode",))
+            self.rewrite_generator(root, "2.9")
+            report = self.freshness(root)
+            self.assertEqual(report["state"], "stale")
+            self.assertEqual(report["installed"], "2.9")
+            self.assertEqual(report["running"], TOOL.VERSION)
+
+    def test_a_later_installed_package_warns_that_the_running_builder_is_older(self):
+        """An older tool judging a newer harness must say so instead of passing quietly."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("opencode",))
+            self.rewrite_generator(root, "99.9")
+            report = self.freshness(root)
+            self.assertEqual(report["state"], "ahead")
+            self.assertEqual(report["installed"], "99.9")
+            self.assertEqual(report["running"], TOOL.VERSION)
+            self.assertTrue(report.get("warning", "").strip(), "an ahead package must carry a warning")
+
+    def test_a_manifest_without_a_generator_field_is_absent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("opencode",))
+            self.rewrite_generator(root, None)
+            report = self.freshness(root)
+            self.assertEqual(report["state"], "absent")
+            self.assertIsNone(report["installed"])
+
+    def test_a_repository_without_a_manifest_is_absent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            report = self.freshness(root)
+            self.assertEqual(report["state"], "absent")
+            self.assertIsNone(report["installed"])
+
+    def test_an_unreadable_manifest_is_unverifiable(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("opencode",))
+            with open(self.manifest_path(root), "w", encoding="utf-8", newline="\n") as handle:
+                handle.write("{ not json")
+            report = self.freshness(root)
+            self.assertEqual(report["state"], "unverifiable")
+            self.assertIsNone(report["installed"])
+
+    def test_a_malformed_generator_version_is_unverifiable(self):
+        """A version that is not a version cannot be compared, and guessing would be worse."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("opencode",))
+            self.rewrite_generator(root, "three point zero")
+            report = self.freshness(root)
+            self.assertEqual(report["state"], "unverifiable")
+
+    def test_a_generator_that_is_not_an_object_is_unverifiable(self):
+        """A generator field that exists but is the wrong shape is malformed, not absent."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("opencode",))
+            path = self.manifest_path(root)
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+            manifest["generator"] = TOOL.VERSION
+            with open(path, "w", encoding="utf-8", newline="\n") as handle:
+                handle.write(json.dumps(manifest, indent=2) + "\n")
+            report = self.freshness(root)
+            self.assertEqual(report["state"], "unverifiable")
+            self.assertIsNone(report["installed"])
+
+    def test_an_indirect_manifest_is_unverifiable(self):
+        """Freshness drives an update decision, so a manifest reached through a link proves nothing."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("opencode",))
+            path = self.manifest_path(root)
+            elsewhere = root / "elsewhere-manifest.json"
+            elsewhere.write_bytes(path.read_bytes())
+            path.unlink()
+            try:
+                path.symlink_to(elsewhere)
+            except (OSError, NotImplementedError):
+                self.skipTest("this platform cannot create symlinks without elevation")
+            report = self.freshness(root)
+            self.assertEqual(report["state"], "unverifiable")
+            self.assertIsNone(report["installed"])
+
+    def link_directory(self, link: Path, target: Path) -> bool:
+        """Link a directory by any mechanism this platform actually allows."""
+        try:
+            link.symlink_to(target, target_is_directory=True)
+            return True
+        except (OSError, NotImplementedError):
+            pass
+        if os.name == "nt":
+            result = subprocess.run(
+                ["cmd", "/c", "mklink", "/J", str(link), str(target)],
+                capture_output=True,
+                text=True,
+            )
+            return result.returncode == 0
+        return False
+
+    def test_an_indirect_ancestor_is_unverifiable(self):
+        """The link can be the directory, not just the file, and that is just as untrustworthy."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("opencode",))
+            harness = root / ".repo-harness"
+            elsewhere = root / "elsewhere-harness"
+            harness.rename(elsewhere)
+            if not self.link_directory(harness, elsewhere):
+                self.skipTest("this platform allows no directory link")
+            # check() refuses the whole repository here, and rightly so, but the
+            # classification itself must answer instead of raising.
+            with self.assertRaises(TOOL.ContractError):
+                self.freshness(root)
+            report = TOOL.package_freshness(root)
+            self.assertEqual(report["state"], "unverifiable")
+            self.assertIsNone(report["installed"])
+
+    def test_freshness_is_reported_separately_from_projection_drift(self):
+        """Package staleness and per-file drift are different failures with different fixes."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("opencode",))
+            report = TOOL.check(root, "Example", ["opencode"])
+            self.assertEqual(report["status"], "current")
+            self.assertEqual(report["packageFreshness"]["state"], "fresh")
+            self.assertEqual(report["writes"], 0)
+            self.assertNotIn("packageFreshness", {key for entry in report["files"] for key in entry})
+
+
 class RecordedRuntimeSetTests(unittest.TestCase):
     """An existing manifest records the runtime set, and it can never be rewritten."""
 
