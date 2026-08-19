@@ -24,6 +24,40 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0041
+| Field | Value |
+|---|---|
+| Origin | Owner-run `v3.1-rc.3` upgrade against a real generator-3.0 consumer, reported back and then re-verified against canonical source in this repository |
+| Priority | P0: the legacy skill-name migration that `RH-W-0021` and `RH-W-0024` built is unreachable against every real legacy install, so no consumer carrying project-prefixed generated skills can be upgraded at all |
+| Dependencies | none |
+| Status | ready |
+| Completed work | Confirmed the reported first wall at `skill/repo-harness-builder/scripts/harness_tool.py:2239`, `require(isinstance(language, dict), "manifest ownership is unverifiable")`, and proved it is a defect rather than a policy by locating the contradicting contract in the same file: `declared_languages()` at line 2530 tolerates the absent field and infers `["en"]` plus `"es"` when `docs/es/repo-harness` exists, which is the `RH-W-0003` behavior. Then measured past the reported wall instead of stopping at it. An isolated probe over a copy of a real consumer, with the repository left untouched, injected the inferred `language` and found the migration still blocked one wall later. |
+| Remaining work | Decide how an authentic prior-era manifest proves ownership when the current renderer cannot reproduce its bytes, then implement, then re-verify against the same consumer copy. |
+| Additions | A legacy language fallback reusing the existing inference, an authenticity proof for a prior-era manifest, and regression coverage whose fixture reproduces a genuine pre-`language` manifest. |
+| Exclusions | No change to any consumer repository, no hand-patched consumer manifest, no weakening of path safety, and no change to what byte equality authorizes for non-manifest generated paths. |
+| Deferrals | none |
+| Rejections | Rejected patching the consumer's `.repo-harness/manifest.json` to add `language`, which unblocks in seconds and masks the origin defect while leaving every future install exposed. Rejected repairing the consumer's own `.claude/skills/repo-harness-builder/` copy, which is a runtime projection of the distributed package and not canonical source. |
+| Evidence | The consumer manifest carries exactly `canonicalSkills`, `generator`, `integrationMode`, `project`, `runtimes`, `schemaVersion`, `writeSemantics`, with no `language`. Probe result over a temporary copy: wall 1 raises `ContractError manifest ownership is unverifiable`; with the inferred `language` injected, `legacy_migration_inputs()` succeeds and reconstructs 37 outputs with 9 replacements; `plan_generated_output_migration()` then raises `ContractError manifest ownership or bytes are unverifiable`. The cause of wall 3 is measured, not inferred: installed `writeSemantics` is `additive-create-with-runtime-pointer-append` while the current renderer emits `additive-create-with-bounded-root-append`, so byte equality cannot hold for a prior-era manifest. Both generator versions read `3.0` and the tool `VERSION` is `3.0`, so a generator-version comparison would not have caught this. The existing `migration_fixture` in `tests/test_harness_tool.py` renders its installed manifest through the current renderer, so it always carries `language` and never reproduces a real legacy install; that is why the defect shipped inside `v3.1-rc.3`. |
+| Decision history | 2026-08-18: registered `ready` at P0 after the owner ran the upgrade himself and the two reported defects were re-verified against canonical source. The consumer stays untouched and serves as the verification fixture. |
+| Next advancement condition | Advance once the owner decides how a prior-era manifest proves authenticity. The precedent is `RH-W-0036`, which separated authenticity from freshness for the checker after byte equality proved too strong a gate, and bounded the weaker proof to exactly one repair. |
+
+### RH-W-0042
+| Field | Value |
+|---|---|
+| Origin | Same owner-run consumer upgrade: the apply stayed blocked by `.gitattributes` even after the migration question |
+| Priority | P1: a correctly written LF-safe repository is refused, and the only remedy offered today is editing a human-owned file that is already correct |
+| Dependencies | none; independent of `RH-W-0041` |
+| Status | ready |
+| Completed work | Confirmed the reported cause at `conflicting_attribute_paths()` line 498, which flags any assignment starting with `text=` while evaluating each assignment independently of its siblings on the same line. Narrowed the report rather than accepting it: blocking a bare `* text=auto` is correct and deliberate, because `text=auto` alone checks out CRLF on Windows, and it is covered at `tests/test_harness_tool.py:3593` inside `test_matching_non_lf_attributes_block_without_writes`. Only the `text=auto` plus `eol=lf` combination is a false positive. Read the consumer's real file to confirm which rule actually fires. |
+| Remaining work | Treat `text=auto` as compatible only when the same line also assigns `eol=lf`, keep every other assignment unchanged, and add the missing combination to the existing case table. |
+| Additions | One combination-aware compatibility rule and its regression, keeping the bare `text=auto` block intact. |
+| Exclusions | No change to any consumer `.gitattributes`, no relaxation of `binary`, `-text`, `!text`, `eol=crlf`, or bare `eol`, and no change to macro expansion. |
+| Deferrals | none |
+| Rejections | Rejected asking the consumer to edit its `.gitattributes`, because the file is correct and documented and the builder is the side that is wrong. |
+| Evidence | The consumer's `.gitattributes` line 4 is `* text=auto eol=lf`, and that single wildcard reaches all 24 byte-compared protected paths. Its remaining rules use bare `text` and pass cleanly; `*.bat` and `*.cmd` carry `text eol=crlf` but match no protected path. `text=auto eol=lf` normalizes text files and pins the working tree to LF, so it is compatible with the exact `text eol=lf` rule the builder requires. No test covers the combination. |
+| Decision history | 2026-08-18: registered `ready` at P1 alongside `RH-W-0041` from the same consumer run. |
+| Next advancement condition | Reopen only if a combination that genuinely forces non-LF is accepted, or if bare `text=auto` stops blocking. |
+
 ### RH-W-0040
 | Field | Value |
 |---|---|
