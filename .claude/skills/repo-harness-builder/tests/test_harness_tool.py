@@ -2142,6 +2142,30 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(phrase, scoped)
 
+    def test_spanish_roadmap_records_hold_the_same_lifecycle_invariant(self):
+        """The Spanish peer is a human mirror, so a completed record may not still owe work."""
+        path = ROOT.parents[1] / "docs/es/repo-harness/roadmap.md"
+        if not path.is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        roadmap = path.read_text(encoding="utf-8")
+        records = re.findall(r"^### (RH-W-\d{4})$(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S)
+        english = ROOT.parents[1] / "docs/repo-harness/roadmap.md"
+        expected = re.findall(r"^### (RH-W-\d{4})$", english.read_text(encoding="utf-8"), re.M)
+        self.assertEqual([record_id for record_id, _ in records], expected)
+        allowed_statuses = {
+            "proposed", "ready", "active", "blocked", "deferred", "completed",
+            "excluded", "rejected",
+        }
+        for record_id, body in records:
+            with self.subTest(record_id=record_id):
+                status = re.search(r"Estado: `(\w+)`", body)
+                # A record may quote a field label inside code spans as evidence; that is not a field.
+                remaining = re.search(r"(?<!`)Trabajo restante: (.+?)(?: [A-Z]|$)", body, re.S)
+                self.assertIsNotNone(status, "record must declare Estado")
+                self.assertIsNotNone(remaining, "record must declare Trabajo restante")
+                self.assertIn(status.group(1), allowed_statuses)
+                if status.group(1) == "completed":
+                    self.assertEqual(remaining.group(1).strip().rstrip("."), "`none`")
     def test_repository_roadmap_records_have_valid_lifecycle_fields(self):
         path = ROOT.parents[1] / "docs/repo-harness/roadmap.md"
         if not path.is_file():
