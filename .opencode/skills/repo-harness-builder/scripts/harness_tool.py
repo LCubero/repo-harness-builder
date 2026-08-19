@@ -492,10 +492,12 @@ def conflicting_attribute_paths(current: bytes, protected: Sequence[str]) -> set
         if len(fields) < 2:
             continue
         pattern, assignments = fields[0], expand(fields[1:])
+        lf_pinned = "eol=lf" in assignments
         incompatible = any(
             assignment == "binary"
             or assignment == "eol"
-            or assignment.startswith(("-text", "!text", "text=", "-eol", "!eol"))
+            or assignment.startswith(("-text", "!text", "-eol", "!eol"))
+            or (assignment.startswith("text=") and not (assignment == "text=auto" and lf_pinned))
             or (assignment.startswith("eol=") and assignment != "eol=lf")
             for assignment in assignments
         )
@@ -784,6 +786,7 @@ Never use git pull, git rebase, git reset, force operations, merge on divergence
 
 Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
 Report the checker result in the reply language: `current` means every runtime projection is up to date, and `drift` is reported as needing an update, naming each drifted runtime projection.
+Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 {references_section(rulebook_path)}"""
 
 
@@ -883,6 +886,7 @@ Always report required continuity outcome separately from optional Git branch ou
 ## Output Contract
 
 Deliver the complete Output Contract only after continuity is saved successfully. Return close outcome, required continuity outcome, optional Git branch outcome, completed work, decisions, unresolved issues, next steps, verified paths, documentation update result, {output_continuity}, classified Git state, proposed or completed work units, commit result, push result, transport receipts, safely-local state, and separately pending optional gates. When safe and relevant, ask exactly one blocking question and make it the final user-facing line.
+Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 If continuity saving fails, surface the failure and do not claim successful continuity or a final handoff.
 {references_section(rulebook_path)}"""
 
@@ -948,6 +952,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 ## Output Contract
 
 Return canonical owners checked, links validated, stale or duplicate claims resolved, durable documents changed, temporary state left unpromoted, and remaining documentation risks.
+Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 {references_section(rulebook_path)}"""
 
 
@@ -2233,7 +2238,12 @@ def legacy_migration_inputs(
     project = installed_manifest.get("project")
     language = installed_manifest.get("language")
     require(isinstance(project, dict) and isinstance(project.get("id"), str), "manifest ownership is unverifiable")
-    require(isinstance(language, dict), "manifest ownership is unverifiable")
+    if language is None:
+        documentation_languages, conversation_language = declared_languages(root)
+    else:
+        require(isinstance(language, dict), "manifest ownership is unverifiable")
+        documentation_languages = language.get("documentation")
+        conversation_language = language.get("conversation")
     require(isinstance(installed_manifest.get("runtimes"), list), "manifest ownership is unverifiable")
     replacements = generated_skill_replacements(installed_manifest, desired_manifest)
     installed_outputs = render_with_skill_mapping(
@@ -2242,12 +2252,35 @@ def legacy_migration_inputs(
         desired_skill_license(desired_outputs),
         installed_manifest.get("integrationMode") == "standalone",
         DEFAULT_REPORT_LANGUAGE,
-        language.get("documentation"),
-        language.get("conversation"),
+        documentation_languages,
+        conversation_language,
         project.get("ignoreCodegraph", True),
         legacy_command_to_skill(project["id"]),
     )
+    if digest_bytes(manifest_target.read_bytes()) != digest_text(installed_outputs[MANIFEST_PATH]):
+        installed_outputs = prior_era_installed_outputs(root, installed_outputs, replacements)
     return installed_outputs, replacements
+
+
+def prior_era_installed_outputs(
+    root: Path,
+    installed_outputs: dict[str, str],
+    replacements: dict[str, str],
+) -> dict[str, str]:
+    """Read the gated paths from disk when the current renderer cannot reproduce them.
+
+    A prior-era installation was written by older templates, so byte equality with a
+    fresh render can never hold and it proves nothing about ownership. Reading the
+    installed bytes moves the proof to what a prior-era install can still show: the
+    checker embedding the digest of these exact manifest bytes, and a builder
+    provenance marker on every generated skill. Both are already required downstream.
+    """
+    installed = dict(installed_outputs)
+    for path in (MANIFEST_PATH, ".repo-harness/check.py", *replacements):
+        target = guarded_target(root, path)
+        if target.is_file() and not is_indirect(target):
+            installed[path] = target.read_bytes().decode("utf-8")
+    return installed
 
 
 def plan_generated_output_migration(
@@ -2268,7 +2301,13 @@ def plan_generated_output_migration(
 
     installed_manifest = json.loads(installed_outputs[MANIFEST_PATH])
     desired_manifest = json.loads(desired_outputs[MANIFEST_PATH])
-    require(installed_outputs[".repo-harness/check.py"] == check_script(digest_text(installed_outputs[MANIFEST_PATH])), "installed checker ownership is unverifiable")
+    installed_checker = installed_outputs[".repo-harness/check.py"]
+    installed_manifest_text = installed_outputs[MANIFEST_PATH]
+    require(
+        installed_checker == check_script(digest_text(installed_manifest_text))
+        or authentic_installed_checker(installed_checker.encode("utf-8"), installed_manifest_text.encode("utf-8")),
+        "installed checker ownership is unverifiable",
+    )
     owned_sources = generated_skill_paths(installed_manifest)
     owned_destinations = generated_skill_paths(desired_manifest)
     source_paths = set(replacements)

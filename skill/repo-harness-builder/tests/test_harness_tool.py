@@ -1288,6 +1288,47 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
             self.assertFalse(set(replacements.values()) & {item["path"] for item in plan["create"]})
             self.assertFalse(set(replacements) & set(plan["identical"]))
 
+    def age_into_pre_language_install(self, root: Path) -> None:
+        """Turn a rendered legacy fixture into what a real generator-3.0 install looks like."""
+        manifest_path = root / TOOL.MANIFEST_PATH
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest.pop("language", None)
+        manifest["writeSemantics"] = "additive-create-with-runtime-pointer-append"
+        manifest_text = TOOL.dump_json(manifest)
+        manifest_path.write_text(manifest_text, encoding="utf-8", newline="")
+        checker = root / ".repo-harness/check.py"
+        checker.write_text(TOOL.check_script(TOOL.digest_text(manifest_text)), encoding="utf-8", newline="")
+
+    def test_pre_language_legacy_install_still_migrates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode", "claude-code"))
+            self.age_into_pre_language_install(root)
+            aged = next(iter(sorted(replacements)))
+            body = (root / aged).read_text(encoding="utf-8")
+            (root / aged).write_text(body + "prior era template line" + chr(10), encoding="utf-8", newline="")
+
+            plan = TOOL.plan_changes(root, desired)
+
+            self.assertEqual(len(plan["migrate"]), 1)
+            migration = plan["migrate"][0]
+            self.assertEqual(migration["action"], "migrate-generated-skills")
+            self.assertEqual({item["sourcePath"] for item in migration["moves"]}, set(replacements))
+            self.assertEqual({item["destinationPath"] for item in migration["moves"]}, set(replacements.values()))
+    def test_pre_language_legacy_install_still_requires_provenance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode",))
+            self.age_into_pre_language_install(root)
+            unowned = sorted(replacements)[0]
+            unowned_bytes = b"no provenance marker here" + bytes([10])
+            (root / unowned).write_bytes(unowned_bytes)
+
+            with self.assertRaisesRegex(TOOL.ContractError, "ownership is unverifiable"):
+                TOOL.plan_changes(root, desired)
+
+            self.assertEqual((root / unowned).read_bytes(), unowned_bytes)
+            self.assertTrue(all(not (root / destination).exists() for destination in replacements.values()))
     def test_fresh_install_is_additive_and_has_no_migration_action(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -2101,6 +2142,30 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(phrase, scoped)
 
+    def test_spanish_roadmap_records_hold_the_same_lifecycle_invariant(self):
+        """The Spanish peer is a human mirror, so a completed record may not still owe work."""
+        path = ROOT.parents[1] / "docs/es/repo-harness/roadmap.md"
+        if not path.is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        roadmap = path.read_text(encoding="utf-8")
+        records = re.findall(r"^### (RH-W-\d{4})$(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S)
+        english = ROOT.parents[1] / "docs/repo-harness/roadmap.md"
+        expected = re.findall(r"^### (RH-W-\d{4})$", english.read_text(encoding="utf-8"), re.M)
+        self.assertEqual([record_id for record_id, _ in records], expected)
+        allowed_statuses = {
+            "proposed", "ready", "active", "blocked", "deferred", "completed",
+            "excluded", "rejected",
+        }
+        for record_id, body in records:
+            with self.subTest(record_id=record_id):
+                status = re.search(r"Estado: `(\w+)`", body)
+                # A record may quote a field label inside code spans as evidence; that is not a field.
+                remaining = re.search(r"(?<!`)Trabajo restante: (.+?)(?: [A-Z]|$)", body, re.S)
+                self.assertIsNotNone(status, "record must declare Estado")
+                self.assertIsNotNone(remaining, "record must declare Trabajo restante")
+                self.assertIn(status.group(1), allowed_statuses)
+                if status.group(1) == "completed":
+                    self.assertEqual(remaining.group(1).strip().rstrip("."), "`none`")
     def test_repository_roadmap_records_have_valid_lifecycle_fields(self):
         path = ROOT.parents[1] / "docs/repo-harness/roadmap.md"
         if not path.is_file():
@@ -3611,16 +3676,17 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
                 self.assertFalse((root / RULEBOOK).exists())
 
     def test_compatible_broader_attributes_do_not_block_exact_rule_append(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            target = root / ".gitattributes"
-            target.write_bytes(b"* text eol=lf\n")
-            outputs = TOOL.render("Example", [])
-            plan = TOOL.plan_changes(root, outputs)
+        for original in (b"* text eol=lf\n", b"* text=auto eol=lf\n"):
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root / ".gitattributes"
+                target.write_bytes(original)
+                outputs = TOOL.render("Example", [])
+                plan = TOOL.plan_changes(root, outputs)
 
-            self.assertFalse([item for item in plan["blocked"] if item["path"] == ".gitattributes"])
-            TOOL.write_outputs(root, outputs, plan)
-            self.assertEqual(target.read_text(encoding="utf-8"), "* text eol=lf\n" + self.EXPECTED)
+                self.assertFalse([item for item in plan["blocked"] if item["path"] == ".gitattributes"])
+                TOOL.write_outputs(root, outputs, plan)
+                self.assertEqual(target.read_text(encoding="utf-8"), original.decode() + self.EXPECTED)
 
     def test_check_reports_only_bounded_attribute_protection(self):
         cases = (

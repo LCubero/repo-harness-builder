@@ -1288,6 +1288,47 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
             self.assertFalse(set(replacements.values()) & {item["path"] for item in plan["create"]})
             self.assertFalse(set(replacements) & set(plan["identical"]))
 
+    def age_into_pre_language_install(self, root: Path) -> None:
+        """Turn a rendered legacy fixture into what a real generator-3.0 install looks like."""
+        manifest_path = root / TOOL.MANIFEST_PATH
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest.pop("language", None)
+        manifest["writeSemantics"] = "additive-create-with-runtime-pointer-append"
+        manifest_text = TOOL.dump_json(manifest)
+        manifest_path.write_text(manifest_text, encoding="utf-8", newline="")
+        checker = root / ".repo-harness/check.py"
+        checker.write_text(TOOL.check_script(TOOL.digest_text(manifest_text)), encoding="utf-8", newline="")
+
+    def test_pre_language_legacy_install_still_migrates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode", "claude-code"))
+            self.age_into_pre_language_install(root)
+            aged = next(iter(sorted(replacements)))
+            body = (root / aged).read_text(encoding="utf-8")
+            (root / aged).write_text(body + "prior era template line" + chr(10), encoding="utf-8", newline="")
+
+            plan = TOOL.plan_changes(root, desired)
+
+            self.assertEqual(len(plan["migrate"]), 1)
+            migration = plan["migrate"][0]
+            self.assertEqual(migration["action"], "migrate-generated-skills")
+            self.assertEqual({item["sourcePath"] for item in migration["moves"]}, set(replacements))
+            self.assertEqual({item["destinationPath"] for item in migration["moves"]}, set(replacements.values()))
+    def test_pre_language_legacy_install_still_requires_provenance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode",))
+            self.age_into_pre_language_install(root)
+            unowned = sorted(replacements)[0]
+            unowned_bytes = b"no provenance marker here" + bytes([10])
+            (root / unowned).write_bytes(unowned_bytes)
+
+            with self.assertRaisesRegex(TOOL.ContractError, "ownership is unverifiable"):
+                TOOL.plan_changes(root, desired)
+
+            self.assertEqual((root / unowned).read_bytes(), unowned_bytes)
+            self.assertTrue(all(not (root / destination).exists() for destination in replacements.values()))
     def test_fresh_install_is_additive_and_has_no_migration_action(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -2101,6 +2142,30 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(phrase, scoped)
 
+    def test_spanish_roadmap_records_hold_the_same_lifecycle_invariant(self):
+        """The Spanish peer is a human mirror, so a completed record may not still owe work."""
+        path = ROOT.parents[1] / "docs/es/repo-harness/roadmap.md"
+        if not path.is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        roadmap = path.read_text(encoding="utf-8")
+        records = re.findall(r"^### (RH-W-\d{4})$(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S)
+        english = ROOT.parents[1] / "docs/repo-harness/roadmap.md"
+        expected = re.findall(r"^### (RH-W-\d{4})$", english.read_text(encoding="utf-8"), re.M)
+        self.assertEqual([record_id for record_id, _ in records], expected)
+        allowed_statuses = {
+            "proposed", "ready", "active", "blocked", "deferred", "completed",
+            "excluded", "rejected",
+        }
+        for record_id, body in records:
+            with self.subTest(record_id=record_id):
+                status = re.search(r"Estado: `(\w+)`", body)
+                # A record may quote a field label inside code spans as evidence; that is not a field.
+                remaining = re.search(r"(?<!`)Trabajo restante: (.+?)(?: [A-Z]|$)", body, re.S)
+                self.assertIsNotNone(status, "record must declare Estado")
+                self.assertIsNotNone(remaining, "record must declare Trabajo restante")
+                self.assertIn(status.group(1), allowed_statuses)
+                if status.group(1) == "completed":
+                    self.assertEqual(remaining.group(1).strip().rstrip("."), "`none`")
     def test_repository_roadmap_records_have_valid_lifecycle_fields(self):
         path = ROOT.parents[1] / "docs/repo-harness/roadmap.md"
         if not path.is_file():
@@ -2155,6 +2220,61 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(fact, roadmap)
         self.assertLess(roadmap.index("### RH-W-0016"), roadmap.index("### RH-W-0003"))
+
+    def test_documented_suite_count_matches_the_real_suite(self):
+        """A count nobody compares goes stale the moment a test is added."""
+        repository = ROOT.parents[1]
+        state = repository / "docs/repo-harness/current-state.md"
+        if not state.is_file():
+            self.skipTest("repository documentation fixture is outside the portable package")
+        actual = unittest.defaultTestLoader.discover(str(Path(__file__).resolve().parent), pattern="test_*.py").countTestCases()
+        documented = re.search(r"Canonical suite green: (\d+) tests passed", state.read_text(encoding="utf-8"))
+        self.assertIsNotNone(documented, "current-state must state the canonical suite count")
+        self.assertEqual(
+            int(documented.group(1)),
+            actual,
+            "current-state claims a suite size the suite does not have; update it in the same change",
+        )
+
+    def test_checked_in_documents_do_not_mix_line_endings(self):
+        """One edit written with the wrong newline leaves a file half CRLF and half LF."""
+        repository = ROOT.parents[1]
+        if not (repository / "docs/repo-harness/current-state.md").is_file():
+            self.skipTest("repository documentation fixture is outside the portable package")
+        documents = sorted(repository.glob("*.md")) + sorted(repository.glob("docs/**/*.md"))
+        for document in documents:
+            raw = document.read_bytes()
+            crlf = raw.count(bytes((13, 10)))
+            stray_lf = raw.count(bytes((10,))) - crlf
+            with self.subTest(document=document.relative_to(repository).as_posix()):
+                self.assertFalse(
+                    crlf and stray_lf,
+                    f"mixed line endings: {crlf} CRLF and {stray_lf} bare LF",
+                )
+
+    def test_current_state_projection_agrees_with_the_roadmap_owner(self):
+        """The roadmap owns lifecycle; a projection that contradicts it is false evidence."""
+        repository = ROOT.parents[1]
+        roadmap_path = repository / "docs/repo-harness/roadmap.md"
+        state_path = repository / "docs/repo-harness/current-state.md"
+        if not roadmap_path.is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        roadmap = roadmap_path.read_text(encoding="utf-8")
+        owned = {
+            record_id: dict(re.findall(r"^\| ([^|]+) \| (.*?) \|$", body, re.M)).get("Status")
+            for record_id, body in re.findall(r"^### (RH-W-\d{4})\n(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S)
+        }
+        claims = re.findall(r"`(RH-W-\d{4})`(?: and `(RH-W-\d{4})`)? (?:is|are) `([a-z]+)`", state_path.read_text(encoding="utf-8"))
+        self.assertTrue(claims, "current-state must project at least one lifecycle status")
+        for first, second, claimed in claims:
+            for record_id in filter(None, (first, second)):
+                with self.subTest(record_id=record_id):
+                    self.assertIn(record_id, owned, "current-state projects a record the roadmap does not own")
+                    self.assertEqual(
+                        owned[record_id],
+                        claimed,
+                        f"current-state says {record_id} is {claimed}; the roadmap says {owned[record_id]}",
+                    )
 
     def test_repository_product_readmes_use_fixed_daily_skill_names(self):
         repository = ROOT.parents[1]
@@ -2615,6 +2735,25 @@ class GeneratedCoreTests(unittest.TestCase):
             "If continuity saving fails, surface the failure",
         ):
             self.assertIn(phrase, stop)
+
+    def test_daily_skill_reports_must_label_every_claim_with_its_evidence_class(self):
+        """The rulebook classifies claims internally; the report must show the class.
+
+        Without this, an agent can classify a claim as inference and still emit it in
+        assertive form without violating any output contract.
+        """
+        outputs = TOOL.render("Example", [])
+        contracts = (
+            ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+            ".repo-harness/skills/repo-harness-documentation/SKILL.md",
+        )
+        for contract in contracts:
+            with self.subTest(contract=contract):
+                body = outputs[contract].split("## Output Contract", 1)[1]
+                self.assertIn("verified fact, supported inference, unknown or unverifiable", body)
+                self.assertIn("names the evidence it rests on", body)
+                self.assertIn("Never present an inference in assertive form", body)
 
     def test_git_consent_scope_covers_only_the_approved_outcome(self):
         cases = (
@@ -3537,16 +3676,17 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
                 self.assertFalse((root / RULEBOOK).exists())
 
     def test_compatible_broader_attributes_do_not_block_exact_rule_append(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            target = root / ".gitattributes"
-            target.write_bytes(b"* text eol=lf\n")
-            outputs = TOOL.render("Example", [])
-            plan = TOOL.plan_changes(root, outputs)
+        for original in (b"* text eol=lf\n", b"* text=auto eol=lf\n"):
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root / ".gitattributes"
+                target.write_bytes(original)
+                outputs = TOOL.render("Example", [])
+                plan = TOOL.plan_changes(root, outputs)
 
-            self.assertFalse([item for item in plan["blocked"] if item["path"] == ".gitattributes"])
-            TOOL.write_outputs(root, outputs, plan)
-            self.assertEqual(target.read_text(encoding="utf-8"), "* text eol=lf\n" + self.EXPECTED)
+                self.assertFalse([item for item in plan["blocked"] if item["path"] == ".gitattributes"])
+                TOOL.write_outputs(root, outputs, plan)
+                self.assertEqual(target.read_text(encoding="utf-8"), original.decode() + self.EXPECTED)
 
     def test_check_reports_only_bounded_attribute_protection(self):
         cases = (
