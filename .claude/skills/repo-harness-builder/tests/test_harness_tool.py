@@ -1288,6 +1288,47 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
             self.assertFalse(set(replacements.values()) & {item["path"] for item in plan["create"]})
             self.assertFalse(set(replacements) & set(plan["identical"]))
 
+    def age_into_pre_language_install(self, root: Path) -> None:
+        """Turn a rendered legacy fixture into what a real generator-3.0 install looks like."""
+        manifest_path = root / TOOL.MANIFEST_PATH
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest.pop("language", None)
+        manifest["writeSemantics"] = "additive-create-with-runtime-pointer-append"
+        manifest_text = TOOL.dump_json(manifest)
+        manifest_path.write_text(manifest_text, encoding="utf-8", newline="")
+        checker = root / ".repo-harness/check.py"
+        checker.write_text(TOOL.check_script(TOOL.digest_text(manifest_text)), encoding="utf-8", newline="")
+
+    def test_pre_language_legacy_install_still_migrates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode", "claude-code"))
+            self.age_into_pre_language_install(root)
+            aged = next(iter(sorted(replacements)))
+            body = (root / aged).read_text(encoding="utf-8")
+            (root / aged).write_text(body + "prior era template line" + chr(10), encoding="utf-8", newline="")
+
+            plan = TOOL.plan_changes(root, desired)
+
+            self.assertEqual(len(plan["migrate"]), 1)
+            migration = plan["migrate"][0]
+            self.assertEqual(migration["action"], "migrate-generated-skills")
+            self.assertEqual({item["sourcePath"] for item in migration["moves"]}, set(replacements))
+            self.assertEqual({item["destinationPath"] for item in migration["moves"]}, set(replacements.values()))
+    def test_pre_language_legacy_install_still_requires_provenance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired, replacements = self.migration_fixture(root, "Acme API", ("opencode",))
+            self.age_into_pre_language_install(root)
+            unowned = sorted(replacements)[0]
+            unowned_bytes = b"no provenance marker here" + bytes([10])
+            (root / unowned).write_bytes(unowned_bytes)
+
+            with self.assertRaisesRegex(TOOL.ContractError, "ownership is unverifiable"):
+                TOOL.plan_changes(root, desired)
+
+            self.assertEqual((root / unowned).read_bytes(), unowned_bytes)
+            self.assertTrue(all(not (root / destination).exists() for destination in replacements.values()))
     def test_fresh_install_is_additive_and_has_no_migration_action(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

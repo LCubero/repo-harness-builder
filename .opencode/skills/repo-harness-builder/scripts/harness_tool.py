@@ -2238,7 +2238,12 @@ def legacy_migration_inputs(
     project = installed_manifest.get("project")
     language = installed_manifest.get("language")
     require(isinstance(project, dict) and isinstance(project.get("id"), str), "manifest ownership is unverifiable")
-    require(isinstance(language, dict), "manifest ownership is unverifiable")
+    if language is None:
+        documentation_languages, conversation_language = declared_languages(root)
+    else:
+        require(isinstance(language, dict), "manifest ownership is unverifiable")
+        documentation_languages = language.get("documentation")
+        conversation_language = language.get("conversation")
     require(isinstance(installed_manifest.get("runtimes"), list), "manifest ownership is unverifiable")
     replacements = generated_skill_replacements(installed_manifest, desired_manifest)
     installed_outputs = render_with_skill_mapping(
@@ -2247,12 +2252,35 @@ def legacy_migration_inputs(
         desired_skill_license(desired_outputs),
         installed_manifest.get("integrationMode") == "standalone",
         DEFAULT_REPORT_LANGUAGE,
-        language.get("documentation"),
-        language.get("conversation"),
+        documentation_languages,
+        conversation_language,
         project.get("ignoreCodegraph", True),
         legacy_command_to_skill(project["id"]),
     )
+    if digest_bytes(manifest_target.read_bytes()) != digest_text(installed_outputs[MANIFEST_PATH]):
+        installed_outputs = prior_era_installed_outputs(root, installed_outputs, replacements)
     return installed_outputs, replacements
+
+
+def prior_era_installed_outputs(
+    root: Path,
+    installed_outputs: dict[str, str],
+    replacements: dict[str, str],
+) -> dict[str, str]:
+    """Read the gated paths from disk when the current renderer cannot reproduce them.
+
+    A prior-era installation was written by older templates, so byte equality with a
+    fresh render can never hold and it proves nothing about ownership. Reading the
+    installed bytes moves the proof to what a prior-era install can still show: the
+    checker embedding the digest of these exact manifest bytes, and a builder
+    provenance marker on every generated skill. Both are already required downstream.
+    """
+    installed = dict(installed_outputs)
+    for path in (MANIFEST_PATH, ".repo-harness/check.py", *replacements):
+        target = guarded_target(root, path)
+        if target.is_file() and not is_indirect(target):
+            installed[path] = target.read_bytes().decode("utf-8")
+    return installed
 
 
 def plan_generated_output_migration(
@@ -2273,7 +2301,13 @@ def plan_generated_output_migration(
 
     installed_manifest = json.loads(installed_outputs[MANIFEST_PATH])
     desired_manifest = json.loads(desired_outputs[MANIFEST_PATH])
-    require(installed_outputs[".repo-harness/check.py"] == check_script(digest_text(installed_outputs[MANIFEST_PATH])), "installed checker ownership is unverifiable")
+    installed_checker = installed_outputs[".repo-harness/check.py"]
+    installed_manifest_text = installed_outputs[MANIFEST_PATH]
+    require(
+        installed_checker == check_script(digest_text(installed_manifest_text))
+        or authentic_installed_checker(installed_checker.encode("utf-8"), installed_manifest_text.encode("utf-8")),
+        "installed checker ownership is unverifiable",
+    )
     owned_sources = generated_skill_paths(installed_manifest)
     owned_destinations = generated_skill_paths(desired_manifest)
     source_paths = set(replacements)
