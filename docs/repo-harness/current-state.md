@@ -11,7 +11,7 @@
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1. The checked-in checker and manifest remain a consistent pair.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
 - Licensed MIT in `LICENSE`, in both `SKILL.md` copies, and inside the distributable skill package and both runtime projections.
-- Published as a private GitHub repository. Tag `v3.1-rc.4` points to `be779401e0982693d4e544805b8c0edc4d4398d7` and is the current published, non-draft GitHub pre-release candidate; it fixes `RH-W-0041`, `RH-W-0042` and `RH-W-0037` on top of `v3.1-rc.3`.
+- Published as a private GitHub repository. Tag `v3.1-rc.5` points to `98f6e5bdef928db7a0913e3218becd417aa9ac10` and is the current published, non-draft GitHub pre-release candidate; it adds `RH-W-0010` and `RH-W-0043` on top of `v3.1-rc.4`. The generator version stays `3.0`, so a generator-3.0 installation reports `fresh`; bumping it remains a separate release decision.
 
 ## Recent Completed Work
 <!-- doc-role:recent-work -->

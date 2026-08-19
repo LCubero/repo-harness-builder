@@ -11,7 +11,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - El conjunto de entornos es `claude-code` y `opencode`; el modo es `integrated`. El idioma de conversacion es `espanol` y los locales documentales son `en` y `es`. El generador es 3.0, el paquete de habilidad es 3.1 y el checker y manifest incorporados conservan consistencia como par.
 - La suite cubre estados Git generados, consentimiento por intencion, comparacion exacta del alcance preparado, separacion del indice previo, invalidacion por cambios materiales, resultados delimitados, deteccion sensible, recibos de transporte acotados y contratos de cache del entorno.
 - La licencia MIT figura en `LICENSE`, en ambas copias de `SKILL.md` y dentro del paquete distribuible de la habilidad y de ambas proyecciones de entorno.
-- El repositorio privado esta publicado. La etiqueta `v3.1-rc.4` apunta a `be779401e0982693d4e544805b8c0edc4d4398d7` y es el candidato actual publicado como pre-release de GitHub que no es borrador; corrige `RH-W-0041`, `RH-W-0042` y `RH-W-0037` sobre `v3.1-rc.3`.
+- El repositorio privado esta publicado. La etiqueta `v3.1-rc.5` apunta a `98f6e5bdef928db7a0913e3218becd417aa9ac10` y es el candidato actual publicado como pre-release de GitHub que no es borrador; agrega `RH-W-0010` y `RH-W-0043` sobre `v3.1-rc.4`. La version del generador sigue en `3.0`, de modo que una instalacion con generador 3.0 informa `fresh`; subirla sigue siendo una decision de release aparte.
 
 ## Trabajo reciente completado
 <!-- doc-role:recent-work -->
