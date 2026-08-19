@@ -492,10 +492,12 @@ def conflicting_attribute_paths(current: bytes, protected: Sequence[str]) -> set
         if len(fields) < 2:
             continue
         pattern, assignments = fields[0], expand(fields[1:])
+        lf_pinned = "eol=lf" in assignments
         incompatible = any(
             assignment == "binary"
             or assignment == "eol"
-            or assignment.startswith(("-text", "!text", "text=", "-eol", "!eol"))
+            or assignment.startswith(("-text", "!text", "-eol", "!eol"))
+            or (assignment.startswith("text=") and not (assignment == "text=auto" and lf_pinned))
             or (assignment.startswith("eol=") and assignment != "eol=lf")
             for assignment in assignments
         )
@@ -784,6 +786,7 @@ Never use git pull, git rebase, git reset, force operations, merge on divergence
 
 Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
 Report the checker result in the reply language: `current` means every runtime projection is up to date, and `drift` is reported as needing an update, naming each drifted runtime projection.
+Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 {references_section(rulebook_path)}"""
 
 
@@ -883,6 +886,7 @@ Always report required continuity outcome separately from optional Git branch ou
 ## Output Contract
 
 Deliver the complete Output Contract only after continuity is saved successfully. Return close outcome, required continuity outcome, optional Git branch outcome, completed work, decisions, unresolved issues, next steps, verified paths, documentation update result, {output_continuity}, classified Git state, proposed or completed work units, commit result, push result, transport receipts, safely-local state, and separately pending optional gates. When safe and relevant, ask exactly one blocking question and make it the final user-facing line.
+Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 If continuity saving fails, surface the failure and do not claim successful continuity or a final handoff.
 {references_section(rulebook_path)}"""
 
@@ -948,6 +952,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 ## Output Contract
 
 Return canonical owners checked, links validated, stale or duplicate claims resolved, durable documents changed, temporary state left unpromoted, and remaining documentation risks.
+Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 {references_section(rulebook_path)}"""
 
 

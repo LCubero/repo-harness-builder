@@ -3611,16 +3611,17 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
                 self.assertFalse((root / RULEBOOK).exists())
 
     def test_compatible_broader_attributes_do_not_block_exact_rule_append(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            target = root / ".gitattributes"
-            target.write_bytes(b"* text eol=lf\n")
-            outputs = TOOL.render("Example", [])
-            plan = TOOL.plan_changes(root, outputs)
+        for original in (b"* text eol=lf\n", b"* text=auto eol=lf\n"):
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root / ".gitattributes"
+                target.write_bytes(original)
+                outputs = TOOL.render("Example", [])
+                plan = TOOL.plan_changes(root, outputs)
 
-            self.assertFalse([item for item in plan["blocked"] if item["path"] == ".gitattributes"])
-            TOOL.write_outputs(root, outputs, plan)
-            self.assertEqual(target.read_text(encoding="utf-8"), "* text eol=lf\n" + self.EXPECTED)
+                self.assertFalse([item for item in plan["blocked"] if item["path"] == ".gitattributes"])
+                TOOL.write_outputs(root, outputs, plan)
+                self.assertEqual(target.read_text(encoding="utf-8"), original.decode() + self.EXPECTED)
 
     def test_check_reports_only_bounded_attribute_protection(self):
         cases = (

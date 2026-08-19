@@ -492,10 +492,12 @@ def conflicting_attribute_paths(current: bytes, protected: Sequence[str]) -> set
         if len(fields) < 2:
             continue
         pattern, assignments = fields[0], expand(fields[1:])
+        lf_pinned = "eol=lf" in assignments
         incompatible = any(
             assignment == "binary"
             or assignment == "eol"
-            or assignment.startswith(("-text", "!text", "text=", "-eol", "!eol"))
+            or assignment.startswith(("-text", "!text", "-eol", "!eol"))
+            or (assignment.startswith("text=") and not (assignment == "text=auto" and lf_pinned))
             or (assignment.startswith("eol=") and assignment != "eol=lf")
             for assignment in assignments
         )
