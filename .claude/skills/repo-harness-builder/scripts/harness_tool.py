@@ -1984,13 +1984,18 @@ def manifest_owned_generated_paths(root: Path) -> set[str]:
     manifest_bytes = manifest_target.read_bytes()
     checker_bytes = checker_target.read_bytes()
     if checker_bytes.decode("utf-8", errors="replace") != check_script(digest_bytes(manifest_bytes)):
-        # A checker that is authentic but not current authorizes exactly one
-        # repair, replacing itself. Widening the set on this weaker proof would
-        # let an edited checker carrying a matching digest line authorize every
-        # other generated path, which byte equality alone previously prevented.
-        if authentic_installed_checker(checker_bytes, manifest_bytes):
-            return {".repo-harness/check.py"}
-        return set()
+        # Byte equality with the current template proves freshness, not authenticity,
+        # and it cannot hold across versions by definition: the checker embeds the
+        # version that wrote it. Narrowing to the checker alone here made a version
+        # bump freeze every installation, and replacing the checker without its
+        # manifest is worse than freezing, because the checker then names manifest
+        # bytes nobody wrote and dies with a digest mismatch. Authenticity is builder
+        # provenance plus the embedded digest naming these exact manifest bytes, which
+        # is what lets the manifest name its own outputs. Every replacement still
+        # requires builder provenance on the file being replaced, so a human-owned
+        # path stays unreachable from here.
+        if not authentic_installed_checker(checker_bytes, manifest_bytes):
+            return set()
     try:
         manifest = json.loads(manifest_bytes)
         paths = generated_skill_paths(manifest)
@@ -2074,7 +2079,11 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
             relative in generated_paths
             and target.is_file()
             and not target.is_symlink()
-            and (relative == MANIFEST_PATH or generated_version(target.read_bytes()) == VERSION)
+            # Provenance, not exact version equality. An installed file carries the
+            # older version by definition during an upgrade, so demanding the current
+            # one let the builder repair its own generation and never update across
+            # versions. A file without provenance is human-owned and still refused.
+            and (relative == MANIFEST_PATH or generated_version(target.read_bytes()) is not None)
         ):
             replace.append({
                 "path": relative,
