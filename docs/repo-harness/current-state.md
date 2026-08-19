@@ -11,7 +11,7 @@
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1. The checked-in checker and manifest remain a consistent pair.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
 - Licensed MIT in `LICENSE`, in both `SKILL.md` copies, and inside the distributable skill package and both runtime projections.
-- Published as a private GitHub repository. Tag `v3.1-rc.3` points to `ccbdd8237f5a1e5ba963ce3b091f887c076afa33` and is the current published, non-draft GitHub pre-release candidate; it adds `RH-W-0034`, `RH-W-0035`, `RH-W-0036`, `RH-W-0038`, and `RH-W-0039` on top of `v3.1-rc.2`.
+- Published as a private GitHub repository. Tag `v3.1-rc.4` points to `be779401e0982693d4e544805b8c0edc4d4398d7` and is the current published, non-draft GitHub pre-release candidate; it fixes `RH-W-0041`, `RH-W-0042` and `RH-W-0037` on top of `v3.1-rc.3`.
 
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
@@ -87,4 +87,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Decide how an authentic prior-era manifest proves ownership, which is the single human decision blocking `RH-W-0041`. The precedent is `RH-W-0036`: it separated authenticity from freshness for the checker once byte equality proved too strong a gate, and bounded the weaker proof to exactly one repair. `RH-W-0042` needs no decision and can land independently. The consumer stays untouched and serves as the verification fixture; a corrected candidate is proved only when its upgrade completes both passes there. The `RH-W-0037` Spanish backfill scope remains a separate open decision.
+Run the `v3.1-rc.4` upgrade against a real legacy consumer and record whether it completes. The owner performs that run himself; this repository must not mutate the consumer. Two passes are still expected: the first restores `.repo-harness/check.py`, and the second should offer the remaining generated documentation. If the second pass offers nothing, that is a finding, not a completed upgrade. No `ready` unit remains; `RH-W-0022` and `RH-W-0040` stay `proposed` and need a scope design before they can advance.

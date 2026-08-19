@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-08-19
+
+- Se publico el pre-release de GitHub [`v3.1-rc.4`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.4) desde el commit etiquetado `be779401e0982693d4e544805b8c0edc4d4398d7` a las 2026-08-19T03:31:44Z. El pre-release, que no es borrador, incluye el asset de 13 archivos `repo-harness-builder-v3.1-rc.4.zip`, etiquetado `Installable repo-harness-builder package` (117413 bytes, SHA-256 `9223cd856e7d2e0c114e500e16c9765c48da587ca9ebc6d25045bbb86b4e1c30`). Solo dos de los trece archivos empaquetados cambiaron desde `v3.1-rc.3`: `scripts/harness_tool.py` y `tests/test_harness_tool.py`. Este candidato corrige `RH-W-0041`, `RH-W-0042` y `RH-W-0037`, los tres defectos encontrados al correr `v3.1-rc.3` contra un consumidor legacy real que nunca se modifico. La verificacion nueva paso 307 pruebas canonicas con 7 omisiones y 307 de OpenCode y de Claude con 19 omisiones cada una; ambos checkers estaban actualizados con 0 escrituras y 0 obsoletas.
+
 ## 2026-08-18
 
 - Se completo `RH-W-0037`: el roadmap en espanol ya no es invisible para el invariante de ciclo de vida. Se aplicaba solo contra la tabla inglesa, de modo que un registro en espanol podia declarar un estado que su propio trabajo restante contradecia y quedarse en verde para siempre. Volver a medir primero mantuvo pequeno el arreglo: 32 de 42 registros en espanol no tenian alguna etiqueta, pero solo `Estado` y `Trabajo restante` cargan la mentira de ciclo de vida, y `Estado` ya estaba en todos, asi que rellenar 13 registros y agregar el invariante fue todo el trabajo y no una reescritura de 32. La comprobacion nueva atrapo uno real de inmediato, donde el `RH-W-0008` espanol afirmaba `completed` mientras seguia debiendo 17 rutas autoalojadas que su propietario ingles ya registraba como `none`, y ademas obligo al parser a ignorar una etiqueta que un registro cita como evidencia dentro de comillas invertidas.

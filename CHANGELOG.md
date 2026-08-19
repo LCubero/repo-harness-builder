@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-08-19
+
+- Published GitHub pre-release [`v3.1-rc.4`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.4) from tag commit `be779401e0982693d4e544805b8c0edc4d4398d7` at 2026-08-19T03:31:44Z. The non-draft pre-release carries the 13-file asset `repo-harness-builder-v3.1-rc.4.zip`, labeled `Installable repo-harness-builder package` (117413 bytes, SHA-256 `9223cd856e7d2e0c114e500e16c9765c48da587ca9ebc6d25045bbb86b4e1c30`). Only two of the thirteen packaged files changed since `v3.1-rc.3`: `scripts/harness_tool.py` and `tests/test_harness_tool.py`. This candidate fixes `RH-W-0041`, `RH-W-0042` and `RH-W-0037`, the three defects found by running `v3.1-rc.3` against a real legacy consumer that was never modified. Fresh verification passed 307 canonical tests with 7 skips and 307 OpenCode and Claude tests with 19 skips each; both checkers were current with 0 writes and 0 stale.
+
 ## 2026-08-18
 
 - Completed `RH-W-0037`: the Spanish roadmap is no longer invisible to the lifecycle invariant. It was enforced against the English table only, so a Spanish record could declare a status its own remaining work contradicted and stay green forever. Re-measuring first kept the fix small: 32 of 42 Spanish records were missing at least one label, but only `Estado` and `Trabajo restante` carry the lifecycle lie, and `Estado` was already everywhere, so backfilling 13 records and adding the invariant was the whole job rather than a 32-record rewrite. The new check immediately caught a real one, where Spanish `RH-W-0008` claimed `completed` while still owing 17 self-hosted paths that its English owner had recorded as `none`, and it also forced the parser to ignore a field label a record quotes inside code spans as evidence.

@@ -11,7 +11,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 - El conjunto de entornos es `claude-code` y `opencode`; el modo es `integrated`. El idioma de conversacion es `espanol` y los locales documentales son `en` y `es`. El generador es 3.0, el paquete de habilidad es 3.1 y el checker y manifest incorporados conservan consistencia como par.
 - La suite cubre estados Git generados, consentimiento por intencion, comparacion exacta del alcance preparado, separacion del indice previo, invalidacion por cambios materiales, resultados delimitados, deteccion sensible, recibos de transporte acotados y contratos de cache del entorno.
 - La licencia MIT figura en `LICENSE`, en ambas copias de `SKILL.md` y dentro del paquete distribuible de la habilidad y de ambas proyecciones de entorno.
-- El repositorio privado esta publicado. La etiqueta `v3.1-rc.3` apunta a `ccbdd8237f5a1e5ba963ce3b091f887c076afa33` y es el candidato actual publicado como pre-release de GitHub que no es borrador; agrega `RH-W-0034`, `RH-W-0035`, `RH-W-0036`, `RH-W-0038` y `RH-W-0039` sobre `v3.1-rc.2`.
+- El repositorio privado esta publicado. La etiqueta `v3.1-rc.4` apunta a `be779401e0982693d4e544805b8c0edc4d4398d7` y es el candidato actual publicado como pre-release de GitHub que no es borrador; corrige `RH-W-0041`, `RH-W-0042` y `RH-W-0037` sobre `v3.1-rc.3`.
 
 ## Trabajo reciente completado
 <!-- doc-role:recent-work -->
@@ -81,4 +81,4 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Decidir como prueba su propiedad un manifiesto autentico de era anterior, que es la unica decision humana que bloquea `RH-W-0041`. El precedente es `RH-W-0036`: separo autenticidad de frescura para el checker cuando la igualdad byte a byte resulto una compuerta demasiado fuerte, y acoto la prueba mas debil a exactamente una reparacion. `RH-W-0042` no necesita decision y puede aterrizar por separado. El consumidor queda intacto y sirve como fixture de verificacion; un candidato corregido solo queda probado cuando su actualizacion completa alli las dos pasadas. El alcance del relleno en espanol de `RH-W-0037` sigue siendo una decision abierta aparte.
+Ejecutar la actualizacion a `v3.1-rc.4` contra un consumidor legacy real y registrar si se completa. El propietario realiza esa corrida el mismo; este repositorio no debe mutar al consumidor. Se siguen esperando dos pasadas: la primera restaura `.repo-harness/check.py` y la segunda deberia ofrecer la documentacion generada restante. Si la segunda pasada no ofrece nada, eso es un hallazgo y no una actualizacion completa. No queda ninguna unidad `ready`; `RH-W-0022` y `RH-W-0040` siguen `proposed` y necesitan un diseno de alcance antes de avanzar.
