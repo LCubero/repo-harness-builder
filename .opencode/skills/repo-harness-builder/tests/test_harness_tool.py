@@ -3825,11 +3825,15 @@ class GeneratedCheckScriptTests(unittest.TestCase):
                         module.parse_manifest(raw, module.MANIFEST_SHA256)
 
     def test_a_prior_version_checker_still_authorizes_replacement(self):
-        """RH-W-0036: a stale checker must not disable its own replacement.
+        """RH-W-0036, widened by RH-W-0043: a stale checker must not disable replacement.
 
         Byte equality with the current template proves freshness, not
         authenticity. Authenticity is proven by builder provenance plus the
         embedded manifest digest, and only that may gate the replaceable set.
+        RH-W-0036 let that weaker proof authorize one repair, the checker itself.
+        RH-W-0043 widened it to the whole manifest-owned set, because a version
+        bump otherwise froze every installation, and replacing the checker alone
+        left it naming manifest bytes nobody wrote.
         """
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -3843,8 +3847,10 @@ class GeneratedCheckScriptTests(unittest.TestCase):
             self.assertEqual(TOOL.generated_version(aged.encode("utf-8")), "2.9")
             owned = TOOL.manifest_owned_generated_paths(root)
             self.assertTrue(owned, "an authentic prior-version checker emptied the replaceable set")
-            # The weaker proof authorizes exactly one repair and nothing else.
-            self.assertEqual(owned, {".repo-harness/check.py"})
+            # The checker and its manifest must move together or the pair goes inconsistent.
+            self.assertIn(".repo-harness/check.py", owned)
+            self.assertIn(TOOL.MANIFEST_PATH, owned)
+            self.assertTrue({path for path in owned if "/commands/" in path})
             checker.write_text(aged.replace("MANIFEST_SHA256 = \"", "MANIFEST_SHA256 = \"0"), encoding="utf-8")
             self.assertEqual(TOOL.manifest_owned_generated_paths(root), set())
 
@@ -4214,7 +4220,8 @@ class RuntimeSelectionContractTests(unittest.TestCase):
     def test_validation_documents_approved_generated_replacement_boundary(self):
         validation = (ROOT / "references" / "validation.md").read_text(encoding="utf-8")
         for phrase in (
-            "human-modified current-version generated",
+            # RH-W-0043: provenance authorizes replacement, not exact version equality
+            "human-modified generated file retaining valid builder provenance",
             "source and destination SHA-256",
             "plan digest",
             "rolls back every replacement, create, and append",
@@ -4223,6 +4230,7 @@ class RuntimeSelectionContractTests(unittest.TestCase):
         ):
             self.assertIn(phrase, validation)
         self.assertNotIn("cannot repair an existing file", validation)
+        self.assertNotIn("current-version", validation, "the superseded version rule came back")
 
     def test_help_states_that_the_runtime_flag_repeats(self):
         """An agent reads --help before the references, so the help text has to say it."""
@@ -4259,6 +4267,98 @@ class RuntimeSelectionContractTests(unittest.TestCase):
                 [path for path in outputs if path.startswith(surface)],
                 f"empty selection leaked {surface} wrappers",
             )
+
+
+class CrossVersionUpdateTests(unittest.TestCase):
+    """A builder version bump must not freeze the installations it exists to update."""
+
+    RUNTIMES = ("claude-code", "opencode")
+
+    def bumped_plan(self, root: Path, version: str = "9.9"):
+        with mock.patch.object(TOOL, "VERSION", version):
+            outputs = TOOL.render("Example", list(self.RUNTIMES))
+            return outputs, TOOL.plan_changes(root, outputs)
+
+    def test_a_version_bump_offers_a_complete_one_pass_update(self):
+        """Every manifest-owned generated path moves together, or the pair goes inconsistent."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", self.RUNTIMES)
+            _, plan = self.bumped_plan(root)
+            replaced = {item["path"] for item in plan["replace"]}
+            self.assertIn(".repo-harness/manifest.json", replaced)
+            self.assertIn(".repo-harness/check.py", replaced)
+            self.assertIn(".claude/commands/session-start.md", replaced)
+            self.assertIn(".opencode/commands/repo-harness-help.md", replaced)
+            self.assertIn(".repo-harness/skills/repo-harness-session-start/SKILL.md", replaced)
+            self.assertIn(".claude/skills/repo-harness-documentation/SKILL.md", replaced)
+            self.assertEqual(len(replaced), 19, sorted(replaced))
+            self.assertEqual(plan["blocked"], [])
+
+    def test_the_installed_checker_survives_a_one_pass_update(self):
+        """Replacing the checker without its manifest leaves it naming bytes nobody wrote."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", self.RUNTIMES)
+            # Render, plan and apply all belong to the same builder run, so they all
+            # happen under one bumped version; splitting them models nothing real.
+            with mock.patch.object(TOOL, "VERSION", "9.9"):
+                outputs = TOOL.render("Example", list(self.RUNTIMES))
+                TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+            result = subprocess.run(
+                [sys.executable, "-B", str(root / ".repo-harness/check.py")],
+                capture_output=True,
+                text=True,
+                cwd=str(root),
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["status"], "current")
+            self.assertEqual(report["writes"], 0)
+
+    def test_a_generated_path_without_provenance_is_never_replaced(self):
+        """Provenance is the whole protection once exact version equality stops gating."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", self.RUNTIMES)
+            victim = ".opencode/commands/session-start.md"
+            target = root / victim
+            stripped = target.read_text(encoding="utf-8").replace(TOOL.GENERATED_MARKER, "hand written", 1)
+            self.assertIsNone(TOOL.generated_version(stripped.encode("utf-8")))
+            with open(target, "w", encoding="utf-8", newline="") as handle:
+                handle.write(stripped)
+            _, plan = self.bumped_plan(root)
+            self.assertNotIn(victim, {item["path"] for item in plan["replace"]})
+            self.assertIn(victim, {item["path"] for item in plan["existing"]})
+            self.assertNotEqual(installed[victim], stripped)
+
+    def test_an_unauthentic_checker_still_authorizes_nothing(self):
+        """The manifest is trusted because the checker names its exact bytes; break that and stop."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", self.RUNTIMES)
+            checker = root / ".repo-harness/check.py"
+            broken = re.sub(
+                r'MANIFEST_SHA256\s*=\s*"[0-9a-f]{64}"',
+                'MANIFEST_SHA256 = "' + ("0" * 64) + '"',
+                checker.read_text(encoding="utf-8"),
+                count=1,
+            )
+            with open(checker, "w", encoding="utf-8", newline="") as handle:
+                handle.write(broken)
+            _, plan = self.bumped_plan(root)
+            self.assertEqual(plan["replace"], [])
+
+    def test_the_same_version_repair_does_not_regress(self):
+        """A fresh install must still report nothing to do at the same version."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = install(root, "Example", self.RUNTIMES)
+            plan = TOOL.plan_changes(root, outputs)
+            self.assertEqual(plan["replace"], [])
+            self.assertEqual(plan["create"], [])
+            self.assertEqual(plan["blocked"], [])
+            self.assertEqual(len(plan["identical"]), len(outputs))
 
 
 class PackageFreshnessTests(unittest.TestCase):
