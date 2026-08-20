@@ -2158,6 +2158,108 @@ def plan_digest(plan: dict[str, Any]) -> str:
     return digest_text(dump_json(canonical))
 
 
+LEGACY_REFERENCE_SCAN_TIMEOUT_SECONDS = 5.0
+LEGACY_REFERENCE_LIMIT = 200
+LEGACY_REFERENCE_FILE_BYTE_LIMIT = 1_048_576
+
+
+def tracked_markdown_paths(
+    root: Path,
+    execute: Callable[..., subprocess.CompletedProcess[str]] = subprocess.run,
+    timeout_seconds: float = LEGACY_REFERENCE_SCAN_TIMEOUT_SECONDS,
+) -> Optional[tuple[str, ...]]:
+    """Return the markdown files Git tracks, or None when Git evidence is unavailable.
+
+    None is not an empty result. A repository without a readable index cannot prove
+    which documents survive, and reporting that as "no references" would invent a
+    verified fact out of a missing capability.
+    """
+    try:
+        completed = execute(
+            ("git", "-C", str(root), "ls-files", "-z", "--", "*.md"),
+            capture_output=True,
+            text=True,
+            timeout=timeout_seconds,
+            check=False,
+            shell=False,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if completed.returncode != 0:
+        return None
+    return tuple(sorted({entry for entry in (completed.stdout or "").split("\0") if entry}))
+
+
+def resolved_by_apply(plan: dict[str, Any]) -> set[str]:
+    """Return every path this apply overwrites or deletes, whose current bytes cannot survive."""
+    resolved = {item["path"] for item in plan["create"]}
+    resolved |= {item["path"] for item in plan["replace"]}
+    for migration in plan["migrate"]:
+        resolved |= {move["destinationPath"] for move in migration["moves"]}
+        resolved |= {item["path"] for item in migration["replace"]}
+        resolved |= set(migration["remove"])
+    return resolved
+
+
+def surviving_legacy_reference_report(
+    root: Path,
+    plan: dict[str, Any],
+    execute: Callable[..., subprocess.CompletedProcess[str]] = subprocess.run,
+) -> dict[str, Any]:
+    """Report documents that survive this apply while still naming a generated skill it removes.
+
+    The migration deletes the legacy skill paths, so a surviving document that still
+    names one points at nothing. The rulebook is the costly case, because its decision
+    gates are read at the start of every session.
+
+    This reports and never rewrites: human-owned bytes stay untouched, so naming the
+    exact file and line is the whole obligation and the human decides what changes.
+
+    Scope is tracked markdown, the set the repository itself owns and a reviewer reads.
+    Untracked or ignored tool state such as `.atl/` stays out, because the tool that
+    writes it owns it, and historical records would otherwise be reported as defects.
+    """
+    if not plan["migrate"]:
+        return {"status": "not-applicable"}
+    removed = sorted(
+        {PurePosixPath(path).parent.name for migration in plan["migrate"] for path in migration["remove"]}
+    )
+    tracked = tracked_markdown_paths(root, execute)
+    if tracked is None:
+        return {
+            "status": "unavailable",
+            "removedSkills": removed,
+            "reason": "no readable Git index, so the surviving document set cannot be established",
+        }
+    resolved = resolved_by_apply(plan)
+    references: list[dict[str, Any]] = []
+    for relative in tracked:
+        if len(references) >= LEGACY_REFERENCE_LIMIT:
+            break
+        if relative in resolved:
+            continue
+        try:
+            target = guarded_target(root, relative)
+        except ContractError:
+            continue
+        if not target.is_file() or is_indirect(target):
+            continue
+        if target.stat().st_size > LEGACY_REFERENCE_FILE_BYTE_LIMIT:
+            continue
+        for number, line in enumerate(target.read_text(encoding="utf-8", errors="replace").splitlines(), start=1):
+            for name in removed:
+                if name in line:
+                    references.append({"path": relative, "line": number, "skill": name})
+            if len(references) >= LEGACY_REFERENCE_LIMIT:
+                break
+    return {
+        "status": "checked",
+        "scope": "tracked-markdown",
+        "removedSkills": removed,
+        "references": references,
+    }
+
+
 class GeneratedSkillMove(TypedDict):
     sourcePath: str
     sourceSha256: str
@@ -2903,7 +3005,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **plan, "runtimeSet": runtime_set_report(root, selected), "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")

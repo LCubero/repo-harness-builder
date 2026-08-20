@@ -4777,5 +4777,172 @@ class PackagePortabilityTests(unittest.TestCase):
         )
 
 
+class SurvivingLegacyReferenceTests(unittest.TestCase):
+    """The migration renames generated skills. Documents that keep naming the old ones must be reported.
+
+    The apply deletes the legacy skill paths, so any surviving document that still
+    names them points at nothing. The builder never rewrites human-owned bytes, so
+    reporting the exact surviving references is the whole obligation here.
+    """
+
+    RUNTIMES = ("opencode", "claude-code")
+
+    def legacy_install(self, root: Path, project: str = "Acme API"):
+        project_id = TOOL.normalize_project_name(project)
+        installed = TOOL.render_with_skill_mapping(
+            project,
+            list(self.RUNTIMES),
+            TOOL.DEFAULT_LICENSE,
+            True,
+            TOOL.DEFAULT_REPORT_LANGUAGE,
+            None,
+            None,
+            True,
+            TOOL.legacy_command_to_skill(project_id),
+        )
+        TOOL.write_outputs(root, installed, TOOL.plan_changes(root, installed))
+        return project_id, TOOL.render(project, list(self.RUNTIMES), standalone=True)
+
+    def age_rulebook_gate_rows(self, root: Path, project_id: str) -> None:
+        """Reproduce what a real prior-era rulebook holds: gate rows naming the project-prefixed skills.
+
+        The current renderer emits the fixed names even under a legacy skill mapping,
+        so a fixture rendered today cannot show this on its own. A real generator-3.0
+        install does, which is the case this report exists for.
+        """
+        rulebook = root / TOOL.RULEBOOK_PATH
+        text = rulebook.read_text(encoding="utf-8")
+        for suffix in ("session-start", "session-stop", "documentation"):
+            text = text.replace(f"repo-harness-{suffix}", f"{project_id}-{suffix}")
+        rulebook.write_text(text, encoding="utf-8", newline="")
+
+    def git(self, root: Path, *args: str) -> None:
+        subprocess.run(
+            ("git", "-C", str(root), *args),
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+
+    def track_everything(self, root: Path) -> None:
+        self.git(root, "init", "-q")
+        self.git(root, "add", "-A")
+
+    def report(self, root: Path, desired: dict) -> dict:
+        return TOOL.surviving_legacy_reference_report(root, TOOL.plan_changes(root, desired))
+
+    def test_a_surviving_human_document_that_names_a_removed_skill_is_reported(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            project_id, desired = self.legacy_install(root)
+            (root / "CONTRIBUTING.md").write_text(
+                f"Las skills canonicas son `{project_id}-session-start` y otras.\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            self.track_everything(root)
+            report = self.report(root, desired)
+            self.assertEqual(report["status"], "checked")
+            self.assertIn(f"{project_id}-session-start", report["removedSkills"])
+            hits = [item for item in report["references"] if item["path"] == "CONTRIBUTING.md"]
+            self.assertEqual(len(hits), 1)
+            self.assertEqual(hits[0]["line"], 1)
+            self.assertEqual(hits[0]["skill"], f"{project_id}-session-start")
+
+    def test_the_rulebook_gate_row_pointing_at_a_removed_canonical_path_is_reported(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            project_id, desired = self.legacy_install(root)
+            self.age_rulebook_gate_rows(root, project_id)
+            self.track_everything(root)
+            report = self.report(root, desired)
+            paths = {item["path"] for item in report["references"]}
+            self.assertIn(TOOL.RULEBOOK_PATH, paths)
+
+    def test_paths_this_apply_overwrites_or_removes_are_never_reported(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired = self.legacy_install(root)
+            self.track_everything(root)
+            plan = TOOL.plan_changes(root, desired)
+            migration = plan["migrate"][0]
+            resolved = (
+                {item["path"] for item in plan["create"]}
+                | {item["path"] for item in plan["replace"]}
+                | {item["destinationPath"] for item in migration["moves"]}
+                | {item["path"] for item in migration["replace"]}
+                | set(migration["remove"])
+            )
+            reported = {item["path"] for item in TOOL.surviving_legacy_reference_report(root, plan)["references"]}
+            self.assertEqual(reported & resolved, set())
+
+    def test_untracked_tool_owned_state_is_out_of_scope_and_says_so(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            project_id, desired = self.legacy_install(root)
+            registry = root / ".atl" / "skill-registry.md"
+            registry.parent.mkdir(parents=True, exist_ok=True)
+            registry.write_text(f"`{project_id}-session-start`\n", encoding="utf-8", newline="\n")
+            (root / ".gitignore").write_text(".atl/\n", encoding="utf-8", newline="\n")
+            self.track_everything(root)
+            report = self.report(root, desired)
+            self.assertEqual(report["scope"], "tracked-markdown")
+            self.assertNotIn(".atl/skill-registry.md", {item["path"] for item in report["references"]})
+
+    def test_a_repository_without_git_evidence_reports_unavailable_not_clean(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, desired = self.legacy_install(root)
+            report = self.report(root, desired)
+            self.assertEqual(report["status"], "unavailable")
+            self.assertNotIn("references", report)
+
+    def test_an_install_without_migration_is_not_applicable(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            desired = TOOL.render("Acme API", list(self.RUNTIMES), standalone=True)
+            TOOL.write_outputs(root, desired, TOOL.plan_changes(root, desired))
+            self.track_everything(root)
+            report = self.report(root, desired)
+            self.assertEqual(report["status"], "not-applicable")
+
+    def test_preview_emits_the_report_without_changing_the_plan_digest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            project_id, desired = self.legacy_install(root)
+            (root / "CONTRIBUTING.md").write_text(
+                f"`{project_id}-session-stop`\n", encoding="utf-8", newline="\n"
+            )
+            self.track_everything(root)
+            expected_digest = TOOL.plan_digest(TOOL.plan_changes(root, desired))
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    "render",
+                    "--root",
+                    str(root),
+                    "--project-name",
+                    "Acme API",
+                    "--runtime",
+                    "opencode",
+                    "--runtime",
+                    "claude-code",
+                    "--standalone",
+                ],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            payload = json.loads(completed.stdout)
+            self.assertEqual(payload["planSha256"], expected_digest)
+            self.assertEqual(payload["survivingLegacyReferences"]["status"], "checked")
+            self.assertIn(
+                "CONTRIBUTING.md",
+                {item["path"] for item in payload["survivingLegacyReferences"]["references"]},
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
