@@ -2706,6 +2706,22 @@ class GeneratedCoreTests(unittest.TestCase):
             start,
         )
 
+    def test_session_start_continues_organically_without_treating_conversation_as_work_authority(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+
+        for behavior in (
+            "After status and any synchronization outcome, continue naturally",
+            "one or two tensions that matter",
+            "review relevant pending work, current state, and priorities",
+            "recommend one direction with reasoning",
+            "Mention a second path only when it is materially relevant",
+            "Ordinary conversational continuation is discussion and steering only",
+            "explicit human intent identifies both the action and its target",
+            "preparation, design, delegation, implementation, mutation, or delivery",
+        ):
+            with self.subTest(behavior=behavior):
+                self.assertIn(behavior, start)
+
     def test_decision_gates_route_to_deeper_documents(self):
         text = TOOL.render("Example", [])[RULEBOOK]
         for destination in ("docs/repo-harness/README.md", "docs/repo-harness/current-state.md",
