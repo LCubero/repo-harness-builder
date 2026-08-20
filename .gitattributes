@@ -1,3 +1,7 @@
+# LF is canonical across Linux, macOS, and Windows.
+# Git enforces this independently of local core.autocrlf settings.
+* text=auto eol=lf
+
 .repo-harness/check.py text eol=lf
 .repo-harness/manifest.json text eol=lf
 .claude/commands/documentation.md text eol=lf
