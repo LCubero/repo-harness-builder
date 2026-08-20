@@ -737,6 +737,9 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 - Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
 - Keep ordinary continuation questions conversational and low-friction. Do not use the builder's exact digest-bound approval vocabulary.
 - Resolve verifiable facts from applicable evidence without asking; ask only when a material choice, authority boundary, unresolved contradiction, or meaningful risk genuinely requires the human; otherwise suggest the next useful action and continue within the user's requested scope.
+- After status and any synchronization outcome, continue naturally: explain the one or two tensions that matter, review relevant pending work, current state, and priorities, and recommend one direction with reasoning. Mention a second path only when it is materially relevant; do not turn the continuation into a backlog dump, fixed menu, multi-question round, or exhaustive interview.
+- Ordinary conversational continuation is discussion and steering only. It does not authorize preparation, design, delegation, implementation, mutation, or delivery.
+- Begin work only when explicit human intent identifies both the action and its target. Judge intent semantically from the conversation; never require or infer authority from a fixed phrase list.
 - Ask for explicit conversational approval before any external mutation.
 - Treat every network approval as a resumable checkpoint: resume the same session-start invocation and execute the approved synchronization branch once.
 - A clean worktree and index with a usable upstream requires one conversational approval before network access.
