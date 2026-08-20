@@ -11,7 +11,7 @@ Which contribution practices improve safety and reviewability for this stdlib Py
 ## Primary Sources
 
 - [LowFuel CONTRIBUTING](https://github.com/LCubero/lowfuel/blob/main/CONTRIBUTING.md): concise quick path, flexible issue-first workflow, short branches, Conventional Commits, verification commands, secret review, nearby docs, and a 400-line review target.
-- [Chiki-RO CONTRIBUTING](https://github.com/LCubero/Chiki-RO/blob/main/CONTRIBUTING.md): operational integration with REPO-HARNESS and Engram plus clear branch, PR, and approval boundaries.
+- The CONTRIBUTING of a private consumer repository, `consumer 2`: operational integration with REPO-HARNESS and Engram plus clear branch, PR, and approval boundaries.
 - [Gentle AI CONTRIBUTING](https://github.com/Gentleman-Programming/gentle-ai/blob/main/CONTRIBUTING.md): strict issue-first delivery, branch and commit conventions, work-unit commits, review budget, and automated PR policy.
 - [Gentle AI cognitive-doc-design](https://github.com/Gentleman-Programming/gentle-ai/tree/main/skills/cognitive-doc-design): answer-first structure, progressive disclosure, chunking, recognition over recall, and reviewer empathy.
 
@@ -30,7 +30,7 @@ The guide names Python 3.10+ stdlib development, canonical product sources in `s
 
 ## Tradeoffs
 
-LowFuel offers the best cognitive size but needs repository-specific source and projection rules. Chiki-RO provides useful continuity detail but is too long and repository-specific to copy. Gentle AI supplies a strong conceptual model, but copying its labels, regex enforcement, templates, or CI checks would create false promises here.
+LowFuel offers the best cognitive size but needs repository-specific source and projection rules. `consumer 2` provides useful continuity detail but is too long and repository-specific to copy. Gentle AI supplies a strong conceptual model, but copying its labels, regex enforcement, templates, or CI checks would create false promises here.
 
 ## Future Product Boundary
 
