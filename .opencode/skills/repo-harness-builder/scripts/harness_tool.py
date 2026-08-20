@@ -434,6 +434,11 @@ def has_pointer_line(current: bytes, directive: str) -> bool:
     return directive.encode("utf-8") in current.splitlines()
 
 
+def has_codegraph_ignore_line(current: bytes) -> bool:
+    """Match either accepted root CodeGraph ignore directive as one exact line."""
+    return any(has_pointer_line(current, directive) for directive in (CODEGRAPH_IGNORE_DIRECTIVE, "/.codegraph/"))
+
+
 def byte_compared_paths(outputs: Mapping[str, str], rulebook_path: str) -> tuple[str, ...]:
     """Return generated paths whose exact bytes checking compares.
 
@@ -2038,7 +2043,8 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
         elif relative in (*POINTER_DIRECTIVES, GITIGNORE_PATH) and target.is_file() and not target.is_symlink():
             current = target.read_bytes()
             directive = CODEGRAPH_IGNORE_DIRECTIVE if relative == GITIGNORE_PATH else POINTER_DIRECTIVES[relative]
-            if has_pointer_line(current, directive):
+            present = has_codegraph_ignore_line(current) if relative == GITIGNORE_PATH else has_pointer_line(current, directive)
+            if present:
                 existing.append({
                     "path": relative,
                     "reason": "required pointer line already present; left untouched",
@@ -2819,7 +2825,9 @@ def check(
             entry["state"] = "indirect-or-non-file"
         elif relative in (*POINTER_DIRECTIVES, GITIGNORE_PATH):
             directive = CODEGRAPH_IGNORE_DIRECTIVE if relative == GITIGNORE_PATH else POINTER_DIRECTIVES[relative]
-            entry["state"] = "present" if has_pointer_line(target.read_bytes(), directive) else "directive-missing"
+            current = target.read_bytes()
+            present = has_codegraph_ignore_line(current) if relative == GITIGNORE_PATH else has_pointer_line(current, directive)
+            entry["state"] = "present" if present else "directive-missing"
         elif relative == GITATTRIBUTES_PATH:
             current = target.read_bytes()
             protected = byte_compared_paths(expected, rulebook_path)
