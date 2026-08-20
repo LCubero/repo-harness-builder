@@ -856,21 +856,33 @@ class AdditiveWriteTests(unittest.TestCase):
                 TOOL.write_outputs(root, outputs, plan)
                 self.assertEqual(target.read_bytes(), expected)
 
-    def test_exact_codegraph_ignore_line_is_idempotent(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            target = root / ".gitignore"
-            original = b"# human\r\n.codegraph/\r\nnode_modules\r\n"
-            target.write_bytes(original)
-            outputs = TOOL.render("Example", [])
-            plan = TOOL.plan_changes(root, outputs)
-            self.assertIn(".gitignore", [item["path"] for item in plan["existing"]])
-            self.assertNotIn(".gitignore", [item["path"] for item in plan["append"]])
-            TOOL.write_outputs(root, outputs, plan)
-            self.assertEqual(target.read_bytes(), original)
+    def test_equivalent_codegraph_ignore_lines_are_idempotent_and_present(self):
+        for directive in (b".codegraph/", b"/.codegraph/"):
+            with self.subTest(directive=directive), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root / ".gitignore"
+                original = b"# human\r\n" + directive + b"\r\nnode_modules\r\n"
+                target.write_bytes(original)
+                outputs = TOOL.render("Example", [])
+                plan = TOOL.plan_changes(root, outputs)
+                self.assertIn(".gitignore", [item["path"] for item in plan["existing"]])
+                self.assertNotIn(".gitignore", [item["path"] for item in plan["append"]])
+                TOOL.write_outputs(root, outputs, plan)
+                self.assertEqual(target.read_bytes(), original)
+                entry = next(item for item in TOOL.check(root, "Example", [])["files"] if item["path"] == ".gitignore")
+                self.assertEqual(entry["state"], "present")
 
     def test_codegraph_ignore_near_matches_do_not_count(self):
-        for original in (b".codegraph", b"/.codegraph/", b"!.codegraph/", b"# .codegraph/", b"prefix.codegraph/suffix"):
+        for original in (
+            b".codegraph",
+            b"!.codegraph/",
+            b"!/.codegraph/",
+            b"# .codegraph/",
+            b"# /.codegraph/",
+            b" .codegraph/",
+            b".codegraph/ ",
+            b"prefix.codegraph/suffix",
+        ):
             with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 target = root / ".gitignore"
