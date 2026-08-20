@@ -24,6 +24,23 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0046
+| Field | Value |
+|---|---|
+| Origin | Owner observation on 2026-08-20 that a `/session-start` run in this repository ends on the same `git fetch` approval question in every session |
+| Priority | P2: no behavior is wrong and no state is at risk, but the contract spends its one mandated final question, on every clean session, on a read-only operation the owner has never declined. |
+| Dependencies | none |
+| Status | proposed |
+| Completed work | Confirmed the recurrence is structural rather than an execution slip, and bounded what is not in question. The obligation is unconditional and the generated session contract carries no consent-persistence surface anywhere, so every clean session with a usable upstream must ask again. The dirty, detached, missing-upstream, ambiguous-remote, diverged, and transport-failure rows were read and are correct as written; none of them is the subject of this unit. |
+| Remaining work | Design the scope boundary before any implementation. Decide whether a read-only `git fetch` is separable from the network-access threshold at all, where a durable per-repository consent would live given that the harness stores no session state today, and how such consent stays visible and revocable. Reconcile the two thresholds the contract already carries in the same design: line 740 requires approval before an external mutation while line 742 requires it before network access, and `git fetch` satisfies only the second because it writes nothing on the remote. |
+| Additions | Either a narrower threshold that classifies read-only fetch as non-mutating network access, or a durable and revocable per-repository consent recorded where the human can see and withdraw it. |
+| Exclusions | No change to any integration approval. Fast-forward-only integration, push, commit, publication, and every destructive path keep their own separate approval. No weakening of the dirty, detached, missing-upstream, ambiguous-remote, diverged, or transport-failure rows, and no change to the two-attempt transport bound. |
+| Deferrals | none |
+| Rejections | Rejected deleting the approval outright. The generated contract installs into every consumer repository, so a harness that fetches silently on session start would take network access in repositories whose owner never granted it, which is a larger defect than the friction it removes. |
+| Evidence | The obligation is at `skill/repo-harness-builder/scripts/harness_tool.py:742`, `A clean worktree and index with a usable upstream requires one conversational approval before network access`, with no condition and no persistence. The clean-with-upstream row at line 774 restates it as `keep network approval mandatory`. The Output Contract at line 787 then requires a safe pending approval to be the single final user-facing line, so the question is not merely permitted but mandated into the most prominent position of the report. Observed live on 2026-08-20: this repository was clean, `main` tracked `origin/main`, the session ended on the fetch question, and the approved fetch reported 0 ahead and 0 behind. The recurrence across earlier sessions is owner-reported and is not recorded by any repository artifact; an Engram search for prior fetch-approval observations returned none. The unconditional rule with no persistence surface is what explains the report. |
+| Decision history | 2026-08-20: the owner reported the repeated question, approved the fetch for that session, and asked explicitly that the observation be documented for later rather than acted on immediately. Registered `proposed` rather than `ready` because the change moves the harness's network-consent boundary in every repository it installs into, which is the whole risk. |
+| Next advancement condition | Advance once a written scope design decides whether read-only fetch leaves the network-access threshold or instead gains durable consent, and names where that consent is stored, how it is shown, and how it is withdrawn. |
+
 ### RH-W-0043
 | Field | Value |
 |---|---|
