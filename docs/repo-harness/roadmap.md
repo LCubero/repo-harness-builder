@@ -20,39 +20,114 @@ Source and tests own current behavior; this roadmap owns lifecycle; [current sta
 
 Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 writes; PR #2 merged as `ec56b1b` for issue #1; runtime-set widening is complete; issue #8 completed exact `.codegraph/` ignore with persistent opt-out; Judgment Day round 2 remains incomplete after judge B hit a session limit; five round-1 findings and the later capabilities below were identified. Each unit remains bounded to its prior outcome, verification, and non-goal.
 
-## Owner-Approved Execution Order
+## Proposed Audit Execution Order
 
-The owner approved this order without changing any status or advancement condition:
+The 2026-08-21 full non-terminal portfolio re-audit recommends this revised order for owner review. It is not owner-approved and changes no status or advancement condition:
 
 1. Design and deliver `RH-W-0050` first because finding and post-delivery reconciliation must govern how later work is classified and routed.
-2. Jointly design `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` because they share `.repo-harness` local namespaces, recoverable inventory, ownership evidence, ignore and override semantics, reports, and safety boundaries.
-3. Implement `RH-W-0051` first within that architecture bundle so `.repo-harness/tmp/` and `.repo-harness/archive/` establish the storage semantics consumed by later units.
-4. Implement `RH-W-0048` second to prove additive, non-overwriting runtime recovery on those storage primitives.
-5. Implement `RH-W-0052` last because archive, uninstall, and reinstall are higher-risk operations that must consume proven storage and recovery primitives.
-6. After that bundle, continue with `RH-W-0011`, `RH-W-0046`, `RH-W-0044`, `RH-W-0022`, and `RH-W-0040`, in that order.
+2. Run `RH-W-0011` next as the first real application of that classification. It inventories this repository's own historical findings with the identical `integrate`, `close`, `defer`, `reject`, or `noise` vocabulary, so it validates `RH-W-0050` against a real backlog at low marginal cost.
+3. Deliver `RH-W-0054` next because it is `P1` and its only declared unit dependency is `RH-W-0050`. No storage or recovery unit blocks it. If its design proves it needs persisted evidence, it joins the local-state architecture design in step 4 instead.
+4. Jointly design the local-state architecture for `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` because they share `.repo-harness` local namespaces, recoverable inventory, ownership evidence, ignore and override semantics, reports, and safety boundaries. The same design reserves namespace for the other declared consumers of that contract: the `RH-W-0053` checkpoint bytes, the durable repository-scoped consent or preference store that both `RH-W-0046` and `RH-W-0018` require, and the `RH-W-0040` violation record location. Reserving a namespace neither advances nor implements those units; it prevents a second breaking change to the storage contract.
+5. Implement `RH-W-0051` first within that architecture so `.repo-harness/tmp/` and `.repo-harness/archive/` establish the storage semantics consumed by later units.
+6. Implement `RH-W-0053` next because it is `P1` and both declared dependencies, `RH-W-0050` and `RH-W-0051`, are satisfied at this point.
+7. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery on those storage primitives.
+8. Implement `RH-W-0052` after that because archive, uninstall, and reinstall are the highest-risk operations and must consume proven storage and recovery primitives.
+9. Design `RH-W-0046` and `RH-W-0018` together because both require the same missing primitive, a durable repository-scoped consent or preference that stays visible and revocable. Implementation stays separate, and `RH-W-0018` remains `deferred` until its own advancement condition is met.
+10. Continue with `RH-W-0044`, whose `RH-W-0043` prerequisite is already completed, so only its written scope design remains.
+11. Continue with `RH-W-0022`.
+12. Continue with `RH-W-0055`.
+13. Continue with `RH-W-0040` last because it addresses only the unmechanizable residue, and which rules belong to that residue is unknown until the earlier checks exist.
 
 Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. `RH-W-0050` remains independent from and precedes the architecture bundle.
+
+Historical owner-approved order: the 2026-08-20 sequence placed the `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` bundle immediately after `RH-W-0050`, then `RH-W-0011`, `RH-W-0046`, `RH-W-0044`, `RH-W-0022`, and `RH-W-0040`, and reviewed `RH-W-0053`, `RH-W-0054`, and `RH-W-0055` last. The re-audit found two `P1` units sitting behind eight units, seven `P2` and one `P3`, with no declared dependency requiring it, and found three further declared consumers of the same local-state contract. The proposed revised order addresses both findings without changing any record status or advancement condition and remains pending owner review.
+
+## Consolidated Portfolio Audit
+
+The seven owner notes were audited against the existing portfolio rather than copied into a second backlog. Verified repository behavior, supported inferences from that behavior, owner decisions, and unresolved product choices remain distinct:
+
+- Human decisions: preserve the first critical path above; register interrupted-session recovery, wrong-answer recovery, and installation onboarding as separate proposed units; integrate existing-memory reconciliation into `RH-W-0050`; and extend the shared non-Git architecture without merging implementation boundaries.
+- Verified facts: `RH-W-0025` is completed; plain checker execution is read-only; the installed harness has no supported interrupted-checkpoint, answer-invalidation, or copy/paste onboarding workflow today.
+- Supported inference: release asset naming belongs with installation onboarding because the install command must identify a stable package artifact. A written release contract and consumer replay would raise this to verified design evidence.
+- Unknown or human decision required: an optional ATL-like capability inventory remains deferred until its product boundary and owner are decided. It must not duplicate Gentle AI-owned routing, review, receipt, or delivery state, and it does not reopen `RH-W-0025`.
+
+A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather than only the owner notes. It counted 18 non-terminal records, 12 `proposed` and 6 `deferred`, and produced the proposed revised execution order above for owner review:
+
+- Verified facts: `RH-W-0054` declares `RH-W-0050` as its only unit dependency and `RH-W-0053` declares `RH-W-0050` and `RH-W-0051`, while both were ordered behind eight units, seven `P2` and one `P3`. `RH-W-0011` and `RH-W-0050` use the identical `integrate`, `close`, `defer`, `reject`, or `noise` classification vocabulary. `RH-W-0044` still named the completed `RH-W-0043` as a pending prerequisite. `RH-W-0055` named a future release contract as a dependency while also declaring that same contract among its own additions.
+- Supported inference: `RH-W-0051` is a storage hub rather than one of three peers. `RH-W-0048`, `RH-W-0052`, and `RH-W-0053` declare its storage semantics as a dependency, and `RH-W-0046`, `RH-W-0018`, and `RH-W-0040` each name a storage location the same contract would own, so designing only `tmp` and `archive` risks a second breaking change.
+- Verified non-defect: the current-state runtime set `claude-code` and `opencode` is this repository's installed manifest, while `RH-W-0055` names the product's supported runtimes, which `skill/repo-harness-builder/scripts/harness_tool.py:26` defines as `opencode`, `claude-code`, and `pi`. The two statements have different scopes and do not conflict.
 
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0055
+| Field | Value |
+|---|---|
+| Origin | Owner note requesting copy/paste installation guidance for Claude Code, OpenCode, and Pi, connected to builder invocation and daily session use. |
+| Priority | P2: installation is possible from a release package, but the repository does not provide one coherent consumer path from artifact selection through daily operation. |
+| Dependencies | RH-W-0050 for evidence classification in onboarding claims. The published package already provides stable contents, so the release asset naming contract is an addition this unit owns rather than a dependency it waits on. |
+| Status | proposed |
+| Completed work | Grouped copy/paste installation, future release asset naming, and install-to-builder-to-session guidance into one bounded lifecycle unit. |
+| Remaining work | Design per-runtime copy/paste commands, supported prerequisites, future release asset naming, verification, upgrade references, and links from installation to builder execution and daily session-start or session-stop usage. |
+| Additions | One concise onboarding path for each supported runtime and one stable future release asset naming contract. |
+| Exclusions | No release publication, network action, package rename, generated behavior, or claim that a future asset already exists. |
+| Deferrals | Actual asset naming and URLs remain unresolved until a release design is approved. |
+| Rejections | Rejected scattering installation snippets across unrelated documents or documenting only package extraction without the operational next steps. |
+| Evidence | Verified: the supported runtime set includes Claude Code, OpenCode, and Pi. Supported inference: asset naming and installation belong together because copy/paste commands need a stable artifact reference. Unknown: exact future asset name and URL pattern. |
+| Decision history | 2026-08-21: registered as proposed from the consolidated portfolio audit; no release or implementation was approved. |
+| Next advancement condition | Advance after a written onboarding design names supported installation sources, exact per-runtime commands, future asset naming, offline and failure boundaries, verification, and links through builder invocation to daily session usage. |
+
+### RH-W-0054
+| Field | Value |
+|---|---|
+| Origin | Owner note requiring recovery when the builder gives a wrong answer or the human corrects a material premise after preview. |
+| Priority | P1: a stale or incorrect answer can preserve an invalid plan or checkpoint unless the correction explicitly invalidates derived authority. |
+| Dependencies | RH-W-0050 evidence classification and the existing digest-bound preview or apply safety model. |
+| Status | proposed |
+| Completed work | Separated answer correction from interrupted-session recovery because invalidating wrong derived state is a different safety boundary from resuming unfinished valid state. |
+| Remaining work | Design correction intake, affected-claim and plan invalidation, preserved evidence, safe re-preview, and resumption without reusing stale approval or silently mutating repository state. |
+| Additions | Typed correction outcome, explicit invalidation scope, and a safe path back to verified evidence and a fresh preview. |
+| Exclusions | No automatic repository mutation, silent correction, reused digest or approval, historical evidence deletion, or claim that every conversational correction invalidates the whole session. |
+| Deferrals | none |
+| Rejections | Rejected continuing from an invalidated plan or treating a corrected answer as sufficient evidence without re-verification. |
+| Evidence | Verified: current digest-bound apply rejects changed plans, but no documented lifecycle owns wrong-answer correction and re-preview. Human decision: correction must invalidate affected derived authority before resumption. |
+| Decision history | 2026-08-21: registered as a separate proposed unit in the later review order. 2026-08-21: the same-day portfolio re-audit superseded that review order and placed this unit third overall, because it is `P1` and declares no unit dependency beyond `RH-W-0050`. The status stays `proposed` and the advancement condition is unchanged. |
+| Next advancement condition | Advance after a written behavior design defines correction scope, invalidation propagation, evidence retention, fresh-preview requirements, approval reset, and focused wrong-answer recovery cases. |
+
+### RH-W-0053
+| Field | Value |
+|---|---|
+| Origin | Owner note requiring safe recovery from a partial or interrupted session. |
+| Priority | P1: unfinished work can be mistaken for completed continuity or resumed from stale assumptions if the interruption is not represented explicitly. |
+| Dependencies | RH-W-0050 evidence classification and RH-W-0051 storage semantics for any future harness-owned local checkpoint bytes. |
+| Status | proposed |
+| Completed work | Bounded the capability to a typed unfinished checkpoint, no automatic mutation, and session-start resumption that re-verifies repository evidence. |
+| Remaining work | Design checkpoint schema, authority and storage, creation and expiry triggers, sensitive-data limits, interrupted-step representation, session-start discovery, stale or conflicting checkpoint handling, and explicit resumption behavior. |
+| Additions | A typed unfinished checkpoint and safe session-start route that distinguishes completed facts, unfinished intent, supported inference, unknown state, and decisions still requiring a human. |
+| Exclusions | No automatic continuation, mutation, approval reuse, claim that an interrupted action completed, duplicate backlog, or storage in user-owned personal paths. |
+| Deferrals | none |
+| Rejections | Rejected treating a generic session summary as proof of an executable checkpoint or resuming an interrupted mutation without fresh evidence and authority. |
+| Evidence | Verified: generated session-start reconciles Engram with repository evidence, but no repository contract defines a typed unfinished checkpoint. Human decision: resumption must be non-mutating until explicit current authority exists. Unknown: final checkpoint owner and persistence shape. |
+| Decision history | 2026-08-21: registered as proposed from the consolidated audit and placed first in the later review order. 2026-08-21: the same-day portfolio re-audit superseded that review order and placed this unit sixth overall, immediately after `RH-W-0051`, because it is `P1` and both declared dependencies are satisfied at that point. The status stays `proposed` and the advancement condition is unchanged. |
+| Next advancement condition | Advance after a written design defines checkpoint owner, typed fields, evidence classes, storage and retention, sensitive-data handling, stale and conflict outcomes, no-mutation startup behavior, and explicit resumption authority. |
 
 ### RH-W-0052
 | Field | Value |
 |---|---|
 | Origin | Approved VPS findings reconciliation: an existing non-Git information folder without a harness exposed a need for explicit uninstall, archive, and reinstall behavior. |
 | Priority | P2: recovery and replacement can destroy useful local information if ownership and manifests are not proved first. |
-| Dependencies | RH-W-0051 and an approved manifest-ownership design. |
+| Dependencies | RH-W-0051 storage semantics and proven RH-W-0048 additive recovery primitives, plus an approved manifest-ownership design. |
 | Status | proposed |
 | Completed work | Classified the failed VPS prototype as evidence for a separate capability, not as an implementation, and fixed the fixture boundary. |
 | Remaining work | Design manifest-aware inventory, archive, uninstall, reinstall, rollback, non-Git behavior, and explicit approval boundaries. |
 | Additions | Identify harness-owned bytes, archive recoverable state, uninstall only proved owned bytes, and reinstall from authoritative material. |
-| Exclusions | No promotion of the failed prototype, automatic deletion, assumption of Git, fixture mutation, or coupling to RH-W-0048. |
+| Exclusions | No promotion of the failed prototype, automatic deletion, assumption of Git, fixture mutation, or merged implementation with RH-W-0048. |
 | Deferrals | none |
 | Rejections | Rejected treating the failed prototype as shipped behavior or proof that destructive cleanup is safe. |
 | Evidence | Owner-approved reconciliation decision; the current repository implements no uninstall, archive, or reinstall command. |
 | Decision history | 2026-08-20: registered as a separate proposed capability. RH-W-0048 remains proposed and separate. |
-| Next advancement condition | Advance only after a written design proves ownership from a manifest, defines archive retention and explicit deletion approval, covers non-Git fixtures, and specifies rollback and reinstall verification. |
+| Next advancement condition | Advance only after RH-W-0051 storage semantics and RH-W-0048 recovery primitives are proven, and a written design proves ownership from a manifest, defines archive retention and explicit deletion approval, covers non-Git folders and workspaces, and specifies rollback and reinstall verification. |
 
 ### RH-W-0051
 | Field | Value |
@@ -62,8 +137,8 @@ Joint design does not merge implementation units. Each implementation retains se
 | Dependencies | none |
 | Status | proposed |
 | Completed work | Documented the target architecture under `.repo-harness/`: `tmp` is disposable and `archive` is recoverable, both non-authoritative and ignored by default, with explicit repository overrides. |
-| Remaining work | Design and implement render, ignore, checker, manifest, override, migration, and verification behavior. |
-| Additions | Default local namespaces with explicit ownership, retention, and clean-worktree rules. |
+| Remaining work | Jointly design the shared storage and recovery architecture with RH-W-0048 and RH-W-0052, including non-Git folders and workspaces, then implement render, ignore, checker, manifest, override, migration, and verification behavior as this separate unit. The same design reserves namespace for the other declared consumers of this contract, the RH-W-0053 checkpoint bytes, the durable repository-scoped consent or preference store required by RH-W-0046 and RH-W-0018, and the RH-W-0040 violation record location, without implementing or advancing any of them. |
+| Additions | Default local namespaces with explicit ownership, retention, clean-worktree, and non-Git workspace rules. |
 | Exclusions | No claim that either directory currently exists or is supported; no ignore, render, checker, manifest, or migration behavior in this documentation work. |
 | Deferrals | none |
 | Rejections | Rejected using user-owned personal storage for harness state and silently applying repository overrides. |
@@ -79,14 +154,14 @@ Joint design does not merge implementation units. Each implementation retains se
 | Dependencies | none |
 | Status | proposed |
 | Completed work | Approved the responsibility and classification vocabulary, and reconciled the current repository records that motivated the unit. |
-| Remaining work | Design generated contracts and focused checks for inventory, classification, evidence reconciliation, promotion approval, continuity cleanup, and next-ready routing. |
-| Additions | Inventory findings; classify integrate, close, defer, reject, or noise; reconcile canonical, localized, and memory evidence; promote only with approval; clean stale or duplicate continuity; and reconcile lifecycle after delivery before recommending the next ready unit. |
+| Remaining work | Design generated contracts and focused checks for inventory, classification, existing-memory discovery and conflict reconciliation, evidence reconciliation, promotion approval, continuity cleanup, and next-ready routing. |
+| Additions | Inventory findings; classify integrate, close, defer, reject, or noise; discover relevant pre-existing Engram observations; distinguish current, stale, conflicting, and unrelated memory evidence; reconcile canonical, localized, and memory evidence without automatic mutation; promote only with approval; clean stale or duplicate continuity; and reconcile lifecycle after delivery before recommending the next ready unit. |
 | Exclusions | No automatic promotion, deletion of historical evidence without approval, duplicate backlog, SDD requirement, or implementation of RH-W-0048, RH-W-0051, or RH-W-0052. |
 | Deferrals | none |
 | Rejections | Rejected treating continuity as only remembering or naming one next item, and routing work before findings are classified. |
 | Evidence | The 2026-08-20 read-only review found 12 non-terminal records, stale advancement conditions in RH-W-0011 and RH-W-0040, omitted local delivery evidence, and duplicate Spanish antecedent sections. |
 | Decision history | 2026-08-20: owner approved finding and post-delivery reconciliation as a harness responsibility; this work integrates current findings without implementing generated behavior. |
-| Next advancement condition | Advance after a written behavior design names owning contracts, inputs, classification output, approval gates, cleanup limits, post-delivery trigger, and focused RED/GREEN cases. |
+| Next advancement condition | Advance after a written behavior design names owning contracts, repository and existing-memory inputs, evidence classes, conflict handling, classification output, approval gates, cleanup limits, post-delivery trigger, and focused RED/GREEN cases. |
 
 ### RH-W-0049
 | Field | Value |
@@ -110,17 +185,17 @@ Joint design does not merge implementation units. Each implementation retains se
 |---|---|
 | Origin | Owner decision clarified on 2026-08-20: a fresh clone may have no `.claude/`, `.opencode/`, or `.pi/` folders, while another clone may have those folders but lack required skills, commands, wrappers, or other generated runtime surfaces. Recovery must work from the installed `.repo-harness` without locating or installing the external repo-harness-builder skill again. Runtime trees are local, minimally generated, and Git-ignored by default, while a repository may explicitly request tracking them. |
 | Priority | P2: nothing is destroyed and the local checker is green for the user who rendered, but a supported configuration produces provably inert output and an unexplained non-zero exit for anyone who clones. |
-| Dependencies | none |
+| Dependencies | RH-W-0051 storage semantics. |
 | Status | proposed |
 | Completed work | Established that the builder has no way to express this configuration, and measured the consequences instead of arguing them. `MANIFEST_FIELDS` at `skill/repo-harness-builder/scripts/harness_tool.py:1670` is exactly `schemaVersion`, `generator`, `project`, `runtimes`, `canonicalSkills`, `writeSemantics`, `integrationMode`, `language`, and `project` is validated at line 1734 as exactly `id`, `ignoreCodegraph`, `rulebook`. No field records how runtime projections are tracked. `--standalone` is not this switch. The owner has now fixed the product boundary: the installed `.repo-harness` must carry enough authoritative local material or inventory to detect and restore the minimum runtime projections without the external builder skill. The generated checker is the preferred owner for detection and recovery UX. Plain `python .repo-harness/check.py` remains read-only and must continue reporting `writes: 0`; mutation requires a future explicit repair or bootstrap invocation whose final command name remains undecided. That invocation handles both entirely absent runtime folders and partially missing generated contents. |
-| Remaining work | Before implementation, decide the bootstrap command name, ownership boundaries, exact trigger, authoritative inventory or templates stored inside `.repo-harness`, minimum file set for each declared runtime, tracked-signal detection, handling of stale versus missing files, and result or report schema. Decide separately whether `.gitattributes` omits rules for local-only paths. |
-| Additions | Local, minimally generated, ignored projection trees by default; an explicit repository choice to track them; authoritative in-repository recovery material; checker-owned detection and explicit recovery UX; and bounded additive creation of only missing required skills, commands, wrappers, and other declared-runtime files. Repair preserves unknown or human-evolved bytes, never stages files, and keeps runtime trees Git-ignored by default. |
+| Remaining work | Jointly design the shared architecture with RH-W-0051 and RH-W-0052, including non-Git folders and workspaces, then separately decide the bootstrap command name, ownership boundaries, exact trigger, authoritative inventory or templates stored inside `.repo-harness`, minimum file set for each declared runtime, tracked-signal detection, handling of stale versus missing files, and result or report schema. Decide separately whether `.gitattributes` omits rules for local-only paths. |
+| Additions | Local, minimally generated, ignored projection trees by default; an explicit repository choice to track them; authoritative in-repository recovery material; checker-owned detection and explicit recovery UX in Git and non-Git workspaces; and bounded additive creation of only missing required skills, commands, wrappers, and other declared-runtime files. Repair preserves unknown or human-evolved bytes, never stages files, and keeps runtime trees Git-ignored by default. |
 | Exclusions | No mutation from plain checker execution and no requirement to reinstall or locate the external builder skill for recovery. No mandatory tracked/local manifest mode unless implementation evidence proves it necessary. No overwrite of stale, unknown, or human-evolved bytes under the missing-file repair contract. No silent reclassification of a projection explicitly tracked in Git but missing: that remains drift or error and must not become local-only. No change to `.repo-harness/` ownership, path safety, or exact-byte validation after bootstrap. No consumer repository is modified. |
 | Deferrals | none |
 | Rejections | Rejected proposing that the consumer commit its runtime projections. Rejected treating appended LF rules as a defect in isolation. Rejected inventing a mandatory tracked/local manifest field without implementation evidence. Rejected treating a tracked but missing projection as local-only, because explicit tracking makes its absence real drift. |
 | Evidence | `references/architecture.md:37` states the generated checker compares each canonical skill against its `.claude/` and `.opencode/` projections and exits non-zero on a missing copy. Line 39 states root `.gitattributes` carries one `text eol=lf` rule per byte-compared generated path, explicitly including runtime projections and wrappers, with the stated rationale that without a rule a CRLF checkout reports drift. That rationale cannot apply to a path Git never checks out. Measured on the real consumer, read-only: `git check-ignore -v` resolves `.claude/skills/repo-harness-session-start/SKILL.md` to `.gitignore:31` and `.opencode/commands/session-start.md` to `.gitignore:30`, and `git ls-files` returns zero tracked paths under either directory, so 14 of the 19 appended rules can never apply. Proved by execution rather than inference: a simulated fresh clone built from only the tracked harness paths ran the installed checker and returned `status: drift` with exit 1 and all six projections `missing`. Recovery has no in-repo path, because the installed checker has no argparse, no options, and no repair mode, and the builder skill itself sits under the same ignored `.claude/` tree. |
 | Decision history | 2026-08-20: found while analyzing the applied `consumer 2` harness at the owner's request. The owner later clarified the local-by-default model, explicit tracked exception, both whole-folder and partial-content recovery cases, installed-harness self-sufficiency, checker ownership preference, read-only plain-check contract, explicit additive repair, and tracked-missing drift boundary. The unit remains `proposed` because the operational recovery design is not complete. |
-| Next advancement condition | Advance only after a written scope design decides the bootstrap command name, ownership boundaries, exact trigger, authoritative `.repo-harness` inventory or templates, minimum file set per runtime, tracked-signal detection, stale-versus-missing handling, and result or report schema while preserving read-only plain checks and tracked-missing drift. |
+| Next advancement condition | Advance only after RH-W-0051 defines storage semantics and a written scope design decides the bootstrap command name, ownership boundaries, exact trigger, authoritative `.repo-harness` inventory or templates, minimum file set per runtime, Git and non-Git behavior, tracked-signal detection, stale-versus-missing handling, and result or report schema while preserving read-only plain checks and tracked-missing drift. |
 
 ### RH-W-0047
 | Field | Value |
@@ -147,7 +222,7 @@ Joint design does not merge implementation units. Each implementation retains se
 | Dependencies | none |
 | Status | proposed |
 | Completed work | Confirmed the recurrence is structural rather than an execution slip, and bounded what is not in question. The obligation is unconditional and the generated session contract carries no consent-persistence surface anywhere, so every clean session with a usable upstream must ask again. The dirty, detached, missing-upstream, ambiguous-remote, diverged, and transport-failure rows were read and are correct as written; none of them is the subject of this unit. |
-| Remaining work | Design the scope boundary before any implementation. Decide whether a read-only `git fetch` is separable from the network-access threshold at all, where a durable per-repository consent would live given that the harness stores no session state today, and how such consent stays visible and revocable. Reconcile the two thresholds the contract already carries in the same design: line 740 requires approval before an external mutation while line 742 requires it before network access, and `git fetch` satisfies only the second because it writes nothing on the remote. |
+| Remaining work | Design the scope boundary before any implementation. Decide whether a read-only `git fetch` is separable from the network-access threshold at all, where a durable per-repository consent would live given that the harness stores no session state today, and how such consent stays visible and revocable. Reconcile the two thresholds the contract already carries in the same design: line 740 requires approval before an external mutation while line 742 requires it before network access, and `git fetch` satisfies only the second because it writes nothing on the remote. Design the durable consent store jointly with RH-W-0018, which requires the same repository-scoped preference primitive, and consume the namespace reserved by RH-W-0051 rather than inventing a second location. Implementation stays separate and RH-W-0018 keeps its own status and advancement condition. |
 | Additions | Either a narrower threshold that classifies read-only fetch as non-mutating network access, or a durable and revocable per-repository consent recorded where the human can see and withdraw it. |
 | Exclusions | No change to any integration approval. Fast-forward-only integration, push, commit, publication, and every destructive path keep their own separate approval. No weakening of the dirty, detached, missing-upstream, ambiguous-remote, diverged, or transport-failure rows, and no change to the two-attempt transport bound. |
 | Deferrals | none |
@@ -188,7 +263,7 @@ Joint design does not merge implementation units. Each implementation retains se
 | Rejections | Rejected registering this `ready`. Its scope boundary is the entire risk, which is the same reason `RH-W-0022` stays `proposed`, and an undesigned boundary here would propose edits to the documents holding this project's durable truth. |
 | Evidence | The classification surface already exists: `plan_changes` routes a human-owned path to `existing` with a proposal-only reason at `skill/repo-harness-builder/scripts/harness_tool.py:2085`. The owner-run consumer report listed `REPO-HARNESS.md` and `CHANGELOG.md` as human-evolved plus four documents with missing sections, which is exactly the detection half without the suggestion half. |
 | Decision history | 2026-08-19: registered `proposed` at P2 in the same work unit as `RH-W-0043`, from the owner's description of the update he wants. Recorded as `proposed` rather than `ready` because the compared document set and the acceptance interaction are undesigned. |
-| Next advancement condition | Advance once `RH-W-0043` lands and a written scope design names the compared document set, the suggestion shape, and the one-at-a-time acceptance interaction. |
+| Next advancement condition | `RH-W-0043` is completed and the prerequisite is satisfied. Retain `proposed` until a written scope design names the compared document set, the suggestion shape, and the one-at-a-time acceptance interaction. |
 
 ### RH-W-0045
 | Field | Value |
@@ -518,7 +593,7 @@ Joint design does not merge implementation units. Each implementation retains se
 |---|---|
 | Origin | User-requested unattended-mode idea for internal harness maintenance and documentation |
 | Priority | P2: repeated low-risk approval questions add friction, but the current interactive contract remains safe and functional |
-| Dependencies | Session-start consent design, repository-scoped preference storage design, and focused safety tests |
+| Dependencies | Session-start consent design, repository-scoped preference storage design, and focused safety tests. The RH-W-0046 consent design is the expected route to that storage design, and the namespace reserved by RH-W-0051 is its expected location; neither advances this unit by itself. |
 | Status | deferred |
 | Completed work | Recorded one autonomy policy with two consent scopes: the normal choice lasts only for the current session, while an explicit remember option persists for that repository until the user changes it. |
 | Remaining work | Design the exact session-start question, remembered-preference lifecycle, precedence rules, and tests that prove excluded actions still require interaction. |
@@ -939,3 +1014,4 @@ Joint design does not merge implementation units. Each implementation retains se
 - English is mandatory as the primary documentation locale, and the reason is now a standing decision rather than a bare `require()`. See [decisions.md](decisions.md).
 - A speculative cross-repository name collision was raised against `RH-W-0021` and withdrawn. Generated skills are repository-scoped and there is no global installation, so the risk was a future problem that is not real. Solve the problem in front of you.
 - Avoided choosing MCP, CLI, binary, third-party, migration-framework, general README rewrite, bulk upgrade, provider mutation, runtime reload, or universal human-doc cap without evidence.
+- The 2026-08-21 portfolio re-audit revised the execution order and changed no status or advancement condition. `RH-W-0011` moves to second as the first application of `RH-W-0050`; the `P1` units `RH-W-0054` and `RH-W-0053` move ahead of the `P2` units that no declared dependency required them to follow; `RH-W-0051` is treated as a storage hub whose one design reserves namespace for every declared consumer; and `RH-W-0046` and `RH-W-0018` share one consent design while keeping separate implementations. Two field defects were corrected in the same unit: `RH-W-0044` no longer names the completed `RH-W-0043` as pending, and `RH-W-0055` no longer depends on the release asset naming contract it delivers.
