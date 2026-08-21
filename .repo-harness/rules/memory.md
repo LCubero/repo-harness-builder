@@ -6,12 +6,18 @@ Load when: saving or recalling across sessions with Gentle AI and Engram.
 
 ## Rules
 
-- Engram is required in integrated mode, but repository evidence remains authoritative whenever they disagree.
-- Surface Engram failures and never claim successful continuity when recovery or saving failed.
+- Scope every harness Engram operation to the explicit repository project.
+- Treat repository files, Git, source, tests, and explicit approvals as canonical. Engram provides semantic continuity only; it never owns backlog, approval, delivery, classification, or reconciliation.
+- Report project resolution, local read, local write, prompt association, conflict discovery, lifecycle review, plugin capture, and sync outcomes separately when applicable. Do not collapse them into one availability verdict.
+- Preserve independent outcomes: an observation save may succeed while best-effort prompt capture or post-save candidate discovery fails.
+- Treat conflict candidates as advisory. `judgment_required` reports candidate discovery, not a proven contradiction.
+- Treat `active` and `needs_review` only as review-age labels computed from `review_after`, never as truth, authority, verification, expiry, or deletion.
+- Claim OpenCode plugin capture, auto prompt capture, compaction handoff, passive capture, or sync only when evidence confirms that operation.
 - Reconcile before trusting: check every recalled claim against the file it describes before acting on it.
 - Save significant decisions, discoveries, fixes, and session summaries to Engram.
 - Do not save what the repository already records. A restatement of current code or history is noise.
 - Never let memory replace documentation. If a fact belongs in `REPO-HARNESS.md` or `docs/repo-harness/`, write it there.
+- Treat SQLite local-first storage as a verified current Engram implementation detail, not a harness dependency.
 
 ## Budget
 
