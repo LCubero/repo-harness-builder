@@ -84,7 +84,7 @@ Entries that stay with `skills-pack-ld9` and must not be copied: creating that w
 
 ## Existing Review Material
 
-A findings-only review of the builder exists at `.ld9/skill-sanitize/skill_review/found/repo-harness-builder.md` in `skills-pack-ld9`, with the prior report preserved alongside it as `repo-harness-builder.superseded-2026-08-11T1422.md`. Carry the current report over and leave the superseded one behind.
+A findings-only review existed in user-owned personal storage in the origin workspace. Its contents were not imported into this repository, so this historical handoff establishes only that the review existed. Any retained finding requires current repository evidence and explicit reconciliation; no external personal report is an operating dependency.
 
 ## Pending Work In The New Repository
 
@@ -93,7 +93,7 @@ A findings-only review of the builder exists at `.ld9/skill-sanitize/skill_revie
 3. Seed `CHANGELOG.md` from the history section above.
 4. Seed `docs/repo-harness/decisions.md` from the decisions section above.
 5. Write the product guide, which is distinct from the generated harness usage guide. It covers what the builder does, how to invoke it, its version policy, and its release process. The generated `docs/repo-harness/usage.md` documents the harness workflow, not the product.
-6. Carry over the current review report.
+6. Reconcile any available historical findings against current repository evidence without depending on an external personal report.
 7. Define how a consumer repository detects that its installed copy of the builder is stale against canonical. See the open gap below.
 8. Deferred and optional: a presentation pass for harness user messages. Explore portable Markdown headings, simple callout blocks, and restrained emoji for session start, alerts, decisions, and session close. Adopt only what renders clearly across operating systems and agents. Avoid runtime-specific formatting and anything that complicates the builder.
 
@@ -108,7 +108,7 @@ The builder was designed and implemented in the `skills-pack-ld9` authoring work
 - Origin workspace: `E:\code\00-skills-pack_ld9`
 - Canonical source at the time of the split: `0_mis_skills/repo-harness-builder/`
 - External command wrapper: `0_mis_commands/repo-harness-builder.md`
-- Review reports: `.ld9/skill-sanitize/skill_review/found/`
+- Historical review material: user-owned personal storage in the origin workspace, not a repository dependency
 - Durable documentation of that workspace: `docs/repo-harness/` and `CHANGELOG.md`
 
 Engram continuity for that period is stored under the project key `skills-pack_ld9`, bound to the path above. Search it there when the reasoning behind a decision is not recorded in this repository.

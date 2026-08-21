@@ -533,8 +533,15 @@ class ProductWorkflowTests(unittest.TestCase):
         second = TOOL.render("Example", ["opencode", "claude-code"])
         self.assertEqual(first, second)
         combined = "\n".join(content for path, content in first.items() if path.endswith(".md") and (path.startswith("docs/") or path.startswith("README")))
-        for forbidden in (".ld9", "memory-bk", "C:\\Users\\", "E:\\code\\"):
+        for forbidden in ("." + "ld9", "memory-bk", "C:\\Users\\", "E:\\code\\"):
             self.assertNotIn(forbidden, combined)
+
+    def test_rendered_contracts_protect_personal_storage_without_naming_a_path(self):
+        outputs = TOOL.render("Example", ["opencode", "claude-code"], documentation_languages=["en", "es"])
+        combined = "\n".join(outputs.values())
+        self.assertNotIn("." + "ld9", combined)
+        stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        self.assertIn("user-owned personal storage", stop)
 
     def test_render_creates_a_bounded_human_owned_readme(self):
         outputs = TOOL.render("Example", [])
@@ -2252,6 +2259,7 @@ class GeneratedCoreTests(unittest.TestCase):
         if not path.is_file():
             self.skipTest("repository lifecycle fixture is outside the portable package")
         roadmap = path.read_text(encoding="utf-8")
+        self.assertNotIn("\n### Antecedente de RH-W-", roadmap, "Spanish roadmap must not duplicate lifecycle records")
         records = re.findall(r"^### (RH-W-\d{4})$(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S)
         english = ROOT.parents[1] / "docs/repo-harness/roadmap.md"
         expected = re.findall(r"^### (RH-W-\d{4})$", english.read_text(encoding="utf-8"), re.M)
@@ -2943,8 +2951,9 @@ class GeneratedCoreTests(unittest.TestCase):
 
     def test_session_stop_excludes_unsafe_staging_paths_and_commands(self):
         stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
-        for phrase in ("`.ld9/`", "`.codegraph/`", "secrets", "unknown generated caches", "unrelated pre-existing work"):
+        for phrase in ("user-owned personal storage", "`.codegraph/`", "secrets", "unknown generated caches", "unrelated pre-existing work"):
             self.assertIn(phrase, stop)
+        self.assertNotIn("." + "ld9", stop)
         self.assertIn("Never use `git add .`", stop)
         self.assertNotIn("force-push", stop.lower().replace("never force-push", ""))
 

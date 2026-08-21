@@ -854,7 +854,7 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 - Ask only one blocking question per turn. Every blocking approval is a resumable intermediate checkpoint, not terminal completion or a new unrelated task.
 - Git consent is outcome-scoped. An explicit request to commit and push, commit, then push, or clear approval of that complete bounded outcome covers exact-path staging, the proposed commit, required read-only checks, one bounded fetch or preflight, and push to the already identified upstream without asking again while material facts remain unchanged.
 - Commit approval does not approve push. Push approval does not approve staging or creating a commit.
-- Never use `git add .`, stage secrets, `.ld9/`, `.codegraph/`, unknown generated caches, or unrelated pre-existing work automatically.
+- Never use `git add .`, stage secrets, user-owned personal storage, `.codegraph/`, unknown generated caches, or unrelated pre-existing work automatically.
 - Never force-push, rebase, reset, auto-merge, or resolve conflicts automatically.
 - Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
 
