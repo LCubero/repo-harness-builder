@@ -86,10 +86,9 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Portfolio size: 18 non-terminal records, 11 `proposed`, 1 `active`, and 6 `deferred`. None is `ready`.
-- Critical-path projection: `RH-W-0050` is `active` and remains first because reconciliation governs how later work is classified and routed. `RH-W-0011` follows as its first real application, then `RH-W-0054`, which is `P1` and declares no unit dependency beyond `RH-W-0050`.
-- `RH-W-0050` now implements the approved hybrid bounded-scan and evidence-triggered reconciliation contracts across generated session start, session stop, documentation, integrated memory, and standalone output. Canonical, self-hosted, OpenCode, and Claude projections are synchronized locally. Delivery and post-delivery lifecycle reconciliation remain pending.
-- The owner-approved [bounded reconciliation design](rh-w-0050-design.md) defines the implemented scan bounds, trigger classification, finding dispositions, evidence precedence, Git and non-Git behavior, operation-level Engram degradation, approval boundaries, and focused RED/GREEN scenarios. Verified delivery remains pending.
+- Portfolio size: 17 non-terminal records, 11 `proposed` and 6 `deferred`. None is `ready` or `active`.
+- `RH-W-0050` is `completed`. Its hybrid bounded-scan and evidence-triggered reconciliation contracts now govern generated session start, session stop, documentation, integrated memory, and standalone output. Approved issue #89 and merged PR #90 provide delivery evidence; merge commit `1bebc027ba61b95088be1acc4966b120d9cd9b5e` is synchronized on `main`.
+- Post-delivery reconciliation verified canonical, self-hosted, OpenCode, and Claude projection parity, 341 passing tests with 8 skips, checker status `current` with zero writes, closed issue #89, and merged PR #90. No retained finding remains inside RH-W-0050 owner scope.
 - Local-state projection: `RH-W-0051`, `RH-W-0053`, `RH-W-0048`, and `RH-W-0052` are `proposed` and follow one shared Git and non-Git architecture design while retaining separate implementation and delivery boundaries. `RH-W-0051` is the storage hub: `RH-W-0053` and `RH-W-0048` depend on its semantics and `RH-W-0052` consumes both. The same design reserves namespace for the consent store `RH-W-0046` and `RH-W-0018` require and for the `RH-W-0040` violation record, without advancing either.
 - Remaining proposed work stays owned by the roadmap in this order: `RH-W-0046` designed together with deferred `RH-W-0018` as one consent design, then `RH-W-0044`, `RH-W-0022`, `RH-W-0055`, and `RH-W-0040`. Deferred records retain their existing advancement conditions. The optional ATL-like capability inventory remains deferred pending a product-boundary decision and must not duplicate Gentle AI-owned state or reopen completed RH-W-0025.
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings, records `RH-W-0007` as completed based on current tests, and `RH-W-0011` owns the incomplete round-2 receipt inside its evidence review.
@@ -98,4 +97,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-`RH-W-0050` stays the immediate work. Complete verification, deliver the implementation through approved issue #89, and perform post-delivery lifecycle reconciliation with delivery evidence before routing another unit. The broader next-work order proposed by the 2026-08-21 audit remains pending owner review.
+No unit is currently `ready`. Review the broader next-work order proposed by the 2026-08-21 audit before advancing another unit; RH-W-0050 completion does not approve that portfolio sequence.

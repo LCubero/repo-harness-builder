@@ -80,10 +80,9 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo pendiente
 <!-- doc-role:pending-work -->
 
-- Tamano del portafolio: 18 registros no terminales, 11 `proposed`, 1 `active` y 6 `deferred`. Ninguno esta `ready`.
-- Proyeccion de ruta critica: `RH-W-0050` esta `active` y sigue primero, porque la reconciliacion gobierna como se clasifica y enruta el trabajo posterior. Sigue `RH-W-0011` como su primera aplicacion real, y despues `RH-W-0054`, que es `P1` y no declara mas dependencia de unidad que `RH-W-0050`.
-- `RH-W-0050` ahora implementa los contratos aprobados de scan acotado hibrido y reconciliacion activada por evidencia en inicio de sesion, cierre de sesion, documentacion, memoria integrada y salida standalone. Las proyecciones canonica, autoalojada, OpenCode y Claude estan sincronizadas localmente. Siguen pendientes la entrega y la reconciliacion posterior a entrega.
-- El [diseno de reconciliacion acotada aprobado por el propietario](rh-w-0050-design.md) define los limites implementados del scan, clasificacion de triggers, disposiciones, precedencia de evidencia, comportamiento con y sin Git, degradacion de Engram por operacion, limites de aprobacion y escenarios RED/GREEN enfocados. Sigue pendiente la entrega verificada.
+- Tamano del portafolio: 17 registros no terminales, 11 `proposed` y 6 `deferred`. Ninguno esta `ready` ni `active`.
+- `RH-W-0050` esta `completed`. Sus contratos de scan acotado hibrido y reconciliacion activada por evidencia ahora gobiernan inicio de sesion, cierre de sesion, documentacion, memoria integrada y salida standalone. El issue aprobado #89 y el PR #90 fusionado aportan evidencia de entrega; el commit de merge `1bebc027ba61b95088be1acc4966b120d9cd9b5e` esta sincronizado en `main`.
+- La reconciliacion posterior a entrega verifico paridad canonica, autoalojada, OpenCode y Claude, 341 pruebas aprobadas con 8 omisiones, checker `current` con cero escrituras, issue #89 cerrado y PR #90 fusionado. No queda ningun hallazgo retenido dentro del alcance propietario de RH-W-0050.
 - Proyeccion de estado local: `RH-W-0051`, `RH-W-0053`, `RH-W-0048` y `RH-W-0052` estan `proposed` y siguen un unico diseno de arquitectura para Git y espacios sin Git, conservando implementacion y entrega separadas. `RH-W-0051` es el hub de almacenamiento: `RH-W-0053` y `RH-W-0048` dependen de su semantica y `RH-W-0052` consume ambas. El mismo diseno reserva namespace para el almacen de consentimiento que requieren `RH-W-0046` y `RH-W-0018` y para el registro de violaciones de `RH-W-0040`, sin avanzar ninguno.
 - El resto del trabajo propuesto sigue en la hoja de ruta en este orden: `RH-W-0046` disenada junto con la aplazada `RH-W-0018` como un unico diseno de consentimiento, y despues `RH-W-0044`, `RH-W-0022`, `RH-W-0055` y `RH-W-0040`. Los registros aplazados conservan sus condiciones. El inventario opcional similar a ATL sigue aplazado hasta decidir su limite de producto, sin duplicar estado de Gentle AI ni reabrir RH-W-0025.
 - Evidencia de bloqueo: la ronda 2 de Judgment Day sigue incompleta porque el juez B termino por limite. La hoja conserva los cinco hallazgos y marca `RH-W-0007` completado segun pruebas actuales.
@@ -92,4 +91,4 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-`RH-W-0050` sigue siendo el trabajo inmediato. Complete la verificacion, entregue la implementacion mediante el issue aprobado #89 y ejecute la reconciliacion posterior a entrega con evidencia antes de enrutar otra unidad. El orden general propuesto por la auditoria del 2026-08-21 sigue pendiente de revision del propietario.
+Ninguna unidad esta actualmente `ready`. Revise el orden general propuesto por la auditoria del 2026-08-21 antes de avanzar otra unidad; completar RH-W-0050 no aprueba esa secuencia del portafolio.
