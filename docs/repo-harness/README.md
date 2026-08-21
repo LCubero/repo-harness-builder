@@ -21,6 +21,7 @@
 | [rh-w-0031-research.md](rh-w-0031-research.md) | Canonical primary-source evidence owner for conversation-language boundaries |
 | [rh-w-0031-implementation-plan.md](rh-w-0031-implementation-plan.md) | Canonical executable remediation plan for conversation-language boundaries |
 | [rh-w-0034-implementation-plan.md](rh-w-0034-implementation-plan.md) | Canonical executable plan for consumer recovery and Spanish-only correctness |
+| [rh-w-0050-design.md](rh-w-0050-design.md) | Draft bounded reconciliation design, pending external review and owner approval |
 | [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |
 | [CHANGELOG.md](../../CHANGELOG.md) | Factual, dated, concise completed changes; never future plans |
 

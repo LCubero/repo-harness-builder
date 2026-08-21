@@ -19,5 +19,6 @@
 | [Investigacion RH-W-0031](../../repo-harness/rh-w-0031-research.md) | Propietario canonico en ingles de la evidencia primaria sobre los limites del idioma de conversacion |
 | [Plan tecnico RH-W-0031](../../repo-harness/rh-w-0031-implementation-plan.md) | Plan canonico en ingles para corregir los limites del idioma de conversacion |
 | [Plan de implementacion RH-W-0034](rh-w-0034-implementation-plan.md) | Par humano completo del plan canonico para recuperacion de consumidores y correccion del modo solo en espanol |
+| [Diseno RH-W-0050](rh-w-0050-design.md) | Borrador completo de reconciliacion acotada, pendiente de revision externa y aprobacion del propietario |
 | [Mapa canonico en ingles](../../repo-harness/README.md) | Propiedad documental canonica |
 | [CHANGELOG.md](../../../CHANGELOG.md) | Historial cronologico canonico |
