@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-21
 
+- Implemented the owner-approved `RH-W-0050` bounded reconciliation contracts test-first across generated session start, session stop, documentation, integrated memory, and standalone output. Five focused regressions failed before implementation and pass afterward; canonical, self-hosted, OpenCode, and Claude projections are synchronized locally. Delivery through approved issue #89 and post-delivery lifecycle reconciliation remain pending.
 - Recorded direct external review and explicit owner approval of the corrected `RH-W-0050` design at commit `38cbedc`, advancing the unit from `proposed` to `ready`. Implementation remains pending; no generated behavior changed.
 - Added, linked, reviewed, and corrected the bilingual `RH-W-0050` draft design. At that point it remained pending external review and owner approval, with no design approval or implementation.
 - Refined the approved `RH-W-0050` Engram design without advancing or implementing the proposed unit: repository evidence and approvals remain canonical, harness operations require explicit project scope and independent outcomes, conflict candidates and review-age labels remain advisory metadata, best-effort capture requires evidence, and SQLite local-first is recorded only as a current implementation detail.

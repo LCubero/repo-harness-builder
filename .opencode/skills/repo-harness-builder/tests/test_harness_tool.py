@@ -2253,6 +2253,85 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(phrase, scoped)
 
+    def test_session_start_generates_bounded_reconciliation_contract(self):
+        outputs = TOOL.render("Example", [])
+        start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        for phrase in (
+            "## Bounded Reconciliation",
+            "at most 20 commits",
+            "at most 12 distinct local evidence paths",
+            "capped at 8 records",
+            "`bound_exhausted`",
+            "Explicit bounded inspection stays bounded",
+            "`baseline: unknown`",
+            "authoritative next-ready routing",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, start)
+
+    def test_session_stop_generates_meaningful_stop_and_delivery_contract(self):
+        outputs = TOOL.render("Example", [])
+        stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        for phrase in (
+            "## Post-Delivery Reconciliation",
+            "meaningful stop",
+            "lifecycle delivery",
+            "full reconciliation",
+            "second bounded scan",
+            "zero further mutations",
+            "non-meaningful stop",
+            "`not_triggered`",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, stop)
+
+    def test_documentation_skill_generates_finding_dispositions(self):
+        outputs = TOOL.render("Example", [])
+        documentation = outputs[".repo-harness/skills/repo-harness-documentation/SKILL.md"]
+        for phrase in (
+            "## Finding Reconciliation",
+            "`integrate`",
+            "`close`",
+            "`defer`",
+            "`reject`",
+            "`noise`",
+            "direct projection",
+            "localized parity",
+            "duplicate store",
+            "separate conflict-state persistence",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, documentation)
+
+    def test_integrated_memory_rule_reports_operation_outcomes_independently(self):
+        memory = TOOL.render("Example", [])[".repo-harness/rules/memory.md"]
+        for phrase in (
+            "explicit repository project scope",
+            "Each operation reports its own outcome",
+            "validated empty",
+            "positive control",
+            "`judgment_required`",
+            "`needs_review`",
+            "advisory metadata",
+            "Never fabricate an aggregate Engram status",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, memory)
+
+    def test_standalone_reconciliation_never_requires_or_emulates_engram(self):
+        outputs = TOOL.render("Example", [], standalone=True)
+        scoped = "\n".join(
+            outputs[path]
+            for path in (
+                ".repo-harness/rules/memory.md",
+                ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+                ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+            )
+        )
+        self.assertIn("memory dimension as `not_applicable`", scoped)
+        self.assertIn("Do not emulate an external continuity service", scoped)
+        self.assertNotIn("Engram is required for standalone reconciliation", scoped)
+
     def test_spanish_roadmap_records_hold_the_same_lifecycle_invariant(self):
         """The Spanish peer is a human mirror, so a completed record may not still owe work."""
         path = ROOT.parents[1] / "docs/es/repo-harness/roadmap.md"

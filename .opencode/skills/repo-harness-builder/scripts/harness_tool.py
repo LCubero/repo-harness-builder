@@ -719,6 +719,11 @@ def session_start_skill(
         else "current documentation, source, tests, Git state or history, and Engram when available"
     )
     lifecycle_mirror = "repository continuity record keyed by `RH-W-####`" if standalone else "Engram topic `work/RH-W-####`"
+    reconciliation_reads = (
+        "Use repository evidence only; the continuity dimension is `not_applicable`."
+        if standalone
+        else "Use at most two Engram reads capped at 10 observations each after explicit project resolution."
+    )
     language_contract = conversation_language_contract(False)
     return frontmatter(name, description, source, license_id) + f"""<!-- {GENERATED_MARKER}; source: {source} -->
 ## Activation Contract
@@ -751,6 +756,15 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 - If the user explicitly asks to sync or update safely after the exact upstream is identified, that consent covers bounded fetch plus fast-forward-only integration without a second approval. Do not ask separately for fetch and fast-forward-only integration.
 - Invalidate synchronization consent and pause if the remote advanced into divergence, the upstream or destination changed, integration is not fast-forward-only, authentication needs a different credential path, verification fails, or any destructive or conflict-resolving action becomes necessary.
 - Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
+
+## Bounded Reconciliation
+
+- Build one ephemeral baseline from the applicable roadmap record, its current-state direct projection, declared localized peers, exact-ID decision and changelog matches, and local Git evidence. Persist no trigger state.
+- With an explicit `RH-W-####` objective, inspect only that owner scope. Without one, derive scope from the canonical active projection. If an owner is missing, comparison fails, or an owner-path change is unexplained, report `baseline: unknown` and suppress authoritative next-ready routing.
+- Inspect at most 20 commits touching owner paths, at most 12 distinct local evidence paths, and direct dependents capped at 8 records. {reconciliation_reads} Report `bound_exhausted` at the first exceeded bound and suppress authoritative routing.
+- Explicit bounded inspection stays bounded unless independent evidence verifies a mandatory trigger. An explicit full request, verified product or lifecycle delivery, canonical lifecycle inconsistency, incomplete delivery evidence, repository-memory contradiction, or unclassified retained finding requires full reconciliation within the same bounded scope.
+- Treat unrelated dirtiness, ahead-only Git, advisory memory metadata, age, invocation count, and wording-only parity differences as advisory. They never trigger full reconciliation alone.
+- Report repository, baseline, bounded scan, reconciliation, trigger, findings, canonical updates, localized parity, delivery evidence, next-ready, Git, and applicable continuity operations as separate outcomes. Use `completed`, `paused`, `blocked`, `failed`, or `not_triggered` where applicable.
 
 ## Self-Update And Runtime Cache
 
@@ -858,6 +872,15 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 - Never force-push, rebase, reset, auto-merge, or resolve conflicts automatically.
 - Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
 
+## Post-Delivery Reconciliation
+
+- A meaningful stop follows repository mutation, verified delivery, lifecycle or next-ready correction, a retained finding, or a continuity write attempt. A non-meaningful stop returns `not_triggered` and creates no chronology or continuity noise.
+- Compare current applicable owner bytes, parsed lifecycle fields, and local Git identity with the verified initial snapshot. Never substitute a prior session, cache, or inferred timestamp.
+- Product delivery or lifecycle delivery requires full reconciliation before authoritative next-ready routing. Verify delivery, classify every retained finding, update only already-authorized canonical owners and localized peers, and preserve every independent operation outcome.
+- After an authorized repair, run a second bounded scan. It must converge to zero further mutations before routing continues.
+- Incomplete delivery evidence, unknown baseline, bound exhaustion, owner-update failure, localized-update failure, or an unresolved retained finding stops only the affected branch. Preserve unrelated work and successful outcomes.
+- A wording-only parity repair is not lifecycle delivery unless it exposes or changes a semantic conflict.
+
 ## Self-Update And Runtime Cache
 
 - Distinguish on-disk canonical and projection parity, active-process registered skill freshness, and runtime reload or restart capability.
@@ -936,6 +959,14 @@ Use when creating, reviewing, or updating project documentation and visible proj
 - Treat `docs/repo-harness/roadmap.md` as the canonical lifecycle owner. When reality changes, reconcile its `RH-W-####` record, the concise current-state projection, localized peers, and {lifecycle_mirror} in the same work unit.
 {continuity}
 - Preserve human-owned content and unknown bytes. Never replace them merely to normalize structure.
+
+## Finding Reconciliation
+
+- Inventory only retained findings inside the applicable owner scope. Resolve each finding's evidence class and smallest canonical owner before proposing a write.
+- Assign exactly one disposition: `integrate` into an existing owner with authority, `close` only from owner plus delivery evidence, `defer` with a named condition, `reject` with owner authority and durable reason, or `noise` with no durable write.
+- Treat roadmap lifecycle as canonical, current state as its direct projection, changelogs as completed chronology, and declared localized peers as localized parity obligations.
+- Update canonical owners and localized peers in the same work unit. A failed localized update preserves canonical success but suppresses affected authoritative routing.
+- Never create a duplicate store, reconciliation log, cache, receipt, ledger, lifecycle store, or separate conflict-state persistence. Classification does not authorize implementation, deletion, or lifecycle advancement.
 
 ## Decision Gates
 
@@ -1059,6 +1090,7 @@ Load when: saving or recalling work across sessions.
 - Current files and validated state are authoritative.
 - Record durable facts in `{rulebook_path}` or `docs/repo-harness/` only after verification and approval.
 - Report missing evidence instead of inventing continuity.
+- For reconciliation, report the memory dimension as `not_applicable`. Do not emulate an external continuity service or create fallback storage.
 
 ## Budget
 
@@ -1074,8 +1106,12 @@ Load when: saving or recalling across sessions with Gentle AI and Engram.
 ## Rules
 
 - Engram is required in integrated mode, but repository evidence remains authoritative whenever they disagree.
+- Resolve explicit repository project scope before every operation. Under project ambiguity, perform zero Engram reads or writes.
+- Each operation reports its own outcome. Never fabricate an aggregate Engram status or collapse successful reads, writes, prompt association, conflict discovery, lifecycle review, capture, or sync because another operation failed.
 - Surface Engram failures and never claim successful continuity when recovery or saving failed.
 - Reconcile before trusting: check every recalled claim against the file it describes before acting on it.
+- Accept an empty exact-topic or exact-subject result only when it is a validated empty from successful same-surface evidence or a same-surface positive control.
+- Treat `judgment_required`, `needs_review`, and other review-age or conflict hints as advisory metadata until current repository owners verify the underlying claim.
 - Save significant decisions, discoveries, fixes, and session summaries to Engram.
 - Do not save what the repository already records. A restatement of current code or history is noise.
 - Never let memory replace documentation. If a fact belongs in `{rulebook_path}` or `docs/repo-harness/`, write it there.
