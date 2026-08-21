@@ -20,9 +20,73 @@ Source and tests own current behavior; this roadmap owns lifecycle; [current sta
 
 Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 writes; PR #2 merged as `ec56b1b` for issue #1; runtime-set widening is complete; issue #8 completed exact `.codegraph/` ignore with persistent opt-out; Judgment Day round 2 remains incomplete after judge B hit a session limit; five round-1 findings and the later capabilities below were identified. Each unit remains bounded to its prior outcome, verification, and non-goal.
 
+## Owner-Approved Execution Order
+
+The owner approved this order without changing any status or advancement condition:
+
+1. Design and deliver `RH-W-0050` first because finding and post-delivery reconciliation must govern how later work is classified and routed.
+2. Jointly design `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` because they share `.repo-harness` local namespaces, recoverable inventory, ownership evidence, ignore and override semantics, reports, and safety boundaries.
+3. Implement `RH-W-0051` first within that architecture bundle so `.repo-harness/tmp/` and `.repo-harness/archive/` establish the storage semantics consumed by later units.
+4. Implement `RH-W-0048` second to prove additive, non-overwriting runtime recovery on those storage primitives.
+5. Implement `RH-W-0052` last because archive, uninstall, and reinstall are higher-risk operations that must consume proven storage and recovery primitives.
+6. After that bundle, continue with `RH-W-0011`, `RH-W-0046`, `RH-W-0044`, `RH-W-0022`, and `RH-W-0040`, in that order.
+
+Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. `RH-W-0050` remains independent from and precedes the architecture bundle.
+
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0052
+| Field | Value |
+|---|---|
+| Origin | Approved VPS findings reconciliation: an existing non-Git information folder without a harness exposed a need for explicit uninstall, archive, and reinstall behavior. |
+| Priority | P2: recovery and replacement can destroy useful local information if ownership and manifests are not proved first. |
+| Dependencies | RH-W-0051 and an approved manifest-ownership design. |
+| Status | proposed |
+| Completed work | Classified the failed VPS prototype as evidence for a separate capability, not as an implementation, and fixed the fixture boundary. |
+| Remaining work | Design manifest-aware inventory, archive, uninstall, reinstall, rollback, non-Git behavior, and explicit approval boundaries. |
+| Additions | Identify harness-owned bytes, archive recoverable state, uninstall only proved owned bytes, and reinstall from authoritative material. |
+| Exclusions | No promotion of the failed prototype, automatic deletion, assumption of Git, fixture mutation, or coupling to RH-W-0048. |
+| Deferrals | none |
+| Rejections | Rejected treating the failed prototype as shipped behavior or proof that destructive cleanup is safe. |
+| Evidence | Owner-approved reconciliation decision; the current repository implements no uninstall, archive, or reinstall command. |
+| Decision history | 2026-08-20: registered as a separate proposed capability. RH-W-0048 remains proposed and separate. |
+| Next advancement condition | Advance only after a written design proves ownership from a manifest, defines archive retention and explicit deletion approval, covers non-Git fixtures, and specifies rollback and reinstall verification. |
+
+### RH-W-0051
+| Field | Value |
+|---|---|
+| Origin | Approved owner decision separating user-owned personal storage from harness-owned local state. |
+| Priority | P2: local state needs predictable ownership and clean-worktree semantics before recovery or archival behavior can depend on it. |
+| Dependencies | none |
+| Status | proposed |
+| Completed work | Documented the target architecture under `.repo-harness/`: `tmp` is disposable and `archive` is recoverable, both non-authoritative and ignored by default, with explicit repository overrides. |
+| Remaining work | Design and implement render, ignore, checker, manifest, override, migration, and verification behavior. |
+| Additions | Default local namespaces with explicit ownership, retention, and clean-worktree rules. |
+| Exclusions | No claim that either directory currently exists or is supported; no ignore, render, checker, manifest, or migration behavior in this documentation work. |
+| Deferrals | none |
+| Rejections | Rejected using user-owned personal storage for harness state and silently applying repository overrides. |
+| Evidence | The canonical generator currently defines no supported `tmp` or `archive` namespace behavior; the standing decision records the approved target policy. |
+| Decision history | 2026-08-20: architecture approved and implementation retained as proposed work. |
+| Next advancement condition | Advance after a written design defines exact generated paths, ignore integration, checker treatment, manifest representation, explicit override semantics, migration, and tests. |
+
+### RH-W-0050
+| Field | Value |
+|---|---|
+| Origin | Completed lifecycle review after PR #82 found unresolved findings, stale prerequisites, missing delivery evidence, duplicate localized continuity, and no post-delivery reconciliation step. |
+| Priority | P1: unreconciled findings and stale projections can route the next session from false repository state. |
+| Dependencies | none |
+| Status | proposed |
+| Completed work | Approved the responsibility and classification vocabulary, and reconciled the current repository records that motivated the unit. |
+| Remaining work | Design generated contracts and focused checks for inventory, classification, evidence reconciliation, promotion approval, continuity cleanup, and next-ready routing. |
+| Additions | Inventory findings; classify integrate, close, defer, reject, or noise; reconcile canonical, localized, and memory evidence; promote only with approval; clean stale or duplicate continuity; and reconcile lifecycle after delivery before recommending the next ready unit. |
+| Exclusions | No automatic promotion, deletion of historical evidence without approval, duplicate backlog, SDD requirement, or implementation of RH-W-0048, RH-W-0051, or RH-W-0052. |
+| Deferrals | none |
+| Rejections | Rejected treating continuity as only remembering or naming one next item, and routing work before findings are classified. |
+| Evidence | The 2026-08-20 read-only review found 12 non-terminal records, stale advancement conditions in RH-W-0011 and RH-W-0040, omitted local delivery evidence, and duplicate Spanish antecedent sections. |
+| Decision history | 2026-08-20: owner approved finding and post-delivery reconciliation as a harness responsibility; this work integrates current findings without implementing generated behavior. |
+| Next advancement condition | Advance after a written behavior design names owning contracts, inputs, classification output, approval gates, cleanup limits, post-delivery trigger, and focused RED/GREEN cases. |
 
 ### RH-W-0049
 | Field | Value |
@@ -38,7 +102,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Deferrals | none |
 | Rejections | Rejected treating the terminal report as sufficient merely because it names one next step: one recommendation without comparative context does not help the human choose. Rejected interpreting `continue`, `let us continue`, or equivalent conversational wording as launch authority. Rejected auto-launching the recommended unit, which would violate the rulebook prohibition on continuing into unrequested tasks. |
 | Evidence | The generated session-start contract requires identifying completed work, remaining work, constraints, and one next recommended step at `skill/repo-harness-builder/scripts/harness_tool.py:760`, while its equal-state Git row says only to report synchronization healthy and continue at line 775. Its Output Contract at line 787 ends with exactly one next recommended step and defines no post-sync conversational handoff, comparative option framing, or distinction between continuing discussion and authorizing work. The live sequence supplied by the owner is corroborated by Engram observations `#9963` and `#9964`: after synchronization the report stopped; the owner's `si ok sigamos, xq te quedas ahi.?` was overread as authority to prepare `RH-W-0047`; the owner then corrected `lanzar el trabajo no, hablar conmigo, ver que sigue, proponer`. `REPO-HARNESS.md:20` already prohibits automatic continuation into unrequested tasks, so the missing rule belongs in the generated session-start behavior rather than as another root rule. |
-| Decision history | 2026-08-20: registered `proposed` at P2 as delegated direct documentation work. The owner defined the desired boundary and reaffirmed that self-hosted harness failures are documented here, improved here, and then propagated into builder output. Later that day the owner explicitly authorized review and implementation. Completed through direct delegated work, not SDD, with a local plan, strict RED/GREEN evidence, minimal canonical-source change, repository-owned projection synchronization, and lifecycle reconciliation. |
+| Decision history | 2026-08-20: registered `proposed` at P2 as delegated direct documentation work. The owner defined the desired boundary and later authorized review and implementation. Completed through direct delegated work with strict RED/GREEN evidence and projection synchronization. Git-local delivery evidence: implementation parent `40eb1533369fcb2de71ea45f8739a90ced14e307` and merge commit `017df90af0a6fc1bb38678e55dd23adefdc3e6c8`; the local merge subject identifies pull request #76. Engram observation #9965 corroborates issue #75 and PR #76, but no Judgment Day artifact is claimed. |
 | Next advancement condition | none |
 
 ### RH-W-0048
@@ -192,7 +256,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Rejections | Rejected framing this as a pre-session rule reader, because the violated rule was already in context. Rejected presenting it as automatic detection: it can only record violations a human or a later check noticed, so an empty ledger never proves compliance. |
 | Evidence | In one session the claim-classification rule was violated three times while loaded: an inference about test coverage stated as fact, a corrected restatement that was also wrong, and a stale suite count introduced while correcting stale suite counts. A fourth instance was measured on 2026-08-20 and has a sharper shape than the first three. Reviewing the consumer plan, a narrow grep for five exact phrases returned nothing, and that null result was reported to the owner as the verified fact that the builder contract carries no evidence obligation at all. A broader grep then found the obligation in the same files, at `references/audit-and-interview.md:7`, `Report uncertainty and the exact missing evidence instead of guessing`. The rule was loaded throughout and was not skipped; it was misapplied, because an unvalidated probe was labeled `verified fact` rather than the weak single-source inference it was. The named discipline that would have caught it is a positive control: a null search result supports a negative claim only after the same search is shown to return a positive on a string known to be present. Recorded here because it is the same failure the run under review had committed about a root `LICENSE`, which makes it the clearest evidence yet that this residue is about how a claim is classified and not about which rules are visible. |
 | Decision history | 2026-08-18: registered `proposed` under issue #65 from an owner proposal, deliberately narrowed to the unmechanizable residue after the counter-evidence showed a rule reader would have prevented none of the observed failures. |
-| Next advancement condition | Advance only after RH-W-0039 lands and the remaining violated rules are known to be unmechanizable, so this unit covers a measured residue rather than a guess. |
+| Next advancement condition | RH-W-0039 is completed and the prerequisite is satisfied. Retain `proposed` until a written design decides the violation schema, authority, storage location, writer, ranking rule, and bounded session-start presentation for the measured unmechanizable residue. |
 
 ### RH-W-0039
 | Field | Value |
@@ -274,7 +338,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Additions | Portable interpreter resolution in tests, one guard covering bare interpreter literals in subprocess argument lists, and generated documentation copy that names the Windows and POSIX cases explicitly instead of assuming either one. |
 | Exclusions | No change to any other repository, no platform-conditional rendering of generated documentation, no interpreter version bump, no new dependency, no `py` launcher requirement, no Git mutation, no external service, no release, and no changelog entry while planned. |
 | Deferrals | Real execution on macOS and Linux hardware is deferred until a collaborator machine is available; Windows evidence is authoritative for this unit and the correction must not depend on a single platform to be valid. |
-| Rejections | Rejected a blanket `python` to `python3` substitution, because `python3` is absent from a default python.org Windows installation and this machine only resolves it through Python Manager. Rejected rendering the generated command from the installing machine's platform, because the generated file is committed into a repository that contributors on the other two systems clone. Rejected touching `unified_ai_brain_jl_i3`, `.ld9/referencia_panda/`, `.ld9/gentle-ai/`, and the historical `docs/superpowers/plans/` record. |
+| Rejections | Rejected a blanket `python` to `python3` substitution, because `python3` is absent from a default python.org Windows installation and this machine only resolves it through Python Manager. Rejected rendering the generated command from the installing machine's platform, because the generated file is committed into a repository that contributors on the other two systems clone. Rejected touching unrelated repositories, user-owned personal storage, and the historical `docs/superpowers/plans/` record. |
 | Evidence | `skill/repo-harness-builder/tests/test_harness_tool.py` invokes `subprocess.run(["python", ...])` at lines 83, 91, 433, 451, 902, 912, 1289, 1325, 1764, 1786, 1807, 1831, and 2787 while the same file already uses `sys.executable` at lines 1110, 3555, 3961, 3972, 4053, 4070, 4135, 4156, and 4178. `skill/repo-harness-builder/scripts/harness_tool.py` emits `python .repo-harness/check.py` into consumer text at lines 756, 1011, 1209, 1306, 1330, 1426, and 1519, while line 1642 gives the generated checker a `#!/usr/bin/env python3` shebang, so generated output contradicts itself. Measured on the Windows development machine on 2026-08-17: `python` resolves to `C:\Python314\python.exe` reporting 3.14.3, `python3` resolves through Python Manager reporting 3.14.2, and `py -3` reports 3.14.2. Baseline before any change: 293 tests passed with 7 skips. Completion evidence: the guard RED listed exactly those 13 offenders with zero false positives, and after the correction the canonical, OpenCode, and Claude suites each passed 294 tests. Digest-bound maintenance plan `02ec2033010c0ade1e7530399204c880aaaadaa12aa69acc576de65eeff41a17` carried exactly 3 `replace-generated-output` actions and no create, append, migrate, or blocked action; applying it changed 3 files by one line each and returned the owner check to `current` with 0 stale, 21 current, 18 human-evolved, and 4 present. |
 | Decision history | 2026-08-17: registered as `ready` after the user confirmed the standing Windows, Linux, and macOS support requirement already recorded for line endings, and directed that Windows is the current working platform while the correction must keep the other two systems valid. |
 | Next advancement condition | Reopen only if a bare interpreter name returns to a subprocess invocation, generated command copy stops naming both the Windows and POSIX cases, or real macOS or Linux execution contradicts the Windows evidence. |
@@ -479,7 +543,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Exclusions | No change to skill or documentation provenance, which carries real reader value and lives in files the prompt does not load on every invocation. |
 | Deferrals | none |
 | Rejections | Rejected deleting the comment on its own, because wrappers have no frontmatter and the `source:` line is their only version evidence. |
-| Evidence | Current completed-state evidence: `wrapper()` and `help_wrapper()` emit only the thin registered-skill instructions, with no prompt-visible generated marker. `generated_version(current, replacement_evidence)` returns authenticated replacement evidence for marker-free bytes; wrapper replacement supplies that evidence only after the installed checker authenticates the exact manifest bytes and the installed wrapper exactly matches the manifest-derived render. Focused tests cover normal and help wrappers, exact-byte binding, forged checker digests, modified wrappers, and legacy manifest fallbacks. Pre-fix evidence retained for lifecycle history: before completion, `wrapper()` emitted `<!-- Generated by repo-harness-builder; source: wrapper/<runtime>:<version> -->`, `generated_version()` depended on that marker and its `source:` version, and a live `/session-start` invocation loaded the marker as the first prompt bytes. |
+| Evidence | Current completed-state evidence: `wrapper()` and `help_wrapper()` emit only thin registered-skill instructions. Authenticated replacement evidence requires exact manifest and wrapper bytes. Focused tests cover both wrapper kinds, exact-byte binding, forged checker digests, modifications, and legacy fallbacks. Git-local delivery evidence: implementation commit `e6218cada5c3056694e30d04d5fff6b04a764bd5` and merge commit `61c35585d6bc2fb411f2bb970ebba40b1b79a41c`, whose local subject identifies pull request #82. No issue or Judgment Day artifact is claimed. |
 | Decision history | 2026-08-14: user questioned the token cost; verification confirmed the cost is real and small, and that a blind deletion would silently degrade every wrapper to `legacy`. 2026-08-20: completed through delegated direct work with authenticated manifest/checker evidence, exact wrapper-byte binding, and strict TDD. |
 | Next advancement condition | Reopen only if a marker-free generated wrapper becomes unreplaceable, unauthenticated or modified wrapper bytes become replaceable, or wrapper provenance returns to prompt-visible output. |
 
@@ -727,16 +791,16 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 | Origin | Roadmap unit 11; `skills-pack-ld9` historical review |
 | Priority | P2: still-relevant review findings need public evidence or explicit closure |
 | Dependencies | RH-W-0003 through RH-W-0010 outcomes may close or reshape findings |
-| Status | deferred |
-| Completed work | Migration must reconcile rather than blindly import private or stale notes. |
-| Remaining work | Trace each retained or closed finding to current public repository evidence. |
+| Status | proposed |
+| Completed work | The prerequisite range RH-W-0003 through RH-W-0010 is completed. Reconciliation must use current repository evidence and must not depend on external personal report paths or claim unavailable report contents. |
+| Remaining work | Inventory only findings supported by repository or verified continuity evidence, then classify each as integrate, close, defer, reject, or noise. |
 | Additions | Include the incomplete Judgment Day round-2 receipt in the evidence review. |
 | Exclusions | No blind import of private or stale notes. |
-| Deferrals | Deferred until prerequisite product corrections reduce stale findings. |
+| Deferrals | none |
 | Rejections | none |
-| Evidence | Historical report exists outside this repository; round 2 lacks judge B output. |
-| Decision history | 2026-08-13: deferred with an observable evidence threshold. |
-| Next advancement condition | Advance when RH-W-0003 through RH-W-0010 are resolved or the report contains a newly urgent independent finding. |
+| Evidence | Repository lifecycle records show RH-W-0003 through RH-W-0010 completed. This repository does not contain the historical report contents, and Judgment Day round 2 still lacks judge B output, so those contents remain unverifiable and are not claimed. |
+| Decision history | 2026-08-13: deferred with an observable evidence threshold. 2026-08-20: advanced to `proposed` because the prerequisite range completed; evidence limitations replace the former external-report dependency. |
+| Next advancement condition | Advance after a written reconciliation scope identifies repository-local evidence sources, classification output, handling of the incomplete round-2 receipt, and explicit promotion approval without requiring unavailable report contents. |
 
 ### RH-W-0012
 | Field | Value |
