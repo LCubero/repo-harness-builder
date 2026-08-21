@@ -6,7 +6,7 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes. The manifest-matched owner check also reports `current` with 21 current, 18 human-evolved, 4 present, and 0 stale.
-- Canonical suite green: 336 tests passed with 8 skips. `RH-W-0025` includes deterministic capability classification, CLI-bound integrated preflight, complete-output validation, owner boundaries, integrated selection, and component-degradation coverage.
+- Canonical suite green: 341 tests passed with 8 skips. RH-W-0050 adds focused deterministic contract coverage for bounded reconciliation.
 - Root `.gitattributes` protects 19 byte-compared generated paths, derived from render outputs rather than a fixed pair.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1. The checked-in checker and manifest remain a consistent pair.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
@@ -86,10 +86,10 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Portfolio size: 18 non-terminal records, 11 `proposed`, 1 `ready`, and 6 `deferred`. None is `active`.
-- Critical-path projection: `RH-W-0050` is `ready` and comes first because reconciliation governs how later work is classified and routed. `RH-W-0011` follows as its first real application, then `RH-W-0054`, which is `P1` and declares no unit dependency beyond `RH-W-0050`.
-- `RH-W-0050` carries the approved hybrid bounded-scan and evidence-triggered reconciliation design: repository evidence and approvals stay canonical; operations use explicit project scope and independent outcomes; conflict candidates and review-age labels remain advisory metadata; best-effort capture requires evidence; and the current SQLite local-first implementation is not a harness dependency. Direct external review completed and the owner approved the corrected design at commit `38cbedc` on 2026-08-21. No generated behavior is implemented.
-- The owner-approved [bounded reconciliation design](rh-w-0050-design.md) defines the scan bounds, trigger classification, finding dispositions, evidence precedence, Git and non-Git behavior, operation-level Engram degradation, approval boundaries, and focused RED/GREEN scenarios. Implementation remains pending and is the next step.
+- Portfolio size: 18 non-terminal records, 11 `proposed`, 1 `active`, and 6 `deferred`. None is `ready`.
+- Critical-path projection: `RH-W-0050` is `active` and remains first because reconciliation governs how later work is classified and routed. `RH-W-0011` follows as its first real application, then `RH-W-0054`, which is `P1` and declares no unit dependency beyond `RH-W-0050`.
+- `RH-W-0050` now implements the approved hybrid bounded-scan and evidence-triggered reconciliation contracts across generated session start, session stop, documentation, integrated memory, and standalone output. Canonical, self-hosted, OpenCode, and Claude projections are synchronized locally. Delivery and post-delivery lifecycle reconciliation remain pending.
+- The owner-approved [bounded reconciliation design](rh-w-0050-design.md) defines the implemented scan bounds, trigger classification, finding dispositions, evidence precedence, Git and non-Git behavior, operation-level Engram degradation, approval boundaries, and focused RED/GREEN scenarios. Verified delivery remains pending.
 - Local-state projection: `RH-W-0051`, `RH-W-0053`, `RH-W-0048`, and `RH-W-0052` are `proposed` and follow one shared Git and non-Git architecture design while retaining separate implementation and delivery boundaries. `RH-W-0051` is the storage hub: `RH-W-0053` and `RH-W-0048` depend on its semantics and `RH-W-0052` consumes both. The same design reserves namespace for the consent store `RH-W-0046` and `RH-W-0018` require and for the `RH-W-0040` violation record, without advancing either.
 - Remaining proposed work stays owned by the roadmap in this order: `RH-W-0046` designed together with deferred `RH-W-0018` as one consent design, then `RH-W-0044`, `RH-W-0022`, `RH-W-0055`, and `RH-W-0040`. Deferred records retain their existing advancement conditions. The optional ATL-like capability inventory remains deferred pending a product-boundary decision and must not duplicate Gentle AI-owned state or reopen completed RH-W-0025.
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings, records `RH-W-0007` as completed based on current tests, and `RH-W-0011` owns the incomplete round-2 receipt inside its evidence review.
@@ -98,4 +98,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-`RH-W-0050` stays the immediate work. Implement its [owner-approved bounded reconciliation design](rh-w-0050-design.md) through focused RED/GREEN, synchronize required projections, complete verification, and perform post-delivery lifecycle reconciliation with delivery evidence before routing another unit. The broader next-work order proposed by the 2026-08-21 audit remains pending owner review; this design approval does not approve that portfolio sequence.
+`RH-W-0050` stays the immediate work. Complete verification, deliver the implementation through approved issue #89, and perform post-delivery lifecycle reconciliation with delivery evidence before routing another unit. The broader next-work order proposed by the 2026-08-21 audit remains pending owner review.

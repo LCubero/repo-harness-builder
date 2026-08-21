@@ -40,6 +40,15 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 - Never force-push, rebase, reset, auto-merge, or resolve conflicts automatically.
 - Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
 
+## Post-Delivery Reconciliation
+
+- A meaningful stop follows repository mutation, verified delivery, lifecycle or next-ready correction, a retained finding, or a continuity write attempt. A non-meaningful stop returns `not_triggered` and creates no chronology or continuity noise.
+- Compare current applicable owner bytes, parsed lifecycle fields, and local Git identity with the verified initial snapshot. Never substitute a prior session, cache, or inferred timestamp.
+- Product delivery or lifecycle delivery requires full reconciliation before authoritative next-ready routing. Verify delivery, classify every retained finding, update only already-authorized canonical owners and localized peers, and preserve every independent operation outcome.
+- After an authorized repair, run a second bounded scan. It must converge to zero further mutations before routing continues.
+- Incomplete delivery evidence, unknown baseline, bound exhaustion, owner-update failure, localized-update failure, or an unresolved retained finding stops only the affected branch. Preserve unrelated work and successful outcomes.
+- A wording-only parity repair is not lifecycle delivery unless it exposes or changes a semantic conflict.
+
 ## Self-Update And Runtime Cache
 
 - Distinguish on-disk canonical and projection parity, active-process registered skill freshness, and runtime reload or restart capability.

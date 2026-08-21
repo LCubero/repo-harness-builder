@@ -48,6 +48,15 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Invalidate synchronization consent and pause if the remote advanced into divergence, the upstream or destination changed, integration is not fast-forward-only, authentication needs a different credential path, verification fails, or any destructive or conflict-resolving action becomes necessary.
 - Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
 
+## Bounded Reconciliation
+
+- Build one ephemeral baseline from the applicable roadmap record, its current-state direct projection, declared localized peers, exact-ID decision and changelog matches, and local Git evidence. Persist no trigger state.
+- With an explicit `RH-W-####` objective, inspect only that owner scope. Without one, derive scope from the canonical active projection. If an owner is missing, comparison fails, or an owner-path change is unexplained, report `baseline: unknown` and suppress authoritative next-ready routing.
+- Inspect at most 20 commits touching owner paths, at most 12 distinct local evidence paths, and direct dependents capped at 8 records. Use at most two Engram reads capped at 10 observations each after explicit project resolution. Report `bound_exhausted` at the first exceeded bound and suppress authoritative routing.
+- Explicit bounded inspection stays bounded unless independent evidence verifies a mandatory trigger. An explicit full request, verified product or lifecycle delivery, canonical lifecycle inconsistency, incomplete delivery evidence, repository-memory contradiction, or unclassified retained finding requires full reconciliation within the same bounded scope.
+- Treat unrelated dirtiness, ahead-only Git, advisory memory metadata, age, invocation count, and wording-only parity differences as advisory. They never trigger full reconciliation alone.
+- Report repository, baseline, bounded scan, reconciliation, trigger, findings, canonical updates, localized parity, delivery evidence, next-ready, Git, and applicable continuity operations as separate outcomes. Use `completed`, `paused`, `blocked`, `failed`, or `not_triggered` where applicable.
+
 ## Self-Update And Runtime Cache
 
 - Distinguish on-disk canonical and projection parity, active-process registered skill freshness, and runtime reload or restart capability.

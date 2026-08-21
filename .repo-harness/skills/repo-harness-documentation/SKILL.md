@@ -27,6 +27,14 @@ Use when creating, reviewing, or updating project documentation and visible proj
 - Gentle AI and Engram are required continuity tools. Reconcile Engram with the changelog without blindly overwriting either.
 - Preserve human-owned content and unknown bytes. Never replace them merely to normalize structure.
 
+## Finding Reconciliation
+
+- Inventory only retained findings inside the applicable owner scope. Resolve each finding's evidence class and smallest canonical owner before proposing a write.
+- Assign exactly one disposition: `integrate` into an existing owner with authority, `close` only from owner plus delivery evidence, `defer` with a named condition, `reject` with owner authority and durable reason, or `noise` with no durable write.
+- Treat roadmap lifecycle as canonical, current state as its direct projection, changelogs as completed chronology, and declared localized peers as localized parity obligations.
+- Update canonical owners and localized peers in the same work unit. A failed localized update preserves canonical success but suppresses affected authoritative routing.
+- Never create a duplicate store, reconciliation log, cache, receipt, ledger, lifecycle store, or separate conflict-state persistence. Classification does not authorize implementation, deletion, or lifecycle advancement.
+
 ## Decision Gates
 
 | Content | Canonical destination |

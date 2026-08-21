@@ -4,6 +4,7 @@
 
 ## 2026-08-21
 
+- Se implementaron mediante pruebas primero los contratos aprobados de reconciliacion acotada de `RH-W-0050` en inicio de sesion, cierre de sesion, documentacion, memoria integrada y salida standalone. Cinco regresiones enfocadas fallaron antes de implementar y pasan despues; las proyecciones canonica, autoalojada, OpenCode y Claude estan sincronizadas localmente. Siguen pendientes la entrega mediante el issue aprobado #89 y la reconciliacion posterior a entrega.
 - Se registraron la revision externa directa y la aprobacion explicita del propietario del diseno corregido de `RH-W-0050` en el commit `38cbedc`, avanzando la unidad de `proposed` a `ready`. La implementacion sigue pendiente y no cambio ningun comportamiento generado.
 - Se agrego, enlazo, reviso y corrigio el borrador bilingue de `RH-W-0050`. En ese momento seguia pendiente de revision externa y aprobacion del propietario, sin aprobacion del diseno ni implementacion.
 - Se refino el diseno aprobado de Engram para `RH-W-0050` sin avanzar ni implementar la unidad propuesta: la evidencia del repositorio y las aprobaciones siguen siendo canonicas, las operaciones del harness exigen alcance explicito de proyecto y resultados independientes, los candidatos de conflicto y las etiquetas de antiguedad de revision siguen siendo metadata consultiva, la captura de mejor esfuerzo exige evidencia y SQLite local-first se registra solo como detalle de la implementacion actual.
