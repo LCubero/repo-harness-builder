@@ -22,25 +22,24 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Proposed Audit Execution Order
 
-The 2026-08-21 full non-terminal portfolio re-audit recommends this revised order for owner review. It is not owner-approved and changes no status or advancement condition:
+The owner approved this revised execution order on 2026-08-21 after Judgment Day found zero severe defects. Approval of the order changes no unit status or advancement condition. Completed `RH-W-0050` is baseline context for every scheduled unit below, not future work:
 
-1. Design and deliver `RH-W-0050` first because finding and post-delivery reconciliation must govern how later work is classified and routed.
-2. Run `RH-W-0011` next as the first real application of that classification. It inventories this repository's own historical findings with the identical `integrate`, `close`, `defer`, `reject`, or `noise` vocabulary, so it validates `RH-W-0050` against a real backlog at low marginal cost.
-3. Deliver `RH-W-0054` next because it is `P1` and its only declared unit dependency is `RH-W-0050`. No storage or recovery unit blocks it. If its design proves it needs persisted evidence, it joins the local-state architecture design in step 4 instead.
-4. Jointly design the local-state architecture for `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` because they share `.repo-harness` local namespaces, recoverable inventory, ownership evidence, ignore and override semantics, reports, and safety boundaries. The same design reserves namespace for the other declared consumers of that contract: the `RH-W-0053` checkpoint bytes, the durable repository-scoped consent or preference store that both `RH-W-0046` and `RH-W-0018` require, and the `RH-W-0040` violation record location. Reserving a namespace neither advances nor implements those units; it prevents a second breaking change to the storage contract.
-5. Implement `RH-W-0051` first within that architecture so `.repo-harness/tmp/` and `.repo-harness/archive/` establish the storage semantics consumed by later units.
-6. Implement `RH-W-0053` next because it is `P1` and both declared dependencies, `RH-W-0050` and `RH-W-0051`, are satisfied at this point.
-7. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery on those storage primitives.
-8. Implement `RH-W-0052` after that because archive, uninstall, and reinstall are the highest-risk operations and must consume proven storage and recovery primitives.
-9. Design `RH-W-0046` and `RH-W-0018` together because both require the same missing primitive, a durable repository-scoped consent or preference that stays visible and revocable. Implementation stays separate, and `RH-W-0018` remains `deferred` until its own advancement condition is met.
-10. Continue with `RH-W-0044`, whose `RH-W-0043` prerequisite is already completed, so only its written scope design remains.
-11. Continue with `RH-W-0022`.
-12. Continue with `RH-W-0055`.
-13. Continue with `RH-W-0040` last because it addresses only the unmechanizable residue, and which rules belong to that residue is unknown until the earlier checks exist.
+1. Deliver `RH-W-0054` because it is `P1` and its only declared unit dependency, `RH-W-0050`, is completed. No storage or recovery unit blocks it. If its design proves it needs persisted evidence, it joins the local-state architecture design in step 3 instead.
+2. Run `RH-W-0011` as the first real application of the completed classification baseline. It inventories this repository's own historical findings with the identical `integrate`, `close`, `defer`, `reject`, or `noise` vocabulary, so it validates `RH-W-0050` against a real backlog at low marginal cost.
+3. Jointly design the local-state architecture for `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` because they share `.repo-harness` local namespaces, recoverable inventory, ownership evidence, ignore and override semantics, reports, and safety boundaries. The same design reserves namespace for the other declared consumers of that contract: the `RH-W-0053` checkpoint bytes, the durable repository-scoped consent or preference store that both `RH-W-0046` and `RH-W-0018` require, and the `RH-W-0040` violation record location. Reserving a namespace neither advances nor implements those units; it prevents a second breaking change to the storage contract.
+4. Implement `RH-W-0051` first within that architecture so `.repo-harness/tmp/` and `.repo-harness/archive/` establish the storage semantics consumed by later units.
+5. Implement `RH-W-0053` next because it is `P1` and both declared dependencies, `RH-W-0050` and `RH-W-0051`, are satisfied at this point.
+6. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery on those storage primitives.
+7. Implement `RH-W-0052` after that because archive, uninstall, and reinstall are the highest-risk operations and must consume proven storage and recovery primitives.
+8. Design `RH-W-0046` and `RH-W-0018` together because both require the same missing primitive, a durable repository-scoped consent or preference that stays visible and revocable. Implementation stays separate, and `RH-W-0018` remains `deferred` until its own advancement condition is met.
+9. Continue with `RH-W-0044`, whose `RH-W-0043` prerequisite is already completed, so only its written scope design remains.
+10. Continue with `RH-W-0022`. Reversing it with `RH-W-0044` was an unsupported optimization, not a dependency-backed correction.
+11. Continue with `RH-W-0055`.
+12. Continue with `RH-W-0040` last because it addresses only the unmechanizable residue, and which rules belong to that residue is unknown until the earlier checks exist.
 
-Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. `RH-W-0050` remains independent from and precedes the architecture bundle.
+Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. Completed `RH-W-0050` remains the independent baseline for the architecture bundle.
 
-Historical owner-approved order: the 2026-08-20 sequence placed the `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` bundle immediately after `RH-W-0050`, then `RH-W-0011`, `RH-W-0046`, `RH-W-0044`, `RH-W-0022`, and `RH-W-0040`, and reviewed `RH-W-0053`, `RH-W-0054`, and `RH-W-0055` last. The re-audit found two `P1` units sitting behind eight units, seven `P2` and one `P3`, with no declared dependency requiring it, and found three further declared consumers of the same local-state contract. The proposed revised order addresses both findings without changing any record status or advancement condition and remains pending owner review.
+Historical owner-approved order: the 2026-08-20 sequence placed the `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` bundle immediately after `RH-W-0050`, then `RH-W-0011`, `RH-W-0046`, `RH-W-0044`, `RH-W-0022`, and `RH-W-0040`, and reviewed `RH-W-0053`, `RH-W-0054`, and `RH-W-0055` last. The re-audit found two `P1` units sitting behind eight units, seven `P2` and one `P3`, with no declared dependency requiring it, and found three further declared consumers of the same local-state contract. The owner-approved revised order addresses both findings without changing any record status or advancement condition.
 
 ## Consolidated Portfolio Audit
 
@@ -51,7 +50,7 @@ The seven owner notes were audited against the existing portfolio rather than co
 - Supported inference: release asset naming belongs with installation onboarding because the install command must identify a stable package artifact. A written release contract and consumer replay would raise this to verified design evidence.
 - Unknown or human decision required: an optional ATL-like capability inventory remains deferred until its product boundary and owner are decided. It must not duplicate Gentle AI-owned routing, review, receipt, or delivery state, and it does not reopen `RH-W-0025`.
 
-A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather than only the owner notes. It counted 18 non-terminal records, 12 `proposed` and 6 `deferred`, and produced the proposed revised execution order above for owner review:
+A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather than only the owner notes. It counted 18 non-terminal records, 12 `proposed` and 6 `deferred`, and produced the revised execution order above, which the owner approved on 2026-08-21 after Judgment Day:
 
 - Verified facts: `RH-W-0054` declares `RH-W-0050` as its only unit dependency and `RH-W-0053` declares `RH-W-0050` and `RH-W-0051`, while both were ordered behind eight units, seven `P2` and one `P3`. `RH-W-0011` and `RH-W-0050` use the identical `integrate`, `close`, `defer`, `reject`, or `noise` classification vocabulary. `RH-W-0044` still named the completed `RH-W-0043` as a pending prerequisite. `RH-W-0055` named a future release contract as a dependency while also declaring that same contract among its own additions.
 - Supported inference: `RH-W-0051` is a storage hub rather than one of three peers. `RH-W-0048`, `RH-W-0052`, and `RH-W-0053` declare its storage semantics as a dependency, and `RH-W-0046`, `RH-W-0018`, and `RH-W-0040` each name a storage location the same contract would own, so designing only `tmp` and `archive` risks a second breaking change.
@@ -92,7 +91,7 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 | Deferrals | none |
 | Rejections | Rejected continuing from an invalidated plan or treating a corrected answer as sufficient evidence without re-verification. |
 | Evidence | Verified: current digest-bound apply rejects changed plans, but no documented lifecycle owns wrong-answer correction and re-preview. Human decision: correction must invalidate affected derived authority before resumption. |
-| Decision history | 2026-08-21: registered as a separate proposed unit in the later review order. 2026-08-21: the same-day portfolio re-audit superseded that review order and placed this unit third overall, because it is `P1` and declares no unit dependency beyond `RH-W-0050`. The status stays `proposed` and the advancement condition is unchanged. |
+| Decision history | 2026-08-21: registered as a separate proposed unit in the later review order. 2026-08-21: the same-day portfolio re-audit superseded that review order and placed this unit first in the scheduled order after the completed `RH-W-0050` baseline context, because it is `P1` and declares no unit dependency beyond `RH-W-0050`. The status stays `proposed` and the advancement condition is unchanged. |
 | Next advancement condition | Advance after a written behavior design defines correction scope, invalidation propagation, evidence retention, fresh-preview requirements, approval reset, and focused wrong-answer recovery cases. |
 
 ### RH-W-0053
