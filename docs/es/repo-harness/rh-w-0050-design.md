@@ -1,25 +1,25 @@
 # Diseno de reconciliacion acotada RH-W-0050
 
-> **Estado: BORRADOR. Pendiente de revision externa y aprobacion del propietario.**
+> **Estado: DISENO APROBADO POR EL PROPIETARIO. La implementacion esta pendiente.**
 >
-> Esta propuesta para revision no es un diseno aprobado, autorizacion de implementacion, avance de ciclo de vida ni entrega. RH-W-0050 permanece `proposed`.
+> La revision externa termino y el propietario aprobo este diseno corregido en el commit `38cbedc` el 2026-08-21. La aprobacion del diseno avanza RH-W-0050 a `ready`; no autoriza ni afirma implementacion o entrega.
 
 ## Contrato de revision y etiquetas de estado
 
-Revise este borrador contra el [registro canonico RH-W-0050](roadmap.md#rh-w-0050), las [decisiones permanentes](decisions.md), las [reglas de memoria](../../../.repo-harness/rules/memory.md) incorporadas y el [contrato de mantenimiento bilingue](i18n-maintenance.md). La evidencia del repositorio es canonica. El [par en ingles](../../repo-harness/rh-w-0050-design.md) debe permanecer completo y semanticamente equivalente.
+Revise este diseno contra el [registro canonico RH-W-0050](roadmap.md#rh-w-0050), las [decisiones permanentes](decisions.md), las [reglas de memoria](../../../.repo-harness/rules/memory.md) incorporadas y el [contrato de mantenimiento bilingue](i18n-maintenance.md). La evidencia del repositorio es canonica. El [par en ingles](../../repo-harness/rh-w-0050-design.md) debe permanecer completo y semanticamente equivalente.
 
 - **Restriccion aprobada:** ya autorizada por el roadmap, las decisiones, el rulebook o el contrato generado actual.
-- **Comportamiento actual verificado:** observado directamente en evidencia actual del repositorio y no propuesto por este borrador.
-- **Decision recomendada:** propuesta aqui y pendiente de aprobacion del propietario.
+- **Comportamiento actual verificado:** observado directamente en evidencia actual del repositorio y no introducido por este diseno.
+- **Decision de diseno aprobada:** revisada externamente y aprobada por el propietario para implementacion futura.
 - **Detalle de implementacion restante:** aplazado intencionalmente hasta una tarea de implementacion aprobada.
 
 ## Problema, objetivos y exclusiones
 
 Session start y session stop reconcilian evidencia, pero no definen un contrato de activacion determinista para reconciliar hallazgos por completo. Baselines y limites indefinidos pueden causar revision ilimitada o routing falso de la siguiente unidad lista.
 
-Este borrador recomienda un scan acotado hibrido mas reconciliacion completa activada por evidencia. Preserva autoridad del repositorio, aprobacion humana explicita, paridad bilingue, resultados independientes, operacion con y sin Git y observabilidad efimera sin agregar backlog, cache, estado de trigger, recibo, store de conflictos, store de ciclo, ledger, daemon, scheduler ni framework.
+El diseno aprobado usa un scan acotado hibrido mas reconciliacion completa activada por evidencia. Preserva autoridad del repositorio, aprobacion humana explicita, paridad bilingue, resultados independientes, operacion con y sin Git y observabilidad efimera sin agregar backlog, cache, estado de trigger, recibo, store de conflictos, store de ciclo, ledger, daemon, scheduler ni framework.
 
-Este borrador no implementa comportamiento generado, codigo, pruebas, almacenamiento, migracion, promocion automatica, mutacion de ciclo, juicio de conflictos ni borrado. No avanza RH-W-0050 ni implementa otra unidad RH-W.
+Este diseno no implementa comportamiento generado, codigo, pruebas, almacenamiento, migracion, promocion automatica, juicio de conflictos ni borrado. Su aprobacion solo avanza RH-W-0050 a `ready` y no implementa ninguna unidad RH-W.
 
 ## Autoridad y comportamiento actual verificado
 
@@ -33,7 +33,7 @@ Este borrador no implementa comportamiento generado, codigo, pruebas, almacenami
 
 ## Arquitectura recomendada
 
-**Decision recomendada, no aprobada:** cada inicio y cierre calificante ejecuta un scan acotado determinista. Evidencia obligatoria o una peticion completa explicita ejecuta reconciliacion completa. Senales consultivas solo estrechan la inspeccion. Una peticion acotada permanece acotada salvo que verifique de forma independiente otro trigger obligatorio.
+**Diseno aprobado:** cada inicio y cierre calificante ejecuta un scan acotado determinista. Evidencia obligatoria o una peticion completa explicita ejecuta reconciliacion completa. Senales consultivas solo estrechan la inspeccion. Una peticion acotada permanece acotada salvo que verifique de forma independiente otro trigger obligatorio.
 
 | Propietario | Responsabilidad propuesta |
 |---|---|
@@ -42,7 +42,7 @@ Este borrador no implementa comportamiento generado, codigo, pruebas, almacenami
 | Habilidad de documentacion | Elegir propietario canonico menor, clasificar promocion, mantener mapas y paridad localizada y rechazar stores duplicados. |
 | Reglas de memoria | Definir proyecto explicito y evidencia por operacion despues de implementar la decision del generador del producto. |
 | Roadmap y estado actual | Poseer ciclo y su proyeccion directa. |
-| Propietario del repositorio | Aprobar diseno final, implementacion, promocion discrecional, cambios de ciclo y acciones destructivas. |
+| Propietario del repositorio | Aprobar implementacion, promocion discrecional, cambios de ciclo y acciones destructivas. La aprobacion del diseno final termino el 2026-08-21. |
 
 ## Glosario
 
@@ -244,14 +244,14 @@ Solo se muestran campos aplicables. Esta salida no es recibo persistido.
 
 | Afirmacion | Clase de evidencia | Propietario o simbolo canonico | Preservada o cambiada |
 |---|---|---|---|
-| RH-W-0050 sigue `proposed` | Comportamiento actual verificado | `roadmap.md#rh-w-0050` | Preservada |
+| RH-W-0050 esta `ready` con implementacion pendiente | Decision de ciclo aprobada por el propietario | `roadmap.md#rh-w-0050` | Avanzo despues de revision externa |
 | Repositorio supera memoria | Restriccion aprobada | `REPO-HARNESS.md`, reglas de memoria | Preservada |
 | Reglas autoalojadas son ricas por operacion | Comportamiento actual verificado | `.repo-harness/rules/memory.md` | Preservada y aclarada |
 | Generador no emite contrato rico completo | Comportamiento actual verificado | `harness_tool.py::rule_outputs` | Afirmacion corregida |
-| Debe adoptarse activacion hibrida | Decision recomendada | Este borrador | Cambiada y pendiente |
+| Se adopta activacion hibrida para la implementacion | Decision de diseno aprobada por el propietario | Este diseno | Aprobada |
 | Search vacio usa evidencia de misma superficie | Disciplina existente aprobada | Evidencia RH-W-0040 del roadmap | Recomendacion resuelta |
-| Dependientes solo por campos de routing cambiados | Decision recomendada | Este borrador | Recomendacion resuelta |
-| Entrega de ciclo obliga reconciliacion | Decision recomendada | Este borrador | Recomendacion resuelta |
+| Dependientes solo por campos de routing cambiados | Decision de diseno aprobada por el propietario | Este diseno | Aprobada |
+| Entrega de ciclo obliga reconciliacion | Decision de diseno aprobada por el propietario | Este diseno | Aprobada |
 
 ## Mapa de impacto de implementacion
 
@@ -275,16 +275,16 @@ Este mapa identifica trabajo futuro y no autoriza ediciones.
 
 La propuesta no agrega schema, cache ni ledger persistido, por lo que un rollback futuro restauraria juntos wording generado y pruebas enfocadas y resincronizaria proyecciones. Observaciones Engram existentes quedan intactas.
 
-Detalles restantes incluyen estructuras exactas de parser, formato del reporte, mecanica de control positivo por adapter, fixtures y ubicacion en renderer despues de aprobacion. No pueden debilitar baselines, limites, estados, resultados independientes ni obligaciones integradas y standalone.
+Detalles restantes incluyen estructuras exactas de parser, formato del reporte, mecanica de control positivo por adapter, fixtures y ubicacion en renderer. No pueden debilitar los baselines, limites, estados, resultados independientes ni obligaciones integradas y standalone aprobados.
 
-La revision externa debe verificar:
+La revision externa termino contra estas obligaciones:
 
-- [ ] Estado borrador y `proposed` son claros; no se implica implementacion o aprobacion.
-- [ ] Cada baseline, limite, trigger, parada, estado y regla de mutacion es determinista.
-- [ ] Peticiones humanas completas y acotadas siguen distintas.
-- [ ] Generador del producto y politica autoalojada rica no se confunden.
-- [ ] Filas formales son observables y preservan resultados independientes.
-- [ ] Integrado y standalone, inicio y cierre estan completos.
-- [ ] Secciones, tablas normativas, listas y obligaciones inglesas y espanolas son equivalentes.
-- [ ] Simbolos existen y ninguna redaccion afirma comportamiento generado existente.
-- [ ] Enlaces resuelven y no queda U+2013, U+2014, placeholder, contradiccion ni drift de aprobacion.
+- [x] El diseno aprobado y el estado `ready` son claros; no se implica implementacion ni entrega.
+- [x] Cada baseline, limite, trigger, parada, estado y regla de mutacion es determinista.
+- [x] Peticiones humanas completas y acotadas siguen distintas.
+- [x] Generador del producto y politica autoalojada rica no se confunden.
+- [x] Filas formales son observables y preservan resultados independientes.
+- [x] Integrado y standalone, inicio y cierre estan completos.
+- [x] Secciones, tablas normativas, listas y obligaciones inglesas y espanolas son equivalentes.
+- [x] Simbolos existen y ninguna redaccion afirma comportamiento generado existente.
+- [x] Enlaces resuelven y no queda Unicode prohibido, placeholder, contradiccion ni drift de aprobacion.

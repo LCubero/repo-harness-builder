@@ -1,25 +1,25 @@
 # RH-W-0050 Bounded Reconciliation Design
 
-> **Status: DRAFT. Pending external review and owner approval.**
+> **Status: OWNER-APPROVED DESIGN. Implementation is pending.**
 >
-> This review proposal is not an approved design, implementation authorization, lifecycle advancement, or delivery. RH-W-0050 remains `proposed`.
+> External review completed and the owner approved this corrected design at commit `38cbedc` on 2026-08-21. Design approval advances RH-W-0050 to `ready`; it does not authorize or claim implementation or delivery.
 
 ## Review Contract And State Labels
 
-Review this draft against the canonical [RH-W-0050 roadmap record](roadmap.md#rh-w-0050), [standing decisions](decisions.md), checked-in [memory rules](../../.repo-harness/rules/memory.md), and [bilingual maintenance contract](i18n-maintenance.md). Repository evidence is canonical. The [Spanish peer](../es/repo-harness/rh-w-0050-design.md) must remain complete and semantically equivalent.
+Review this design against the canonical [RH-W-0050 roadmap record](roadmap.md#rh-w-0050), [standing decisions](decisions.md), checked-in [memory rules](../../.repo-harness/rules/memory.md), and [bilingual maintenance contract](i18n-maintenance.md). Repository evidence is canonical. The [Spanish peer](../es/repo-harness/rh-w-0050-design.md) must remain complete and semantically equivalent.
 
 - **Approved constraint:** already authorized by the roadmap, decisions, rulebook, or current generated contract.
-- **Verified current behavior:** directly observed in current repository evidence and not proposed by this draft.
-- **Recommended decision:** proposed here and pending owner approval.
+- **Verified current behavior:** directly observed in current repository evidence and not introduced by this design.
+- **Approved design decision:** externally reviewed and owner-approved for future implementation.
 - **Remaining implementation detail:** intentionally deferred until an approved implementation task.
 
 ## Problem, Goals, And Non-Goals
 
 Session start and session stop reconcile evidence but do not define a deterministic activation contract for complete finding reconciliation. Undefined baselines and bounds can cause either unbounded review or false next-ready routing.
 
-This draft recommends a hybrid bounded scan plus evidence-triggered full reconciliation. It preserves repository authority, explicit human approval, bilingual parity, independent operation outcomes, Git and non-Git operation, and ephemeral observability without adding a backlog, cache, trigger state, receipt, conflict store, lifecycle store, ledger, daemon, scheduler, or framework.
+The approved design uses a hybrid bounded scan plus evidence-triggered full reconciliation. It preserves repository authority, explicit human approval, bilingual parity, independent operation outcomes, Git and non-Git operation, and ephemeral observability without adding a backlog, cache, trigger state, receipt, conflict store, lifecycle store, ledger, daemon, scheduler, or framework.
 
-This draft does not implement generated behavior, code, tests, storage, migration, automatic promotion, lifecycle mutation, conflict judgment, or deletion. It does not advance RH-W-0050 or implement any other RH-W unit.
+This design does not implement generated behavior, code, tests, storage, migration, automatic promotion, conflict judgment, or deletion. Its approval advances RH-W-0050 to `ready` only and does not implement any RH-W unit.
 
 ## Authority And Verified Current Behavior
 
@@ -33,7 +33,7 @@ This draft does not implement generated behavior, code, tests, storage, migratio
 
 ## Recommended Architecture
 
-**Recommended decision, not approved:** every start and qualifying stop runs a deterministic bounded scan. Mandatory evidence or an explicit full request runs full reconciliation. Advisory signals only narrow inspection. A bounded request stays bounded unless it independently verifies a mandatory trigger.
+**Approved design:** every start and qualifying stop runs a deterministic bounded scan. Mandatory evidence or an explicit full request runs full reconciliation. Advisory signals only narrow inspection. A bounded request stays bounded unless it independently verifies a mandatory trigger.
 
 | Owner | Proposed responsibility |
 |---|---|
@@ -42,7 +42,7 @@ This draft does not implement generated behavior, code, tests, storage, migratio
 | Documentation skill | Select the smallest canonical owner, classify owner promotion, maintain maps and localized parity, and reject duplicate stores. |
 | Memory rules | Define explicit project scope and operation-level evidence after the product generator decision is implemented. |
 | Roadmap and current state | Own lifecycle and its direct projection. |
-| Repository owner | Approve final design, implementation, discretionary promotion, lifecycle changes, and destructive action. |
+| Repository owner | Approve implementation, discretionary promotion, lifecycle changes, and destructive action. Final design approval completed on 2026-08-21. |
 
 ## Glossary
 
@@ -244,14 +244,14 @@ Only applicable fields render. This output is not a persisted receipt.
 
 | Claim | Evidence class | Canonical owner or symbol | Preserved or changed |
 |---|---|---|---|
-| RH-W-0050 remains `proposed` | Verified current behavior | `roadmap.md#rh-w-0050` | Preserved |
+| RH-W-0050 is `ready` with implementation pending | Owner-approved lifecycle decision | `roadmap.md#rh-w-0050` | Advanced after external review |
 | Repository evidence outranks memory | Approved constraint | `REPO-HARNESS.md`, memory rules | Preserved |
 | Self-hosted memory rules are operation-rich | Verified current behavior | `.repo-harness/rules/memory.md` | Preserved and clarified |
 | Product generator lacks the complete richer memory contract | Verified current behavior | `harness_tool.py::rule_outputs` | Corrected claim |
-| Hybrid bounded activation should be adopted | Recommended decision | This draft | Changed and pending approval |
+| Hybrid bounded activation is adopted for implementation | Owner-approved design decision | This design | Approved |
 | Empty search validation uses same-surface evidence | Approved existing discipline | Roadmap RH-W-0040 evidence | Resolved recommendation |
-| Direct dependents are inspected only on changed routing fields | Recommended decision | This draft | Resolved recommendation |
-| Lifecycle delivery mandates post-delivery reconciliation | Recommended decision | This draft | Resolved recommendation |
+| Direct dependents are inspected only on changed routing fields | Owner-approved design decision | This design | Approved |
+| Lifecycle delivery mandates post-delivery reconciliation | Owner-approved design decision | This design | Approved |
 
 ## Implementation Impact Map
 
@@ -275,16 +275,16 @@ This map identifies future work only. It authorizes no edit.
 
 The proposal adds no persisted schema, cache, or ledger, so a future rollback would restore prior generated wording and focused tests together and resynchronize existing projections. Existing Engram observations remain untouched.
 
-Remaining implementation details include exact parser structures, report formatting, adapter-specific positive-control mechanics, test fixture construction, and renderer placement after owner approval. They may not weaken the baselines, bounds, states, independent outcomes, or integrated and standalone obligations in this draft.
+Remaining implementation details include exact parser structures, report formatting, adapter-specific positive-control mechanics, test fixture construction, and renderer placement. They may not weaken the approved baselines, bounds, states, independent outcomes, or integrated and standalone obligations in this design.
 
-External review must verify:
+External review completed against these obligations:
 
-- [ ] Draft and `proposed` status are unmistakable; no implementation or approval is implied.
-- [ ] Every baseline, bound, trigger, stop, state, and mutation rule is deterministic.
-- [ ] Full and bounded human requests remain distinct.
-- [ ] Product generator and richer self-hosted memory policy are not conflated.
-- [ ] All formal acceptance rows are observable and preserve independent outcomes.
-- [ ] Integrated and standalone, start and stop behavior are complete.
-- [ ] English and Spanish sections, normative tables, lists, and obligations are semantically equivalent.
-- [ ] Impact symbols exist and no wording claims generated behavior already exists.
-- [ ] Links resolve and no U+2013, U+2014, unresolved placeholder, contradiction, or approval drift remains.
+- [x] Approved design and `ready` status are unmistakable; no implementation or delivery is implied.
+- [x] Every baseline, bound, trigger, stop, state, and mutation rule is deterministic.
+- [x] Full and bounded human requests remain distinct.
+- [x] Product generator and richer self-hosted memory policy are not conflated.
+- [x] All formal acceptance rows are observable and preserve independent outcomes.
+- [x] Integrated and standalone, start and stop behavior are complete.
+- [x] English and Spanish sections, normative tables, lists, and obligations are semantically equivalent.
+- [x] Impact symbols exist and no wording claims generated behavior already exists.
+- [x] Links resolve and no forbidden Unicode, unresolved placeholder, contradiction, or approval drift remains.
