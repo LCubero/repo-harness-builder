@@ -18,6 +18,7 @@ Do not commit directly to `main`. A maintainer may explicitly authorize an emerg
 
 - Use Python 3.10+ and the standard library. Do not add dependencies without an agreed issue and clear need.
 - Follow [REPO-HARNESS.md](REPO-HARNESS.md). Repository evidence overrides Engram or Gentle AI continuity when they differ.
+- Keep text files at canonical LF line endings on Linux, macOS, and Windows. The repository `.gitattributes` policy enforces this independently of local `core.autocrlf` settings.
 - Preserve `.codegraph/` as ignored tool state. Never include it in a commit or PR.
 - Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), for example `docs: add contribution workflow` or `fix(checker): detect stale projection`.
 - Commit by deliverable work unit, not by file type. Tests and docs belong with the behavior they verify or explain.
