@@ -22,6 +22,7 @@
 | [rh-w-0031-implementation-plan.md](rh-w-0031-implementation-plan.md) | Canonical executable remediation plan for conversation-language boundaries |
 | [rh-w-0034-implementation-plan.md](rh-w-0034-implementation-plan.md) | Canonical executable plan for consumer recovery and Spanish-only correctness |
 | [rh-w-0050-design.md](rh-w-0050-design.md) | Owner-approved bounded reconciliation design; implementation remains pending |
+| [rh-w-0054-design.md](rh-w-0054-design.md) | Owner-approved material correction invalidation design; implementation remains pending |
 | [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |
 | [CHANGELOG.md](../../CHANGELOG.md) | Factual, dated, concise completed changes; never future plans |
 
