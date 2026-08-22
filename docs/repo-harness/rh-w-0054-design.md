@@ -26,7 +26,7 @@ After the first repository write, invalidation cannot undo mutation. Errors reta
 
 ## Canonical Authority Context
 
-The host MUST provide one exact canonical JSON byte sequence. Canonical JSON uses recursively sorted object keys, compact `,` and `:` separators, `ensure_ascii=True`, UTF-8 encoding, and no trailing newline. Arrays retain semantic order. Raw input bytes or decoded text MUST equal that representation exactly. Leading or trailing whitespace, any LF, alternate ordering or spacing, duplicate keys, non-object roots, unknown fields, and missing fields are rejected.
+The host MUST provide one exact canonical JSON byte sequence. Canonical JSON uses recursively sorted object keys, compact `,` and `:` separators, `ensure_ascii=True`, `allow_nan=False`, UTF-8 encoding, and no trailing newline. Arrays retain semantic order. Raw input bytes or decoded text MUST equal that representation exactly. Leading or trailing whitespace, any LF, alternate ordering or spacing, duplicate keys, non-object roots, unknown fields, missing fields, `NaN`, positive infinity, and negative infinity are rejected.
 
 ```json
 {
@@ -79,9 +79,9 @@ The context binds all host-owned, output-affecting authority inputs: project id 
 
 `host_json` binds explicit structured host inputs already accepted by the CLI, including `--engram-evidence-json`. The CLI parses that input with duplicate-key rejection, serializes it with the same canonical JSON algorithm, hashes those canonical bytes, and requires equality with the declared digest. It does not claim to verify the truth or provenance of host JSON. Missing input, unsupported source names, malformed or non-canonicalizable JSON, or digest mismatch fails closed.
 
-`human_decision` is a separate typed authority entry. It is never represented as repository evidence and is bound by the canonical authority context itself. Premises reference decisions and evidence by typed IDs that resolve uniquely inside the context. Opaque evidence references are forbidden.
+`human_decision` is a separate typed authority entry. It is never represented as repository evidence and is bound by the canonical authority context itself. Premises reference decisions and evidence by typed IDs that resolve uniquely inside the context. Opaque evidence references are forbidden. Premise values and human decision statements remain host-owned input. Their canonical bytes contribute to `authorityContextSha256`, but the CLI never echoes them.
 
-The CLI does not read arbitrary external paths, persist evidence, or copy evidence content into generated output. Preview shows only safe IDs, evidence kind, repository-relative locator when safe, and digest. It never prints raw evidence content, raw host JSON, absolute paths, or sensitive values.
+The CLI does not read arbitrary external paths, persist evidence, or copy evidence content into generated output. Neither stdout nor stderr may contain complete authority context, raw premise values, human decision statements, raw host JSON, evidence content, secrets, or absolute paths. Preview may expose only stable entry IDs, classes or kinds, repository-relative locators when safe, content digests, `authorityContextSha256`, `targetBindingSha256`, `generationSha256`, `planSha256`, and explicit redaction markers. Capability preflight follows the same projection boundary: current detection may inspect host evidence internally, but returned or printed capability results contain classification metadata only and never raw host evidence.
 
 Report-language presentation alone MUST NOT change executable plan identity. It enters authority only when it changes the approval domain or another bound interpretation. Presentation-only localization stays outside `planSha256`.
 
@@ -133,6 +133,8 @@ Preview computes `currentPlanSha256` from current managed inputs and CLI configu
 
 Builder activation requires authority context and approved generation. Ordinary `maintenance` retains its existing plan-digest flow and neither requires nor accepts builder authority fields. This design establishes no maintenance correction context.
 
+Malformed initial preview input and stale apply input have distinct routing. Preview rejects an initially missing, unreadable, indirect, invalid UTF-8, syntactically invalid, non-canonical, or contract-invalid context transport as a safe validation refusal because no approved generation exists yet. Once builder apply begins, the same transport conditions, a transport changed since preview, and any `OSError`, `UnicodeDecodeError`, JSON parse error, or `ContractError` while loading or validating authority input route to `fresh_preview_required` before writes. Both routes emit only safe classification and redaction metadata, never raw context or exception content derived from it.
+
 ## Failure Routing
 
 | Event | Required result |
@@ -142,6 +144,8 @@ Builder activation requires authority context and approved generation. Ordinary 
 | Corrected context, identical plan bytes | New `materialRevision` creates a different generation and requires fresh approval. |
 | Evidence is unsupported, missing, indirect, external, changed, or unverifiable | Reject with `fresh_preview_required`; no write. |
 | Bound host JSON changes or is unavailable | Reject with `fresh_preview_required`; no write. |
+| Initial preview context transport is malformed or unavailable | Safe validation refusal with no write and no raw input or exception echo. |
+| Apply context transport is missing, unreadable, indirect, invalid UTF-8, malformed, invalid, or changed | Reject with `fresh_preview_required`; no write and no raw input or exception echo. |
 | Target moves or is renamed | Target binding differs; fresh preview required. |
 | CLI configuration differs | Context mismatch; fresh preview required. |
 | Apply fails before first write | No authority is retained and no reset is needed. |
@@ -157,6 +161,10 @@ Builder activation requires authority context and approved generation. Ordinary 
 - Stale repository evidence before first write returning `fresh_preview_required`.
 - Failed apply, repeated preview, ordinary maintenance compatibility, and no reset API.
 - Safe identifiers and evidence metadata visible without raw evidence, raw host JSON, absolute path, secret, hidden token, or mutable authority leakage.
+- Exact sentinel-secret absence from stdout and stderr on success, denial, initial validation failure, apply preflight failure, and `fresh_preview_required`.
+- Canonical rejection of `NaN`, positive infinity, and negative infinity in authority context and bound host JSON.
+- Apply routing for context transport `OSError`, `UnicodeDecodeError`, JSON errors, and `ContractError`, with unchanged repository bytes and no raw context leakage.
+- Capability preflight output limited to classification metadata without raw host evidence.
 - Post-first-write errors preserving the existing fail-closed boundary without false rollback or recovery claims.
 
 ## Implementation Impact
@@ -165,7 +173,7 @@ Builder activation requires authority context and approved generation. Ordinary 
 |---|---|
 | `skill/repo-harness-builder/scripts/harness_tool.py` | Canonical parsing, validation, digest helpers, builder CLI transport, target binding, and pre-write mismatch routing while preserving maintenance and existing write guards. |
 | `skill/repo-harness-builder/tests/test_harness_tool.py` | Unit and genuine separate-process CLI coverage for this contract. |
-| Product contracts and usage documentation | Host refresh after correction, raw-context review, fresh generation approval, and trust boundary. |
+| Product contracts and usage documentation | Host refresh after correction, private host-side context review, safe CLI metadata review, fresh generation approval, and trust boundary. |
 | Runtime projections | Exact canonical package synchronization after canonical implementation is green. |
 
 ## Evidence Matrix

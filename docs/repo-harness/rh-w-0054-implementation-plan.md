@@ -18,7 +18,7 @@
 |---|---|
 | `skill/repo-harness-builder/scripts/harness_tool.py` | Define authority schema, exact canonical parser, typed evidence resolution, target binding, digest computation, builder CLI transport, and pre-write mismatch routing. |
 | `skill/repo-harness-builder/tests/test_harness_tool.py` | Unit, independent-main, and subprocess regressions. |
-| `skill/repo-harness-builder/SKILL.md` | Require host context refresh, raw-context review, and exact generation approval. |
+| `skill/repo-harness-builder/SKILL.md` | Require host context refresh, private host-side content review, safe CLI metadata review, and exact generation approval. |
 | `skill/repo-harness-builder/references/audit-and-interview.md` | Define classified premise, decision, and evidence lineage supplied by the host. |
 | `skill/repo-harness-builder/references/architecture.md` | Define stateless authority transport and trust boundary. |
 | `skill/repo-harness-builder/references/preservation-and-safety.md` | Define target privacy, pre-write rejection, and post-write boundary. |
@@ -109,8 +109,6 @@ Add these exact function signatures in this order:
 ```python
 def canonical_json(value: Any) -> str:
 def parse_authority_context(raw: str) -> tuple[AuthorityContext, str]:
-def expected_authority_builder_config(args: argparse.Namespace) -> AuthorityBuilderConfig:
-def target_binding_sha256(root: Path) -> str:
 def validate_authority_context(
     root: Path,
     context: AuthorityContext,
@@ -119,6 +117,8 @@ def validate_authority_context(
     expected_config: AuthorityBuilderConfig,
     host_json_inputs: dict[str, str],
 ) -> list[EvidenceBinding]:
+def expected_authority_builder_config(args: argparse.Namespace) -> AuthorityBuilderConfig:
+def target_binding_sha256(root: Path) -> str:
 def authority_binding(
     root: Path,
     context: AuthorityContext,
@@ -129,7 +129,7 @@ def authority_binding(
 def validate_write_preconditions(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> None:
 ```
 
-`canonical_json()` returns `json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(",", ":"))`. `parse_authority_context()` rejects any `"\n"` or `"\r"`, parses with an `object_pairs_hook` that rejects duplicate keys, validates exact fields and scalar/list types, and requires `raw == canonical_json(parsed)`. The accepted transport and returned canonical text have NO trailing newline. Preview serializes the enclosing report normally but never changes or relaxes the accepted authority bytes.
+`canonical_json()` returns `json.dumps(value, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(",", ":"))`. It translates `ValueError` for non-finite values into a content-free `ContractError`. `parse_authority_context()` rejects any `"\n"` or `"\r"`, parses with an `object_pairs_hook` that rejects duplicate keys and a `parse_constant` callback that rejects `NaN`, `Infinity`, and `-Infinity`, validates exact fields and scalar/list types, and requires `raw == canonical_json(parsed)`. The accepted transport and returned canonical text have NO trailing newline. Preview serializes the enclosing report normally but never changes or relaxes the accepted authority bytes.
 
 `target_binding_sha256()` resolves the root strictly, applies `os.path.normcase(os.path.normpath(str(resolved)))`, encodes UTF-8, and hashes those bytes. No caller returns or logs the normalized path.
 
@@ -155,17 +155,17 @@ Builder CLI additions:
 --approved-generation-sha256 SHA256
 ```
 
-`--authority-context-file -` reads stdin; any other transport path is read as UTF-8 only because the user explicitly supplied that context transport. It is not an evidence locator. Preview under `--activation builder` requires project id and context file, rejects approved generation, and emits safe IDs, evidence kind, safe repository-relative locator or host source, declared digest, and all binding digests. It emits no raw repository evidence, raw `--engram-evidence-json`, absolute path, or sensitive value. Builder apply additionally requires approved generation. Maintenance rejects all three authority arguments and preserves its current digest-only flow.
+`--authority-context-file -` reads stdin; any other transport path is read as UTF-8 only because the user explicitly supplied that context transport. It is not an evidence locator and must itself be a direct regular file when a path is used. Preview under `--activation builder` requires project id and context file, rejects approved generation, and emits only stable premise, decision, and evidence IDs; classes or kinds; safe repository-relative locator or host source; declared content digests; `authorityContextSha256`; `targetBindingSha256`; `planSha256`; `generationSha256`; and explicit redaction markers. It never emits complete `authorityContext`, premise values, decision statements, raw repository evidence, raw `--engram-evidence-json`, absolute paths, secrets, or exception text derived from those values. Builder apply additionally requires approved generation. Maintenance rejects all three authority arguments and preserves its current digest-only flow.
 
-## Task 1: Canonical Context Parser And Schema
+## Task 1: Canonical Context Parser And Host JSON Validation
 
 **Files:**
 - Modify: `skill/repo-harness-builder/tests/test_harness_tool.py`
 - Modify: `skill/repo-harness-builder/scripts/harness_tool.py`
 
-- [ ] **Step 1: Add failing parser tests**
+- [ ] **Step 1: Add failing canonical parser tests**
 
-Add `AuthorityContextTests` with a `context(revision="revision-1")` helper returning the exact typed schema above. Add tests that assert canonical round trip, duplicate-key rejection, unknown/missing field rejection, invalid authority class or evidence kind, duplicate IDs, dangling decision/evidence IDs, and non-canonical JSON rejection. Test malformed plan digest through `authority_binding()` in Task 2.
+Add `AuthorityContextTests` with a `context(revision="revision-1", evidence=None)` helper returning the exact typed schema above and defaulting to host JSON evidence only. Add tests that assert canonical round trip, duplicate-key rejection, unknown/missing field rejection, invalid authority class or evidence kind, duplicate IDs, dangling decision/evidence IDs, and non-canonical JSON rejection. Add exact table-driven rejection for `NaN`, `Infinity`, and `-Infinity` in authority context. Test malformed plan digest through `authority_binding()` in Task 2. Repository-file resolution is added only in Task 3.
 
 The duplicate-key case must call:
 
@@ -198,13 +198,15 @@ for name, raw in variants.items():
         TOOL.parse_authority_context(raw)
 ```
 
+For each non-finite token, replace one premise value with the raw token in otherwise canonical object text and require `ContractError` without the token or sentinel content in its message. Do not use `json.dumps()` to construct those raw invalid JSON fixtures because its default permits non-finite values.
+
 - [ ] **Step 2: Verify RED**
 
 Run: `python -B skill/repo-harness-builder/tests/test_harness_tool.py AuthorityContextTests -v`
 
 Expected RED: missing `canonical_json` or `parse_authority_context`, not a fixture or syntax error.
 
-- [ ] **Step 3: Implement the exact parser contract**
+- [ ] **Step 3: Implement the exact parser and AuthorityContext types**
 
 Add the types and first two functions from the Exact Internal Contract. Implement validation as one depth-first exact-field check with these field sets:
 
@@ -218,23 +220,68 @@ REPOSITORY_FILE_EVIDENCE_FIELDS = {"id", "kind", "locator", "sha256"}
 HOST_JSON_EVIDENCE_FIELDS = {"id", "kind", "source", "sha256"}
 ```
 
-Reject booleans where integers are expected. Reject empty IDs, statements, locators, and values after stripping. Require lowercase 64-character SHA-256. Keep semantic array order unchanged. Do not resolve evidence in the parser.
+Reject booleans where integers are expected. Reject empty IDs, statements, locators, and values after stripping. Require lowercase 64-character SHA-256. Keep semantic array order unchanged. Do not resolve evidence in the parser. Introduce every `AuthorityContext` supporting type and `EvidenceBinding`; do not add the validator function yet.
 
-- [ ] **Step 4: Verify GREEN**
+- [ ] **Step 4: Verify parser GREEN**
 
 Run the focused class. Expected: all parser tests pass with no warnings.
 
-- [ ] **Step 5: Work-unit boundary**
+- [ ] **Step 5: Add failing host JSON validator tests**
+
+Using a host-only context and a directly supplied expected builder configuration, call the exact `validate_authority_context()` API. Assert exact project id/name checks, exact context structural checks, unique typed references, canonical host JSON digest binding, safe returned `EvidenceBinding` metadata, missing current host input rejection, changed host input rejection, duplicate host JSON key rejection, and exact table-driven rejection for `NaN`, `Infinity`, and `-Infinity` in bound host JSON. The RED test invokes the exact wished-for API before its implementation, never an API deferred to another task.
+
+For each non-finite token, supply the raw token through the `host_json` validation path with `--engram-evidence-json` equivalents and require `ContractError` without the token or sentinel content in its message. Do not use `json.dumps()` for these invalid fixtures.
+
+- [ ] **Step 6: Verify validator RED**
+
+Run the host JSON validation methods. Expected RED: missing `validate_authority_context()`, not a missing supporting type, fixture, or syntax error.
+
+- [ ] **Step 7: Implement minimal host JSON validation**
+
+Add `validate_authority_context()` with its exact signature and implement it for the already-parsed exact schema, exact project id/name, direct expected-config dictionary comparison, unique typed references, and `host_json` evidence. Accept only `engram_evidence_json`, require the corresponding current input, parse with the same duplicate-key and non-finite rejection helpers, canonicalize with `canonical_json()`, compare its lowercase SHA-256, and return only safe typed binding metadata. If repository-file evidence is present, fail with the existing unsupported evidence refusal until Task 3 adds that branch. The validator does not receive or compare a plan digest.
+
+- [ ] **Step 8: Verify complete Task 1 GREEN**
+
+Run: `python -B skill/repo-harness-builder/tests/test_harness_tool.py AuthorityContextTests -v`
+
+Expected: canonical parser and host JSON validator methods all pass with no warnings. No later task may call `validate_authority_context()` before this GREEN boundary.
+
+- [ ] **Step 9: Work-unit boundary**
 
 Planned commit: `feat(authority): validate canonical authority context`
 
-Rollback: parser types, constants, functions, and focused tests only. No CLI behavior changes yet.
+Rollback: authority types, parser constants and functions, host JSON validator foundation, and focused tests only. No target digest, generation binding, repository-file resolution, or CLI behavior exists yet.
 
-## Task 2: Deterministic Target And Generation Binding
+## Task 2: Deterministic Configuration, Target, And Generation Binding
 
 **Files:** same canonical script and test module.
 
-- [ ] **Step 1: Add failing binding tests**
+- [ ] **Step 1: Add failing configuration projection tests**
+
+Construct an `argparse.Namespace` containing project, runtimes, license, standalone, report language, documentation languages, conversation language, ignore choice, and activation. Assert `expected_authority_builder_config()` returns all fields exactly. Table-drive one mutation per field through the already-green `validate_authority_context()` and require `ContractError` containing `authority context configuration mismatch`. Add project id and project name mismatch tests.
+
+Add one report-language test with two layers:
+
+```python
+self.assertEqual(TOOL.plan_digest(plan_en), TOOL.plan_digest(plan_es))
+self.assertNotEqual(config_en["reportLanguage"], config_es["reportLanguage"])
+```
+
+This proves presentation alone does not alter executable plan identity while an authority-relevant approval domain remains explicitly bound in context.
+
+- [ ] **Step 2: Verify configuration RED**
+
+Run the focused configuration methods. Expected RED: missing `expected_authority_builder_config()`, not missing validator types or behavior.
+
+- [ ] **Step 3: Implement deterministic configuration projection**
+
+Add `expected_authority_builder_config()` with its exact signature. Derive `integrationMode` from `args.standalone`, preserve runtime and documentation-language order exactly as normalized by current CLI parsing, and return every declared builder field. Keep the already-green validator API unchanged and compare dictionaries directly.
+
+- [ ] **Step 4: Verify configuration GREEN**
+
+Run the focused configuration and mismatch methods. Expected: all pass with no warnings.
+
+- [ ] **Step 5: Add failing target and generation binding tests**
 
 Add tests proving:
 
@@ -247,52 +294,59 @@ self.assertRegex(binding["generationSha256"], r"^[0-9a-f]{64}$")
 self.assertNotIn(str(root.resolve()), json.dumps(binding))
 ```
 
-Use two temporary roots with identical files and assert different target and generation digests. Copy the same root to a renamed directory and assert a new target digest. Change only `materialRevision` while keeping the plan digest identical and assert a new generation. Change only the plan digest and assert a new generation. Repeat unchanged input and assert identical bindings.
+Use host-only contexts so this task builds exclusively on Task 1 GREEN behavior. Use two temporary roots with identical files and assert different target and generation digests. Copy the same root to a renamed directory and assert a new target digest. Change only `materialRevision` while keeping the plan digest identical and assert a new generation. Change only the plan digest and assert a new generation. Repeat unchanged input and assert identical bindings. Add malformed plan digest rejection through `authority_binding()`.
 
-- [ ] **Step 2: Verify RED**
+- [ ] **Step 6: Verify binding RED**
 
 Run the five binding tests. Expected RED: missing binding functions.
 
-- [ ] **Step 3: Implement the exact digest functions**
+- [ ] **Step 7: Implement the exact digest functions**
 
 Add `target_binding_sha256()` and `authority_binding()` exactly as specified. Use existing `digest_text()` only for canonical JSON text; use `hashlib.sha256(normalized_path.encode("utf-8")).hexdigest()` for target identity so no path string enters a returned object.
 
-- [ ] **Step 4: Verify GREEN**
+- [ ] **Step 8: Verify complete Task 2 GREEN and current plan compatibility**
 
-Run all `AuthorityContextTests`. Expected: all pass.
+Run all `AuthorityContextTests` plus:
 
-- [ ] **Step 5: Work-unit boundary**
+`python -B skill/repo-harness-builder/tests/test_harness_tool.py RootPointerTests.test_preview_withholds_the_strict_domain_unless_the_builder_is_active RootPointerTests.test_ordinary_maintenance_applies_on_the_digest_alone -v`
+
+Expected: all parser, host validation, configuration, target, generation, malformed plan digest, and compatibility tests pass.
+
+- [ ] **Step 9: Work-unit boundary**
 
 Planned commit: `feat(authority): bind generations to context and target`
 
-Rollback: two pure helpers and binding tests. No write path is affected.
+Rollback: deterministic configuration projection, two pure digest helpers, authority binding, and focused tests. No repository-file resolution or write path is affected.
 
-## Task 3: Bind Current Builder Configuration And Plan Identity
+## Task 3: Resolve Typed Repository Evidence And Complete Validation
 
 **Files:** same canonical script and test module.
 
-- [ ] **Step 1: Add failing validation tests**
+- [ ] **Step 1: Add failing repository evidence tests**
 
-Construct an `argparse.Namespace` containing project, runtimes, license, standalone, report language, documentation languages, conversation language, ignore choice, and activation. Assert `expected_authority_builder_config()` returns all fields exactly. Table-drive one mutation per field and require `ContractError` containing `authority context configuration mismatch`. Add project id and project name mismatch tests. Plan changes are covered as generation changes in Tasks 2 and 5.
+Extend the Task 1 context helper with one `repository_file` entry and references to it. Assert `validate_authority_context()` returns the exact safe repository binding after reading current bytes. Add missing, directory, symlink or reparse point, traversal, absolute locator, changed bytes, malformed digest, unsupported evidence kind, duplicate evidence ID, and dangling evidence reference cases. Require every failure to remain content-free and to expose no absolute root or evidence bytes. Plan changes remain covered as generation changes in Tasks 2 and 5.
 
-Add one report-language test with two layers:
+Add a mixed-evidence test that preserves semantic evidence array order while returning complete typed metadata for both kinds:
 
 ```python
-self.assertEqual(TOOL.plan_digest(plan_en), TOOL.plan_digest(plan_es))
-self.assertNotEqual(config_en["reportLanguage"], config_es["reportLanguage"])
+self.assertEqual(
+    TOOL.validate_authority_context(root, context, "example", "Example", config, host_json_inputs),
+    [
+        {"id": "repo-evidence", "kind": "repository_file", "locator": "evidence.txt", "sha256": repository_sha256},
+        {"id": "engram-input", "kind": "host_json", "source": "engram_evidence_json", "sha256": host_sha256},
+    ],
+)
 ```
-
-This proves presentation alone does not alter executable plan identity while an authority-relevant approval domain remains explicitly bound in context.
 
 - [ ] **Step 2: Verify RED**
 
-Run the focused validation methods. Expected RED: missing configuration or validation function.
+Run the focused repository evidence methods. Expected RED: the already-green validator rejects `repository_file` as unsupported, not a missing validator, type, parser, configuration, target, or binding function.
 
-- [ ] **Step 3: Implement exact validation**
+- [ ] **Step 3: Extend validation with typed repository resolution**
 
-Add the remaining functions from the Exact Internal Contract in their declared order. Derive `integrationMode` from `args.standalone`, preserve runtime and documentation-language order exactly as normalized by current CLI parsing, and compare dictionaries directly. `validate_authority_context()` validates schema, configuration, target, and evidence bindings only. It never receives or compares plan identity.
+Extend only the `repository_file` branch of the already-green `validate_authority_context()`. Resolve `locator` only with `guarded_target(root, locator)`, require an existing regular non-indirect file, re-read bytes, compare exact SHA-256, and return safe repository-relative metadata. Preserve the already-green host JSON, project, configuration, ID, and typed-reference behavior unchanged. `validate_authority_context()` validates schema, project, configuration, and evidence bindings only. Target identity remains in `target_binding_sha256()`, and the validator never receives or compares plan identity.
 
-- [ ] **Step 4: Verify GREEN and current plan compatibility**
+- [ ] **Step 4: Verify complete validation GREEN and current plan compatibility**
 
 Run focused tests plus:
 
@@ -302,9 +356,9 @@ Expected: all pass.
 
 - [ ] **Step 5: Work-unit boundary**
 
-Planned commit: `feat(authority): bind builder configuration and plan identity`
+Planned commit: `feat(authority): resolve typed repository evidence`
 
-Rollback: configuration projection, validation, and tests only.
+Rollback: repository-file validation branch and focused tests only. Canonical parsing, host JSON validation, deterministic configuration, target binding, and generation binding remain independently green.
 
 ## Task 4: Integrate Stateless Builder Preview
 
@@ -314,7 +368,7 @@ Rollback: configuration projection, validation, and tests only.
 
 Write a helper that calls `TOOL.main(argv)` with fresh patched stdin/stdout each time and never stores module authority. Build canonical host context, then invoke a builder preview `main()` call using a temporary context file. The CLI computes plan identity during that preview, so no preliminary maintenance preview is required.
 
-Assert output contains exact `authorityContext`, `authorityContextSha256`, `targetBindingSha256`, and `generationSha256`, and contains neither the resolved root string nor any field named session, receipt, ledger, cache, token, or reset. Add repeated-preview equality and missing-context rejection.
+Assert output contains exact safe entry metadata, explicit redaction markers, `authorityContextSha256`, `targetBindingSha256`, `planSha256`, and `generationSha256`. Assert it does not contain an `authorityContext` field, premise values, decision statements, host JSON, evidence content, sentinel secrets, the resolved root string, or any field named session, receipt, ledger, cache, token, or reset. Add repeated-preview equality and missing-context rejection.
 
 - [ ] **Step 2: Verify RED**
 
@@ -326,7 +380,7 @@ Run `MaterialCorrectionCliTests.test_builder_preview_transports_reviewable_bindi
 2. After current argument normalization and after outputs, plan, and `planSha256` are computed, branch on activation.
 3. For maintenance, reject any authority argument and leave output unchanged.
 4. For builder, require project id and context file; reject approved generation unless `--apply` is present.
-5. Read context, parse it, construct expected config and current host JSON inputs, validate context and evidence, compute binding with the separately computed plan digest, and merge only safe evidence metadata and the four binding fields into preview output.
+5. Read context, parse it, construct expected config and current host JSON inputs, validate context and evidence, compute binding with the separately computed plan digest, and merge only stable entry IDs, classes or kinds, safe locators or sources, content digests, explicit redaction markers, and the four binding digests into preview output.
 6. Do not store context or binding globally and do not change `plan_digest()`, `plan_changes()`, or `write_outputs()`.
 
 - [ ] **Step 4: Verify GREEN**
@@ -347,7 +401,7 @@ Rollback: three parser arguments, builder preview branch, and its tests. Mainten
 
 Use `subprocess.run([sys.executable, "-B", str(ROOT / "scripts" / "harness_tool.py"), ...], text=True, capture_output=True)` for preview and a second subprocess for apply. Pass context by file and parse preview stdout. The success test passes preview `generationSha256`, plan digest, and exact localized approval token.
 
-Add separate tests for cross-root, renamed-root, one mutation of every builder config field, changed canonical context bytes, changed plan identity, old generation after corrected identical-plan context, changed repository evidence bytes that leave generated plan bytes unchanged, missing and indirect evidence, unsupported evidence kind, and changed `--engram-evidence-json`. Every rejection asserts exit 2, `fresh_preview_required` in stderr or structured output, and unchanged repository snapshots.
+Add separate tests for cross-root, renamed-root, one mutation of every builder config field, changed canonical context bytes, changed plan identity, old generation after corrected identical-plan context, changed repository evidence bytes that leave generated plan bytes unchanged, missing and indirect evidence, unsupported evidence kind, and changed `--engram-evidence-json`. Add transport tests for missing, unreadable, indirect, invalid UTF-8, syntactically invalid, contract-invalid, and changed context input. Inject or provoke `OSError`, `UnicodeDecodeError`, JSON parse errors, and `ContractError` at their actual load or validation boundaries. Every apply rejection asserts exit 2, `fresh_preview_required` in safe output, unchanged repository snapshots, and absence of raw context and sentinel secrets from both stdout and stderr.
 
 The corrected identical-plan test copies context, changes only `materialRevision`, previews again, asserts equal plan digests and unequal generation digests, then applies new context with old generation and expects rejection.
 
@@ -358,11 +412,11 @@ Run the subprocess test class. Expected RED: apply ignores approved generation o
 - [ ] **Step 3: Patch builder apply in this exact order**
 
 1. Require context file, project id, approved generation, approved plan digest, and exact localized approval.
-2. Re-read context from the provided transport.
+2. Re-read context from the provided direct transport as strict UTF-8.
 3. Re-render outputs and recompute plan from current root and normalized CLI arguments using the existing code path.
 4. Validate schema, project, configuration, target, and all evidence bindings against current values.
 5. Recompute target and generation binding using the separately recomputed plan identity.
-6. On any `ContractError` from steps 2 through 5, raise `ContractError("fresh_preview_required: authority, target, configuration, plan, or repository evidence changed")` before `write_outputs()`.
+6. During builder apply, translate `OSError`, `UnicodeDecodeError`, JSON errors, and `ContractError` from steps 2 through 5 into one content-free `ContractError("fresh_preview_required: authority input is unavailable, invalid, or changed")` before `write_outputs()`. Do not include a path, raw value, nested exception, or exception representation. Initial preview uses a distinct content-free validation refusal because no prior generation exists.
 7. Require supplied approved generation equal recomputed `generationSha256`.
 8. Extract current `write_outputs()` lines that recompute the plan and validate blocked actions, existing targets, append source bytes, create absence, and replacement source/destination/plan digests into `validate_write_preconditions()` with the exact signature declared above. Call it at the start of `write_outputs()` and leave `apply_additive()` plus migration execution unchanged.
 9. In builder apply, call `validate_write_preconditions()` before `write_outputs()`. Translate any `ContractError` from this explicit preflight call to `fresh_preview_required`. Then call `write_outputs()`, whose repeated preflight is intentional defense in depth against a race between validation and mutation.
@@ -391,6 +445,8 @@ Add tests that:
 - Run ordinary maintenance preview/apply with only the current plan digest and assert success.
 - Assert maintenance rejects authority arguments.
 - Scan builder preview JSON recursively and assert the absolute root, parent path, context file path, raw repository evidence, raw host JSON, and sentinel secret are absent. Require only evidence ID, kind, safe locator or source, and digest.
+- Run success, localized denial, initial preview validation failure, apply preflight failure, and `fresh_preview_required` subprocess cases with distinct sentinel secrets in premise values, decision statements, host JSON, repository evidence, and transport filenames. Assert every sentinel is absent independently from `stdout` and `stderr`.
+- Pass host Engram evidence containing a sentinel through current `detect_engram()` and capability preflight. Require internal classification to remain correct while every returned or printed capability projection contains only component name, classification, and safe availability metadata, never the raw `evidence` object or sentinel.
 - Force a failure after the first write through the existing transaction fixture and assert current rollback/remediation wording is preserved without a new recovery claim.
 
 - [ ] **Step 2: Verify RED**
@@ -399,7 +455,7 @@ Run focused methods. Expected RED: leakage or compatibility assertion fails unti
 
 - [ ] **Step 3: Apply only bounded corrections**
 
-If a test exposes a path, remove that output field rather than masking the string. If maintenance accepts authority fields, reject them during argument validation. If failed apply affects later calls, remove the mutable value causing coupling rather than adding cleanup. Do not introduce a reset function.
+If a test exposes content or a path, remove that output field rather than masking the string. Add one focused capability projection helper only if needed to keep `detect_engram()` verification internal while `select_integration_mode()` and CLI output return classification metadata. Do not redesign detection or change authorization semantics. If maintenance accepts authority fields, reject them during argument validation. If failed apply affects later calls, remove the mutable value causing coupling rather than adding cleanup. Do not introduce a reset function.
 
 - [ ] **Step 4: Verify GREEN**
 
@@ -508,8 +564,9 @@ def test_ordinary_maintenance_remains_digest_only(self):
 def test_preview_leaks_no_authority_content(self):
     preview = self.preview(self.root, self.context, self.engram_json)
     rendered = json.dumps(preview, sort_keys=True)
-    for forbidden in (str(self.root.resolve()), str(self.context_path), "evidence-v1", self.engram_json, "current"):
+    for forbidden in (str(self.root.resolve()), str(self.context_path), "evidence-v1", self.engram_json, "current", "premise-secret", "decision-secret"):
         self.assertNotIn(forbidden, rendered)
+    self.assertNotIn("authorityContext", preview)
     self.assertEqual(
         preview["evidence"],
         [
@@ -532,6 +589,8 @@ def test_corrected_revision_requires_new_approval_for_identical_plan(self):
 
 For canonical variants, use the exact table in Task 1. For `--engram-evidence-json`, change only `fact` from `current` to `corrected`, keep generated plan bytes unchanged, and assert `assert_fresh_preview`. For missing, directory, symlink or reparse point, traversal, absolute locator, unsupported kind, malformed host JSON, and duplicate host JSON keys, snapshot first and assert the same fail-closed result.
 
+Add one shared `assert_secret_absent(test, result, *sentinels)` helper that checks `result.stdout` and `result.stderr` separately. Use it in success, denial, validation failure, preflight failure, and every `assert_fresh_preview` path. The denial fixture must fail exact localized approval after valid authority loading; the initial validation fixture must fail before a generation exists; the preflight fixture must fail after valid apply arguments but before `write_outputs()`; and the fresh-preview fixture must use changed or unavailable apply transport. This separation proves all five routes rather than passing several labels through one failure.
+
 For the post-write boundary, reuse the existing transaction fixture that fails the second mutation. Patch only `apply_additive` at its established call boundary, assert it was entered, assert the existing rollback result byte for the first target, and assert output does not contain `fresh_preview_required`, `recovered`, or `automatic correction`. This proves authority preflight ended before mutation and later failures remain owned by the existing transaction boundary.
 
 ## Task 7: Update Product Contracts And Synchronize Projections
@@ -540,7 +599,7 @@ For the post-write boundary, reuse the existing transaction fixture that fails t
 
 - [ ] **Step 1: Add failing contract tests**
 
-In `ProductWorkflowTests`, read the five canonical package documents and require these phrases across their combined text: `canonical authority context`, `typed evidence binding`, `authorityContextSha256`, `generationSha256`, `targetBindingSha256`, `fresh preview`, `host must refresh`, `separate CLI processes`, and `maintenance`. Assert the safety document contains `do not print the absolute target path`, `do not print raw evidence`, and excludes claims that the CLI discovers omitted conversational corrections or verifies unsupported evidence.
+In `ProductWorkflowTests`, read the five canonical package documents and require these phrases across their combined text: `canonical authority context`, `typed evidence binding`, `authorityContextSha256`, `generationSha256`, `targetBindingSha256`, `fresh preview`, `host must refresh`, `separate CLI processes`, and `maintenance`. Assert the safety document contains `do not print the absolute target path`, `do not print raw evidence`, `do not print premise values or decision statements`, `capability classification metadata only`, and excludes claims that the CLI discovers omitted conversational corrections or verifies unsupported evidence.
 
 - [ ] **Step 2: Verify RED**
 
@@ -629,7 +688,7 @@ Rollback: verification-only refinements and later completion documentation. Post
 
 | Review slice | Tasks | Estimated authored change | Review question |
 |---|---|---:|---|
-| 1. Canonical authority primitives | 1 through 3 | 260 to 340 lines | Are context, configuration, plan, material revision, and target bound deterministically without leaking paths? |
+| 1. Canonical authority primitives | 1 through 3 | 260 to 340 lines | Does each green layer progress from canonical host validation, through deterministic configuration and generation binding, to guarded repository evidence without leaking paths? |
 | 2. Separate-process CLI enforcement | 4 through 6 | 300 to 420 lines | Does apply recompute and reject every mismatch before writes while maintenance stays compatible? |
 | 3. Contracts, projections, verification | 7 through 8 | 220 to 320 authored lines plus exact projection copies | Do product contracts match behavior and are all package copies byte-identical? |
 
@@ -646,6 +705,11 @@ Use three chained review slices because authored work exceeds the 400-line targe
 - [ ] Corrected identical plans require a fresh generation and approval.
 - [ ] Unsupported, missing, indirect, external, changed, or unverifiable evidence routes to `fresh_preview_required` before first write.
 - [ ] Canonical transport rejects every newline, surrounding whitespace, alternate ordering or spacing, and duplicate keys.
+- [ ] Canonical serialization uses `allow_nan=False` and rejects `NaN`, `Infinity`, and `-Infinity` in authority context and host JSON.
+- [ ] Complete authority context, premise values, decision statements, host JSON, evidence content, secrets, and absolute paths never appear in stdout or stderr.
+- [ ] Success, denial, validation failure, preflight failure, and `fresh_preview_required` each prove sentinel-secret absence independently.
+- [ ] Missing, unreadable, indirect, invalid UTF-8, malformed, contract-invalid, or changed apply transport routes to `fresh_preview_required` before writes; malformed initial preview remains a distinct safe validation refusal.
+- [ ] Capability preflight returns classification metadata only and never raw host evidence.
 - [ ] Existing post-first-write fail-closed behavior remains intact.
 - [ ] Maintenance retains digest-only compatibility.
 - [ ] No persistent or in-memory authority state, token, receipt, ledger, cache, or reset API exists.
@@ -657,6 +721,10 @@ Use three chained review slices because authored work exceeds the 400-line targe
 ## Remaining Human Decisions
 
 None before implementation authorization. Naming and ownership of a future post-first-write remediation workflow remain a separate design decision and are not implementation blockers for RH-W-0054.
+
+## Handoff
+
+**Next step:** Implementation starts only after this correction is verified and explicitly authorized. Until then RH-W-0054 remains `ready`, and no implementation, commit, push, SDD, or RDD action is authorized.
 
 ## Second-Correction Review Dispositions
 
@@ -674,3 +742,7 @@ None before implementation authorization. Naming and ownership of a future post-
 | APIs or types appeared after use | integrate | Exact Internal Contract defines every type and signature before task bodies; validation precedes binding in declaration and execution order. |
 | CLI freshness claim exceeded what it could verify | integrate | Design and summaries limit freshness to explicitly resolved repository files, canonical host JSON, and managed plan inputs. |
 | Stateless architecture could regress into persistence or shared process state | close | No store, session, reset, receipt, ledger, cache, or hidden token is added; genuine subprocess tests remain mandatory. |
+| Complete authority context or sensitive host-owned values could leak through preview or errors | integrate | Metadata-only output contract plus exact sentinel-secret absence tests for success, denial, validation failure, preflight failure, and `fresh_preview_required`. |
+| Canonical JSON could accept non-finite values | integrate | `allow_nan=False`, rejecting `parse_constant`, and exact `NaN`, `Infinity`, and `-Infinity` tests for authority context and host JSON. |
+| Context transport failures did not consistently route stale apply to a fresh preview | integrate | Distinct initial-preview validation refusal and apply translation of `OSError`, `UnicodeDecodeError`, JSON errors, and `ContractError` to content-free `fresh_preview_required` before writes. |
+| Capability preflight could return raw Engram host evidence | integrate | Current code inspection confirms `detect_engram()` and `select_integration_mode()` expose raw evidence; Task 6 adds the smallest classification-only projection and sentinel regression without redesigning detection. |

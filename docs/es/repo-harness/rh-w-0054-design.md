@@ -26,7 +26,7 @@ Despues de la primera escritura, invalidar autoridad no deshace la mutacion. Los
 
 ## Contexto canonico de autoridad
 
-El host DEBE entregar una secuencia exacta de bytes JSON canonicos. Usa claves ordenadas recursivamente, separadores compactos, `ensure_ascii=True`, codificacion UTF-8 y ningun salto final. Los arreglos conservan orden semantico. Los bytes o texto crudos deben igualar exactamente esa representacion. Se rechaza espacio inicial o final, cualquier LF, orden o espaciado alterno, claves duplicadas, raiz distinta de objeto y campos desconocidos o ausentes.
+El host DEBE entregar una secuencia exacta de bytes JSON canonicos. Usa claves ordenadas recursivamente, separadores compactos, `ensure_ascii=True`, `allow_nan=False`, codificacion UTF-8 y ningun salto final. Los arreglos conservan orden semantico. Los bytes o texto crudos deben igualar exactamente esa representacion. Se rechaza espacio inicial o final, cualquier LF, orden o espaciado alterno, claves duplicadas, raiz distinta de objeto, campos desconocidos o ausentes, `NaN`, infinito positivo e infinito negativo.
 
 ```json
 {
@@ -65,9 +65,9 @@ El contexto liga todas las entradas del host que afectan salida o autoridad, pre
 
 `host_json` liga entradas estructuradas explicitas ya aceptadas por la CLI, incluido `--engram-evidence-json`. La CLI rechaza claves duplicadas, serializa con el mismo JSON canonico y compara el digest de esos bytes. Solo verifica identidad de contenido, no verdad ni procedencia. Entrada ausente, fuente no soportada, JSON invalido o digest distinto falla de forma cerrada.
 
-`human_decision` es autoridad tipada separada, nunca evidencia del repositorio. Premisas referencian IDs unicos y tipados. Se prohiben referencias opacas.
+`human_decision` es autoridad tipada separada, nunca evidencia del repositorio. Premisas referencian IDs unicos y tipados. Se prohiben referencias opacas. Los valores de premisas y las declaraciones de decisiones humanas siguen siendo entrada propiedad del host. Sus bytes canonicos contribuyen a `authorityContextSha256`, pero la CLI nunca los repite.
 
-La CLI no lee rutas externas arbitrarias, no persiste evidencia y no copia contenido de evidencia a la salida. Preview muestra solo IDs seguros, tipo, locator relativo cuando sea seguro y digest. Nunca imprime contenido crudo, JSON crudo del host, rutas absolutas ni valores sensibles.
+La CLI no lee rutas externas arbitrarias, no persiste evidencia y no copia contenido de evidencia a la salida. Ni stdout ni stderr pueden contener el contexto de autoridad completo, valores crudos de premisas, declaraciones humanas, JSON crudo del host, contenido de evidencia, secretos ni rutas absolutas. Preview solo puede exponer IDs estables, clases o tipos, locator relativo cuando sea seguro, digests de contenido, `authorityContextSha256`, `targetBindingSha256`, `generationSha256`, `planSha256` y marcadores explicitos de redaccion. El preflight de capacidades usa el mismo limite: la deteccion puede inspeccionar evidencia del host internamente, pero el resultado impreso o retornado contiene solo metadata de clasificacion y nunca evidencia cruda.
 
 La presentacion en otro idioma de informe por si sola NO DEBE cambiar la identidad ejecutable del plan. Solo entra a la autoridad cuando cambia el dominio de aprobacion u otra interpretacion ligada. La localizacion solo de presentacion queda fuera de `planSha256`.
 
@@ -117,6 +117,8 @@ Preview calcula `currentPlanSha256` desde entradas administradas y configuracion
 
 La activacion builder exige contexto y generacion aprobada. `maintenance` conserva su flujo solo con digest y no exige ni acepta campos builder. Este diseno no crea contexto de correccion para mantenimiento.
 
+La entrada inicial malformada de preview y la entrada obsoleta de apply tienen rutas distintas. Preview rechaza transporte inicialmente ausente, ilegible, indirecto, UTF-8 invalido, JSON invalido, no canonico o contrario al contrato como rechazo seguro de validacion, porque todavia no existe generacion aprobada. Cuando inicia builder apply, esas mismas condiciones, un transporte cambiado desde preview y cualquier `OSError`, `UnicodeDecodeError`, error JSON o `ContractError` al cargar o validar autoridad producen `fresh_preview_required` antes de escribir. Ambas rutas emiten solo clasificacion y redaccion seguras, nunca contexto crudo ni contenido de excepciones derivado de el.
+
 ## Enrutamiento de fallos
 
 | Evento | Resultado requerido |
@@ -126,6 +128,8 @@ La activacion builder exige contexto y generacion aprobada. `maintenance` conser
 | Contexto corregido con plan identico | `materialRevision` nueva crea generacion distinta y aprobacion nueva. |
 | Evidencia no soportada, ausente, indirecta, externa, cambiada o no verificable | Rechazo `fresh_preview_required`; no se escribe. |
 | Cambia o falta JSON ligado del host | Rechazo `fresh_preview_required`; no se escribe. |
+| Transporte inicial de preview malformado o no disponible | Rechazo seguro de validacion, sin escritura ni eco de entrada o excepcion cruda. |
+| Transporte de apply ausente, ilegible, indirecto, UTF-8 invalido, malformado, invalido o cambiado | Rechazo `fresh_preview_required`, sin escritura ni eco de entrada o excepcion cruda. |
 | Se mueve o renombra el objetivo | Difiere el vinculo; preview nuevo. |
 | Difiere configuracion CLI | Difiere contexto; preview nuevo. |
 | Apply falla antes de escribir | No se conserva autoridad ni se necesita reset. |
@@ -141,6 +145,10 @@ La activacion builder exige contexto y generacion aprobada. `maintenance` conser
 - Evidencia obsoleta antes de escribir que produce `fresh_preview_required`.
 - Apply fallido, preview repetido, mantenimiento compatible y ausencia de API de reset.
 - Identificadores y metadata seguros sin evidencia cruda, JSON crudo del host, ruta absoluta, secreto, token oculto ni autoridad mutable.
+- Ausencia exacta de secretos centinela en stdout y stderr para exito, denegacion, fallo de validacion inicial, fallo de preflight y `fresh_preview_required`.
+- Rechazo canonico de `NaN`, infinito positivo e infinito negativo en contexto y JSON del host.
+- Enrutamiento de apply para `OSError`, `UnicodeDecodeError`, errores JSON y `ContractError`, sin cambiar bytes del repositorio ni filtrar contexto.
+- Salida de preflight de capacidades limitada a metadata de clasificacion, sin evidencia cruda del host.
 - Errores posteriores a escritura conservando el limite cerrado sin afirmar rollback ni recuperacion.
 
 ## Impacto de implementacion
