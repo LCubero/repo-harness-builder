@@ -22,5 +22,6 @@
 | [Diseno RH-W-0050](rh-w-0050-design.md) | Diseno completo de reconciliacion acotada aprobado por el propietario; la implementacion sigue pendiente |
 | [Diseno RH-W-0054](rh-w-0054-design.md) | Diseno completo de autoridad de correccion sin estado aprobado por el propietario; la Tarea 1 esta completa localmente y la implementacion restante sigue pendiente |
 | [Plan de implementacion RH-W-0054](../../repo-harness/rh-w-0054-implementation-plan.md) | Plan ejecutable canonico en ingles para transportar autoridad de correccion sin estado |
+| [Hallazgos RH-W-0056](rh-w-0056-findings.md) | Propietario canonico de hallazgos de la revision de harness externo; solo recomendaciones, sin adopcion |
 | [Mapa canonico en ingles](../../repo-harness/README.md) | Propiedad documental canonica |
 | [CHANGELOG.md](../../../CHANGELOG.md) | Historial cronologico canonico |

@@ -24,6 +24,7 @@
 | [rh-w-0050-design.md](rh-w-0050-design.md) | Owner-approved bounded reconciliation design; implementation remains pending |
 | [rh-w-0054-design.md](rh-w-0054-design.md) | Owner-approved stateless correction authority design; Task 1 is locally complete and remaining implementation is pending |
 | [rh-w-0054-implementation-plan.md](rh-w-0054-implementation-plan.md) | Canonical executable plan for stateless correction authority transport |
+| [rh-w-0056-findings.md](rh-w-0056-findings.md) | Canonical findings owner for the external harness review; recommendations only, no adoption |
 | [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |
 | [CHANGELOG.md](../../CHANGELOG.md) | Factual, dated, concise completed changes; never future plans |
 
