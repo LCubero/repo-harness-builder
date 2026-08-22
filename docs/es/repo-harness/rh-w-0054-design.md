@@ -1,8 +1,8 @@
 # Diseno RH-W-0054 de autoridad de correccion sin estado
 
-> **Estado: DISENO APROBADO POR EL PROPIETARIO. La implementacion esta pendiente.**
+> **Estado: DISENO APROBADO POR EL PROPIETARIO. La Tarea 1 esta completa localmente; la implementacion restante esta pendiente.**
 >
-> El propietario aprobo este transporte corregido el 2026-08-21. RH-W-0054 permanece `ready`; este documento no autoriza implementacion ni entrega.
+> El propietario aprobo este transporte corregido el 2026-08-21. RH-W-0054 esta activo; la Tarea 1 esta completa localmente y sin commit, mientras que las Tareas 2-8 y la entrega permanecen pendientes.
 
 ## Contrato de revision
 

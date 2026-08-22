@@ -1,8 +1,8 @@
 # RH-W-0054 Stateless Correction Authority Design
 
-> **Status: OWNER-APPROVED DESIGN. Implementation is pending.**
+> **Status: OWNER-APPROVED DESIGN. Task 1 is locally complete; remaining implementation is pending.**
 >
-> The owner approved this corrected transport design on 2026-08-21. RH-W-0054 remains `ready`; implementation and delivery are not authorized by this document.
+> The owner approved this corrected transport design on 2026-08-21. RH-W-0054 is active; Task 1 is locally complete and uncommitted, while Tasks 2-8 and delivery remain pending.
 
 ## Review Contract
 

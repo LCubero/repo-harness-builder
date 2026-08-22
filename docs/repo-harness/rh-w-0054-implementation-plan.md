@@ -1,6 +1,6 @@
 # RH-W-0054 Stateless Correction Authority Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: use `subagent-driven-development` task by task, `test-driven-development` for every behavior slice, and `verification-before-completion` before delivery. Do not implement until RH-W-0054 has explicit implementation authorization and moves from `ready` to `active`.
+> **For agentic workers:** REQUIRED SUB-SKILL: use `subagent-driven-development` task by task, `test-driven-development` for every behavior slice, and `verification-before-completion` before delivery. RH-W-0054 is `active`; Task 1 is the only authorized implementation boundary, and Tasks 2 through 8 remain pending.
 
 **Goal:** Bind builder preview approval across separate CLI processes to one reviewable canonical authority context, current repository evidence, complete output-affecting configuration, exact plan identity, and opaque target identity.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** Python 3.10+ standard library, `TypedDict`, `unittest`, `hashlib`, deterministic JSON, independent `main()` calls, subprocess CLI tests, and exact canonical-to-runtime projection copies.
 
-**Lifecycle owner:** [RH-W-0054](roadmap.md#rh-w-0054), status `ready`. The [approved design](rh-w-0054-design.md) owns behavior; this plan owns implementation sequence only.
+**Lifecycle owner:** [RH-W-0054](roadmap.md#rh-w-0054), status `active`. The [approved design](rh-w-0054-design.md) owns behavior; this plan owns implementation sequence only. Task 1 is complete in the current uncommitted worktree after focused review corrections; Tasks 2 through 8 and delivery remain pending.
 
 ---
 
@@ -55,12 +55,16 @@ class AuthorityBuilderConfig(TypedDict):
     ignoreCodegraph: bool
     activation: Literal["builder"]
 
-class AuthorityPremise(TypedDict):
-    id: str
-    class_: AuthorityClass
-    value: str
-    decisionIds: list[str]
-    evidenceIds: list[str]
+AuthorityPremise = TypedDict(
+    "AuthorityPremise",
+    {
+        "id": str,
+        "class": AuthorityClass,
+        "value": str,
+        "decisionIds": list[str],
+        "evidenceIds": list[str],
+    },
+)
 
 class HumanDecision(TypedDict):
     id: str
@@ -84,7 +88,7 @@ class AuthorityContext(TypedDict):
     materialRevision: str
     project: AuthorityProject
     builder: AuthorityBuilderConfig
-    premises: list[dict[str, Any]]
+    premises: list[AuthorityPremise]
     decisions: list[HumanDecision]
     evidence: list[RepositoryFileEvidence | HostJsonEvidence]
 
@@ -163,7 +167,7 @@ Builder CLI additions:
 - Modify: `skill/repo-harness-builder/tests/test_harness_tool.py`
 - Modify: `skill/repo-harness-builder/scripts/harness_tool.py`
 
-- [ ] **Step 1: Add failing canonical parser tests**
+- [x] **Step 1: Add failing canonical parser tests**
 
 Add `AuthorityContextTests` with a `context(revision="revision-1", evidence=None)` helper returning the exact typed schema above and defaulting to host JSON evidence only. Add tests that assert canonical round trip, duplicate-key rejection, unknown/missing field rejection, invalid authority class or evidence kind, duplicate IDs, dangling decision/evidence IDs, and non-canonical JSON rejection. Add exact table-driven rejection for `NaN`, `Infinity`, and `-Infinity` in authority context. Test malformed plan digest through `authority_binding()` in Task 2. Repository-file resolution is added only in Task 3.
 
@@ -200,13 +204,13 @@ for name, raw in variants.items():
 
 For each non-finite token, replace one premise value with the raw token in otherwise canonical object text and require `ContractError` without the token or sentinel content in its message. Do not use `json.dumps()` to construct those raw invalid JSON fixtures because its default permits non-finite values.
 
-- [ ] **Step 2: Verify RED**
+- [x] **Step 2: Verify RED**
 
 Run: `python -B skill/repo-harness-builder/tests/test_harness_tool.py AuthorityContextTests -v`
 
 Expected RED: missing `canonical_json` or `parse_authority_context`, not a fixture or syntax error.
 
-- [ ] **Step 3: Implement the exact parser and AuthorityContext types**
+- [x] **Step 3: Implement the exact parser and AuthorityContext types**
 
 Add the types and first two functions from the Exact Internal Contract. Implement validation as one depth-first exact-field check with these field sets:
 
@@ -222,25 +226,25 @@ HOST_JSON_EVIDENCE_FIELDS = {"id", "kind", "source", "sha256"}
 
 Reject booleans where integers are expected. Reject empty IDs, statements, locators, and values after stripping. Require lowercase 64-character SHA-256. Keep semantic array order unchanged. Do not resolve evidence in the parser. Introduce every `AuthorityContext` supporting type and `EvidenceBinding`; do not add the validator function yet.
 
-- [ ] **Step 4: Verify parser GREEN**
+- [x] **Step 4: Verify parser GREEN**
 
 Run the focused class. Expected: all parser tests pass with no warnings.
 
-- [ ] **Step 5: Add failing host JSON validator tests**
+- [x] **Step 5: Add failing host JSON validator tests**
 
 Using a host-only context and a directly supplied expected builder configuration, call the exact `validate_authority_context()` API. Assert exact project id/name checks, exact context structural checks, unique typed references, canonical host JSON digest binding, safe returned `EvidenceBinding` metadata, missing current host input rejection, changed host input rejection, duplicate host JSON key rejection, and exact table-driven rejection for `NaN`, `Infinity`, and `-Infinity` in bound host JSON. The RED test invokes the exact wished-for API before its implementation, never an API deferred to another task.
 
 For each non-finite token, supply the raw token through the `host_json` validation path with `--engram-evidence-json` equivalents and require `ContractError` without the token or sentinel content in its message. Do not use `json.dumps()` for these invalid fixtures.
 
-- [ ] **Step 6: Verify validator RED**
+- [x] **Step 6: Verify validator RED**
 
 Run the host JSON validation methods. Expected RED: missing `validate_authority_context()`, not a missing supporting type, fixture, or syntax error.
 
-- [ ] **Step 7: Implement minimal host JSON validation**
+- [x] **Step 7: Implement minimal host JSON validation**
 
 Add `validate_authority_context()` with its exact signature and implement it for the already-parsed exact schema, exact project id/name, direct expected-config dictionary comparison, unique typed references, and `host_json` evidence. Accept only `engram_evidence_json`, require the corresponding current input, parse with the same duplicate-key and non-finite rejection helpers, canonicalize with `canonical_json()`, compare its lowercase SHA-256, and return only safe typed binding metadata. If repository-file evidence is present, fail with the existing unsupported evidence refusal until Task 3 adds that branch. The validator does not receive or compare a plan digest.
 
-- [ ] **Step 8: Verify complete Task 1 GREEN**
+- [x] **Step 8: Verify complete Task 1 GREEN**
 
 Run: `python -B skill/repo-harness-builder/tests/test_harness_tool.py AuthorityContextTests -v`
 
@@ -672,7 +676,7 @@ Task 6 asserts at runtime that the superseded session APIs are not defined.
 
 Run `git status --short`, `git diff --stat`, and `git diff -- docs/repo-harness/roadmap.md docs/es/repo-harness/roadmap.md docs/repo-harness/current-state.md docs/es/repo-harness/current-state.md CHANGELOG.md`.
 
-Expected before completed delivery: RH-W-0054 remains `ready`, no changelog completion entry exists, no post-write owner is assigned, and no commit, push, staging, provider action, or external repository mutation occurred.
+Expected before completed delivery: RH-W-0054 remains `active`; Task 1 may be complete while Tasks 2 through 8 and delivery remain pending. No changelog completion entry exists, no post-write owner is assigned, and no commit, push, staging, provider action, or external repository mutation occurred.
 
 - [ ] **Step 6: Conditional completion reconciliation**
 
@@ -716,7 +720,7 @@ Use three chained review slices because authored work exceeds the 400-line targe
 - [ ] Genuine subprocess tests and independent `main()` tests pass.
 - [ ] Portable Python replaces every repository-content `rg` verification.
 - [ ] Canonical package files and both runtime projections are byte-identical.
-- [ ] RH-W-0054 stays `ready` until separately authorized implementation and delivery complete.
+- [ ] RH-W-0054 stays `active` until all separately authorized implementation and delivery evidence supports completion; Task 1 completion does not authorize Tasks 2 through 8.
 
 ## Remaining Human Decisions
 
@@ -724,7 +728,7 @@ None before implementation authorization. Naming and ownership of a future post-
 
 ## Handoff
 
-**Next step:** Implementation starts only after this correction is verified and explicitly authorized. Until then RH-W-0054 remains `ready`, and no implementation, commit, push, SDD, or RDD action is authorized.
+**Next step:** Begin the next session with Task 2 as the candidate boundary, then obtain separate authorization before implementation. RH-W-0054 remains `active`; Tasks 2 through 8, delivery, commit, push, SDD, and RDD remain unauthorized.
 
 ## Second-Correction Review Dispositions
 

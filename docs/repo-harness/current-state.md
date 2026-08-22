@@ -6,7 +6,7 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes. The manifest-matched owner check also reports `current` with 21 current, 18 human-evolved, 4 present, and 0 stale.
-- Canonical suite green: 341 tests passed with 8 skips. RH-W-0050 adds focused deterministic contract coverage for bounded reconciliation.
+- Canonical suite green: 360 tests passed with 8 skips. RH-W-0050 adds focused deterministic contract coverage for bounded reconciliation, and active RH-W-0054 Task 1 adds canonical authority-context and host-JSON validation coverage.
 - Root `.gitattributes` protects 19 byte-compared generated paths, derived from render outputs rather than a fixed pair.
 - Runtime set `claude-code` and `opencode`. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1. The checked-in checker and manifest remain a consistent pair.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
@@ -86,11 +86,11 @@
 ## Pending Work
 <!-- doc-role:pending-work -->
 
-- Portfolio size: 17 non-terminal records, 10 `proposed`, 1 `ready`, and 6 `deferred`. None is `active`.
+- Portfolio size: 17 non-terminal records, 10 `proposed`, 1 `active`, and 6 `deferred`. None is `ready`.
 - `RH-W-0050` is `completed`. Its hybrid bounded-scan and evidence-triggered reconciliation contracts now govern generated session start, session stop, documentation, integrated memory, and standalone output. Approved issue #89 and merged PR #90 provide delivery evidence; merge commit `1bebc027ba61b95088be1acc4966b120d9cd9b5e` is synchronized on `main`.
 - Post-delivery reconciliation verified canonical, self-hosted, OpenCode, and Claude projection parity, 341 passing tests with 8 skips, checker status `current` with zero writes, closed issue #89, and merged PR #90. No retained finding remains inside RH-W-0050 owner scope.
-- `RH-W-0054` is `ready` after an authorized ordinary follow-up correction to its approved stateless transport design and plan. The correction requires metadata-only stdout and stderr, sentinel-secret regressions on every success and failure route, `allow_nan=False`, rejection of all non-finite JSON values, distinct initial-preview versus stale-apply transport routing, and classification-only capability preflight output. Separate-process authority, typed evidence binding, maintenance compatibility, and the pre-write or post-write boundary are unchanged. Implementation starts only after this correction is verified and explicitly authorized.
-- Owner-approved execution projection: completed `RH-W-0050` is baseline context, then ready `RH-W-0054` precedes `RH-W-0011`. The local-state chain is joint design for `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` with namespace reservations, followed by `RH-W-0051`, `RH-W-0053`, `RH-W-0048`, and `RH-W-0052`. These units retain separate implementation and delivery boundaries.
+- `RH-W-0054` is `active`. Task 1 is locally complete and reviewed: 19 focused `AuthorityContextTests` pass, the canonical suite passes 360 tests with 8 skips, and the checker reports `current` with zero writes. Spec compliance and ordinary quality review pass after corrections. Tasks 2 through 8 and delivery remain pending, and runtime projections intentionally remain pending until Task 7.
+- Owner-approved execution projection: completed `RH-W-0050` is baseline context, then active `RH-W-0054` precedes `RH-W-0011`. The local-state chain is joint design for `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` with namespace reservations, followed by `RH-W-0051`, `RH-W-0053`, `RH-W-0048`, and `RH-W-0052`. These units retain separate implementation and delivery boundaries.
 - Remaining proposed work stays owned by the roadmap in this order: `RH-W-0046` designed together with deferred `RH-W-0018` as one consent design, then `RH-W-0044`, `RH-W-0022`, `RH-W-0055`, and `RH-W-0040`. Deferred records retain their existing advancement conditions. The optional ATL-like capability inventory remains deferred pending a product-boundary decision and must not duplicate Gentle AI-owned state or reopen completed RH-W-0025.
 - Blocker evidence: Judgment Day round 2 remains incomplete because judge B terminated on a session limit. The roadmap preserves the five findings, records `RH-W-0007` as completed based on current tests, and `RH-W-0011` owns the incomplete round-2 receipt inside its evidence review.
 - Recently completed IDs: `RH-W-0019`, `RH-W-0047`, `RH-W-0049`, `RH-W-0045`, `RH-W-0043`, `RH-W-0010`, `RH-W-0041`, `RH-W-0042`, `RH-W-0037`, `RH-W-0039`, `RH-W-0038`, `RH-W-0036`, `RH-W-0035`, `RH-W-0034`, `RH-W-0033`, `RH-W-0025`, `RH-W-0032`, `RH-W-0031`, `RH-W-0009`, `RH-W-0030`, `RH-W-0029`, `RH-W-0028`, `RH-W-0008`, `RH-W-0027`, `RH-W-0006`, `RH-W-0005`, `RH-W-0004`, `RH-W-0017`, `RH-W-0021`, `RH-W-0024`, `RH-W-0023`, `RH-W-0020`.
@@ -98,4 +98,4 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-`RH-W-0054` is the only `ready` unit. Its approved design does not authorize implementation; first verify this follow-up correction, then require explicit implementation authorization against the corrected design and focused test contract.
+`RH-W-0054` is the only `active` unit. Begin the next session with Task 2 as the candidate boundary, but obtain separate authorization before implementation. Tasks 2 through 8 and delivery remain pending.

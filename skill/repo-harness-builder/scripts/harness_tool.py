@@ -19,7 +19,7 @@ import tempfile
 from collections.abc import Mapping, Sequence
 from datetime import date
 from pathlib import Path, PurePosixPath
-from typing import Any, Callable, Optional, TypedDict
+from typing import Any, Callable, Literal, Optional, TypedDict
 
 VERSION = "3.0"
 MIN_PYTHON = (3, 10)
@@ -229,10 +229,284 @@ class ContractError(ValueError):
     """Represent a safe, expected contract refusal."""
 
 
+AuthorityClass = Literal["factual_claim", "assistant_interpretation"]
+EvidenceKind = Literal["repository_file", "host_json"]
+
+
+class AuthorityProject(TypedDict):
+    id: str
+    name: str
+
+
+class AuthorityBuilderConfig(TypedDict):
+    runtimes: list[str]
+    license: str
+    integrationMode: Literal["integrated", "standalone"]
+    reportLanguage: str
+    documentationLanguages: list[str]
+    conversationLanguage: str
+    ignoreCodegraph: bool
+    activation: Literal["builder"]
+
+
+AuthorityPremise = TypedDict(
+    "AuthorityPremise",
+    {
+        "id": str,
+        "class": AuthorityClass,
+        "value": str,
+        "decisionIds": list[str],
+        "evidenceIds": list[str],
+    },
+)
+
+
+class HumanDecision(TypedDict):
+    id: str
+    kind: Literal["human_decision"]
+    statement: str
+
+
+class RepositoryFileEvidence(TypedDict):
+    id: str
+    kind: Literal["repository_file"]
+    locator: str
+    sha256: str
+
+
+class HostJsonEvidence(TypedDict):
+    id: str
+    kind: Literal["host_json"]
+    source: Literal["engram_evidence_json"]
+    sha256: str
+
+
+class AuthorityContext(TypedDict):
+    schemaVersion: Literal[1]
+    materialRevision: str
+    project: AuthorityProject
+    builder: AuthorityBuilderConfig
+    premises: list[AuthorityPremise]
+    decisions: list[HumanDecision]
+    evidence: list[RepositoryFileEvidence | HostJsonEvidence]
+
+
+class EvidenceBinding(TypedDict, total=False):
+    id: str
+    kind: EvidenceKind
+    locator: str
+    source: str
+    sha256: str
+
+
+CONTEXT_FIELDS = {
+    "schemaVersion",
+    "materialRevision",
+    "project",
+    "builder",
+    "premises",
+    "decisions",
+    "evidence",
+}
+PROJECT_FIELDS = {"id", "name"}
+BUILDER_FIELDS = {
+    "runtimes",
+    "license",
+    "integrationMode",
+    "reportLanguage",
+    "documentationLanguages",
+    "conversationLanguage",
+    "ignoreCodegraph",
+    "activation",
+}
+PREMISE_FIELDS = {"id", "class", "value", "decisionIds", "evidenceIds"}
+DECISION_FIELDS = {"id", "kind", "statement"}
+REPOSITORY_FILE_EVIDENCE_FIELDS = {"id", "kind", "locator", "sha256"}
+HOST_JSON_EVIDENCE_FIELDS = {"id", "kind", "source", "sha256"}
+SHA256_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
+
+
 def require(condition: bool, message: str) -> None:
     """Raise a contract error when a required condition is false."""
     if not condition:
         raise ContractError(message)
+
+
+def canonical_json(value: Any) -> str:
+    """Return exact compact ASCII-safe JSON without a trailing newline."""
+    try:
+        return json.dumps(
+            value,
+            ensure_ascii=True,
+            allow_nan=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+    except (TypeError, ValueError) as error:
+        raise ContractError("authority content is not canonicalizable") from error
+
+
+def _reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ContractError("authority JSON contains duplicate keys")
+        result[key] = value
+    return result
+
+
+def _reject_non_finite(_value: str) -> None:
+    raise ContractError("authority JSON contains a non-finite value")
+
+
+def _parse_strict_json(raw: str) -> Any:
+    try:
+        return json.loads(
+            raw,
+            object_pairs_hook=_reject_duplicate_keys,
+            parse_constant=_reject_non_finite,
+        )
+    except ContractError:
+        raise
+    except (json.JSONDecodeError, TypeError) as error:
+        raise ContractError("authority JSON is invalid") from error
+
+
+def _exact_object(value: Any, fields: set[str]) -> dict[str, Any]:
+    require(isinstance(value, dict) and set(value) == fields, "authority context schema mismatch")
+    return value
+
+
+def _non_empty_string(value: Any) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def _string_list(value: Any) -> bool:
+    return isinstance(value, list) and all(isinstance(item, str) for item in value)
+
+
+def _validate_authority_context_schema(value: Any) -> AuthorityContext:
+    context = _exact_object(value, CONTEXT_FIELDS)
+    require(type(context["schemaVersion"]) is int and context["schemaVersion"] == 1, "authority context schema mismatch")
+    require(_non_empty_string(context["materialRevision"]), "authority context schema mismatch")
+
+    project = _exact_object(context["project"], PROJECT_FIELDS)
+    require(_non_empty_string(project["id"]) and _non_empty_string(project["name"]), "authority context schema mismatch")
+
+    builder = _exact_object(context["builder"], BUILDER_FIELDS)
+    require(_string_list(builder["runtimes"]), "authority context schema mismatch")
+    require(_non_empty_string(builder["license"]), "authority context schema mismatch")
+    require(
+        isinstance(builder["integrationMode"], str)
+        and builder["integrationMode"] in {"integrated", "standalone"},
+        "authority context schema mismatch",
+    )
+    require(_non_empty_string(builder["reportLanguage"]), "authority context schema mismatch")
+    require(_string_list(builder["documentationLanguages"]), "authority context schema mismatch")
+    require(_non_empty_string(builder["conversationLanguage"]), "authority context schema mismatch")
+    require(type(builder["ignoreCodegraph"]) is bool, "authority context schema mismatch")
+    require(builder["activation"] == "builder", "authority context schema mismatch")
+
+    premises = context["premises"]
+    decisions = context["decisions"]
+    evidence = context["evidence"]
+    require(isinstance(premises, list) and isinstance(decisions, list) and isinstance(evidence, list), "authority context schema mismatch")
+
+    all_ids: set[str] = set()
+    decision_ids: set[str] = set()
+    evidence_ids: set[str] = set()
+
+    for decision_value in decisions:
+        decision = _exact_object(decision_value, DECISION_FIELDS)
+        require(_non_empty_string(decision["id"]), "authority context schema mismatch")
+        require(decision["kind"] == "human_decision", "authority context schema mismatch")
+        require(_non_empty_string(decision["statement"]), "authority context schema mismatch")
+        require(decision["id"] not in all_ids, "authority context IDs must be unique")
+        all_ids.add(decision["id"])
+        decision_ids.add(decision["id"])
+
+    for evidence_value in evidence:
+        require(isinstance(evidence_value, dict), "authority context schema mismatch")
+        kind = evidence_value.get("kind")
+        if kind == "repository_file":
+            item = _exact_object(evidence_value, REPOSITORY_FILE_EVIDENCE_FIELDS)
+            require(_non_empty_string(item["locator"]), "authority context schema mismatch")
+        elif kind == "host_json":
+            item = _exact_object(evidence_value, HOST_JSON_EVIDENCE_FIELDS)
+            require(item["source"] == "engram_evidence_json", "authority context schema mismatch")
+        else:
+            raise ContractError("authority context evidence kind is unsupported")
+        require(_non_empty_string(item["id"]), "authority context schema mismatch")
+        require(isinstance(item["sha256"], str) and SHA256_PATTERN.fullmatch(item["sha256"]) is not None, "authority context schema mismatch")
+        require(item["id"] not in all_ids, "authority context IDs must be unique")
+        all_ids.add(item["id"])
+        evidence_ids.add(item["id"])
+
+    for premise_value in premises:
+        premise = _exact_object(premise_value, PREMISE_FIELDS)
+        require(_non_empty_string(premise["id"]) and _non_empty_string(premise["value"]), "authority context schema mismatch")
+        require(
+            isinstance(premise["class"], str)
+            and premise["class"] in {"factual_claim", "assistant_interpretation"},
+            "authority context schema mismatch",
+        )
+        require(_string_list(premise["decisionIds"]) and _string_list(premise["evidenceIds"]), "authority context schema mismatch")
+        require(len(premise["decisionIds"]) == len(set(premise["decisionIds"])), "authority context references must be unique")
+        require(len(premise["evidenceIds"]) == len(set(premise["evidenceIds"])), "authority context references must be unique")
+        require(premise["id"] not in all_ids, "authority context IDs must be unique")
+        all_ids.add(premise["id"])
+        require(set(premise["decisionIds"]).issubset(decision_ids), "authority context has a dangling decision reference")
+        require(set(premise["evidenceIds"]).issubset(evidence_ids), "authority context has a dangling evidence reference")
+
+    return context  # type: ignore[return-value]
+
+
+def parse_authority_context(raw: str) -> tuple[AuthorityContext, str]:
+    """Parse one exact canonical authority context transport."""
+    require(isinstance(raw, str) and "\n" not in raw and "\r" not in raw, "authority context bytes are not canonical")
+    parsed = _validate_authority_context_schema(_parse_strict_json(raw))
+    canonical = canonical_json(parsed)
+    require(raw == canonical, "authority context bytes are not canonical")
+    return parsed, canonical
+
+
+def validate_authority_context(
+    root: Path,
+    context: AuthorityContext,
+    project_id: str,
+    project_name: str,
+    expected_config: AuthorityBuilderConfig,
+    host_json_inputs: dict[str, str],
+) -> list[EvidenceBinding]:
+    """Validate current host JSON bindings and return safe metadata only."""
+    del root
+    validated = _validate_authority_context_schema(context)
+    require(
+        validated["project"]["id"] == project_id
+        and validated["project"]["name"] == project_name,
+        "authority context project mismatch",
+    )
+    require(validated["builder"] == expected_config, "authority context configuration mismatch")
+
+    bindings: list[EvidenceBinding] = []
+    for item in validated["evidence"]:
+        if item["kind"] == "repository_file":
+            raise ContractError("unsupported evidence kind in this validation phase")
+        source = item["source"]
+        require(source == "engram_evidence_json", "authority context host source is unsupported")
+        require(source in host_json_inputs, "authority context host input is unavailable")
+        parsed_host_json = _parse_strict_json(host_json_inputs[source])
+        actual_sha256 = hashlib.sha256(canonical_json(parsed_host_json).encode("utf-8")).hexdigest()
+        require(actual_sha256 == item["sha256"], "authority context host input changed")
+        bindings.append(
+            {
+                "id": item["id"],
+                "kind": "host_json",
+                "source": source,
+                "sha256": item["sha256"],
+            }
+        )
+    return bindings
 
 
 def approval_domain(report_language: str = DEFAULT_REPORT_LANGUAGE) -> dict[str, str]:
