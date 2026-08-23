@@ -1119,8 +1119,10 @@ VISIBILITY_CONTRACT = (
     "delimited by a horizontal rule line above and below, with a short label line naming it in the reply "
     "language. Never use side borders or box corners, which misalign in a terminal. Reserve the block for "
     "input the human must act on: when nothing is pending, close with a plain status line and one concrete "
-    "recommendation, never an empty block. This binds the agent's own replies as well as reported output, "
-    "and strengthens the single-final-question rule rather than replacing it."
+    "recommendation, never an empty block. A block that asks something and a block that names the next "
+    "actions use a distinct rule character each, so the reader sees from the shape alone whether the reply "
+    "is waiting on the human; never reuse one form for both. This binds the agent's own replies as well as "
+    "reported output, and strengthens the single-final-question rule rather than replacing it."
 )
 """One obligation, shared by every daily contract.
 

@@ -6060,6 +6060,13 @@ class QuestionVisibilityTests(unittest.TestCase):
         self.assertIn("final user-facing line", start)
         self.assertRegex(start, r"(?i)strengthens")
 
+    def test_a_question_block_and_a_next_action_block_are_told_apart_by_shape(self):
+        """One delimiter for both destroys the signal: the reader cannot see whether a reply waits on them."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("distinct rule character", text)
+                self.assertRegex(text, r"(?i)waiting on the human")
+
     def test_the_rulebook_is_untouched_by_the_visibility_obligation(self):
         """RH-W-0058 lands in the daily contracts only; the rulebook has four tokens of headroom."""
         rulebook = TOOL.render("Example", ["opencode"])["REPO-HARNESS.md"]
