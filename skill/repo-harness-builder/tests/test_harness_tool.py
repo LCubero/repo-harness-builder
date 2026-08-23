@@ -6064,8 +6064,18 @@ class QuestionVisibilityTests(unittest.TestCase):
         """One delimiter for both destroys the signal: the reader cannot see whether a reply waits on them."""
         for path, text in self.rendered_daily().items():
             with self.subTest(path=path):
-                self.assertIn("distinct rule character", text)
-                self.assertRegex(text, r"(?i)waiting on the human")
+                self.assertIn("the choice between them is not", text)
+                self.assertIn("from the shape alone whether the reply is waiting on them", text)
+
+    def test_the_two_block_forms_name_their_characters_and_when_each_applies(self):
+        """A character without its condition is decoration; the reader has to know which one is coming."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("a line of `=`", text)
+                self.assertIn("a line of `+`", text)
+                self.assertIn("only when the reply is blocked", text)
+                self.assertIn("only when the reply asks nothing", text)
+                self.assertRegex(text, r"(?i)never put both forms in one reply")
 
     def test_the_rulebook_is_untouched_by_the_visibility_obligation(self):
         """RH-W-0058 lands in the daily contracts only; the rulebook has four tokens of headroom."""
