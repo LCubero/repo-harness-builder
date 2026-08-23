@@ -97,7 +97,7 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 ### RH-W-0056
 | Field | Value |
 |---|---|
-| Origin | Owner request on 2026-08-22 to review his own external harness `unified_ai_brain_jl_i3` and extract generically reusable ideas for any repository. |
+| Origin | Owner request on 2026-08-22 to review his own external harness, referred to here as `external harness 1`, and extract generically reusable ideas for any repository. The alias follows the `RH-W-0046` precedent: the reviewed repository belongs to the owner, and its identity is not this repository's to record. |
 | Priority | P2: it is an idea source rather than a defect, but this repository has no comparative evidence base for cross-OS, transport, or runtime-surface decisions and currently designs each one from first principles. |
 | Dependencies | none |
 | Status | active |
