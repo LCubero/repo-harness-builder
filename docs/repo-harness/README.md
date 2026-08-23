@@ -25,6 +25,7 @@
 | [rh-w-0054-design.md](rh-w-0054-design.md) | Owner-approved stateless correction authority design; Task 1 is locally complete and remaining implementation is pending |
 | [rh-w-0054-implementation-plan.md](rh-w-0054-implementation-plan.md) | Canonical executable plan for stateless correction authority transport |
 | [rh-w-0059-design.md](rh-w-0059-design.md) | Draft non-interactive transport design; pending owner approval, no implementation authorized |
+| [rh-w-0057-design.md](rh-w-0057-design.md) | Draft canonical command and wrapper coverage design; pending owner approval, one open decision, no implementation authorized |
 | [rh-w-0056-findings.md](rh-w-0056-findings.md) | Canonical findings owner for the external harness review; recommendations only, no adoption |
 | [archive/repo-bootstrap-handoff.md](archive/repo-bootstrap-handoff.md) | Archived 2026-08-12 split handoff, provenance only; not policy, not a plan, and not a source of pending work |
 | [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |
