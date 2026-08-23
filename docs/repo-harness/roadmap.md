@@ -60,6 +60,40 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 
 <!-- doc-role:active-records -->
 
+### RH-W-0063
+| Field | Value |
+|---|---|
+| Origin | Item 8 of the pending list in the 2026-08-12 bootstrap handoff, recovered on 2026-08-23 while archiving that document. It was the only item there that carried its own deferral and never reached this roadmap. |
+| Priority | P3: presentation only. No state, contract, or outcome depends on it, and every current message is already readable. |
+| Dependencies | none |
+| Status | deferred |
+| Completed work | Recovered the item with its original disposition intact rather than promoting it. The handoff already classified it as deferred and optional, so registering it as `proposed` would have invented an intent the owner never expressed. |
+| Remaining work | Explore portable Markdown headings, simple callout blocks, and restrained emoji for session start, alerts, decisions, and session close. Adopt only what renders clearly across operating systems and agents. |
+| Additions | A presentation pass over generated harness user messages. |
+| Exclusions | No runtime-specific formatting, nothing that complicates the builder, and no change to what any contract requires to be reported. Presentation may not become a second output contract competing with the existing ones. |
+| Deferrals | Deferred at origin and still deferred. It competes with correctness work and its value is unmeasured here. |
+| Rejections | Rejected adopting any format before it is verified to render clearly on the operating systems and agents this product supports. |
+| Evidence | Verified: the item existed in the archived handoff with an explicit deferred and optional label, and no roadmap record covered it before 2026-08-23. Human decision: whether readability of generated messages is worth spending on at all. |
+| Decision history | 2026-08-23: registered as `deferred` while archiving the bootstrap handoff, preserving its original disposition. Registered outside the owner-approved 2026-08-21 execution order; its scheduling remains an owner decision. |
+| Next advancement condition | Advance only if the owner asks for it, and then only after a written proposal names the exact forms, the surfaces they apply to, and the cross-platform evidence that each renders clearly. |
+
+### RH-W-0062
+| Field | Value |
+|---|---|
+| Origin | Item 7 and the open gap of the 2026-08-12 bootstrap handoff, recovered on 2026-08-23 while archiving that document. It was written before the split and never reached this roadmap. |
+| Priority | P2: a consumer can invoke an installed builder copy that is not the version it believes it has, and nothing tells it so. No data is at risk, but every guarantee the consumer reasons about is guaranteed by a version it cannot confirm. |
+| Dependencies | none declared. Related to `RH-W-0057`, which owns a different blind spot in the same checker, and the two should be designed together if both are scheduled. |
+| Status | proposed |
+| Completed work | Recovered the gap and restated it inside this repository's boundary, without inspecting or naming any consumer. The original text measured the gap in another workspace; that framing is dropped because this repository schedules no work inside a consumer. The product-side question survives: canonical now lives here, an installed copy lives wherever the consumer put it, and no mechanism reports the distance between them. |
+| Remaining work | Design how a repository that installed the builder detects that its copy is stale against canonical. Decide what identity a copy carries, where the comparison runs, what it reports, and whether it is a builder capability, a generated-checker capability, or a release artifact. The generated checker cannot be the whole answer on its own: it compares projections against canonical copies inside the repository it runs in, and a consumer has no canonical builder to compare against. |
+| Additions | One staleness signal for an installed builder copy, owned by this product. |
+| Exclusions | No modification of any consumer repository, no inspection of one, no scheduled work inside one, no network dependency, and no telemetry. Installing and running a release stays the owner's action. |
+| Deferrals | none |
+| Rejections | Rejected extending the generated checker alone without a design, because it reports on a repository's own harness projections and has no canonical builder to compare against in a consumer. |
+| Evidence | Verified: the archived handoff records the gap, and no roadmap record covered it before 2026-08-23. Verified: `.repo-harness/check.py` compares only paths declared in the installed manifest. Human decision: whether the signal belongs to the builder, the generated checker, or the release. |
+| Decision history | 2026-08-23: registered as proposed while archiving the bootstrap handoff, restated inside this repository's boundary. Registered outside the owner-approved 2026-08-21 execution order; its scheduling remains an owner decision. |
+| Next advancement condition | Advance after a written design names the copy identity, the comparison location, the reported outcome, and the owning surface, with focused tests that fail before implementation. |
+
 ### RH-W-0061
 | Field | Value |
 |---|---|

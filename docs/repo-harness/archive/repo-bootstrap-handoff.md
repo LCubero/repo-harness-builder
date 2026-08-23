@@ -1,8 +1,8 @@
-# Repo Bootstrap Handoff
+# Repo Bootstrap Handoff (Archived)
 
-Read this before creating the standalone `repo-harness-builder` repository. It carries the knowledge that currently lives in `skills-pack-ld9` and would otherwise be lost, because the builder generates an empty harness shell and knows nothing about its own history.
+Archived on 2026-08-23. This is a historical record of the 2026-08-12 split that created this repository, kept for provenance only. It is not policy, not a plan, and not a source of pending work. Current policy lives in `REPO-HARNESS.md` and [decisions.md](../decisions.md); current work lives in [roadmap.md](../roadmap.md).
 
-This file is a completed historical handoff, not an operating document. Current policy lives in `REPO-HARNESS.md` and `docs/repo-harness/decisions.md`.
+Everything this document once instructed a reader to fetch from outside this repository was removed when it was archived, because nothing here depends on another workspace. The removed text remains recoverable from this file's Git history. Its four uncarried design decisions were promoted into [decisions.md](../decisions.md) on the same day, and its two surviving pending items became `RH-W-0062` and `RH-W-0063`.
 
 ## Decision Behind The Split
 
@@ -26,7 +26,7 @@ Verified in `skills-pack-ld9` at the time of writing:
 - Generator version `3.0`. Rendered output did not change when the package went to `3.1`, so the two version numbers are intentionally different.
 - Test suite: 116 tests passing with five expected skips. One skip is a Windows symlink privilege check, four are optional external wrapper checks.
 - Both integrated and standalone self-tests report `current`.
-- Dogfooded end to end against `E:\code\02-Proyectos\bionic-reader`, producing 26 files and a generated checker reporting `current`.
+- Dogfooded end to end against a separate repository, producing 26 files and a generated checker reporting `current`.
 - Author: Luis Diego Cubero Chavarria. License: CC BY-NC 4.0.
 
 ## Package Structure
@@ -48,7 +48,7 @@ Implementation constraint: Python 3.10 or later, standard library only.
 
 ## Design Decisions To Carry Over
 
-Seed these into `docs/repo-harness/decisions.md` in the new repository.
+These were meant to be seeded into `docs/repo-harness/decisions.md`. Six of them were. On 2026-08-23, while archiving this document, four were found never to have been carried over and were promoted then: version control as the safety net, runtime selection never inferred, the tool-owned path boundary, and generated session-start never delegating to a subagent. The list below is kept as the historical record of the transfer, not as a second owner.
 
 - **Historical preservation policy, superseded.** The original additive-create-only rule was replaced by the repository-sensitive policy in `docs/repo-harness/decisions.md`.
 - **Version control is the safety net.** The tool is not presented as a boundary against a hostile filesystem.
@@ -82,44 +82,11 @@ These entries currently sit in the `skills-pack-ld9` changelog but describe the 
 
 Entries that stay with `skills-pack-ld9` and must not be copied: creating that workspace's own harness, and applying the usage guide and help wrappers to that workspace's active harness. Those describe a consumer, not the product.
 
-## Existing Review Material
+## Pending Work In The New Repository (Resolved)
 
-A findings-only review existed in user-owned personal storage in the origin workspace. Its contents were not imported into this repository, so this historical handoff establishes only that the review existed. Any retained finding requires current repository evidence and explicit reconciliation; no external personal report is an operating dependency.
+Items 1 through 6 were completed while this repository was built: the package became its single canonical source, the harness was bootstrapped against the repository itself, `CHANGELOG.md` and `docs/repo-harness/decisions.md` were seeded, the product guide was written, and historical findings were reconciled against repository evidence.
 
-## Pending Work In The New Repository
+The two items that were still open when this document was archived were moved to the canonical lifecycle owner, because a pending item living in an archive has no owner:
 
-1. Create the repository and place this package as its single canonical source.
-2. Bootstrap the repository harness by running the builder against the new repository itself.
-3. Seed `CHANGELOG.md` from the history section above.
-4. Seed `docs/repo-harness/decisions.md` from the decisions section above.
-5. Write the product guide, which is distinct from the generated harness usage guide. It covers what the builder does, how to invoke it, its version policy, and its release process. The generated `docs/repo-harness/usage.md` documents the harness workflow, not the product.
-6. Reconcile any available historical findings against current repository evidence without depending on an external personal report.
-7. Define how a consumer repository detects that its installed copy of the builder is stale against canonical. See the open gap below.
-8. Deferred and optional: a presentation pass for harness user messages. Explore portable Markdown headings, simple callout blocks, and restrained emoji for session start, alerts, decisions, and session close. Adopt only what renders clearly across operating systems and agents. Avoid runtime-specific formatting and anything that complicates the builder.
-
-## Open Gap Found During Handoff
-
-In `skills-pack-ld9`, the runtime copy at `.claude/skills/repo-harness-builder/` is not covered by `python .repo-harness/check.py`. That checker reports on six files only, the three session skills across two runtimes. The builder projection can therefore drift from canonical without detection, which means a consumer can invoke a copy that is not the version it believes it has. This gap becomes more relevant once canonical lives in a separate repository, and item 7 above is the work it implies.
-
-## Origin And Historical Reference
-
-The builder was designed and implemented in the `skills-pack-ld9` authoring workspace. Keep that workspace as the historical record. Nothing before the split is reconstructable from the new repository's own Git history, because the work predates it.
-
-- Origin workspace: `E:\code\00-skills-pack_ld9`
-- Canonical source at the time of the split: `0_mis_skills/repo-harness-builder/`
-- External command wrapper: `0_mis_commands/repo-harness-builder.md`
-- Historical review material: user-owned personal storage in the origin workspace, not a repository dependency
-- Durable documentation of that workspace: `docs/repo-harness/` and `CHANGELOG.md`
-
-Engram continuity for that period is stored under the project key `skills-pack_ld9`, bound to the path above. Search it there when the reasoning behind a decision is not recorded in this repository.
-
-- Development window: 2026-08-10 through 2026-08-12.
-- Observation `#9143`, session summary closing the builder polishing cycle, including the runtime set handling fixes.
-- Observation `#9215`, the decision to split the builder into its own repository.
-- Useful search terms: `repo-harness-builder`, `runtime selection contract`, `repo-harness-help`, `usage guide`, `tool-owned path boundary`, `preflight`.
-
-Treat Engram as a continuity input, not as durable truth. Anything recovered from it must be reconciled against repository evidence before it is promoted into a canonical document.
-
-## Follow-Up Required In skills-pack-ld9
-
-Once the split happens, `REPO-HARNESS.md` in `skills-pack-ld9` still states that `0_mis_skills/` holds the canonical hand-maintained copies and is the only copy that may be edited. That statement stops being true for the builder and must be corrected in the same change.
+- Item 7, how a repository that installed the builder detects that its copy is stale against canonical, is now `RH-W-0062`.
+- Item 8, the deferred and optional presentation pass over generated user messages, is now `RH-W-0063`, registered `deferred` to preserve its original disposition.

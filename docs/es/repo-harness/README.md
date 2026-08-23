@@ -24,5 +24,6 @@
 | [Plan de implementacion RH-W-0054](../../repo-harness/rh-w-0054-implementation-plan.md) | Plan ejecutable canonico en ingles para transportar autoridad de correccion sin estado |
 | [Diseno RH-W-0059](rh-w-0059-design.md) | Borrador de transporte no interactivo; pendiente de aprobacion del propietario, sin implementacion autorizada |
 | [Hallazgos RH-W-0056](rh-w-0056-findings.md) | Propietario canonico de hallazgos de la revision de harness externo; solo recomendaciones, sin adopcion |
+| [Traspaso de arranque archivado](../../repo-harness/archive/repo-bootstrap-handoff.md) | Registro historico en ingles de la separacion del 2026-08-12; solo procedencia, no es politica ni plan ni fuente de trabajo pendiente |
 | [Mapa canonico en ingles](../../repo-harness/README.md) | Propiedad documental canonica |
 | [CHANGELOG.md](../../../CHANGELOG.md) | Historial cronologico canonico |
