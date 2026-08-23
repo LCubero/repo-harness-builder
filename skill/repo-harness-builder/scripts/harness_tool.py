@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -507,6 +508,75 @@ def validate_authority_context(
             }
         )
     return bindings
+
+
+def expected_authority_builder_config(args: argparse.Namespace) -> AuthorityBuilderConfig:
+    """Project the exact builder configuration this invocation would run.
+
+    The context declares what the builder is doing; this is the only thing it can be
+    compared against. Deriving it here rather than trusting the context is the whole
+    point: a context that describes a different build must not authorize this one.
+
+    Runtime and documentation-language order follow what the renderer normalizes, not
+    what the caller typed, because the plan is rendered from the normalized order and a
+    context bound to the typed order would disagree with the plan it claims to justify.
+    """
+    return {
+        "runtimes": sorted(set(args.runtime or [])),
+        "license": args.license_id,
+        "integrationMode": "standalone" if args.standalone else "integrated",
+        "reportLanguage": args.report_language,
+        "documentationLanguages": list(normalize_documentation_languages(args.documentation_languages)),
+        "conversationLanguage": args.conversation_language or DEFAULT_REPORT_LANGUAGE,
+        "ignoreCodegraph": args.ignore_codegraph,
+        "activation": args.activation,
+    }
+
+
+def target_binding_sha256(root: Path) -> str:
+    """Hash the normalized destination so identity survives without disclosing the path.
+
+    The normalized path is hashed and discarded. No caller returns or logs it, which is
+    what lets a preview name the target it is bound to without naming where it lives.
+    """
+    resolved = root.resolve(strict=True)
+    normalized = os.path.normcase(os.path.normpath(str(resolved)))
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+
+def authority_binding(
+    root: Path,
+    context: AuthorityContext,
+    canonical_context: str,
+    evidence: list[EvidenceBinding],
+    plan_sha256: str,
+) -> AuthorityBinding:
+    """Bind one generation to its context, its target, and its plan.
+
+    Three identities have to move together or the binding proves nothing. The context
+    says what was believed, the target says which repository it was believed about, and
+    the plan says what would be written. Changing any one of them is a different
+    generation, which is why an approval cannot survive a correction.
+    """
+    require(
+        isinstance(plan_sha256, str) and re.fullmatch(r"[0-9a-f]{64}", plan_sha256) is not None,
+        "authority binding requires a lowercase 64-character plan digest",
+    )
+    authority_context_sha256 = digest_text(canonical_context)
+    target_sha256 = target_binding_sha256(root)
+    generation = {
+        "domain": "repo-harness-builder/authority-generation/v1",
+        "authorityContextSha256": authority_context_sha256,
+        "materialRevision": context["materialRevision"],
+        "planIdentity": {"schemaVersion": 1, "planSha256": plan_sha256},
+        "targetBindingSha256": target_sha256,
+    }
+    return {
+        "evidence": evidence,
+        "authorityContextSha256": authority_context_sha256,
+        "targetBindingSha256": target_sha256,
+        "generationSha256": digest_text(canonical_json(generation)),
+    }
 
 
 def approval_domain(report_language: str = DEFAULT_REPORT_LANGUAGE) -> dict[str, str]:

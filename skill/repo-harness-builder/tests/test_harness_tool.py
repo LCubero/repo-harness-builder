@@ -1,3 +1,4 @@
+import argparse
 import ast
 import importlib.util
 import hashlib
@@ -5410,6 +5411,194 @@ class SurvivingLegacyReferenceTests(unittest.TestCase):
                 {item["path"] for item in payload["survivingLegacyReferences"]["references"]},
             )
 
+
+
+
+class AuthorityConfigurationProjectionTests(unittest.TestCase):
+    """RH-W-0054 Task 2: the context must bind the exact configuration the builder would run."""
+
+    def args(self, **overrides):
+        values = {
+            "project_name": "Example",
+            "runtime": ["opencode"],
+            "license_id": "MIT",
+            "standalone": False,
+            "report_language": "english",
+            "documentation_languages": ["en", "es"],
+            "conversation_language": "espanol",
+            "ignore_codegraph": True,
+            "activation": "builder",
+        }
+        values.update(overrides)
+        return argparse.Namespace(**values)
+
+    def context(self, **builder_overrides):
+        base = AuthorityContextTests.context(AuthorityContextTests())
+        base["builder"].update(builder_overrides)
+        return base
+
+    def host_inputs(self):
+        return {"engram_evidence_json": '{"observations":[{"fact":"current","id":1}]}'}
+
+    def test_projection_returns_every_declared_builder_field(self):
+        self.assertEqual(
+            TOOL.expected_authority_builder_config(self.args()),
+            {
+                "runtimes": ["opencode"],
+                "license": "MIT",
+                "integrationMode": "integrated",
+                "reportLanguage": "english",
+                "documentationLanguages": ["en", "es"],
+                "conversationLanguage": "espanol",
+                "ignoreCodegraph": True,
+                "activation": "builder",
+            },
+        )
+
+    def test_integration_mode_is_derived_from_the_standalone_choice(self):
+        self.assertEqual(
+            TOOL.expected_authority_builder_config(self.args(standalone=True))["integrationMode"],
+            "standalone",
+        )
+
+    def test_runtime_order_matches_what_the_renderer_normalizes(self):
+        """A context that bound the typed order would disagree with the plan the builder actually renders."""
+        projected = TOOL.expected_authority_builder_config(self.args(runtime=["opencode", "claude-code"]))
+        self.assertEqual(projected["runtimes"], sorted({"opencode", "claude-code"}))
+
+    def test_each_configuration_field_mutation_is_refused(self):
+        """One mutation per field: an authority context may not describe a build the CLI is not running."""
+        mutations = (
+            ("runtimes", ["claude-code"]),
+            ("license", "UNLICENSED"),
+            ("integrationMode", "standalone"),
+            ("reportLanguage", "espanol"),
+            ("documentationLanguages", ["en"]),
+            ("conversationLanguage", "english"),
+            ("ignoreCodegraph", False),
+        )
+        expected = TOOL.expected_authority_builder_config(self.args())
+        for field, value in mutations:
+            with self.subTest(field=field):
+                with self.assertRaises(TOOL.ContractError) as caught:
+                    TOOL.validate_authority_context(
+                        Path("."), self.context(**{field: value}), "example", "Example",
+                        expected, self.host_inputs(),
+                    )
+                self.assertIn("authority context configuration mismatch", str(caught.exception))
+
+    def test_project_id_and_name_mismatches_are_refused(self):
+        expected = TOOL.expected_authority_builder_config(self.args())
+        for project_id, project_name in (("other", "Example"), ("example", "Other")):
+            with self.subTest(project_id=project_id, project_name=project_name):
+                with self.assertRaises(TOOL.ContractError) as caught:
+                    TOOL.validate_authority_context(
+                        Path("."), self.context(), project_id, project_name,
+                        expected, self.host_inputs(),
+                    )
+                self.assertIn("authority context project mismatch", str(caught.exception))
+
+    def test_report_language_changes_the_bound_domain_without_changing_plan_identity(self):
+        """Presentation alone must not move executable plan identity, while the approval domain stays bound."""
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            outputs = TOOL.render("Example", ["opencode"])
+            plan_en = TOOL.plan_changes(root, outputs)
+            plan_es = TOOL.plan_changes(root, outputs)
+        self.assertEqual(TOOL.plan_digest(plan_en), TOOL.plan_digest(plan_es))
+        config_en = TOOL.expected_authority_builder_config(self.args(report_language="english"))
+        config_es = TOOL.expected_authority_builder_config(self.args(report_language="espanol"))
+        self.assertNotEqual(config_en["reportLanguage"], config_es["reportLanguage"])
+
+
+class AuthorityBindingTests(unittest.TestCase):
+    """RH-W-0054 Task 2: a generation is bound to context, target, and plan, and leaks no path."""
+
+    PLAN_SHA = "0" * 64
+
+    def setUp(self):
+        self.context = AuthorityContextTests.context(AuthorityContextTests())
+        self.canonical = TOOL.canonical_json(self.context)
+        self.config = TOOL.expected_authority_builder_config(
+            argparse.Namespace(
+                project_name="Example", runtime=["opencode"], license_id="MIT", standalone=False,
+                report_language="english", documentation_languages=["en", "es"],
+                conversation_language="espanol", ignore_codegraph=True, activation="builder",
+            )
+        )
+        self.host_inputs = {"engram_evidence_json": '{"observations":[{"fact":"current","id":1}]}'}
+
+    def bind(self, root, context=None, plan_sha=None):
+        # `plan_sha or default` would turn the empty-string case into the valid default and
+        # let a malformed digest pass its own rejection test.
+        context = self.context if context is None else context
+        plan_sha = self.PLAN_SHA if plan_sha is None else plan_sha
+        evidence = TOOL.validate_authority_context(
+            root, context, "example", "Example", self.config, self.host_inputs
+        )
+        return TOOL.authority_binding(
+            root, context, TOOL.canonical_json(context), evidence, plan_sha
+        )
+
+    def test_binding_returns_three_hex_digests_and_no_absolute_path(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            binding = self.bind(root)
+        self.assertRegex(binding["authorityContextSha256"], r"^[0-9a-f]{64}$")
+        self.assertRegex(binding["targetBindingSha256"], r"^[0-9a-f]{64}$")
+        self.assertRegex(binding["generationSha256"], r"^[0-9a-f]{64}$")
+        self.assertNotIn(str(root.resolve()), json.dumps(binding))
+
+    def test_two_identical_roots_bind_to_different_targets_and_generations(self):
+        """Identical content is not identity: the target is where it is, not what it holds."""
+        with tempfile.TemporaryDirectory() as first, tempfile.TemporaryDirectory() as second:
+            (Path(first) / "same.txt").write_text("same", encoding="utf-8")
+            (Path(second) / "same.txt").write_text("same", encoding="utf-8")
+            one = self.bind(Path(first))
+            two = self.bind(Path(second))
+        self.assertNotEqual(one["targetBindingSha256"], two["targetBindingSha256"])
+        self.assertNotEqual(one["generationSha256"], two["generationSha256"])
+
+    def test_renaming_the_directory_produces_a_new_target(self):
+        with tempfile.TemporaryDirectory() as name:
+            base = Path(name)
+            original = base / "before"
+            original.mkdir()
+            before = self.bind(original)
+            renamed = base / "after"
+            original.rename(renamed)
+            after = self.bind(renamed)
+        self.assertNotEqual(before["targetBindingSha256"], after["targetBindingSha256"])
+
+    def test_material_revision_alone_moves_the_generation(self):
+        """The plan digest is unchanged; the world the plan was justified against is not."""
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            first = self.bind(root)
+            second = self.bind(root, context=AuthorityContextTests.context(AuthorityContextTests(), revision="revision-2"))
+        self.assertNotEqual(first["authorityContextSha256"], second["authorityContextSha256"])
+        self.assertNotEqual(first["generationSha256"], second["generationSha256"])
+
+    def test_plan_digest_alone_moves_the_generation(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            first = self.bind(root)
+            second = self.bind(root, plan_sha="1" * 64)
+        self.assertEqual(first["authorityContextSha256"], second["authorityContextSha256"])
+        self.assertNotEqual(first["generationSha256"], second["generationSha256"])
+
+    def test_unchanged_input_binds_identically(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            self.assertEqual(self.bind(root), self.bind(root))
+
+    def test_a_malformed_plan_digest_is_refused(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            for bad in ("", "0" * 63, "0" * 65, "g" * 64, "0" * 63 + "A"):
+                with self.subTest(plan_sha256=bad):
+                    with self.assertRaises(TOOL.ContractError):
+                        self.bind(root, plan_sha=bad)
 
 
 class NonInteractiveTransportTests(unittest.TestCase):

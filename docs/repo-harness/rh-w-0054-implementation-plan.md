@@ -1,6 +1,6 @@
 # RH-W-0054 Stateless Correction Authority Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: use `subagent-driven-development` task by task, `test-driven-development` for every behavior slice, and `verification-before-completion` before delivery. RH-W-0054 is `active`; Task 1 is the only authorized implementation boundary, and Tasks 2 through 8 remain pending.
+> **For agentic workers:** REQUIRED SUB-SKILL: use `subagent-driven-development` task by task, `test-driven-development` for every behavior slice, and `verification-before-completion` before delivery. RH-W-0054 is `active`; Tasks 1 and 2 are complete, Task 3 is the next candidate boundary, and Tasks 3 through 8 remain pending.
 
 **Goal:** Bind builder preview approval across separate CLI processes to one reviewable canonical authority context, current repository evidence, complete output-affecting configuration, exact plan identity, and opaque target identity.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** Python 3.10+ standard library, `TypedDict`, `unittest`, `hashlib`, deterministic JSON, independent `main()` calls, subprocess CLI tests, and exact canonical-to-runtime projection copies.
 
-**Lifecycle owner:** [RH-W-0054](roadmap.md#rh-w-0054), status `active`. The [approved design](rh-w-0054-design.md) owns behavior; this plan owns implementation sequence only. Task 1 is complete in the current uncommitted worktree after focused review corrections; Tasks 2 through 8 and delivery remain pending.
+**Lifecycle owner:** [RH-W-0054](roadmap.md#rh-w-0054), status `active`. The [approved design](rh-w-0054-design.md) owns behavior; this plan owns implementation sequence only. Tasks 1 and 2 are complete and committed; Tasks 3 through 8 and delivery remain pending.
 
 ---
 
@@ -260,7 +260,7 @@ Rollback: authority types, parser constants and functions, host JSON validator f
 
 **Files:** same canonical script and test module.
 
-- [ ] **Step 1: Add failing configuration projection tests**
+- [x] **Step 1: Add failing configuration projection tests**
 
 Construct an `argparse.Namespace` containing project, runtimes, license, standalone, report language, documentation languages, conversation language, ignore choice, and activation. Assert `expected_authority_builder_config()` returns all fields exactly. Table-drive one mutation per field through the already-green `validate_authority_context()` and require `ContractError` containing `authority context configuration mismatch`. Add project id and project name mismatch tests.
 
@@ -273,19 +273,19 @@ self.assertNotEqual(config_en["reportLanguage"], config_es["reportLanguage"])
 
 This proves presentation alone does not alter executable plan identity while an authority-relevant approval domain remains explicitly bound in context.
 
-- [ ] **Step 2: Verify configuration RED**
+- [x] **Step 2: Verify configuration RED**
 
 Run the focused configuration methods. Expected RED: missing `expected_authority_builder_config()`, not missing validator types or behavior.
 
-- [ ] **Step 3: Implement deterministic configuration projection**
+- [x] **Step 3: Implement deterministic configuration projection**
 
 Add `expected_authority_builder_config()` with its exact signature. Derive `integrationMode` from `args.standalone`, preserve runtime and documentation-language order exactly as normalized by current CLI parsing, and return every declared builder field. Keep the already-green validator API unchanged and compare dictionaries directly.
 
-- [ ] **Step 4: Verify configuration GREEN**
+- [x] **Step 4: Verify configuration GREEN**
 
 Run the focused configuration and mismatch methods. Expected: all pass with no warnings.
 
-- [ ] **Step 5: Add failing target and generation binding tests**
+- [x] **Step 5: Add failing target and generation binding tests**
 
 Add tests proving:
 
@@ -300,15 +300,15 @@ self.assertNotIn(str(root.resolve()), json.dumps(binding))
 
 Use host-only contexts so this task builds exclusively on Task 1 GREEN behavior. Use two temporary roots with identical files and assert different target and generation digests. Copy the same root to a renamed directory and assert a new target digest. Change only `materialRevision` while keeping the plan digest identical and assert a new generation. Change only the plan digest and assert a new generation. Repeat unchanged input and assert identical bindings. Add malformed plan digest rejection through `authority_binding()`.
 
-- [ ] **Step 6: Verify binding RED**
+- [x] **Step 6: Verify binding RED**
 
 Run the five binding tests. Expected RED: missing binding functions.
 
-- [ ] **Step 7: Implement the exact digest functions**
+- [x] **Step 7: Implement the exact digest functions**
 
 Add `target_binding_sha256()` and `authority_binding()` exactly as specified. Use existing `digest_text()` only for canonical JSON text; use `hashlib.sha256(normalized_path.encode("utf-8")).hexdigest()` for target identity so no path string enters a returned object.
 
-- [ ] **Step 8: Verify complete Task 2 GREEN and current plan compatibility**
+- [x] **Step 8: Verify complete Task 2 GREEN and current plan compatibility**
 
 Run all `AuthorityContextTests` plus:
 
@@ -316,7 +316,7 @@ Run all `AuthorityContextTests` plus:
 
 Expected: all parser, host validation, configuration, target, generation, malformed plan digest, and compatibility tests pass.
 
-- [ ] **Step 9: Work-unit boundary**
+- [x] **Step 9: Work-unit boundary**
 
 Planned commit: `feat(authority): bind generations to context and target`
 
@@ -676,7 +676,7 @@ Task 6 asserts at runtime that the superseded session APIs are not defined.
 
 Run `git status --short`, `git diff --stat`, and `git diff -- docs/repo-harness/roadmap.md docs/es/repo-harness/roadmap.md docs/repo-harness/current-state.md docs/es/repo-harness/current-state.md CHANGELOG.md`.
 
-Expected before completed delivery: RH-W-0054 remains `active`; Task 1 may be complete while Tasks 2 through 8 and delivery remain pending. No changelog completion entry exists, no post-write owner is assigned, and no commit, push, staging, provider action, or external repository mutation occurred.
+Expected before completed delivery: RH-W-0054 remains `active`; Tasks 1 and 2 may be complete while Tasks 3 through 8 and delivery remain pending. No changelog completion entry exists, no post-write owner is assigned, and no commit, push, staging, provider action, or external repository mutation occurred.
 
 - [ ] **Step 6: Conditional completion reconciliation**
 
@@ -720,7 +720,7 @@ Use three chained review slices because authored work exceeds the 400-line targe
 - [ ] Genuine subprocess tests and independent `main()` tests pass.
 - [ ] Portable Python replaces every repository-content `rg` verification.
 - [ ] Canonical package files and both runtime projections are byte-identical.
-- [ ] RH-W-0054 stays `active` until all separately authorized implementation and delivery evidence supports completion; Task 1 completion does not authorize Tasks 2 through 8.
+- [ ] RH-W-0054 stays `active` until all separately authorized implementation and delivery evidence supports completion; Task 2 completion does not authorize Tasks 3 through 8.
 
 ## Remaining Human Decisions
 
@@ -728,7 +728,7 @@ None before implementation authorization. Naming and ownership of a future post-
 
 ## Handoff
 
-**Next step:** Begin the next session with Task 2 as the candidate boundary, then obtain separate authorization before implementation. RH-W-0054 remains `active`; Tasks 2 through 8, delivery, commit, push, SDD, and RDD remain unauthorized.
+**Next step:** Begin the next session with Task 3, resolving typed repository evidence, as the candidate boundary, then obtain separate authorization before implementation. RH-W-0054 remains `active`; Tasks 3 through 8 and delivery remain unauthorized.
 
 ## Second-Correction Review Dispositions
 
