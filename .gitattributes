@@ -21,3 +21,7 @@
 .repo-harness/skills/repo-harness-documentation/SKILL.md text eol=lf
 .repo-harness/skills/repo-harness-session-start/SKILL.md text eol=lf
 .repo-harness/skills/repo-harness-session-stop/SKILL.md text eol=lf
+.pi/prompts/documentation.md text eol=lf
+.pi/prompts/repo-harness-help.md text eol=lf
+.pi/prompts/session-start.md text eol=lf
+.pi/prompts/session-stop.md text eol=lf

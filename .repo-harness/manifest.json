@@ -23,7 +23,8 @@
   },
   "runtimes": [
     "claude-code",
-    "opencode"
+    "opencode",
+    "pi"
   ],
   "schemaVersion": "3.0",
   "writeSemantics": "additive-create-with-bounded-root-append"

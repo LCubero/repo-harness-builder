@@ -1,6 +1,6 @@
 # RH-W-0057 Design: Canonical Commands And Wrapper Coverage
 
-Status: draft, pending owner approval. No implementation is authorized by this document.
+Status: draft, pending owner approval. No implementation is authorized by this document. Revised on 2026-08-23 after the owner scoped Pi coverage: Pi is compared whenever Pi is recorded, which removed the open option this design first carried.
 
 ## The Defect, Measured
 
@@ -16,32 +16,47 @@ This matters in a consumer repository specifically. The builder is not installed
 
 ## Decision 1: Canonical Layout
 
-Canonical command sources live at `.repo-harness/commands/{command}.md`, one file per generated command, beside `.repo-harness/skills/`.
+Canonical command sources live beside `.repo-harness/skills/`, one file per generated command per surface family: `.repo-harness/commands/{command}.md` for the runtimes that load a command, and `.repo-harness/prompts/{command}.md` for the runtimes that load a prompt. Decision 3 gives the measurement that forces two families rather than one.
 
 This is chosen over recording a wrapper digest in the manifest because a canonical peer keeps the checker's existing shape: read canonical, read projection, compare. A digest field would add a second comparison mechanism and would make the manifest grow every time a command is added. The unit's exclusions already reject the digest approach for this reason.
 
 ## Decision 2: Manifest Declaration
 
-The manifest gains `canonicalCommands`, mirroring `canonicalSkills`:
+The manifest gains one field, `canonicalCommands`, keyed by command name and then by surface family:
 
 ```json
-"canonicalCommands": {"session-start": ".repo-harness/commands/session-start.md"}
+"canonicalCommands": {
+  "session-start": {
+    "commands": ".repo-harness/commands/session-start.md",
+    "prompts": ".repo-harness/prompts/session-start.md"
+  }
+}
 ```
 
-The checker validates it exactly as it validates `canonicalSkills`: a non-empty object, each key matching `[a-z0-9]+(?:-[a-z0-9]+)*`, each value passing `safe_relative()`.
+Only the families the render actually produced appear under a command, so a repository without Pi carries no `prompts` entry and a repository with only Pi carries no `commands` entry.
+
+One field rather than two is deliberate. The generated checker requires exact manifest field-set equality, so an optional second field would either have to always exist, sometimes empty, or break that check. Nesting keeps the field always present and always non-empty while letting the families vary.
+
+The checker validates it the way it validates `canonicalSkills`, one level deeper: a non-empty object, each command key matching `[a-z0-9]+(?:-[a-z0-9]+)*`, each value a non-empty object whose keys are `commands` or `prompts` and whose values pass `safe_relative()`.
 
 ## Decision 3: Which Surfaces Are Compared
 
-Verified: `wrapper(runtime, skill_name)` differs across runtimes in exactly one word. It renders `skill mechanism` for `claude-code` and `opencode` and `prompt mechanism` for `pi`. Verified on disk: all five wrappers under `.claude/commands/` are byte-identical to their `.opencode/commands/` peers. Verified: `help_wrapper()` accepts a `runtime` argument and never reads it, so its output does not vary by runtime at all.
+Every recorded runtime is compared, Pi included. The checker already iterates `manifest["runtimes"]`, so a surface is compared exactly when the repository declares that runtime and skipped when it does not. Nothing needs a special case for presence.
 
-So one canonical file per command is byte-identical to both the Claude Code and the OpenCode projection, and differs from the Pi projection by one word inside a sentence.
+Pi is the runtime that most needs this. Verified after adding Pi to this repository on 2026-08-23: the builder generates no `.pi/skills/` at all, so Pi's only generated surface is its four `.pi/prompts/*.md` command prompts. The current checker compares six files, all of them Claude Code and OpenCode skill projections. Pi is therefore not partially checked today; it is entirely unchecked, and the control that would cover it is precisely the one this unit adds.
 
-The skills solve their equivalent problem with `comparable()`, which drops the whole `canonical-source:` line. That works because the difference is a complete line. It does not transfer here: the Pi difference is a word inside a sentence, and normalizing it would mean teaching the checker which words a runtime is allowed to change. That is a rule that rots the first time a wrapper is reworded.
+The obstacle is one word. Verified: `wrapper(runtime, skill_name)` renders `skill mechanism` for `claude-code` and `opencode` and `prompt mechanism` for `pi`. Verified on disk: all five wrappers under `.claude/commands/` are byte-identical to their `.opencode/commands/` peers, and `.pi/prompts/session-start.md` differs from `.claude/commands/session-start.md` in exactly that word. Verified: `help_wrapper()` accepts a `runtime` argument it never reads, so the help surface does not vary by runtime at all.
 
-Two honest options, and this is the one decision this design leaves to the owner:
+The skills solve their equivalent problem with `comparable()`, which drops the whole `canonical-source:` line. That does not transfer, because the Pi difference is a word inside a sentence and normalizing it would mean teaching the checker which words a runtime is allowed to change. That rule rots the first time a wrapper is reworded.
 
-- **Option A, recommended.** Compare `.claude/commands/{name}.md` and `.opencode/commands/{name}.md` against the canonical peer. Report the Pi surface as `unchecked` with its reason, so the report states its own limit rather than implying coverage it does not have. Smallest change, no generated bytes move, and Pi users see explicitly that this control does not cover them.
-- **Option B.** Make `wrapper()` runtime-neutral so one canonical file covers all three surfaces. This deletes the limitation instead of documenting it, but it changes generated bytes for every Pi installation and belongs to a separate unit with its own migration reasoning.
+So the canonical source is stored per surface family, one file per command per family:
+
+| Canonical | Compared against | Created when |
+|---|---|---|
+| `.repo-harness/commands/{command}.md` | `.claude/commands/{command}.md`, `.opencode/commands/{command}.md` | `claude-code` or `opencode` is recorded |
+| `.repo-harness/prompts/{command}.md` | `.pi/prompts/{command}.md` | `pi` is recorded |
+
+Each canonical file is byte-identical to the surfaces it covers, so the comparison stays a plain byte comparison with no normalization and no runtime-aware rules. A family whose runtimes are not recorded produces no canonical directory, exactly as `.pi/prompts/` does not exist until Pi is selected. The cost is one extra canonical file per command only for repositories that actually use Pi, and it buys Pi the same coverage the other two get instead of a documented blind spot.
 
 ## Decision 4: Installs That Predate The Field
 
@@ -61,13 +76,12 @@ Reuse the existing vocabulary rather than inventing one:
 | `stale` | Projection exists and differs |
 | `missing` | Projection absent |
 | `canonical-missing` | Canonical peer absent, so nothing can be compared |
-| `unchecked` | Surface deliberately not compared, with its reason (Option A only) |
 
-`drift` remains any state other than `current`, and `unchecked` does not count as drift, because a stated limit is not a defect.
+`drift` remains any state other than `current`. No `unchecked` state is needed, because every recorded runtime is compared and an unrecorded one produces no surface to compare.
 
 ## Exclusions
 
-No writes from the checker, no repair or regeneration mode, no change to skill projection comparison, no wrapper digest field in the manifest, and no change to `wrapper()` unless the owner selects Option B, which would then be its own unit.
+No writes from the checker, no repair or regeneration mode, no change to skill projection comparison, no wrapper digest field in the manifest, and no change to `wrapper()`. Making the wrapper text runtime-neutral would collapse the two canonical families into one, but it changes generated bytes for every Pi installation and belongs to its own unit with its own migration reasoning.
 
 ## Incidental Observation, Not Scope
 
@@ -80,6 +94,6 @@ Focused tests that fail first:
 - The generated checker reports a deleted command wrapper as `missing`.
 - It reports an edited wrapper as `stale`.
 - It reports an absent canonical peer as `canonical-missing`.
-- A manifest declaring `canonicalCommands` with an unsafe or absolute path is rejected before any read.
+- A manifest declaring `canonicalCommands` with an unsafe or absolute path, an unknown family key, or an empty family object is rejected before any read.
 - The builder's own `check()` reports `undeclared` for an installed manifest without the field instead of raising.
-- Under Option A, the Pi surface is reported `unchecked` and does not make the status `drift`.
+- A deleted `.pi/prompts/{command}.md` is reported `missing` when `pi` is recorded, and no Pi surface is reported at all when it is not.
