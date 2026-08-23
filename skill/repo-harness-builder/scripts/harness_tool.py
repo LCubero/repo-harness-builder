@@ -322,6 +322,13 @@ BUILDER_FIELDS = {
 }
 PREMISE_FIELDS = {"id", "class", "value", "decisionIds", "evidenceIds"}
 DECISION_FIELDS = {"id", "kind", "statement"}
+FRESH_PREVIEW_REQUIRED = "fresh_preview_required: authority input is unavailable, invalid, or changed"
+"""Every authority refusal on the apply path collapses here.
+
+A caller learns that the approval no longer holds and must preview again. It learns nothing
+about which field, path, or byte disagreed, because that detail is the evidence itself.
+"""
+
 REDACTED_MARKER = "[redacted]"
 REPOSITORY_FILE_EVIDENCE_FIELDS = {"id", "kind", "locator", "sha256"}
 HOST_JSON_EVIDENCE_FIELDS = {"id", "kind", "source", "sha256"}
@@ -3062,8 +3069,13 @@ def apply_generated_output_migration(
         raise
 
 
-def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> list[str]:
-    """Execute only the unchanged approved plan, including bounded root appends."""
+def validate_write_preconditions(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> None:
+    """Prove the approved plan still describes the repository, before anything is written.
+
+    This lived inside `write_outputs()` and still runs there. It is named and callable on its
+    own so an authority-carrying apply can run it as an explicit preflight and translate its
+    refusal into one content-free outcome, without teaching the writer about authority.
+    """
     require(plan == plan_changes(root, outputs), "approved plan is stale; preview again")
     require(not plan["blocked"], "blocked plan actions require approved executable integration")
     for item in plan["existing"]:
@@ -3088,6 +3100,16 @@ def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> 
         require(target.is_file() and not is_indirect(target), f"invalid generated replacement target: {relative}")
         require(digest_bytes(target.read_bytes()) == item["sourceSha256"], f"generated source bytes changed: {relative}")
         require(digest_text(outputs[relative]) == item["destinationSha256"], f"generated destination bytes changed: {relative}")
+
+
+def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> list[str]:
+    """Execute only the unchanged approved plan, including bounded root appends.
+
+    The preflight repeats deliberately when a caller already ran it: it is the last check
+    before mutation, and a race between validation and the write must not pass through.
+    """
+    validate_write_preconditions(root, outputs, plan)
+
     def apply_additive() -> list[str]:
         written: list[Path] = []
         appended: dict[Path, bytes] = {}
@@ -3545,7 +3567,17 @@ def main(argv: Optional[list[str]] = None) -> int:
             # here would delete that boundary rather than extend it.
             if args.authority_context_file:
                 require(bool(args.project_id), "an authority context requires --project-id")
-                authority_projection = builder_authority_projection(root, args, digest)
+                if args.apply:
+                    # An initial preview reports exactly what is wrong with the context it was
+                    # handed. Apply cannot: by then the same failure means the approval no
+                    # longer describes this repository, and naming the difference would echo
+                    # the evidence the binding exists to keep out of the output.
+                    try:
+                        authority_projection = builder_authority_projection(root, args, digest)
+                    except (ContractError, OSError, UnicodeDecodeError, ValueError) as error:
+                        raise ContractError(FRESH_PREVIEW_REQUIRED) from error
+                else:
+                    authority_projection = builder_authority_projection(root, args, digest)
             else:
                 require(
                     not args.project_id,
@@ -3583,6 +3615,17 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if not approval_granted(args.approval, args.report_language):
                     print(dump_json({"status": "DENIED", "changed": [], "planSha256": digest, "reportLanguage": args.report_language}), end="")
                     return 0
+            if builder_active and args.authority_context_file:
+                require(
+                    bool(args.approved_generation_sha256),
+                    "--approved-generation-sha256 is required when apply carries an authority context",
+                )
+                if args.approved_generation_sha256 != authority_projection["generationSha256"]:
+                    raise ContractError(FRESH_PREVIEW_REQUIRED)
+                try:
+                    validate_write_preconditions(root, outputs, plan)
+                except ContractError as error:
+                    raise ContractError(FRESH_PREVIEW_REQUIRED) from error
             changed = write_outputs(root, outputs, plan)
             print(dump_json({"status": "VALIDATED", "changed": changed, "planSha256": digest, "reportLanguage": args.report_language, "plan": plan}), end="")
         return 0

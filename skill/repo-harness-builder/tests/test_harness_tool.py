@@ -6063,5 +6063,205 @@ class QuestionVisibilityTests(unittest.TestCase):
                 self.assertNotIn(token, rulebook)
 
 
+class BuilderApplyGenerationTests(unittest.TestCase):
+    """RH-W-0054 Task 5: an approved generation that no longer matches must not reach a write."""
+
+    SENTINEL = "sentinel-secret-value"
+    EVIDENCE = "docs/evidence.md"
+
+    def cli(self, root):
+        return [
+            sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
+            "--project-name", "Example", "--runtime", "opencode",
+            "--license", "MIT", "--standalone",
+            "--report-language", "english",
+            "--documentation-language", "en",
+            "--conversation-language", "english",
+            "--activation", "builder", "--project-id", "example",
+        ]
+
+    def builder_config(self):
+        return TOOL.expected_authority_builder_config(argparse.Namespace(
+            project_name="Example",
+            runtime=["opencode"],
+            license_id="MIT",
+            standalone=True,
+            report_language="english",
+            documentation_languages=["en"],
+            conversation_language="english",
+            ignore_codegraph=True,
+            activation="builder",
+        ))
+
+    def seed_evidence(self, root, body="evidence body\n"):
+        target = root / self.EVIDENCE
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(body, encoding="utf-8")
+        return hashlib.sha256(target.read_bytes()).hexdigest()
+
+    def context(self, digest, revision="revision-1"):
+        return {
+            "schemaVersion": 1,
+            "materialRevision": revision,
+            "project": {"id": "example", "name": "Example"},
+            "builder": self.builder_config(),
+            "premises": [{
+                "id": "premise-1",
+                "class": "factual_claim",
+                "value": self.SENTINEL,
+                "decisionIds": ["decision-1"],
+                "evidenceIds": ["evidence-1"],
+            }],
+            "decisions": [{
+                "id": "decision-1",
+                "kind": "human_decision",
+                "statement": self.SENTINEL,
+            }],
+            "evidence": [{
+                "id": "evidence-1",
+                "kind": "repository_file",
+                "locator": self.EVIDENCE,
+                "sha256": digest,
+            }],
+        }
+
+    def write_context(self, root, digest, revision="revision-1"):
+        path = root / "authority-context.json"
+        path.write_text(TOOL.canonical_json(self.context(digest, revision)), encoding="utf-8")
+        return path
+
+    def preview(self, root, context_path):
+        result = subprocess.run(
+            [*self.cli(root), "--authority-context-file", str(context_path)],
+            check=True, capture_output=True, text=True,
+        )
+        return json.loads(result.stdout)
+
+    def apply(self, root, context_path, plan_sha, generation):
+        command = [
+            *self.cli(root), "--authority-context-file", str(context_path),
+            "--apply", "--approved-plan-sha256", plan_sha, "--approval", "APPROVE",
+        ]
+        if generation is not None:
+            command += ["--approved-generation-sha256", generation]
+        return subprocess.run(command, check=False, capture_output=True, text=True)
+
+    def assert_no_writes(self, result, root):
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("fresh_preview_required", result.stderr)
+        self.assertFalse((root / "REPO-HARNESS.md").exists())
+        self.assertNotIn(self.SENTINEL, result.stdout)
+        self.assertNotIn(self.SENTINEL, result.stderr)
+
+    def test_apply_writes_when_the_approved_generation_still_matches(self):
+        """The happy path has to work, or every rejection below proves nothing."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            applied = self.apply(root, context_path, plan["planSha256"], plan["generationSha256"])
+
+            self.assertEqual(applied.returncode, 0, applied.stderr)
+            self.assertEqual(json.loads(applied.stdout)["status"], "VALIDATED")
+            self.assertTrue((root / "REPO-HARNESS.md").is_file())
+            self.assertNotIn(self.SENTINEL, applied.stdout)
+
+    def test_apply_rejects_a_generation_that_does_not_match(self):
+        """Without this the flag is accepted and ignored, which is worse than absent."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            applied = self.apply(root, context_path, plan["planSha256"], "0" * 64)
+
+            self.assert_no_writes(applied, root)
+
+    def test_apply_requires_an_approved_generation_when_it_carries_a_context(self):
+        """An authority context without an approved generation authorizes nothing."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            applied = self.apply(root, context_path, plan["planSha256"], None)
+
+            self.assertEqual(applied.returncode, 2)
+            self.assertFalse((root / "REPO-HARNESS.md").exists())
+            self.assertNotIn(self.SENTINEL, applied.stderr)
+
+    def test_a_corrected_identical_plan_needs_a_fresh_generation(self):
+        """Same bytes, corrected premise: the plan digest cannot notice, the generation must."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            digest = self.seed_evidence(root)
+            first_path = self.write_context(root, digest, revision="revision-1")
+            first = self.preview(root, first_path)
+
+            second_path = root / "authority-context-2.json"
+            second_path.write_text(
+                TOOL.canonical_json(self.context(digest, revision="revision-2")), encoding="utf-8"
+            )
+            second = self.preview(root, second_path)
+
+            self.assertEqual(first["planSha256"], second["planSha256"])
+            self.assertNotEqual(first["generationSha256"], second["generationSha256"])
+
+            applied = self.apply(root, second_path, second["planSha256"], first["generationSha256"])
+            self.assert_no_writes(applied, root)
+
+    def test_apply_rejects_evidence_bytes_changed_after_the_preview(self):
+        """The plan bytes are unchanged, so only the evidence binding can catch this."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            (root / self.EVIDENCE).write_text("evidence changed after preview\n", encoding="utf-8")
+
+            applied = self.apply(root, context_path, plan["planSha256"], plan["generationSha256"])
+            self.assert_no_writes(applied, root)
+
+    def test_apply_rejects_a_context_transport_that_disappeared(self):
+        """An unreadable transport is not permission to fall back to the digest alone."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            context_path.unlink()
+
+            applied = self.apply(root, context_path, plan["planSha256"], plan["generationSha256"])
+            self.assert_no_writes(applied, root)
+
+    def test_apply_rejects_a_context_whose_bytes_stopped_being_canonical(self):
+        """A transport edited after preview is a changed authority, not a formatting detail."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            context_path.write_text(
+                context_path.read_text(encoding="utf-8") + "\n", encoding="utf-8"
+            )
+
+            applied = self.apply(root, context_path, plan["planSha256"], plan["generationSha256"])
+            self.assert_no_writes(applied, root)
+
+    def test_maintenance_apply_still_needs_only_the_matching_digest(self):
+        """Task 5 may not make the ordinary maintenance path require authority it never had."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base = [
+                sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
+                "--project-name", "Example", "--runtime", "opencode", "--standalone",
+            ]
+            digest = json.loads(
+                subprocess.run(base, check=True, capture_output=True, text=True).stdout
+            )["planSha256"]
+            applied = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", digest],
+                check=False, capture_output=True, text=True,
+            )
+
+            self.assertEqual(applied.returncode, 0, applied.stderr)
+            self.assertTrue((root / "REPO-HARNESS.md").is_file())
+
+
 if __name__ == "__main__":
     unittest.main()
