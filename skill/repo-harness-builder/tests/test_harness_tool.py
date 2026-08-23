@@ -3841,8 +3841,13 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
                                 result = TOOL.main([*base, *apply_args])
                             self.assertEqual(result, 2)
                             payload = json.loads("".join(call.args[0] for call in stderr.write.call_args_list))
-                            self.assertEqual(payload["capabilityPreflight"]["gentleAi"], gentle)
-                            self.assertEqual(payload["capabilityPreflight"]["engram"], engram)
+                            # RH-W-0054 Task 6 removed the evidence each component was judged
+                            # from: the host supplies Engram's, so echoing it back published
+                            # whatever that payload carried. The classification this test cares
+                            # about is unchanged.
+                            projected = payload["capabilityPreflight"]
+                            self.assertEqual(projected["gentleAi"], {"classification": gentle_classification})
+                            self.assertEqual(projected["engram"], {"classification": engram_classification})
                             self.assertFalse((Path(directory) / RULEBOOK).exists())
 
     def test_cli_integrated_preview_and_apply_proceed_when_both_capabilities_verify(self):
@@ -6259,6 +6264,192 @@ class BuilderApplyGenerationTests(unittest.TestCase):
                 check=False, capture_output=True, text=True,
             )
 
+            self.assertEqual(applied.returncode, 0, applied.stderr)
+            self.assertTrue((root / "REPO-HARNESS.md").is_file())
+
+
+class StatelessBoundaryTests(unittest.TestCase):
+    """RH-W-0054 Task 6: prove the authority path keeps no state and leaks no content."""
+
+    PREMISE = "SENTINEL-PREMISE-4a1b"
+    DECISION = "SENTINEL-DECISION-7c2d"
+    EVIDENCE_BODY = "SENTINEL-EVIDENCE-BODY-9e3f"
+    HOST = "SENTINEL-HOST-EVIDENCE-2b8a"
+    TRANSPORT_NAME = "SENTINEL-TRANSPORT-6d4c.json"
+
+    FORBIDDEN_STATE = (
+        "ACTIVE_PREVIEW_SESSION",
+        "PreviewAuthoritySession",
+        "reset_authority",
+        "save_authority",
+        "load_authority",
+    )
+
+    def cli(self, root):
+        return [
+            sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
+            "--project-name", "Example", "--runtime", "opencode",
+            "--license", "MIT", "--standalone",
+            "--report-language", "english",
+            "--documentation-language", "en",
+            "--conversation-language", "english",
+            "--activation", "builder", "--project-id", "example",
+        ]
+
+    def builder_config(self):
+        return TOOL.expected_authority_builder_config(argparse.Namespace(
+            project_name="Example", runtime=["opencode"], license_id="MIT", standalone=True,
+            report_language="english", documentation_languages=["en"],
+            conversation_language="english", ignore_codegraph=True, activation="builder",
+        ))
+
+    def fixture(self, root):
+        evidence = root / "evidence.txt"
+        evidence.write_text(self.EVIDENCE_BODY, encoding="utf-8")
+        context = {
+            "schemaVersion": 1,
+            "materialRevision": "revision-1",
+            "project": {"id": "example", "name": "Example"},
+            "builder": self.builder_config(),
+            "premises": [{
+                "id": "premise-1", "class": "factual_claim", "value": self.PREMISE,
+                "decisionIds": ["decision-1"], "evidenceIds": ["repo-evidence"],
+            }],
+            "decisions": [{"id": "decision-1", "kind": "human_decision", "statement": self.DECISION}],
+            "evidence": [{
+                "id": "repo-evidence", "kind": "repository_file", "locator": "evidence.txt",
+                "sha256": hashlib.sha256(evidence.read_bytes()).hexdigest(),
+            }],
+        }
+        path = root / self.TRANSPORT_NAME
+        path.write_text(TOOL.canonical_json(context), encoding="utf-8")
+        return path
+
+    def strings(self, value):
+        if isinstance(value, str):
+            yield value
+        elif isinstance(value, dict):
+            for key, item in value.items():
+                yield key
+                yield from self.strings(item)
+        elif isinstance(value, list):
+            for item in value:
+                yield from self.strings(item)
+
+    def test_the_module_exposes_no_authority_session_or_recovery_api(self):
+        """Statelessness is an absence, so the only honest test is that the names do not exist."""
+        for name in self.FORBIDDEN_STATE:
+            with self.subTest(name=name):
+                self.assertFalse(hasattr(TOOL, name), f"{name} would make the authority path stateful")
+
+    def test_capability_preflight_reports_classification_without_raw_host_evidence(self):
+        """The host hands its own evidence in; printing it back publishes whatever it contained."""
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run(
+                [
+                    sys.executable, "-B", str(SCRIPT), "render", "--root", directory,
+                    "--project-name", "Example", "--runtime", "opencode",
+                    "--engram-evidence-json",
+                    TOOL.canonical_json({"surface": "mcp", "status": "partial", "evidence": self.HOST}),
+                ],
+                check=False, capture_output=True, text=True,
+            )
+
+            self.assertEqual(result.returncode, 2)
+            self.assertNotIn(self.HOST, result.stdout)
+            self.assertNotIn(self.HOST, result.stderr)
+            preflight = json.loads(result.stderr)["capabilityPreflight"]
+            self.assertEqual(preflight["engram"]["classification"], "found_on_path")
+            for component in ("engram", "gentleAi"):
+                with self.subTest(component=component):
+                    self.assertNotIn("evidence", preflight[component])
+
+    def test_detect_engram_keeps_the_whole_evidence_for_internal_verification(self):
+        """The projection must narrow the output, never weaken the check behind it."""
+        host = {"surface": "mcp", "status": "verified", "evidence": self.HOST}
+        self.assertEqual(TOOL.detect_engram(host)["classification"], "verified")
+        self.assertEqual(TOOL.detect_engram(host)["evidence"], host)
+        self.assertEqual(TOOL.detect_engram({"surface": "mcp", "status": "missing"})["classification"], "not_found")
+
+    def test_builder_preview_carries_no_absolute_path_and_no_raw_content(self):
+        """A reviewer needs the bindings, never the bytes or where they live."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.fixture(root)
+            result = subprocess.run(
+                [*self.cli(root), "--authority-context-file", str(context_path)],
+                check=True, capture_output=True, text=True,
+            )
+            payload = json.loads(result.stdout)
+            haystack = "\n".join(self.strings(payload))
+
+            for forbidden in (
+                str(root), str(root.parent), str(context_path), self.TRANSPORT_NAME,
+                self.PREMISE, self.DECISION, self.EVIDENCE_BODY,
+            ):
+                with self.subTest(forbidden=forbidden):
+                    self.assertNotIn(forbidden, haystack)
+
+            evidence = payload["authorityEvidence"][0]
+            self.assertEqual(set(evidence), {"id", "kind", "locator", "sha256"})
+            self.assertEqual(evidence["locator"], "evidence.txt")
+
+    def test_every_cli_outcome_keeps_each_sentinel_out_of_both_streams(self):
+        """One clean stream proves nothing; a leak usually appears on the other one."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.fixture(root)
+            base = [*self.cli(root), "--authority-context-file", str(context_path)]
+            preview = subprocess.run(base, check=True, capture_output=True, text=True)
+            plan = json.loads(preview.stdout)
+
+            broken = root / "broken.json"
+            broken.write_text('{"schemaVersion":1,"materialRevision":"' + self.PREMISE + '"}', encoding="utf-8")
+
+            outcomes = {
+                "preview": preview,
+                "denied": subprocess.run(
+                    [*base, "--apply", "--approved-plan-sha256", plan["planSha256"],
+                     "--approval", "DENY", "--approved-generation-sha256", plan["generationSha256"]],
+                    check=False, capture_output=True, text=True),
+                "validation_failure": subprocess.run(
+                    [*self.cli(root), "--authority-context-file", str(broken)],
+                    check=False, capture_output=True, text=True),
+                "fresh_preview_required": subprocess.run(
+                    [*base, "--apply", "--approved-plan-sha256", plan["planSha256"],
+                     "--approval", "APPROVE", "--approved-generation-sha256", "0" * 64],
+                    check=False, capture_output=True, text=True),
+            }
+
+            for name, result in outcomes.items():
+                for sentinel in (self.PREMISE, self.DECISION, self.EVIDENCE_BODY):
+                    with self.subTest(outcome=name, sentinel=sentinel):
+                        self.assertNotIn(sentinel, result.stdout)
+                        self.assertNotIn(sentinel, result.stderr)
+
+    def test_a_rejected_apply_leaves_nothing_a_later_run_must_clear(self):
+        """If a failed apply needed cleanup, the next honest preview would disagree with the first."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.fixture(root)
+            base = [*self.cli(root), "--authority-context-file", str(context_path)]
+            first = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
+
+            rejected = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", first["planSha256"],
+                 "--approval", "APPROVE", "--approved-generation-sha256", "0" * 64],
+                check=False, capture_output=True, text=True,
+            )
+            self.assertEqual(rejected.returncode, 2)
+
+            second = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
+            self.assertEqual(first, second)
+
+            applied = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", second["planSha256"],
+                 "--approval", "APPROVE", "--approved-generation-sha256", second["generationSha256"]],
+                check=False, capture_output=True, text=True,
+            )
             self.assertEqual(applied.returncode, 0, applied.stderr)
             self.assertTrue((root / "REPO-HARNESS.md").is_file())
 

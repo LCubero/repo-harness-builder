@@ -198,6 +198,21 @@ def select_integration_mode(
     }
 
 
+def capability_projection(preflight: Mapping[str, Any]) -> dict[str, Any]:
+    """Return the preflight outcome without the evidence each component was judged from.
+
+    The host supplies its own Engram evidence, so echoing it back publishes whatever that
+    payload happened to carry. Classification is the decision this tool made; the evidence
+    is the input the caller already holds, and it is not this tool's to republish.
+    """
+    projected = dict(preflight)
+    for component in ("gentleAi", "engram"):
+        value = projected.get(component)
+        if isinstance(value, Mapping):
+            projected[component] = {key: item for key, item in value.items() if key != "evidence"}
+    return projected
+
+
 def runtime_capability_status(
     gentle_ai_available: bool,
     engram_available: bool,
@@ -3538,7 +3553,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                     dump_json({
                         "status": "FAILED_CLOSED",
                         "error": "integrated mode requires verified Gentle AI and Engram capabilities",
-                        "capabilityPreflight": preflight,
+                        "capabilityPreflight": capability_projection(preflight),
                     }),
                     end="",
                     file=sys.stderr,
