@@ -322,6 +322,7 @@ BUILDER_FIELDS = {
 }
 PREMISE_FIELDS = {"id", "class", "value", "decisionIds", "evidenceIds"}
 DECISION_FIELDS = {"id", "kind", "statement"}
+REDACTED_MARKER = "[redacted]"
 REPOSITORY_FILE_EVIDENCE_FIELDS = {"id", "kind", "locator", "sha256"}
 HOST_JSON_EVIDENCE_FIELDS = {"id", "kind", "source", "sha256"}
 SHA256_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
@@ -600,6 +601,58 @@ def authority_binding(
         "authorityContextSha256": authority_context_sha256,
         "targetBindingSha256": target_sha256,
         "generationSha256": digest_text(canonical_json(generation)),
+    }
+
+
+def read_authority_context_transport(locator: str) -> str:
+    """Read the exact authority context bytes the human explicitly supplied.
+
+    This is a transport the caller named, not an evidence locator: it is read as given
+    rather than resolved against the target, which is why a path must be a direct regular
+    file and never a symlink into something else.
+    """
+    if locator == "-":
+        return sys.stdin.read()
+    path = Path(locator)
+    require(path.is_file() and not is_indirect(path), "authority context transport is unavailable")
+    return path.read_text(encoding="utf-8")
+
+
+def builder_authority_projection(root: Path, args: argparse.Namespace, plan_sha256: str) -> dict[str, Any]:
+    """Return only what a human can review, and nothing a preview must not disclose.
+
+    Every premise value and decision statement is replaced by an explicit redaction marker
+    rather than omitted, because a reader has to see that something was withheld. Evidence
+    keeps its stable id, kind, safe locator or source, and content digest, which is enough
+    to check what the answer rested on without reproducing it.
+    """
+    raw = read_authority_context_transport(args.authority_context_file)
+    context, canonical_context = parse_authority_context(raw)
+    host_json_inputs = (
+        {"engram_evidence_json": args.engram_evidence_json} if args.engram_evidence_json else {}
+    )
+    evidence = validate_authority_context(
+        root,
+        context,
+        args.project_id,
+        args.project_name,
+        expected_authority_builder_config(args),
+        host_json_inputs,
+    )
+    binding = authority_binding(root, context, canonical_context, evidence, plan_sha256)
+    return {
+        "authorityEvidence": binding["evidence"],
+        "authorityPremises": [
+            {"id": premise["id"], "class": premise["class"], "value": REDACTED_MARKER}
+            for premise in context["premises"]
+        ],
+        "authorityDecisions": [
+            {"id": decision["id"], "kind": decision["kind"], "statement": REDACTED_MARKER}
+            for decision in context["decisions"]
+        ],
+        "authorityContextSha256": binding["authorityContextSha256"],
+        "targetBindingSha256": binding["targetBindingSha256"],
+        "generationSha256": binding["generationSha256"],
     }
 
 
@@ -3415,6 +3468,9 @@ def main(argv: Optional[list[str]] = None) -> int:
             child.add_argument("--approved-plan-sha256", help="digest printed by the approved preview")
             child.add_argument("--approval", help="exact approval answer from the active report-language domain; builder activation only")
             child.add_argument("--engram-evidence-json", help="exact JSON evidence from the host-supported Engram MCP or CLI boundary")
+            child.add_argument("--project-id", help="exact normalized project identifier the authority context declares; builder activation only")
+            child.add_argument("--authority-context-file", help="path to the exact canonical authority context, or - to read it from stdin; builder activation only")
+            child.add_argument("--approved-generation-sha256", help="generation digest printed by the approved builder preview; builder apply only")
     self_test = sub.add_parser("self-test", help="bootstrap and verify a temporary empty project")
     self_test.add_argument("--standalone", action="store_true", help="test repository-only continuity")
     args = parser.parse_args(argv)
@@ -3459,6 +3515,28 @@ def main(argv: Optional[list[str]] = None) -> int:
         )
         plan = plan_changes(root, outputs)
         digest = plan_digest(plan)
+        authority_projection: dict[str, Any] = {}
+        if args.activation == "builder":
+            require(
+                args.apply or not args.approved_generation_sha256,
+                "an approved generation belongs to apply, never to preview",
+            )
+            # The authority transport is opt-in. Builder activation on its own still means only
+            # what RH-W-0030 made it mean, the strict approval domain, so requiring a context
+            # here would delete that boundary rather than extend it.
+            if args.authority_context_file:
+                require(bool(args.project_id), "an authority context requires --project-id")
+                authority_projection = builder_authority_projection(root, args, digest)
+            else:
+                require(
+                    not args.project_id,
+                    "--project-id belongs to an authority context",
+                )
+        else:
+            require(
+                not (args.project_id or args.authority_context_file or args.approved_generation_sha256),
+                "authority arguments require builder activation",
+            )
         domain = approval_domain(args.report_language)
         entry_points = documentation_entry_points(
             args.conversation_language or DEFAULT_REPORT_LANGUAGE,
@@ -3473,7 +3551,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")

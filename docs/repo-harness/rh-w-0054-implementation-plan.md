@@ -1,6 +1,6 @@
 # RH-W-0054 Stateless Correction Authority Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: use `subagent-driven-development` task by task, `test-driven-development` for every behavior slice, and `verification-before-completion` before delivery. RH-W-0054 is `active`; Tasks 1 through 3 are complete, Task 4 is the next candidate boundary, and Tasks 4 through 8 remain pending.
+> **For agentic workers:** REQUIRED SUB-SKILL: use `subagent-driven-development` task by task, `test-driven-development` for every behavior slice, and `verification-before-completion` before delivery. RH-W-0054 is `active`; Tasks 1 through 4 are complete, Task 5 is the next candidate boundary, and Tasks 5 through 8 remain pending.
 
 **Goal:** Bind builder preview approval across separate CLI processes to one reviewable canonical authority context, current repository evidence, complete output-affecting configuration, exact plan identity, and opaque target identity.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** Python 3.10+ standard library, `TypedDict`, `unittest`, `hashlib`, deterministic JSON, independent `main()` calls, subprocess CLI tests, and exact canonical-to-runtime projection copies.
 
-**Lifecycle owner:** [RH-W-0054](roadmap.md#rh-w-0054), status `active`. The [approved design](rh-w-0054-design.md) owns behavior; this plan owns implementation sequence only. Tasks 1 through 3 are complete and committed; Tasks 4 through 8 and delivery remain pending.
+**Lifecycle owner:** [RH-W-0054](roadmap.md#rh-w-0054), status `active`. The [approved design](rh-w-0054-design.md) owns behavior; this plan owns implementation sequence only. Tasks 1 through 4 are complete and committed; Tasks 5 through 8 and delivery remain pending.
 
 ---
 
@@ -368,17 +368,17 @@ Rollback: repository-file validation branch and focused tests only. Canonical pa
 
 **Files:** same canonical script and test module.
 
-- [ ] **Step 1: Add independent-main preview tests**
+- [x] **Step 1: Add independent-main preview tests**
 
 Write a helper that calls `TOOL.main(argv)` with fresh patched stdin/stdout each time and never stores module authority. Build canonical host context, then invoke a builder preview `main()` call using a temporary context file. The CLI computes plan identity during that preview, so no preliminary maintenance preview is required.
 
 Assert output contains exact safe entry metadata, explicit redaction markers, `authorityContextSha256`, `targetBindingSha256`, `planSha256`, and `generationSha256`. Assert it does not contain an `authorityContext` field, premise values, decision statements, host JSON, evidence content, sentinel secrets, the resolved root string, or any field named session, receipt, ledger, cache, token, or reset. Add repeated-preview equality and missing-context rejection.
 
-- [ ] **Step 2: Verify RED**
+- [x] **Step 2: Verify RED**
 
 Run `MaterialCorrectionCliTests.test_builder_preview_transports_reviewable_bindings_without_process_state` and its repeated/missing variants. Expected RED: unrecognized authority arguments or absent fields.
 
-- [ ] **Step 3: Patch `main()` preview in this exact order**
+- [x] **Step 3: Patch `main()` preview in this exact order**
 
 1. Add parser arguments `--project-id`, `--authority-context-file`, and `--approved-generation-sha256` to `render`.
 2. After current argument normalization and after outputs, plan, and `planSha256` are computed, branch on activation.
@@ -387,11 +387,13 @@ Run `MaterialCorrectionCliTests.test_builder_preview_transports_reviewable_bindi
 5. Read context, parse it, construct expected config and current host JSON inputs, validate context and evidence, compute binding with the separately computed plan digest, and merge only stable entry IDs, classes or kinds, safe locators or sources, content digests, explicit redaction markers, and the four binding digests into preview output.
 6. Do not store context or binding globally and do not change `plan_digest()`, `plan_changes()`, or `write_outputs()`.
 
-- [ ] **Step 4: Verify GREEN**
+**Correction applied on 2026-08-22, recorded rather than silently followed.** Step 3 point 4 said to require project id and context file for builder activation. Applied literally that removes the `RH-W-0030` boundary, where `--activation builder` on its own means only the strict approval domain, and it broke four existing tests including the compatibility test this same task's Step 4 requires to pass. The plan contradicted itself. The authority transport is therefore opt-in: supplying `--authority-context-file` activates it and then requires `--project-id`, while builder activation without a context behaves exactly as before. Maintenance still rejects all three arguments.
+
+- [x] **Step 4: Verify GREEN**
 
 Run `MaterialCorrectionCliTests` preview methods and the two compatibility tests from Task 3.
 
-- [ ] **Step 5: Work-unit boundary**
+- [x] **Step 5: Work-unit boundary**
 
 Planned commit: `feat(cli): emit stateless builder authority preview`
 
@@ -676,7 +678,7 @@ Task 6 asserts at runtime that the superseded session APIs are not defined.
 
 Run `git status --short`, `git diff --stat`, and `git diff -- docs/repo-harness/roadmap.md docs/es/repo-harness/roadmap.md docs/repo-harness/current-state.md docs/es/repo-harness/current-state.md CHANGELOG.md`.
 
-Expected before completed delivery: RH-W-0054 remains `active`; Tasks 1 through 3 may be complete while Tasks 4 through 8 and delivery remain pending. No changelog completion entry exists, no post-write owner is assigned, and no commit, push, staging, provider action, or external repository mutation occurred.
+Expected before completed delivery: RH-W-0054 remains `active`; Tasks 1 through 4 may be complete while Tasks 5 through 8 and delivery remain pending. No changelog completion entry exists, no post-write owner is assigned, and no commit, push, staging, provider action, or external repository mutation occurred.
 
 - [ ] **Step 6: Conditional completion reconciliation**
 
@@ -720,7 +722,7 @@ Use three chained review slices because authored work exceeds the 400-line targe
 - [ ] Genuine subprocess tests and independent `main()` tests pass.
 - [ ] Portable Python replaces every repository-content `rg` verification.
 - [ ] Canonical package files and both runtime projections are byte-identical.
-- [ ] RH-W-0054 stays `active` until all separately authorized implementation and delivery evidence supports completion; Task 3 completion does not authorize Tasks 4 through 8.
+- [ ] RH-W-0054 stays `active` until all separately authorized implementation and delivery evidence supports completion; Task 4 completion does not authorize Tasks 5 through 8.
 
 ## Remaining Human Decisions
 
@@ -728,7 +730,7 @@ None before implementation authorization. Naming and ownership of a future post-
 
 ## Handoff
 
-**Next step:** Begin the next session with Task 4, integrating the stateless builder preview, as the candidate boundary, then obtain separate authorization before implementation. RH-W-0054 remains `active`; Tasks 4 through 8 and delivery remain unauthorized.
+**Next step:** Begin the next session with Task 5, apply recompute and pre-write rejection, as the candidate boundary, then obtain separate authorization before implementation. The owner raised a proportionality concern on 2026-08-22: this is a documentation harness, and Tasks 5 through 8 are the expensive half. Task 5 makes the binding do work, because nothing validates a generation before writing until it lands; reassess Tasks 6 through 8 after it. RH-W-0054 remains `active`; Tasks 5 through 8 and delivery remain unauthorized.
 
 ## Second-Correction Review Dispositions
 
