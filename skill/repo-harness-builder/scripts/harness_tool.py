@@ -479,8 +479,7 @@ def validate_authority_context(
     expected_config: AuthorityBuilderConfig,
     host_json_inputs: dict[str, str],
 ) -> list[EvidenceBinding]:
-    """Validate current host JSON bindings and return safe metadata only."""
-    del root
+    """Validate typed evidence bindings and return safe metadata only."""
     validated = _validate_authority_context_schema(context)
     require(
         validated["project"]["id"] == project_id
@@ -492,7 +491,32 @@ def validate_authority_context(
     bindings: list[EvidenceBinding] = []
     for item in validated["evidence"]:
         if item["kind"] == "repository_file":
-            raise ContractError("unsupported evidence kind in this validation phase")
+            # The digest was recorded when the answer was believed. The file is re-read and
+            # compared, never trusted, because a correction that changed the file must not
+            # leave the old plan authorized by evidence that no longer says what it said.
+            # Digest shape is already settled by the schema pass through SHA256_PATTERN;
+            # re-checking it here would be a branch no input can reach.
+            locator = safe_relative(item["locator"])
+            target = guarded_target(root, locator)
+            require(
+                target.is_file() and not is_indirect(target),
+                "authority context repository evidence is unavailable",
+            )
+            actual_bytes_sha256 = hashlib.sha256(target.read_bytes()).hexdigest()
+            require(
+                actual_bytes_sha256 == item["sha256"],
+                "authority context repository evidence changed",
+            )
+            # Repository-relative locator only. The resolved path and the bytes stay here.
+            bindings.append(
+                {
+                    "id": item["id"],
+                    "kind": "repository_file",
+                    "locator": locator,
+                    "sha256": item["sha256"],
+                }
+            )
+            continue
         source = item["source"]
         require(source == "engram_evidence_json", "authority context host source is unsupported")
         require(source in host_json_inputs, "authority context host input is unavailable")

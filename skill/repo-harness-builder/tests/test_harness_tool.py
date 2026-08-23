@@ -299,7 +299,15 @@ class AuthorityContextTests(unittest.TestCase):
             self.assertNotIn(token, str(raised.exception))
             self.assertNotIn("secret-sentinel", str(raised.exception))
 
-    def test_repository_file_evidence_remains_unsupported_in_task_one(self):
+    def test_repository_file_evidence_that_is_not_there_is_refused(self):
+        """Task 3 replaced the phase refusal with a real resolution, so the refusal has a real reason now.
+
+        This asserted "unsupported evidence" while Task 1 was the whole validator. Keeping that
+        assertion after Task 3 would have pinned the scaffolding instead of the behavior, so the
+        case it still owns is the one this class can prove without a repository: a declared file
+        the validator cannot resolve is refused, and the refusal names the resolution and not the
+        phase. `RepositoryEvidenceTests` owns the resolved cases against a real root.
+        """
         context = self.context(
             evidence=[
                 {
@@ -310,7 +318,7 @@ class AuthorityContextTests(unittest.TestCase):
                 }
             ]
         )
-        with self.assertRaisesRegex(TOOL.ContractError, "unsupported evidence"):
+        with self.assertRaisesRegex(TOOL.ContractError, "repository evidence is unavailable"):
             self.validate(context)
 
 
@@ -5599,6 +5607,138 @@ class AuthorityBindingTests(unittest.TestCase):
                 with self.subTest(plan_sha256=bad):
                     with self.assertRaises(TOOL.ContractError):
                         self.bind(root, plan_sha=bad)
+
+
+
+class RepositoryEvidenceTests(unittest.TestCase):
+    """RH-W-0054 Task 3: repository evidence is re-read and compared, and every refusal stays content-free."""
+
+    HOST_JSON = '{"observations":[{"fact":"current","id":1}]}'
+    SECRET = "SENTINEL-EVIDENCE-SECRET-8f2a"
+
+    def setUp(self):
+        self._dir = tempfile.TemporaryDirectory()
+        self.root = Path(self._dir.name)
+        self.evidence_path = self.root / "evidence.txt"
+        self.evidence_bytes = f"{self.SECRET}\n".encode("utf-8")
+        self.evidence_path.write_bytes(self.evidence_bytes)
+        self.repository_sha256 = hashlib.sha256(self.evidence_bytes).hexdigest()
+        self.host_sha256 = hashlib.sha256(self.HOST_JSON.encode("utf-8")).hexdigest()
+        self.config = TOOL.expected_authority_builder_config(
+            argparse.Namespace(
+                project_name="Example", runtime=["opencode"], license_id="MIT", standalone=False,
+                report_language="english", documentation_languages=["en", "es"],
+                conversation_language="espanol", ignore_codegraph=True, activation="builder",
+            )
+        )
+        self.host_inputs = {"engram_evidence_json": self.HOST_JSON}
+        self.addCleanup(self._dir.cleanup)
+
+    def repository_entry(self, **overrides):
+        entry = {
+            "id": "repo-evidence",
+            "kind": "repository_file",
+            "locator": "evidence.txt",
+            "sha256": self.repository_sha256,
+        }
+        entry.update(overrides)
+        return entry
+
+    def host_entry(self, **overrides):
+        entry = {
+            "id": "engram-input",
+            "kind": "host_json",
+            "source": "engram_evidence_json",
+            "sha256": self.host_sha256,
+        }
+        entry.update(overrides)
+        return entry
+
+    def context(self, evidence=None, evidence_ids=None):
+        evidence = [self.repository_entry(), self.host_entry()] if evidence is None else evidence
+        ids = [item["id"] for item in evidence] if evidence_ids is None else evidence_ids
+        base = AuthorityContextTests.context(AuthorityContextTests(), evidence=evidence)
+        base["premises"][0]["evidenceIds"] = ids
+        base["evidence"] = evidence
+        return base
+
+    def validate(self, context=None):
+        return TOOL.validate_authority_context(
+            self.root, self.context() if context is None else context,
+            "example", "Example", self.config, self.host_inputs,
+        )
+
+    def assert_refused(self, context, forbidden=()):
+        """A refusal proves nothing if it leaks what it refused to disclose."""
+        with self.assertRaises(TOOL.ContractError) as caught:
+            self.validate(context)
+        message = str(caught.exception)
+        self.assertNotIn(self.SECRET, message)
+        self.assertNotIn(str(self.root.resolve()), message)
+        for token in forbidden:
+            self.assertNotIn(token, message)
+        return message
+
+    def test_mixed_evidence_returns_typed_metadata_in_declared_order(self):
+        """Order is semantic: the context author decided which evidence supports which premise first."""
+        self.assertEqual(
+            self.validate(),
+            [
+                {"id": "repo-evidence", "kind": "repository_file", "locator": "evidence.txt", "sha256": self.repository_sha256},
+                {"id": "engram-input", "kind": "host_json", "source": "engram_evidence_json", "sha256": self.host_sha256},
+            ],
+        )
+
+    def test_returned_repository_metadata_never_carries_the_bytes_or_the_root(self):
+        payload = json.dumps(self.validate())
+        self.assertNotIn(self.SECRET, payload)
+        self.assertNotIn(str(self.root.resolve()), payload)
+
+    def test_a_missing_file_is_refused(self):
+        self.assert_refused(self.context(evidence=[self.repository_entry(locator="absent.txt"), self.host_entry()]))
+
+    def test_a_directory_is_not_a_file(self):
+        (self.root / "folder").mkdir()
+        self.assert_refused(self.context(evidence=[self.repository_entry(locator="folder"), self.host_entry()]))
+
+    def test_an_indirect_path_is_refused(self):
+        """A symlink or reparse point can point outside the target after the containment check passed."""
+        link = self.root / "linked.txt"
+        try:
+            link.symlink_to(self.evidence_path)
+        except (OSError, NotImplementedError):
+            self.skipTest("this environment cannot create a symlink")
+        self.assert_refused(self.context(evidence=[self.repository_entry(locator="linked.txt"), self.host_entry()]))
+
+    def test_a_traversal_locator_is_refused(self):
+        self.assert_refused(self.context(evidence=[self.repository_entry(locator="../evidence.txt"), self.host_entry()]))
+
+    def test_an_absolute_locator_is_refused(self):
+        for locator in ("/etc/passwd", "C:/Windows/system.ini"):
+            with self.subTest(locator=locator):
+                self.assert_refused(self.context(evidence=[self.repository_entry(locator=locator), self.host_entry()]))
+
+    def test_changed_bytes_are_refused(self):
+        """The digest was taken when the answer was believed; the file is re-read, never trusted."""
+        self.evidence_path.write_bytes(b"corrected\n")
+        self.assert_refused(self.context())
+
+    def test_a_malformed_declared_digest_is_refused(self):
+        for bad in ("", "0" * 63, "g" * 64, self.repository_sha256.upper()):
+            with self.subTest(sha256=bad):
+                self.assert_refused(self.context(evidence=[self.repository_entry(sha256=bad), self.host_entry()]))
+
+    def test_an_unsupported_evidence_kind_is_refused(self):
+        self.assert_refused(self.context(evidence=[self.repository_entry(kind="database_row"), self.host_entry()]))
+
+    def test_a_duplicate_evidence_id_is_refused(self):
+        duplicate = self.repository_entry()
+        self.assert_refused(self.context(evidence=[duplicate, dict(duplicate)]))
+
+    def test_a_dangling_evidence_reference_is_refused(self):
+        self.assert_refused(
+            self.context(evidence=[self.repository_entry(), self.host_entry()], evidence_ids=["repo-evidence", "absent-id"])
+        )
 
 
 class NonInteractiveTransportTests(unittest.TestCase):

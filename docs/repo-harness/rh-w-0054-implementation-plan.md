@@ -1,6 +1,6 @@
 # RH-W-0054 Stateless Correction Authority Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: use `subagent-driven-development` task by task, `test-driven-development` for every behavior slice, and `verification-before-completion` before delivery. RH-W-0054 is `active`; Tasks 1 and 2 are complete, Task 3 is the next candidate boundary, and Tasks 3 through 8 remain pending.
+> **For agentic workers:** REQUIRED SUB-SKILL: use `subagent-driven-development` task by task, `test-driven-development` for every behavior slice, and `verification-before-completion` before delivery. RH-W-0054 is `active`; Tasks 1 through 3 are complete, Task 4 is the next candidate boundary, and Tasks 4 through 8 remain pending.
 
 **Goal:** Bind builder preview approval across separate CLI processes to one reviewable canonical authority context, current repository evidence, complete output-affecting configuration, exact plan identity, and opaque target identity.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** Python 3.10+ standard library, `TypedDict`, `unittest`, `hashlib`, deterministic JSON, independent `main()` calls, subprocess CLI tests, and exact canonical-to-runtime projection copies.
 
-**Lifecycle owner:** [RH-W-0054](roadmap.md#rh-w-0054), status `active`. The [approved design](rh-w-0054-design.md) owns behavior; this plan owns implementation sequence only. Tasks 1 and 2 are complete and committed; Tasks 3 through 8 and delivery remain pending.
+**Lifecycle owner:** [RH-W-0054](roadmap.md#rh-w-0054), status `active`. The [approved design](rh-w-0054-design.md) owns behavior; this plan owns implementation sequence only. Tasks 1 through 3 are complete and committed; Tasks 4 through 8 and delivery remain pending.
 
 ---
 
@@ -326,7 +326,7 @@ Rollback: deterministic configuration projection, two pure digest helpers, autho
 
 **Files:** same canonical script and test module.
 
-- [ ] **Step 1: Add failing repository evidence tests**
+- [x] **Step 1: Add failing repository evidence tests**
 
 Extend the Task 1 context helper with one `repository_file` entry and references to it. Assert `validate_authority_context()` returns the exact safe repository binding after reading current bytes. Add missing, directory, symlink or reparse point, traversal, absolute locator, changed bytes, malformed digest, unsupported evidence kind, duplicate evidence ID, and dangling evidence reference cases. Require every failure to remain content-free and to expose no absolute root or evidence bytes. Plan changes remain covered as generation changes in Tasks 2 and 5.
 
@@ -342,15 +342,15 @@ self.assertEqual(
 )
 ```
 
-- [ ] **Step 2: Verify RED**
+- [x] **Step 2: Verify RED**
 
 Run the focused repository evidence methods. Expected RED: the already-green validator rejects `repository_file` as unsupported, not a missing validator, type, parser, configuration, target, or binding function.
 
-- [ ] **Step 3: Extend validation with typed repository resolution**
+- [x] **Step 3: Extend validation with typed repository resolution**
 
 Extend only the `repository_file` branch of the already-green `validate_authority_context()`. Resolve `locator` only with `guarded_target(root, locator)`, require an existing regular non-indirect file, re-read bytes, compare exact SHA-256, and return safe repository-relative metadata. Preserve the already-green host JSON, project, configuration, ID, and typed-reference behavior unchanged. `validate_authority_context()` validates schema, project, configuration, and evidence bindings only. Target identity remains in `target_binding_sha256()`, and the validator never receives or compares plan identity.
 
-- [ ] **Step 4: Verify complete validation GREEN and current plan compatibility**
+- [x] **Step 4: Verify complete validation GREEN and current plan compatibility**
 
 Run focused tests plus:
 
@@ -358,7 +358,7 @@ Run focused tests plus:
 
 Expected: all pass.
 
-- [ ] **Step 5: Work-unit boundary**
+- [x] **Step 5: Work-unit boundary**
 
 Planned commit: `feat(authority): resolve typed repository evidence`
 
@@ -676,7 +676,7 @@ Task 6 asserts at runtime that the superseded session APIs are not defined.
 
 Run `git status --short`, `git diff --stat`, and `git diff -- docs/repo-harness/roadmap.md docs/es/repo-harness/roadmap.md docs/repo-harness/current-state.md docs/es/repo-harness/current-state.md CHANGELOG.md`.
 
-Expected before completed delivery: RH-W-0054 remains `active`; Tasks 1 and 2 may be complete while Tasks 3 through 8 and delivery remain pending. No changelog completion entry exists, no post-write owner is assigned, and no commit, push, staging, provider action, or external repository mutation occurred.
+Expected before completed delivery: RH-W-0054 remains `active`; Tasks 1 through 3 may be complete while Tasks 4 through 8 and delivery remain pending. No changelog completion entry exists, no post-write owner is assigned, and no commit, push, staging, provider action, or external repository mutation occurred.
 
 - [ ] **Step 6: Conditional completion reconciliation**
 
@@ -720,7 +720,7 @@ Use three chained review slices because authored work exceeds the 400-line targe
 - [ ] Genuine subprocess tests and independent `main()` tests pass.
 - [ ] Portable Python replaces every repository-content `rg` verification.
 - [ ] Canonical package files and both runtime projections are byte-identical.
-- [ ] RH-W-0054 stays `active` until all separately authorized implementation and delivery evidence supports completion; Task 2 completion does not authorize Tasks 3 through 8.
+- [ ] RH-W-0054 stays `active` until all separately authorized implementation and delivery evidence supports completion; Task 3 completion does not authorize Tasks 4 through 8.
 
 ## Remaining Human Decisions
 
@@ -728,7 +728,7 @@ None before implementation authorization. Naming and ownership of a future post-
 
 ## Handoff
 
-**Next step:** Begin the next session with Task 3, resolving typed repository evidence, as the candidate boundary, then obtain separate authorization before implementation. RH-W-0054 remains `active`; Tasks 3 through 8 and delivery remain unauthorized.
+**Next step:** Begin the next session with Task 4, integrating the stateless builder preview, as the candidate boundary, then obtain separate authorization before implementation. RH-W-0054 remains `active`; Tasks 4 through 8 and delivery remain unauthorized.
 
 ## Second-Correction Review Dispositions
 
