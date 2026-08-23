@@ -1092,6 +1092,22 @@ def frontmatter(name: str, description: str, source: str, license_id: str) -> st
     )
 
 
+VISIBILITY_CONTRACT = (
+    "Visibility: a notice, pending action, or question must survive skimming. Give it its own block, "
+    "delimited by a horizontal rule line above and below, with a short label line naming it in the reply "
+    "language. Never use side borders or box corners, which misalign in a terminal. Reserve the block for "
+    "input the human must act on: when nothing is pending, close with a plain status line and one concrete "
+    "recommendation, never an empty block. This binds the agent's own replies as well as reported output, "
+    "and strengthens the single-final-question rule rather than replacing it."
+)
+"""One obligation, shared by every daily contract.
+
+A position rule is not a visibility rule: a final line at the end of a long reply is
+still unfindable. It lives here rather than in the rulebook because the rulebook has
+four tokens of headroom and this is contract detail, not a never-miss rule.
+"""
+
+
 def references_section(rulebook_path: str) -> str:
     """Render the shared References section for every generated skill."""
     return f"""
@@ -1230,6 +1246,7 @@ Never use git pull, git rebase, git reset, force operations, merge on divergence
 Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
 Report the checker result in the reply language: `current` means every runtime projection is up to date, and `drift` is reported as needing an update, naming each drifted runtime projection.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
+{VISIBILITY_CONTRACT}
 {references_section(rulebook_path)}"""
 
 
@@ -1339,6 +1356,7 @@ Always report required continuity outcome separately from optional Git branch ou
 
 Deliver the complete Output Contract only after continuity is saved successfully. Return close outcome, required continuity outcome, optional Git branch outcome, completed work, decisions, unresolved issues, next steps, verified paths, documentation update result, {output_continuity}, classified Git state, proposed or completed work units, commit result, push result, transport receipts, safely-local state, and separately pending optional gates. When safe and relevant, ask exactly one blocking question and make it the final user-facing line.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
+{VISIBILITY_CONTRACT}
 If continuity saving fails, surface the failure and do not claim successful continuity or a final handoff.
 {references_section(rulebook_path)}"""
 
@@ -1413,6 +1431,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 
 Return canonical owners checked, links validated, stale or duplicate claims resolved, durable documents changed, temporary state left unpromoted, and remaining documentation risks.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
+{VISIBILITY_CONTRACT}
 {references_section(rulebook_path)}"""
 
 

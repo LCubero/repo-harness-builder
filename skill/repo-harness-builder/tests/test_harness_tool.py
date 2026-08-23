@@ -6002,5 +6002,66 @@ class NonInteractiveTransportTests(unittest.TestCase):
 
 
 
+class QuestionVisibilityTests(unittest.TestCase):
+    """RH-W-0058: a question the human cannot find is a question that was never asked."""
+
+    DAILY_SKILLS = (
+        ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+        ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+        ".repo-harness/skills/repo-harness-documentation/SKILL.md",
+    )
+
+    def rendered_daily(self):
+        outputs = TOOL.render("Example", ["opencode"])
+        return {path: outputs[path] for path in self.DAILY_SKILLS}
+
+    def test_every_daily_contract_carries_the_visibility_obligation(self):
+        """Position is not visibility; all three daily contracts state the same obligation."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("survive skimming", text)
+
+    def test_the_obligation_names_the_delimiter_and_forbids_side_borders(self):
+        """A rule mechanical enough to follow, and the exact form that misaligns in a terminal."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("horizontal rule line", text)
+                self.assertIn("side borders", text)
+                self.assertIn("box corners", text)
+
+    def test_the_obligation_requires_a_label_in_the_reply_language(self):
+        """The block is generated English; its label follows the conversation the human is reading."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("label line", text)
+                self.assertIn("reply language", text)
+
+    def test_the_obligation_forbids_an_empty_block_and_requires_a_recommendation(self):
+        """A block reading no-question-pending spends the one visual device on nothing."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("never an empty block", text)
+                self.assertRegex(text, r"(?i)concrete recommendation")
+
+    def test_the_obligation_binds_the_agent_own_replies(self):
+        """The defect was a chat reply, so a rule bounded to generated output would not have prevented it."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("the agent's own replies", text)
+
+    def test_the_obligation_does_not_replace_the_single_final_question_rule(self):
+        """Two rules that look alike drift apart unless one names the other."""
+        start = self.rendered_daily()[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        self.assertIn("final user-facing line", start)
+        self.assertRegex(start, r"(?i)strengthens")
+
+    def test_the_rulebook_is_untouched_by_the_visibility_obligation(self):
+        """RH-W-0058 lands in the daily contracts only; the rulebook has four tokens of headroom."""
+        rulebook = TOOL.render("Example", ["opencode"])["REPO-HARNESS.md"]
+        for token in ("survive skimming", "side borders", "box corners"):
+            with self.subTest(token=token):
+                self.assertNotIn(token, rulebook)
+
+
 if __name__ == "__main__":
     unittest.main()
