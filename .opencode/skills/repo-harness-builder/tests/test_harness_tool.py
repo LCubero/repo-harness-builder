@@ -31,6 +31,288 @@ DISCIPLINE = (
     "Preserve unknown files and existing work.",
 )
 
+
+class AuthorityContextTests(unittest.TestCase):
+    def test_authority_premise_type_models_exact_wire_keys(self):
+        self.assertEqual(
+            TOOL.AuthorityPremise.__required_keys__,
+            frozenset({"id", "class", "value", "decisionIds", "evidenceIds"}),
+        )
+        self.assertEqual(
+            TOOL.AuthorityContext.__annotations__["premises"].__forward_arg__,
+            "list[AuthorityPremise]",
+        )
+
+    def context(self, revision="revision-1", evidence=None):
+        host_json = '{"observations":[{"fact":"current","id":1}]}'
+        if evidence is None:
+            evidence = [
+                {
+                    "id": "engram-input",
+                    "kind": "host_json",
+                    "source": "engram_evidence_json",
+                    "sha256": hashlib.sha256(host_json.encode("utf-8")).hexdigest(),
+                }
+            ]
+        return {
+            "schemaVersion": 1,
+            "materialRevision": revision,
+            "project": {"id": "example", "name": "Example"},
+            "builder": {
+                "runtimes": ["opencode"],
+                "license": "MIT",
+                "integrationMode": "integrated",
+                "reportLanguage": "english",
+                "documentationLanguages": ["en", "es"],
+                "conversationLanguage": "espanol",
+                "ignoreCodegraph": True,
+                "activation": "builder",
+            },
+            "premises": [
+                {
+                    "id": "premise-1",
+                    "class": "factual_claim",
+                    "value": "current premise",
+                    "decisionIds": ["decision-1"],
+                    "evidenceIds": [item["id"] for item in evidence],
+                }
+            ],
+            "decisions": [
+                {
+                    "id": "decision-1",
+                    "kind": "human_decision",
+                    "statement": "approved bounded correction",
+                }
+            ],
+            "evidence": evidence,
+        }
+
+    def test_canonical_context_round_trips_as_exact_compact_ascii_without_newline(self):
+        context = self.context(revision="revisi\u00f3n-1")
+        canonical = TOOL.canonical_json(context)
+        parsed, displayed = TOOL.parse_authority_context(canonical)
+        self.assertEqual(parsed, context)
+        self.assertEqual(displayed, TOOL.canonical_json(context))
+        self.assertEqual(canonical, canonical.encode("ascii").decode("ascii"))
+        self.assertNotIn("\n", canonical)
+        self.assertNotIn("\r", canonical)
+        self.assertNotIn(": ", canonical)
+        self.assertNotIn(", ", canonical)
+
+    def test_canonical_json_rejects_non_finite_values_without_echo(self):
+        for value in (float("nan"), float("inf"), float("-inf")):
+            with self.subTest(value=value), self.assertRaises(TOOL.ContractError) as raised:
+                TOOL.canonical_json({"secret-sentinel": value})
+            self.assertNotIn("secret-sentinel", str(raised.exception))
+
+    def test_context_rejects_non_canonical_byte_variants(self):
+        canonical = TOOL.canonical_json(self.context())
+        variants = {
+            "one LF": canonical + "\n",
+            "multiple LF": canonical + "\n\n",
+            "leading space": " " + canonical,
+            "trailing space": canonical + " ",
+            "alternate key order": '{"schemaVersion":1,"materialRevision":"revision-1"}',
+            "duplicate key": '{"schemaVersion":1,"schemaVersion":1}',
+        }
+        for name, raw in variants.items():
+            with self.subTest(name=name), self.assertRaises(TOOL.ContractError):
+                TOOL.parse_authority_context(raw)
+
+    def test_duplicate_key_is_rejected_by_exact_fixture(self):
+        with self.assertRaises(TOOL.ContractError):
+            TOOL.parse_authority_context('{"schemaVersion":1,"schemaVersion":1}')
+
+    def test_context_rejects_unknown_and_missing_fields(self):
+        for name, mutate in (
+            ("unknown", lambda value: value.update({"unknown": True})),
+            ("missing", lambda value: value.pop("materialRevision")),
+        ):
+            context = self.context()
+            mutate(context)
+            with self.subTest(name=name), self.assertRaises(TOOL.ContractError):
+                TOOL.parse_authority_context(TOOL.canonical_json(context))
+
+    def test_context_rejects_invalid_schema_and_scalar_or_list_types(self):
+        mutations = (
+            lambda value: value.update({"schemaVersion": True}),
+            lambda value: value.update({"schemaVersion": 2}),
+            lambda value: value["project"].update({"id": 1}),
+            lambda value: value["builder"].update({"runtimes": "opencode"}),
+            lambda value: value["builder"].update({"ignoreCodegraph": 1}),
+            lambda value: value["premises"][0].update({"decisionIds": [1]}),
+        )
+        for index, mutate in enumerate(mutations):
+            context = self.context()
+            mutate(context)
+            with self.subTest(index=index), self.assertRaises(TOOL.ContractError):
+                TOOL.parse_authority_context(TOOL.canonical_json(context))
+
+    def test_context_rejects_invalid_authority_class_or_evidence_kind(self):
+        for field, invalid in (("class", "human_decision"), ("kind", "opaque")):
+            context = self.context()
+            target = context["premises"][0] if field == "class" else context["evidence"][0]
+            target[field] = invalid
+            with self.subTest(field=field), self.assertRaises(TOOL.ContractError):
+                TOOL.parse_authority_context(TOOL.canonical_json(context))
+
+    def test_context_rejects_duplicate_ids_and_dangling_typed_references(self):
+        cases = []
+        duplicate = self.context()
+        duplicate["decisions"].append(dict(duplicate["decisions"][0]))
+        cases.append(("duplicate", duplicate))
+        dangling_decision = self.context()
+        dangling_decision["premises"][0]["decisionIds"] = ["missing-decision"]
+        cases.append(("decision", dangling_decision))
+        dangling_evidence = self.context()
+        dangling_evidence["premises"][0]["evidenceIds"] = ["missing-evidence"]
+        cases.append(("evidence", dangling_evidence))
+        for name, context in cases:
+            with self.subTest(name=name), self.assertRaises(TOOL.ContractError):
+                TOOL.parse_authority_context(TOOL.canonical_json(context))
+
+    def test_context_rejects_empty_semantic_strings(self):
+        mutations = (
+            lambda value: value.update({"materialRevision": " "}),
+            lambda value: value["premises"][0].update({"id": ""}),
+            lambda value: value["premises"][0].update({"value": " "}),
+            lambda value: value["decisions"][0].update({"statement": " "}),
+        )
+        for index, mutate in enumerate(mutations):
+            context = self.context()
+            mutate(context)
+            with self.subTest(index=index), self.assertRaises(TOOL.ContractError):
+                TOOL.parse_authority_context(TOOL.canonical_json(context))
+
+    def test_context_rejects_non_finite_tokens_without_echo(self):
+        canonical = TOOL.canonical_json(self.context())
+        for token in ("NaN", "Infinity", "-Infinity"):
+            raw = canonical.replace('"current premise"', token)
+            with self.subTest(token=token), self.assertRaises(TOOL.ContractError) as raised:
+                TOOL.parse_authority_context(raw)
+            self.assertNotIn(token, str(raised.exception))
+            self.assertNotIn("current premise", str(raised.exception))
+
+    def expected_config(self):
+        return dict(self.context()["builder"])
+
+    def validate(self, context=None, host_json=None):
+        if context is None:
+            context = self.context()
+        if host_json is None:
+            host_json = '{"observations":[{"fact":"current","id":1}]}'
+        with tempfile.TemporaryDirectory() as directory:
+            return TOOL.validate_authority_context(
+                Path(directory),
+                context,
+                "example",
+                "Example",
+                self.expected_config(),
+                {"engram_evidence_json": host_json},
+            )
+
+    def test_host_json_validation_returns_only_safe_binding_metadata(self):
+        context = self.context()
+        self.assertEqual(
+            self.validate(context),
+            [
+                {
+                    "id": "engram-input",
+                    "kind": "host_json",
+                    "source": "engram_evidence_json",
+                    "sha256": context["evidence"][0]["sha256"],
+                }
+            ],
+        )
+
+    def test_host_json_validation_rechecks_project_and_configuration(self):
+        context = self.context()
+        cases = (
+            ("project id", "other", "Example", self.expected_config()),
+            ("project name", "example", "Other", self.expected_config()),
+            (
+                "configuration",
+                "example",
+                "Example",
+                {**self.expected_config(), "license": "Apache-2.0"},
+            ),
+        )
+        for name, project_id, project_name, config in cases:
+            with tempfile.TemporaryDirectory() as directory, self.subTest(name=name):
+                with self.assertRaises(TOOL.ContractError):
+                    TOOL.validate_authority_context(
+                        Path(directory),
+                        context,
+                        project_id,
+                        project_name,
+                        config,
+                        {"engram_evidence_json": '{"observations":[{"fact":"current","id":1}]}'},
+                    )
+
+    def test_host_json_validation_rechecks_structure_and_typed_references(self):
+        cases = []
+        unknown = self.context()
+        unknown["unknown"] = True
+        cases.append(("unknown", unknown))
+        duplicate = self.context()
+        duplicate["evidence"].append(dict(duplicate["evidence"][0]))
+        cases.append(("duplicate", duplicate))
+        dangling = self.context()
+        dangling["premises"][0]["evidenceIds"] = ["missing"]
+        cases.append(("dangling", dangling))
+        for name, context in cases:
+            with self.subTest(name=name), self.assertRaises(TOOL.ContractError):
+                self.validate(context)
+
+    def test_host_json_validation_rejects_missing_or_changed_current_input(self):
+        context = self.context()
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaises(TOOL.ContractError):
+                TOOL.validate_authority_context(
+                    Path(directory),
+                    context,
+                    "example",
+                    "Example",
+                    self.expected_config(),
+                    {},
+                )
+        with self.assertRaises(TOOL.ContractError):
+            self.validate(context, '{"observations":[{"fact":"changed","id":1}]}')
+
+    def test_host_json_validation_binds_canonical_content_not_input_spacing(self):
+        context = self.context()
+        spaced = '{ "observations" : [ { "fact" : "current", "id" : 1 } ] }'
+        self.assertEqual(self.validate(context, spaced)[0]["sha256"], context["evidence"][0]["sha256"])
+
+    def test_host_json_validation_rejects_duplicate_keys_without_echo(self):
+        raw = '{"secret-sentinel":1,"secret-sentinel":2}'
+        with self.assertRaises(TOOL.ContractError) as raised:
+            self.validate(self.context(), raw)
+        self.assertNotIn("secret-sentinel", str(raised.exception))
+
+    def test_host_json_validation_rejects_non_finite_tokens_without_echo(self):
+        for token in ("NaN", "Infinity", "-Infinity"):
+            raw = '{"secret-sentinel":' + token + "}"
+            with self.subTest(token=token), self.assertRaises(TOOL.ContractError) as raised:
+                self.validate(self.context(), raw)
+            self.assertNotIn(token, str(raised.exception))
+            self.assertNotIn("secret-sentinel", str(raised.exception))
+
+    def test_repository_file_evidence_remains_unsupported_in_task_one(self):
+        context = self.context(
+            evidence=[
+                {
+                    "id": "repo-evidence",
+                    "kind": "repository_file",
+                    "locator": "evidence.txt",
+                    "sha256": "0" * 64,
+                }
+            ]
+        )
+        with self.assertRaisesRegex(TOOL.ContractError, "unsupported evidence"):
+            self.validate(context)
+
+
 RULEBOOK = "REPO-HARNESS.md"
 CLAUDE_POINTER = "@REPO-HARNESS.md"
 AGENTS_POINTER = "Read and follow REPO-HARNESS.md before working in this repository."
@@ -5127,6 +5409,75 @@ class SurvivingLegacyReferenceTests(unittest.TestCase):
                 "CONTRIBUTING.md",
                 {item["path"] for item in payload["survivingLegacyReferences"]["references"]},
             )
+
+
+
+class NonInteractiveTransportTests(unittest.TestCase):
+    """RH-W-0059: the transport contract must fail fast instead of waiting on a prompt nobody can answer."""
+
+    SESSION_SKILLS = (
+        ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+        ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+    )
+
+    def rendered_sessions(self):
+        outputs = TOOL.render("Example", ["opencode"])
+        return {path: outputs[path] for path in self.SESSION_SKILLS}
+
+    def test_both_session_skills_name_every_prompt_suppression_mechanism(self):
+        """Batch mode covers SSH and the terminal-prompt switch covers HTTPS; a repository may use either."""
+        required = (
+            "BatchMode=yes",
+            "GIT_TERMINAL_PROMPT=0",
+            "ConnectTimeout=20",
+            "core.sshCommand",
+        )
+        for path, text in self.rendered_sessions().items():
+            for token in required:
+                with self.subTest(path=path, token=token):
+                    self.assertIn(token, text)
+
+    def test_both_session_skills_state_why_the_invocation_must_be_non_interactive(self):
+        """A mechanism without its reason is the first thing a later edit relaxes."""
+        for path, text in self.rendered_sessions().items():
+            with self.subTest(path=path):
+                self.assertIn("no TTY", text)
+                self.assertRegex(text, r"(?i)hang")
+
+    def test_both_session_skills_give_the_environment_variable_per_shell(self):
+        """The POSIX-only prefix form fails on PowerShell before Git runs, which is the platform served first."""
+        for path, text in self.rendered_sessions().items():
+            with self.subTest(path=path):
+                self.assertIn("$env:GIT_TERMINAL_PROMPT", text)
+                self.assertIn("export GIT_TERMINAL_PROMPT", text)
+
+    def test_no_session_skill_writes_the_posix_only_prefix_form(self):
+        """A guard, not a preference: this exact form is what the per-shell rule exists to prevent."""
+        for path, text in self.rendered_sessions().items():
+            with self.subTest(path=path):
+                self.assertNotRegex(text, r"GIT_TERMINAL_PROMPT=0\s+git")
+
+    def test_both_session_skills_quote_the_upstream_shorthand(self):
+        """Raw @{u} can parse as a hashtable expression in PowerShell."""
+        for path, text in self.rendered_sessions().items():
+            with self.subTest(path=path):
+                self.assertIn('"@{u}"', text)
+
+    def test_both_session_skills_bound_the_mechanism_with_its_two_known_limits(self):
+        """Stating the limits prevents the contract from claiming the hang is now impossible."""
+        for path, text in self.rendered_sessions().items():
+            with self.subTest(path=path):
+                self.assertIn("GIT_SSH_COMMAND", text)
+                self.assertRegex(text, r"(?i)credential helper")
+
+    def test_the_rulebook_is_untouched_by_the_transport_contract(self):
+        """RH-W-0059 lands in the session skills only; the rulebook has four tokens of headroom."""
+        outputs = TOOL.render("Example", ["opencode"])
+        rulebook = outputs["REPO-HARNESS.md"]
+        for token in ("BatchMode", "GIT_TERMINAL_PROMPT", "ConnectTimeout"):
+            with self.subTest(token=token):
+                self.assertNotIn(token, rulebook)
+
 
 
 if __name__ == "__main__":

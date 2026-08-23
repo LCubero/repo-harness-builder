@@ -5411,5 +5411,74 @@ class SurvivingLegacyReferenceTests(unittest.TestCase):
             )
 
 
+
+class NonInteractiveTransportTests(unittest.TestCase):
+    """RH-W-0059: the transport contract must fail fast instead of waiting on a prompt nobody can answer."""
+
+    SESSION_SKILLS = (
+        ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+        ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+    )
+
+    def rendered_sessions(self):
+        outputs = TOOL.render("Example", ["opencode"])
+        return {path: outputs[path] for path in self.SESSION_SKILLS}
+
+    def test_both_session_skills_name_every_prompt_suppression_mechanism(self):
+        """Batch mode covers SSH and the terminal-prompt switch covers HTTPS; a repository may use either."""
+        required = (
+            "BatchMode=yes",
+            "GIT_TERMINAL_PROMPT=0",
+            "ConnectTimeout=20",
+            "core.sshCommand",
+        )
+        for path, text in self.rendered_sessions().items():
+            for token in required:
+                with self.subTest(path=path, token=token):
+                    self.assertIn(token, text)
+
+    def test_both_session_skills_state_why_the_invocation_must_be_non_interactive(self):
+        """A mechanism without its reason is the first thing a later edit relaxes."""
+        for path, text in self.rendered_sessions().items():
+            with self.subTest(path=path):
+                self.assertIn("no TTY", text)
+                self.assertRegex(text, r"(?i)hang")
+
+    def test_both_session_skills_give_the_environment_variable_per_shell(self):
+        """The POSIX-only prefix form fails on PowerShell before Git runs, which is the platform served first."""
+        for path, text in self.rendered_sessions().items():
+            with self.subTest(path=path):
+                self.assertIn("$env:GIT_TERMINAL_PROMPT", text)
+                self.assertIn("export GIT_TERMINAL_PROMPT", text)
+
+    def test_no_session_skill_writes_the_posix_only_prefix_form(self):
+        """A guard, not a preference: this exact form is what the per-shell rule exists to prevent."""
+        for path, text in self.rendered_sessions().items():
+            with self.subTest(path=path):
+                self.assertNotRegex(text, r"GIT_TERMINAL_PROMPT=0\s+git")
+
+    def test_both_session_skills_quote_the_upstream_shorthand(self):
+        """Raw @{u} can parse as a hashtable expression in PowerShell."""
+        for path, text in self.rendered_sessions().items():
+            with self.subTest(path=path):
+                self.assertIn('"@{u}"', text)
+
+    def test_both_session_skills_bound_the_mechanism_with_its_two_known_limits(self):
+        """Stating the limits prevents the contract from claiming the hang is now impossible."""
+        for path, text in self.rendered_sessions().items():
+            with self.subTest(path=path):
+                self.assertIn("GIT_SSH_COMMAND", text)
+                self.assertRegex(text, r"(?i)credential helper")
+
+    def test_the_rulebook_is_untouched_by_the_transport_contract(self):
+        """RH-W-0059 lands in the session skills only; the rulebook has four tokens of headroom."""
+        outputs = TOOL.render("Example", ["opencode"])
+        rulebook = outputs["REPO-HARNESS.md"]
+        for token in ("BatchMode", "GIT_TERMINAL_PROMPT", "ConnectTimeout"):
+            with self.subTest(token=token):
+                self.assertNotIn(token, rulebook)
+
+
+
 if __name__ == "__main__":
     unittest.main()
