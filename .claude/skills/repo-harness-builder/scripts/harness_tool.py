@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -197,6 +198,21 @@ def select_integration_mode(
     }
 
 
+def capability_projection(preflight: Mapping[str, Any]) -> dict[str, Any]:
+    """Return the preflight outcome without the evidence each component was judged from.
+
+    The host supplies its own Engram evidence, so echoing it back publishes whatever that
+    payload happened to carry. Classification is the decision this tool made; the evidence
+    is the input the caller already holds, and it is not this tool's to republish.
+    """
+    projected = dict(preflight)
+    for component in ("gentleAi", "engram"):
+        value = projected.get(component)
+        if isinstance(value, Mapping):
+            projected[component] = {key: item for key, item in value.items() if key != "evidence"}
+    return projected
+
+
 def runtime_capability_status(
     gentle_ai_available: bool,
     engram_available: bool,
@@ -321,6 +337,14 @@ BUILDER_FIELDS = {
 }
 PREMISE_FIELDS = {"id", "class", "value", "decisionIds", "evidenceIds"}
 DECISION_FIELDS = {"id", "kind", "statement"}
+FRESH_PREVIEW_REQUIRED = "fresh_preview_required: authority input is unavailable, invalid, or changed"
+"""Every authority refusal on the apply path collapses here.
+
+A caller learns that the approval no longer holds and must preview again. It learns nothing
+about which field, path, or byte disagreed, because that detail is the evidence itself.
+"""
+
+REDACTED_MARKER = "[redacted]"
 REPOSITORY_FILE_EVIDENCE_FIELDS = {"id", "kind", "locator", "sha256"}
 HOST_JSON_EVIDENCE_FIELDS = {"id", "kind", "source", "sha256"}
 SHA256_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
@@ -478,8 +502,7 @@ def validate_authority_context(
     expected_config: AuthorityBuilderConfig,
     host_json_inputs: dict[str, str],
 ) -> list[EvidenceBinding]:
-    """Validate current host JSON bindings and return safe metadata only."""
-    del root
+    """Validate typed evidence bindings and return safe metadata only."""
     validated = _validate_authority_context_schema(context)
     require(
         validated["project"]["id"] == project_id
@@ -491,7 +514,32 @@ def validate_authority_context(
     bindings: list[EvidenceBinding] = []
     for item in validated["evidence"]:
         if item["kind"] == "repository_file":
-            raise ContractError("unsupported evidence kind in this validation phase")
+            # The digest was recorded when the answer was believed. The file is re-read and
+            # compared, never trusted, because a correction that changed the file must not
+            # leave the old plan authorized by evidence that no longer says what it said.
+            # Digest shape is already settled by the schema pass through SHA256_PATTERN;
+            # re-checking it here would be a branch no input can reach.
+            locator = safe_relative(item["locator"])
+            target = guarded_target(root, locator)
+            require(
+                target.is_file() and not is_indirect(target),
+                "authority context repository evidence is unavailable",
+            )
+            actual_bytes_sha256 = hashlib.sha256(target.read_bytes()).hexdigest()
+            require(
+                actual_bytes_sha256 == item["sha256"],
+                "authority context repository evidence changed",
+            )
+            # Repository-relative locator only. The resolved path and the bytes stay here.
+            bindings.append(
+                {
+                    "id": item["id"],
+                    "kind": "repository_file",
+                    "locator": locator,
+                    "sha256": item["sha256"],
+                }
+            )
+            continue
         source = item["source"]
         require(source == "engram_evidence_json", "authority context host source is unsupported")
         require(source in host_json_inputs, "authority context host input is unavailable")
@@ -507,6 +555,127 @@ def validate_authority_context(
             }
         )
     return bindings
+
+
+def expected_authority_builder_config(args: argparse.Namespace) -> AuthorityBuilderConfig:
+    """Project the exact builder configuration this invocation would run.
+
+    The context declares what the builder is doing; this is the only thing it can be
+    compared against. Deriving it here rather than trusting the context is the whole
+    point: a context that describes a different build must not authorize this one.
+
+    Runtime and documentation-language order follow what the renderer normalizes, not
+    what the caller typed, because the plan is rendered from the normalized order and a
+    context bound to the typed order would disagree with the plan it claims to justify.
+    """
+    return {
+        "runtimes": sorted(set(args.runtime or [])),
+        "license": args.license_id,
+        "integrationMode": "standalone" if args.standalone else "integrated",
+        "reportLanguage": args.report_language,
+        "documentationLanguages": list(normalize_documentation_languages(args.documentation_languages)),
+        "conversationLanguage": args.conversation_language or DEFAULT_REPORT_LANGUAGE,
+        "ignoreCodegraph": args.ignore_codegraph,
+        "activation": args.activation,
+    }
+
+
+def target_binding_sha256(root: Path) -> str:
+    """Hash the normalized destination so identity survives without disclosing the path.
+
+    The normalized path is hashed and discarded. No caller returns or logs it, which is
+    what lets a preview name the target it is bound to without naming where it lives.
+    """
+    resolved = root.resolve(strict=True)
+    normalized = os.path.normcase(os.path.normpath(str(resolved)))
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+
+def authority_binding(
+    root: Path,
+    context: AuthorityContext,
+    canonical_context: str,
+    evidence: list[EvidenceBinding],
+    plan_sha256: str,
+) -> AuthorityBinding:
+    """Bind one generation to its context, its target, and its plan.
+
+    Three identities have to move together or the binding proves nothing. The context
+    says what was believed, the target says which repository it was believed about, and
+    the plan says what would be written. Changing any one of them is a different
+    generation, which is why an approval cannot survive a correction.
+    """
+    require(
+        isinstance(plan_sha256, str) and re.fullmatch(r"[0-9a-f]{64}", plan_sha256) is not None,
+        "authority binding requires a lowercase 64-character plan digest",
+    )
+    authority_context_sha256 = digest_text(canonical_context)
+    target_sha256 = target_binding_sha256(root)
+    generation = {
+        "domain": "repo-harness-builder/authority-generation/v1",
+        "authorityContextSha256": authority_context_sha256,
+        "materialRevision": context["materialRevision"],
+        "planIdentity": {"schemaVersion": 1, "planSha256": plan_sha256},
+        "targetBindingSha256": target_sha256,
+    }
+    return {
+        "evidence": evidence,
+        "authorityContextSha256": authority_context_sha256,
+        "targetBindingSha256": target_sha256,
+        "generationSha256": digest_text(canonical_json(generation)),
+    }
+
+
+def read_authority_context_transport(locator: str) -> str:
+    """Read the exact authority context bytes the human explicitly supplied.
+
+    This is a transport the caller named, not an evidence locator: it is read as given
+    rather than resolved against the target, which is why a path must be a direct regular
+    file and never a symlink into something else.
+    """
+    if locator == "-":
+        return sys.stdin.read()
+    path = Path(locator)
+    require(path.is_file() and not is_indirect(path), "authority context transport is unavailable")
+    return path.read_text(encoding="utf-8")
+
+
+def builder_authority_projection(root: Path, args: argparse.Namespace, plan_sha256: str) -> dict[str, Any]:
+    """Return only what a human can review, and nothing a preview must not disclose.
+
+    Every premise value and decision statement is replaced by an explicit redaction marker
+    rather than omitted, because a reader has to see that something was withheld. Evidence
+    keeps its stable id, kind, safe locator or source, and content digest, which is enough
+    to check what the answer rested on without reproducing it.
+    """
+    raw = read_authority_context_transport(args.authority_context_file)
+    context, canonical_context = parse_authority_context(raw)
+    host_json_inputs = (
+        {"engram_evidence_json": args.engram_evidence_json} if args.engram_evidence_json else {}
+    )
+    evidence = validate_authority_context(
+        root,
+        context,
+        args.project_id,
+        args.project_name,
+        expected_authority_builder_config(args),
+        host_json_inputs,
+    )
+    binding = authority_binding(root, context, canonical_context, evidence, plan_sha256)
+    return {
+        "authorityEvidence": binding["evidence"],
+        "authorityPremises": [
+            {"id": premise["id"], "class": premise["class"], "value": REDACTED_MARKER}
+            for premise in context["premises"]
+        ],
+        "authorityDecisions": [
+            {"id": decision["id"], "kind": decision["kind"], "statement": REDACTED_MARKER}
+            for decision in context["decisions"]
+        ],
+        "authorityContextSha256": binding["authorityContextSha256"],
+        "targetBindingSha256": binding["targetBindingSha256"],
+        "generationSha256": binding["generationSha256"],
+    }
 
 
 def approval_domain(report_language: str = DEFAULT_REPORT_LANGUAGE) -> dict[str, str]:
@@ -945,6 +1114,27 @@ def frontmatter(name: str, description: str, source: str, license_id: str) -> st
     )
 
 
+VISIBILITY_CONTRACT = (
+    "Visibility: a notice, pending action, or question must survive skimming. Give it its own block, "
+    "delimited by a horizontal rule line above and below, with a short label line naming it in the reply "
+    "language. Never use side borders or box corners, which misalign in a terminal. Reserve the block for "
+    "input the human must act on: when nothing is pending, close with a plain status line and one concrete "
+    "recommendation, never an empty block. Two block forms exist and the choice between them is not "
+    "stylistic: draw the block with a line of `=` only when the reply is blocked and cannot continue until "
+    "the human answers, and draw it with a line of `+` only when the reply asks nothing and names what comes "
+    "next. Never use `=` for something the human does not have to answer, never use `+` to ask, and never "
+    "put both forms in one reply, so the reader knows from the shape alone whether the reply is waiting on "
+    "them. This binds the agent's own replies as well as "
+    "reported output, and strengthens the single-final-question rule rather than replacing it."
+)
+"""One obligation, shared by every daily contract.
+
+A position rule is not a visibility rule: a final line at the end of a long reply is
+still unfindable. It lives here rather than in the rulebook because the rulebook has
+four tokens of headroom and this is contract detail, not a never-miss rule.
+"""
+
+
 def references_section(rulebook_path: str) -> str:
     """Render the shared References section for every generated skill."""
     return f"""
@@ -1083,6 +1273,7 @@ Never use git pull, git rebase, git reset, force operations, merge on divergence
 Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
 Report the checker result in the reply language: `current` means every runtime projection is up to date, and `drift` is reported as needing an update, naming each drifted runtime projection.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
+{VISIBILITY_CONTRACT}
 {references_section(rulebook_path)}"""
 
 
@@ -1192,6 +1383,7 @@ Always report required continuity outcome separately from optional Git branch ou
 
 Deliver the complete Output Contract only after continuity is saved successfully. Return close outcome, required continuity outcome, optional Git branch outcome, completed work, decisions, unresolved issues, next steps, verified paths, documentation update result, {output_continuity}, classified Git state, proposed or completed work units, commit result, push result, transport receipts, safely-local state, and separately pending optional gates. When safe and relevant, ask exactly one blocking question and make it the final user-facing line.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
+{VISIBILITY_CONTRACT}
 If continuity saving fails, surface the failure and do not claim successful continuity or a final handoff.
 {references_section(rulebook_path)}"""
 
@@ -1266,6 +1458,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 
 Return canonical owners checked, links validated, stale or duplicate claims resolved, durable documents changed, temporary state left unpromoted, and remaining documentation risks.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
+{VISIBILITY_CONTRACT}
 {references_section(rulebook_path)}"""
 
 
@@ -1535,7 +1728,7 @@ Run `python3 .repo-harness/check.py` (`python` on Windows) after canonical skill
 
 <!-- doc-role:approval-boundaries -->
 
-The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, or `degraded`, scoped so optional Git failure does not fail successful continuity. Documentation writes require explicit conversational approval. Explicit safe-sync consent covers bounded fetch plus fast-forward-only integration. Explicit combined commit-and-push consent covers exact staging, commit, checks, one fetch preflight, and one push to the identified upstream. Commit-only and push-only remain narrow, and material changes invalidate consent. Dirty or diverged repositories stay local for human resolution, and no Git action is required for continuity.
+The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, or `degraded`, scoped so optional Git failure does not fail successful continuity. Documentation writes require explicit conversational approval. Explicit safe-sync consent covers bounded fetch plus fast-forward-only integration. Explicit combined commit-and-push consent covers exact staging, commit, checks, one fetch preflight, and one push to the identified upstream. Commit-only and push-only remain narrow, and material changes invalidate consent. Dirty or diverged repositories stay local for human resolution, and no Git action is required for continuity. A builder run carrying an authority context also prints digests you can review without reading anything private: `authorityContextSha256`, `targetBindingSha256`, `planSha256`, and `generationSha256` binding them together, with premise values and decision statements shown as explicit redaction markers and each evidence item as a repository-relative locator and a digest. Check those locators are the files you expect, then approve. If something was wrong the host must refresh the context with a new material revision and preview again, because a corrected answer with an identical plan keeps the same `planSha256` and gets a different `generationSha256`.
 """
     state = f"""# Current State
 
@@ -2896,8 +3089,13 @@ def apply_generated_output_migration(
         raise
 
 
-def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> list[str]:
-    """Execute only the unchanged approved plan, including bounded root appends."""
+def validate_write_preconditions(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> None:
+    """Prove the approved plan still describes the repository, before anything is written.
+
+    This lived inside `write_outputs()` and still runs there. It is named and callable on its
+    own so an authority-carrying apply can run it as an explicit preflight and translate its
+    refusal into one content-free outcome, without teaching the writer about authority.
+    """
     require(plan == plan_changes(root, outputs), "approved plan is stale; preview again")
     require(not plan["blocked"], "blocked plan actions require approved executable integration")
     for item in plan["existing"]:
@@ -2922,6 +3120,16 @@ def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> 
         require(target.is_file() and not is_indirect(target), f"invalid generated replacement target: {relative}")
         require(digest_bytes(target.read_bytes()) == item["sourceSha256"], f"generated source bytes changed: {relative}")
         require(digest_text(outputs[relative]) == item["destinationSha256"], f"generated destination bytes changed: {relative}")
+
+
+def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> list[str]:
+    """Execute only the unchanged approved plan, including bounded root appends.
+
+    The preflight repeats deliberately when a caller already ran it: it is the last check
+    before mutation, and a race between validation and the write must not pass through.
+    """
+    validate_write_preconditions(root, outputs, plan)
+
     def apply_additive() -> list[str]:
         written: list[Path] = []
         appended: dict[Path, bytes] = {}
@@ -3321,6 +3529,9 @@ def main(argv: Optional[list[str]] = None) -> int:
             child.add_argument("--approved-plan-sha256", help="digest printed by the approved preview")
             child.add_argument("--approval", help="exact approval answer from the active report-language domain; builder activation only")
             child.add_argument("--engram-evidence-json", help="exact JSON evidence from the host-supported Engram MCP or CLI boundary")
+            child.add_argument("--project-id", help="exact normalized project identifier the authority context declares; builder activation only")
+            child.add_argument("--authority-context-file", help="path to the exact canonical authority context, or - to read it from stdin; builder activation only")
+            child.add_argument("--approved-generation-sha256", help="generation digest printed by the approved builder preview; builder apply only")
     self_test = sub.add_parser("self-test", help="bootstrap and verify a temporary empty project")
     self_test.add_argument("--standalone", action="store_true", help="test repository-only continuity")
     args = parser.parse_args(argv)
@@ -3347,7 +3558,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                     dump_json({
                         "status": "FAILED_CLOSED",
                         "error": "integrated mode requires verified Gentle AI and Engram capabilities",
-                        "capabilityPreflight": preflight,
+                        "capabilityPreflight": capability_projection(preflight),
                     }),
                     end="",
                     file=sys.stderr,
@@ -3365,6 +3576,38 @@ def main(argv: Optional[list[str]] = None) -> int:
         )
         plan = plan_changes(root, outputs)
         digest = plan_digest(plan)
+        authority_projection: dict[str, Any] = {}
+        if args.activation == "builder":
+            require(
+                args.apply or not args.approved_generation_sha256,
+                "an approved generation belongs to apply, never to preview",
+            )
+            # The authority transport is opt-in. Builder activation on its own still means only
+            # what RH-W-0030 made it mean, the strict approval domain, so requiring a context
+            # here would delete that boundary rather than extend it.
+            if args.authority_context_file:
+                require(bool(args.project_id), "an authority context requires --project-id")
+                if args.apply:
+                    # An initial preview reports exactly what is wrong with the context it was
+                    # handed. Apply cannot: by then the same failure means the approval no
+                    # longer describes this repository, and naming the difference would echo
+                    # the evidence the binding exists to keep out of the output.
+                    try:
+                        authority_projection = builder_authority_projection(root, args, digest)
+                    except (ContractError, OSError, UnicodeDecodeError, ValueError) as error:
+                        raise ContractError(FRESH_PREVIEW_REQUIRED) from error
+                else:
+                    authority_projection = builder_authority_projection(root, args, digest)
+            else:
+                require(
+                    not args.project_id,
+                    "--project-id belongs to an authority context",
+                )
+        else:
+            require(
+                not (args.project_id or args.authority_context_file or args.approved_generation_sha256),
+                "authority arguments require builder activation",
+            )
         domain = approval_domain(args.report_language)
         entry_points = documentation_entry_points(
             args.conversation_language or DEFAULT_REPORT_LANGUAGE,
@@ -3379,7 +3622,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")
@@ -3392,6 +3635,17 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if not approval_granted(args.approval, args.report_language):
                     print(dump_json({"status": "DENIED", "changed": [], "planSha256": digest, "reportLanguage": args.report_language}), end="")
                     return 0
+            if builder_active and args.authority_context_file:
+                require(
+                    bool(args.approved_generation_sha256),
+                    "--approved-generation-sha256 is required when apply carries an authority context",
+                )
+                if args.approved_generation_sha256 != authority_projection["generationSha256"]:
+                    raise ContractError(FRESH_PREVIEW_REQUIRED)
+                try:
+                    validate_write_preconditions(root, outputs, plan)
+                except ContractError as error:
+                    raise ContractError(FRESH_PREVIEW_REQUIRED) from error
             changed = write_outputs(root, outputs, plan)
             print(dump_json({"status": "VALIDATED", "changed": changed, "planSha256": digest, "reportLanguage": args.report_language, "plan": plan}), end="")
         return 0

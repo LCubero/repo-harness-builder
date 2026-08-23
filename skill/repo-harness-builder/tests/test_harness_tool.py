@@ -595,6 +595,55 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
 
 
 class ProductWorkflowTests(unittest.TestCase):
+    """RH-W-0054 Task 7: the shipped contracts must describe the transport the code enforces."""
+
+    PACKAGE_DOCUMENTS = (
+        "SKILL.md",
+        "references/audit-and-interview.md",
+        "references/architecture.md",
+        "references/preservation-and-safety.md",
+        "references/validation.md",
+    )
+
+    def package_text(self):
+        return {name: (ROOT / name).read_text(encoding="utf-8") for name in self.PACKAGE_DOCUMENTS}
+
+    def test_the_package_contracts_describe_the_stateless_authority_transport(self):
+        """A contract that omits the transport leaves the next reader to infer it from code."""
+        combined = chr(10).join(self.package_text().values())
+        for phrase in (
+            "canonical authority context",
+            "typed evidence binding",
+            "authorityContextSha256",
+            "generationSha256",
+            "targetBindingSha256",
+            "fresh preview",
+            "host must refresh",
+            "separate CLI processes",
+            "maintenance",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_the_safety_contract_states_every_privacy_boundary_and_claims_no_more(self):
+        """The safety document is where an over-claim would be most believed, so it is checked hardest."""
+        # The obligation is the sentence, not its capitalization at the start of a bullet.
+        safety = self.package_text()["references/preservation-and-safety.md"].lower()
+        for phrase in (
+            "do not print the absolute target path",
+            "do not print raw evidence",
+            "do not print premise values or decision statements",
+            "capability classification metadata only",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, safety)
+        for overclaim in (
+            "discovers omitted conversational corrections",
+            "verifies unsupported evidence",
+        ):
+            with self.subTest(overclaim=overclaim):
+                self.assertNotIn(overclaim, safety)
+
     def test_generated_spanish_docs_are_complete_localized_baselines(self):
         outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
         expectations = {

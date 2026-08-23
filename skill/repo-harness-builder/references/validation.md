@@ -106,3 +106,24 @@ The external command wrapper lives outside this package. Its three contract chec
 The renderer does not provide generic agent packs, managed-region merging, schema-library validation, Git operations, provider operations, backup, publication, or repository-wide secret scanning. Runtime discovery and registration remain host responsibilities.
 
 It does not merge arbitrary existing content. Human-owned evolution remains proposal-only until a bounded integration action exists. Exact authenticated generated outputs carrying builder provenance can be replaced only through the explicit content-bound approval contract above.
+
+## Authority Transport Scenarios
+
+Cover these with genuine separate CLI processes, one for preview and one for apply, passing the
+context by file and parsing preview stdout:
+
+- Apply succeeds when the approved generation still matches, and writes the expected baseline.
+- Apply refuses a mismatched generation, a missing `--approved-generation-sha256`, a corrected
+  identical plan approved under the previous generation, repository evidence changed after the
+  preview, a transport that disappeared, and a transport whose bytes stopped being canonical.
+- Every refusal exits 2, reports the content-free `fresh preview` outcome, and leaves the
+  repository unwritten.
+- Maintenance still applies on the matching plan digest alone and rejects all three authority
+  arguments.
+- The module exposes no authority session or recovery API, and a rejected apply leaves nothing a
+  later run must clear: an identical preview after a rejection returns the identical payload.
+- Builder preview output contains no absolute path, no transport path, no premise value, no
+  decision statement, and no evidence bytes, checked by walking the payload recursively rather
+  than by scanning one field.
+- Distinct sentinel values in the premise, the decision, the repository evidence, and the host
+  JSON are absent from both stdout and stderr in every outcome, checked independently per stream.

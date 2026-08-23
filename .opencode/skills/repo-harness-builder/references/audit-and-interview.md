@@ -68,3 +68,27 @@ Pass the resolved value explicitly to the renderer as `--report-language english
 Preserve commands, paths, URLs, identifiers, tokens, invocations, branches, remotes, digests, messages, scopes, enum values, states, and anything inside backticks exactly as written. Skills, contracts, wrappers, checker machinery, manifest instructions and schema, code, comments, runtime instructions, and technical artifacts stay in English. Human repository documentation may be English-only, Spanish-only at canonical paths, or bilingual with English owners and Spanish peers. The human-facing help guide is the routed reading surface. Guide locale never supplies reply language.
 
 After the harness is verified, optional capability questions appear only when relevant. Git initialization and provider publication are separate approval boundaries. For publication, suggest GitHub as one provider, ask whether visibility should be private or public, and require explicit approval before authentication or remote mutation.
+
+## Classified Premises And Typed Evidence
+
+An answer that changed a decision has to be reviewable without republishing what it rested on.
+The canonical authority context carries three separate lists for that reason.
+
+- **Premises** carry an id, a class of either `factual_claim` or `assistant_interpretation`, the
+  value itself, and the decision and evidence ids they connect. The class is the point: a reader
+  must be able to see which parts of an answer were claimed as fact and which were the
+  assistant's reading of something.
+- **Human decisions** are their own `human_decision` entries, never premises. A decision a person
+  made is not a claim the tool can verify, and collapsing the two would let an interpretation
+  inherit a human's authority.
+- **Evidence** entries are typed evidence bindings. A `repository_file` binding names a
+  repository-relative locator and the SHA-256 of its bytes; it is resolved only through the
+  containment guard, required to be a regular non-indirect file, re-read, and compared exactly.
+  A `host_json` binding names its source and the digest of its canonicalized content.
+
+Evidence that is unsupported, missing, indirect, external, or changed fails closed. The tool
+verifies what the bindings assert and nothing beyond them.
+
+After a correction the host must refresh the context and preview again. Editing a premise without
+a new material revision produces the same generation digest and would silently reuse an approval
+that described a different answer.

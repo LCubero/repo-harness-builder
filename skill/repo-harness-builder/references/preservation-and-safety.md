@@ -103,3 +103,31 @@ Builder-owned remediation preserves consumer state, names the exact reproduction
 ## Generated Checker Boundary
 
 The generated checker trusts no mutable manifest field until the exact manifest bytes match its embedded SHA-256. It then requires the exact checker schema, an `integrationMode` of `integrated` or `standalone`, supported runtimes, safe canonical skill names, and repository-relative paths. It rejects absolute, drive-qualified, parent-traversing, symlinked, reparse-point, and outside-resolving paths before content reads. Its scope remains manifest integrity and canonical runtime skill projections only.
+
+## Authority Privacy Boundary
+
+The bindings exist so a human can review what an answer rested on without the tool republishing
+it. Four rules hold on every output path, including the failure paths:
+
+- Do not print the absolute target path. The destination is identified by `targetBindingSha256`,
+  which is computed from the normalized resolved root and then discarded.
+- Do not print raw evidence. A `repository_file` binding returns its repository-relative locator
+  and digest; a `host_json` binding returns its source and digest. The bytes never appear.
+- Do not print premise values or decision statements. They are replaced by an explicit redaction
+  marker rather than omitted, because a reader has to see that something was withheld.
+- Report capability classification metadata only. `detect_gentle_ai()` and `detect_engram()` keep
+  the complete evidence internally because the verification needs it, and
+  `capability_projection()` removes it from every printed surface. The host supplies its own
+  Engram evidence, so echoing that object back would publish whatever payload it carried.
+
+Success, denial, validation failure, and the `fresh preview` refusal each hold these rules
+independently. A refusal that names which field disagreed would leak the evidence by describing
+it, so every authority failure at apply returns one content-free outcome instead.
+
+The first-write boundary is unchanged and is not widened by any of this. All authority validation
+happens before `write_outputs()` begins. Once the mutation path starts, the existing rollback and
+post-first-write remediation boundary remains authoritative, and the tool makes no new recovery
+claim beyond it.
+
+The tool cannot detect a correction the host never sent, and it does not verify truth beyond the
+bindings it was given. It says so rather than implying an assurance it does not provide.

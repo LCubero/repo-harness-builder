@@ -1,3 +1,4 @@
+import argparse
 import ast
 import importlib.util
 import hashlib
@@ -298,7 +299,15 @@ class AuthorityContextTests(unittest.TestCase):
             self.assertNotIn(token, str(raised.exception))
             self.assertNotIn("secret-sentinel", str(raised.exception))
 
-    def test_repository_file_evidence_remains_unsupported_in_task_one(self):
+    def test_repository_file_evidence_that_is_not_there_is_refused(self):
+        """Task 3 replaced the phase refusal with a real resolution, so the refusal has a real reason now.
+
+        This asserted "unsupported evidence" while Task 1 was the whole validator. Keeping that
+        assertion after Task 3 would have pinned the scaffolding instead of the behavior, so the
+        case it still owns is the one this class can prove without a repository: a declared file
+        the validator cannot resolve is refused, and the refusal names the resolution and not the
+        phase. `RepositoryEvidenceTests` owns the resolved cases against a real root.
+        """
         context = self.context(
             evidence=[
                 {
@@ -309,7 +318,7 @@ class AuthorityContextTests(unittest.TestCase):
                 }
             ]
         )
-        with self.assertRaisesRegex(TOOL.ContractError, "unsupported evidence"):
+        with self.assertRaisesRegex(TOOL.ContractError, "repository evidence is unavailable"):
             self.validate(context)
 
 
@@ -586,6 +595,55 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
 
 
 class ProductWorkflowTests(unittest.TestCase):
+    """RH-W-0054 Task 7: the shipped contracts must describe the transport the code enforces."""
+
+    PACKAGE_DOCUMENTS = (
+        "SKILL.md",
+        "references/audit-and-interview.md",
+        "references/architecture.md",
+        "references/preservation-and-safety.md",
+        "references/validation.md",
+    )
+
+    def package_text(self):
+        return {name: (ROOT / name).read_text(encoding="utf-8") for name in self.PACKAGE_DOCUMENTS}
+
+    def test_the_package_contracts_describe_the_stateless_authority_transport(self):
+        """A contract that omits the transport leaves the next reader to infer it from code."""
+        combined = chr(10).join(self.package_text().values())
+        for phrase in (
+            "canonical authority context",
+            "typed evidence binding",
+            "authorityContextSha256",
+            "generationSha256",
+            "targetBindingSha256",
+            "fresh preview",
+            "host must refresh",
+            "separate CLI processes",
+            "maintenance",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_the_safety_contract_states_every_privacy_boundary_and_claims_no_more(self):
+        """The safety document is where an over-claim would be most believed, so it is checked hardest."""
+        # The obligation is the sentence, not its capitalization at the start of a bullet.
+        safety = self.package_text()["references/preservation-and-safety.md"].lower()
+        for phrase in (
+            "do not print the absolute target path",
+            "do not print raw evidence",
+            "do not print premise values or decision statements",
+            "capability classification metadata only",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, safety)
+        for overclaim in (
+            "discovers omitted conversational corrections",
+            "verifies unsupported evidence",
+        ):
+            with self.subTest(overclaim=overclaim):
+                self.assertNotIn(overclaim, safety)
+
     def test_generated_spanish_docs_are_complete_localized_baselines(self):
         outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
         expectations = {
@@ -3832,8 +3890,13 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
                                 result = TOOL.main([*base, *apply_args])
                             self.assertEqual(result, 2)
                             payload = json.loads("".join(call.args[0] for call in stderr.write.call_args_list))
-                            self.assertEqual(payload["capabilityPreflight"]["gentleAi"], gentle)
-                            self.assertEqual(payload["capabilityPreflight"]["engram"], engram)
+                            # RH-W-0054 Task 6 removed the evidence each component was judged
+                            # from: the host supplies Engram's, so echoing it back published
+                            # whatever that payload carried. The classification this test cares
+                            # about is unchanged.
+                            projected = payload["capabilityPreflight"]
+                            self.assertEqual(projected["gentleAi"], {"classification": gentle_classification})
+                            self.assertEqual(projected["engram"], {"classification": engram_classification})
                             self.assertFalse((Path(directory) / RULEBOOK).exists())
 
     def test_cli_integrated_preview_and_apply_proceed_when_both_capabilities_verify(self):
@@ -5412,6 +5475,519 @@ class SurvivingLegacyReferenceTests(unittest.TestCase):
 
 
 
+
+class AuthorityConfigurationProjectionTests(unittest.TestCase):
+    """RH-W-0054 Task 2: the context must bind the exact configuration the builder would run."""
+
+    def args(self, **overrides):
+        values = {
+            "project_name": "Example",
+            "runtime": ["opencode"],
+            "license_id": "MIT",
+            "standalone": False,
+            "report_language": "english",
+            "documentation_languages": ["en", "es"],
+            "conversation_language": "espanol",
+            "ignore_codegraph": True,
+            "activation": "builder",
+        }
+        values.update(overrides)
+        return argparse.Namespace(**values)
+
+    def context(self, **builder_overrides):
+        base = AuthorityContextTests.context(AuthorityContextTests())
+        base["builder"].update(builder_overrides)
+        return base
+
+    def host_inputs(self):
+        return {"engram_evidence_json": '{"observations":[{"fact":"current","id":1}]}'}
+
+    def test_projection_returns_every_declared_builder_field(self):
+        self.assertEqual(
+            TOOL.expected_authority_builder_config(self.args()),
+            {
+                "runtimes": ["opencode"],
+                "license": "MIT",
+                "integrationMode": "integrated",
+                "reportLanguage": "english",
+                "documentationLanguages": ["en", "es"],
+                "conversationLanguage": "espanol",
+                "ignoreCodegraph": True,
+                "activation": "builder",
+            },
+        )
+
+    def test_integration_mode_is_derived_from_the_standalone_choice(self):
+        self.assertEqual(
+            TOOL.expected_authority_builder_config(self.args(standalone=True))["integrationMode"],
+            "standalone",
+        )
+
+    def test_runtime_order_matches_what_the_renderer_normalizes(self):
+        """A context that bound the typed order would disagree with the plan the builder actually renders."""
+        projected = TOOL.expected_authority_builder_config(self.args(runtime=["opencode", "claude-code"]))
+        self.assertEqual(projected["runtimes"], sorted({"opencode", "claude-code"}))
+
+    def test_each_configuration_field_mutation_is_refused(self):
+        """One mutation per field: an authority context may not describe a build the CLI is not running."""
+        mutations = (
+            ("runtimes", ["claude-code"]),
+            ("license", "UNLICENSED"),
+            ("integrationMode", "standalone"),
+            ("reportLanguage", "espanol"),
+            ("documentationLanguages", ["en"]),
+            ("conversationLanguage", "english"),
+            ("ignoreCodegraph", False),
+        )
+        expected = TOOL.expected_authority_builder_config(self.args())
+        for field, value in mutations:
+            with self.subTest(field=field):
+                with self.assertRaises(TOOL.ContractError) as caught:
+                    TOOL.validate_authority_context(
+                        Path("."), self.context(**{field: value}), "example", "Example",
+                        expected, self.host_inputs(),
+                    )
+                self.assertIn("authority context configuration mismatch", str(caught.exception))
+
+    def test_project_id_and_name_mismatches_are_refused(self):
+        expected = TOOL.expected_authority_builder_config(self.args())
+        for project_id, project_name in (("other", "Example"), ("example", "Other")):
+            with self.subTest(project_id=project_id, project_name=project_name):
+                with self.assertRaises(TOOL.ContractError) as caught:
+                    TOOL.validate_authority_context(
+                        Path("."), self.context(), project_id, project_name,
+                        expected, self.host_inputs(),
+                    )
+                self.assertIn("authority context project mismatch", str(caught.exception))
+
+    def test_report_language_changes_the_bound_domain_without_changing_plan_identity(self):
+        """Presentation alone must not move executable plan identity, while the approval domain stays bound."""
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            outputs = TOOL.render("Example", ["opencode"])
+            plan_en = TOOL.plan_changes(root, outputs)
+            plan_es = TOOL.plan_changes(root, outputs)
+        self.assertEqual(TOOL.plan_digest(plan_en), TOOL.plan_digest(plan_es))
+        config_en = TOOL.expected_authority_builder_config(self.args(report_language="english"))
+        config_es = TOOL.expected_authority_builder_config(self.args(report_language="espanol"))
+        self.assertNotEqual(config_en["reportLanguage"], config_es["reportLanguage"])
+
+
+class AuthorityBindingTests(unittest.TestCase):
+    """RH-W-0054 Task 2: a generation is bound to context, target, and plan, and leaks no path."""
+
+    PLAN_SHA = "0" * 64
+
+    def setUp(self):
+        self.context = AuthorityContextTests.context(AuthorityContextTests())
+        self.canonical = TOOL.canonical_json(self.context)
+        self.config = TOOL.expected_authority_builder_config(
+            argparse.Namespace(
+                project_name="Example", runtime=["opencode"], license_id="MIT", standalone=False,
+                report_language="english", documentation_languages=["en", "es"],
+                conversation_language="espanol", ignore_codegraph=True, activation="builder",
+            )
+        )
+        self.host_inputs = {"engram_evidence_json": '{"observations":[{"fact":"current","id":1}]}'}
+
+    def bind(self, root, context=None, plan_sha=None):
+        # `plan_sha or default` would turn the empty-string case into the valid default and
+        # let a malformed digest pass its own rejection test.
+        context = self.context if context is None else context
+        plan_sha = self.PLAN_SHA if plan_sha is None else plan_sha
+        evidence = TOOL.validate_authority_context(
+            root, context, "example", "Example", self.config, self.host_inputs
+        )
+        return TOOL.authority_binding(
+            root, context, TOOL.canonical_json(context), evidence, plan_sha
+        )
+
+    def test_binding_returns_three_hex_digests_and_no_absolute_path(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            binding = self.bind(root)
+        self.assertRegex(binding["authorityContextSha256"], r"^[0-9a-f]{64}$")
+        self.assertRegex(binding["targetBindingSha256"], r"^[0-9a-f]{64}$")
+        self.assertRegex(binding["generationSha256"], r"^[0-9a-f]{64}$")
+        self.assertNotIn(str(root.resolve()), json.dumps(binding))
+
+    def test_two_identical_roots_bind_to_different_targets_and_generations(self):
+        """Identical content is not identity: the target is where it is, not what it holds."""
+        with tempfile.TemporaryDirectory() as first, tempfile.TemporaryDirectory() as second:
+            (Path(first) / "same.txt").write_text("same", encoding="utf-8")
+            (Path(second) / "same.txt").write_text("same", encoding="utf-8")
+            one = self.bind(Path(first))
+            two = self.bind(Path(second))
+        self.assertNotEqual(one["targetBindingSha256"], two["targetBindingSha256"])
+        self.assertNotEqual(one["generationSha256"], two["generationSha256"])
+
+    def test_renaming_the_directory_produces_a_new_target(self):
+        with tempfile.TemporaryDirectory() as name:
+            base = Path(name)
+            original = base / "before"
+            original.mkdir()
+            before = self.bind(original)
+            renamed = base / "after"
+            original.rename(renamed)
+            after = self.bind(renamed)
+        self.assertNotEqual(before["targetBindingSha256"], after["targetBindingSha256"])
+
+    def test_material_revision_alone_moves_the_generation(self):
+        """The plan digest is unchanged; the world the plan was justified against is not."""
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            first = self.bind(root)
+            second = self.bind(root, context=AuthorityContextTests.context(AuthorityContextTests(), revision="revision-2"))
+        self.assertNotEqual(first["authorityContextSha256"], second["authorityContextSha256"])
+        self.assertNotEqual(first["generationSha256"], second["generationSha256"])
+
+    def test_plan_digest_alone_moves_the_generation(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            first = self.bind(root)
+            second = self.bind(root, plan_sha="1" * 64)
+        self.assertEqual(first["authorityContextSha256"], second["authorityContextSha256"])
+        self.assertNotEqual(first["generationSha256"], second["generationSha256"])
+
+    def test_unchanged_input_binds_identically(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            self.assertEqual(self.bind(root), self.bind(root))
+
+    def test_a_malformed_plan_digest_is_refused(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            for bad in ("", "0" * 63, "0" * 65, "g" * 64, "0" * 63 + "A"):
+                with self.subTest(plan_sha256=bad):
+                    with self.assertRaises(TOOL.ContractError):
+                        self.bind(root, plan_sha=bad)
+
+
+
+class RepositoryEvidenceTests(unittest.TestCase):
+    """RH-W-0054 Task 3: repository evidence is re-read and compared, and every refusal stays content-free."""
+
+    HOST_JSON = '{"observations":[{"fact":"current","id":1}]}'
+    SECRET = "SENTINEL-EVIDENCE-SECRET-8f2a"
+
+    def setUp(self):
+        self._dir = tempfile.TemporaryDirectory()
+        self.root = Path(self._dir.name)
+        self.evidence_path = self.root / "evidence.txt"
+        self.evidence_bytes = f"{self.SECRET}\n".encode("utf-8")
+        self.evidence_path.write_bytes(self.evidence_bytes)
+        self.repository_sha256 = hashlib.sha256(self.evidence_bytes).hexdigest()
+        self.host_sha256 = hashlib.sha256(self.HOST_JSON.encode("utf-8")).hexdigest()
+        self.config = TOOL.expected_authority_builder_config(
+            argparse.Namespace(
+                project_name="Example", runtime=["opencode"], license_id="MIT", standalone=False,
+                report_language="english", documentation_languages=["en", "es"],
+                conversation_language="espanol", ignore_codegraph=True, activation="builder",
+            )
+        )
+        self.host_inputs = {"engram_evidence_json": self.HOST_JSON}
+        self.addCleanup(self._dir.cleanup)
+
+    def repository_entry(self, **overrides):
+        entry = {
+            "id": "repo-evidence",
+            "kind": "repository_file",
+            "locator": "evidence.txt",
+            "sha256": self.repository_sha256,
+        }
+        entry.update(overrides)
+        return entry
+
+    def host_entry(self, **overrides):
+        entry = {
+            "id": "engram-input",
+            "kind": "host_json",
+            "source": "engram_evidence_json",
+            "sha256": self.host_sha256,
+        }
+        entry.update(overrides)
+        return entry
+
+    def context(self, evidence=None, evidence_ids=None):
+        evidence = [self.repository_entry(), self.host_entry()] if evidence is None else evidence
+        ids = [item["id"] for item in evidence] if evidence_ids is None else evidence_ids
+        base = AuthorityContextTests.context(AuthorityContextTests(), evidence=evidence)
+        base["premises"][0]["evidenceIds"] = ids
+        base["evidence"] = evidence
+        return base
+
+    def validate(self, context=None):
+        return TOOL.validate_authority_context(
+            self.root, self.context() if context is None else context,
+            "example", "Example", self.config, self.host_inputs,
+        )
+
+    def assert_refused(self, context, forbidden=()):
+        """A refusal proves nothing if it leaks what it refused to disclose."""
+        with self.assertRaises(TOOL.ContractError) as caught:
+            self.validate(context)
+        message = str(caught.exception)
+        self.assertNotIn(self.SECRET, message)
+        self.assertNotIn(str(self.root.resolve()), message)
+        for token in forbidden:
+            self.assertNotIn(token, message)
+        return message
+
+    def test_mixed_evidence_returns_typed_metadata_in_declared_order(self):
+        """Order is semantic: the context author decided which evidence supports which premise first."""
+        self.assertEqual(
+            self.validate(),
+            [
+                {"id": "repo-evidence", "kind": "repository_file", "locator": "evidence.txt", "sha256": self.repository_sha256},
+                {"id": "engram-input", "kind": "host_json", "source": "engram_evidence_json", "sha256": self.host_sha256},
+            ],
+        )
+
+    def test_returned_repository_metadata_never_carries_the_bytes_or_the_root(self):
+        payload = json.dumps(self.validate())
+        self.assertNotIn(self.SECRET, payload)
+        self.assertNotIn(str(self.root.resolve()), payload)
+
+    def test_a_missing_file_is_refused(self):
+        self.assert_refused(self.context(evidence=[self.repository_entry(locator="absent.txt"), self.host_entry()]))
+
+    def test_a_directory_is_not_a_file(self):
+        (self.root / "folder").mkdir()
+        self.assert_refused(self.context(evidence=[self.repository_entry(locator="folder"), self.host_entry()]))
+
+    def test_an_indirect_path_is_refused(self):
+        """A symlink or reparse point can point outside the target after the containment check passed."""
+        link = self.root / "linked.txt"
+        try:
+            link.symlink_to(self.evidence_path)
+        except (OSError, NotImplementedError):
+            self.skipTest("this environment cannot create a symlink")
+        self.assert_refused(self.context(evidence=[self.repository_entry(locator="linked.txt"), self.host_entry()]))
+
+    def test_a_traversal_locator_is_refused(self):
+        self.assert_refused(self.context(evidence=[self.repository_entry(locator="../evidence.txt"), self.host_entry()]))
+
+    def test_an_absolute_locator_is_refused(self):
+        for locator in ("/etc/passwd", "C:/Windows/system.ini"):
+            with self.subTest(locator=locator):
+                self.assert_refused(self.context(evidence=[self.repository_entry(locator=locator), self.host_entry()]))
+
+    def test_changed_bytes_are_refused(self):
+        """The digest was taken when the answer was believed; the file is re-read, never trusted."""
+        self.evidence_path.write_bytes(b"corrected\n")
+        self.assert_refused(self.context())
+
+    def test_a_malformed_declared_digest_is_refused(self):
+        for bad in ("", "0" * 63, "g" * 64, self.repository_sha256.upper()):
+            with self.subTest(sha256=bad):
+                self.assert_refused(self.context(evidence=[self.repository_entry(sha256=bad), self.host_entry()]))
+
+    def test_an_unsupported_evidence_kind_is_refused(self):
+        self.assert_refused(self.context(evidence=[self.repository_entry(kind="database_row"), self.host_entry()]))
+
+    def test_a_duplicate_evidence_id_is_refused(self):
+        duplicate = self.repository_entry()
+        self.assert_refused(self.context(evidence=[duplicate, dict(duplicate)]))
+
+    def test_a_dangling_evidence_reference_is_refused(self):
+        self.assert_refused(
+            self.context(evidence=[self.repository_entry(), self.host_entry()], evidence_ids=["repo-evidence", "absent-id"])
+        )
+
+
+
+VERIFIED_CAPABILITY = {"classification": "verified", "evidence": "verified"}
+
+
+class MaterialCorrectionCliTests(unittest.TestCase):
+    """RH-W-0054 Task 4: the builder preview transports reviewable bindings and nothing else."""
+
+    SECRET = "SENTINEL-PREVIEW-SECRET-3d71"
+    PREMISE_VALUE = "SENTINEL-PREMISE-VALUE-c0de"
+    DECISION_STATEMENT = "SENTINEL-DECISION-STATEMENT-b17e"
+
+    def setUp(self):
+        self._dir = tempfile.TemporaryDirectory()
+        self.root = Path(self._dir.name)
+        self.evidence_path = self.root / "evidence.txt"
+        self.evidence_path.write_bytes(f"{self.SECRET}".encode("utf-8"))
+        self.context_path = self.root / "authority-context.json"
+        self.engram_json = TOOL.canonical_json({"observations": [{"id": 1, "fact": "current"}]})
+        self.context = self.build_context()
+        self.addCleanup(self._dir.cleanup)
+
+    def build_context(self, **overrides):
+        context = {
+            "schemaVersion": 1,
+            "materialRevision": "revision-1",
+            "project": {"id": "example", "name": "Example"},
+            "builder": {
+                "runtimes": ["opencode"],
+                "license": "MIT",
+                "integrationMode": "integrated",
+                "reportLanguage": "english",
+                "documentationLanguages": ["en", "es"],
+                "conversationLanguage": "espanol",
+                "ignoreCodegraph": True,
+                "activation": "builder",
+            },
+            "premises": [
+                {
+                    "id": "premise-1",
+                    "class": "factual_claim",
+                    "value": self.PREMISE_VALUE,
+                    "decisionIds": ["decision-1"],
+                    "evidenceIds": ["repo-evidence", "engram-input"],
+                }
+            ],
+            "decisions": [
+                {"id": "decision-1", "kind": "human_decision", "statement": self.DECISION_STATEMENT}
+            ],
+            "evidence": [
+                {
+                    "id": "repo-evidence",
+                    "kind": "repository_file",
+                    "locator": "evidence.txt",
+                    "sha256": hashlib.sha256(self.evidence_path.read_bytes()).hexdigest(),
+                },
+                {
+                    "id": "engram-input",
+                    "kind": "host_json",
+                    "source": "engram_evidence_json",
+                    "sha256": hashlib.sha256(self.engram_json.encode("utf-8")).hexdigest(),
+                },
+            ],
+        }
+        context.update(overrides)
+        return context
+
+    def builder_args(self, root=None, context_path=None, engram_json=None, extra=()):
+        return [
+            "render", "--root", str(self.root if root is None else root),
+            "--project-name", "Example",
+            "--project-id", "example",
+            "--runtime", "opencode",
+            "--license", "MIT",
+            "--report-language", "english",
+            "--documentation-language", "en",
+            "--documentation-language", "es",
+            "--conversation-language", "espanol",
+            "--activation", "builder",
+            "--authority-context-file", str(self.context_path if context_path is None else context_path),
+            "--engram-evidence-json", self.engram_json if engram_json is None else engram_json,
+            *extra,
+        ]
+
+    def invoke(self, argv):
+        """One fresh in-process run with its own captured streams, so nothing carries between calls."""
+        stdout = unittest.mock.MagicMock()
+        stderr = unittest.mock.MagicMock()
+        with mock.patch.object(TOOL, "detect_gentle_ai", return_value=VERIFIED_CAPABILITY), \
+             mock.patch.object(TOOL, "detect_engram", return_value=VERIFIED_CAPABILITY), \
+             mock.patch.object(sys, "stdout", stdout), \
+             mock.patch.object(sys, "stderr", stderr):
+            code = TOOL.main(argv)
+        out = "".join(call.args[0] for call in stdout.write.call_args_list)
+        err = "".join(call.args[0] for call in stderr.write.call_args_list)
+        return code, out, err
+
+    def preview(self, context=None, **kwargs):
+        payload = self.context if context is None else context
+        self.context_path.write_bytes(TOOL.canonical_json(payload).encode("utf-8"))
+        code, out, err = self.invoke(self.builder_args(**kwargs))
+        self.assertEqual(code, 0, out + err)
+        return json.loads(out)
+
+    def test_builder_preview_transports_reviewable_bindings_without_process_state(self):
+        preview = self.preview()
+        for field in ("authorityContextSha256", "targetBindingSha256", "planSha256", "generationSha256"):
+            with self.subTest(field=field):
+                self.assertRegex(preview[field], r"^[0-9a-f]{64}$")
+        self.assertEqual(
+            preview["authorityEvidence"],
+            [
+                {"id": "repo-evidence", "kind": "repository_file", "locator": "evidence.txt",
+                 "sha256": hashlib.sha256(f"{self.SECRET}".encode("utf-8")).hexdigest()},
+                {"id": "engram-input", "kind": "host_json", "source": "engram_evidence_json",
+                 "sha256": hashlib.sha256(self.engram_json.encode("utf-8")).hexdigest()},
+            ],
+        )
+        self.assertEqual(preview["authorityPremises"], [{"id": "premise-1", "class": "factual_claim", "value": "[redacted]"}])
+        self.assertEqual(
+            preview["authorityDecisions"],
+            [{"id": "decision-1", "kind": "human_decision", "statement": "[redacted]"}],
+        )
+
+    def test_builder_preview_emits_no_authority_content_and_no_process_state_fields(self):
+        """A preview that leaks what it was justified by is not reviewable, it is a disclosure."""
+        preview = self.preview()
+        payload = json.dumps(preview)
+        for forbidden in (
+            self.SECRET, self.PREMISE_VALUE, self.DECISION_STATEMENT,
+            self.engram_json, str(self.root.resolve()),
+        ):
+            with self.subTest(forbidden=forbidden[:24]):
+                self.assertNotIn(forbidden, payload)
+        self.assertNotIn("authorityContext", preview)
+        for banned in ("session", "receipt", "ledger", "cache", "token", "reset"):
+            with self.subTest(field=banned):
+                self.assertNotIn(banned, {key.lower() for key in preview})
+
+    def test_repeated_preview_of_unchanged_input_is_identical(self):
+        self.assertEqual(self.preview(), self.preview())
+
+    def test_a_missing_context_file_is_rejected(self):
+        code, out, err = self.invoke(
+            self.builder_args(context_path=self.root / "absent.json")
+        )
+        self.assertEqual(code, 2, out + err)
+        self.assertNotIn(str(self.root.resolve()), out + err)
+
+    def test_the_authority_transport_is_opt_in_and_pairs_its_two_arguments(self):
+        """Builder activation alone still means only the strict approval domain that RH-W-0030 gave it.
+
+        Requiring a context for every builder run would delete that boundary instead of
+        extending it, so the transport is opt-in and its two arguments travel together.
+        """
+        self.context_path.write_bytes(TOOL.canonical_json(self.context).encode("utf-8"))
+        plain = [item for item in self.builder_args()
+                 if item not in ("--authority-context-file", str(self.context_path),
+                                 "--project-id", "example")]
+        code, out, err = self.invoke(plain)
+        self.assertEqual(code, 0, out + err)
+        self.assertNotIn("authorityContextSha256", json.loads(out))
+
+        without_id = [item for item in self.builder_args() if item not in ("--project-id", "example")]
+        code, out, err = self.invoke(without_id)
+        self.assertEqual(code, 2, out + err)
+
+        without_context = [item for item in self.builder_args()
+                           if item not in ("--authority-context-file", str(self.context_path))]
+        code, out, err = self.invoke(without_context)
+        self.assertEqual(code, 2, out + err)
+
+    def test_maintenance_rejects_every_authority_argument(self):
+        """Maintenance keeps its digest-only flow; an authority argument there is a category error."""
+        self.context_path.write_bytes(TOOL.canonical_json(self.context).encode("utf-8"))
+        for extra in (
+            ["--project-id", "example"],
+            ["--authority-context-file", str(self.context_path)],
+            ["--approved-generation-sha256", "0" * 64],
+        ):
+            with self.subTest(argument=extra[0]):
+                argv = ["render", "--root", str(self.root), "--project-name", "Example", *extra]
+                code, out, err = self.invoke(argv)
+                self.assertEqual(code, 2, out + err)
+
+    def test_builder_preview_rejects_an_approved_generation(self):
+        """An approved generation is an apply input; accepting it during preview would invite reuse."""
+        self.context_path.write_bytes(TOOL.canonical_json(self.context).encode("utf-8"))
+        code, out, err = self.invoke(
+            self.builder_args(extra=["--approved-generation-sha256", "0" * 64])
+        )
+        self.assertEqual(code, 2, out + err)
+
+
 class NonInteractiveTransportTests(unittest.TestCase):
     """RH-W-0059: the transport contract must fail fast instead of waiting on a prompt nobody can answer."""
 
@@ -5478,6 +6054,470 @@ class NonInteractiveTransportTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertNotIn(token, rulebook)
 
+
+
+class QuestionVisibilityTests(unittest.TestCase):
+    """RH-W-0058: a question the human cannot find is a question that was never asked."""
+
+    DAILY_SKILLS = (
+        ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+        ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+        ".repo-harness/skills/repo-harness-documentation/SKILL.md",
+    )
+
+    def rendered_daily(self):
+        outputs = TOOL.render("Example", ["opencode"])
+        return {path: outputs[path] for path in self.DAILY_SKILLS}
+
+    def test_every_daily_contract_carries_the_visibility_obligation(self):
+        """Position is not visibility; all three daily contracts state the same obligation."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("survive skimming", text)
+
+    def test_the_obligation_names_the_delimiter_and_forbids_side_borders(self):
+        """A rule mechanical enough to follow, and the exact form that misaligns in a terminal."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("horizontal rule line", text)
+                self.assertIn("side borders", text)
+                self.assertIn("box corners", text)
+
+    def test_the_obligation_requires_a_label_in_the_reply_language(self):
+        """The block is generated English; its label follows the conversation the human is reading."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("label line", text)
+                self.assertIn("reply language", text)
+
+    def test_the_obligation_forbids_an_empty_block_and_requires_a_recommendation(self):
+        """A block reading no-question-pending spends the one visual device on nothing."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("never an empty block", text)
+                self.assertRegex(text, r"(?i)concrete recommendation")
+
+    def test_the_obligation_binds_the_agent_own_replies(self):
+        """The defect was a chat reply, so a rule bounded to generated output would not have prevented it."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("the agent's own replies", text)
+
+    def test_the_obligation_does_not_replace_the_single_final_question_rule(self):
+        """Two rules that look alike drift apart unless one names the other."""
+        start = self.rendered_daily()[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        self.assertIn("final user-facing line", start)
+        self.assertRegex(start, r"(?i)strengthens")
+
+    def test_a_question_block_and_a_next_action_block_are_told_apart_by_shape(self):
+        """One delimiter for both destroys the signal: the reader cannot see whether a reply waits on them."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("the choice between them is not", text)
+                self.assertIn("from the shape alone whether the reply is waiting on them", text)
+
+    def test_the_two_block_forms_name_their_characters_and_when_each_applies(self):
+        """A character without its condition is decoration; the reader has to know which one is coming."""
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                self.assertIn("a line of `=`", text)
+                self.assertIn("a line of `+`", text)
+                self.assertIn("only when the reply is blocked", text)
+                self.assertIn("only when the reply asks nothing", text)
+                self.assertRegex(text, r"(?i)never put both forms in one reply")
+
+    def test_the_rulebook_is_untouched_by_the_visibility_obligation(self):
+        """RH-W-0058 lands in the daily contracts only; the rulebook has four tokens of headroom."""
+        rulebook = TOOL.render("Example", ["opencode"])["REPO-HARNESS.md"]
+        for token in ("survive skimming", "side borders", "box corners"):
+            with self.subTest(token=token):
+                self.assertNotIn(token, rulebook)
+
+
+class BuilderApplyGenerationTests(unittest.TestCase):
+    """RH-W-0054 Task 5: an approved generation that no longer matches must not reach a write."""
+
+    SENTINEL = "sentinel-secret-value"
+    EVIDENCE = "docs/evidence.md"
+
+    def cli(self, root):
+        return [
+            sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
+            "--project-name", "Example", "--runtime", "opencode",
+            "--license", "MIT", "--standalone",
+            "--report-language", "english",
+            "--documentation-language", "en",
+            "--conversation-language", "english",
+            "--activation", "builder", "--project-id", "example",
+        ]
+
+    def builder_config(self):
+        return TOOL.expected_authority_builder_config(argparse.Namespace(
+            project_name="Example",
+            runtime=["opencode"],
+            license_id="MIT",
+            standalone=True,
+            report_language="english",
+            documentation_languages=["en"],
+            conversation_language="english",
+            ignore_codegraph=True,
+            activation="builder",
+        ))
+
+    def seed_evidence(self, root, body="evidence body\n"):
+        target = root / self.EVIDENCE
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(body, encoding="utf-8")
+        return hashlib.sha256(target.read_bytes()).hexdigest()
+
+    def context(self, digest, revision="revision-1"):
+        return {
+            "schemaVersion": 1,
+            "materialRevision": revision,
+            "project": {"id": "example", "name": "Example"},
+            "builder": self.builder_config(),
+            "premises": [{
+                "id": "premise-1",
+                "class": "factual_claim",
+                "value": self.SENTINEL,
+                "decisionIds": ["decision-1"],
+                "evidenceIds": ["evidence-1"],
+            }],
+            "decisions": [{
+                "id": "decision-1",
+                "kind": "human_decision",
+                "statement": self.SENTINEL,
+            }],
+            "evidence": [{
+                "id": "evidence-1",
+                "kind": "repository_file",
+                "locator": self.EVIDENCE,
+                "sha256": digest,
+            }],
+        }
+
+    def write_context(self, root, digest, revision="revision-1"):
+        path = root / "authority-context.json"
+        path.write_text(TOOL.canonical_json(self.context(digest, revision)), encoding="utf-8")
+        return path
+
+    def preview(self, root, context_path):
+        result = subprocess.run(
+            [*self.cli(root), "--authority-context-file", str(context_path)],
+            check=True, capture_output=True, text=True,
+        )
+        return json.loads(result.stdout)
+
+    def apply(self, root, context_path, plan_sha, generation):
+        command = [
+            *self.cli(root), "--authority-context-file", str(context_path),
+            "--apply", "--approved-plan-sha256", plan_sha, "--approval", "APPROVE",
+        ]
+        if generation is not None:
+            command += ["--approved-generation-sha256", generation]
+        return subprocess.run(command, check=False, capture_output=True, text=True)
+
+    def assert_no_writes(self, result, root):
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("fresh_preview_required", result.stderr)
+        self.assertFalse((root / "REPO-HARNESS.md").exists())
+        self.assertNotIn(self.SENTINEL, result.stdout)
+        self.assertNotIn(self.SENTINEL, result.stderr)
+
+    def test_apply_writes_when_the_approved_generation_still_matches(self):
+        """The happy path has to work, or every rejection below proves nothing."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            applied = self.apply(root, context_path, plan["planSha256"], plan["generationSha256"])
+
+            self.assertEqual(applied.returncode, 0, applied.stderr)
+            self.assertEqual(json.loads(applied.stdout)["status"], "VALIDATED")
+            self.assertTrue((root / "REPO-HARNESS.md").is_file())
+            self.assertNotIn(self.SENTINEL, applied.stdout)
+
+    def test_apply_rejects_a_generation_that_does_not_match(self):
+        """Without this the flag is accepted and ignored, which is worse than absent."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            applied = self.apply(root, context_path, plan["planSha256"], "0" * 64)
+
+            self.assert_no_writes(applied, root)
+
+    def test_apply_requires_an_approved_generation_when_it_carries_a_context(self):
+        """An authority context without an approved generation authorizes nothing."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            applied = self.apply(root, context_path, plan["planSha256"], None)
+
+            self.assertEqual(applied.returncode, 2)
+            self.assertFalse((root / "REPO-HARNESS.md").exists())
+            self.assertNotIn(self.SENTINEL, applied.stderr)
+
+    def test_a_corrected_identical_plan_needs_a_fresh_generation(self):
+        """Same bytes, corrected premise: the plan digest cannot notice, the generation must."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            digest = self.seed_evidence(root)
+            first_path = self.write_context(root, digest, revision="revision-1")
+            first = self.preview(root, first_path)
+
+            second_path = root / "authority-context-2.json"
+            second_path.write_text(
+                TOOL.canonical_json(self.context(digest, revision="revision-2")), encoding="utf-8"
+            )
+            second = self.preview(root, second_path)
+
+            self.assertEqual(first["planSha256"], second["planSha256"])
+            self.assertNotEqual(first["generationSha256"], second["generationSha256"])
+
+            applied = self.apply(root, second_path, second["planSha256"], first["generationSha256"])
+            self.assert_no_writes(applied, root)
+
+    def test_apply_rejects_evidence_bytes_changed_after_the_preview(self):
+        """The plan bytes are unchanged, so only the evidence binding can catch this."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            (root / self.EVIDENCE).write_text("evidence changed after preview\n", encoding="utf-8")
+
+            applied = self.apply(root, context_path, plan["planSha256"], plan["generationSha256"])
+            self.assert_no_writes(applied, root)
+
+    def test_apply_rejects_a_context_transport_that_disappeared(self):
+        """An unreadable transport is not permission to fall back to the digest alone."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            context_path.unlink()
+
+            applied = self.apply(root, context_path, plan["planSha256"], plan["generationSha256"])
+            self.assert_no_writes(applied, root)
+
+    def test_apply_rejects_a_context_whose_bytes_stopped_being_canonical(self):
+        """A transport edited after preview is a changed authority, not a formatting detail."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.write_context(root, self.seed_evidence(root))
+            plan = self.preview(root, context_path)
+            context_path.write_text(
+                context_path.read_text(encoding="utf-8") + "\n", encoding="utf-8"
+            )
+
+            applied = self.apply(root, context_path, plan["planSha256"], plan["generationSha256"])
+            self.assert_no_writes(applied, root)
+
+    def test_maintenance_apply_still_needs_only_the_matching_digest(self):
+        """Task 5 may not make the ordinary maintenance path require authority it never had."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base = [
+                sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
+                "--project-name", "Example", "--runtime", "opencode", "--standalone",
+            ]
+            digest = json.loads(
+                subprocess.run(base, check=True, capture_output=True, text=True).stdout
+            )["planSha256"]
+            applied = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", digest],
+                check=False, capture_output=True, text=True,
+            )
+
+            self.assertEqual(applied.returncode, 0, applied.stderr)
+            self.assertTrue((root / "REPO-HARNESS.md").is_file())
+
+
+class StatelessBoundaryTests(unittest.TestCase):
+    """RH-W-0054 Task 6: prove the authority path keeps no state and leaks no content."""
+
+    PREMISE = "SENTINEL-PREMISE-4a1b"
+    DECISION = "SENTINEL-DECISION-7c2d"
+    EVIDENCE_BODY = "SENTINEL-EVIDENCE-BODY-9e3f"
+    HOST = "SENTINEL-HOST-EVIDENCE-2b8a"
+    TRANSPORT_NAME = "SENTINEL-TRANSPORT-6d4c.json"
+
+    FORBIDDEN_STATE = (
+        "ACTIVE_PREVIEW_SESSION",
+        "PreviewAuthoritySession",
+        "reset_authority",
+        "save_authority",
+        "load_authority",
+    )
+
+    def cli(self, root):
+        return [
+            sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
+            "--project-name", "Example", "--runtime", "opencode",
+            "--license", "MIT", "--standalone",
+            "--report-language", "english",
+            "--documentation-language", "en",
+            "--conversation-language", "english",
+            "--activation", "builder", "--project-id", "example",
+        ]
+
+    def builder_config(self):
+        return TOOL.expected_authority_builder_config(argparse.Namespace(
+            project_name="Example", runtime=["opencode"], license_id="MIT", standalone=True,
+            report_language="english", documentation_languages=["en"],
+            conversation_language="english", ignore_codegraph=True, activation="builder",
+        ))
+
+    def fixture(self, root):
+        evidence = root / "evidence.txt"
+        evidence.write_text(self.EVIDENCE_BODY, encoding="utf-8")
+        context = {
+            "schemaVersion": 1,
+            "materialRevision": "revision-1",
+            "project": {"id": "example", "name": "Example"},
+            "builder": self.builder_config(),
+            "premises": [{
+                "id": "premise-1", "class": "factual_claim", "value": self.PREMISE,
+                "decisionIds": ["decision-1"], "evidenceIds": ["repo-evidence"],
+            }],
+            "decisions": [{"id": "decision-1", "kind": "human_decision", "statement": self.DECISION}],
+            "evidence": [{
+                "id": "repo-evidence", "kind": "repository_file", "locator": "evidence.txt",
+                "sha256": hashlib.sha256(evidence.read_bytes()).hexdigest(),
+            }],
+        }
+        path = root / self.TRANSPORT_NAME
+        path.write_text(TOOL.canonical_json(context), encoding="utf-8")
+        return path
+
+    def strings(self, value):
+        if isinstance(value, str):
+            yield value
+        elif isinstance(value, dict):
+            for key, item in value.items():
+                yield key
+                yield from self.strings(item)
+        elif isinstance(value, list):
+            for item in value:
+                yield from self.strings(item)
+
+    def test_the_module_exposes_no_authority_session_or_recovery_api(self):
+        """Statelessness is an absence, so the only honest test is that the names do not exist."""
+        for name in self.FORBIDDEN_STATE:
+            with self.subTest(name=name):
+                self.assertFalse(hasattr(TOOL, name), f"{name} would make the authority path stateful")
+
+    def test_capability_preflight_reports_classification_without_raw_host_evidence(self):
+        """The host hands its own evidence in; printing it back publishes whatever it contained."""
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run(
+                [
+                    sys.executable, "-B", str(SCRIPT), "render", "--root", directory,
+                    "--project-name", "Example", "--runtime", "opencode",
+                    "--engram-evidence-json",
+                    TOOL.canonical_json({"surface": "mcp", "status": "partial", "evidence": self.HOST}),
+                ],
+                check=False, capture_output=True, text=True,
+            )
+
+            self.assertEqual(result.returncode, 2)
+            self.assertNotIn(self.HOST, result.stdout)
+            self.assertNotIn(self.HOST, result.stderr)
+            preflight = json.loads(result.stderr)["capabilityPreflight"]
+            self.assertEqual(preflight["engram"]["classification"], "found_on_path")
+            for component in ("engram", "gentleAi"):
+                with self.subTest(component=component):
+                    self.assertNotIn("evidence", preflight[component])
+
+    def test_detect_engram_keeps_the_whole_evidence_for_internal_verification(self):
+        """The projection must narrow the output, never weaken the check behind it."""
+        host = {"surface": "mcp", "status": "verified", "evidence": self.HOST}
+        self.assertEqual(TOOL.detect_engram(host)["classification"], "verified")
+        self.assertEqual(TOOL.detect_engram(host)["evidence"], host)
+        self.assertEqual(TOOL.detect_engram({"surface": "mcp", "status": "missing"})["classification"], "not_found")
+
+    def test_builder_preview_carries_no_absolute_path_and_no_raw_content(self):
+        """A reviewer needs the bindings, never the bytes or where they live."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.fixture(root)
+            result = subprocess.run(
+                [*self.cli(root), "--authority-context-file", str(context_path)],
+                check=True, capture_output=True, text=True,
+            )
+            payload = json.loads(result.stdout)
+            haystack = "\n".join(self.strings(payload))
+
+            for forbidden in (
+                str(root), str(root.parent), str(context_path), self.TRANSPORT_NAME,
+                self.PREMISE, self.DECISION, self.EVIDENCE_BODY,
+            ):
+                with self.subTest(forbidden=forbidden):
+                    self.assertNotIn(forbidden, haystack)
+
+            evidence = payload["authorityEvidence"][0]
+            self.assertEqual(set(evidence), {"id", "kind", "locator", "sha256"})
+            self.assertEqual(evidence["locator"], "evidence.txt")
+
+    def test_every_cli_outcome_keeps_each_sentinel_out_of_both_streams(self):
+        """One clean stream proves nothing; a leak usually appears on the other one."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.fixture(root)
+            base = [*self.cli(root), "--authority-context-file", str(context_path)]
+            preview = subprocess.run(base, check=True, capture_output=True, text=True)
+            plan = json.loads(preview.stdout)
+
+            broken = root / "broken.json"
+            broken.write_text('{"schemaVersion":1,"materialRevision":"' + self.PREMISE + '"}', encoding="utf-8")
+
+            outcomes = {
+                "preview": preview,
+                "denied": subprocess.run(
+                    [*base, "--apply", "--approved-plan-sha256", plan["planSha256"],
+                     "--approval", "DENY", "--approved-generation-sha256", plan["generationSha256"]],
+                    check=False, capture_output=True, text=True),
+                "validation_failure": subprocess.run(
+                    [*self.cli(root), "--authority-context-file", str(broken)],
+                    check=False, capture_output=True, text=True),
+                "fresh_preview_required": subprocess.run(
+                    [*base, "--apply", "--approved-plan-sha256", plan["planSha256"],
+                     "--approval", "APPROVE", "--approved-generation-sha256", "0" * 64],
+                    check=False, capture_output=True, text=True),
+            }
+
+            for name, result in outcomes.items():
+                for sentinel in (self.PREMISE, self.DECISION, self.EVIDENCE_BODY):
+                    with self.subTest(outcome=name, sentinel=sentinel):
+                        self.assertNotIn(sentinel, result.stdout)
+                        self.assertNotIn(sentinel, result.stderr)
+
+    def test_a_rejected_apply_leaves_nothing_a_later_run_must_clear(self):
+        """If a failed apply needed cleanup, the next honest preview would disagree with the first."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            context_path = self.fixture(root)
+            base = [*self.cli(root), "--authority-context-file", str(context_path)]
+            first = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
+
+            rejected = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", first["planSha256"],
+                 "--approval", "APPROVE", "--approved-generation-sha256", "0" * 64],
+                check=False, capture_output=True, text=True,
+            )
+            self.assertEqual(rejected.returncode, 2)
+
+            second = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
+            self.assertEqual(first, second)
+
+            applied = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", second["planSha256"],
+                 "--approval", "APPROVE", "--approved-generation-sha256", second["generationSha256"]],
+                check=False, capture_output=True, text=True,
+            )
+            self.assertEqual(applied.returncode, 0, applied.stderr)
+            self.assertTrue((root / "REPO-HARNESS.md").is_file())
 
 
 if __name__ == "__main__":
