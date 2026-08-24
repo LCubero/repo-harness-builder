@@ -2174,13 +2174,18 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
 MANIFEST_SHA256 = "{manifest_sha256}"
-MANIFEST_FIELDS = {{"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "writeSemantics", "integrationMode", "language"}}
+MANIFEST_FIELDS = {{"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language"}}
 REPORT_LANGUAGES = {{"english", "espanol"}}
 DOCUMENTATION_LANGUAGES = {{"en", "es"}}
 RUNTIMES = {{"claude-code", "opencode", "pi"}}
 SKILL_SURFACES = {{
     "claude-code": ".claude/skills/{{name}}/SKILL.md",
     "opencode": ".opencode/skills/{{name}}/SKILL.md",
+}}
+COMMAND_SURFACES = {{
+    "claude-code": ("commands", ".claude/commands/{{name}}.md"),
+    "opencode": ("commands", ".opencode/commands/{{name}}.md"),
+    "pi": ("prompts", ".pi/prompts/{{name}}.md"),
 }}
 
 
@@ -2271,6 +2276,16 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
             raise ValueError("invalid canonical skill name")
         safe_relative(relative)
+    commands = manifest["canonicalCommands"]
+    if not isinstance(commands, dict) or not commands:
+        raise ValueError("unexpected canonical commands")
+    for name, families in commands.items():
+        if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
+            raise ValueError("invalid canonical command name")
+        if not isinstance(families, dict) or not families or not set(families) <= {{"commands", "prompts"}}:
+            raise ValueError("unexpected canonical command families")
+        for relative in families.values():
+            safe_relative(relative)
     return manifest
 
 
@@ -2298,6 +2313,26 @@ def check_projections(root: Path) -> dict:
             else:
                 state = "current"
             entries.append({{"skill": name, "runtime": runtime, "path": relative, "state": state}})
+    for name, families in sorted(manifest["canonicalCommands"].items()):
+        for family, canonical_relative in sorted(families.items()):
+            canonical = guarded_path(root, canonical_relative)
+            if not canonical.is_file():
+                entries.append({{"command": name, "family": family, "path": canonical_relative, "state": "canonical-missing"}})
+                continue
+            expected = canonical.read_bytes()
+            for runtime in manifest["runtimes"]:
+                surface_family, surface = COMMAND_SURFACES[runtime]
+                if surface_family != family:
+                    continue
+                relative = surface.format(name=name)
+                target = guarded_path(root, relative)
+                if not target.is_file():
+                    state = "missing"
+                elif target.read_bytes() != expected:
+                    state = "stale"
+                else:
+                    state = "current"
+                entries.append({{"command": name, "family": family, "runtime": runtime, "path": relative, "state": state}})
     drifted = [entry for entry in entries if entry["state"] != "current"]
     return {{"status": "drift" if drifted else "current", "files": entries, "writes": 0}}
 
@@ -2411,6 +2446,25 @@ def render_with_skill_mapping(
             require(size < RULEBOOK_TOKEN_BUDGET, f"{path} is {size} tokens, over its {RULEBOOK_TOKEN_BUDGET} budget")
     for name, content in skills.items():
         outputs[f".repo-harness/skills/{name}/SKILL.md"] = content
+    canonical_commands: dict[str, dict[str, str]] = {
+        command: {} for command in (*skill_mapping, "repo-harness-help")
+    }
+    if {"claude-code", "opencode"} & set(selected):
+        for command, name in skill_mapping.items():
+            path = f".repo-harness/commands/{command}.md"
+            outputs[path] = wrapper("opencode", name)
+            canonical_commands[command]["commands"] = path
+        path = ".repo-harness/commands/repo-harness-help.md"
+        outputs[path] = help_wrapper("opencode", conversation, languages)
+        canonical_commands["repo-harness-help"]["commands"] = path
+    if "pi" in selected:
+        for command, name in skill_mapping.items():
+            path = f".repo-harness/prompts/{command}.md"
+            outputs[path] = wrapper("pi", name)
+            canonical_commands[command]["prompts"] = path
+        path = ".repo-harness/prompts/repo-harness-help.md"
+        outputs[path] = help_wrapper("pi", conversation, languages)
+        canonical_commands["repo-harness-help"]["prompts"] = path
     for runtime in selected:
         for command, name in skill_mapping.items():
             if runtime == "pi":
@@ -2437,6 +2491,7 @@ def render_with_skill_mapping(
         "project": {"id": project_id, "ignoreCodegraph": ignore_codegraph, "rulebook": rulebook_path},
         "runtimes": selected,
         "canonicalSkills": {name: f".repo-harness/skills/{name}/SKILL.md" for name in skills},
+        "canonicalCommands": canonical_commands,
         "writeSemantics": "additive-create-with-bounded-root-append",
         "integrationMode": "standalone" if standalone else "integrated",
         "language": {"conversation": conversation, "documentation": list(languages)},
@@ -3375,6 +3430,13 @@ def check(
     than supplied again: checking must never contradict what the repository recorded.
     """
     documentation_languages, conversation_language = declared_languages(root)
+    installed_manifest = guarded_target(root, MANIFEST_PATH)
+    commands_declared = True
+    if installed_manifest.is_file() and not is_indirect(installed_manifest):
+        try:
+            commands_declared = "canonicalCommands" in json.loads(installed_manifest.read_bytes())
+        except (json.JSONDecodeError, TypeError):
+            commands_declared = False
     expected = render(
         project_name,
         runtimes,
@@ -3442,6 +3504,8 @@ def check(
         else:
             entry["state"] = "current"
         entries.append(entry)
+    if not commands_declared:
+        entries.append({"path": MANIFEST_PATH, "surface": "canonicalCommands", "state": "undeclared"})
     drifted = [item for item in entries if item["state"] not in {"current", "present", "human-evolved"}]
     return {
         "status": "drift" if drifted else "current",

@@ -1,4 +1,22 @@
 {
+  "canonicalCommands": {
+    "documentation": {
+      "commands": ".repo-harness/commands/documentation.md",
+      "prompts": ".repo-harness/prompts/documentation.md"
+    },
+    "repo-harness-help": {
+      "commands": ".repo-harness/commands/repo-harness-help.md",
+      "prompts": ".repo-harness/prompts/repo-harness-help.md"
+    },
+    "session-start": {
+      "commands": ".repo-harness/commands/session-start.md",
+      "prompts": ".repo-harness/prompts/session-start.md"
+    },
+    "session-stop": {
+      "commands": ".repo-harness/commands/session-stop.md",
+      "prompts": ".repo-harness/prompts/session-stop.md"
+    }
+  },
   "canonicalSkills": {
     "repo-harness-documentation": ".repo-harness/skills/repo-harness-documentation/SKILL.md",
     "repo-harness-session-start": ".repo-harness/skills/repo-harness-session-start/SKILL.md",

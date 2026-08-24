@@ -29,11 +29,11 @@ With no operation, the builder performs a read-only audit. It does not initializ
 - Root `REPO-HARNESS.md` as the concise working entry point.
 - Root `README.md` when absent, with a bounded builder-managed section.
 - Complete English durable documentation under `docs/repo-harness/`.
-- Runtime-neutral session and documentation skills under `.repo-harness/skills/`.
+- Runtime-neutral session and documentation skills under `.repo-harness/skills/`, plus canonical command peers under `.repo-harness/commands/` and `.repo-harness/prompts/` for emitted surface families.
 - Selected Claude Code, OpenCode, or Pi runtime projections.
 - `.repo-harness/check.py` for read-only projection drift checks.
 - One exact root `.gitignore` directive, `.codegraph/`, unless explicitly disabled.
-- Root `.gitattributes` with exact LF protection for `.repo-harness/check.py` and `.repo-harness/manifest.json`.
+- Root `.gitattributes` with exact LF protection for every byte-compared generated path.
 
 A harness is English-only unless you declare more documentation locales. See [Documentation Language](#documentation-language).
 
@@ -43,8 +43,8 @@ A harness is English-only unless you declare more documentation locales. See [Do
 | `docs/repo-harness/` | Durable owners for usage, current state, and decisions, so facts have one home. |
 | `CHANGELOG.md` | A dated record of meaningful completed changes, separate from current and future work. |
 | Engram continuity | Temporary cross-session memory in integrated mode, always reconciled with repository evidence. |
-| Runtime projections | Thin Claude Code, OpenCode, or Pi surfaces generated from runtime-neutral canonical skills. |
-| `.repo-harness/check.py` | A read-only congruence check that detects missing or stale runtime projections. |
+| Runtime projections | Thin Claude Code, OpenCode, or Pi surfaces generated from canonical skills and family-specific command peers. |
+| `.repo-harness/check.py` | A read-only congruence check that detects missing or stale skill, command, and prompt projections. |
 
 ## Builder And Generated Skills
 <!-- doc-role:skills -->
@@ -131,7 +131,7 @@ The README is human-owned after creation. Its bounded builder section identifies
 
 Root `.gitignore` is also human-owned. By default, the approved plan creates it when absent or appends exactly `.codegraph/` when that exact line is missing, preserving BOM, existing bytes, comments, blank lines, line endings, and unrelated rules. `--no-codegraph-ignore` records the opt-out in the manifest and performs no ignore-file mutation.
 
-Root `.gitattributes` remains human-owned. The builder creates or appends only `.repo-harness/check.py text eol=lf` and `.repo-harness/manifest.json text eol=lf`, preserving unrelated rules and existing line endings. A matching rule that assigns incompatible text or EOL behavior blocks the plan instead of creating ambiguous checkout semantics.
+Root `.gitattributes` remains human-owned. The builder creates or appends one exact `<path> text eol=lf` rule for every byte-compared generated path, preserving unrelated rules and existing line endings. A matching rule that assigns incompatible text or EOL behavior blocks the plan instead of creating ambiguous checkout semantics.
 
 Operational facts remain single-owned. `REPO-HARNESS.md`, `CHANGELOG.md`, and the English durable state owners are canonical. When another locale is declared, its peers are complete localized presentations that link back to those owners. See the [bilingual maintenance contract](docs/repo-harness/i18n-maintenance.md), which applies only to a repository that declared more than one locale.
 

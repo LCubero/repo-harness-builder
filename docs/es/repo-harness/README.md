@@ -20,10 +20,10 @@
 | [Plan tecnico RH-W-0031](../../repo-harness/rh-w-0031-implementation-plan.md) | Plan canonico en ingles para corregir los limites del idioma de conversacion |
 | [Plan de implementacion RH-W-0034](rh-w-0034-implementation-plan.md) | Par humano completo del plan canonico para recuperacion de consumidores y correccion del modo solo en espanol |
 | [Diseno RH-W-0050](rh-w-0050-design.md) | Diseno completo de reconciliacion acotada aprobado por el propietario; la implementacion sigue pendiente |
-| [Diseno RH-W-0054](rh-w-0054-design.md) | Diseno completo de autoridad de correccion sin estado aprobado por el propietario; la Tarea 1 esta completa localmente y la implementacion restante sigue pendiente |
-| [Plan de implementacion RH-W-0054](../../repo-harness/rh-w-0054-implementation-plan.md) | Plan ejecutable canonico en ingles para transportar autoridad de correccion sin estado |
+| [Diseno RH-W-0054](rh-w-0054-design.md) | Diseno completado de autoridad de correccion sin estado aprobado por el propietario; se conserva el cuerpo historico |
+| [Plan de implementacion RH-W-0054](../../repo-harness/rh-w-0054-implementation-plan.md) | Plan de implementacion completado en ingles; se conservan las instrucciones historicas |
 | [Diseno RH-W-0059](rh-w-0059-design.md) | Borrador de transporte no interactivo; pendiente de aprobacion del propietario, sin implementacion autorizada |
-| [Diseno RH-W-0057](rh-w-0057-design.md) | Borrador de comandos canonicos y cobertura de wrappers; pendiente de aprobacion, con una decision abierta y sin implementacion autorizada |
+| [Diseno RH-W-0057](rh-w-0057-design.md) | Diseno completado de comandos canonicos y cobertura de wrappers; se conserva el cuerpo historico |
 | [Hallazgos RH-W-0056](rh-w-0056-findings.md) | Propietario canonico de hallazgos de la revision de harness externo; solo recomendaciones, sin adopcion |
 | [Traspaso de arranque archivado](../../repo-harness/archive/repo-bootstrap-handoff.md) | Registro historico en ingles de la separacion del 2026-08-12; solo procedencia, no es politica ni plan ni fuente de trabajo pendiente |
 | [Mapa canonico en ingles](../../repo-harness/README.md) | Propiedad documental canonica |

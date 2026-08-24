@@ -1,8 +1,8 @@
 # Diseno RH-W-0054 de autoridad de correccion sin estado
 
-> **Estado: DISENO APROBADO POR EL PROPIETARIO. La Tarea 1 esta completa localmente; la implementacion restante esta pendiente.**
+> **Estado: CICLO DE VIDA COMPLETADO.**
 >
-> El propietario aprobo este transporte corregido el 2026-08-21. RH-W-0054 esta activo; la Tarea 1 esta completa localmente y sin commit, mientras que las Tareas 2-8 y la entrega permanecen pendientes.
+> El propietario aprobo este diseno el 2026-08-21 y las ocho tareas de implementacion se completaron el 2026-08-23. El [registro canonico de la hoja de ruta](../../repo-harness/roadmap.md#rh-w-0054) posee la evidencia de entrega. El cuerpo de diseno se conserva como razonamiento historico de implementacion.
 
 ## Contrato de revision
 

@@ -1,8 +1,8 @@
 # RH-W-0054 Stateless Correction Authority Design
 
-> **Status: OWNER-APPROVED DESIGN. Task 1 is locally complete; remaining implementation is pending.**
+> **Status: COMPLETED LIFECYCLE.**
 >
-> The owner approved this corrected transport design on 2026-08-21. RH-W-0054 is active; Task 1 is locally complete and uncommitted, while Tasks 2-8 and delivery remain pending.
+> The owner approved this design on 2026-08-21, and all eight implementation tasks completed on 2026-08-23. The canonical [roadmap record](roadmap.md#rh-w-0054) owns delivery evidence. The design body below is retained as historical implementation rationale.
 
 ## Review Contract
 

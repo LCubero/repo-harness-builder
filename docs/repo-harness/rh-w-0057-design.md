@@ -1,6 +1,6 @@
 # RH-W-0057 Design: Canonical Commands And Wrapper Coverage
 
-Status: draft, pending owner approval. No implementation is authorized by this document. Revised on 2026-08-23 after the owner scoped Pi coverage: Pi is compared whenever Pi is recorded, which removed the open option this design first carried.
+Status: completed on 2026-08-23 after explicit implementation authorization and focused RED/GREEN evidence. The canonical [roadmap record](roadmap.md#rh-w-0057) owns lifecycle and verification evidence; this design remains the behavior authority.
 
 ## The Defect, Measured
 

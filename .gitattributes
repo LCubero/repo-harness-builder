@@ -25,3 +25,11 @@
 .pi/prompts/repo-harness-help.md text eol=lf
 .pi/prompts/session-start.md text eol=lf
 .pi/prompts/session-stop.md text eol=lf
+.repo-harness/commands/documentation.md text eol=lf
+.repo-harness/commands/repo-harness-help.md text eol=lf
+.repo-harness/commands/session-start.md text eol=lf
+.repo-harness/commands/session-stop.md text eol=lf
+.repo-harness/prompts/documentation.md text eol=lf
+.repo-harness/prompts/repo-harness-help.md text eol=lf
+.repo-harness/prompts/session-start.md text eol=lf
+.repo-harness/prompts/session-stop.md text eol=lf

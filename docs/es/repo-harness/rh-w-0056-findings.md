@@ -149,7 +149,7 @@ Incide directamente sobre la abierta `RH-W-0046` y sobre los gates de sesion gen
 
 ## Grupo G: autoridad e identidad de artefactos
 
-Incide directamente sobre la activa `RH-W-0054`.
+Historicamente informo a la completada `RH-W-0054`. Cualquier adopcion futura de G1 a G3 pertenece a una unidad nueva que herede ese alcance de forma explicita.
 
 | # | Patron | Clase de evidencia | Recomendacion |
 |---|---|---|---|
@@ -204,7 +204,7 @@ Los conteos y la membresia se derivan de las tablas de arriba parseandolas, no a
 3. **Disciplina de controles**: A1, A2, A3, A6, A8, A10, A11, A12.
 4. **Invariantes de documentacion**: D1, D4, D6, D8, D9, D10, D11, D12, D14, D15.
 5. **Disciplina de evidencia y afirmaciones**: F1 a F12, F15, F17.
-6. **Autoridad e identidad de artefactos**: G1, G2, G3, G4, G8, G9, G10, G12, G13. G1 a G3 inciden sobre la activa `RH-W-0054` y conviene leerlas antes de su Tarea 2.
+6. **Autoridad e identidad de artefactos**: G1, G2, G3, G4, G8, G9, G10, G12, G13. G1 a G3 informaron historicamente a la completada `RH-W-0054`; cualquier adopcion futura debe dirigirse a una unidad nueva que herede ese alcance de forma explicita.
 7. **Ciclo de vida de la sesion**: E2, E3, E6, E7, E8, E9, E10, E11, E12.
 
 Este documento no autoriza ninguna adopcion, implementacion ni cambio de comportamiento generado.

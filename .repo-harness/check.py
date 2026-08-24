@@ -13,14 +13,19 @@ import re
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
-MANIFEST_SHA256 = "a301727dc5daa639ef539f467384ae4f4822a828ca01d85d6e4ab0c16cb0a2ec"
-MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "writeSemantics", "integrationMode", "language"}
+MANIFEST_SHA256 = "dc3a8f1f9db51441f24b3b97ce6040c7910cb140dc20a72f8e45e81e46b40efb"
+MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language"}
 REPORT_LANGUAGES = {"english", "espanol"}
 DOCUMENTATION_LANGUAGES = {"en", "es"}
 RUNTIMES = {"claude-code", "opencode", "pi"}
 SKILL_SURFACES = {
     "claude-code": ".claude/skills/{name}/SKILL.md",
     "opencode": ".opencode/skills/{name}/SKILL.md",
+}
+COMMAND_SURFACES = {
+    "claude-code": ("commands", ".claude/commands/{name}.md"),
+    "opencode": ("commands", ".opencode/commands/{name}.md"),
+    "pi": ("prompts", ".pi/prompts/{name}.md"),
 }
 
 
@@ -111,6 +116,16 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
             raise ValueError("invalid canonical skill name")
         safe_relative(relative)
+    commands = manifest["canonicalCommands"]
+    if not isinstance(commands, dict) or not commands:
+        raise ValueError("unexpected canonical commands")
+    for name, families in commands.items():
+        if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
+            raise ValueError("invalid canonical command name")
+        if not isinstance(families, dict) or not families or not set(families) <= {"commands", "prompts"}:
+            raise ValueError("unexpected canonical command families")
+        for relative in families.values():
+            safe_relative(relative)
     return manifest
 
 
@@ -138,6 +153,26 @@ def check_projections(root: Path) -> dict:
             else:
                 state = "current"
             entries.append({"skill": name, "runtime": runtime, "path": relative, "state": state})
+    for name, families in sorted(manifest["canonicalCommands"].items()):
+        for family, canonical_relative in sorted(families.items()):
+            canonical = guarded_path(root, canonical_relative)
+            if not canonical.is_file():
+                entries.append({"command": name, "family": family, "path": canonical_relative, "state": "canonical-missing"})
+                continue
+            expected = canonical.read_bytes()
+            for runtime in manifest["runtimes"]:
+                surface_family, surface = COMMAND_SURFACES[runtime]
+                if surface_family != family:
+                    continue
+                relative = surface.format(name=name)
+                target = guarded_path(root, relative)
+                if not target.is_file():
+                    state = "missing"
+                elif target.read_bytes() != expected:
+                    state = "stale"
+                else:
+                    state = "current"
+                entries.append({"command": name, "family": family, "runtime": runtime, "path": relative, "state": state})
     drifted = [entry for entry in entries if entry["state"] != "current"]
     return {"status": "drift" if drifted else "current", "files": entries, "writes": 0}
 

@@ -27,10 +27,10 @@ Sin operacion explicita, el constructor realiza una auditoria de solo lectura. N
 - `REPO-HARNESS.md` como entrada operativa canonica.
 - `README.md` en la raiz cuando falta, con una seccion acotada administrada por el constructor.
 - Documentacion durable completa en ingles bajo `docs/repo-harness/`.
-- Habilidades neutrales bajo `.repo-harness/skills/` y proyecciones para Claude Code, OpenCode o Pi.
+- Habilidades neutrales bajo `.repo-harness/skills/`, pares canonicos de comandos bajo `.repo-harness/commands/` y `.repo-harness/prompts/`, y proyecciones para Claude Code, OpenCode o Pi.
 - `.repo-harness/check.py` para comprobaciones de congruencia sin escritura.
 - Una unica directiva `.codegraph/` en `.gitignore` raiz, salvo opt-out explicito.
-- `.gitattributes` raiz con proteccion LF exacta para `.repo-harness/check.py` y `.repo-harness/manifest.json`.
+- `.gitattributes` raiz con proteccion LF exacta para cada ruta generada comparada byte a byte.
 
 Un harness es solo en ingles salvo que se declaren mas locales de documentacion. Consulte [Idioma de la documentacion](#idioma-de-la-documentacion).
 
@@ -40,8 +40,8 @@ Un harness es solo en ingles salvo que se declaren mas locales de documentacion.
 | `docs/repo-harness/` | Propietarios durables de uso, estado actual y decisiones. |
 | `CHANGELOG.md` | Registro fechado de cambios completados, separado del estado y trabajo futuro. |
 | Continuidad en Engram | Memoria temporal entre sesiones en modo integrado, reconciliada siempre con evidencia del repositorio. |
-| Proyecciones | Superficies delgadas para Claude Code, OpenCode o Pi generadas desde habilidades canonicas neutrales. |
-| `.repo-harness/check.py` | Comprobacion de solo lectura que detecta proyecciones faltantes u obsoletas. |
+| Proyecciones | Superficies delgadas para Claude Code, OpenCode o Pi generadas desde habilidades canonicas y pares de comandos por familia. |
+| `.repo-harness/check.py` | Comprobacion de solo lectura que detecta proyecciones de habilidades, comandos y prompts faltantes u obsoletas. |
 
 ## Constructor y habilidades generadas
 <!-- doc-role:skills -->
@@ -123,7 +123,7 @@ Los harness anteriores se auditan, no se reemplazan a ciegas. Las rutas se clasi
 
 El `.gitignore` raiz sigue siendo propiedad humana. El plan aprobado crea el archivo si falta o agrega exactamente `.codegraph/` si no existe esa linea, preservando BOM, bytes, comentarios, lineas vacias, finales de linea y reglas ajenas. `--no-codegraph-ignore` registra el opt-out en el manifiesto y no modifica el archivo.
 
-El `.gitattributes` raiz tambien sigue siendo propiedad humana. El constructor crea o agrega solo `.repo-harness/check.py text eol=lf` y `.repo-harness/manifest.json text eol=lf`, preservando reglas ajenas y finales de linea existentes. Una regla coincidente que asigne comportamiento incompatible de texto o EOL bloquea el plan en vez de crear semantica ambigua de checkout.
+El `.gitattributes` raiz tambien sigue siendo propiedad humana. El constructor crea o agrega una regla exacta `<path> text eol=lf` por cada ruta generada comparada byte a byte, preservando reglas ajenas y finales de linea existentes. Una regla coincidente que asigne comportamiento incompatible de texto o EOL bloquea el plan en vez de crear semantica ambigua de checkout.
 
 En modo bilingue, los propietarios canonicos en ingles conservan la verdad operativa unica y los pares en espanol son presentaciones completas. Consulte el [contrato de mantenimiento bilingue](docs/es/repo-harness/i18n-maintenance.md), que aplica solo cuando se declaran ambos locales.
 

@@ -1158,6 +1158,24 @@ class FixedGeneratedSkillNameTests(unittest.TestCase):
         }
         self.assertEqual(emitted, self.EXPECTED_COMMANDS)
 
+    def test_manifest_declares_canonical_commands_by_emitted_surface_family(self):
+        cases = (
+            (("opencode",), {"commands"}),
+            (("pi",), {"prompts"}),
+            (("claude-code", "pi"), {"commands", "prompts"}),
+        )
+        for runtimes, families in cases:
+            with self.subTest(runtimes=runtimes):
+                outputs = TOOL.render("Example", list(runtimes))
+                manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+                declarations = manifest["canonicalCommands"]
+                self.assertEqual(set(declarations), {*self.EXPECTED_COMMANDS, "repo-harness-help"})
+                for command, family_paths in declarations.items():
+                    self.assertEqual(set(family_paths), families)
+                    for family, path in family_paths.items():
+                        self.assertEqual(path, f".repo-harness/{family}/{command}.md")
+                        self.assertIn(path, outputs)
+
 
 class AdditiveWriteTests(unittest.TestCase):
     """Writes create absent files, with exact bounded root append exceptions."""
@@ -2430,6 +2448,27 @@ class CheckTests(unittest.TestCase):
             self.assertEqual(before, after)
             self.assertEqual(report["writes"], 0)
             self.assertEqual(report["status"], "current")
+
+    def test_check_reports_undeclared_for_manifest_without_canonical_commands(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = install(root, runtimes=("opencode",))
+            manifest_path = root / TOOL.MANIFEST_PATH
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest.pop("canonicalCommands")
+            manifest_path.write_text(TOOL.dump_json(manifest), encoding="utf-8", newline="\n")
+            checker = root / ".repo-harness/check.py"
+            checker.write_text(
+                TOOL.check_script(TOOL.digest_text(TOOL.dump_json(manifest))),
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            report = TOOL.check(root, "Example", ["opencode"])
+
+            self.assertTrue(any(item["state"] == "undeclared" for item in report["files"]))
+            self.assertEqual(report["writes"], 0)
+            self.assertEqual(outputs[".opencode/commands/session-start.md"], (root / ".opencode/commands/session-start.md").read_text(encoding="utf-8"))
 
     def test_check_classifies_managed_upgrade_states(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -4497,6 +4536,22 @@ class GeneratedCheckScriptTests(unittest.TestCase):
                 )
                 self.assert_no_outside_read(module, root)
 
+    def test_checker_rejects_invalid_canonical_command_declarations_before_reads(self):
+        attacks = (
+            lambda data: data["canonicalCommands"]["session-start"].__setitem__("commands", "../outside.md"),
+            lambda data: data["canonicalCommands"]["session-start"].__setitem__("other", ".repo-harness/other.md"),
+            lambda data: data["canonicalCommands"].__setitem__("session-start", {}),
+        )
+        for attack in attacks:
+            with self.subTest(attack=attack), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                module = self.signed_manifest(root, attack)
+                raw = (root / TOOL.MANIFEST_PATH).read_bytes()
+                with mock.patch.object(Path, "read_bytes", wraps=Path.read_bytes) as read_bytes:
+                    with self.assertRaises(ValueError):
+                        module.parse_manifest(raw, module.MANIFEST_SHA256)
+                self.assertEqual(read_bytes.call_count, 0)
+
     def test_checker_rejects_symlink_ancestor_without_outside_reads_when_supported(self):
         with tempfile.TemporaryDirectory() as directory:
             base = Path(directory)
@@ -4564,6 +4619,42 @@ class GeneratedCheckScriptTests(unittest.TestCase):
             report = self.loaded(root).check_projections(root)
             states = {item["path"]: item["state"] for item in report["files"]}
             self.assertEqual(states[".opencode/skills/repo-harness-documentation/SKILL.md"], "missing")
+
+    def test_detects_missing_and_stale_command_surfaces(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=self.RUNTIMES)
+            (root / ".opencode/commands/session-start.md").unlink()
+            stale = root / ".claude/commands/session-stop.md"
+            stale.write_text(stale.read_text(encoding="utf-8") + "stale\n", encoding="utf-8")
+            report = self.loaded(root).check_projections(root)
+            states = {item["path"]: item["state"] for item in report["files"]}
+            self.assertEqual(states[".opencode/commands/session-start.md"], "missing")
+            self.assertEqual(states[".claude/commands/session-stop.md"], "stale")
+
+    def test_detects_missing_canonical_command_peer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("opencode",))
+            (root / ".repo-harness/commands/session-start.md").unlink()
+            report = self.loaded(root).check_projections(root)
+            entry = next(item for item in report["files"] if item.get("command") == "session-start")
+            self.assertEqual(entry["state"], "canonical-missing")
+
+    def test_pi_prompt_is_checked_only_when_pi_is_recorded(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("pi",))
+            (root / ".pi/prompts/documentation.md").unlink()
+            report = self.loaded(root).check_projections(root)
+            states = {item["path"]: item["state"] for item in report["files"]}
+            self.assertEqual(states[".pi/prompts/documentation.md"], "missing")
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("opencode",))
+            report = self.loaded(root).check_projections(root)
+            self.assertFalse(any(item["path"].startswith(".pi/") for item in report["files"]))
 
     def test_provenance_rewrite_alone_is_not_drift(self):
         """A projection legitimately differs from its canonical only in the canonical-source line."""

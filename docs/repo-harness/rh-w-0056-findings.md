@@ -149,7 +149,7 @@ Bears directly on the open `RH-W-0046` and on the generated session gates.
 
 ## Group G: Authority And Artifact Identity
 
-Bears directly on the active `RH-W-0054`.
+Historically informed completed `RH-W-0054`. Any future adoption of G1 through G3 belongs to a new unit that explicitly inherits that scope.
 
 | # | Pattern | Evidence class | Recommendation |
 |---|---|---|---|
@@ -204,7 +204,7 @@ Counts and membership are derived from the tables above by parsing them, not by 
 3. **Control discipline**: A1, A2, A3, A6, A8, A10, A11, A12.
 4. **Documentation invariants**: D1, D4, D6, D8, D9, D10, D11, D12, D14, D15.
 5. **Evidence and claim discipline**: F1 through F12, F15, F17.
-6. **Authority and artifact identity**: G1, G2, G3, G4, G8, G9, G10, G12, G13. G1 through G3 bear on the active `RH-W-0054` and should be read before its Task 2.
+6. **Authority and artifact identity**: G1, G2, G3, G4, G8, G9, G10, G12, G13. G1 through G3 historically informed completed `RH-W-0054`; direct any future adoption to a new unit that explicitly inherits that scope.
 7. **Session lifecycle**: E2, E3, E6, E7, E8, E9, E10, E11, E12.
 
 No adoption, implementation, or generated behavior change is authorized by this document.

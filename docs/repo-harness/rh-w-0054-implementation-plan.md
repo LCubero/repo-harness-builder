@@ -1,6 +1,6 @@
 # RH-W-0054 Stateless Correction Authority Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: use `subagent-driven-development` task by task, `test-driven-development` for every behavior slice, and `verification-before-completion` before delivery. RH-W-0054 is `active`; Tasks 1 through 4 are complete, Task 5 is the next candidate boundary, and Tasks 5 through 8 remain pending.
+> **Completed lifecycle notice:** RH-W-0054 completed all eight tasks and delivery on 2026-08-23. The canonical [roadmap record](roadmap.md#rh-w-0054) owns delivery evidence. The historical task instructions and checkboxes below are retained as execution evidence, not pending work.
 
 **Goal:** Bind builder preview approval across separate CLI processes to one reviewable canonical authority context, current repository evidence, complete output-affecting configuration, exact plan identity, and opaque target identity.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** Python 3.10+ standard library, `TypedDict`, `unittest`, `hashlib`, deterministic JSON, independent `main()` calls, subprocess CLI tests, and exact canonical-to-runtime projection copies.
 
-**Lifecycle owner:** [RH-W-0054](roadmap.md#rh-w-0054), status `active`. The [approved design](rh-w-0054-design.md) owns behavior; this plan owns implementation sequence only. Tasks 1 through 4 are complete and committed; Tasks 5 through 8 and delivery remain pending.
+**Lifecycle owner:** [RH-W-0054](roadmap.md#rh-w-0054), status `completed`. The [approved design](rh-w-0054-design.md) owns behavior; this plan preserves the completed implementation sequence. The roadmap owns final verification and delivery evidence.
 
 ---
 
@@ -678,11 +678,11 @@ Task 6 asserts at runtime that the superseded session APIs are not defined.
 
 Run `git status --short`, `git diff --stat`, and `git diff -- docs/repo-harness/roadmap.md docs/es/repo-harness/roadmap.md docs/repo-harness/current-state.md docs/es/repo-harness/current-state.md CHANGELOG.md`.
 
-Expected before completed delivery: RH-W-0054 remains `active`; Tasks 1 through 4 may be complete while Tasks 5 through 8 and delivery remain pending. No changelog completion entry exists, no post-write owner is assigned, and no commit, push, staging, provider action, or external repository mutation occurred.
+Historical pre-delivery expectation: RH-W-0054 remained `active` until all eight tasks and delivery evidence completed. This statement records the gate that applied during execution and is not current lifecycle status.
 
 - [ ] **Step 6: Conditional completion reconciliation**
 
-Only after separate implementation authorization, observed RED evidence, all GREEN checks, reviewed projection synchronization, and delivery evidence, reconcile roadmap, current state, localized peers, changelog, and Engram topic `work/RH-W-0054` in one later work unit. This plan does not advance lifecycle.
+This conditional reconciliation was reached after separate implementation authorizations, observed RED evidence, GREEN checks, reviewed projection synchronization, and delivery evidence. The roadmap records the completed lifecycle; this historical plan does not independently own or advance status.
 
 - [ ] **Step 7: Work-unit boundary**
 
@@ -722,15 +722,15 @@ Use three chained review slices because authored work exceeds the 400-line targe
 - [ ] Genuine subprocess tests and independent `main()` tests pass.
 - [ ] Portable Python replaces every repository-content `rg` verification.
 - [ ] Canonical package files and both runtime projections are byte-identical.
-- [ ] RH-W-0054 stays `active` until all separately authorized implementation and delivery evidence supports completion; Task 4 completion does not authorize Tasks 5 through 8.
+- [x] RH-W-0054 stayed `active` until separately authorized implementation and delivery evidence supported completion; Task 4 completion did not authorize Tasks 5 through 8.
 
 ## Remaining Human Decisions
 
-None before implementation authorization. Naming and ownership of a future post-first-write remediation workflow remain a separate design decision and are not implementation blockers for RH-W-0054.
+None remain for completed RH-W-0054. Naming and ownership of a future post-first-write remediation workflow remain a separate design decision outside this unit.
 
 ## Handoff
 
-**Next step:** Begin the next session with Task 5, apply recompute and pre-write rejection, as the candidate boundary, then obtain separate authorization before implementation. The owner raised a proportionality concern on 2026-08-22: this is a documentation harness, and Tasks 5 through 8 are the expensive half. Task 5 makes the binding do work, because nothing validates a generation before writing until it lands; reassess Tasks 6 through 8 after it. RH-W-0054 remains `active`; Tasks 5 through 8 and delivery remain unauthorized.
+**Terminal status:** All eight tasks and delivery completed on 2026-08-23. Continue from the canonical [roadmap](roadmap.md#rh-w-0054), not from this historical handoff.
 
 ## Second-Correction Review Dispositions
 

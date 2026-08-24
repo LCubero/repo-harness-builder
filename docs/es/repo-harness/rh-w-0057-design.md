@@ -1,6 +1,6 @@
 # Diseno RH-W-0057: comandos canonicos y cobertura de wrappers
 
-Estado: borrador, pendiente de aprobacion del propietario. Este documento no autoriza ninguna implementacion. Revisado el 2026-08-23 despues de que el propietario delimitara la cobertura de Pi: Pi se compara siempre que Pi este registrado, lo que elimino la opcion abierta que este diseno traia al principio.
+Estado: completado el 2026-08-23 despues de autorizacion explicita de implementacion y evidencia RED/GREEN enfocada. El [registro canonico de la hoja de ruta](../../repo-harness/roadmap.md#rh-w-0057) posee el ciclo de vida y la evidencia de verificacion; este diseno conserva la autoridad de comportamiento.
 
 ## El defecto, medido
 
