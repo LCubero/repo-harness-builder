@@ -19,7 +19,7 @@
 | [Investigacion RH-W-0031](../../repo-harness/rh-w-0031-research.md) | Propietario canonico en ingles de la evidencia primaria sobre los limites del idioma de conversacion |
 | [Plan tecnico RH-W-0031](../../repo-harness/rh-w-0031-implementation-plan.md) | Plan canonico en ingles para corregir los limites del idioma de conversacion |
 | [Plan de implementacion RH-W-0034](rh-w-0034-implementation-plan.md) | Par humano completo del plan canonico para recuperacion de consumidores y correccion del modo solo en espanol |
-| [Diseno RH-W-0050](rh-w-0050-design.md) | Diseno completo de reconciliacion acotada aprobado por el propietario; la implementacion sigue pendiente |
+| [Diseno RH-W-0050](rh-w-0050-design.md) | Diseno completado de reconciliacion acotada aprobado por el propietario; entregado con el cuerpo historico conservado |
 | [Diseno RH-W-0054](rh-w-0054-design.md) | Diseno completado de autoridad de correccion sin estado aprobado por el propietario; se conserva el cuerpo historico |
 | [Plan de implementacion RH-W-0054](../../repo-harness/rh-w-0054-implementation-plan.md) | Plan de implementacion completado en ingles; se conservan las instrucciones historicas |
 | [Diseno RH-W-0059](rh-w-0059-design.md) | Diseno completado de transporte no interactivo aprobado por el propietario; entregado con pruebas primero y con el cuerpo historico conservado |
