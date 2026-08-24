@@ -22,22 +22,42 @@ Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 
 
 ## Orden de ejecucion aprobado restante
 
-Con `RH-W-0011` completada, la ruta aprobada comienza ahora con el diseno conjunto de la arquitectura de estado local. Las completadas `RH-W-0054`, `RH-W-0057` y `RH-W-0011` quedan como antecedentes historicos, no como pasos pendientes:
+Revisado el 2026-08-24. El propietario delego el criterio tecnico de ordenamiento tras una revision completa del portafolio y de los planes, asi que esta revision esta autorizada por el propietario y guiada por evidencia, no por preferencia. Por si sola no cambia el estado de ninguna unidad, y conserva cada posicion relativa pendiente de la ruta aprobada del 2026-08-21: las unidades ya agendadas mantienen su orden entre si y la revision solo inserta las seis registradas fuera de esa ruta, mas `RH-W-0013`, cuya condicion de aplazamiento se midio y se disparo.
 
-1. Hacer que `RH-W-0051` lidere la arquitectura conjunta de estado local al definir la taxonomia de estado local y la semantica de propiedad. `RH-W-0048` participa de forma condicional sobre esa semantica. `RH-W-0052` solo puede redactarse de forma condicional y no puede avanzar hasta que `RH-W-0051` y `RH-W-0048` esten probadas y se apruebe la propiedad por manifiesto. Reservar namespace para `RH-W-0053`, `RH-W-0046`, `RH-W-0018` y `RH-W-0040` sin fusionar sus ciclos de vida ni sus limites de implementacion.
-2. Implementar `RH-W-0051`.
-3. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
-4. Implementar `RH-W-0048`.
-5. Implementar `RH-W-0052`.
-6. Disenar juntas `RH-W-0046` y `RH-W-0018`, con implementaciones separadas.
-7. Continuar con `RH-W-0044`; su antecedente `RH-W-0043` esta satisfecho y solo queda diseno o avance.
-8. Continuar con `RH-W-0022`.
-9. Continuar con `RH-W-0055`.
-10. Continuar con `RH-W-0040`; su prerrequisito esta satisfecho y su diseno o avance sigue pendiente.
+Tres inserciones encabezan, porque cada una esta completamente medida, no tiene dependencia sin cumplir y desbloquea o protege algo detras:
+
+1. `RH-W-0061`, licencia registrada. Es el unico registro `ready` del portafolio, esta completamente medida, tiene remedio exacto y el alcance mas chico de todas las unidades, y no tiene dependencia sin cumplir. Igual conviene que aterrice antes que `RH-W-0048` porque ambas cambian lo que `check()` recibe como entrada, asi que implementarla primero le ahorra a esa unidad un cambio de firma a mitad del diseno. La razon mas fuerte registrada el 2026-08-24, que ambas mutan el conjunto de campos del manifiesto, ya no aplica: la decision de licencia del propietario ese mismo dia disolvio el campo de manifiesto de esta unidad.
+2. `RH-W-0013`, presupuestos de contexto medidos. Su condicion de aplazamiento se observo el 2026-08-24 y se disparo, y `RH-W-0067` no puede colocar una fila de gate hasta que este registro decida el margen.
+3. `RH-W-0067`, ubicacion del contrato de forma de respuesta. Depende del resultado de presupuesto anterior y repara un defecto observado dos veces en una misma conversacion.
+
+Despues corre sin cambios la arquitectura de estado local:
+
+4. Hacer que `RH-W-0051` lidere la arquitectura conjunta de estado local al definir la taxonomia de estado local y la semantica de propiedad. `RH-W-0048` participa de forma condicional sobre esa semantica. `RH-W-0052` solo puede redactarse de forma condicional y no puede avanzar hasta que `RH-W-0051` y `RH-W-0048` esten probadas y se apruebe la propiedad por manifiesto. Reservar namespace para `RH-W-0053`, `RH-W-0046`, `RH-W-0018` y `RH-W-0040` sin fusionar sus ciclos de vida ni sus limites de implementacion.
+5. Implementar `RH-W-0051`.
+6. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
+7. Implementar `RH-W-0048`.
+8. Implementar `RH-W-0052`.
+
+Siguen consentimiento y comparacion, sin cambios:
+
+9. Disenar juntas `RH-W-0046` y `RH-W-0018`, con implementaciones separadas.
+10. Continuar con `RH-W-0044`; su antecedente `RH-W-0043` esta satisfecho y solo queda diseno o avance.
+11. Continuar con `RH-W-0022`.
+
+Onboarding y el residuo restante cierran la ruta:
+
+12. Continuar con `RH-W-0055`.
+13. Luego `RH-W-0062`, que se resuelve contra el diseno de `RH-W-0055` y cierra como sin residuo si ese diseno no encuentra identidad offline viable.
+14. Continuar con `RH-W-0040`; su prerrequisito esta satisfecho y su diseno o avance sigue pendiente.
+15. Luego `RH-W-0060`, colocada despues de `RH-W-0067` porque ambas reescriben los tres contratos diarios generados y no deben implementarse en paralelo.
+16. Luego `RH-W-0065`.
+17. Luego `RH-W-0066`.
+
+Los cinco registros de la lista aplazada conservan sus condiciones y no se agendan: `RH-W-0012`, `RH-W-0014`, `RH-W-0015`, `RH-W-0026` y `RH-W-0063`.
 
 El diseno conjunto no fusiona las unidades de implementacion. Cada implementacion conserva pruebas, commit, issue, pull request, evidencia de ciclo de vida, limite de rollback y condicion de avance propios. `RH-W-0050`, ya completada, sigue como base independiente del paquete de arquitectura.
 
-Orden historico aprobado: la secuencia del 2026-08-20 colocaba el paquete local despues de `RH-W-0050`. La revision del 2026-08-21 movio `RH-W-0054` al inicio y despues el propietario inserto `RH-W-0057`. Ambas estan completadas. La proyeccion restante conserva cada posicion relativa pendiente.
+Orden historico aprobado: la secuencia del 2026-08-20 colocaba el paquete local despues de `RH-W-0050`. La revision del 2026-08-21 movio `RH-W-0054` al inicio y despues el propietario inserto `RH-W-0057`. Ambas estan completadas, igual que `RH-W-0011`. La revision del 2026-08-24 conserva cada posicion relativa pendiente de esa ruta y solo inserta unidades antes no agendadas.
 
 ## Auditoria consolidada del portafolio
 
@@ -54,9 +74,268 @@ Una segunda pasada el 2026-08-21 reaudito todo el portafolio no terminal, no sol
 - Inferencia respaldada: `RH-W-0051` es un hub de almacenamiento y no una de tres unidades pares. `RH-W-0048`, `RH-W-0052` y `RH-W-0053` declaran su semantica de almacenamiento como dependencia, y `RH-W-0046`, `RH-W-0018` y `RH-W-0040` nombran cada una una ubicacion de almacenamiento que ese mismo contrato poseeria, de modo que disenar solo `tmp` y `archive` arriesga un segundo cambio rompiente.
 - No defecto verificado: el runtime set `claude-code` y `opencode` del estado actual es el manifiesto instalado de este repositorio, mientras que `RH-W-0055` nombra los runtimes soportados por el producto, que `skill/repo-harness-builder/scripts/harness_tool.py:26` define como `opencode`, `claude-code` y `pi`. Las dos afirmaciones tienen alcances distintos y no se contradicen.
 
+## Planes de accion
+
+<!-- doc-role:action-plans -->
+
+Un plan de ejecucion por cada registro no terminal. Esta seccion no posee estado, prioridad ni calendario: los registros de abajo poseen el ciclo de vida y el orden aprobado de arriba posee la secuencia. Un plan nombra el siguiente artefacto requerido, los pasos ordenados que lo producen y las decisiones humanas que lo condicionan. Un plan no es autorizacion. Producir cualquier artefacto nombrado aqui requiere intencion explicita del propietario que nombre la accion y su objetivo, y nada de lo siguiente autoriza implementacion, cambio de ciclo de vida ni entrega.
+
+La preparacion clasifica al plan, no al registro:
+
+- `plannable now` significa que toda dependencia declarada esta satisfecha y el siguiente artefacto puede escribirse hoy.
+- `plannable after <ID>` significa que el artefacto solo puede redactarse con honestidad una vez probada la unidad nombrada.
+- `not plannable` significa que la condicion de avance del propio registro no se cumple, asi que ningun artefacto puede producirse sin inventar la evidencia que esa condicion exige.
+
+Reconcilie esta seccion siempre que cambie el estado, las dependencias o la condicion de avance de un registro, en la misma unidad de trabajo, junto con la proyeccion de estado actual y el duenio canonico en ingles.
+
+### Plan 1: diseno de arquitectura de estado local RH-W-0051
+
+Preparacion `plannable now`. Prioridad `P2`, sin dependencias. Siguiente artefacto: `docs/repo-harness/rh-w-0051-design.md` y su par en espanol, registrados en ambos mapas de documentacion.
+
+1. Reafirmar la base medida: el generador canonico no define hoy ningun namespace `tmp` ni `archive` con soporte, y las dos decisiones permanentes registran la politica objetivo aprobada sin soporte.
+2. Definir la taxonomia de estado local: `.repo-harness/tmp/` como descartable y `.repo-harness/archive/` como recuperable, ambos no autoritativos e ignorados por Git por defecto.
+3. Definir la semantica de propiedad por namespace: quien escribe, quien borra, que reporta una verificacion de solo lectura y que significa un arbol limpio para cada uno.
+4. Definir el comportamiento en una carpeta sin Git y en un espacio de trabajo multiraiz, porque la taxonomia no puede suponer Git.
+5. Reservar namespace para los consumidores declarados sin absorberlos: los bytes de checkpoint de RH-W-0053, el almacen de consentimiento o preferencia de RH-W-0046 y RH-W-0018, y el registro de violaciones de RH-W-0040. Solo nombrar cada consumidor y su ubicacion reservada.
+6. Especificar rutas generadas exactas, integracion con `.gitignore`, tratamiento en el checker generado, representacion en el manifiesto, semantica de anulacion explicita por repositorio y migracion para un harness instalado que no tenga ninguno de los dos namespaces.
+7. Nombrar las pruebas RED que deben fallar antes de implementar, una por clausula del contrato.
+
+Decisiones humanas: la sintaxis exacta de anulacion; si el manifiesto registra los namespaces o el generador los fija; y la politica de retencion de `archive`, que nunca se borra automaticamente.
+
+Termina cuando el propietario aprueba el diseno. Aprobar un diseno no autoriza implementarlo.
+
+### Plan 2: implementacion de RH-W-0051
+
+Preparacion `plannable after` la aprobacion del diseno de RH-W-0051. Siguiente artefacto: `docs/repo-harness/rh-w-0051-implementation-plan.md` y su par en espanol.
+
+1. Derivar la lista de tareas del diseno aprobado, una tarea por clausula del contrato.
+2. Escribir primero las pruebas RED y registrar el conteo y los mensajes exactos de fallo.
+3. Implementar la fuente canonica y luego sincronizar ambas proyecciones de runtime con el renderizador de mantenimiento.
+4. Verificar: checker generado `current` con cero escrituras, suite canonica completa en verde y conteo documentado de la suite actualizado en la misma unidad de trabajo.
+5. Entregar con issue primero segun `CONTRIBUTING.md` y luego reconciliar hoja de ruta, estado actual, pares en espanol y el espejo Engram `work/RH-W-0051` en la misma unidad.
+
+Decisiones humanas: ninguna mas alla de la aprobacion del diseno y la autorizacion explicita de implementacion.
+
+### Plan 3: diseno de checkpoint de sesion interrumpida RH-W-0053
+
+Preparacion `plannable after RH-W-0051`. Prioridad `P1`, la mas alta entre los registros no terminales. Siguiente artefacto: un documento de diseno y su par en espanol.
+
+1. Definir el esquema tipado del checkpoint y sus clases de evidencia, separando hechos completados, intencion inconclusa, inferencia sustentada, estado desconocido y decisiones que aun requieren a una persona.
+2. Decidir el duenio del checkpoint y su almacenamiento dentro del namespace que reserva RH-W-0051, nunca en rutas personales del usuario.
+3. Definir los disparadores de creacion y expiracion, y los limites de datos sensibles sobre lo que un checkpoint puede contener.
+4. Definir como se representa un paso interrumpido sin afirmar que se completo.
+5. Definir el descubrimiento en el inicio de sesion, los resultados ante checkpoints obsoletos o en conflicto y el comportamiento de arranque sin mutacion.
+6. Definir la autoridad explicita de reanudacion: reanudar reverifica la evidencia del repositorio y nunca reutiliza una aprobacion previa.
+7. Nombrar las pruebas RED, incluida una que pruebe que un checkpoint nunca dispara continuacion automatica.
+
+Decisiones humanas: el duenio final del checkpoint y su forma de persistencia, y si un checkpoint puede escribirse alguna vez sin peticion explicita.
+
+### Plan 4: diseno de recuperacion de proyecciones de runtime RH-W-0048
+
+Preparacion `plannable after RH-W-0051`. Prioridad `P2`. Siguiente artefacto: un diseno de alcance y su par en espanol.
+
+1. Declarar la politica de proyeccion de runtime rastreada frente a local, que es la capacidad de producto faltante; `--standalone` no es ese interruptor.
+2. Nombrar la invocacion de reparacion o arranque y probar que `python .repo-harness/check.py` simple sigue reportando `writes: 0`.
+3. Definir los limites de propiedad y el disparador exacto de la reparacion.
+4. Definir el inventario o las plantillas autoritativas guardadas dentro de `.repo-harness` para que la recuperacion nunca requiera localizar la skill externa del builder.
+5. Definir el conjunto minimo de archivos por runtime declarado, la deteccion de senial rastreada y el manejo de obsoleto frente a faltante, manteniendo una proyeccion rastreada pero ausente como drift real.
+6. Definir el esquema de resultado o reporte y decidir por separado si `.gitattributes` omite reglas para rutas solo locales.
+7. Nombrar las pruebas RED, incluido el clon fresco simulado que hoy devuelve `drift` con salida 1 y seis proyecciones faltantes.
+
+Decisiones humanas: el nombre del comando de reparacion y si el manifiesto gana un campo rastreado frente a local, que el registro prohibe inventar sin evidencia de implementacion.
+
+### Plan 5: diseno de archivado, desinstalacion y reinstalacion RH-W-0052
+
+Preparacion `plannable after` que RH-W-0051 y RH-W-0048 esten probados. Prioridad `P2`. Antes de eso solo se permite un borrador condicional; el registro no puede avanzar hasta que se apruebe la propiedad por manifiesto.
+
+1. Probar los bytes propiedad del harness desde un manifiesto antes de cualquier consideracion destructiva.
+2. Definir la retencion del archivo y el limite de aprobacion explicita de borrado, sin borrado automatico.
+3. Cubrir carpetas y espacios sin Git, ya que la evidencia de origen fue una carpeta de informacion sin Git.
+4. Especificar la verificacion de rollback y reinstalacion.
+5. Mantener la implementacion separada de RH-W-0048 y nunca promover el prototipo fallido como comportamiento entregado.
+
+Decisiones humanas: politica de retencion del archivo, limite de aprobacion de borrado y aprobacion de propiedad por manifiesto.
+
+### Plan 6: diseno conjunto de consentimiento RH-W-0046 y RH-W-0018
+
+Preparacion: la mitad del umbral es `plannable now`; la mitad de almacenamiento es `plannable after RH-W-0051` reserve el namespace. RH-W-0046 esta `proposed` y RH-W-0018 esta `deferred`; este plan produce un diseno conjunto mientras ambos conservan implementaciones, estados y condiciones de avance separados.
+
+1. Reconciliar los dos umbrales que ya lleva el contrato generado: aprobacion antes de una mutacion externa y aprobacion antes de acceso a la red. Un `git fetch` de solo lectura satisface solo el segundo porque no escribe nada en el remoto.
+2. Decidir si el fetch de solo lectura sale del umbral de acceso a red. Ahi esta todo el riesgo: el contrato se instala en cada repositorio consumidor, asi que un harness que haga fetch en silencio tomaria acceso a red en repositorios cuyo duenio nunca lo concedio.
+3. Si no sale del umbral, definir un consentimiento durable por repositorio registrado dentro del namespace de RH-W-0051, visible y revocable, nunca en una segunda ubicacion.
+4. Definir en el mismo diseno la mitad de RH-W-0018: la pregunta exacta al iniciar sesion, los alcances de consentimiento por sesion y recordado, las reglas de precedencia y el comportamiento interactivo por defecto sin cambios.
+5. Nombrar las pruebas RED, incluida una por clase de accion excluida que pruebe que codigo de producto, Git, commit, push, pull requests, publicacion, secretos, proveedores y acciones destructivas siguen requiriendo interaccion.
+
+Decisiones humanas: si el fetch de solo lectura se reclasifica, y como se muestra y se retira una preferencia recordada.
+
+### Plan 7: diseno de alcance de comparar y sugerir RH-W-0044
+
+Preparacion `plannable now`. Prioridad `P2`, prerrequisito RH-W-0043 completado. Siguiente artefacto: un diseno de alcance y su par en espanol.
+
+1. Nombrar el conjunto exacto de documentos de propiedad humana que se comparan; la deteccion ya reporta `stale`, `missing`, `human-evolved`, `sections-missing` y `directive-missing` por ruta, asi que esta unidad solo agrega comparacion a nivel de contenido.
+2. Definir que contiene una sugerencia y como se presenta.
+3. Definir aceptacion de una en una, sin aceptacion masiva ni sobrescritura de un documento de propiedad humana.
+4. Definir como el builder evita proponer deshacer una divergencia legitima que el repositorio quiso.
+5. Nombrar las pruebas RED, incluida una que pruebe que un documento de propiedad humana sigue siendo solo propuesta.
+
+Decisiones humanas: el conjunto de documentos comparados y como se declara una divergencia intencional para que una sugerencia no la ataque.
+
+### Plan 8: diseno de relaciones declaradas de documentacion RH-W-0022
+
+Preparacion `plannable now`. Prioridad `P2`. Siguiente artefacto: un documento de diseno y su par en espanol.
+
+1. Definir el formato minimo de arista declarada, rechazando la inferencia desde grafos de enlaces o patrones de nombre.
+2. Decidir el archivo duenio unico del mapa declarado y mantenerlo lo bastante pequenio para mantenerse a mano.
+3. Definir la salida exacta del checker cuando una arista no se satisface, cubriendo las relaciones duenio en ingles a par en espanol y hoja de ruta a proyeccion de estado actual, que ya han derivado antes.
+4. Mantener intactas las exclusiones: sin grafo de simbolos de codigo, sin analisis de rutas de llamada, sin motor de dependencias, sin daemon, sin planificador, sin servicio externo y sin dependencia de runtime nueva mas alla de la biblioteca estandar de Python.
+5. Nombrar las pruebas RED, idealmente reproduciendo un drift real pasado.
+
+Decisiones humanas: el formato de arista y la ubicacion del archivo duenio.
+
+### Plan 9: diseno de instalacion y onboarding RH-W-0055
+
+Preparacion `plannable now`. Prioridad `P2`. Siguiente artefacto: un diseno de onboarding y su par en espanol.
+
+1. Nombrar las fuentes de instalacion soportadas y los prerrequisitos.
+2. Escribir los comandos exactos de copiar y pegar por runtime para `claude-code`, `opencode` y `pi`.
+3. Definir el contrato futuro de nombrado del artefacto de release, sin afirmar que ya existe.
+4. Definir la verificacion posterior a la instalacion y los limites offline y de fallo.
+5. Enlazar la instalacion con la invocacion del builder y el uso diario de inicio y cierre de sesion, en una sola ruta en vez de fragmentos dispersos.
+6. Registrar si el diseno encuentra una identidad offline viable, porque RH-W-0062 se resuelve contra esa respuesta.
+
+Decisiones humanas: el patron futuro de nombrado del artefacto y la forma de la URL.
+
+### Plan 10: diseno de registro de violaciones RH-W-0040
+
+Preparacion `plannable now` para el diseno, con el almacenamiento `plannable after RH-W-0051`. Prioridad `P3`, prerrequisito RH-W-0039 completado.
+
+1. Definir que contiene un registro de violacion, dado que la evidencia medida muestra que la regla violada ya estaba cargada en contexto en cada turno, asi que esta unidad no es un lector de reglas.
+2. Decidir la autoridad y quien escribe, porque la deteccion no puede afirmarse como automatica y un registro vacio nunca prueba cumplimiento.
+3. Decidir la ubicacion de almacenamiento dentro del namespace de RH-W-0051.
+4. Definir la regla de ranking y la presentacion acotada al iniciar sesion que solo muestre a los principales infractores.
+5. Nombrar las pruebas RED, incluida una que pruebe que el reglamento completo no se relee al iniciar sesion.
+
+Decisiones humanas: quien escribe un registro de violacion y si se rastrea en Git.
+
+### Plan 11: licencia registrada y su descubrimiento RH-W-0061
+
+Preparacion `plannable now`, y el registro esta `ready` y no `proposed`: el propietario resolvio su unica decision abierta el 2026-08-24 al separar un repositorio del harness de ese repositorio. Prioridad `P2`, sin dependencias. Encabeza el orden revisado porque es el unico registro `ready`, esta completamente medida y carga el alcance mas chico del portafolio. Igual conviene que aterrice antes del Plan 4, ya que ambos cambian lo que `check()` recibe como entrada, aunque el choque original del conjunto de campos del manifiesto ya no aplica a esta unidad.
+
+La decision colapsa este plan en vez de ramificarlo. La licencia de un repositorio es eleccion del consumidor; una skill generada es salida propia de este producto y lleva la licencia de este producto. Acoplar ambas era el defecto, y una vez desacopladas desaparecen el campo del manifiesto, la ruta de descubrimiento y la pregunta de reporte sin licencia, porque no queda nada que el repositorio deba registrar en nombre de las skills.
+
+1. Convertir la licencia de la skill generada en una constante del producto, para que `check()` deje de tomar un valor que no puede verificar y una invocacion que coincida con el manifiesto reproduzca el harness instalado. Mantener `--license` aceptada como anulacion explicita.
+2. Quitar de `references/license-selection.md` la frase que enruta una licencia de repositorio declinada hacia la metadata de la skill generada. Esa referencia conserva su trabajo real, ayudar al consumidor a elegir licencia para el repositorio, y pierde solo la mitad que filtra esa eleccion hacia archivos que el consumidor no escribio.
+3. Declarar la consecuencia de migracion en vez de descubrirla despues. Medido en solo lectura sobre el consumidor real `consumidor 3`: sus tres skills generadas llevan `license: "UNLICENSED"` mientras el repositorio no tiene archivo `LICENSE`, asi que esos tres archivos cambian a la constante del producto en el siguiente render y un checker los reportara hasta que se ejecute.
+4. Escribir primero las pruebas RED: el frontmatter renderizado es la constante sin importar la licencia del repositorio, `check()` ya no requiere el valor, la anulacion sigue funcionando y la referencia corregida ya no nombra metadata de skill generada.
+5. Dejar sin cambios el `.repo-harness/check.py` generado, que compara proyecciones contra copias canonicas y no se ve afectado, y no agregar migracion que reescriba un manifiesto instalado sin aprobacion.
+
+Decisiones humanas: no queda ninguna. El registro esta `ready` y solo espera autorizacion explicita de implementacion.
+
+### Plan 12: diseno de reporte de estado del repositorio RH-W-0060
+
+Preparacion `plannable now`. Prioridad `P3`, sin dependencias. Registrado fuera del orden aprobado.
+
+1. Para el hallazgo `C12`, decidir que debe listar una revision de estado del repositorio y especificar que una rama fusionada se resuelve por verificacion de ascendencia contra la punta local y la remota, nunca por nombre ni fecha.
+2. Para el hallazgo `C11`, especificar una comparacion contra el blob commiteado antes de que una clasificacion de staging reporte una ruta como modificada en contenido, porque `core.autocrlf` es `true` en este clon mientras `.gitattributes` fija `eol=lf`.
+3. Decidir, por clausula, si la obligacion pertenece a las skills generadas de sesion o solo a los acuerdos de trabajo de este repositorio.
+4. Nombrar las pruebas RED, una por clausula.
+
+Decision humana: contrato generado o acuerdo local, decidido por separado para cada una de las dos clausulas.
+
+### Plan 13: identidad de copia distribuida offline RH-W-0062
+
+Preparacion `plannable after RH-W-0055`. Prioridad `P2`. No se produce artefacto separado antes de que ese diseno responda si existe una identidad offline viable mas alla de la frescura del manifiesto y los digests de release publicados. Si no existe, el resultado honesto es cerrar esta unidad como sin residuo en vez de disenar alrededor de ella.
+
+Decision humana: si la identidad offline aporta evidencia suficiente para justificar un diseno.
+
+### Plan 14: diseno de evidencia de investigacion y referencias durables RH-W-0065
+
+Preparacion `plannable now`. Prioridad `P2`. Registrado fuera del orden aprobado.
+
+1. Decidir primero si se crea un duenio de referencias, ya que se prefiere un documento tematico de investigacion siempre que encaje.
+2. Definir el esquema de campos: URL, fecha, titulo, proposito, procedencia, estado, ultima verificacion, documento duenio y notas.
+3. Definir deduplicacion, rechazo de URLs sensibles, archivado, localizacion y cadencia de revalidacion.
+4. Definir el limite exacto de verificacion de relaciones con RH-W-0022 sin fusionar las dos unidades.
+5. Definir la regla de reporte para fuentes localizadas pero no leidas, con una razon acotada como autenticacion, fallo de transporte, contenido incompleto o evidencia solo de fragmento.
+
+Decision humana: si existe un archivo duenio de referencias.
+
+### Plan 15: diseno de enrutamiento de recordar y anotar RH-W-0066
+
+Preparacion `plannable now`. Prioridad `P2`. Registrado fuera del orden aprobado.
+
+1. Definir la clasificacion de una peticion explicita de recordar o anotar, prefiriendo un duenio canonico existente sobre cualquier almacen nuevo.
+2. Definir deduplicacion o refuerzo cuando el mismo hecho ya esta registrado.
+3. Definir limites de privacidad y manejo de conflictos.
+4. Definir la persistencia rastreada y el limite del espejo Engram, manteniendo a Engram como continuidad y nunca como autoridad.
+5. Definir la propiedad localizada y el limite de pregunta explicita antes de promover algo a comportamiento generado del builder.
+
+Decision humana: si alguna parte se convierte en comportamiento generado del builder en vez de una convencion solo del proyecto.
+
+### Plan 16: presupuestos de contexto medidos RH-W-0013
+
+Preparacion `plannable now`. El registro paso de `deferred` a `proposed` el 2026-08-24 porque la medicion que nombraba su condicion de aplazamiento se tomo y se disparo. Ocupa el segundo lugar del orden aprobado, delante del Plan 17, que no puede colocar una fila de gate hasta que este registro decida el margen.
+
+Medido el 2026-08-24 con el propio proxy del registro, `wc -w` por 1.33: `REPO-HARNESS.md` tiene 526 palabras, o 700 tokens estimados, contra un presupuesto que exige quedarse por debajo de 700, lo que deja cerca de una palabra de margen. `REPO-HARNESS.es.md` marca 475. Las tres skills diarias generadas no tienen presupuesto alguno y miden 2954, 2899 y 1120 tokens estimados para inicio de sesion, cierre de sesion y documentacion. Los dos archivos de reglas miden 344 y 317 contra su propio presupuesto de 700 tokens.
+
+Si el propietario avanza el registro, el plan es:
+
+1. Adoptar los tramos que la copia local `references/gentle-ai-style-guide.md` ya declara en vez de inventar numeros: objetivo de 180 a 450 tokens de cuerpo, maximo recomendado 700, maximo duro 1000. Resolver primero la unica discrepancia abierta, porque el propietario declaro el maximo duro como 1200 el 2026-08-24 mientras la copia local y el documento original dicen 1000.
+2. Decidir que superficies siempre cargadas reciben un presupuesto medido, dado que las dos mas grandes no tienen ninguno. El inicio de sesion generado con 2954 y el cierre con 2899 tokens estimados superan incluso el maximo duro por cerca de tres veces, asi que un presupuesto por si solo las reprobaria en vez de arreglarlas.
+3. Aplicar revelacion progresiva en vez de borrado, que es el mecanismo que prescribe la guia y que este producto ya posee: la skill del builder lleva seis archivos bajo `references/` y las tres skills diarias generadas llevan cero. Mover el detalle conceptual afuera es lo que baja un contrato bajo presupuesto sin perder una obligacion.
+4. Decidir el comportamiento de advertencia cuando una superficie se acerca a su limite, en vez de solo fallar al alcanzarlo.
+5. Agregar pruebas de limite, siguiendo el precedente de RH-W-0039 de que un numero documentado que nadie compara queda obsoleto.
+
+Decision humana: que superficies ganan presupuesto, lo que pertenece al diseno escrito de este registro. El propietario delego el criterio tecnico el 2026-08-24 y el registro ya avanzo fuera de `deferred`.
+
+### Plan 17: ubicacion del contrato de forma de respuesta RH-W-0067
+
+Preparacion `plannable after RH-W-0013`. Prioridad `P2`, dependencias: la completada `RH-W-0058` posee la obligacion, y la propuesta `RH-W-0013` debe decidir primero el margen del reglamento que consume esta unidad. Ocupa el tercer lugar del orden aprobado, inmediatamente despues de `RH-W-0013`. Siguiente artefacto: un documento de diseno y su par en espanol.
+
+1. Decidir el archivo de reglas duenio. La evidencia favorece un unico `.repo-harness/rules/response-contract.md` generado, siguiendo al consumidor `consumidor 3`, sobre duplicar la sintaxis en `REPO-HARNESS.md`, que la decision de `RH-W-0058` ya declino.
+2. Escribir la fila de gate que enruta cualquier respuesta que lleve una pregunta, una aprobacion o un siguiente paso, para que el contrato sea alcanzable desde el reglamento siempre cargado en cualquier turno y no solo mientras corre una skill diaria.
+3. Decidir exactamente que conserva cada uno de los tres contratos diarios. Deberian quedarse con la obligacion y apuntar al archivo de reglas, para que la sintaxis tenga un solo duenio y nunca se duplique.
+4. Trasladar las dos cosas que tiene el archivo del consumidor y le faltan a este producto: ejemplos literales de delimitadores dentro de bloques cercados, y la trampa de encabezado setext de Markdown, donde una linea de `=` directamente debajo de un parrafo lo convierte en titulo y borra el delimitador de la respuesta renderizada. La prosa sola ya produjo el fallo observado.
+5. Especificar un largo exacto de delimitador en vez de la frase abierta actual `una linea de`. El propietario confirmo el 2026-08-24 que los bloques se conservan de forma deliberada por visibilidad, y un conteo fijo es lo que hace que un bloque se vea igual al siguiente en vez de variar por respuesta. Elegir un unico numero para ambos caracteres, verificarlo contra la superficie mas angosta que este producto apunta en vez de suponer una terminal ancha, y declararlo como conteo exacto para que una prueba de contrato pueda compararlo.
+6. Resolver el choque de presupuesto nombrando las palabras exactas que cede el reglamento. Este reglamento mide 700 tokens estimados con 12 filas de gate y no tiene margen, mientras que el de `consumidor 3` mide 633 con 10, asi que su propia fila entra donde la nuestra no. Nunca subir un presupuesto.
+7. Mantener el archivo nuevo dentro del presupuesto de 700 tokens de una regla. El archivo del consumidor mide 883 y mezcla continuidad de sesion que ya poseen las dos skills de sesion, asi que es referencia y no importacion.
+8. Nombrar las pruebas RED: la fila de gate existe, el archivo de reglas se genera con procedencia del builder, los tres contratos diarios no duplican la sintaxis, el archivo lleva ambos ejemplos de delimitador al largo exacto especificado y ambos archivos quedan dentro de sus presupuestos.
+
+Decision humana: que palabras salen de `REPO-HARNESS.md` para hacer lugar a la fila de gate, a partir del resultado completado de `RH-W-0013`.
+
+### Todavia no planificables
+
+Estos registros tienen una condicion de avance no cumplida, asi que ningun artefacto puede producirse sin inventar la evidencia que esa condicion exige.
+
+- `RH-W-0012` seguridad de investigacion externa, `P2`, `deferred`. Su condicion nombraba a RH-W-0011, que se completo el 2026-08-24 con cinco disposiciones `close` y `next_decision: none`, sin identificar ninguna pregunta que requiera investigacion externa de fuente primaria. La condicion se evaluo y no se disparo, asi que el registro corregido espera ahora una necesidad concreta futura de investigacion.
+- `RH-W-0014` capacidad de contribucion del consumidor, `P3`, `deferred`. Requiere un caso real de consumidor y capacidades de proveedor verificadas, y ninguna esta registrada.
+- `RH-W-0015` formas de integracion, `P3`, `deferred`. Requiere evidencia medida de RH-W-0010, RH-W-0012, RH-W-0013 y RH-W-0014. Solo RH-W-0010 esta completado.
+- `RH-W-0026` integracion opcional con CodeGraph, `P3`, `deferred`. Requiere aprobacion explicita del propietario para investigar mas una revision de fuente primaria que este repositorio no ha hecho.
+- `RH-W-0063` pase de presentacion de mensajes, `P3`, `deferred`. Solo avanza si el propietario lo pide, y entonces solo tras una propuesta escrita que nombre las formas exactas, sus superficies y la evidencia de renderizado multiplataforma.
+
+### Revision de coherencia de los planes
+
+Revisado el 2026-08-24 sobre los 17 planes y los 22 registros no terminales que cubren.
+
+La cobertura es completa y ningun plan contradice a otro. Cada registro no terminal tiene exactamente un plan duenio, con dos excepciones deliberadas: `RH-W-0051` lleva un plan de diseno y un plan de implementacion separado, y `RH-W-0046` junto con `RH-W-0018` comparten un unico plan de diseno conjunto mientras conservan implementaciones, estados y condiciones de avance separados. Los cinco registros de la lista de no planificables quedan cubiertos alli y no por un plan.
+
+Aqui se declaran cinco relaciones entre planes para que ninguno suponga en silencio el resultado de otro. Ninguna fusiona un ciclo de vida y ninguna cambia un estado.
+
+1. El Plan 17 y el Plan 16 comparten el presupuesto del reglamento, no el alcance. El Plan 16 corre primero y decide que superficies ganan un presupuesto que hoy no tienen. El Plan 17 lee despues ese resultado y cede las palabras exactas necesarias para que el presupuesto existente de 700 tokens del reglamento siga cumpliendose al agregar una fila de gate.
+2. Ahora el Plan 4 muta solo el conjunto de campos del manifiesto y el Plan 11 ya no. `.repo-harness/check.py` exige igualdad exacta del conjunto de campos en la linea 79 con `set(manifest) != MANIFEST_FIELDS`, y un manifiesto y un checker modificados deben moverse como un unico par consistente, asi que cualquier unidad futura que agregue un campo hereda esa restriccion. Esta entrada se registro el 2026-08-24 como choque entre dos unidades y se corrigio el mismo dia: la decision de licencia del propietario disolvio el campo de manifiesto de `RH-W-0061`, lo que la saco por completo de esa restriccion. Lo que sobrevive entre ambos planes es mas suave y sigue valiendo la secuencia: ambos cambian lo que `check()` recibe como entrada, asi que aterrizar el Plan 11 primero le ahorra al Plan 4 un cambio de firma a mitad del diseno.
+3. El Plan 17 y el Plan 12 editan ambos los tres contratos diarios generados. El Plan 17 les quita la sintaxis de forma de respuesta y el Plan 12 puede agregarles el listado de ramas y la comparacion contra el blob commiteado. Ninguno bloquea al otro, pero no deben implementarse en paralelo, porque ambos reescriben los mismos archivos canonicos y ambos exigen despues que el renderizador de mantenimiento sincronice cada proyeccion de runtime.
+4. El Plan 17 no depende del Plan 1, aunque ambos nombren rutas bajo `.repo-harness/`. `.repo-harness/rules/` es contenido generado y autoritativo con procedencia del builder, mientras que `RH-W-0051` solo posee los namespaces `tmp` y `archive`, no autoritativos e ignorados por Git. El Plan 17 no queda bloqueado por la cadena de estado local.
+5. El Plan 15 mantiene el limite que su propio registro ya declara. `RH-W-0066` se relaciona con `RH-W-0044` para futuras sugerencias sobre documentos de propiedad humana sin absorber su alcance de comparar y sugerir, asi que el Plan 15 enruta una peticion de recordar hacia un duenio existente y nunca propone editar un documento de propiedad humana, lo que sigue siendo alcance del Plan 7. El Plan 14 sostiene el mismo tipo de limite con el Plan 8 y lo declara en su propio paso 4.
+
+Tres planes consumen el namespace que reserva el Plan 1: el Plan 3 para los bytes de checkpoint, el Plan 6 para el almacen de consentimiento o preferencia y el Plan 10 para el registro de violaciones. El Plan 1 los reserva a los tres por nombre sin implementar ninguno, asi que la reserva sigue siendo una unica decision y no tres decisiones en competencia.
+
 ## Registros activos
 
 <!-- doc-role:active-records -->
+
+### RH-W-0067
+
+Origen: observacion del propietario del 2026-08-24, despues de que el agente dibujara dos veces como tres guiones el delimitador de visibilidad `=` y `+` aun con el contrato cargado. Prioridad: `P2`, una obligacion que rige cada respuesta vive solo en archivos cargados por una skill diaria, y `check.py` no puede detectar una regla de prosa sobre salida. Dependencias: la completada `RH-W-0058` posee la obligacion y su sintaxis; la propuesta `RH-W-0013` corre primero y decide el margen del reglamento, que hoy no admite la fila de gate necesaria. Estado: `proposed`. Trabajo completado: se midio la ubicacion. La sintaxis aparece solo en los tres contratos diarios `SKILL.md` y en su fuente, pruebas y proyecciones; `REPO-HARNESS.md` y `.repo-harness/rules/` tienen cero ocurrencias. La inspeccion de solo lectura autorizada de `consumidor 3` encontro una solucion manual sobre el generador `3.0`: `.repo-harness/rules/response-contract.md`, su fila de gate, ejemplos literales de delimitadores y la advertencia sobre encabezados setext de Markdown. Trabajo restante: despues de que cierre `RH-W-0013`, disenar la ubicacion, decidir que conserva cada contrato diario, nombrar las palabras exactas que salen del reglamento y luego implementar con pruebas primero, reconciliando superficies canonicas, localizadas y de runtime. Adiciones: un archivo de reglas generado que posea el contrato completo, con ejemplos literales, advertencia setext, longitud exacta de delimitador y una fila de gate en el reglamento siempre cargado. Exclusiones: ninguna obligacion nueva, contenido duplicado de continuidad de sesion, importacion literal del archivo del consumidor, aumento de presupuesto ni tercer contrato de salida. Aplazamientos: ninguno. Rechazos: se conservaron los bloques visibles; se rechazo dejar la sintaxis solo en contratos diarios y duplicarla completa en `REPO-HARNESS.md`. Evidencia: las busquedas, la inspeccion autorizada, las mediciones de 700 tokens estimados para este reglamento y 633 para el de `consumidor 3`, y los dos fallos observados estan verificadas. Decision humana: que palabras salen del reglamento despues de que `RH-W-0013` decida el margen. Historial: registrada como `proposed` el 2026-08-24 con instruccion de planificar y no actuar; la revision autorizada del orden la coloco tercera, despues de `RH-W-0013`, sin cambiar el estado. Siguiente condicion: despues de que cierre `RH-W-0013`, avanzar con un diseno escrito que nombre el archivo duenio, la fila de gate, lo que conserva cada contrato diario y las palabras exactas que cede el reglamento, con pruebas enfocadas que fallen antes de implementar.
 
 ### RH-W-0066
 
@@ -76,13 +355,11 @@ Origen: item 8 de la lista de pendientes del traspaso de arranque del 2026-08-12
 
 ### RH-W-0062
 
-Actualizacion vigente del 2026-08-23: `RH-W-0010` completada ya posee la frescura del manifest instalado contra el builder en ejecucion. Esta unidad queda `proposed` solo para la identidad offline de una copia distribuida o release, coordinada con `RH-W-0055`, sin duplicar checker, red, publicacion ni telemetria. Avanza solo si el diseno de onboarding demuestra evidencia adicional a la version del manifest y al digest publicado; de lo contrario se cierra sin residuo. La redaccion original siguiente se conserva como historia de la premisa ya estrechada.
-
-Origen: item 7 y la brecha abierta del traspaso de arranque del 2026-08-12, recuperados el 2026-08-23 al archivar ese documento. Se escribio antes de la separacion y nunca llego a esta hoja de ruta. Prioridad: `P2`, un repositorio consumidor puede invocar una copia instalada del builder que no es la version que cree tener, y nada se lo informa. Ningun dato corre riesgo, pero toda garantia sobre la que razona el consumidor la garantiza una version que no puede confirmar. Dependencias: ninguna declarada. Se relaciona con `RH-W-0057`, que posee un punto ciego distinto del mismo verificador, y ambas deberian disenarse juntas si se calendarizan las dos. Estado: `proposed`. Trabajo completado: se recupero la brecha y se replanteo dentro del limite de este repositorio, sin inspeccionar ni nombrar ningun consumidor. El texto original medía la brecha en otro espacio de trabajo; ese encuadre se descarta porque este repositorio no agenda trabajo dentro de un consumidor. La pregunta del lado del producto sobrevive: el canonico ahora vive aca, una copia instalada vive donde el consumidor la puso, y ningun mecanismo informa la distancia entre ambos. Trabajo restante: disenar como un repositorio que instalo el builder detecta que su copia esta obsoleta frente al canonico. Decidir que identidad lleva una copia, donde corre la comparacion, que informa, y si es una capacidad del builder, del verificador generado o del artefacto de release. El verificador generado no puede ser la respuesta completa por si solo: compara proyecciones contra copias canonicas dentro del repositorio donde corre, y un consumidor no tiene builder canonico contra el cual comparar. Adiciones: una senal de obsolescencia para una copia instalada del builder, propiedad de este producto. Exclusiones: sin modificar ningun repositorio consumidor, sin inspeccionarlo, sin agendar trabajo dentro de el, sin dependencia de red y sin telemetria. Instalar y correr un release sigue siendo accion del propietario. Aplazamientos: ninguno. Rechazos: se rechazo extender el verificador generado sin un diseno, porque informa sobre las proyecciones del harness del propio repositorio y en un consumidor no tiene builder canonico contra el cual comparar. Evidencia: hechos verificados, el traspaso archivado registra la brecha y ningun registro de la hoja de ruta la cubria antes del 2026-08-23; `.repo-harness/check.py` compara solo rutas declaradas en el manifest instalado. Decision humana: si la senal pertenece al builder, al verificador generado o al release. Historial: registrado como propuesto el 2026-08-23 al archivar el traspaso de arranque, replanteado dentro del limite de este repositorio. Se registro fuera del orden de ejecucion aprobado el 2026-08-21 y su calendarizacion sigue siendo decision del propietario. Siguiente condicion: avanzar despues de un diseno escrito que fije la identidad de la copia, el lugar de la comparacion, el resultado informado y la superficie propietaria, con pruebas enfocadas que fallen antes de implementar.
+Origen: item 7 y brecha abierta del traspaso de arranque del 2026-08-12, recuperados el 2026-08-23 al archivar ese documento. Prioridad: `P2`, una copia distribuida offline puede carecer de una identidad confiable que la vincule con un artefacto de release; la completada `RH-W-0010` ya informa la frescura del manifiesto instalado frente al builder en ejecucion. Dependencias: coordinar con `RH-W-0055`, que posee el nombre estable futuro de los assets de release y el onboarding de instalacion; reutilizar `RH-W-0010` sin duplicar su senal de frescura. Estado: `proposed`. Trabajo completado: se recupero la brecha original y se estrecho contra el comportamiento actual. `RH-W-0010` ya informa `fresh`, `stale`, `ahead`, `absent` o `unverifiable` al comparar el manifiesto instalado con el builder en ejecucion. El residuo distinto es offline: si los bytes distribuidos pueden identificar el artefacto de release del que provienen antes de disponer de un builder confiable. Trabajo restante: disenar solo la identidad offline de la copia distribuida, como se verifica sin red y como la nombra el onboarding, coordinada con `RH-W-0055`. Adiciones: un contrato de identidad offline de release o copia distribuida, solo si el diseno demuestra que aporta evidencia adicional a la version del generador del manifiesto y al digest publicado. Exclusiones: sin duplicar la frescura del manifiesto instalado, sin capacidad nueva del checker generado, modificacion o inspeccion de consumidores, dependencia de red, telemetria, publicacion ni accion de release. Aplazamientos: ninguno. Rechazos: se rechazo la premisa obsoleta de que no existe ninguna senal de frescura y se rechazo extender el checker generado; `RH-W-0010` posee la frescura instalada frente al builder en ejecucion. Evidencia: `package_freshness()` y `check()` informan el generador instalado frente al builder en ejecucion; la cronologia de releases registra assets y digests, mientras `RH-W-0055` registra que no existe un contrato estable futuro de nombre y onboarding. Decision humana: si la identidad offline aporta evidencia suficiente para justificar un diseno. Historial: registrada como `proposed` el 2026-08-23 al archivar el traspaso; ese mismo dia se estrecho a identidad offline de copia distribuida o release, coordinada con `RH-W-0055`, sin avanzar ni implementar ninguna unidad. Siguiente condicion: avanzar solo si el diseno de `RH-W-0055` nombra una identidad offline viable que no este ya cubierta por la frescura del manifiesto o un digest de release existente; de lo contrario cerrar esta unidad sin residuo.
 
 ### RH-W-0061
 
-Origen: encontrada el 2026-08-23 durante una revision completa de solo lectura del repositorio, al correr el check propietario con todos los valores que el manifest registra y obtener `drift`. Prioridad: `P2`, ningun estado corre riesgo y el verificador generado no se ve afectado, pero un check que informa nueve archivos correctos como `stale` ensena a desconfiar de el, y el remedio obvio es sobrescribir nueve archivos que ya estaban bien. Dependencias: ninguna. Estado: `proposed`. Trabajo completado: el defecto se midio, no se infirio. `.repo-harness/manifest.json` registra `schemaVersion`, `generator`, `project`, `runtimes`, `canonicalSkills`, `writeSemantics`, `integrationMode` y `language`, y ninguna licencia. `check()` resuelve `documentation_languages, conversation_language = declared_languages(root)` desde ese manifest, y su propio docstring declara que el harness instalado declara sus propios idiomas, de modo que se descubren en vez de volver a suministrarse, y que verificar nunca debe contradecir lo que el repositorio registro. El mismo razonamiento aplica a la licencia y no esta implementado: `check()` toma `license_id` de quien la llama con un respaldo `DEFAULT_LICENSE` de `UNLICENSED`. Un diff en memoria de la salida del render contra el disco probo que la unica diferencia en los nueve archivos informados es la linea de licencia del frontmatter, `MIT` en disco contra `UNLICENSED` renderizado. Agregar `--license MIT` devuelve `current` con 21 `current`, 18 `human-evolved`, 4 `present` y 0 obsoletas. Trabajo restante: decidir si el manifest gana un campo de licencia, si `check()` la descubre como descubre los idiomas, y que debe informar un harness instalado sin licencia registrada, ya que las instalaciones existentes no la tienen. Despues implementar con pruebas primero y reconciliar manifest y checker como el par consistente que ya son. Adiciones: un hecho de licencia registrado y su descubrimiento en la ruta del check, para que una invocacion que coincide con el manifest reproduzca el harness instalado. Exclusiones: sin cambios en el `.repo-harness/check.py` generado, que compara proyecciones contra las copias canonicas y no se ve afectado; sin cambios en lo que `render` acepta; sin esquema de manifest nuevo mas alla del unico hecho; y sin migracion que reescriba un manifest instalado sin aprobacion. Aplazamientos: ninguno. Rechazos: se rechazo documentar el rodeo en vez de arreglarlo. Un check cuya invocacion correcta depende de un valor que el repositorio se nego a registrar es un check que solo su autor puede correr. Evidencia: hechos verificados, el contenido del manifest, la firma de `check()` y su descubrimiento de idiomas, las nueve entradas `stale`, el diff de una sola linea y el resultado `current` una vez suministrada la licencia. Decision humana: el comportamiento de reporte para un harness instalado que no registro licencia. Historial: registrada como propuesta desde una revision completa del repositorio, en la misma unidad de trabajo que entrego `RH-W-0058`. Se registro fuera del orden de ejecucion aprobado el 2026-08-21 y su calendarizacion sigue siendo decision del propietario. Distinta de `RH-W-0057`, que posee un punto ciego donde un wrapper borrado es invisible; esta es un falso positivo sobre archivos que estan correctos. Siguiente condicion: avanzar despues de una decision escrita que fije el campo registrado, la ruta de descubrimiento y el comportamiento para un manifest sin licencia, con pruebas enfocadas que fallen antes de implementar.
+Origen: encontrada el 2026-08-23 durante una revision completa de solo lectura, al correr el check propietario con todos los valores que registra el manifiesto y obtener `drift`. Prioridad: `P2`, nueve archivos correctos reportados como `stale` erosionan la confianza y sugieren sobrescribir bytes que ya estaban bien. Dependencias: ninguna. Estado: `ready`. Trabajo completado: se midio el defecto y el propietario resolvio la decision el 2026-08-24 al separar la licencia del repositorio de la licencia del harness. Una skill generada es salida de este producto y lleva la licencia constante de este producto, nunca la eleccion de licencia del repositorio consumidor. El manifiesto no necesita un campo de licencia ni `check()` una ruta de descubrimiento. Trabajo restante: convertir la licencia de la skill generada en una constante del producto, quitar de `references/license-selection.md` la frase que filtra la eleccion del repositorio hacia la metadata generada y dejar de pasar a `check()` un valor que no puede verificar. Mantener `--license` como anulacion explicita, implementar con pruebas primero y declarar la consecuencia de migracion para skills generadas antes con `UNLICENSED`. Adiciones: una constante de producto para la licencia de las skills generadas. Exclusiones: sin cambios en `.repo-harness/check.py`, en lo que acepta `render`, en el esquema del manifiesto ni migracion que reescriba un manifiesto instalado sin aprobacion. Aplazamientos: ninguno. Rechazos: se rechazo documentar el rodeo y se rechazaron el campo de manifiesto, el descubrimiento y el reporte sin licencia, porque la decision del propietario disolvio esos alcances. Evidencia: el manifiesto, la firma de `check()`, las nueve entradas `stale`, el diff de una linea y el resultado `current` con licencia explicita estan verificados. La referencia entregada acopla incorrectamente la licencia generada con la eleccion del repositorio. En el consumidor real `consumidor 3`, medido en solo lectura, las tres skills generadas llevan `UNLICENSED` aunque el repositorio no tiene archivo `LICENSE`, lo que demuestra el acoplamiento. Historial: registrada como `proposed` el 2026-08-23; el 2026-08-24 el propietario separo ambas licencias y el registro avanzo a `ready`, sin cambiar ningun otro estado. Distinta de `RH-W-0057`, que posee un punto ciego ante wrappers borrados. Siguiente condicion: `ready`; la implementacion comienza solo con autorizacion explicita y pruebas primero.
 
 ### RH-W-0060
 
@@ -185,7 +462,7 @@ Origen: la misma actualizacion del consumidor ejecutada por el propietario, el a
 
 Actualizacion vigente: `RH-W-0039` esta completada y el prerrequisito esta satisfecho. Solo quedan el diseno y avance del residuo no mecanizable.
 
-Origen: propuesta del propietario tras tres violaciones de regla en una sola sesion, mostrar las reglas que de verdad se olvidan en lugar del rulebook completo. Prioridad: `P3`, atiende solo el residuo que deja RH-W-0039 y su fuente de evidencia depende de personas, por lo que no puede tratarse como un detector. Dependencias: RH-W-0039, aqui solo entran las reglas demostradamente no mecanizables y ese conjunto se desconoce hasta que existan las comprobaciones. Estado: `proposed`. Trabajo completado: se establecio la contraevidencia que acota esta unidad. `REPO-HARNESS.md:22` se inyecta en el contexto del agente en cada turno y estuvo presente durante toda la sesion en que se violo tres veces, de modo que mostrar reglas antes es insuficiente por si solo y esta unidad no debe plantearse como un lector de reglas. Trabajo restante: disenar que contiene un registro de violacion, donde vive, quien lo escribe y como lo consume el inicio de sesion sin convertirse en otro muro de texto ignorado. Adiciones: un registro acotado de reglas no mecanizables violadas de forma repetida y una ruta de inicio de sesion que muestre solo las reincidentes. Exclusiones: sin releer el rulebook completo al iniciar, sin duplicar reglas que ya aplica una comprobacion, sin afirmar deteccion automatica de violaciones y sin nueva maquina de estados ni tercera autoridad. Aplazamientos: ninguno. Rechazos: se rechazo plantearlo como lector de reglas previo a la sesion, porque la regla violada ya estaba en contexto. Se rechazo presentarlo como deteccion automatica: solo puede registrar violaciones que una persona o una comprobacion posterior noto, asi que un registro vacio nunca demuestra cumplimiento. Evidencia: en una sola sesion la regla de clasificacion de afirmaciones se violo tres veces estando cargada, una inferencia sobre cobertura de pruebas presentada como hecho, una correccion que tambien resulto equivocada, y un conteo de suite rancio introducido mientras se corregian conteos rancios. Una cuarta instancia se midio el 2026-08-20 y tiene una forma mas nitida que las tres primeras. Revisando el plan del consumidor, un grep estrecho de cinco frases exactas no devolvio nada, y ese resultado nulo se le reporto al propietario como el hecho verificado de que el contrato del constructor no lleva ninguna obligacion de evidencia. Un grep mas amplio encontro despues la obligacion en esos mismos archivos, en `references/audit-and-interview.md:7`, `Report uncertainty and the exact missing evidence instead of guessing`. La regla estuvo cargada todo el tiempo y no se omitio; se aplico mal, porque un sondeo sin validar se etiqueto como `verified fact` en lugar de la inferencia debil de una sola fuente que era. La disciplina que lo habria atrapado tiene nombre, control positivo: un resultado de busqueda nulo sostiene una afirmacion negativa solo despues de mostrar que esa misma busqueda devuelve un positivo sobre una cadena que se sabe presente. Se registra aqui porque es el mismo fallo que la corrida bajo revision habia cometido sobre un `LICENSE` de raiz, lo que la vuelve la evidencia mas clara hasta ahora de que este residuo trata de como se clasifica una afirmacion y no de que reglas estan visibles. Historial: el 2026-08-18 se registro como `proposed` bajo el issue #65 a partir de una propuesta del propietario, acotada deliberadamente al residuo no mecanizable despues de que la contraevidencia mostrara que un lector de reglas no habria evitado ninguno de los fallos observados. Siguiente condicion: avanzar solo despues de que RH-W-0039 aterrice y se conozcan las reglas violadas que resulten no mecanizables, para que esta unidad cubra un residuo medido y no una suposicion.
+Origen: propuesta del propietario tras tres violaciones de regla en una sola sesion, mostrar las reglas que de verdad se olvidan en lugar del rulebook completo. Prioridad: `P3`, atiende solo el residuo que deja RH-W-0039 y su fuente de evidencia depende de personas, por lo que no puede tratarse como un detector. Dependencias: RH-W-0039, aqui solo entran las reglas demostradamente no mecanizables y ese conjunto se desconoce hasta que existan las comprobaciones. Estado: `proposed`. Trabajo completado: se establecio la contraevidencia que acota esta unidad. `REPO-HARNESS.md:22` se inyecta en el contexto del agente en cada turno y estuvo presente durante toda la sesion en que se violo tres veces, de modo que mostrar reglas antes es insuficiente por si solo y esta unidad no debe plantearse como un lector de reglas. Trabajo restante: disenar que contiene un registro de violacion, donde vive, quien lo escribe y como lo consume el inicio de sesion sin convertirse en otro muro de texto ignorado. Adiciones: un registro acotado de reglas no mecanizables violadas de forma repetida y una ruta de inicio de sesion que muestre solo las reincidentes. Exclusiones: sin releer el rulebook completo al iniciar, sin duplicar reglas que ya aplica una comprobacion, sin afirmar deteccion automatica de violaciones y sin nueva maquina de estados ni tercera autoridad. Aplazamientos: ninguno. Rechazos: se rechazo plantearlo como lector de reglas previo a la sesion, porque la regla violada ya estaba en contexto. Se rechazo presentarlo como deteccion automatica: solo puede registrar violaciones que una persona o una comprobacion posterior noto, asi que un registro vacio nunca demuestra cumplimiento. Evidencia: en una sola sesion la regla de clasificacion de afirmaciones se violo tres veces estando cargada, una inferencia sobre cobertura de pruebas presentada como hecho, una correccion que tambien resulto equivocada, y un conteo de suite rancio introducido mientras se corregian conteos rancios. Una cuarta instancia se midio el 2026-08-20 y tiene una forma mas nitida que las tres primeras. Revisando el plan del consumidor, un grep estrecho de cinco frases exactas no devolvio nada, y ese resultado nulo se le reporto al propietario como el hecho verificado de que el contrato del constructor no lleva ninguna obligacion de evidencia. Un grep mas amplio encontro despues la obligacion en esos mismos archivos, en `references/audit-and-interview.md:7`, `Report uncertainty and the exact missing evidence instead of guessing`. La regla estuvo cargada todo el tiempo y no se omitio; se aplico mal, porque un sondeo sin validar se etiqueto como `verified fact` en lugar de la inferencia debil de una sola fuente que era. La disciplina que lo habria atrapado tiene nombre, control positivo: un resultado de busqueda nulo sostiene una afirmacion negativa solo despues de mostrar que esa misma busqueda devuelve un positivo sobre una cadena que se sabe presente. Se registra aqui porque es el mismo fallo que la corrida bajo revision habia cometido sobre un `LICENSE` de raiz, lo que la vuelve la evidencia mas clara hasta ahora de que este residuo trata de como se clasifica una afirmacion y no de que reglas estan visibles. Una quinta instancia se midio el 2026-08-24 y corre el residuo mas alla de la clasificacion de afirmaciones: el contrato de visibilidad de `RH-W-0058` estaba cargado y aun asi el agente dibujo el delimitador `=` y `+` como tres guiones, dos veces en la misma conversacion, despues de que el propietario lo corrigiera una vez. Dos propiedades la separan de las cuatro anteriores: es una obligacion de formato y no de evidencia, asi que el residuo no se limita a como se clasifica una afirmacion; y su causa es en parte estructural y no solo de atencion, porque la sintaxis vive solo en los tres contratos diarios, que es el defecto de ubicacion que ahora posee `RH-W-0067`, y esa unidad quita la mitad estructural y deja a este registro solo la mitad atencional. Historial: el 2026-08-18 se registro como `proposed` bajo el issue #65 a partir de una propuesta del propietario, acotada deliberadamente al residuo no mecanizable despues de que la contraevidencia mostrara que un lector de reglas no habria evitado ninguno de los fallos observados. Siguiente condicion: avanzar solo despues de que RH-W-0039 aterrice y se conozcan las reglas violadas que resulten no mecanizables, para que esta unidad cubra un residuo medido y no una suposicion.
 
 ### RH-W-0039
 
@@ -250,7 +527,7 @@ Origen: ocurrencia informada por la persona usuaria durante un cierre en espanol
 
 ### RH-W-0018
 
-Origen: idea solicitada por la persona usuaria para un modo desatendido limitado al mantenimiento interno del harness y su documentacion. Prioridad: `P2`, las preguntas repetidas de aprobacion para tareas de bajo riesgo agregan friccion, pero el contrato interactivo actual sigue siendo seguro y funcional. Dependencias: diseno del consentimiento al inicio de sesion, diseno del almacenamiento de la preferencia por repositorio y pruebas de seguridad enfocadas. El diseno de consentimiento de RH-W-0046 es la ruta esperada hacia ese diseno de almacenamiento, y el namespace reservado por RH-W-0051 es su ubicacion esperada; ninguno de los dos avanza esta unidad por si solo. Estado: `deferred`. Trabajo completado: se registro una sola politica de autonomia con dos alcances de consentimiento; la eleccion normal dura solo la sesion actual y una opcion explicita permite recordarla para ese repositorio hasta que la persona la cambie. Trabajo restante: disenar la pregunta exacta al inicio, el ciclo de vida de la preferencia recordada, las reglas de precedencia y las pruebas que demuestren que las acciones excluidas siguen siendo interactivas. Adicion: al inicio de cada sesion, preguntar si se desea el modo desatendido para mantenimiento interno del harness y documentacion; el comportamiento interactivo actual sigue siendo el predeterminado seguro. Exclusiones: el modo desatendido nunca cubre codigo de producto, Git, commit, push, pull requests, publicacion, secretos, proveedores, acciones destructivas ni decisiones ambiguas. Aplazamiento: hasta aprobar el diseno del ciclo de vida de la preferencia y del limite de seguridad, junto con un plan de pruebas enfocado. Rechazos: se rechazaron la autonomia global o implicita, la activacion silenciosa y cualquier ampliacion fuera del mantenimiento interno del harness y su documentacion. Evidencia: los contratos de sesion actuales son interactivos y todavia no existe un diseno aprobado ni pruebas para una preferencia persistente segura por repositorio. Historial: el 2026-08-14 se registro solo como idea pendiente, conservando el predeterminado interactivo y el contrato de aprobacion vigente. Siguiente condicion: avanzar despues de aprobar un diseno que defina ambos alcances de consentimiento y los cambios de preferencia por repositorio, con pruebas para el predeterminado y cada clase de accion excluida.
+Origen: idea solicitada por la persona usuaria para un modo desatendido limitado al mantenimiento interno del harness y su documentacion. Prioridad: `P2`, las preguntas repetidas de aprobacion para tareas de bajo riesgo agregan friccion, pero el contrato interactivo actual sigue siendo seguro y funcional. Dependencias: diseno del consentimiento al inicio de sesion, diseno del almacenamiento de la preferencia por repositorio y pruebas de seguridad enfocadas. El diseno de consentimiento de RH-W-0046 es la ruta esperada hacia ese diseno de almacenamiento, y el namespace reservado por RH-W-0051 es su ubicacion esperada; ninguno de los dos avanza esta unidad por si solo. Estado: `deferred`. Trabajo completado: se registro una sola politica de autonomia con dos alcances de consentimiento; la eleccion normal dura solo la sesion actual y una opcion explicita permite recordarla para ese repositorio hasta que la persona la cambie. Trabajo restante: disenar la pregunta exacta al inicio, el ciclo de vida de la preferencia recordada, las reglas de precedencia y las pruebas que demuestren que las acciones excluidas siguen siendo interactivas. Adicion: un modo de menos preguntas para mantenimiento interno del harness y su documentacion, activado por una peticion humana explicita en palabras corrientes como `no me preguntes tanto`, juzgada de forma semantica y no desde una lista fija de frases. El predeterminado sigue siendo el comportamiento interactivo actual, y el modo reduce confirmaciones por accion sin eliminar ninguna aprobacion excluida. Exclusiones: el modo desatendido nunca cubre codigo de producto, Git, commit, push, pull requests, publicacion, secretos, proveedores, acciones destructivas ni decisiones ambiguas. Aplazamiento: hasta aprobar el diseno del ciclo de vida de la preferencia y del limite de seguridad, junto con un plan de pruebas enfocado. Rechazos: se rechazaron la autonomia global o implicita, la activacion silenciosa y cualquier ampliacion fuera del mantenimiento interno del harness y su documentacion. Evidencia: los contratos de sesion actuales son interactivos y todavia no existe un diseno aprobado ni pruebas para una preferencia persistente segura por repositorio. Contradiccion verificada en la redaccion previa de este mismo registro, encontrada el 2026-08-24: proponia preguntar al inicio de cada sesion si se desea el modo desatendido, con lo cual el alivio de las preguntas recurrentes llegaba como una pregunta recurrente. Modelo declarado por el propietario el 2026-08-24: el modo se activa cuando la persona lo pide, no se ofrece por calendario. Evidencia viva de la misma sesion: una conversacion larga de planificacion en la que el propietario respondio una lista de siete preguntas, delego cuatro de esas respuestas con `como venga mejor` y despues pidio este modo, es exactamente la friccion que describe este registro. Historial: el 2026-08-14 se registro solo como idea pendiente, conservando el predeterminado interactivo y el contrato de aprobacion vigente. El 2026-08-24 el propietario reformulo la capacidad como un modo que la persona enciende pidiendolo en palabras corrientes, lo que reemplazo la pregunta de inicio de sesion en las adiciones y elimino la autocontradiccion que llevaba. El registro sigue `deferred` porque su condicion de avance es un diseno aprobado y no existe ninguno. Siguiente condicion: avanzar despues de aprobar un diseno que defina la activacion y desactivacion semanticas, ambos alcances de consentimiento, los cambios de preferencia por repositorio y que puede omitir el modo frente a lo que nunca puede omitir, con pruebas para el predeterminado y cada clase de accion excluida.
 
 ### RH-W-0019
 
@@ -320,11 +597,11 @@ Origen: unidad 11, revision historica de `skills-pack-ld9`. Prioridad: `P2`, los
 
 ### RH-W-0012
 
-Origen: unidad 12, investigacion externa segura. Prioridad: `P2`, reproducibilidad sin ejecutar codigo ajeno. Dependencia: RH-W-0011. Estado: `deferred`. Trabajo restante: documentar y probar limites aplicables, y validar enlaces y citas. Completado: fuentes primarias, clones ignorados, licencia, revision, no ejecucion, citas y retencion definidos. Restante: documentar, probar limites y validar enlaces. Adiciones: ninguna. Exclusion: sin dependencia publicada de rutas privadas, ignoradas o locales. Aplazamiento: hasta una necesidad concreta. Rechazos: ninguno. Evidencia: diseno anterior. Historial: capacidad condicional. Siguiente condicion: RH-W-0011 identifica una pregunta externa.
+Origen: unidad 12, investigacion externa segura. Prioridad: `P2`, reproducibilidad sin ejecutar codigo ajeno. Dependencias: ninguna; la completada `RH-W-0011` era el antecedente nombrado y cerro el 2026-08-24 con cinco disposiciones `close` y `next_decision: none`, sin identificar ninguna pregunta que requiera investigacion externa de fuente primaria, asi que la condicion se evaluo y no se disparo. Estado: `deferred`. Trabajo restante: documentar y probar limites aplicables, y validar enlaces y citas. Completado: fuentes primarias, clones ignorados, licencia, revision, no ejecucion, citas y retencion definidos. Restante: documentar, probar limites y validar enlaces. Adiciones: ninguna. Exclusion: sin dependencia publicada de rutas privadas, ignoradas o locales. Aplazamiento: hasta una necesidad concreta. Rechazos: ninguno. Evidencia: diseno anterior. Historial: capacidad condicional. Siguiente condicion: avanzar cuando cualquier unidad de trabajo concreta identifique una pregunta que requiera investigacion externa de fuente primaria; el antecedente `RH-W-0011` ya se completo sin plantear ninguna, asi que este registro ahora espera una necesidad futura y no a esa unidad.
 
 ### RH-W-0013
 
-Origen: unidad 13, presupuesto de contexto. Prioridad: `P2`, contratos cargados siempre necesitan limites medidos. Dependencia: crecimiento medido. Estado: `deferred`. Trabajo restante: agregar presupuestos medidos de habilidad y de contrato operativo, avisos y pruebas de limite. Completado: presupuesto del rulebook y direccion de indices, referencias y revelacion progresiva. Restante: presupuestos medidos para skills y contratos. Adiciones: ninguna. Exclusion: sin limite arbitrario a toda documentacion humana. Aplazamiento: hasta medir friccion. Rechazos: ninguno. Evidencia: solo `REPO-HARNESS.md` tiene proxy de 700 tokens. Historial: medir antes. Siguiente condicion: acercarse a un limite acordado o demostrar friccion.
+Origen: unidad 13, presupuesto de contexto. Prioridad: `P2`, contratos cargados siempre necesitan limites medidos. Dependencias: ninguna; la medicion que este registro esperaba se tomo el 2026-08-24 y la condicion quedo satisfecha. `RH-W-0067` consume su resultado, porque una fila de gate necesita el margen que este registro decide. Estado: `proposed`. Trabajo restante: agregar presupuestos medidos de habilidad y de contrato operativo, avisos y pruebas de limite. Completado: presupuesto del rulebook y direccion de indices, referencias y revelacion progresiva; despues se tomo la medicion pendiente. Adiciones: ninguna. Exclusion: sin limite arbitrario a toda documentacion humana. Aplazamiento: ninguno; la condicion de aplazamiento era observable, se observo y se disparo. Rechazos: se rechazo seguir `deferred` una vez tomada la medicion que el propio registro nombraba, porque un aplazamiento con su condicion cumplida ya no es un aplazamiento. Evidencia: verificado por medicion el 2026-08-24 con el proxy `wc -w` por 1.33 del propio registro: `REPO-HARNESS.md` 526 palabras o 700 tokens estimados, `REPO-HARNESS.es.md` 475, inicio de sesion generado 2954, cierre de sesion 2899, documentacion 1120, y los dos archivos de reglas 344 y 317. Verificado: solo el reglamento y los archivos de reglas declaran presupuesto, asi que las dos superficies siempre cargadas mas grandes no tienen ninguno. Verificado el 2026-08-24 en la copia local `references/gentle-ai-style-guide.md`, cuyos numeros confirmo una lectura del documento original: objetivo de 180 a 450 tokens de cuerpo, maximo recomendado 700, maximo duro 1000, con el detalle conceptual en `references/` y las plantillas en `assets/`. Palanca verificada: la skill del builder ya lleva seis archivos bajo `references/`, mientras las tres skills diarias generadas llevan cero, asi que el mecanismo que prescribe la guia existe en este producto y nunca se aplico a las superficies que estan por encima. Discrepancia reportada y sin resolver: el propietario declaro el maximo duro como 1200 el 2026-08-24 mientras la copia local y el documento original dicen 1000. Decision humana, delegada por el propietario para el criterio tecnico el 2026-08-24: que superficies ganan presupuesto pertenece al diseno escrito de este registro, pero la discrepancia del maximo duro no es criterio tecnico y sigue abierta. Historial: 2026-08-13, medir antes de agregar limites; 2026-08-24, se tomo la medicion en un pase completo de planificacion del portafolio, se cumplio la condicion de avance y el propietario delego el criterio tecnico, asi que el registro paso de `deferred` a `proposed` sin aprobar ningun valor de presupuesto. Siguiente condicion: avanzar tras un diseno escrito que nombre que superficies siempre cargadas ganan presupuesto medido, el comportamiento de aviso antes del limite y no solo al alcanzarlo, y las pruebas de limite, siguiendo el precedente de `RH-W-0039`.
 
 ### RH-W-0014
 
