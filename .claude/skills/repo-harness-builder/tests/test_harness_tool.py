@@ -1,6 +1,7 @@
 import argparse
 import ast
 import importlib.util
+import inspect
 import hashlib
 import json
 import os
@@ -1669,7 +1670,7 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
         installed = TOOL.render_with_skill_mapping(
             project,
             list(runtimes),
-            TOOL.DEFAULT_LICENSE,
+            TOOL.GENERATED_SKILL_LICENSE,
             standalone,
             TOOL.DEFAULT_REPORT_LANGUAGE,
             None,
@@ -2573,6 +2574,51 @@ class CheckTests(unittest.TestCase):
 
             with self.assertRaises(TOOL.ContractError):
                 TOOL.check(root, "Example", [])
+
+
+class GeneratedSkillLicenseTests(unittest.TestCase):
+    def test_generated_skills_use_the_product_license_by_default(self):
+        outputs = TOOL.render("Example", [])
+        generated = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        self.assertIn('license: "MIT"\n', generated)
+
+    def test_render_keeps_an_explicit_license_override(self):
+        outputs = TOOL.render("Example", [], "Apache-2.0")
+        generated = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        self.assertIn('license: "Apache-2.0"\n', generated)
+
+    def test_check_uses_the_product_license_without_a_license_parameter(self):
+        self.assertNotIn("license_id", inspect.signature(TOOL.check).parameters)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root)
+            self.assertEqual(TOOL.check(root, "Example", [])["status"], "current")
+
+    def test_check_cli_does_not_accept_a_license_override(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root)
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    "check",
+                    "--root",
+                    str(root),
+                    "--project-name",
+                    "Example",
+                    "--license",
+                    "Apache-2.0",
+                ],
+                capture_output=True,
+                text=True,
+            )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("unrecognized arguments: --license Apache-2.0", result.stderr)
+
+    def test_repository_license_reference_does_not_set_generated_skill_metadata(self):
+        text = (ROOT / "references" / "license-selection.md").read_text(encoding="utf-8")
+        self.assertNotIn("generated skill metadata", text)
 
 
 class GeneratedCoreTests(unittest.TestCase):
@@ -5438,7 +5484,7 @@ class SurvivingLegacyReferenceTests(unittest.TestCase):
         installed = TOOL.render_with_skill_mapping(
             project,
             list(self.RUNTIMES),
-            TOOL.DEFAULT_LICENSE,
+            TOOL.GENERATED_SKILL_LICENSE,
             True,
             TOOL.DEFAULT_REPORT_LANGUAGE,
             None,

@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-24
 
+- Completed `RH-W-0061` test-first. Generated skills now default to the product's MIT license independently of the consumer repository license, `render --license` remains an explicit override, and `check()` no longer accepts an unverifiable license input. The generated checker and manifest schema are unchanged. Skills previously rendered with `UNLICENSED` change on the next authorized render and report drift until synchronized.
 - Added an action plans section to the roadmap owning one execution plan per non-terminal record, with a coherence review declaring five cross-plan relationships and complete coverage of all 22 records. The section owns no status, priority, or schedule.
 - Registered `RH-W-0067` for the reply-shaping contract placement defect: the `=` and `+` visibility syntax that `RH-W-0058` established lives only in the three daily contracts, with zero occurrences in `REPO-HARNESS.md` and `.repo-harness/rules/`, so an obligation binding every reply is absent from any turn that does not run a daily skill.
 - Revised the execution order to 17 positions after the owner delegated the technical ordering criterion, preserving every still-pending relative position from the 2026-08-21 path and inserting only previously unscheduled units.

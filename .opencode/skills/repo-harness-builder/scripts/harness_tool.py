@@ -49,7 +49,7 @@ POINTER_DIRECTIVES = {
     "CLAUDE.md": "@REPO-HARNESS.md",
     "AGENTS.md": "Read and follow REPO-HARNESS.md before working in this repository.",
 }
-DEFAULT_LICENSE = "UNLICENSED"
+GENERATED_SKILL_LICENSE = "MIT"
 RULEBOOK_TOKEN_BUDGET = 700
 FORBIDDEN_METHODS = ("SDD", "TDD", "RDD", "Fabric", "Azure", "Brain_AI", "Panda")
 DATE_HEADING = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -2369,7 +2369,7 @@ def budgeted(relative: str, rulebook_path: str) -> bool:
 def render(
     project_name: str,
     runtimes: list[str],
-    license_id: str = DEFAULT_LICENSE,
+    license_id: str = GENERATED_SKILL_LICENSE,
     standalone: bool = False,
     report_language: str = DEFAULT_REPORT_LANGUAGE,
     documentation_languages: list[str] | None = None,
@@ -3419,7 +3419,6 @@ def check(
     root: Path,
     project_name: str,
     runtimes: list[str],
-    license_id: str = DEFAULT_LICENSE,
     standalone: bool = False,
 ) -> dict[str, Any]:
     """Compare the repository against a freshly rendered harness and write nothing.
@@ -3441,7 +3440,7 @@ def check(
     expected = render(
         project_name,
         runtimes,
-        license_id,
+        GENERATED_SKILL_LICENSE,
         standalone,
         DEFAULT_REPORT_LANGUAGE,
         documentation_languages,
@@ -3521,11 +3520,10 @@ def upgrade_plan(
     root: Path,
     project_name: str,
     runtimes: list[str],
-    license_id: str = DEFAULT_LICENSE,
     standalone: bool = False,
 ) -> dict[str, Any]:
     """Describe safe upgrade choices without authorizing destructive actions."""
-    report = check(root, project_name, runtimes, license_id, standalone)
+    report = check(root, project_name, runtimes, standalone)
     proposals: list[dict[str, Any]] = []
     for entry in report["files"]:
         state = entry["state"]
@@ -3582,9 +3580,9 @@ def main(argv: Optional[list[str]] = None) -> int:
         child.add_argument("--root", type=Path, required=True)
         child.add_argument("--project-name", required=True)
         child.add_argument("--runtime", action="append", choices=sorted(RUNTIMES), default=[], help="runtime profile; repeat the flag to select several, omit it for the core only")
-        child.add_argument("--license", dest="license_id", default=DEFAULT_LICENSE, help="SPDX identifier for generated skills")
         child.add_argument("--standalone", action="store_true", help="generate repository-only continuity without Gentle AI or Engram")
         if name == "render":
+            child.add_argument("--license", dest="license_id", default=GENERATED_SKILL_LICENSE, help="SPDX identifier for generated skills")
             child.add_argument("--report-language", choices=sorted(APPROVAL_DOMAINS), default=DEFAULT_REPORT_LANGUAGE, help="language for builder approval output; defaults to english")
             child.add_argument("--documentation-language", action="append", dest="documentation_languages", choices=sorted(DOCUMENTATION_LANGUAGES), help="human documentation locale; use es alone for Spanish-only, repeat en then es for bilingual, omit for English-only")
             child.add_argument("--conversation-language", choices=sorted(APPROVAL_DOMAINS), help="language the generated sessions converse in; ask the human, defaults to english")
@@ -3608,7 +3606,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         require(root.is_dir(), "root must be a directory")
         selected = args.runtime or (recorded_runtimes(root) or [])
         if args.command == "check":
-            print(dump_json(check(root, args.project_name, selected, args.license_id, args.standalone)), end="")
+            print(dump_json(check(root, args.project_name, selected, args.standalone)), end="")
             return 0
         if not args.standalone:
             host_evidence = json.loads(args.engram_evidence_json) if args.engram_evidence_json else None

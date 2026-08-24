@@ -24,34 +24,33 @@ Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 
 
 Revisado el 2026-08-24. El propietario delego el criterio tecnico de ordenamiento tras una revision completa del portafolio y de los planes, asi que esta revision esta autorizada por el propietario y guiada por evidencia, no por preferencia. Por si sola no cambia el estado de ninguna unidad, y conserva cada posicion relativa pendiente de la ruta aprobada del 2026-08-21: las unidades ya agendadas mantienen su orden entre si y la revision solo inserta las seis registradas fuera de esa ruta, mas `RH-W-0013`, cuya condicion de aplazamiento se midio y se disparo.
 
-Tres inserciones encabezan, porque cada una esta completamente medida, no tiene dependencia sin cumplir y desbloquea o protege algo detras:
+Dos inserciones encabezan, porque cada una esta completamente medida, no tiene dependencia sin cumplir y desbloquea o protege algo detras:
 
-1. `RH-W-0061`, licencia registrada. Es el unico registro `ready` del portafolio, esta completamente medida, tiene remedio exacto y el alcance mas chico de todas las unidades, y no tiene dependencia sin cumplir. Igual conviene que aterrice antes que `RH-W-0048` porque ambas cambian lo que `check()` recibe como entrada, asi que implementarla primero le ahorra a esa unidad un cambio de firma a mitad del diseno. La razon mas fuerte registrada el 2026-08-24, que ambas mutan el conjunto de campos del manifiesto, ya no aplica: la decision de licencia del propietario ese mismo dia disolvio el campo de manifiesto de esta unidad.
-2. `RH-W-0013`, presupuestos de contexto medidos. Su condicion de aplazamiento se observo el 2026-08-24 y se disparo, y `RH-W-0067` no puede colocar una fila de gate hasta que este registro decida el margen.
-3. `RH-W-0067`, ubicacion del contrato de forma de respuesta. Depende del resultado de presupuesto anterior y repara un defecto observado dos veces en una misma conversacion.
+1. `RH-W-0013`, presupuestos de contexto medidos. Su condicion de aplazamiento se observo el 2026-08-24 y se disparo, y `RH-W-0067` no puede colocar una fila de gate hasta que este registro decida el margen.
+2. `RH-W-0067`, ubicacion del contrato de forma de respuesta. Depende del resultado de presupuesto anterior y repara un defecto observado dos veces en una misma conversacion.
 
 Despues corre sin cambios la arquitectura de estado local:
 
-4. Hacer que `RH-W-0051` lidere la arquitectura conjunta de estado local al definir la taxonomia de estado local y la semantica de propiedad. `RH-W-0048` participa de forma condicional sobre esa semantica. `RH-W-0052` solo puede redactarse de forma condicional y no puede avanzar hasta que `RH-W-0051` y `RH-W-0048` esten probadas y se apruebe la propiedad por manifiesto. Reservar namespace para `RH-W-0053`, `RH-W-0046`, `RH-W-0018` y `RH-W-0040` sin fusionar sus ciclos de vida ni sus limites de implementacion.
-5. Implementar `RH-W-0051`.
-6. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
-7. Implementar `RH-W-0048`.
-8. Implementar `RH-W-0052`.
+3. Hacer que `RH-W-0051` lidere la arquitectura conjunta de estado local al definir la taxonomia de estado local y la semantica de propiedad. `RH-W-0048` participa de forma condicional sobre esa semantica. `RH-W-0052` solo puede redactarse de forma condicional y no puede avanzar hasta que `RH-W-0051` y `RH-W-0048` esten probadas y se apruebe la propiedad por manifiesto. Reservar namespace para `RH-W-0053`, `RH-W-0046`, `RH-W-0018` y `RH-W-0040` sin fusionar sus ciclos de vida ni sus limites de implementacion.
+4. Implementar `RH-W-0051`.
+5. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
+6. Implementar `RH-W-0048`.
+7. Implementar `RH-W-0052`.
 
 Siguen consentimiento y comparacion, sin cambios:
 
-9. Disenar juntas `RH-W-0046` y `RH-W-0018`, con implementaciones separadas.
-10. Continuar con `RH-W-0044`; su antecedente `RH-W-0043` esta satisfecho y solo queda diseno o avance.
-11. Continuar con `RH-W-0022`.
+8. Disenar juntas `RH-W-0046` y `RH-W-0018`, con implementaciones separadas.
+9. Continuar con `RH-W-0044`; su antecedente `RH-W-0043` esta satisfecho y solo queda diseno o avance.
+10. Continuar con `RH-W-0022`.
 
 Onboarding y el residuo restante cierran la ruta:
 
-12. Continuar con `RH-W-0055`.
-13. Luego `RH-W-0062`, que se resuelve contra el diseno de `RH-W-0055` y cierra como sin residuo si ese diseno no encuentra identidad offline viable.
-14. Continuar con `RH-W-0040`; su prerrequisito esta satisfecho y su diseno o avance sigue pendiente.
-15. Luego `RH-W-0060`, colocada despues de `RH-W-0067` porque ambas reescriben los tres contratos diarios generados y no deben implementarse en paralelo.
-16. Luego `RH-W-0065`.
-17. Luego `RH-W-0066`.
+11. Continuar con `RH-W-0055`.
+12. Luego `RH-W-0062`, que se resuelve contra el diseno de `RH-W-0055` y cierra como sin residuo si ese diseno no encuentra identidad offline viable.
+13. Continuar con `RH-W-0040`; su prerrequisito esta satisfecho y su diseno o avance sigue pendiente.
+14. Luego `RH-W-0060`, colocada despues de `RH-W-0067` porque ambas reescriben los tres contratos diarios generados y no deben implementarse en paralelo.
+15. Luego `RH-W-0065`.
+16. Luego `RH-W-0066`.
 
 Los cinco registros de la lista aplazada conservan sus condiciones y no se agendan: `RH-W-0012`, `RH-W-0014`, `RH-W-0015`, `RH-W-0026` y `RH-W-0063`.
 
@@ -217,20 +216,6 @@ Preparacion `plannable now` para el diseno, con el almacenamiento `plannable aft
 
 Decisiones humanas: quien escribe un registro de violacion y si se rastrea en Git.
 
-### Plan 11: licencia registrada y su descubrimiento RH-W-0061
-
-Preparacion `plannable now`, y el registro esta `ready` y no `proposed`: el propietario resolvio su unica decision abierta el 2026-08-24 al separar un repositorio del harness de ese repositorio. Prioridad `P2`, sin dependencias. Encabeza el orden revisado porque es el unico registro `ready`, esta completamente medida y carga el alcance mas chico del portafolio. Igual conviene que aterrice antes del Plan 4, ya que ambos cambian lo que `check()` recibe como entrada, aunque el choque original del conjunto de campos del manifiesto ya no aplica a esta unidad.
-
-La decision colapsa este plan en vez de ramificarlo. La licencia de un repositorio es eleccion del consumidor; una skill generada es salida propia de este producto y lleva la licencia de este producto. Acoplar ambas era el defecto, y una vez desacopladas desaparecen el campo del manifiesto, la ruta de descubrimiento y la pregunta de reporte sin licencia, porque no queda nada que el repositorio deba registrar en nombre de las skills.
-
-1. Convertir la licencia de la skill generada en una constante del producto, para que `check()` deje de tomar un valor que no puede verificar y una invocacion que coincida con el manifiesto reproduzca el harness instalado. Mantener `--license` aceptada como anulacion explicita.
-2. Quitar de `references/license-selection.md` la frase que enruta una licencia de repositorio declinada hacia la metadata de la skill generada. Esa referencia conserva su trabajo real, ayudar al consumidor a elegir licencia para el repositorio, y pierde solo la mitad que filtra esa eleccion hacia archivos que el consumidor no escribio.
-3. Declarar la consecuencia de migracion en vez de descubrirla despues. Medido en solo lectura sobre el consumidor real `consumidor 3`: sus tres skills generadas llevan `license: "UNLICENSED"` mientras el repositorio no tiene archivo `LICENSE`, asi que esos tres archivos cambian a la constante del producto en el siguiente render y un checker los reportara hasta que se ejecute.
-4. Escribir primero las pruebas RED: el frontmatter renderizado es la constante sin importar la licencia del repositorio, `check()` ya no requiere el valor, la anulacion sigue funcionando y la referencia corregida ya no nombra metadata de skill generada.
-5. Dejar sin cambios el `.repo-harness/check.py` generado, que compara proyecciones contra copias canonicas y no se ve afectado, y no agregar migracion que reescriba un manifiesto instalado sin aprobacion.
-
-Decisiones humanas: no queda ninguna. El registro esta `ready` y solo espera autorizacion explicita de implementacion.
-
 ### Plan 12: diseno de reporte de estado del repositorio RH-W-0060
 
 Preparacion `plannable now`. Prioridad `P3`, sin dependencias. Registrado fuera del orden aprobado.
@@ -274,7 +259,7 @@ Decision humana: si alguna parte se convierte en comportamiento generado del bui
 
 ### Plan 16: presupuestos de contexto medidos RH-W-0013
 
-Preparacion `plannable now`. El registro paso de `deferred` a `proposed` el 2026-08-24 porque la medicion que nombraba su condicion de aplazamiento se tomo y se disparo. Ocupa el segundo lugar del orden aprobado, delante del Plan 17, que no puede colocar una fila de gate hasta que este registro decida el margen.
+Preparacion `plannable now`. El registro paso de `deferred` a `proposed` el 2026-08-24 porque la medicion que nombraba su condicion de aplazamiento se tomo y se disparo. Ocupa el primer lugar del orden aprobado, delante del Plan 17, que no puede colocar una fila de gate hasta que este registro decida el margen.
 
 Medido el 2026-08-24 con el propio proxy del registro, `wc -w` por 1.33: `REPO-HARNESS.md` tiene 526 palabras, o 700 tokens estimados, contra un presupuesto que exige quedarse por debajo de 700, lo que deja cerca de una palabra de margen. `REPO-HARNESS.es.md` marca 475. Las tres skills diarias generadas no tienen presupuesto alguno y miden 2954, 2899 y 1120 tokens estimados para inicio de sesion, cierre de sesion y documentacion. Los dos archivos de reglas miden 344 y 317 contra su propio presupuesto de 700 tokens.
 
@@ -290,7 +275,7 @@ Decision humana: que superficies ganan presupuesto, lo que pertenece al diseno e
 
 ### Plan 17: ubicacion del contrato de forma de respuesta RH-W-0067
 
-Preparacion `plannable after RH-W-0013`. Prioridad `P2`, dependencias: la completada `RH-W-0058` posee la obligacion, y la propuesta `RH-W-0013` debe decidir primero el margen del reglamento que consume esta unidad. Ocupa el tercer lugar del orden aprobado, inmediatamente despues de `RH-W-0013`. Siguiente artefacto: un documento de diseno y su par en espanol.
+Preparacion `plannable after RH-W-0013`. Prioridad `P2`, dependencias: la completada `RH-W-0058` posee la obligacion, y la propuesta `RH-W-0013` debe decidir primero el margen del reglamento que consume esta unidad. Ocupa el segundo lugar del orden aprobado, inmediatamente despues de `RH-W-0013`. Siguiente artefacto: un documento de diseno y su par en espanol.
 
 1. Decidir el archivo de reglas duenio. La evidencia favorece un unico `.repo-harness/rules/response-contract.md` generado, siguiendo al consumidor `consumidor 3`, sobre duplicar la sintaxis en `REPO-HARNESS.md`, que la decision de `RH-W-0058` ya declino.
 2. Escribir la fila de gate que enruta cualquier respuesta que lleve una pregunta, una aprobacion o un siguiente paso, para que el contrato sea alcanzable desde el reglamento siempre cargado en cualquier turno y no solo mientras corre una skill diaria.
@@ -315,7 +300,7 @@ Estos registros tienen una condicion de avance no cumplida, asi que ningun artef
 
 ### Revision de coherencia de los planes
 
-Revisado el 2026-08-24 sobre los 17 planes y los 22 registros no terminales que cubren.
+Revisado el 2026-08-24 sobre los 16 planes y los 21 registros no terminales que cubren.
 
 La cobertura es completa y ningun plan contradice a otro. Cada registro no terminal tiene exactamente un plan duenio, con dos excepciones deliberadas: `RH-W-0051` lleva un plan de diseno y un plan de implementacion separado, y `RH-W-0046` junto con `RH-W-0018` comparten un unico plan de diseno conjunto mientras conservan implementaciones, estados y condiciones de avance separados. Los cinco registros de la lista de no planificables quedan cubiertos alli y no por un plan.
 
@@ -359,7 +344,7 @@ Origen: item 7 y brecha abierta del traspaso de arranque del 2026-08-12, recuper
 
 ### RH-W-0061
 
-Origen: encontrada el 2026-08-23 durante una revision completa de solo lectura, al correr el check propietario con todos los valores que registra el manifiesto y obtener `drift`. Prioridad: `P2`, nueve archivos correctos reportados como `stale` erosionan la confianza y sugieren sobrescribir bytes que ya estaban bien. Dependencias: ninguna. Estado: `ready`. Trabajo completado: se midio el defecto y el propietario resolvio la decision el 2026-08-24 al separar la licencia del repositorio de la licencia del harness. Una skill generada es salida de este producto y lleva la licencia constante de este producto, nunca la eleccion de licencia del repositorio consumidor. El manifiesto no necesita un campo de licencia ni `check()` una ruta de descubrimiento. Trabajo restante: convertir la licencia de la skill generada en una constante del producto, quitar de `references/license-selection.md` la frase que filtra la eleccion del repositorio hacia la metadata generada y dejar de pasar a `check()` un valor que no puede verificar. Mantener `--license` como anulacion explicita, implementar con pruebas primero y declarar la consecuencia de migracion para skills generadas antes con `UNLICENSED`. Adiciones: una constante de producto para la licencia de las skills generadas. Exclusiones: sin cambios en `.repo-harness/check.py`, en lo que acepta `render`, en el esquema del manifiesto ni migracion que reescriba un manifiesto instalado sin aprobacion. Aplazamientos: ninguno. Rechazos: se rechazo documentar el rodeo y se rechazaron el campo de manifiesto, el descubrimiento y el reporte sin licencia, porque la decision del propietario disolvio esos alcances. Evidencia: el manifiesto, la firma de `check()`, las nueve entradas `stale`, el diff de una linea y el resultado `current` con licencia explicita estan verificados. La referencia entregada acopla incorrectamente la licencia generada con la eleccion del repositorio. En el consumidor real `consumidor 3`, medido en solo lectura, las tres skills generadas llevan `UNLICENSED` aunque el repositorio no tiene archivo `LICENSE`, lo que demuestra el acoplamiento. Historial: registrada como `proposed` el 2026-08-23; el 2026-08-24 el propietario separo ambas licencias y el registro avanzo a `ready`, sin cambiar ningun otro estado. Distinta de `RH-W-0057`, que posee un punto ciego ante wrappers borrados. Siguiente condicion: `ready`; la implementacion comienza solo con autorizacion explicita y pruebas primero.
+Origen: encontrada el 2026-08-23 durante una revision completa de solo lectura. Prioridad: `P2`. Dependencias: ninguna. Estado: `completed`. Trabajo completado: se implemento con pruebas primero el desacople aprobado. Las skills generadas usan por defecto la constante de producto `MIT`; `render --license` conserva la anulacion explicita; `check()` y su CLI ya no aceptan una licencia que no pueden verificar; y la referencia de licencia del repositorio ya no filtra una eleccion declinada hacia metadata generada. El checker generado y el schema del manifest no cambiaron. Ninguna migracion reescribe manifests instalados. Las skills que antes llevaban `UNLICENSED` cambian a `MIT` en el siguiente render autorizado, y el checker informa deriva hasta sincronizarlas. Trabajo restante: `none`. Adiciones: una constante de producto para la licencia de las skills generadas. Exclusiones: sin cambios en `.repo-harness/check.py`, en el schema del manifest ni migracion automatica. Aplazamientos: ninguno. Rechazos: se rechazo documentar el rodeo o registrar la licencia del repositorio en nombre de las skills. Evidencia: RED ejecuto 5 pruebas enfocadas con 4 fallos esperados; la anulacion explicita ya pasaba. GREEN paso las 5 pruebas enfocadas y la suite canonica paso 437 pruebas con 9 omisiones. La fuente canonica y ambas proyecciones del paquete son identicas byte a byte. Historial: completada el 2026-08-24 por implementacion delegada directa despues de evidencia RED y GREEN. Siguiente condicion: `none`.
 
 ### RH-W-0060
 

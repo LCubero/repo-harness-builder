@@ -24,34 +24,33 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 Revised on 2026-08-24. The owner delegated the technical ordering criterion after a full portfolio and plan review, so this revision is owner-authorized and evidence-driven rather than a preference. It changes no unit status by itself, and it preserves every still-pending relative position from the 2026-08-21 approved path: the previously scheduled units keep their order among themselves and the revision only inserts the six units that were registered outside that path, plus `RH-W-0013`, whose deferral condition was measured and fired.
 
-Three insertions lead, because each is fully measured, has no unmet dependency, and unblocks or protects something behind it:
+Two insertions lead, because each is fully measured, has no unmet dependency, and unblocks or protects something behind it:
 
-1. `RH-W-0061` recorded license. It is the portfolio's only `ready` record, fully measured, with an exact remedy and the smallest scope of any unit here, and it has no unmet dependency. It should still land before `RH-W-0048` because both change what `check()` takes as input, so implementing it first spares that unit a mid-design signature change. The stronger reason recorded on 2026-08-24, that both mutate the manifest field set, no longer applies: the owner's license decision the same day dissolved this unit's manifest field.
-2. `RH-W-0013` measured context budgets. Its deferral condition was observed on 2026-08-24 and fired, and `RH-W-0067` cannot place a gate row until this record decides the headroom.
-3. `RH-W-0067` reply-shaping contract placement. Depends on the budget outcome above and repairs a defect observed twice in one conversation.
+1. `RH-W-0013` measured context budgets. Its deferral condition was observed on 2026-08-24 and fired, and `RH-W-0067` cannot place a gate row until this record decides the headroom.
+2. `RH-W-0067` reply-shaping contract placement. Depends on the budget outcome above and repairs a defect observed twice in one conversation.
 
 The local-state architecture then runs unchanged:
 
-4. Let `RH-W-0051` lead the joint local-state architecture by defining the local-state taxonomy and ownership semantics. `RH-W-0048` participates conditionally on those semantics. `RH-W-0052` may be drafted only conditionally and cannot advance until `RH-W-0051` and `RH-W-0048` are proven and manifest ownership is approved. Reserve namespace for the separate consumers `RH-W-0053`, `RH-W-0046`, `RH-W-0018`, and `RH-W-0040` without merging their lifecycle or implementation boundaries.
-5. Implement `RH-W-0051` first within that architecture.
-6. Implement `RH-W-0053` after `RH-W-0051` establishes the storage semantics it consumes.
-7. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
-8. Implement `RH-W-0052` after those storage and recovery primitives are proven.
+3. Let `RH-W-0051` lead the joint local-state architecture by defining the local-state taxonomy and ownership semantics. `RH-W-0048` participates conditionally on those semantics. `RH-W-0052` may be drafted only conditionally and cannot advance until `RH-W-0051` and `RH-W-0048` are proven and manifest ownership is approved. Reserve namespace for the separate consumers `RH-W-0053`, `RH-W-0046`, `RH-W-0018`, and `RH-W-0040` without merging their lifecycle or implementation boundaries.
+4. Implement `RH-W-0051` first within that architecture.
+5. Implement `RH-W-0053` after `RH-W-0051` establishes the storage semantics it consumes.
+6. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
+7. Implement `RH-W-0052` after those storage and recovery primitives are proven.
 
 Consent and comparison follow, unchanged:
 
-9. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
-10. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
-11. Continue with `RH-W-0022`.
+8. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
+9. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
+10. Continue with `RH-W-0022`.
 
 Onboarding and the remaining residue close the path:
 
-12. Continue with `RH-W-0055`.
-13. Then `RH-W-0062`, which resolves against the `RH-W-0055` design and closes as no residue if that design finds no viable offline identity.
-14. Continue with `RH-W-0040`; its completed prerequisite is satisfied, while design and advancement of the unmechanizable residue remain pending.
-15. Then `RH-W-0060`, placed after `RH-W-0067` because both rewrite the three generated daily contracts and must not be implemented concurrently.
-16. Then `RH-W-0065`.
-17. Then `RH-W-0066`.
+11. Continue with `RH-W-0055`.
+12. Then `RH-W-0062`, which resolves against the `RH-W-0055` design and closes as no residue if that design finds no viable offline identity.
+13. Continue with `RH-W-0040`; its completed prerequisite is satisfied, while design and advancement of the unmechanizable residue remain pending.
+14. Then `RH-W-0060`, placed after `RH-W-0067` because both rewrite the three generated daily contracts and must not be implemented concurrently.
+15. Then `RH-W-0065`.
+16. Then `RH-W-0066`.
 
 The five records in the deferred list keep their existing conditions and are not scheduled: `RH-W-0012`, `RH-W-0014`, `RH-W-0015`, `RH-W-0026`, and `RH-W-0063`.
 
@@ -217,20 +216,6 @@ Readiness `plannable now` for the design, with storage `plannable after RH-W-005
 
 Human decisions: who writes a violation record, and whether it is tracked in Git.
 
-### Plan 11: RH-W-0061 recorded license and its discovery
-
-Readiness `plannable now`, and the record is `ready` rather than `proposed`: the owner resolved its one open decision on 2026-08-24 by separating a repository from that repository's harness. Priority `P2`, dependencies none. It leads the revised order because it is the only `ready` record, is fully measured, and carries the smallest scope in the portfolio. It should still land before Plan 4, since both change what `check()` takes as input, though the original manifest field-set collision no longer applies to this unit.
-
-The decision collapses this plan rather than branching it. A repository license is the consumer's choice; a generated skill is this product's own output and carries this product's license. Coupling the two was the defect, and once it is uncoupled the manifest field, the discovery path, and the no-license reporting question all disappear, because there is nothing left for the repository to record on the skills' behalf.
-
-1. Make the generated skill license a product constant, so `check()` stops taking a value it cannot verify and a check invocation matching the manifest reproduces the installed harness. Keep `--license` accepted as an explicit override.
-2. Remove the sentence in `references/license-selection.md` that routes a declined repository license into generated skill metadata. That reference keeps its real job, which is helping a consumer choose a license for the repository, and loses only the half that leaks that choice into files the consumer did not author.
-3. State the migration consequence rather than discovering it later. Measured read-only on the real `consumer 3` consumer: all three of its generated skills carry `license: "UNLICENSED"` while the repository has no `LICENSE` file, so those three files change to the product constant on the next render and a checker will report them until it is run.
-4. Write the RED tests first: the rendered frontmatter is the constant regardless of any repository license, `check()` no longer requires the value, the override still works, and the corrected reference no longer names generated skill metadata.
-5. Keep the generated `.repo-harness/check.py` unchanged, since it compares projections against canonical copies and is unaffected, and add no migration that rewrites an installed manifest without approval.
-
-Human decisions: none remain. The record is `ready` and waits only on explicit implementation authorization.
-
 ### Plan 12: RH-W-0060 repository state reporting design
 
 Readiness `plannable now`. Priority `P3`, dependencies none. Registered outside the approved order.
@@ -274,7 +259,7 @@ Human decision: whether any part of this becomes generated builder behavior rath
 
 ### Plan 16: RH-W-0013 measured context budgets
 
-Readiness `plannable now`. The record moved from `deferred` to `proposed` on 2026-08-24 because the measurement its deferral condition named was taken and fired. It is second in the approved order, ahead of Plan 17, which cannot place a gate row until this record decides the headroom.
+Readiness `plannable now`. The record moved from `deferred` to `proposed` on 2026-08-24 because the measurement its deferral condition named was taken and fired. It is first in the approved order, ahead of Plan 17, which cannot place a gate row until this record decides the headroom.
 
 Measured on 2026-08-24 with the record's own `wc -w` times 1.33 proxy: `REPO-HARNESS.md` is 526 words, or 700 estimated tokens, against a budget that requires staying under 700, which leaves roughly one word of headroom. `REPO-HARNESS.es.md` is 475. The three generated daily skills carry no budget at all and measure 2954, 2899, and 1120 estimated tokens for session start, session stop, and documentation. The two rule files measure 344 and 317 against their own 700-token budget.
 
@@ -290,7 +275,7 @@ Human decision: which surfaces earn a budget, which belongs to this record's wri
 
 ### Plan 17: RH-W-0067 reply-shaping contract placement
 
-Readiness `plannable after RH-W-0013`. Priority `P2`, dependencies: completed `RH-W-0058` owns the obligation, and proposed `RH-W-0013` must first decide the rulebook headroom this unit consumes. It is third in the approved order, immediately after `RH-W-0013`. Next artifact: a design document and its Spanish peer.
+Readiness `plannable after RH-W-0013`. Priority `P2`, dependencies: completed `RH-W-0058` owns the obligation, and proposed `RH-W-0013` must first decide the rulebook headroom this unit consumes. It is second in the approved order, immediately after `RH-W-0013`. Next artifact: a design document and its Spanish peer.
 
 1. Decide the owning rule file. The evidence favors one generated `.repo-harness/rules/response-contract.md`, following the `consumer 3` consumer, over duplicating the syntax into `REPO-HARNESS.md`, which the `RH-W-0058` decision already declined.
 2. Write the gate row that routes any reply carrying a question, an approval, or a next step, so the contract is reachable from the always-loaded rulebook in any turn rather than only while a daily skill runs.
@@ -315,7 +300,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Reviewed on 2026-08-24 across all 17 plans and the 22 non-terminal records they cover.
+Reviewed on 2026-08-24 across all 16 plans and the 21 non-terminal records they cover.
 
 Coverage is complete and no plan contradicts another. Every non-terminal record has exactly one owning plan, with two deliberate exceptions: `RH-W-0051` carries a design plan and a separate implementation plan, and `RH-W-0046` with `RH-W-0018` share one joint design plan while keeping separate implementations, statuses, and advancement conditions. The five records in the not-plannable list above are covered there rather than by a plan.
 
@@ -347,7 +332,7 @@ Three plans consume the namespace Plan 1 reserves: Plan 3 for checkpoint bytes, 
 | Deferrals | none |
 | Rejections | The owner confirmed on 2026-08-24 that the visible blocks are kept deliberately, so this unit repairs their placement and precision and never proposes removing or softening them. Rejected leaving the syntax only in the daily contracts, because a rule that binds every reply cannot live where it loads only when a daily skill runs. Rejected duplicating the full syntax into `REPO-HARNESS.md`, which the `RH-W-0058` decision already declined and which the measured budget now forbids outright. |
 | Evidence | Verified by search: zero occurrences of the block syntax in `REPO-HARNESS.md` and in `.repo-harness/rules/`, against occurrences in all three daily contracts and their source, tests, and projections. Verified by read-only inspection: `consumer 3` carries `.repo-harness/rules/response-contract.md` with its own gate row, no builder provenance marker, and manifest generator `3.0`. Verified by measurement: that consumer file is 664 words or 883 estimated tokens; this rulebook is 526 words or 700 estimated tokens with 12 gate rows, and one added row raises it to roughly 720; the `consumer 3` rulebook is 476 words or 633 estimated tokens with 10 gate rows, so its own row fits where this one does not. Verified by observation: the delimiter was rendered as three hyphens twice in one conversation with the contract loaded. Human decision: which words leave the rulebook to make room after `RH-W-0013` decides the available headroom. |
-| Decision history | 2026-08-24: registered `proposed` on the owner's explicit instruction to plan and not to act, in the same work unit that recorded the measured placement evidence and the consumer comparison. The owner-authorized execution revision later placed it third, after `RH-W-0013`; no lifecycle status changed. |
+| Decision history | 2026-08-24: registered `proposed` on the owner's explicit instruction to plan and not to act, in the same work unit that recorded the measured placement evidence and the consumer comparison. After `RH-W-0061` completed, the remaining execution order places it second, after `RH-W-0013`; no lifecycle status changed. |
 | Next advancement condition | After `RH-W-0013` closes, advance with a written design that names the owning rule file, the gate row wording, what each daily contract retains, and the exact words the rulebook sheds to stay under its budget, with focused tests that fail before implementation. |
 
 ### RH-W-0066
@@ -441,16 +426,16 @@ Three plans consume the namespace Plan 1 reserves: Plan 3 for checkpoint bytes, 
 | Origin | Found on 2026-08-23 during a full read-only repository review, by running the owner check with every value the manifest records and getting `drift`. |
 | Priority | P2: no state is at risk and the generated checker is unaffected, but a check that reports nine correct files as `stale` teaches the reader to distrust it, and the obvious remedy is to overwrite nine files that were already right. |
 | Dependencies | none |
-| Status | ready |
-| Completed work | Measured the defect rather than inferred it. `.repo-harness/manifest.json` records `schemaVersion`, `generator`, `project`, `runtimes`, `canonicalSkills`, `writeSemantics`, `integrationMode`, and `language`, and no license. `check()` resolves `documentation_languages, conversation_language = declared_languages(root)` from that manifest, and its own docstring states that the installed harness declares its own languages, so they are discovered rather than supplied again, and that checking must never contradict what the repository recorded. The same reasoning applies to the license and is not implemented: `check()` takes `license_id` from the caller with a `DEFAULT_LICENSE` fallback of `UNLICENSED`. An in-memory diff of render output against disk proved the only difference in all nine reported files is the frontmatter license line, `MIT` on disk against `UNLICENSED` rendered. Adding `--license MIT` returns `current` with 21 current, 18 human-evolved, 4 present, and 0 stale. |
-| Remaining work | Make the generated skill license a product constant, remove the sentence in `references/license-selection.md` that routes a repository license choice into generated skill metadata, and stop `check()` from taking a value it cannot verify. Keep `--license` accepted as an explicit override. Implement test-first and state the migration consequence, because a consumer rendered under the old default carries `UNLICENSED` in its generated skills and those bytes change on the next render. |
+| Status | completed |
+| Completed work | Implemented the approved uncoupling test-first. Generated skills now default to the product constant `MIT`; `render --license` remains an explicit override for preview and apply; `check()` and its CLI no longer accept a license value they cannot verify; and the repository-license reference no longer routes a declined repository choice into generated skill metadata. The generated checker and manifest schema are unchanged. Installed manifests are never rewritten by a migration. Generated skills previously carrying `UNLICENSED` change to `MIT` on the next authorized render, and checker reports drift until those generated files are synchronized. |
+| Remaining work | none |
 | Additions | One product constant for the generated skill license, so a check invocation that matches the manifest reproduces the installed harness without being handed a value the repository never recorded. The repository license stays a consumer choice and keeps its own separate reference. |
 | Exclusions | No change to the generated `.repo-harness/check.py`, which compares projections against the canonical copies and is unaffected; no change to what `render` accepts; no new manifest schema beyond the single fact; and no migration that rewrites an installed manifest without approval. |
 | Deferrals | none |
 | Rejections | Rejected documenting the workaround instead of fixing it. A check whose correct invocation depends on a value the repository refused to record is a check that only its author can run. |
-| Evidence | Verified: the manifest content, the `check()` signature and its language discovery, the nine `stale` entries, the single-line diff, and the `current` result once the license is supplied. Verified contradiction found on 2026-08-24 while acting on the owner's correction: `references/license-selection.md` instructs asking the user to choose a license when the repository does not already declare one, and on refusal it uses `UNLICENSED` for generated skill metadata and states that no repository license was selected. That shipped reference couples the generated skill license to the repository's choice, which is the opposite of the owner's stated intent. The CLI help at `harness_tool.py:3585` already reads `SPDX identifier for generated skills`, so the flag is named for the skills while the reference treats it as the repository's. Owner decision on 2026-08-24, which resolves it: a repository and that repository's harness are separate things. The repository license is the consumer's choice and has nothing to do with the generated skills, so the generated skill license is a product constant and the coupling is the defect. Measured on the real `consumer 3` consumer, read-only: all three generated skills carry `license: "UNLICENSED"` while that repository has no `LICENSE` file at all, so a repository that simply never chose a license stamped `UNLICENSED` onto files that are this MIT-licensed product's own output. That is the coupling defect observed in production rather than argued. |
-| Decision history | 2026-08-24: the owner separated a repository from that repository's harness, ruled the generated skill license independent of the consumer repository, and the record advanced from `proposed` to `ready` because that decision satisfied and then dissolved its previous advancement condition. 2026-08-23: registered as proposed from a full repository review, in the same work unit that delivered `RH-W-0058`. Registered outside the owner-approved 2026-08-21 execution order; its scheduling remains an owner decision. Distinct from `RH-W-0057`, which owns a blind spot where a deleted wrapper is invisible; this one is a false positive on files that are correct. |
-| Next advancement condition | Ready. The owner decided the coupling on 2026-08-24, which dissolved the manifest field, the discovery path, and the no-license reporting question that the previous condition named. Implementation begins on explicit authorization, test-first, with the consumer migration consequence stated in the same unit. |
+| Evidence | RED: 5 focused tests ran with 4 expected failures; the explicit render override already passed. GREEN: all 5 focused tests passed, then the canonical suite passed 437 tests with 9 skips. Canonical source and both package runtime projections are byte-identical, and final checker and full runtime evidence are recorded in the completed work unit. |
+| Decision history | 2026-08-24: completed by direct delegated implementation after strict RED and GREEN evidence. Earlier the same day the owner separated the repository license from the generated skill license and advanced the record from `proposed` to `ready`. 2026-08-23: registered as proposed from a full repository review. |
+| Next advancement condition | none |
 
 ### RH-W-0060
 | Field | Value |
