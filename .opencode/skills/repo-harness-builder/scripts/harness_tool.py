@@ -1506,11 +1506,12 @@ Describe what this project does and who it serves.
 - Do not introduce unrelated tools, processes, abstractions, or scope.
 - Do not retry indefinitely. After a repeated failure, stop, present evidence, and request a decision.
 - Do not continue automatically into unrequested tasks.
+- Do not stop after merely announcing an immediately executable verification or action inside the requested and authorized scope. Execute it and report the result. Pause only for approval, authority, evidence, safety, or a material decision.
 - Preserve unknown files and existing work.
 {evidence_rule}
 {verification_rule}
 {integration_rule}
-- Keep Git, provider, backup, and publication operations separately approved. Nothing implies them.
+- Keep Git consent outcome-scoped and conversational. Combined intent may cover unchanged safe prerequisites; provider changes, backup, publication, destructive actions, and material risk changes require separate approval.
 
 ## Decision Gates
 
@@ -1528,9 +1529,9 @@ Describe what this project does and who it serves.
 
 ## Updating This File
 
-1. **When.** A rule changes, a gate destination moves, or a statement here stops being true. Same change, not later.
-2. **Where.** A rule that must never be missed goes in Hard Rules. Everything else moves down into a file under `.repo-harness/rules/` and earns at most one gate row here. Detail never moves up. A new rule file gets a gate row and the same budget.
-3. **Budget.** This loads every session. Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33, never by eye. A section that grows here is the signal to move it down, not to raise the budget.
+1. **When.** Update this file when a rule, gate destination, or statement changes.
+2. **Where.** Keep never-miss rules here. Move detail to `.repo-harness/rules/` with at most one gate row.
+3. **Budget.** Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. Growth moves down; the budget never rises.
 
 No dated status here. Completed changes go to `CHANGELOG.md`, current state and next step to `docs/repo-harness/current-state.md`, decisions and their reasons to `docs/repo-harness/decisions.md`.
 """

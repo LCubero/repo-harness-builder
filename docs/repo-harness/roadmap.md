@@ -61,6 +61,23 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 
 <!-- doc-role:active-records -->
 
+### RH-W-0064
+| Field | Value |
+|---|---|
+| Origin | Owner-authorized continuity follow-through correction on 2026-08-23 after an agent announced an immediately executable verification and stopped without running it. |
+| Priority | P1: an authorized verification or action that is only announced produces no evidence or result, so the requested work silently remains incomplete. |
+| Dependencies | none. `RH-W-0058` owns visual discoverability; this unit owns general execution follow-through. |
+| Status | completed |
+| Completed work | Added one never-miss Hard Rule to the canonical generated rulebook and this repository's self-hosted rulebook. It requires an agent to execute and report immediately executable work inside the requested and authorized scope instead of merely announcing it, and permits pausing only for approval, authority, evidence, safety, or a material decision. The existing prohibition on automatically continuing into unrequested tasks and every approval boundary remain intact. The complete blocked-question `=` and informational next-action `+` syntax remains only in `VISIBILITY_CONTRACT` and all three daily Output Contracts. Canonical source and tests are byte-identical to their OpenCode and Claude projections. |
+| Remaining work | none |
+| Additions | One general execution follow-through rule plus focused boundary and contract-separation tests. |
+| Exclusions | No automatic continuation into unrequested tasks, no approval reuse, no weakening of authority or safety gates, and no duplication of the full visibility syntax in the rulebook. |
+| Deferrals | none |
+| Rejections | Rejected reopening `RH-W-0058`, because visual discoverability and execution follow-through prevent different failure classes and have different canonical owners. |
+| Evidence | RED: 4 focused tests ran with 4 expected assertion failures because the follow-through phrases and pause boundary were absent; both visibility separation checks passed. GREEN: the canonical, OpenCode, and Claude copies each ran 6 focused tests successfully. Canonical script and test SHA-256 values match both projections. The self-hosted rulebook moved from 696 to 699.58 proxy tokens, remains below 700, and LF-only structural checks pass. The repository checker reports `current` with zero writes. Full canonical and runtime suites are intentionally deferred to a fresh verifier. |
+| Decision history | 2026-08-23: the owner supplied the complete design and authorized implementation as new unit `RH-W-0064`; strict TDD, projection synchronization, self-hosted integration, and lifecycle reconciliation completed in the same work unit. |
+| Next advancement condition | none |
+
 ### RH-W-0063
 | Field | Value |
 |---|---|

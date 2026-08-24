@@ -3238,6 +3238,31 @@ class GeneratedCoreTests(unittest.TestCase):
                 self.assertNotIn(rule, outputs[path])
         self.assertEqual(sum(text.count(rule) for text in outputs.values()), 1)
 
+    def test_rulebook_requires_follow_through_on_authorized_executable_work(self):
+        rulebook = TOOL.render("Example", ["opencode"])[RULEBOOK]
+
+        for phrase in (
+            "merely announcing an immediately executable verification or action",
+            "Execute it and report the result",
+            "inside the requested and authorized scope",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, rulebook)
+
+    def test_rulebook_follow_through_preserves_pause_and_scope_boundaries(self):
+        rulebook = TOOL.render("Example", ["opencode"])[RULEBOOK]
+
+        self.assertIn("Pause only for approval, authority, evidence, safety, or a material decision", rulebook)
+        self.assertIn("Do not continue automatically into unrequested tasks", rulebook)
+        self.assertIn("Ask for explicit approval before reading or modifying paths outside it", rulebook)
+        for phrase in (
+            "Git consent outcome-scoped and conversational",
+            "Combined intent may cover unchanged safe prerequisites",
+            "provider changes, backup, publication, destructive actions, and material risk changes require separate approval",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, rulebook)
+
     def test_session_start_resolves_facts_without_rigid_questioning(self):
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
 
@@ -6220,7 +6245,15 @@ class QuestionVisibilityTests(unittest.TestCase):
     def test_the_rulebook_is_untouched_by_the_visibility_obligation(self):
         """RH-W-0058 lands in the daily contracts only; the rulebook has four tokens of headroom."""
         rulebook = TOOL.render("Example", ["opencode"])["REPO-HARNESS.md"]
-        for token in ("survive skimming", "side borders", "box corners"):
+        for token in (
+            "survive skimming",
+            "side borders",
+            "box corners",
+            "a line of `=`",
+            "a line of `+`",
+            "only when the reply is blocked",
+            "only when the reply asks nothing",
+        ):
             with self.subTest(token=token):
                 self.assertNotIn(token, rulebook)
 
