@@ -22,19 +22,18 @@ Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 
 
 ## Orden de ejecucion aprobado restante
 
-La ruta aprobada comienza ahora con `RH-W-0011`. Las completadas `RH-W-0054` y `RH-W-0057` quedan como antecedentes historicos, no como pasos pendientes:
+Con `RH-W-0011` completada, la ruta aprobada comienza ahora con el diseno conjunto de la arquitectura de estado local. Las completadas `RH-W-0054`, `RH-W-0057` y `RH-W-0011` quedan como antecedentes historicos, no como pasos pendientes:
 
-1. Ejecutar `RH-W-0011` sobre la base completada de `RH-W-0050`.
-2. Disenar conjuntamente `RH-W-0051`, `RH-W-0048` y `RH-W-0052`, reservando namespace para `RH-W-0053`, `RH-W-0046`, `RH-W-0018` y `RH-W-0040` sin fusionar sus ciclos de vida.
-3. Implementar `RH-W-0051`.
-4. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
-5. Implementar `RH-W-0048`.
-6. Implementar `RH-W-0052`.
-7. Disenar juntas `RH-W-0046` y `RH-W-0018`, con implementaciones separadas.
-8. Continuar con `RH-W-0044`; su antecedente `RH-W-0043` esta satisfecho y solo queda diseno o avance.
-9. Continuar con `RH-W-0022`.
-10. Continuar con `RH-W-0055`.
-11. Continuar con `RH-W-0040`; su prerrequisito esta satisfecho y su diseno o avance sigue pendiente.
+1. Disenar conjuntamente `RH-W-0051`, `RH-W-0048` y `RH-W-0052`, reservando namespace para `RH-W-0053`, `RH-W-0046`, `RH-W-0018` y `RH-W-0040` sin fusionar sus ciclos de vida.
+2. Implementar `RH-W-0051`.
+3. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
+4. Implementar `RH-W-0048`.
+5. Implementar `RH-W-0052`.
+6. Disenar juntas `RH-W-0046` y `RH-W-0018`, con implementaciones separadas.
+7. Continuar con `RH-W-0044`; su antecedente `RH-W-0043` esta satisfecho y solo queda diseno o avance.
+8. Continuar con `RH-W-0022`.
+9. Continuar con `RH-W-0055`.
+10. Continuar con `RH-W-0040`; su prerrequisito esta satisfecho y su diseno o avance sigue pendiente.
 
 El diseno conjunto no fusiona las unidades de implementacion. Cada implementacion conserva pruebas, commit, issue, pull request, evidencia de ciclo de vida, limite de rollback y condicion de avance propios. `RH-W-0050`, ya completada, sigue como base independiente del paquete de arquitectura.
 
@@ -315,7 +314,7 @@ Origen: unidad 10, builder instalado obsoleto. Prioridad: `P2`, los consumidores
 
 ### RH-W-0011
 
-Origen: unidad 11, revision historica de `skills-pack-ld9`. Prioridad: `P2`, los hallazgos vigentes requieren evidencia del repositorio o cierre explicito. Dependencias: RH-W-0003 a RH-W-0010, ya completadas. Estado: `proposed`. Trabajo completado: se cumplio el prerrequisito y se fijo que la reconciliacion no depende de rutas personales ni afirma contenidos de informes no disponibles. Trabajo restante: inventariar solo hallazgos sostenidos por evidencia del repositorio o continuidad verificada y clasificarlos como integrar, cerrar, aplazar, rechazar o ruido. Adiciones: recibo incompleto de ronda 2. Exclusiones: sin importacion ciega ni reconstruccion de contenido no disponible. Aplazamientos: ninguno. Rechazos: ninguno. Evidencia: los registros canonicos muestran RH-W-0003 a RH-W-0010 completadas; el contenido del informe historico no esta en este repositorio y falta la salida del juez B. Historial: aplazada el 2026-08-13; avanzada a `proposed` el 2026-08-20 al cumplirse el prerrequisito. Siguiente condicion: diseno escrito de fuentes locales, clasificacion, recibo incompleto y aprobacion de promocion.
+Origen: unidad 11, revision historica de `skills-pack-ld9`. Prioridad: `P2`, los hallazgos vigentes requieren evidencia del repositorio o cierre explicito. Dependencias: RH-W-0003 a RH-W-0010, ya completadas. Estado: `completed`. Trabajo completado: se cumplio el prerrequisito; el propietario aprobo el alcance escrito y autorizo por separado la reconciliacion acotada el 2026-08-24; el resultado verificado clasifico RH-W-0003 a RH-W-0007 con cinco disposiciones `close`; y el propietario acepto explicitamente las cinco clasificaciones y autorizo el cierre del ciclo de vida sin promocion ni implementacion. Trabajo restante: `none`. Adiciones: manejo del recibo incompleto de ronda 2. Exclusiones: sin importacion ciega ni reconstruccion de contenido no disponible. Aplazamientos: ninguno. Rechazos: ninguno. Evidencia: el [resultado verificado](rh-w-0011-results.md) registra cinco clasificaciones `close` desde propietarios independientes del repositorio, implementacion y pruebas actuales, y commits locales de entrega. El informe historico sigue no disponible y no verificable, la ronda 2 de Judgment Day sigue incompleta y la salida del juez B sigue no disponible por limite de sesion. El cierre no depende de esos artefactos ausentes. Historial: aplazada el 2026-08-13; avanzada a `proposed` el 2026-08-20; el 2026-08-24 el propietario aprobo el alcance escrito y la unidad avanzo a `ready`, despues autorizo por separado la reconciliacion acotada, y finalmente acepto las cinco clasificaciones `close` y autorizo el cierre del ciclo de vida sin promocion ni implementacion. Siguiente condicion: `none`.
 
 ### RH-W-0012
 

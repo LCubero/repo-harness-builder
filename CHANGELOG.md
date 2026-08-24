@@ -4,6 +4,11 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-08-24
+
+- Completed `RH-W-0011` after the owner explicitly accepted all five verified `close` classifications and authorized lifecycle closure. No promotion or implementation was required; the unavailable historical report and incomplete Judgment Day judge B output remain recorded limitations, and closure rests on independent repository evidence for RH-W-0003 through RH-W-0007.
+- Advanced `RH-W-0011` from `proposed` to `ready` after the owner explicitly approved its complete bilingual written reconciliation scope. Approval records the scope only; the bounded inventory and classification require separate execution authorization, and no reconciliation, promotion, implementation, or completion is claimed.
+
 ## 2026-08-23
 
 - Completed and delivered `RH-W-0056` through owner-authorized portfolio reconciliation in commit `b4538c95dd23043a37e52349d48ce284923a6ce7` (`docs(roadmap): reconcile adoption portfolio`), synchronized on `main` at 0 ahead and 0 behind. All 64 external-review `integrate` recommendations now carry exactly one durable disposition: 43 closed as satisfied, 13 integrated into six existing non-terminal owners, 0 deferred, 8 rejected, and 0 new units. Completed units remain closed, accepted residuals retain separate lifecycle owners, and the same delivery registered `RH-W-0065` and `RH-W-0066` as `proposed` without implementation.

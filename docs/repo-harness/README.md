@@ -22,6 +22,8 @@
 | [rh-w-0031-implementation-plan.md](rh-w-0031-implementation-plan.md) | Canonical executable remediation plan for conversation-language boundaries |
 | [rh-w-0034-implementation-plan.md](rh-w-0034-implementation-plan.md) | Canonical executable plan for consumer recovery and Spanish-only correctness |
 | [rh-w-0050-design.md](rh-w-0050-design.md) | Completed owner-approved bounded reconciliation design; delivered with historical design body retained |
+| [rh-w-0011-design.md](rh-w-0011-design.md) | Completed owner-approved reconciliation scope; historical design body retained |
+| [rh-w-0011-results.md](rh-w-0011-results.md) | Canonical completed reconciliation result, five-finding dispositions, and owner-accepted lifecycle closure |
 | [rh-w-0054-design.md](rh-w-0054-design.md) | Completed owner-approved stateless correction authority design; historical design body retained |
 | [rh-w-0054-implementation-plan.md](rh-w-0054-implementation-plan.md) | Completed implementation plan for stateless correction authority transport; historical task instructions retained |
 | [rh-w-0059-design.md](rh-w-0059-design.md) | Completed owner-approved non-interactive transport design; delivered test-first with historical design body retained |

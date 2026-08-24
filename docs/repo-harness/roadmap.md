@@ -22,19 +22,18 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-The owner-approved path now begins with `RH-W-0011`. Completed `RH-W-0054` and `RH-W-0057` remain historical antecedents and are not pending steps. Scheduling changes no unit status or advancement condition:
+With `RH-W-0011` completed, the owner-approved path now begins with the joint local-state architecture design. Completed `RH-W-0054`, `RH-W-0057`, and `RH-W-0011` remain historical antecedents and are not pending steps. Scheduling changes no unit status or advancement condition:
 
-1. Run `RH-W-0011` as the first real application of the completed `RH-W-0050` classification baseline.
-2. Jointly design the local-state architecture for `RH-W-0051`, `RH-W-0048`, and `RH-W-0052`, reserving namespace for the separate consumers `RH-W-0053`, `RH-W-0046`, `RH-W-0018`, and `RH-W-0040` without merging their lifecycle or implementation boundaries.
-3. Implement `RH-W-0051` first within that architecture.
-4. Implement `RH-W-0053` after `RH-W-0051` establishes the storage semantics it consumes.
-5. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
-6. Implement `RH-W-0052` after those storage and recovery primitives are proven.
-7. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
-8. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
-9. Continue with `RH-W-0022`.
-10. Continue with `RH-W-0055`.
-11. Continue with `RH-W-0040`; its completed prerequisite is satisfied, while design and advancement of the unmechanizable residue remain pending.
+1. Jointly design the local-state architecture for `RH-W-0051`, `RH-W-0048`, and `RH-W-0052`, reserving namespace for the separate consumers `RH-W-0053`, `RH-W-0046`, `RH-W-0018`, and `RH-W-0040` without merging their lifecycle or implementation boundaries.
+2. Implement `RH-W-0051` first within that architecture.
+3. Implement `RH-W-0053` after `RH-W-0051` establishes the storage semantics it consumes.
+4. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
+5. Implement `RH-W-0052` after those storage and recovery primitives are proven.
+6. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
+7. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
+8. Continue with `RH-W-0022`.
+9. Continue with `RH-W-0055`.
+10. Continue with `RH-W-0040`; its completed prerequisite is satisfied, while design and advancement of the unmechanizable residue remain pending.
 
 Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. Completed `RH-W-0050` remains the independent baseline for the architecture bundle.
 
@@ -1051,16 +1050,16 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 | Origin | Roadmap unit 11; `skills-pack-ld9` historical review |
 | Priority | P2: still-relevant review findings need public evidence or explicit closure |
 | Dependencies | RH-W-0003 through RH-W-0010 outcomes may close or reshape findings |
-| Status | proposed |
-| Completed work | The prerequisite range RH-W-0003 through RH-W-0010 is completed. Reconciliation must use current repository evidence and must not depend on external personal report paths or claim unavailable report contents. |
-| Remaining work | Inventory only findings supported by repository or verified continuity evidence, then classify each as integrate, close, defer, reject, or noise. |
+| Status | completed |
+| Completed work | The prerequisite range RH-W-0003 through RH-W-0010 completed. The owner approved the written scope and separately authorized bounded reconciliation on 2026-08-24. The verified result classified RH-W-0003 through RH-W-0007 as five `close` dispositions. The owner then explicitly accepted all five classifications and authorized lifecycle closure without promotion or implementation. |
+| Remaining work | none |
 | Additions | Include the incomplete Judgment Day round-2 receipt in the evidence review. |
 | Exclusions | No blind import of private or stale notes. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | Repository lifecycle records show RH-W-0003 through RH-W-0010 completed. This repository does not contain the historical report contents, and Judgment Day round 2 still lacks judge B output, so those contents remain unverifiable and are not claimed. |
-| Decision history | 2026-08-13: deferred with an observable evidence threshold. 2026-08-20: advanced to `proposed` because the prerequisite range completed; evidence limitations replace the former external-report dependency. |
-| Next advancement condition | Advance after a written reconciliation scope identifies repository-local evidence sources, classification output, handling of the incomplete round-2 receipt, and explicit promotion approval without requiring unavailable report contents. |
+| Evidence | The [verified reconciliation result](rh-w-0011-results.md) records five `close` classifications from independent repository owners, current implementation and tests, and local delivery commits. The historical report remains unavailable and unverifiable, Judgment Day round 2 remains incomplete, and judge B output remains unavailable due to the session limit. Closure does not rely on those missing artifacts. |
+| Decision history | 2026-08-13: deferred with an observable evidence threshold. 2026-08-20: advanced to `proposed` because the prerequisite range completed; evidence limitations replaced the former external-report dependency. 2026-08-24: the owner approved the written scope, advancing the unit to `ready`; then separately authorized bounded reconciliation; then explicitly accepted all five `close` classifications and authorized lifecycle closure without promotion or implementation. |
+| Next advancement condition | none |
 
 ### RH-W-0012
 | Field | Value |
