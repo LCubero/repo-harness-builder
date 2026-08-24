@@ -9,7 +9,7 @@ Ask the user to choose a license when the repository does not already declare on
 | `GPL-3.0-only` | Strong copyleft: conveyed modified source works remain under GPL v3, and corresponding source obligations apply to conveyed object code. Use `GPL-3.0-or-later` only if the user explicitly wants the later-version option. |
 | Another or custom choice | Accept another valid SPDX expression or a user-supplied custom choice. Explain that custom legal text may warrant legal review. |
 
-If the user declines to choose, use `UNLICENSED` for generated skill metadata and state that no repository license was selected. Never claim one option is universally best or most popular.
+Never claim one option is universally best or most popular.
 
 ## Authoritative Sources
 

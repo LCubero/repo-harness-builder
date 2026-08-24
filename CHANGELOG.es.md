@@ -4,6 +4,7 @@
 
 ## 2026-08-24
 
+- Se completo `RH-W-0061` con pruebas primero. Las skills generadas ahora usan por defecto la licencia MIT del producto, independiente de la licencia del repositorio consumidor; `render --license` conserva la anulacion explicita y `check()` ya no acepta una licencia que no puede verificar. El checker generado y el schema del manifest no cambian. Las skills antes renderizadas con `UNLICENSED` cambian en el siguiente render autorizado e informan deriva hasta sincronizarse.
 - Se agrego a la hoja de ruta una seccion de planes de accion que posee un plan de ejecucion por cada registro no terminal, con una revision de coherencia que declara cinco relaciones entre planes y cobertura completa de los 22 registros. La seccion no posee estado, prioridad ni calendario.
 - Se registro `RH-W-0067` por el defecto de ubicacion del contrato de forma de respuesta: la sintaxis de visibilidad `=` y `+` que establecio `RH-W-0058` vive solo en los tres contratos diarios, con cero ocurrencias en `REPO-HARNESS.md` y `.repo-harness/rules/`, asi que una obligacion que rige cada respuesta falta en cualquier turno que no corra una skill diaria.
 - Se reviso el orden de ejecucion a 17 posiciones tras delegar el propietario el criterio tecnico de ordenamiento, conservando cada posicion relativa pendiente de la ruta del 2026-08-21 e insertando solo unidades antes no agendadas.
