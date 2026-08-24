@@ -17,8 +17,8 @@
 | [Investigacion de integracion](integration-research.md) | Espejo humano completo de la investigacion canonica sobre Gentle AI y Engram |
 | [Plan de implementacion RH-W-0025](rh-w-0025-implementation-plan.md) | Espejo humano completo del plan canonico de coordinacion consciente de capacidades |
 | [Investigacion RH-W-0031](../../repo-harness/rh-w-0031-research.md) | Propietario canonico en ingles de la evidencia primaria sobre los limites del idioma de conversacion |
-| [Plan tecnico RH-W-0031](../../repo-harness/rh-w-0031-implementation-plan.md) | Plan canonico en ingles para corregir los limites del idioma de conversacion |
-| [Plan de implementacion RH-W-0034](rh-w-0034-implementation-plan.md) | Par humano completo del plan canonico para recuperacion de consumidores y correccion del modo solo en espanol |
+| [Plan tecnico RH-W-0031](../../repo-harness/rh-w-0031-implementation-plan.md) | Plan completado en ingles para corregir los limites del idioma de conversacion; se conservan las instrucciones historicas |
+| [Plan de implementacion RH-W-0034](rh-w-0034-implementation-plan.md) | Par humano del plan completado para recuperacion de consumidores y correccion del modo solo en espanol; se conservan las instrucciones historicas |
 | [Diseno RH-W-0050](rh-w-0050-design.md) | Diseno completado de reconciliacion acotada aprobado por el propietario; entregado con el cuerpo historico conservado |
 | [Diseno RH-W-0011](rh-w-0011-design.md) | Alcance de reconciliacion completado y aprobado por el propietario; se conserva el cuerpo historico |
 | [Resultados RH-W-0011](rh-w-0011-results.md) | Par completo del resultado canonico completado, las disposiciones de cinco hallazgos y el cierre aceptado por el propietario |

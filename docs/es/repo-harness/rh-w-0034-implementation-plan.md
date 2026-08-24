@@ -1,5 +1,7 @@
 # Plan de implementacion RH-W-0034 para recuperacion de consumidores y correccion del modo solo en espanol
 
+> **Aviso de ciclo de vida completado:** RH-W-0034 se completo el 2026-08-17. El [registro canonico de la hoja de ruta](roadmap.md#rh-w-0034) posee la evidencia de cierre y entrega. Las instrucciones historicas y las casillas sin marcar que siguen se conservan como evidencia de ejecucion, no como trabajo pendiente.
+
 > **Para agentes de implementacion:** HABILIDADES REQUERIDAS: use `systematic-debugging`, `test-driven-development` y `verification-before-completion`. Marque cada casilla. Implemente solo despues de mover el registro del ciclo de vida a `active`.
 
 **Objetivo:** Corregir los defectos del constructor expuestos por la transcripcion verificada del consumidor de `v3.1-rc.2`, de modo que las personas usuarias reciban preguntas concretas en espanol, el idioma del informe se resuelva solo desde evidencia humana valida, las instalaciones solo en espanol pasen ambos verificadores con enlaces locales validos y los fallos propiedad del constructor nunca entren al reporte de defectos del proveedor.
@@ -8,7 +10,7 @@
 
 **Tecnologia:** Biblioteca estandar de Python 3.10+, `unittest`, contratos Markdown generados, manifest JSON, fixtures por subproceso y proyecciones incorporadas exactas de OpenCode y Claude.
 
-**Propietario del ciclo de vida:** [RH-W-0034](roadmap.md#rh-w-0034), estado `ready`, prioridad `P1`. La hoja de ruta posee el estado y este archivo posee la secuencia ejecutable.
+**Propietario del ciclo de vida:** [RH-W-0034](roadmap.md#rh-w-0034), estado `completed`, prioridad `P1`. La hoja de ruta posee el estado y la evidencia de entrega; este archivo conserva la secuencia ejecutable historica.
 
 ## Causa raiz
 

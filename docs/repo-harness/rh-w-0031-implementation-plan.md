@@ -1,5 +1,7 @@
 # RH-W-0031 Conversation-Language Boundary Remediation Plan
 
+> **Completed lifecycle notice:** RH-W-0031 completed on 2026-08-15. The canonical [roadmap record](roadmap.md#rh-w-0031) owns completion and delivery evidence. The historical task instructions and unchecked boxes below are retained as execution evidence, not pending work.
+
 > **For agentic workers:** REQUIRED SUB-SKILLS: use `systematic-debugging`, `test-driven-development`, and `verification-before-completion`. Track each step with its checkbox. This is one bounded product unit.
 
 **Goal:** Make session-start, session-stop, and help preserve an explicit human conversation-language preference while keeping technical artifacts and machine-significant values outside language resolution.
@@ -8,7 +10,7 @@
 
 **Tech Stack:** Python 3.10+ standard library, `unittest`, generated Markdown contracts, JSON manifest, and exact checked-in OpenCode and Claude package projections.
 
-**Lifecycle owner:** [RH-W-0031](roadmap.md#rh-w-0031), status `ready`, priority `P1`. The roadmap owns status; this file owns the implementation sequence.
+**Lifecycle owner:** [RH-W-0031](roadmap.md#rh-w-0031), status `completed`, priority `P1`. The roadmap owns status and delivery evidence; this file preserves the historical implementation sequence.
 
 **Evidence owner:** [RH-W-0031 conversation-language research](rh-w-0031-research.md) owns the reviewed primary-source registry, claim limitations, revision dates, and refresh procedure.
 

@@ -1,5 +1,7 @@
 # RH-W-0034 Consumer Recovery And Spanish-Only Correctness Plan
 
+> **Completed lifecycle notice:** RH-W-0034 completed on 2026-08-17. The canonical [roadmap record](roadmap.md#rh-w-0034) owns completion and delivery evidence. The historical task instructions and unchecked boxes below are retained as execution evidence, not pending work.
+
 > **For agentic workers:** REQUIRED SUB-SKILLS: use `systematic-debugging`, `test-driven-development`, and `verification-before-completion`. Track each checkbox. Implement only after moving the lifecycle record to `active`.
 
 **Goal:** Correct the builder defects exposed by the verified `v3.1-rc.2` consumer transcript so Spanish users receive concrete questions, report language is resolved only from valid human evidence, Spanish-only installations pass both checkers with valid local links, and builder-owned failures never enter provider-defect reporting.
@@ -8,7 +10,7 @@
 
 **Tech stack:** Python 3.10+ standard library, `unittest`, generated Markdown contracts, JSON manifest, subprocess fixtures, and exact checked-in OpenCode and Claude package projections.
 
-**Lifecycle owner:** [RH-W-0034](roadmap.md#rh-w-0034), status `ready`, priority `P1`. The roadmap owns status; this file owns the executable sequence.
+**Lifecycle owner:** [RH-W-0034](roadmap.md#rh-w-0034), status `completed`, priority `P1`. The roadmap owns status and delivery evidence; this file preserves the historical executable sequence.
 
 ## Root Cause
 
