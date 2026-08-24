@@ -197,14 +197,118 @@ Noventa y cuatro hallazgos.
 
 Los conteos y la membresia se derivan de las tablas de arriba parseandolas, no a mano. Un borrador anterior de este documento afirmo un total que las tablas no sostenian; ahora el conteo se verifica contra las filas.
 
-**Decision humana requerida.** Esta tabla es una recomendacion, no una adopcion. Agrupamientos propuestos, cada uno su propia unidad de trabajo:
+El propietario autorizo la reconciliacion del portafolio el 2026-08-23. Las recomendaciones originales de arriba se conservan como salida historica de la revision. Las tablas siguientes asignan exactamente una disposicion durable a cada una de las 64 recomendaciones `integrar` contra la evidencia actual. `Cerrar` significa que el comportamiento actual o una unidad completada ya satisface el alcance aplicable. `Integrar` nombra un unico propietario de ciclo de vida no terminal. `Rechazar` declina el mecanismo o la premisa propuesta sin negar la evidencia subyacente.
 
-1. **Endurecimiento de transporte**: C1, C2, C3, C5, C7, C8, C10, C11, C12. La mas urgente, porque el gate de sesion generado aca promete un banner de remediacion al que no puede llegar cuando hay una llave protegida por passphrase.
-2. **Proyeccion de comandos**: B1, B2, B7, B8, B9. Se pliega sobre la ya abierta `RH-W-0057` y la corrobora.
-3. **Disciplina de controles**: A1, A2, A3, A6, A8, A10, A11, A12.
-4. **Invariantes de documentacion**: D1, D4, D6, D8, D9, D10, D11, D12, D14, D15.
-5. **Disciplina de evidencia y afirmaciones**: F1 a F12, F15, F17.
-6. **Autoridad e identidad de artefactos**: G1, G2, G3, G4, G8, G9, G10, G12, G13. G1 a G3 informaron historicamente a la completada `RH-W-0054`; cualquier adopcion futura debe dirigirse a una unidad nueva que herede ese alcance de forma explicita.
-7. **Ciclo de vida de la sesion**: E2, E3, E6, E7, E8, E9, E10, E11, E12.
+### Grupo A: disciplina de controles
 
-Este documento no autoriza ninguna adopcion, implementacion ni cambio de comportamiento generado.
+| Hallazgo | Disposicion | Evidencia o propietario |
+|---|---|---|
+| A1 | Cerrar | El descubrimiento canonico de `unittest` ya corre el arbol de pruebas del paquete desde un comando. |
+| A2 | Cerrar | El conteo canonico comprobado hace que un descubrimiento vacio falle la verificacion en vez de pasar en silencio. |
+| A3 | Cerrar | `RH-W-0039` completada y la evidencia de control positivo retenida por `RH-W-0040` exigen probar que el detector encuentra una entrada conocida. |
+| A6 | Cerrar | La verificacion conserva la salida completa y exige evidencia fresca antes de afirmar un resultado. |
+| A8 | Cerrar | El contrato de evidencia exige salida y resultado observado, nunca solo el codigo de salida. |
+| A10 | Cerrar | El vocabulario separa fallo de ejecucion no disponible o no verificable. |
+| A11 | Rechazar | Un contrato nuevo de presentacion del barrido limpio no agrega correccion; la salida de pruebas sigue siendo la evidencia autoritativa. |
+| A12 | Integrar en `RH-W-0022` | La comprobacion de relaciones documentales es el propietario existente para anclas y enlaces durables. |
+
+### Grupo B: proyeccion de comandos
+
+| Hallazgo | Disposicion | Evidencia o propietario |
+|---|---|---|
+| B1 | Cerrar | `RH-W-0057` completada agrego pares canonicos de comandos y prompts y cobertura del checker. |
+| B2 | Rechazar | `RH-W-0057` adopto estados propios (`current`, `stale`, `missing` y `canonical-missing`); importar otro vocabulario duplicaria el modelo. |
+| B7 | Cerrar | La brecha medida de proyeccion fue el defecto completado por `RH-W-0057`. |
+| B8 | Cerrar | Los archivos humanos se comparan por estructura y se actualizan de forma aditiva; las superficies generadas se comparan por bytes. |
+| B9 | Cerrar | El manifiesto autenticado selecciona y nombra las superficies de runtime revisadas. |
+
+### Grupo C: transporte y multiplataforma
+
+| Hallazgo | Disposicion | Evidencia o propietario |
+|---|---|---|
+| C1 | Rechazar | El diseno aprobado de `RH-W-0059` rechazo el respaldo provider-first porque el producto no exige tooling del proveedor; el fallo terminal sigue explicito. |
+| C2 | Rechazar | La ruta HTTPS explicita depende de la arquitectura provider-first rechazada. |
+| C3 | Cerrar | `RH-W-0059` completada exige SSH y HTTPS no interactivos con timeout acotado. |
+| C5 | Cerrar | `RH-W-0059` completada entrecomilla la forma corta del upstream para PowerShell. |
+| C7 | Cerrar | `RH-W-0059` completada documenta los dos limites junto al mecanismo. |
+| C8 | Cerrar | La revision de `RH-W-0059` verifico que ya existe integracion local del upstream traido. |
+| C10 | Rechazar | La revision de `RH-W-0059` lo retiro como no defecto verificado: ningun contrato generado toma la fecha con esa forma de shell. |
+| C11 | Integrar en `RH-W-0060` | Esa unidad ya posee la comparacion con el blob commiteado antes de clasificar cambios solo de fin de linea. |
+| C12 | Integrar en `RH-W-0060` | Esa unidad ya posee listado de ramas y evidencia de ascendencia sin borrado automatico. |
+
+### Grupo D: invariantes de documentacion
+
+| Hallazgo | Disposicion | Evidencia o propietario |
+|---|---|---|
+| D1 | Cerrar | Rulebook, mapa, hoja de ruta, estado actual, decisiones y changelog ya tienen propiedad canonica distinta. |
+| D4 | Integrar en `RH-W-0040` | Su residuo de disciplina no mecanizable es el propietario de afirmaciones cuya evidencia citada no las zanja. |
+| D6 | Integrar en `RH-W-0052` | Archivo, desinstalacion y reinstalacion conscientes del manifiesto poseen las copias que sobreviven al retiro de su fuente. |
+| D8 | Rechazar | Una prohibicion absoluta de carteles contradice el mapa acotado y el enrutamiento por enlaces; los indices duplicados siguen prohibidos. |
+| D9 | Integrar en `RH-W-0022` | Relaciones entrantes, salientes y etiquetas visibles seguras ante mudanzas pertenecen al propietario documental existente. |
+| D10 | Rechazar | Un segundo registro mecanico duplicaria `decisions.md` y el propietario de ciclo de vida. |
+| D11 | Cerrar | `RH-W-0050` completada exige reconciliacion posterior y un segundo barrido acotado despues de reparar. |
+| D12 | Cerrar | Los punteros raiz son excepciones acotadas explicitas y se comprueban como directivas. |
+| D14 | Cerrar | La reconciliacion ya admite un resultado respaldado de ningun cambio de texto. |
+| D15 | Integrar en `RH-W-0022` | La politica de anclas estables y resolucion pertenece a la comprobacion futura de relaciones. |
+
+### Grupo E: ciclo de vida de la sesion
+
+| Hallazgo | Disposicion | Evidencia o propietario |
+|---|---|---|
+| E2 | Integrar en `RH-W-0051` | La arquitectura de estado local posee cualquier indice append-only futuro y sus semanticas de union o reconstruccion. |
+| E3 | Integrar en `RH-W-0051` | Esa unidad ya posee el unico namespace local `.repo-harness/` en la raiz. |
+| E6 | Integrar en `RH-W-0066` | Persistencia explicita, conflictos y verificacion de Engram pertenecen a su diseno de enrutamiento semantico. |
+| E7 | Cerrar | El cierre generado guarda continuidad antes de las compuertas documentales y de entrega. |
+| E8 | Cerrar | `RH-W-0050` y `RH-W-0064` completadas ejecutan reconciliacion obvia autorizada y reservan preguntas para juicios humanos. |
+| E9 | Cerrar | El cierre valida rutas del traspaso y muestra ausencias sin convertirlas en exito falso. |
+| E10 | Cerrar | El inicio distingue evidencia bloqueada o no disponible y nunca presenta un chequeo no ejecutado como verificado. |
+| E11 | Cerrar | `REPO-HARNESS.md` es la entrada acotada y enruta reglas detalladas solo cuando dispara su gate. |
+| E12 | Integrar en `RH-W-0066` | Su futuro diseno de recuperacion y conflictos de Engram posee orden y verificacion de actualidad de resultados. |
+
+### Grupo F: disciplina de evidencia y afirmaciones
+
+| Hallazgo | Disposicion | Evidencia o propietario |
+|---|---|---|
+| F1 | Cerrar | `RH-W-0058` completada posee bloques visibles de preguntas y avisos. |
+| F2 | Rechazar | Un ledger de incidentes duplicaria evidencia de hoja de ruta, decisiones, cronologia y continuidad de Engram. |
+| F3 | Cerrar | El rulebook exige evidencia aplicable y prohibe tratar una observacion como su propia conclusion. |
+| F4 | Cerrar | Las afirmaciones nombran evidencia aplicable y proporcional, incluido el alcance del propietario. |
+| F5 | Cerrar | La verificacion usa evidencia del repositorio y comandos frescos, no autoridad de herramienta ni confianza. |
+| F6 | Cerrar | Fuentes canonicas y chequeos mecanicos poseen la verdad; la paridad sola no es evidencia de entrega. |
+| F7 | Integrar en `RH-W-0040` | Las afirmaciones negativas condicionales y su evidencia invalidante pertenecen a su diseno pendiente. |
+| F8 | Cerrar | El rulebook raiz lleva reglas imprescindibles y enruta detalle en el gate donde se usa. |
+| F9 | Cerrar | `RH-W-0050` completada exige reconciliar continuidad obsoleta despues de entregar. |
+| F10 | Cerrar | El vocabulario separa hecho verificado, inferencia respaldada, desconocido o no verificable y decision humana. |
+| F11 | Cerrar | Los resultados independientes conservan clasificacion independiente. |
+| F12 | Cerrar | Las compuertas de contribucion y publicacion ya exigen revision sensible antes de publicar. |
+| F15 | Cerrar | El rulebook prohibe estado fechado y enruta inventario actual solo al estado actual. |
+| F17 | Cerrar | La identidad se resuelve desde el repositorio seleccionado; aliases y rutas externas no otorgan autoridad. |
+
+### Grupo G: autoridad e identidad de artefactos
+
+| Hallazgo | Disposicion | Evidencia o propietario |
+|---|---|---|
+| G1 | Cerrar | `RH-W-0054` completada transporta autoridad sin estado mediante argumentos y JSON canonico del host. |
+| G2 | Cerrar | `RH-W-0054` completada liga autoridad a bytes y digests, no a nombres. |
+| G3 | Cerrar | `RH-W-0054` completada exige bindings inmutables y procedencia; un nombre coincidente no da autoridad. |
+| G4 | Cerrar | Publicar sigue siendo una compuerta explicita separada y antes se revisa el alcance del repositorio. |
+| G8 | Cerrar | Las salidas existentes nunca se sobrescriben sin propiedad autenticada, binding de contenido y aprobacion; las colisiones bloquean. |
+| G9 | Cerrar | JSON canonico y manifiestos se ordenan deterministicamente antes de hashear o escribir. |
+| G10 | Integrar en `RH-W-0052` | Restauracion generada frente a autorada pertenece al diseno de archivo y reinstalacion consciente del manifiesto. |
+| G12 | Cerrar | Capacidad, deriva, runtimes, frescura y resultados operativos se informan por separado. |
+| G13 | Cerrar | Procedencia y comparaciones canonicas impiden que una copia obsoleta reclame autoridad por una salida limpia. |
+
+### Totales de disposicion
+
+| Grupo | Cerrar | Integrar | Aplazar | Rechazar | Unidad nueva | Total |
+|---|---:|---:|---:|---:|---:|---:|
+| A | 6 | 1 | 0 | 1 | 0 | 8 |
+| B | 4 | 0 | 0 | 1 | 0 | 5 |
+| C | 4 | 2 | 0 | 3 | 0 | 9 |
+| D | 4 | 4 | 0 | 2 | 0 | 10 |
+| E | 5 | 4 | 0 | 0 | 0 | 9 |
+| F | 12 | 1 | 0 | 1 | 0 | 14 |
+| G | 8 | 1 | 0 | 0 | 0 | 9 |
+| **Total** | **43** | **13** | **0** | **8** | **0** | **64** |
+
+Totales de residuos aceptados: `RH-W-0022` posee 3, `RH-W-0040` posee 2, `RH-W-0051` posee 2, `RH-W-0052` posee 2, `RH-W-0060` posee 2 y `RH-W-0066` posee 2. Ninguna recomendacion necesito una unidad nueva, ninguna unidad completada se reabrio y la infraestructura compartida no fusiono unidades independientes. Esta reconciliacion no autoriza comportamiento nuevo.

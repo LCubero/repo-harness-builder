@@ -2,7 +2,7 @@
 
 <!-- doc-role:design -->
 
-Draft design for [RH-W-0059](roadmap.md#rh-w-0059). Pending owner approval; no implementation is authorized by this document. The Spanish peer is [`../es/repo-harness/rh-w-0059-design.md`](../es/repo-harness/rh-w-0059-design.md).
+Completed owner-approved design for [RH-W-0059](roadmap.md#rh-w-0059), delivered test-first. The body retains the pre-delivery draft and review narrative as history. The Spanish peer is [`../es/repo-harness/rh-w-0059-design.md`](../es/repo-harness/rh-w-0059-design.md).
 
 ## The Defect
 

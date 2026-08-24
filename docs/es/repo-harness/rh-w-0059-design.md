@@ -2,7 +2,7 @@
 
 <!-- doc-role:design -->
 
-La fuente factual canonica es [`../../repo-harness/rh-w-0059-design.md`](../../repo-harness/rh-w-0059-design.md). Este es su espejo humano completo en espanol. Borrador pendiente de aprobacion del propietario; este documento no autoriza ninguna implementacion. El propietario del ciclo de vida es [RH-W-0059](roadmap.md#rh-w-0059).
+La fuente factual canonica es [`../../repo-harness/rh-w-0059-design.md`](../../repo-harness/rh-w-0059-design.md). Este es su espejo humano completo en espanol. Diseno completado, aprobado por el propietario y entregado con pruebas primero. El cuerpo conserva como historia la narrativa de borrador y revision anterior a la entrega. El propietario del ciclo de vida es [RH-W-0059](roadmap.md#rh-w-0059).
 
 ## El defecto
 

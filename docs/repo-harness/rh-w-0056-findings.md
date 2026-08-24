@@ -197,14 +197,118 @@ Ninety-four findings.
 
 Counts and membership are derived from the tables above by parsing them, not by hand. An earlier draft of this document claimed a total the tables did not support; the count is now checked against the rows.
 
-**Human decision required.** This table is a recommendation, not an adoption. Proposed groupings, each its own work unit:
+The owner authorized portfolio reconciliation on 2026-08-23. The original recommendations above remain historical review output. The tables below assign exactly one durable disposition to each of the 64 `integrate` recommendations against current repository evidence. `Close` means current behavior or a completed unit already satisfies the applicable scope. `Integrate` names one non-terminal lifecycle owner. `Reject` declines the proposed mechanism or premise without denying the underlying evidence.
 
-1. **Transport hardening**: C1, C2, C3, C5, C7, C8, C10, C11, C12. Highest urgency, because the generated session gate here promises a remediation banner it cannot reach when a passphrase-protected key is present.
-2. **Command projection**: B1, B2, B7, B8, B9. Folds into the already-open `RH-W-0057` and corroborates it.
-3. **Control discipline**: A1, A2, A3, A6, A8, A10, A11, A12.
-4. **Documentation invariants**: D1, D4, D6, D8, D9, D10, D11, D12, D14, D15.
-5. **Evidence and claim discipline**: F1 through F12, F15, F17.
-6. **Authority and artifact identity**: G1, G2, G3, G4, G8, G9, G10, G12, G13. G1 through G3 historically informed completed `RH-W-0054`; direct any future adoption to a new unit that explicitly inherits that scope.
-7. **Session lifecycle**: E2, E3, E6, E7, E8, E9, E10, E11, E12.
+### Group A: control discipline
 
-No adoption, implementation, or generated behavior change is authorized by this document.
+| Finding | Disposition | Evidence or owner |
+|---|---|---|
+| A1 | Close | Canonical `unittest` discovery already runs the package test tree from one command. |
+| A2 | Close | The checked canonical suite count makes an empty discovery result fail repository verification rather than pass silently. |
+| A3 | Close | Completed `RH-W-0039` and the positive-control evidence retained by `RH-W-0040` require a detector to prove it can find known-present input. |
+| A6 | Close | Repository verification preserves complete command output and requires fresh output before a claim. |
+| A8 | Close | The evidence contract requires command output and observed result, never exit status alone. |
+| A10 | Close | The repository evidence vocabulary separates failure from unavailable or unverifiable execution. |
+| A11 | Reject | A new clean-sweep presentation contract adds no correctness here; existing test output remains the authoritative evidence. |
+| A12 | Integrate into `RH-W-0022` | Documentation relationship checking is the existing non-terminal owner for durable anchor and link validation. |
+
+### Group B: command projection
+
+| Finding | Disposition | Evidence or owner |
+|---|---|---|
+| B1 | Close | Completed `RH-W-0057` added canonical command and prompt peers and checker coverage. |
+| B2 | Reject | `RH-W-0057` adopted repository-specific states (`current`, `stale`, `missing`, and `canonical-missing`); importing a second five-state vocabulary would duplicate the checker model. |
+| B7 | Close | The measured projection blind spot was the defect completed by `RH-W-0057`. |
+| B8 | Close | Human-owned harness files are checked structurally and updated additively; generated command surfaces are byte-compared. |
+| B9 | Close | The authenticated manifest selects and names the recorded runtime surfaces the checker evaluates. |
+
+### Group C: transport and cross-platform behavior
+
+| Finding | Disposition | Evidence or owner |
+|---|---|---|
+| C1 | Reject | The approved `RH-W-0059` design rejected provider-first fallback because this product does not require provider tooling; terminal failure remains explicit. |
+| C2 | Reject | The explicit provider HTTPS path depends on the rejected provider-first architecture. |
+| C3 | Close | Completed `RH-W-0059` requires non-interactive SSH and HTTPS with a bounded timeout. |
+| C5 | Close | Completed `RH-W-0059` quotes the upstream shorthand for PowerShell. |
+| C7 | Close | Completed `RH-W-0059` documents both known prompt-suppression limits beside the mechanism. |
+| C8 | Close | The `RH-W-0059` design review verified local integration of the fetched upstream already exists. |
+| C10 | Reject | The `RH-W-0059` design review withdrew this as a verified non-defect: no generated contract takes a date through that shell form. |
+| C11 | Integrate into `RH-W-0060` | That unit already owns committed-blob comparison before classifying line-ending-only changes. |
+| C12 | Integrate into `RH-W-0060` | That unit already owns branch listing and ancestry-backed deletion evidence without automatic deletion. |
+
+### Group D: documentation invariants
+
+| Finding | Disposition | Evidence or owner |
+|---|---|---|
+| D1 | Close | The rulebook, documentation map, roadmap, current state, decisions, and changelog already have distinct canonical ownership. |
+| D4 | Integrate into `RH-W-0040` | Its remaining unmechanizable claim-discipline residue is the existing owner for assertions whose cited evidence cannot settle them. |
+| D6 | Integrate into `RH-W-0052` | Manifest-aware archive, uninstall, and reinstall is the owner for generated copies surviving after their canonical source is withdrawn. |
+| D8 | Reject | An absolute ban on signposts conflicts with the repository's bounded documentation map and relative-link routing; duplicate indexes remain forbidden. |
+| D9 | Integrate into `RH-W-0022` | Move-safe inbound, outbound, and visible-label relationship checking belongs to the existing documentation relationship owner. |
+| D10 | Reject | A second machine decision registry would duplicate `decisions.md` and the roadmap lifecycle owner. |
+| D11 | Close | Completed `RH-W-0050` requires post-delivery reconciliation and a second bounded scan after repairs. |
+| D12 | Close | Root pointer directives are explicit bounded exceptions and are checked as directives rather than full generated copies. |
+| D14 | Close | Documentation reconciliation already permits an evidence-backed no-text-change outcome. |
+| D15 | Integrate into `RH-W-0022` | Stable-anchor policy and relationship resolution belong with future documentation relationship checking. |
+
+### Group E: session lifecycle
+
+| Finding | Disposition | Evidence or owner |
+|---|---|---|
+| E2 | Integrate into `RH-W-0051` | The shared local-state architecture is the owner for any future append-only local index and its union or rebuild semantics. |
+| E3 | Integrate into `RH-W-0051` | That unit already owns the single repository-root `.repo-harness/` local-state namespace. |
+| E6 | Integrate into `RH-W-0066` | Explicit remember or note persistence, conflict handling, and Engram verification belong to its proposed semantic routing design. |
+| E7 | Close | Generated session stop saves continuity before documentation and delivery gates. |
+| E8 | Close | Completed `RH-W-0050` and `RH-W-0064` require authorized obvious reconciliation to execute and reserve questions for human-owned judgments. |
+| E9 | Close | Generated session stop validates referenced handoff paths and surfaces absent paths without turning them into a false success. |
+| E10 | Close | Session-start output distinguishes blocked or unavailable evidence and never presents an unrun check as verified. |
+| E11 | Close | `REPO-HARNESS.md` is the bounded start entry point and routes detailed rules only when their gates fire. |
+| E12 | Integrate into `RH-W-0066` | Its future Engram retrieval and conflict design is the existing owner for search-result ordering and recency verification. |
+
+### Group F: evidence and claim discipline
+
+| Finding | Disposition | Evidence or owner |
+|---|---|---|
+| F1 | Close | Completed `RH-W-0058` owns visible question and notice blocks. |
+| F2 | Reject | A separate incident ledger would duplicate roadmap evidence, decisions, changelog chronology, and Engram continuity. |
+| F3 | Close | The rulebook requires applicable evidence and forbids treating an observation as its own conclusion. |
+| F4 | Close | Claims must name applicable and proportionate evidence, including the bounded owner scope. |
+| F5 | Close | Verification uses repository evidence and fresh commands rather than tool authority or confidence wording. |
+| F6 | Close | Canonical sources and machine checks own truth; projection parity alone is not delivery evidence. |
+| F7 | Integrate into `RH-W-0040` | Conditional negative claims and the evidence that would invalidate them belong to its remaining claim-discipline design. |
+| F8 | Close | The root rulebook carries never-miss rules and routes detail at the exact decision gate where it is used. |
+| F9 | Close | Completed `RH-W-0050` requires stale continuation state to be reconciled after delivery. |
+| F10 | Close | The repository-wide vocabulary separates verified, supported inference, unknown or unverifiable, and human decision required. |
+| F11 | Close | Independent outcomes remain independently classified; one bundle status cannot overwrite them. |
+| F12 | Close | Contribution and publication gates already require sensitive-path or secret review before external publication. |
+| F15 | Close | The rulebook forbids dated status and routes current inventory only to current state. |
+| F17 | Close | Project identity is resolved from the selected repository and aliases or external paths do not grant authority. |
+
+### Group G: authority and artifact identity
+
+| Finding | Disposition | Evidence or owner |
+|---|---|---|
+| G1 | Close | Completed `RH-W-0054` carries stateless authority as explicit command arguments and canonical host JSON. |
+| G2 | Close | Completed `RH-W-0054` binds authority to canonical bytes and digests rather than names. |
+| G3 | Close | Completed `RH-W-0054` requires immutable bindings and provenance; matching names grant no authority. |
+| G4 | Close | Publication remains a separate explicit gate and the operator reviews repository scope before it. |
+| G8 | Close | Existing generated outputs are never overwritten without authenticated ownership, content binding, and explicit approval; collisions block. |
+| G9 | Close | Canonical JSON and manifest output is deterministic and sorted before hashing or writing. |
+| G10 | Integrate into `RH-W-0052` | Generated-versus-authored restore behavior belongs to manifest-aware archive and reinstall design. |
+| G12 | Close | Builder capability, file drift, runtime set, package freshness, and operation outcomes are reported separately. |
+| G13 | Close | Generated provenance and canonical comparisons prevent a stale copy from claiming current authority merely because an operation exited cleanly. |
+
+### Disposition totals
+
+| Group | Close | Integrate | Defer | Reject | New unit | Total |
+|---|---:|---:|---:|---:|---:|---:|
+| A | 6 | 1 | 0 | 1 | 0 | 8 |
+| B | 4 | 0 | 0 | 1 | 0 | 5 |
+| C | 4 | 2 | 0 | 3 | 0 | 9 |
+| D | 4 | 4 | 0 | 2 | 0 | 10 |
+| E | 5 | 4 | 0 | 0 | 0 | 9 |
+| F | 12 | 1 | 0 | 1 | 0 | 14 |
+| G | 8 | 1 | 0 | 0 | 0 | 9 |
+| **Total** | **43** | **13** | **0** | **8** | **0** | **64** |
+
+Accepted residual ownership totals: `RH-W-0022` owns 3, `RH-W-0040` owns 2, `RH-W-0051` owns 2, `RH-W-0052` owns 2, `RH-W-0060` owns 2, and `RH-W-0066` owns 2. No recommendation required a new lifecycle unit, no completed unit was reopened, and shared infrastructure did not merge independent lifecycle units. This reconciliation authorizes no new product behavior.

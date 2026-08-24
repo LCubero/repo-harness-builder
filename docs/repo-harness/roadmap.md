@@ -20,27 +20,25 @@ Source and tests own current behavior; this roadmap owns lifecycle; [current sta
 
 Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 writes; PR #2 merged as `ec56b1b` for issue #1; runtime-set widening is complete; issue #8 completed exact `.codegraph/` ignore with persistent opt-out; Judgment Day round 2 remains incomplete after judge B hit a session limit; five round-1 findings and the later capabilities below were identified. Each unit remains bounded to its prior outcome, verification, and non-goal.
 
-## Proposed Audit Execution Order
+## Remaining Approved Execution Order
 
-The owner approved this revised execution order on 2026-08-21 after Judgment Day found zero severe defects. The sequence below incorporates the owner's narrow 2026-08-22 scheduling of `RH-W-0057` after `RH-W-0054`; every other position remains unchanged. Approval or scheduling changes no unit status or advancement condition. Completed `RH-W-0050` is baseline context for every scheduled unit below, not future work:
+The owner-approved path now begins with `RH-W-0011`. Completed `RH-W-0054` and `RH-W-0057` remain historical antecedents and are not pending steps. Scheduling changes no unit status or advancement condition:
 
-1. Deliver `RH-W-0054` because it is `P1` and its only declared unit dependency, `RH-W-0050`, is completed. No storage or recovery unit blocks it. If its design proves it needs persisted evidence, it joins the local-state architecture design in step 4 instead.
-2. Completed `RH-W-0057` immediately after `RH-W-0054`, as narrowly scheduled by the owner on 2026-08-22. The owner separately approved its design and authorized implementation on 2026-08-23; focused RED/GREEN evidence and synchronized projections completed the unit the same day.
-3. Run `RH-W-0011` as the first real application of the completed classification baseline. It inventories this repository's own historical findings with the identical `integrate`, `close`, `defer`, `reject`, or `noise` vocabulary, so it validates `RH-W-0050` against a real backlog at low marginal cost.
-4. Jointly design the local-state architecture for `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` because they share `.repo-harness` local namespaces, recoverable inventory, ownership evidence, ignore and override semantics, reports, and safety boundaries. The same design reserves namespace for the other declared consumers of that contract: the `RH-W-0053` checkpoint bytes, the durable repository-scoped consent or preference store that both `RH-W-0046` and `RH-W-0018` require, and the `RH-W-0040` violation record location. Reserving a namespace neither advances nor implements those units; it prevents a second breaking change to the storage contract.
-5. Implement `RH-W-0051` first within that architecture so `.repo-harness/tmp/` and `.repo-harness/archive/` establish the storage semantics consumed by later units.
-6. Implement `RH-W-0053` next because it is `P1` and both declared dependencies, `RH-W-0050` and `RH-W-0051`, are satisfied at this point.
-7. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery on those storage primitives.
-8. Implement `RH-W-0052` after that because archive, uninstall, and reinstall are the highest-risk operations and must consume proven storage and recovery primitives.
-9. Design `RH-W-0046` and `RH-W-0018` together because both require the same missing primitive, a durable repository-scoped consent or preference that stays visible and revocable. Implementation stays separate, and `RH-W-0018` remains `deferred` until its own advancement condition is met.
-10. Continue with `RH-W-0044`, whose `RH-W-0043` prerequisite is already completed, so only its written scope design remains.
-11. Continue with `RH-W-0022`. Reversing it with `RH-W-0044` was an unsupported optimization, not a dependency-backed correction.
-12. Continue with `RH-W-0055`.
-13. Continue with `RH-W-0040` last because it addresses only the unmechanizable residue, and which rules belong to that residue is unknown until the earlier checks exist.
+1. Run `RH-W-0011` as the first real application of the completed `RH-W-0050` classification baseline.
+2. Jointly design the local-state architecture for `RH-W-0051`, `RH-W-0048`, and `RH-W-0052`, reserving namespace for the separate consumers `RH-W-0053`, `RH-W-0046`, `RH-W-0018`, and `RH-W-0040` without merging their lifecycle or implementation boundaries.
+3. Implement `RH-W-0051` first within that architecture.
+4. Implement `RH-W-0053` after `RH-W-0051` establishes the storage semantics it consumes.
+5. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
+6. Implement `RH-W-0052` after those storage and recovery primitives are proven.
+7. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
+8. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
+9. Continue with `RH-W-0022`.
+10. Continue with `RH-W-0055`.
+11. Continue with `RH-W-0040`; its completed prerequisite is satisfied, while design and advancement of the unmechanizable residue remain pending.
 
 Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. Completed `RH-W-0050` remains the independent baseline for the architecture bundle.
 
-Historical owner-approved order: the 2026-08-20 sequence placed the `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` bundle immediately after `RH-W-0050`, then `RH-W-0011`, `RH-W-0046`, `RH-W-0044`, `RH-W-0022`, and `RH-W-0040`, and reviewed `RH-W-0053`, `RH-W-0054`, and `RH-W-0055` last. The re-audit found two `P1` units sitting behind eight units, seven `P2` and one `P3`, with no declared dependency requiring it, and found three further declared consumers of the same local-state contract. The owner-approved revised order addresses both findings without changing any record status or advancement condition.
+Historical owner-approved order: the 2026-08-20 sequence placed the `RH-W-0051`, `RH-W-0048`, and `RH-W-0052` bundle immediately after `RH-W-0050`, then `RH-W-0011`, `RH-W-0046`, `RH-W-0044`, `RH-W-0022`, and `RH-W-0040`, and reviewed `RH-W-0053`, `RH-W-0054`, and `RH-W-0055` last. The 2026-08-21 revision moved `RH-W-0054` first and the owner later inserted `RH-W-0057` immediately after it. Both are now completed. The remaining projection above preserves every still-pending relative position from that approved path.
 
 ## Consolidated Portfolio Audit
 
@@ -60,6 +58,40 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0066
+| Field | Value |
+|---|---|
+| Origin | Owner-approved analysis registered on 2026-08-23 for explicit requests to remember or note something, where persistence is useful but the correct durable owner depends on the meaning of the request. |
+| Priority | P2: routing a durable request to the wrong owner creates duplicate or conflicting truth, while failing to persist an appropriate request loses owner intent across sessions. |
+| Dependencies | Reuse the completed `RH-W-0050` classification baseline. Relate to `RH-W-0044` for future human-owned document suggestions without absorbing its compare-and-suggest scope. |
+| Status | proposed |
+| Completed work | Registered the semantic routing boundary only. An explicit remember or note request requires durable persistence when appropriate, but first searches for an existing canonical owner. Temporary session observations route to Engram or session output; personal preferences to personal Engram; decisions to `decisions.md`; pending work to this roadmap; research sources to thematic research or the future reference owner proposed by `RH-W-0065`; and durable project facts to their existing owner. A generic notes dumping ground is rejected. If the request could mean either project-only knowledge or generated builder behavior, promotion to the product waits for one explicit human question. |
+| Remaining work | Design classification, deduplication or reinforcement, privacy, conflict handling, tracked persistence, Engram mirror boundaries, and localized ownership before any behavior or artifact is implemented. |
+| Additions | One future semantic routing contract for explicit remember or note requests, with durable persistence only in the smallest applicable owner. |
+| Exclusions | No generic notes file, no generated builder behavior, no product promotion without resolving ambiguous scope, no new reference file, and no duplicate lifecycle, decision, research, or memory store. Do not absorb `RH-W-0051`, `RH-W-0040`, or `RH-W-0062`. |
+| Deferrals | Exact routing mechanics, persistence schema, and generated behavior remain deferred to a future approved design. |
+| Rejections | Rejected a generic notes dumping ground and rejected treating every remember request as product behavior. Existing canonical owners remain authoritative, and ambiguous project-only versus generated behavior requires one explicit human question. |
+| Evidence | Human decision: the owner approved this bounded lifecycle scope and immutable ID. Verified repository policy: `RH-W-0050` owns finding classification and reconciliation; `decisions.md`, this roadmap, thematic research documents, localized peers, and Engram already have distinct ownership boundaries. No implementation evidence is claimed. |
+| Decision history | 2026-08-23: registered as `proposed` from owner-approved analysis, without implementation, a design artifact, or a generic notes store. Registered outside the owner-approved 2026-08-21 execution order; scheduling remains an owner decision. |
+| Next advancement condition | Advance only after an owner-approved design defines classification, deduplication or reinforcement, privacy, conflicts, tracked persistence, Engram mirror boundaries, localized ownership, and the explicit-question boundary for possible product promotion. |
+
+### RH-W-0065
+| Field | Value |
+|---|---|
+| Origin | Owner-approved analysis registered on 2026-08-23 for research evidence and useful durable links that currently have no thematic canonical owner. |
+| Priority | P2: research conclusions become misleading when used sources were never opened, unreadable sources disappear from the report, or useful links are scattered without provenance or revalidation state. |
+| Dependencies | Reuse the completed `RH-W-0050` classification baseline and the completed `RH-W-0031` primary-source research precedent. Relate to `RH-W-0022` only for future documentation-relationship checking. |
+| Status | proposed |
+| Completed work | Registered the research and durable-reference boundary only. Internet research must attempt to open and evaluate every source used. Results explicitly list located sources that could not be read, with a bounded reason such as authentication, transport failure, incomplete content, or snippet-only evidence. Useful owner-supplied or research-produced links may be persisted in a tracked maintainable reference owner only when they do not belong better to an existing thematic document. No reference file or schema was created. |
+| Remaining work | Design the future URL, date, title, purpose, provenance, status, last-verified, owner-document, and notes schema, plus deduplication, sensitive URL rejection, archival, localization, and revalidation. |
+| Additions | One future maintainable owner for otherwise-ownerless durable research links, plus explicit reporting of unread located sources. |
+| Exclusions | No `references.md`, no schema or file creation now, no network access in this registration, no replacement for thematic research owners, and no implementation. Do not absorb `RH-W-0051`, `RH-W-0040`, or `RH-W-0062`. |
+| Deferrals | File location, schema representation, lifecycle operations, localization mechanics, and revalidation cadence remain deferred to a future approved design. |
+| Rejections | Rejected persisting links that belong to an existing thematic document, sensitive URLs, and source lists that hide located but unread evidence. Rejected merging this with future documentation relationship checking under `RH-W-0022`. |
+| Evidence | Human decision: the owner approved this bounded lifecycle scope and immutable ID. Verified repository precedent: `RH-W-0031` owns primary-source research evidence, `RH-W-0050` supplies the classification baseline, and the documentation map assigns thematic research to dedicated owners. No source was researched and no implementation evidence is claimed in this registration. |
+| Decision history | 2026-08-23: registered as `proposed` from owner-approved analysis, without creating a reference file or schema. Registered outside the owner-approved 2026-08-21 execution order; scheduling remains an owner decision. |
+| Next advancement condition | Advance only after an owner-approved design defines the complete field schema, deduplication, sensitive URL rejection, archival, localization, revalidation, thematic-owner preference, and the exact relationship-checking boundary with `RH-W-0022`. |
 
 ### RH-W-0064
 | Field | Value |
@@ -99,18 +131,18 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 | Field | Value |
 |---|---|
 | Origin | Item 7 and the open gap of the 2026-08-12 bootstrap handoff, recovered on 2026-08-23 while archiving that document. It was written before the split and never reached this roadmap. |
-| Priority | P2: a consumer can invoke an installed builder copy that is not the version it believes it has, and nothing tells it so. No data is at risk, but every guarantee the consumer reasons about is guaranteed by a version it cannot confirm. |
-| Dependencies | none declared. Related to `RH-W-0057`, which owns a different blind spot in the same checker, and the two should be designed together if both are scheduled. |
+| Priority | P2: an offline distributed builder copy can lack a trustworthy identity tying it to a release artifact. Installed manifest freshness against the builder currently running is already reported by completed `RH-W-0010`. |
+| Dependencies | Coordinate with `RH-W-0055`, which owns stable future release asset naming and installation onboarding. Reuse completed `RH-W-0010`; do not duplicate its installed-versus-running freshness signal. |
 | Status | proposed |
-| Completed work | Recovered the gap and restated it inside this repository's boundary, without inspecting or naming any consumer. The original text measured the gap in another workspace; that framing is dropped because this repository schedules no work inside a consumer. The product-side question survives: canonical now lives here, an installed copy lives wherever the consumer put it, and no mechanism reports the distance between them. |
-| Remaining work | Design how a repository that installed the builder detects that its copy is stale against canonical. Decide what identity a copy carries, where the comparison runs, what it reports, and whether it is a builder capability, a generated-checker capability, or a release artifact. The generated checker cannot be the whole answer on its own: it compares projections against canonical copies inside the repository it runs in, and a consumer has no canonical builder to compare against. |
-| Additions | One staleness signal for an installed builder copy, owned by this product. |
-| Exclusions | No modification of any consumer repository, no inspection of one, no scheduled work inside one, no network dependency, and no telemetry. Installing and running a release stays the owner's action. |
+| Completed work | Recovered the original gap without inspecting or naming a consumer, then narrowed it against current behavior. Completed `RH-W-0010` already reports `fresh`, `stale`, `ahead`, `absent`, or `unverifiable` by comparing the installed manifest with the builder currently running. The distinct residue is offline: whether distributed bytes can identify the release artifact they came from before a trusted builder is available. |
+| Remaining work | Design only the offline distributed-copy identity: what immutable release identity the package carries, how a user verifies it without network access, and how onboarding names it. Coordinate the identity and naming contract with `RH-W-0055`. |
+| Additions | One offline release or distributed-copy identity contract, if design proves it adds evidence beyond the existing manifest generator version and published digest. |
+| Exclusions | No duplicate installed-manifest freshness signal, generated-checker freshness feature, consumer modification or inspection, network dependency, telemetry, publication, or release action. |
 | Deferrals | none |
-| Rejections | Rejected extending the generated checker alone without a design, because it reports on a repository's own harness projections and has no canonical builder to compare against in a consumer. |
-| Evidence | Verified: the archived handoff records the gap, and no roadmap record covered it before 2026-08-23. Verified: `.repo-harness/check.py` compares only paths declared in the installed manifest. Human decision: whether the signal belongs to the builder, the generated checker, or the release. |
-| Decision history | 2026-08-23: registered as proposed while archiving the bootstrap handoff, restated inside this repository's boundary. Registered outside the owner-approved 2026-08-21 execution order; its scheduling remains an owner decision. |
-| Next advancement condition | Advance after a written design names the copy identity, the comparison location, the reported outcome, and the owning surface, with focused tests that fail before implementation. |
+| Rejections | Rejected the stale premise that no freshness signal exists and rejected extending the generated checker: completed `RH-W-0010` owns installed freshness against the running builder. |
+| Evidence | Verified: `package_freshness()` and builder `check()` report the installed manifest generator against the running builder. Verified: the release chronology records package assets and digests, while `RH-W-0055` records that no stable future naming and onboarding contract exists. Human decision: whether offline identity adds enough evidence beyond those existing facts to justify design. |
+| Decision history | 2026-08-23: registered as proposed while archiving the bootstrap handoff. 2026-08-23: narrowed to offline distributed-copy or release identity after reconciling the original premise with completed `RH-W-0010`; coordination moved to `RH-W-0055`, without advancing or implementing either unit. |
+| Next advancement condition | Advance only with `RH-W-0055` design evidence that names a viable offline identity not already supplied by manifest freshness or an existing release digest; otherwise close this unit as no residue. |
 
 ### RH-W-0061
 | Field | Value |
@@ -153,7 +185,7 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 | Priority | P1: the generated session contracts promise a remediation banner naming an alternate credential path, and against a passphrase-protected key or an uncached HTTPS credential they cannot reach it. The session hangs with no error, no banner, and no timeout, which is worse on the close path where memory may already be saved. |
 | Dependencies | none. `RH-W-0046` owns whether a read-only fetch is separable from the network-access threshold; this unit owns how the fetch is invoked once it is authorized, and the two do not block each other. |
 | Status | completed |
-| Completed work | Implemented the approved four-clause contract test-first. Seven focused `NonInteractiveTransportTests` failed with 16 assertions before implementation and pass afterward; the canonical suite passes 367 tests with 8 skips; the generated checker reports `current` with zero writes; and the canonical self-hosted session skills plus both runtime projections are synchronized, with each projection keeping its own provenance pointer. The owner approved the design and both recommendations: name the exact flags, and keep `C1` and `C2` excluded. Wrote the [design](rh-w-0059-design.md) and reviewed it against repository evidence, which cut it from eight clauses to four. Three clauses left as scope creep and are now `RH-W-0060` or withdrawn, one imported justification was retracted, and two findings were reclassified as already satisfied. Pending owner approval, with three open human decisions and no implementation authorized. Measured the gap in this repository's own generated contract rather than assuming it. `.repo-harness/skills/repo-harness-session-start/SKILL.md` requires one approval before network access, names `git fetch` and fast-forward-only integration, and requires transport-failure remediation to name an available alternate credential path, but nothing in it specifies a non-interactive invocation. The strings `BatchMode`, `GIT_TERMINAL_PROMPT`, `TTY`, and `passphrase` appear nowhere in the generated skills or in the roadmap. The reviewed external harness states the same obligation, states that exactly this configuration exists on one of its two machines, and states that it has not fired only because its provider path keeps winning first. |
+| Completed work | Implemented the approved four-clause contract test-first. Seven focused `NonInteractiveTransportTests` failed with 16 assertions before implementation and pass afterward; the canonical suite passes 367 tests with 8 skips; the generated checker reports `current` with zero writes; and the canonical self-hosted session skills plus both runtime projections are synchronized, with each projection keeping its own provenance pointer. The owner approved the design and both recommendations: name the exact flags, and keep `C1` and `C2` excluded. Wrote the [design](rh-w-0059-design.md) and reviewed it against repository evidence, which cut it from eight clauses to four. Three clauses left as scope creep and are now `RH-W-0060` or withdrawn, one imported justification was retracted, and two findings were reclassified as already satisfied. The design body retains its pre-delivery draft and review narrative as history. Measured the gap in this repository's own generated contract rather than assuming it. `.repo-harness/skills/repo-harness-session-start/SKILL.md` requires one approval before network access, names `git fetch` and fast-forward-only integration, and requires transport-failure remediation to name an available alternate credential path, but nothing in it specifies a non-interactive invocation. The strings `BatchMode`, `GIT_TERMINAL_PROMPT`, `TTY`, and `passphrase` appear nowhere in the generated skills or in the roadmap. The reviewed external harness states the same obligation, states that exactly this configuration exists on one of its two machines, and states that it has not fired only because its provider path keeps winning first. |
 | Remaining work | none |
 | Additions | A non-interactive transport contract in the generated session skills, with the shell-portability hazards stated where the command is given. |
 | Exclusions | No provider tooling requirement, no change to the approval threshold that `RH-W-0046` owns, no new dependency, no credential storage, no automatic integration on divergence, and no change to the existing outcome model. |
@@ -203,23 +235,23 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 | Origin | Owner request on 2026-08-22 to review his own external harness, referred to here as `external harness 1`, and extract generically reusable ideas for any repository. The alias follows the `RH-W-0046` precedent: the reviewed repository belongs to the owner, and its identity is not this repository's to record. |
 | Priority | P2: it is an idea source rather than a defect, but this repository has no comparative evidence base for cross-OS, transport, or runtime-surface decisions and currently designs each one from first principles. |
 | Dependencies | none |
-| Status | active |
+| Status | completed |
 | Completed work | Confirmed the owner owns the reviewed repository, that the review is read-only, and that no existing roadmap record covers a comparative external harness analysis. Performed the bounded read-only inspection on 2026-08-22 and delivered the bilingual [findings document](rh-w-0056-findings.md) with 94 patterns across seven groups, each carrying its evidence class and a recommendation: 64 `integrate`, 14 `inspire`, 16 `already present`, 0 `reject`, and 0 `out of scope`. The first pass covered roughly a third of the harness and stopped at a bound this work unit invented rather than one the owner set; the owner rejected it, and the completed review then read the whole harness surface: the root rulebook and all three root pointer files, the six gated rule files, all six pack skills with every reference and banner asset, the control index, every control docstring plus the two largest control implementations in full, the ignore and attribute files, the pack installation guide, the generated skill registry, and the product README's conventions and session-command sections. Deployment target references, audit and backup workflow bodies beyond their rules and hazards, and business documentation, notebooks, and application code remain unread as domain operations detail, and the document states that no claim and no absence claim rests on them. No project identity, absolute path, host, credential, or domain datum was carried into this repository. |
-| Remaining work | Obtain the owner decision on the 64 `integrate` recommendations and register the accepted ones as their own work units. The document proposes seven natural groupings: transport hardening, command projection folding into `RH-W-0057`, control discipline, documentation invariants, evidence and claim discipline, authority and artifact identity, and session lifecycle. `G1` through `G3` bore on `RH-W-0054`, which completed on 2026-08-23; read them against whatever unit inherits that scope rather than against a closed one. `F1` was extracted into its own registered unit `RH-W-0058` because the reviewing session violated it in the same turn that found it. No adoption is authorized by the document itself. |
+| Remaining work | none |
 | Additions | One findings document plus a reconciliation that classifies every finding as integrate, inspire, reject, or out of scope, using the vocabulary the completed `RH-W-0050` already established. |
 | Exclusions | No mutation of the reviewed repository, no secrets, credentials, absolute paths, host names, or machine-specific values copied into this repository, no adoption of any pattern without its own separate unit, and no second backlog competing with this roadmap. |
 | Deferrals | none |
-| Rejections | Rejected adopting any reviewed pattern directly, because an adoption needs its own design, tests, and delivery evidence, and rejected treating the reviewed repository as authority over this product's boundaries. |
-| Evidence | Verified: `docs/repo-harness/` already owns `integration-research.md`, `i18n-research.md`, and `contribution-workflow-research.md`, so a findings document is an established artifact type here. Verified: no roadmap record covers external harness comparison, and the nearest units `RH-W-0022`, `RH-W-0055`, and `RH-W-0046` plus the deferred ATL-like inventory address different scopes. Verified: the owner stated the reviewed repository is his own and authorized a read-only review. Human decision: which findings are adopted, inspired, or rejected. |
-| Decision history | 2026-08-22: registered as proposed at owner request after confirming no existing owner for the scope. Registered outside the owner-approved 2026-08-21 execution order; its scheduling remains an owner decision. 2026-08-22: the owner authorized execution the same day; the bounded read-only inspection ran and the bilingual findings document was delivered, advancing the unit to `active` with the adoption decision still pending. |
-| Next advancement condition | Advance after the owner decides which of the 64 `integrate` recommendations to adopt and the accepted recommendations are registered as separately scoped work units. The completed findings document alone does not advance the unit. |
+| Rejections | The reconciliation rejected 8 recommendations whose mechanism or premise conflicts with current product boundaries. It rejected direct adoption without a lifecycle owner and rejected treating the reviewed repository as authority over this product. |
+| Evidence | Verified: the bilingual findings owner now gives all 64 `integrate` recommendations exactly one disposition: 43 closed as satisfied, 13 integrated into six existing non-terminal owners, 0 deferred, 8 rejected, and 0 new units. Accepted residual totals are `RH-W-0022` 3, `RH-W-0040` 2, `RH-W-0051` 2, `RH-W-0052` 2, `RH-W-0060` 2, and `RH-W-0066` 2. Completed `RH-W-0054`, `RH-W-0057`, `RH-W-0058`, `RH-W-0059`, and `RH-W-0064` remain closed. |
+| Decision history | 2026-08-22: registered and advanced to `active` after delivery of the complete bilingual review. 2026-08-23: owner-authorized portfolio reconciliation assigned all 64 dispositions without creating a duplicate unit or reopening completed work, advancing the unit to `completed`. |
+| Next advancement condition | none |
 
 ### RH-W-0055
 | Field | Value |
 |---|---|
 | Origin | Owner note requesting copy/paste installation guidance for Claude Code, OpenCode, and Pi, connected to builder invocation and daily session use. |
 | Priority | P2: installation is possible from a release package, but the repository does not provide one coherent consumer path from artifact selection through daily operation. |
-| Dependencies | RH-W-0050 for evidence classification in onboarding claims. The published package already provides stable contents, so the release asset naming contract is an addition this unit owns rather than a dependency it waits on. |
+| Dependencies | Completed `RH-W-0050` for evidence classification. Coordinate with narrowed `RH-W-0062` if offline distributed-copy identity survives design. A release asset exists, but no stable future naming or onboarding contract exists. |
 | Status | proposed |
 | Completed work | Grouped copy/paste installation, future release asset naming, and install-to-builder-to-session guidance into one bounded lifecycle unit. |
 | Remaining work | Design per-runtime copy/paste commands, supported prerequisites, future release asset naming, verification, upgrade references, and links from installation to builder execution and daily session-start or session-stop usage. |
@@ -227,7 +259,7 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 | Exclusions | No release publication, network action, package rename, generated behavior, or claim that a future asset already exists. |
 | Deferrals | Actual asset naming and URLs remain unresolved until a release design is approved. |
 | Rejections | Rejected scattering installation snippets across unrelated documents or documenting only package extraction without the operational next steps. |
-| Evidence | Verified: the supported runtime set includes Claude Code, OpenCode, and Pi. Supported inference: asset naming and installation belong together because copy/paste commands need a stable artifact reference. Unknown: exact future asset name and URL pattern. |
+| Evidence | Verified: the supported runtime set includes Claude Code, OpenCode, and Pi, and the changelog records an existing installable release asset. Verified absence in current owners: no stable future asset naming or onboarding contract exists. Supported inference: naming and installation belong together because copy/paste commands need a stable artifact reference. Unknown: exact future asset name and URL pattern. |
 | Decision history | 2026-08-21: registered as proposed from the consolidated portfolio audit; no release or implementation was approved. |
 | Next advancement condition | Advance after a written onboarding design names supported installation sources, exact per-runtime commands, future asset naming, offline and failure boundaries, verification, and links through builder invocation to daily session usage. |
 
@@ -406,7 +438,7 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 |---|---|
 | Origin | Owner statement of the goal on 2026-08-19: a new skill version is copied over the repository, run once, and the update reviews the core, key decisions, and tools against what the builder would produce now, then suggests the changes without damaging anything |
 | Priority | P2: regeneration already repairs everything the builder owns, so the update is useful without this unit, but the human-owned half of a harness is where drift actually accumulates and today it is reported only as a missing section or a missing directive. |
-| Dependencies | RH-W-0043, because a suggestion the builder cannot then apply is advice rather than an update. |
+| Dependencies | Completed `RH-W-0043`; the antecedent is satisfied. Only this unit's scope design and advancement remain pending. |
 | Status | proposed |
 | Completed work | Bounded what already exists so this unit does not rebuild it. Congruence checking already reports `stale`, `missing`, `human-evolved`, `sections-missing`, and `directive-missing` per path, and human-owned documents already stay proposal-only. The gap is content-level comparison and a concrete proposed change, not detecting that a human-owned document diverged. |
 | Remaining work | Design the scope boundary before any implementation: which human-owned documents are compared, what one suggestion contains, how suggestions are presented and accepted individually, and how the builder avoids proposing to undo legitimate divergence the repository intended. |
@@ -474,7 +506,7 @@ A second pass on 2026-08-21 re-audited the whole non-terminal portfolio rather t
 |---|---|
 | Origin | Owner proposal after three rule violations in one session: surface the rules that are actually forgotten instead of the whole rulebook |
 | Priority | P3: it addresses only the residue left after RH-W-0039, and its evidence source is human-fed, so it cannot be trusted as a detector |
-| Dependencies | RH-W-0039; only rules proven unmechanizable belong here, and that set is unknown until the checks exist |
+| Dependencies | Completed `RH-W-0039`; the prerequisite is satisfied. Only design and advancement of the proven unmechanizable residue remain pending. |
 | Status | proposed |
 | Completed work | Established the counter-evidence that bounds this unit. `REPO-HARNESS.md:22` is injected into agent context every turn and was present throughout the session in which it was violated three times, so surfacing rules earlier is proven insufficient on its own and this unit must not be scoped as a rule reader. |
 | Remaining work | Design what a violation record contains, where it lives, who writes it, and how session start consumes it without becoming another ignored wall of text. |
