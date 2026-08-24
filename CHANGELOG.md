@@ -6,6 +6,11 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-24
 
+- Added an action plans section to the roadmap owning one execution plan per non-terminal record, with a coherence review declaring five cross-plan relationships and complete coverage of all 22 records. The section owns no status, priority, or schedule.
+- Registered `RH-W-0067` for the reply-shaping contract placement defect: the `=` and `+` visibility syntax that `RH-W-0058` established lives only in the three daily contracts, with zero occurrences in `REPO-HARNESS.md` and `.repo-harness/rules/`, so an obligation binding every reply is absent from any turn that does not run a daily skill.
+- Revised the execution order to 17 positions after the owner delegated the technical ordering criterion, preserving every still-pending relative position from the 2026-08-21 path and inserting only previously unscheduled units.
+- Advanced `RH-W-0013` from `deferred` to `proposed` once the measurement its condition named was taken, and `RH-W-0061` from `proposed` to `ready` after the owner separated a repository license from that repository's harness.
+- Corrected the `RH-W-0012` dependency wording, recorded a fifth measured instance on `RH-W-0040`, and restated the `RH-W-0018` activation model as a mode the human turns on by asking for it.
 - Completed `RH-W-0011` after the owner explicitly accepted all five verified `close` classifications and authorized lifecycle closure. No promotion or implementation was required; the unavailable historical report and incomplete Judgment Day judge B output remain recorded limitations, and closure rests on independent repository evidence for RH-W-0003 through RH-W-0007.
 - Advanced `RH-W-0011` from `proposed` to `ready` after the owner explicitly approved its complete bilingual written reconciliation scope. Approval records the scope only; the bounded inventory and classification require separate execution authorization, and no reconciliation, promotion, implementation, or completion is claimed.
 

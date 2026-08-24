@@ -4,6 +4,11 @@
 
 ## 2026-08-24
 
+- Se agrego a la hoja de ruta una seccion de planes de accion que posee un plan de ejecucion por cada registro no terminal, con una revision de coherencia que declara cinco relaciones entre planes y cobertura completa de los 22 registros. La seccion no posee estado, prioridad ni calendario.
+- Se registro `RH-W-0067` por el defecto de ubicacion del contrato de forma de respuesta: la sintaxis de visibilidad `=` y `+` que establecio `RH-W-0058` vive solo en los tres contratos diarios, con cero ocurrencias en `REPO-HARNESS.md` y `.repo-harness/rules/`, asi que una obligacion que rige cada respuesta falta en cualquier turno que no corra una skill diaria.
+- Se reviso el orden de ejecucion a 17 posiciones tras delegar el propietario el criterio tecnico de ordenamiento, conservando cada posicion relativa pendiente de la ruta del 2026-08-21 e insertando solo unidades antes no agendadas.
+- Se avanzo `RH-W-0013` de `deferred` a `proposed` una vez tomada la medicion que nombraba su condicion, y `RH-W-0061` de `proposed` a `ready` tras separar el propietario la licencia del repositorio del harness de ese repositorio.
+- Se corrigio la redaccion de dependencias de `RH-W-0012`, se registro una quinta instancia medida en `RH-W-0040` y se reformulo el modelo de activacion de `RH-W-0018` como un modo que la persona enciende pidiendolo.
 - Se completo `RH-W-0011` despues de que el propietario aceptara explicitamente las cinco clasificaciones `close` verificadas y autorizara el cierre del ciclo de vida. No se requirio promocion ni implementacion; el informe historico no disponible y la salida incompleta del juez B de Judgment Day siguen como limitaciones registradas, y el cierre descansa en evidencia independiente del repositorio para RH-W-0003 a RH-W-0007.
 - Se avanzo `RH-W-0011` de `proposed` a `ready` despues de que el propietario aprobara explicitamente su alcance escrito bilingue completo de reconciliacion. La aprobacion registra solamente el alcance; el inventario y la clasificacion acotados requieren autorizacion separada de ejecucion, y no se afirma reconciliacion, promocion, implementacion ni finalizacion.
 
