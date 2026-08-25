@@ -22,30 +22,32 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-Reconciled on 2026-08-24 after `RH-W-0013` and `RH-W-0067` completed. Their historical insertion and dependency sequence remains recorded below in the action plans, while the remaining order preserves every still-pending relative position from the owner-approved path.
+Reconciled on 2026-08-25 after registering RH-W-0071. Historical sequence remains in the action plans. RH-W-0071 is inserted only after RH-W-0051 implements preference storage. RH-W-0070 remains outside this order and unscheduled until its proportional resource-safety boundary is designed and approved.
 
 The local-state architecture leads:
 
-1. Let `RH-W-0051` lead the joint local-state architecture by defining the local-state taxonomy and ownership semantics. `RH-W-0048` participates conditionally on those semantics. `RH-W-0052` may be drafted only conditionally and cannot advance until `RH-W-0051` and `RH-W-0048` are proven and manifest ownership is approved. Reserve namespace for the separate consumers `RH-W-0053`, `RH-W-0046`, `RH-W-0018`, and `RH-W-0040` without merging their lifecycle or implementation boundaries.
+1. Let `RH-W-0051` lead the joint local-state architecture and reserve namespaces for `RH-W-0071`, `RH-W-0069`, `RH-W-0053`, `RH-W-0046`, `RH-W-0018`, and `RH-W-0040` without merging lifecycle or implementation boundaries.
 2. Implement `RH-W-0051` first within that architecture.
-3. Implement `RH-W-0053` after `RH-W-0051` establishes the storage semantics it consumes.
-4. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
-5. Implement `RH-W-0052` after those storage and recovery primitives are proven.
+3. Implement `RH-W-0071` after RH-W-0051 establishes `.repo-harness/state/preferences/`, without absorbing consent or language-preference semantics.
+4. Implement `RH-W-0069` after RH-W-0051 establishes `.repo-harness/memory-bk/`, without absorbing typed checkpoints.
+5. Implement `RH-W-0053` after RH-W-0051 establishes its storage semantics.
+6. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
+7. Implement `RH-W-0052` after those storage and recovery primitives are proven.
 
 Consent and comparison follow, unchanged:
 
-6. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
-7. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
-8. Continue with `RH-W-0022`.
+8. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
+9. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
+10. Continue with `RH-W-0022`.
 
 Onboarding and the remaining residue close the path:
 
-9. Continue with `RH-W-0055`.
-10. Then `RH-W-0062`, which resolves against the `RH-W-0055` design and closes as no residue if that design finds no viable offline identity.
-11. Continue with `RH-W-0040`; its completed prerequisite is satisfied, while design and advancement of the unmechanizable residue remain pending.
-12. Then `RH-W-0060`; its non-concurrency constraint with completed `RH-W-0067` remains satisfied.
-13. Then `RH-W-0065`.
-14. Then `RH-W-0066`.
+11. Continue with `RH-W-0055`.
+12. Then `RH-W-0062`, which resolves against the `RH-W-0055` design.
+13. Continue with `RH-W-0040`.
+14. Then `RH-W-0060`.
+15. Then `RH-W-0065`.
+16. Then `RH-W-0066`.
 
 The five records in the deferred list keep their existing conditions and are not scheduled: `RH-W-0012`, `RH-W-0014`, `RH-W-0015`, `RH-W-0026`, and `RH-W-0063`.
 
@@ -84,23 +86,23 @@ Reconcile this section whenever a record's status, dependencies, or advancement 
 
 ### Plan 1: RH-W-0051 local-state architecture design
 
-Readiness `plannable now`. Priority `P2`, dependencies none. Next artifact: `docs/repo-harness/rh-w-0051-design.md` and its Spanish peer, registered in both documentation maps.
+Readiness `completed`. Priority `P2`, dependencies none. The owner-approved [design](rh-w-0051-design.md) and its Spanish peer define the four namespaces, including the RH-W-0069 reservation, without implementing consumer behavior.
 
 1. Restate the measured baseline: the canonical generator defines no supported `tmp` or `archive` namespace today, and the two standing decisions record the approved target policy without support.
-2. Define the local-state taxonomy: `.repo-harness/tmp/` as disposable and `.repo-harness/archive/` as recoverable, both non-authoritative and Git-ignored by default.
+2. Define `.repo-harness/tmp/`, `.repo-harness/archive/`, `.repo-harness/state/`, and `.repo-harness/memory-bk/`, all non-authoritative and Git-ignored by default.
 3. Define ownership semantics per namespace: who writes, who deletes, what a plain read-only check reports, and what a clean worktree means for each.
 4. Define behavior for a non-Git folder and a multi-root workspace, because the taxonomy may not assume Git.
-5. Reserve namespace for the declared consumers without absorbing them: RH-W-0053 checkpoint bytes, the RH-W-0046 and RH-W-0018 consent or preference store, and the RH-W-0040 violation record. Name each consumer and its reserved location only.
+5. Reserve namespace without absorbing consumers: RH-W-0069 backups, RH-W-0053 checkpoints, RH-W-0046 and RH-W-0018 preferences, and RH-W-0040 violations.
 6. Specify exact generated paths, `.gitignore` integration, generated-checker treatment, manifest representation, explicit repository override semantics, and migration for an installed harness that carries neither namespace.
 7. Name the RED tests that must fail before implementation, one per contract clause.
 
-Human decisions: the exact override syntax; whether the manifest records the namespaces or the generator fixes them; and the retention policy for `archive`, which is never auto-deleted.
+Human decisions: none for the approved design. Overrides, cleanup, migration, and implementation remain separate future decisions.
 
-Done when the owner approves the design. Approval of a design is not authorization to implement it.
+Done. Approval of the design does not authorize implementation.
 
 ### Plan 2: RH-W-0051 implementation
 
-Readiness `plannable after RH-W-0051 design approval`. Next artifact: `docs/repo-harness/rh-w-0051-implementation-plan.md` and its Spanish peer.
+Readiness `planned`. The owner-requested bilingual [implementation plan](rh-w-0051-implementation-plan.md) and its Spanish peer are complete. The record remains `proposed`; the plan authorizes no implementation or lifecycle change.
 
 1. Derive the task list from the approved design, one task per contract clause.
 2. Write the RED tests first and record the exact failure count and messages.
@@ -109,6 +111,18 @@ Readiness `plannable after RH-W-0051 design approval`. Next artifact: `docs/repo
 5. Deliver issue-first per `CONTRIBUTING.md`, then reconcile roadmap, current-state, Spanish peers, and the Engram `work/RH-W-0051` mirror in the same unit.
 
 Human decisions: none beyond the design approval and explicit implementation authorization.
+
+### Plan 2A: RH-W-0069 local memory backup implementation
+
+Readiness `planned after RH-W-0051 implementation`. Priority `P2`. The owner-approved [design](rh-w-0069-design.md), bilingual [implementation plan](rh-w-0069-implementation-plan.md), and their Spanish peers are complete. The record remains `proposed`; execution still waits for proven RH-W-0051 support and separate authorization.
+
+1. Derive focused RED tests for schema, containment, privacy, repository-first reads, local-first writes, independent outcomes, and Engram cross-checking.
+2. Implement only after RH-W-0051 provides `.repo-harness/memory-bk/` taxonomy and Git-ignore support.
+3. Update canonical start, stop, and memory contracts without coupling Gentle AI or built-in runtime memory to backup mechanics.
+4. Synchronize generated projections and verify integrated and standalone behavior.
+5. Reconcile lifecycle and Engram after verified implementation without absorbing RH-W-0053, RH-W-0066, or RH-W-0068.
+
+Human decision: explicit implementation authorization. This plan and design authorize no implementation.
 
 ### Plan 3: RH-W-0053 interrupted-session checkpoint design
 
@@ -292,6 +306,32 @@ Readiness `plannable now`. Priority `P1`. Registered outside the approved order 
 
 Human decision: approve the minimal design before implementation. This registration authorizes no product change.
 
+### Plan 19: RH-W-0070 agent resource-safety limits
+
+Readiness `plannable now`. Priority `P1`. Registered outside the approved order after a verified delegated-review incident; this plan authorizes only a future bilingual design, not implementation.
+
+1. Inventory potentially expensive actions, including scripts, tools, tests, builds, model workloads, reviewers, delegated verification, and similar subprocess or provider-managed work, across CPU, GPU, and RAM.
+2. Treat 90 percent utilization as an operational ceiling to keep in mind while designing or executing work, not as a promise of precise continuous measurement or universal hard enforcement.
+3. Define simple preventive controls available to each action: focused scope, bounded workers or parallelism, bounded batch sizes, explicit timeouts, one launch, lightweight alternatives, and a cost or resource forecast before expensive work.
+4. Define how planning and delegated review avoid casual full or recursive suites and stop or ask before launching work whose saturation risk cannot be bounded.
+5. Keep unrelated user processes untouched. Never kill or throttle them, and do not design a monitoring daemon, telemetry system, memory monitor, GPU watcher, scheduler, process killer, or universal enforcement mechanism.
+6. Name focused RED tests and lightweight bounded verification evidence for each preventive clause, including honest limitation reporting where the available action cannot bound saturation risk.
+
+Human decision: approve the future bilingual design and its proportional preventive boundary before any implementation. Precise continuous measurement and universal hard enforcement are outside this unit.
+
+### Plan 20: RH-W-0071 ADHD-friendly response mode implementation
+
+Readiness `planned after RH-W-0051 implementation`. Priority `P2`. The owner-approved bilingual [design](rh-w-0071-design.md) is complete. This action plan records future work only; it is not an implementation plan and authorizes no lifecycle advancement or product change.
+
+1. Derive focused deterministic RED cases without live-model evaluation or expensive verification.
+2. Reuse RH-W-0051 `.repo-harness/state/preferences/` for repository persistence and keep session-only state non-persistent.
+3. Extend the existing RH-W-0067 response contract, builder interview, and help path without another response owner or external ADHD dependency.
+4. Preserve RH-W-0031 provenance and no-inference semantics: explicit current-session instruction, then repository preference, then explicit standard.
+5. Keep the active preference out of the manifest and checker, preserve read-only checking, and use normal generated-output migration.
+6. Verify standalone and integrated parity, bounded rollback, localization, and negligible CPU, GPU, and RAM impact.
+
+Human decision: separate explicit authorization for an implementation plan and later implementation. The persisted file format and implementation API remain intentionally undecided until that work has current repository evidence.
+
 ### Not plannable yet
 
 These records have an unmet advancement condition, so no artifact can be produced without inventing the evidence the condition requires.
@@ -304,23 +344,76 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reviewed on 2026-08-24 across all 17 non-terminal plans and the 20 non-terminal records they cover.
+Current projection reviewed on 2026-08-25 across all 20 non-terminal plans and the 23 non-terminal records they cover.
 
 Coverage is complete and no plan contradicts another. Every non-terminal record has exactly one owning plan, with two deliberate exceptions: `RH-W-0051` carries a design plan and a separate implementation plan, and `RH-W-0046` with `RH-W-0018` share one joint design plan while keeping separate implementations, statuses, and advancement conditions. The five records in the not-plannable list above are covered there rather than by a plan.
 
-Five cross-plan relationships are declared here so no plan silently assumes another's outcome. None merges a lifecycle and none changes a status.
+Seven cross-plan relationships are declared here so no plan silently assumes another's outcome. None merges a lifecycle and none changes a status.
 
 1. Plan 16 runs first only to remove the blocking render and check budget semantics. Plan 17 then independently owns rule placement, the gate row, and the exact words the rulebook sheds so its existing 700-token template control still holds.
 2. Plan 4 now mutates the manifest field set alone, and Plan 11 no longer does. `.repo-harness/check.py` enforces exact field-set equality at line 79 with `set(manifest) != MANIFEST_FIELDS`, and a changed manifest and checker must move as one consistent pair, so any future unit adding a field inherits that constraint. This entry was recorded on 2026-08-24 as a two-unit collision and corrected the same day: the owner's license decision dissolved `RH-W-0061`'s manifest field, which removed it from this constraint entirely. What survives between the two plans is softer and still worth sequencing: both change what `check()` takes as input, so Plan 11 landing first spares Plan 4 a mid-design signature change.
 3. Plan 17 and Plan 12 both edit the three generated daily contracts. Plan 17 removes the reply-shaping syntax from them and Plan 12 may add branch listing and committed-blob comparison to them. Neither blocks the other, but they must not be implemented concurrently, because both rewrite the same canonical files and both then require the maintenance renderer to synchronize every runtime projection.
-4. Plan 17 does not depend on Plan 1, although both name paths under `.repo-harness/`. `.repo-harness/rules/` is generated authoritative content carrying builder provenance, while `RH-W-0051` owns only the non-authoritative, Git-ignored `tmp` and `archive` namespaces. Plan 17 is not blocked by the local-state chain.
+4. Plan 17 does not depend on Plan 1, although both name paths under `.repo-harness/`. `.repo-harness/rules/` is generated authoritative content carrying builder provenance, while `RH-W-0051` owns only non-authoritative Git-ignored local-state namespaces. Plan 17 is not blocked by the local-state chain.
 5. Plan 15 keeps the boundary its record already declares. `RH-W-0066` relates to `RH-W-0044` for future human-owned document suggestions without absorbing its compare-and-suggest scope, so Plan 15 routes a remember request to an existing owner and never proposes an edit to a human-owned document, which remains Plan 7's scope. Plan 14 holds the same kind of boundary with Plan 8 and states it in its own step 4.
+6. Plan 2A consumes the RH-W-0051 `memory-bk` reservation after that taxonomy is implemented. It owns ordinary pause and close backups, while Plan 3 keeps executable interrupted checkpoints, Plan 15 keeps explicit remember or note routing, and Plan 18 keeps changelog and Git-policy close defects.
+7. Plan 20 consumes the RH-W-0051 preference reservation after that taxonomy is implemented. RH-W-0071 owns response-mode selection and shaping, RH-W-0067 remains the complete response-contract owner, RH-W-0031 retains language precedence, RH-W-0046 and RH-W-0018 retain consent semantics, RH-W-0066 retains explicit remember routing, and RH-W-0070 retains general resource safety.
 
-Three plans consume the namespace Plan 1 reserves: Plan 3 for checkpoint bytes, Plan 6 for the consent or preference store, and Plan 10 for the violation record. Plan 1 reserves all three by name without implementing any of them, so the reservation stays one decision rather than three competing ones.
+Five plans consume namespaces Plan 1 reserves: Plan 2A for local memory backups, Plan 3 for checkpoint bytes, Plan 6 for consent preferences, Plan 10 for the violation record, and Plan 20 for response-mode preference. Plan 1 reserves each by name without implementing any consumer behavior.
 
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0071
+| Field | Value |
+|---|---|
+| Origin | Owner-approved request on 2026-08-25 for a native configurable ADHD-friendly response mode with explicit no-inference, low-resource, bilingual, and repository-persistent boundaries. |
+| Priority | P2: the mode improves response usability and continuity without correcting lost authority or unsafe behavior; standard remains explicit and usable. |
+| Dependencies | RH-W-0051 must implement `.repo-harness/state/preferences/` before persistence. Reuse RH-W-0067 as the complete response-contract owner and RH-W-0031 for explicit-preference precedence. Coordinate without merging RH-W-0046, RH-W-0018, RH-W-0066, and RH-W-0070. |
+| Status | proposed |
+| Completed work | Registered the immutable unit and owner-approved bilingual [design](rh-w-0071-design.md). It fixes visible names, explicit standard default, builder choice, repository persistence, session-only overrides, one-question scope clarification, more-detail behavior, deterministic precedence, no-inference exclusions, ADHD-friendly structure, safety preservation, native ownership, negligible resource impact, migration, help, standalone and integrated parity, test design, rollback, and done conditions. |
+| Remaining work | After RH-W-0051 implementation and separate authorization, create an implementation plan, implement test-first, synchronize generated contracts, and verify focused deterministic behavior. No implementation plan exists yet. |
+| Additions | Native response-mode selection, repository-persisted preference, session-only override, explicit scope question, standard fallback, ADHD-friendly response shaping, help guidance, deterministic migration, and bounded rollback. |
+| Exclusions | No implementation, implementation plan, lifecycle advancement, code, test, generated skill, manifest or checker mutation, classifier, model call, subagent, scorer, parser, formatter daemon, monitor, telemetry, expensive fan-out, staging, commit, remote, network action, external ADHD reference, or duplicate no-overengineering rule. |
+| Deferrals | Exact persisted file format, implementation API, implementation plan, and implementation wait for RH-W-0051 support, current repository evidence, and separate explicit authorization. |
+| Rejections | Rejected inferred activation, diagnosis or behavior classification, personal or memory-derived activation, session override rewriting repository preference, more-detail requests changing mode, external-skill dependency or provenance, tracked active preference, duplicate response owner, and resource-heavy machinery. |
+| Evidence | Human decision: the owner supplied and approved the complete behavior and constraints. Verified repository evidence: RH-W-0031 owns explicit instruction over persisted preference and opaque-context exclusion; RH-W-0051 reserves `.repo-harness/state/preferences/`; RH-W-0067 owns the complete response contract; existing smallest-change and proportionality owners already cover no-overengineering, so no duplicate rule is added. |
+| Decision history | 2026-08-25: RH-W-0071 verified as the next available immutable ID and registered `proposed` with complete owner-approved bilingual design. No implementation plan, lifecycle advancement, or product implementation is authorized. |
+| Next advancement condition | Advance only after RH-W-0051 preference storage is proven and the owner separately authorizes an implementation plan based on this design. |
+
+### RH-W-0070
+| Field | Value |
+|---|---|
+| Origin | Verified incident during delegated plan review on 2026-08-25: recursive suites were attempted, local CPU reached 99 percent, commands timed out, and no lingering Python process was found afterward. |
+| Priority | P1: unbounded expensive actions can saturate CPU, GPU, or RAM, block useful work, and make delegated verification unsafe even when no process remains afterward. |
+| Dependencies | Reuse existing proportionality, authorization, and bounded-failure rules. The future design must define preventive controls available to an action without promising precise monitoring or universal enforcement. |
+| Status | proposed |
+| Completed work | Registered the future resource-safety requirement and its evidence classes only. Resource safety covers CPU, GPU, and RAM. The 90 percent threshold is an operational ceiling to keep in mind when designing or executing scripts, tools, tests, builds, model workloads, reviewers, and verification; it is not a precise continuous-measurement guarantee. |
+| Remaining work | Create and approve a concise bilingual design for proportional resource awareness and safe defaults, then separately authorize test-first implementation and lightweight bounded verification. |
+| Additions | Focused scope, bounded workers or parallelism, bounded batch sizes, explicit timeouts, one launch, lightweight alternatives, cost or resource forecasts before expensive work, and stopping or asking when saturation risk cannot be bounded. |
+| Exclusions | No behavior change, design document, implementation, code, test, generated file, skill, process launch, full or recursive suite, monitoring daemon, telemetry system, memory monitor, GPU watcher, scheduler, process killer, universal hard enforcement, or precise continuous measurement in this registration. Never kill or throttle unrelated user processes. |
+| Deferrals | The proportional preventive boundary across hosts, runtimes, and provider-managed subagents is deferred to the approved design; no portable monitoring or hard-enforcement mechanism is required. |
+| Rejections | Rejected casual full or recursive suites, unbounded workers or parallelism, unbounded batches, repeated launches, timeout-free expensive actions, proceeding when saturation risk cannot be bounded, interference with unrelated user processes, and any monitoring or universal enforcement promise. |
+| Evidence | Verified incident: delegated review attempted recursive suites, local CPU reached 99 percent, commands timed out, and no lingering Python process was found afterward. Human decision: future repo-harness work must apply proportional CPU, GPU, and RAM awareness, use the 90 percent operational ceiling when planning and executing expensive actions, prefer simple preventive controls, and stop or ask when saturation risk cannot be bounded. |
+| Decision history | 2026-08-25: registered as `proposed` under immutable ID RH-W-0070, outside the approved execution order. Owner intent was corrected to proportional CPU, GPU, and RAM awareness without a monitoring or universal enforcement promise. No design or implementation is approved. |
+| Next advancement condition | Advance only after the owner approves a bilingual design that defines proportional preventive controls, honestly reports limitations, leaves unrelated processes untouched, and names focused RED and lightweight bounded verification cases. |
+
+### RH-W-0069
+| Field | Value |
+|---|---|
+| Origin | Owner-approved local continuity direction on 2026-08-25 separating canonical documentation from operational memory and requiring a harness-owned fallback independent from Engram availability. |
+| Priority | P2: continuity loss degrades future sessions, but repository evidence remains authoritative and no current product behavior or durable truth is at risk. |
+| Dependencies | RH-W-0051 must first implement the `.repo-harness/memory-bk/` taxonomy and Git-ignore contract. Reuse completed RH-W-0050 reconciliation semantics without reopening it. Keep RH-W-0053 checkpoints, RH-W-0066 explicit remember routing, and RH-W-0068 close defects separate. |
+| Status | proposed |
+| Completed work | Registered the unit and recorded the owner-approved bilingual [design](rh-w-0069-design.md). The design fixes one structured Markdown file per deliberate pause or close, repository-first start reads, local-first stop writes, independent Engram outcomes, conflict reporting, bounded privacy filtering, path safety, no automatic deletion or migration, and exclusion of Gentle AI and built-in runtime memory from backup mechanics. |
+| Remaining work | On separate authorization after RH-W-0051 implementation, create an implementation plan, write focused RED tests, implement canonical session and memory contracts, synchronize projections, and verify integrated and standalone behavior. |
+| Additions | `.repo-harness/memory-bk/` session summaries, exact minimal schema, repository authority order, newest-backup default, independent local and Engram outcomes, cross-source conflict reporting, and bounded sensitive-content exclusion. |
+| Exclusions | No implementation, generated skill, test, manifest field, directory, migration, staging, Git delivery, network action, database, encryption subsystem, daemon, generic memory API, automatic deletion, duplicate documentation, checkpoint, lifecycle, approval, receipt, conflict, or delivery store. |
+| Deferrals | Implementation and any future migration or deletion policy wait for separate explicit owner decisions. |
+| Rejections | Rejected personal `.ld9/` dependency or migration, activation of temporary `wk` skills, built-in runtime memory as authority, Gentle AI coupling, silent Engram/local merge, fabricated aggregate success, and backup content as canonical truth. |
+| Evidence | Human decision: the owner supplied and approved the complete design direction. Verified repository evidence: current session contracts use Engram but define no harness-owned local backup; `.repo-harness/memory-bk/` and RH-W-0069 were absent before this registration; RH-W-0051 owns local-state taxonomy; RH-W-0050 owns reconciliation semantics. |
+| Decision history | 2026-08-25: registered as `proposed` with complete owner-approved bilingual design. No implementation or lifecycle advancement is authorized. Recommended immediately after RH-W-0051 implementation and before RH-W-0053. |
+| Next advancement condition | Advance only after RH-W-0051 storage support is proven and the owner explicitly authorizes a bilingual implementation plan and test-first implementation of the approved design. |
 
 ### RH-W-0068
 | Field | Value |
@@ -618,15 +711,15 @@ Three plans consume the namespace Plan 1 reserves: Plan 3 for checkpoint bytes, 
 | Priority | P2: local state needs predictable ownership and clean-worktree semantics before recovery or archival behavior can depend on it. |
 | Dependencies | none |
 | Status | proposed |
-| Completed work | Documented the target architecture under `.repo-harness/`: `tmp` is disposable and `archive` is recoverable, both non-authoritative and ignored by default, with explicit repository overrides. |
-| Remaining work | Lead the joint architecture by defining the local-state taxonomy and ownership semantics, including non-Git folders and workspaces. RH-W-0048 participates conditionally on those semantics, and RH-W-0052 may be drafted only conditionally without advancing. Then implement render, ignore, checker, manifest, override, migration, and verification behavior as this separate unit. The same design reserves namespace for the other declared consumers of this contract, the RH-W-0053 checkpoint bytes, the durable repository-scoped consent or preference store required by RH-W-0046 and RH-W-0018, and the RH-W-0040 violation record location, without implementing or advancing any of them. |
-| Additions | Default local namespaces with explicit ownership, retention, clean-worktree, and non-Git workspace rules. |
+| Completed work | Recorded the owner-approved bilingual [local-state taxonomy design](rh-w-0051-design.md): `tmp`, `archive`, `state`, and `memory-bk` are fixed non-authoritative namespaces, Git-ignored by default, with exact ownership, containment, checker, manifest, compatibility, and consumer reservations. No behavior was implemented. |
+| Remaining work | On separate authorization, create the bilingual implementation plan and implement render, ignore, checker, manifest, compatibility, and verification behavior. RH-W-0048 and RH-W-0052 retain their conditional boundaries. The design reserves `.repo-harness/memory-bk/` for RH-W-0069, `.repo-harness/state/checkpoints/` for RH-W-0053, `.repo-harness/state/preferences/` for RH-W-0046 and RH-W-0018, and `.repo-harness/state/violations/` for RH-W-0040 without implementing any consumer. |
+| Additions | Four default local namespaces with explicit ownership, retention, clean-worktree, path-safety, non-Git, workspace, manifest, and checker rules. |
 | Exclusions | No claim that either directory currently exists or is supported; no ignore, render, checker, manifest, or migration behavior in this documentation work. |
 | Deferrals | none |
 | Rejections | Rejected using user-owned personal storage for harness state and silently applying repository overrides. |
 | Evidence | The canonical generator currently defines no supported `tmp` or `archive` namespace behavior; the standing decision records the approved target policy. |
-| Decision history | 2026-08-20: architecture approved and implementation retained as proposed work. |
-| Next advancement condition | Advance after a written design defines exact generated paths, ignore integration, checker treatment, manifest representation, explicit override semantics, migration, and tests. |
+| Decision history | 2026-08-20: architecture approved and implementation retained as proposed work. 2026-08-25: owner approved the complete bilingual taxonomy design and widened it only enough to reserve `state` and `memory-bk`; status remains `proposed` and implementation remains unauthorized. |
+| Next advancement condition | Advance only after explicit owner authorization for a bilingual implementation plan and test-first implementation of the approved design. |
 
 ### RH-W-0050
 | Field | Value |

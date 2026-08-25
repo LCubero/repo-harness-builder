@@ -13,6 +13,12 @@ Invoke deliberately through `/repo-harness-builder`. This skill never activates 
 
 The exact approval UI and strict builder rules exist only during an explicitly active `repo-harness-builder` skill execution. Repository identity, self-hosting, ordinary repository maintenance, generated-file ownership, session skills, and direct questions do not activate this interface. Outside an active builder skill execution, use ordinary conversational approval rules.
 
+## Product Identity
+
+`repo-harness` is a repository-scoped system of prompts, guardrails, harness rules, durable documentation, skills, and commands that strengthens and assists AI coding agents such as OpenCode, Claude Code, and Pi. `repo-harness-builder` creates, audits, installs, and safely evolves that system inside a selected repository.
+
+The harness is independently useful in standalone mode and may use optional ecosystem components according to the selected integration mode. Gentle AI provides broader routing, review, receipts, and delivery capabilities. Engram provides semantic continuity but never replaces repository truth. CodeGraph is the most optional repository-local code intelligence and navigation aid and is never an authority store. Hermes Agent, OpenClaw, and Pi are inspiration sources only, not dependencies or products this tool recreates.
+
 Build or inspect root `REPO-HARNESS.md`, durable documentation, operational skills, and selected-runtime wrappers. Default integrated mode requires Gentle AI and Engram. Use `--standalone` for repository-only continuity. With no operation, check read-only and report gaps.
 
 An optional argument sets the report language to `español` or `english`; otherwise follow runtime preference, then the language the user is writing in. Resolve report, conversation, documentation, and artifact language independently. A persisted explicit conversation preference changes only through a later verified explicit human instruction.

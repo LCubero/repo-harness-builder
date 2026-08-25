@@ -17,11 +17,16 @@
 | [i18n-research.md](i18n-research.md) | Primary-source research and architecture tradeoffs |
 | [contribution-workflow-research.md](contribution-workflow-research.md) | Primary-source comparison and recommendation for contribution policy |
 | [integration-research.md](integration-research.md) | Canonical primary-source research owner for generic Gentle AI and Engram integration |
+| [agent-continuity-research.md](agent-continuity-research.md) | Primary-source comparison of Hermes Agent, OpenClaw, and Pi continuity, learning, trust, and recovery patterns |
 | [rh-w-0025-implementation-plan.md](rh-w-0025-implementation-plan.md) | Canonical executable implementation plan for capability-aware Gentle AI and Engram coordination |
 | [rh-w-0031-research.md](rh-w-0031-research.md) | Canonical primary-source evidence owner for conversation-language boundaries |
 | [rh-w-0031-implementation-plan.md](rh-w-0031-implementation-plan.md) | Completed conversation-language remediation plan; historical task instructions retained |
 | [rh-w-0034-implementation-plan.md](rh-w-0034-implementation-plan.md) | Completed consumer recovery and Spanish-only correctness plan; historical task instructions retained |
 | [rh-w-0050-design.md](rh-w-0050-design.md) | Completed owner-approved bounded reconciliation design; delivered with historical design body retained |
+| [rh-w-0051-design.md](rh-w-0051-design.md) | Owner-approved local-state taxonomy design; implementation remains separately unauthorized |
+| [rh-w-0051-implementation-plan.md](rh-w-0051-implementation-plan.md) | Canonical executable implementation plan for the approved local-state taxonomy |
+| [rh-w-0069-design.md](rh-w-0069-design.md) | Owner-approved local memory backup and cross-source continuity design; implementation remains separately unauthorized |
+| [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Canonical executable implementation plan for native local backup and cross-source continuity |
 | [rh-w-0011-design.md](rh-w-0011-design.md) | Completed owner-approved reconciliation scope; historical design body retained |
 | [rh-w-0011-results.md](rh-w-0011-results.md) | Canonical completed reconciliation result, five-finding dispositions, and owner-accepted lifecycle closure |
 | [rh-w-0054-design.md](rh-w-0054-design.md) | Completed owner-approved stateless correction authority design; historical design body retained |
@@ -32,6 +37,7 @@
 | [rh-w-0013-implementation-plan.md](rh-w-0013-implementation-plan.md) | Canonical two-task implementation plan for the RH-W-0013 blockers |
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
+| [rh-w-0071-design.md](rh-w-0071-design.md) | Owner-approved native ADHD-friendly response mode design; implementation remains separately unauthorized |
 | [rh-w-0056-findings.md](rh-w-0056-findings.md) | Canonical findings and completed 64-recommendation disposition owner for the external harness review |
 | [archive/repo-bootstrap-handoff.md](archive/repo-bootstrap-handoff.md) | Archived 2026-08-12 split handoff, provenance only; not policy, not a plan, and not a source of pending work |
 | [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |

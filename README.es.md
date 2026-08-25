@@ -7,7 +7,23 @@
 
 <!-- README-I18N:END -->
 
-`repo-harness-builder` proporciona a un repositorio un sistema operativo pequeno y durable para trabajo asistido por IA. Mantiene visibles las reglas, vigente el estado del proyecto, recuperable el contexto entre sesiones y verificables las transferencias, sin quitar propiedad a quienes mantienen el repositorio.
+`repo-harness` es un sistema acotado al repositorio compuesto por prompts, guardrails, reglas del harness, documentacion durable, habilidades y comandos que fortalece y asiste a agentes de programacion con IA como OpenCode, Claude Code y Pi. Mantiene visibles las reglas, vigente el estado del proyecto, portables las instrucciones de runtime y verificables las transferencias, sin quitar propiedad a quienes mantienen el repositorio.
+
+`repo-harness-builder` es la habilidad y herramienta que crea, audita, instala y evoluciona con seguridad `repo-harness` dentro de un repositorio seleccionado.
+
+## Posicionamiento del producto
+<!-- doc-role:positioning -->
+
+El harness conserva su utilidad por si solo. Puede operar con o sin Gentle AI, Engram y CodeGraph segun el modo de integracion seleccionado explicitamente. Cuando el modo integrado selecciona componentes obligatorios, esos componentes deben estar disponibles.
+
+| Componente | Limite |
+|---|---|
+| `repo-harness` | Guia operativa acotada al repositorio y verdad durable del proyecto para agentes de programacion con IA compatibles. |
+| Gentle AI | Un ecosistema mas amplio para agentes de IA que puede proporcionar enrutamiento, revision, recibos y puertas de entrega. |
+| Engram | Memoria semantica y continuidad entre sesiones. Nunca reemplaza la verdad del repositorio. |
+| CodeGraph | El componente mas opcional: una ayuda local al repositorio para ubicar archivos, simbolos, relaciones e impacto. No es un almacen de autoridad. |
+
+Hermes Agent, OpenClaw y Pi pueden aportar a la investigacion, pero recrearlos o copiarlos no es un objetivo del producto. `repo-harness` tiene limites distintos y acotados al repositorio.
 
 ## Inicio rapido
 <!-- doc-role:quick-start -->

@@ -7,9 +7,23 @@
 
 <!-- README-I18N:END -->
 
-`repo-harness-builder` gives a repository a small, durable operating system for AI-assisted work. It keeps working rules visible, project state current, session context recoverable, runtime instructions portable, and handoffs verifiable without taking ownership away from maintainers.
+`repo-harness` is a repository-scoped system of prompts, guardrails, harness rules, durable documentation, skills, and commands that strengthens and assists AI coding agents such as OpenCode, Claude Code, and Pi. It keeps working rules visible, project state current, runtime instructions portable, and handoffs verifiable without taking ownership away from maintainers.
 
-The result is less context loss between sessions, safer repository evolution, clearer documentation ownership, and the same core workflow across Claude Code, OpenCode, and Pi.
+`repo-harness-builder` is the skill and tool that creates, audits, installs, and safely evolves `repo-harness` inside a selected repository.
+
+## Product Positioning
+<!-- doc-role:positioning -->
+
+The harness remains useful on its own. It can operate with or without Gentle AI, Engram, and CodeGraph according to the explicitly selected integration mode. When integrated mode selects required components, those components must be available.
+
+| Component | Boundary |
+|---|---|
+| `repo-harness` | Repository-scoped operating guidance and durable project truth for supported AI coding agents. |
+| Gentle AI | A broader AI-agent ecosystem that may provide routing, review, receipts, and delivery gates. |
+| Engram | Cross-session semantic memory and continuity. It never replaces repository truth. |
+| CodeGraph | The most optional component: a repository-local aid for locating files, symbols, relationships, and impact. It is not an authority store. |
+
+Hermes Agent, OpenClaw, and Pi may inform research, but recreating or copying them is not a product goal. `repo-harness` has different repository-scoped boundaries.
 
 ## Quick Start
 <!-- doc-role:quick-start -->
