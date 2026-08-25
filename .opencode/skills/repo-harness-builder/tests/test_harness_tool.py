@@ -4161,6 +4161,33 @@ class RepoHarnessHelpWrapperTests(unittest.TestCase):
             self.assertEqual(target.read_bytes(), b"human command\r\n")
 
 
+class ContextBudgetBlockingTests(unittest.TestCase):
+    def test_exact_budget_rulebook_renders(self):
+        original = TOOL.rulebook("example", False)
+        exact = next(
+            original + "\n" + ("filler " * count)
+            for count in range(TOOL.RULEBOOK_TOKEN_BUDGET)
+            if TOOL.token_proxy(original + "\n" + ("filler " * count)) == TOOL.RULEBOOK_TOKEN_BUDGET
+        )
+        self.assertEqual(TOOL.token_proxy(exact), TOOL.RULEBOOK_TOKEN_BUDGET)
+        with mock.patch.object(TOOL, "rulebook", return_value=exact):
+            outputs = TOOL.render("Example", [])
+        self.assertEqual(outputs[TOOL.RULEBOOK_PATH], exact)
+
+    def test_exact_701_rulebook_renders(self):
+        original = TOOL.rulebook("example", False)
+        exact = next(
+            original + "\n" + ("filler " * count)
+            for count in range(TOOL.RULEBOOK_TOKEN_BUDGET)
+            if TOOL.token_proxy(original + "\n" + ("filler " * count)) == TOOL.RULEBOOK_TOKEN_BUDGET
+        )
+        exact_701 = exact + "\nfiller"
+        self.assertEqual(TOOL.token_proxy(exact_701), 701)
+        with mock.patch.object(TOOL, "rulebook", return_value=exact_701):
+            outputs = TOOL.render("Example", [])
+        self.assertEqual(outputs[TOOL.RULEBOOK_PATH], exact_701)
+
+
 class RuleFileTests(unittest.TestCase):
     """The rulebook can only stay small if detail has a budgeted place to go down to."""
 
@@ -4194,7 +4221,7 @@ class RuleFileTests(unittest.TestCase):
         for path in self.SEEDS:
             self.assertLess(TOOL.token_proxy(outputs[path]), TOOL.RULEBOOK_TOKEN_BUDGET, path)
 
-    def test_check_reports_a_budgeted_file_that_outgrew_its_budget(self):
+    def test_check_keeps_large_human_evolved_rule_current(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             install(root)
@@ -4202,9 +4229,10 @@ class RuleFileTests(unittest.TestCase):
             target.write_text(target.read_text(encoding="utf-8") + "\n" + ("filler " * TOOL.RULEBOOK_TOKEN_BUDGET), encoding="utf-8")
             report = TOOL.check(root, "Example", [])
             entry = next(item for item in report["files"] if item["path"] == ".repo-harness/rules/memory.md")
-            self.assertEqual(entry["state"], "over-budget")
-            self.assertGreater(entry["tokens"], TOOL.RULEBOOK_TOKEN_BUDGET)
-            self.assertEqual(report["status"], "drift")
+            self.assertEqual(entry["state"], "human-evolved")
+            self.assertNotIn("tokens", entry)
+            self.assertEqual(report["status"], "current")
+            self.assertEqual(report["writes"], 0)
 
     def test_working_agreements_name_the_two_failure_modes_by_name(self):
         text = TOOL.render("Example", [])[".repo-harness/rules/working-agreements.md"]

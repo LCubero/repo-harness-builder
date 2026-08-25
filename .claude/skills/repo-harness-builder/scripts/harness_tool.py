@@ -2361,11 +2361,6 @@ def human_owned(relative: str, rulebook_path: str) -> bool:
     return relative.startswith("docs/repo-harness/") or relative.startswith("docs/es/repo-harness/") or relative.startswith(".repo-harness/rules/")
 
 
-def budgeted(relative: str, rulebook_path: str) -> bool:
-    """Report whether a path carries the loaded-every-session token budget."""
-    return relative == rulebook_path or relative.startswith(".repo-harness/rules/")
-
-
 def render(
     project_name: str,
     runtimes: list[str],
@@ -2441,10 +2436,6 @@ def render_with_skill_mapping(
     }
     if ignore_codegraph:
         outputs[GITIGNORE_PATH] = CODEGRAPH_IGNORE_DIRECTIVE + "\n"
-    for path, content in outputs.items():
-        if budgeted(path, rulebook_path):
-            size = token_proxy(content)
-            require(size < RULEBOOK_TOKEN_BUDGET, f"{path} is {size} tokens, over its {RULEBOOK_TOKEN_BUDGET} budget")
     for name, content in skills.items():
         outputs[f".repo-harness/skills/{name}/SKILL.md"] = content
     canonical_commands: dict[str, dict[str, str]] = {
@@ -3482,16 +3473,12 @@ def check(
                 locale_contract_path(relative, documentation_languages or [PRIMARY_DOCUMENTATION_LANGUAGE]),
                 current_text,
             )
-            size = token_proxy(current_text)
             if absent:
                 entry["state"] = "sections-missing"
                 entry["missing"] = absent
             elif locale_issues:
                 entry["state"] = "locale-content-incomplete"
                 entry["issues"] = locale_issues
-            elif budgeted(relative, rulebook_path) and size >= RULEBOOK_TOKEN_BUDGET:
-                entry["state"] = "over-budget"
-                entry["tokens"] = size
             elif digest_bytes(current_bytes) != digest_text(content):
                 entry["state"] = "human-evolved"
             else:
