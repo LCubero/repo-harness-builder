@@ -4,7 +4,7 @@
 
 Revisar este diseno contra el [registro canonico RH-W-0067](../../repo-harness/roadmap.md#rh-w-0067), el [Plan 17](../../repo-harness/roadmap.md#plan-17-rh-w-0067-reply-shaping-contract-placement), la evidencia completada de RH-W-0049, RH-W-0058 y RH-W-0064 en la hoja de ruta y el changelog, y el [diseno RH-W-0013](../../repo-harness/rh-w-0013-design.md) aprobado. Debe conservar equivalencia semantica con el [diseno en ingles](../../repo-harness/rh-w-0067-design.md).
 
-El estado permanece `proposed`. Este documento no aprueba implementacion, plan de implementacion, transicion de ciclo de vida, commit, publicacion ni acceso externo.
+El estado del ciclo de vida ahora es `ready` tras una reconciliacion separada del propietario. Este documento de diseno no aprueba implementacion, commit, publicacion ni acceso externo; la implementacion sigue sin realizarse y requiere autorizacion explicita separada.
 
 ## Decision
 
@@ -192,8 +192,8 @@ El rollback es una unidad: retirar la regla de `rule_outputs()`, restaurar plant
 
 - Sin RDD, schema, parser, analisis por IA, dependencia de runtime, taxonomia, reescritura automatica ni refactor ajeno.
 - Sin ID nuevo ni separacion de la clausula contextual.
-- Sin plan de implementacion en esta unidad.
-- Sin cambio de estado.
+- La unidad de diseno no creo un plan de implementacion; el plan bilingue completo fue autorizado y revisado despues.
+- La unidad de diseno no cambio el estado; la reconciliacion posterior del propietario avanzo RH-W-0067 a `ready`.
 - Sin cambios de clasificacion de evidencia, autoridad, proporcionalidad, trabajo no pedido ni seguimiento autorizado.
 - Sin continuidad de sesion en la regla.
 - Sin sintaxis completa duplicada en reglamento o skills.
@@ -203,7 +203,7 @@ El rollback es una unidad: retirar la regla de `rule_outputs()`, restaurar plant
 
 ## Dependencias
 
-RH-W-0058 completada aporta visibilidad. RH-W-0049 completada aporta continuacion contextual proporcional sin menus ni trabajo automatico. RH-W-0064 completada aporta seguimiento autorizado sin continuacion no pedida. RH-W-0013 permanece como dependencia separada y debe implementarse antes de RH-W-0067. RH-W-0060 no debe implementar los mismos contratos diarios en paralelo.
+RH-W-0058 completada aporta visibilidad. RH-W-0049 completada aporta continuacion contextual proporcional sin menus ni trabajo automatico. RH-W-0064 completada aporta seguimiento autorizado sin continuacion no pedida. RH-W-0013 completada satisface la dependencia separada de implementacion. RH-W-0060 no debe implementar los mismos contratos diarios en paralelo.
 
 ## Criterios de aceptacion
 
@@ -215,8 +215,8 @@ RH-W-0058 completada aporta visibilidad. RH-W-0049 completada aporta continuacio
 - La compresion exacta conserva obligaciones y presupuesto de desarrollo.
 - Rutas, propiedad humana, proyecciones, migracion, actualizacion y rollback usan mecanismos existentes sin schema ni dependencia nueva.
 - La verificacion enfocada y completa pasa con paridad, sin placeholders, enlaces validos y sin U+2013 ni U+2014.
-- El estado sigue `proposed`; implementacion y plan de implementacion siguen ausentes.
+- El estado es `ready`; existe el plan bilingue completo y la implementacion sigue sin realizarse.
 
 ## Decisiones humanas restantes
 
-Ninguna. Autorizar implementacion, autorizar despues un plan de implementacion y avanzar el ciclo de vida son acciones futuras separadas.
+Ninguna. La implementacion requiere autorizacion explicita separada; todo avance posterior del ciclo de vida requiere evidencia de implementacion y entrega.
