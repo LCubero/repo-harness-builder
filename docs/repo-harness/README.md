@@ -30,8 +30,8 @@
 | [rh-w-0057-design.md](rh-w-0057-design.md) | Completed owner-approved canonical command and wrapper coverage design; historical design body retained |
 | [rh-w-0013-design.md](rh-w-0013-design.md) | Canonical minimal design for removing two runtime context-budget blockers |
 | [rh-w-0013-implementation-plan.md](rh-w-0013-implementation-plan.md) | Canonical two-task implementation plan for the RH-W-0013 blockers |
-| [rh-w-0067-design.md](rh-w-0067-design.md) | Canonical proposed design for the generated response-shaping contract and bounded contextual explanation semantics |
-| [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Canonical executable implementation plan for the RH-W-0067 response contract |
+| [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
+| [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
 | [rh-w-0056-findings.md](rh-w-0056-findings.md) | Canonical findings and completed 64-recommendation disposition owner for the external harness review |
 | [archive/repo-bootstrap-handoff.md](archive/repo-bootstrap-handoff.md) | Archived 2026-08-12 split handoff, provenance only; not policy, not a plan, and not a source of pending work |
 | [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |

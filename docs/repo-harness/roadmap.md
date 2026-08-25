@@ -22,35 +22,30 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-Revised on 2026-08-24. The owner delegated the technical ordering criterion after a full portfolio and plan review, so this revision is owner-authorized and evidence-driven rather than a preference. It changes no unit status by itself, and it preserves every still-pending relative position from the 2026-08-21 approved path: the previously scheduled units keep their order among themselves and the revision only inserts the six units that were registered outside that path, plus `RH-W-0013`, whose deferral condition was measured and fired.
+Reconciled on 2026-08-24 after `RH-W-0013` and `RH-W-0067` completed. Their historical insertion and dependency sequence remains recorded below in the action plans, while the remaining order preserves every still-pending relative position from the owner-approved path.
 
-Two insertions lead, because each is fully measured, has no unmet dependency, and unblocks or protects something behind it:
+The local-state architecture leads:
 
-1. `RH-W-0013` measured context budgets. Its deferral condition was observed on 2026-08-24 and fired; it first removes the two blocking budget effects.
-2. `RH-W-0067` reply-shaping contract placement. Follows RH-W-0013 so placement and headroom work begins only after budget crossings stop blocking render and check; it repairs a defect observed twice in one conversation.
-
-The local-state architecture then runs unchanged:
-
-3. Let `RH-W-0051` lead the joint local-state architecture by defining the local-state taxonomy and ownership semantics. `RH-W-0048` participates conditionally on those semantics. `RH-W-0052` may be drafted only conditionally and cannot advance until `RH-W-0051` and `RH-W-0048` are proven and manifest ownership is approved. Reserve namespace for the separate consumers `RH-W-0053`, `RH-W-0046`, `RH-W-0018`, and `RH-W-0040` without merging their lifecycle or implementation boundaries.
-4. Implement `RH-W-0051` first within that architecture.
-5. Implement `RH-W-0053` after `RH-W-0051` establishes the storage semantics it consumes.
-6. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
-7. Implement `RH-W-0052` after those storage and recovery primitives are proven.
+1. Let `RH-W-0051` lead the joint local-state architecture by defining the local-state taxonomy and ownership semantics. `RH-W-0048` participates conditionally on those semantics. `RH-W-0052` may be drafted only conditionally and cannot advance until `RH-W-0051` and `RH-W-0048` are proven and manifest ownership is approved. Reserve namespace for the separate consumers `RH-W-0053`, `RH-W-0046`, `RH-W-0018`, and `RH-W-0040` without merging their lifecycle or implementation boundaries.
+2. Implement `RH-W-0051` first within that architecture.
+3. Implement `RH-W-0053` after `RH-W-0051` establishes the storage semantics it consumes.
+4. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
+5. Implement `RH-W-0052` after those storage and recovery primitives are proven.
 
 Consent and comparison follow, unchanged:
 
-8. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
-9. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
-10. Continue with `RH-W-0022`.
+6. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
+7. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
+8. Continue with `RH-W-0022`.
 
 Onboarding and the remaining residue close the path:
 
-11. Continue with `RH-W-0055`.
-12. Then `RH-W-0062`, which resolves against the `RH-W-0055` design and closes as no residue if that design finds no viable offline identity.
-13. Continue with `RH-W-0040`; its completed prerequisite is satisfied, while design and advancement of the unmechanizable residue remain pending.
-14. Then `RH-W-0060`, placed after `RH-W-0067` because both rewrite the three generated daily contracts and must not be implemented concurrently.
-15. Then `RH-W-0065`.
-16. Then `RH-W-0066`.
+9. Continue with `RH-W-0055`.
+10. Then `RH-W-0062`, which resolves against the `RH-W-0055` design and closes as no residue if that design finds no viable offline identity.
+11. Continue with `RH-W-0040`; its completed prerequisite is satisfied, while design and advancement of the unmechanizable residue remain pending.
+12. Then `RH-W-0060`; its non-concurrency constraint with completed `RH-W-0067` remains satisfied.
+13. Then `RH-W-0065`.
+14. Then `RH-W-0066`.
 
 The five records in the deferred list keep their existing conditions and are not scheduled: `RH-W-0012`, `RH-W-0014`, `RH-W-0015`, `RH-W-0026`, and `RH-W-0063`.
 
@@ -283,7 +278,7 @@ Readiness `completed`. Direct delegated implementation followed the approved fiv
 6. Keep the new rule below the existing development-time 700-token control, preserve it as human-owned after seeding, and add no manifest field, checker schema, runtime dependency, or runtime-specific copy.
 7. Implement only after RH-W-0013, test first against the design's 15 obligations including separate notice and pending-action reachability checks, synchronize canonical package source and both package projections, and keep RH-W-0060 out of concurrent edits to the same daily contracts.
 
-Delivery evidence: the owner directly authorized implementation and lifecycle completion without Git delivery actions. Focused GREEN passed 34 tests. Canonical, OpenCode, and Claude each passed 441 tests, with 9, 21, and 21 skips. Maintenance preview proposed one rule creation and nine daily-skill replacements with no blocked action; digest-bound apply returned `VALIDATED`. The checker reports `current` and zero writes. Exact SHA parity, runtime provenance, rule ownership, delimiter counts, gate and daily references, budgets, links, localization, lifecycle count, forbidden scope, and diff checks passed. No commit, push, PR, merge, external repository access, or RH-W-0060 work occurred.
+Delivery evidence: issue #104 records the approved work. Implementation commit `7ef4993` was delivered through PR #105 and merge commit `5ebaf941d81e9b512584d13b2a08dd800a179824`. Focused GREEN passed 34 tests. Canonical, OpenCode, and Claude each passed 441 tests, with 9, 21, and 21 skips. Maintenance preview proposed one rule creation and nine daily-skill replacements with no blocked action; digest-bound apply returned `VALIDATED`. The checker reports `current` and zero writes. Exact SHA parity, runtime provenance, rule ownership, delimiter counts, gate and daily references, budgets, links, localization, lifecycle count, forbidden scope, and diff checks passed. No RH-W-0060 work occurred.
 
 ### Not plannable yet
 
@@ -297,7 +292,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Reviewed on 2026-08-24 across all 16 plans and the 21 non-terminal records they cover.
+Current projection reviewed on 2026-08-24 across all 16 plans and the 19 non-terminal records they cover.
 
 Coverage is complete and no plan contradicts another. Every non-terminal record has exactly one owning plan, with two deliberate exceptions: `RH-W-0051` carries a design plan and a separate implementation plan, and `RH-W-0046` with `RH-W-0018` share one joint design plan while keeping separate implementations, statuses, and advancement conditions. The five records in the not-plannable list above are covered there rather than by a plan.
 
@@ -328,8 +323,8 @@ Three plans consume the namespace Plan 1 reserves: Plan 3 for checkpoint bytes, 
 | Exclusions | No visibility obligation beyond the one `RH-W-0058` established. The only scope expansion is the design's bounded contextual explanation clause under this same ID. No session-continuity duplication, verbatim consumer import, budget increase, third output contract, schema, parser, AI analysis, runtime dependency, taxonomy, automatic rewrite, or unrelated refactor. |
 | Deferrals | none |
 | Rejections | The owner confirmed on 2026-08-24 that the visible blocks are kept deliberately, so this unit repairs their placement and precision and never proposes removing or softening them. Rejected leaving the syntax only in the daily contracts, because a rule that binds every reply cannot live where it loads only when a daily skill runs. Rejected duplicating the full syntax into `REPO-HARNESS.md`, which the `RH-W-0058` decision already declined and which the measured budget now forbids outright. |
-| Evidence | RED: owner/gate produced two failures including `0 != 1`; delimiter and context each raised the expected missing-rule `KeyError`; compression failed on the first absent replacement; daily coverage produced four failing methods; lifecycle raised the expected `KeyError`; and the runtime-duplication control passed. GREEN: 34 focused tests passed. Canonical, OpenCode, and Claude each passed 441 tests with skips of 9, 21, and 21. Maintenance apply returned `VALIDATED`; checker status is `current` with zero writes; canonical package SHA parity, projection provenance, exact delimiters, gate, references, budgets, links, localization, lifecycle count, forbidden scope, and diff checks passed. |
-| Decision history | 2026-08-24: registered `proposed`, then approved through complete bilingual design and plan, advanced to `ready` after RH-W-0013 completed, and completed under direct delegated implementation authority after strict RED/GREEN, maintenance synchronization, and full local verification. No Git delivery or external access occurred. |
+| Evidence | RED: owner/gate produced two failures including `0 != 1`; delimiter and context each raised the expected missing-rule `KeyError`; compression failed on the first absent replacement; daily coverage produced four failing methods; lifecycle raised the expected `KeyError`; and the runtime-duplication control passed. GREEN: 34 focused tests passed. Canonical, OpenCode, and Claude each passed 441 tests with skips of 9, 21, and 21. Maintenance apply returned `VALIDATED`; checker status is `current` with zero writes; canonical package SHA parity, projection provenance, exact delimiters, gate, references, budgets, links, localization, lifecycle count, forbidden scope, and diff checks passed. Issue #104, implementation commit `7ef4993`, PR #105, and merge commit `5ebaf941d81e9b512584d13b2a08dd800a179824` provide delivery evidence. |
+| Decision history | 2026-08-24: registered `proposed`, then approved through complete bilingual design and plan, advanced to `ready` after RH-W-0013 completed, completed under direct delegated implementation authority after strict RED/GREEN, maintenance synchronization, and full local verification, and was delivered through issue #104 and PR #105. |
 | Next advancement condition | none |
 
 ### RH-W-0066

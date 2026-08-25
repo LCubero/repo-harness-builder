@@ -22,35 +22,30 @@ Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 
 
 ## Orden de ejecucion aprobado restante
 
-Revisado el 2026-08-24. El propietario delego el criterio tecnico de ordenamiento tras una revision completa del portafolio y de los planes, asi que esta revision esta autorizada por el propietario y guiada por evidencia, no por preferencia. Por si sola no cambia el estado de ninguna unidad, y conserva cada posicion relativa pendiente de la ruta aprobada del 2026-08-21: las unidades ya agendadas mantienen su orden entre si y la revision solo inserta las seis registradas fuera de esa ruta, mas `RH-W-0013`, cuya condicion de aplazamiento se midio y se disparo.
+Reconciliado el 2026-08-24 despues de completar `RH-W-0013` y `RH-W-0067`. Su insercion historica y secuencia de dependencias permanecen en los planes de accion; el orden restante conserva cada posicion relativa pendiente de la ruta aprobada.
 
-Dos inserciones encabezan, porque cada una esta completamente medida, no tiene dependencia sin cumplir y desbloquea o protege algo detras:
+La arquitectura de estado local encabeza:
 
-1. `RH-W-0013`, presupuestos de contexto medidos. Su condicion de aplazamiento se observo el 2026-08-24 y se disparo; primero retira los dos efectos bloqueantes del presupuesto.
-2. `RH-W-0067`, ubicacion del contrato de forma de respuesta. Sigue a RH-W-0013 para que el trabajo de ubicacion y margen comience solo cuando los cruces de presupuesto dejen de bloquear render y check; repara un defecto observado dos veces en una misma conversacion.
-
-Despues corre sin cambios la arquitectura de estado local:
-
-3. Hacer que `RH-W-0051` lidere la arquitectura conjunta de estado local al definir la taxonomia de estado local y la semantica de propiedad. `RH-W-0048` participa de forma condicional sobre esa semantica. `RH-W-0052` solo puede redactarse de forma condicional y no puede avanzar hasta que `RH-W-0051` y `RH-W-0048` esten probadas y se apruebe la propiedad por manifiesto. Reservar namespace para `RH-W-0053`, `RH-W-0046`, `RH-W-0018` y `RH-W-0040` sin fusionar sus ciclos de vida ni sus limites de implementacion.
-4. Implementar `RH-W-0051`.
-5. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
-6. Implementar `RH-W-0048`.
-7. Implementar `RH-W-0052`.
+1. Hacer que `RH-W-0051` lidere la arquitectura conjunta de estado local al definir la taxonomia de estado local y la semantica de propiedad. `RH-W-0048` participa de forma condicional sobre esa semantica. `RH-W-0052` solo puede redactarse de forma condicional y no puede avanzar hasta que `RH-W-0051` y `RH-W-0048` esten probadas y se apruebe la propiedad por manifiesto. Reservar namespace para `RH-W-0053`, `RH-W-0046`, `RH-W-0018` y `RH-W-0040` sin fusionar sus ciclos de vida ni sus limites de implementacion.
+2. Implementar `RH-W-0051`.
+3. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
+4. Implementar `RH-W-0048`.
+5. Implementar `RH-W-0052`.
 
 Siguen consentimiento y comparacion, sin cambios:
 
-8. Disenar juntas `RH-W-0046` y `RH-W-0018`, con implementaciones separadas.
-9. Continuar con `RH-W-0044`; su antecedente `RH-W-0043` esta satisfecho y solo queda diseno o avance.
-10. Continuar con `RH-W-0022`.
+6. Disenar juntas `RH-W-0046` y `RH-W-0018`, con implementaciones separadas.
+7. Continuar con `RH-W-0044`; su antecedente `RH-W-0043` esta satisfecho y solo queda diseno o avance.
+8. Continuar con `RH-W-0022`.
 
 Onboarding y el residuo restante cierran la ruta:
 
-11. Continuar con `RH-W-0055`.
-12. Luego `RH-W-0062`, que se resuelve contra el diseno de `RH-W-0055` y cierra como sin residuo si ese diseno no encuentra identidad offline viable.
-13. Continuar con `RH-W-0040`; su prerrequisito esta satisfecho y su diseno o avance sigue pendiente.
-14. Luego `RH-W-0060`, colocada despues de `RH-W-0067` porque ambas reescriben los tres contratos diarios generados y no deben implementarse en paralelo.
-15. Luego `RH-W-0065`.
-16. Luego `RH-W-0066`.
+9. Continuar con `RH-W-0055`.
+10. Luego `RH-W-0062`, que se resuelve contra el diseno de `RH-W-0055` y cierra como sin residuo si ese diseno no encuentra identidad offline viable.
+11. Continuar con `RH-W-0040`; su prerrequisito esta satisfecho y su diseno o avance sigue pendiente.
+12. Luego `RH-W-0060`; su restriccion de no concurrencia con la completada `RH-W-0067` sigue satisfecha.
+13. Luego `RH-W-0065`.
+14. Luego `RH-W-0066`.
 
 Los cinco registros de la lista aplazada conservan sus condiciones y no se agendan: `RH-W-0012`, `RH-W-0014`, `RH-W-0015`, `RH-W-0026` y `RH-W-0063`.
 
@@ -283,7 +278,7 @@ Preparacion `completed`. La implementacion delegada directa siguio las cinco tar
 6. Mantener la regla bajo el control existente, como propiedad humana despues de sembrarse, sin campo de manifiesto, schema, dependencia ni copia por runtime.
 7. Implementar solo despues de RH-W-0013, con las 15 obligaciones del diseno, incluidas comprobaciones separadas de alcance para aviso y accion pendiente, sincronizar canon y proyecciones del paquete, y evitar edicion concurrente con RH-W-0060.
 
-Evidencia de entrega: el propietario autorizo directamente implementacion y cierre de ciclo sin acciones Git. GREEN enfocado paso 34 pruebas. Canon, OpenCode y Claude pasaron 441 pruebas con 9, 21 y 21 omisiones. El preview de mantenimiento propuso una regla nueva y nueve reemplazos de skills sin bloqueos; el apply ligado por digest devolvio `VALIDATED`. El checker informa `current` y cero escrituras. Pasaron paridad SHA, procedencia de runtime, propiedad de regla, delimitadores, compuerta, referencias, presupuestos, enlaces, localizacion, conteo de ciclo, alcance prohibido y comprobaciones de diff. No hubo commit, push, PR, merge, acceso a repositorios externos ni trabajo RH-W-0060.
+Evidencia de entrega: el issue #104 registra el trabajo aprobado. El commit de implementacion `7ef4993` se entrego mediante el PR #105 y el commit de merge `5ebaf941d81e9b512584d13b2a08dd800a179824`. GREEN enfocado paso 34 pruebas. Canon, OpenCode y Claude pasaron 441 pruebas con 9, 21 y 21 omisiones. El preview de mantenimiento propuso una regla nueva y nueve reemplazos de skills sin bloqueos; el apply ligado por digest devolvio `VALIDATED`. El checker informa `current` y cero escrituras. Pasaron paridad SHA, procedencia de runtime, propiedad de regla, delimitadores, compuerta, referencias, presupuestos, enlaces, localizacion, conteo de ciclo, alcance prohibido y comprobaciones de diff. No hubo trabajo RH-W-0060.
 
 ### Todavia no planificables
 
@@ -297,7 +292,7 @@ Estos registros tienen una condicion de avance no cumplida, asi que ningun artef
 
 ### Revision de coherencia de los planes
 
-Revisado el 2026-08-24 sobre los 16 planes y los 21 registros no terminales que cubren.
+Proyeccion vigente revisada el 2026-08-24 sobre los 16 planes y los 19 registros no terminales que cubren.
 
 La cobertura es completa y ningun plan contradice a otro. Cada registro no terminal tiene exactamente un plan duenio, con dos excepciones deliberadas: `RH-W-0051` lleva un plan de diseno y un plan de implementacion separado, y `RH-W-0046` junto con `RH-W-0018` comparten un unico plan de diseno conjunto mientras conservan implementaciones, estados y condiciones de avance separados. Los cinco registros de la lista de no planificables quedan cubiertos alli y no por un plan.
 
@@ -317,9 +312,13 @@ Tres planes consumen el namespace que reserva el Plan 1: el Plan 3 para los byte
 
 ### RH-W-0067
 
-Reconciliacion vigente del 2026-08-24. Estado: `completed`. Trabajo restante: `none`. Se implemento el plan revisado con RED/GREEN, una regla generada como unico propietario, una compuerta exacta, referencias diarias concisas, delimitadores ASCII de 32 bytes, prevencion setext, explicacion contextual proporcional, seis compresiones exactas, migracion existente y rollback documentado. GREEN enfocado paso 34 pruebas; canon, OpenCode y Claude pasaron 441; maintenance apply devolvio `VALIDATED`; y el checker informa `current` con cero escrituras. RH-W-0013 y RH-W-0067 estan completadas. La linea siguiente es solo una instantanea cronologica anterior al diseno y no expresa estado, trabajo restante ni dependencias vigentes.
+Reconciliacion vigente del 2026-08-24. Estado: `completed`. Trabajo restante: `none`. Se implemento el plan revisado con RED/GREEN, una regla generada como unico propietario, una compuerta exacta, referencias diarias concisas, delimitadores ASCII de 32 bytes, prevencion setext, explicacion contextual proporcional, seis compresiones exactas, migracion existente y rollback documentado. GREEN enfocado paso 34 pruebas; canon, OpenCode y Claude pasaron 441; maintenance apply devolvio `VALIDATED`; y el checker informa `current` con cero escrituras. El issue #104, el commit de implementacion `7ef4993`, el PR #105 y el commit de merge `5ebaf941d81e9b512584d13b2a08dd800a179824` aportan evidencia de entrega. RH-W-0013 y RH-W-0067 estan completadas.
+
+<!-- Instantanea historica anterior al diseno, retirada de la vista porque sus estados ya no son vigentes.
 
 Origen: observacion del propietario del 2026-08-24, despues de que el agente dibujara dos veces como tres guiones el delimitador de visibilidad `=` y `+` aun con el contrato cargado. Prioridad: `P2`, una obligacion que rige cada respuesta vive solo en archivos cargados por una skill diaria, y `check.py` no puede detectar una regla de prosa sobre salida. Dependencias: la completada `RH-W-0058` posee la obligacion y su sintaxis; `RH-W-0013`, ahora `ready`, corre primero solo para retirar la semantica bloqueante de presupuesto en render y check. Esta unidad posee el margen del reglamento y la ubicacion. Estado: `proposed`. Trabajo completado: se midio la ubicacion. La sintaxis aparece solo en los tres contratos diarios `SKILL.md` y en su fuente, pruebas y proyecciones; `REPO-HARNESS.md` y `.repo-harness/rules/` tienen cero ocurrencias. La inspeccion de solo lectura autorizada de `consumidor 3` encontro una solucion manual sobre el generador `3.0`: `.repo-harness/rules/response-contract.md`, su fila de gate, ejemplos literales de delimitadores y la advertencia sobre encabezados setext de Markdown. Trabajo restante: despues de que `RH-W-0013` retire la semantica bloqueante, disenar la ubicacion, decidir que conserva cada contrato diario, nombrar las palabras exactas que salen del reglamento y luego implementar con pruebas primero, reconciliando superficies canonicas, localizadas y de runtime. Adiciones: un archivo de reglas generado que posea el contrato completo, con ejemplos literales, advertencia setext, longitud exacta de delimitador y una fila de gate en el reglamento siempre cargado. Exclusiones: ninguna obligacion nueva, contenido duplicado de continuidad de sesion, importacion literal del archivo del consumidor, aumento de presupuesto ni tercer contrato de salida. Aplazamientos: ninguno. Rechazos: se conservaron los bloques visibles; se rechazo dejar la sintaxis solo en contratos diarios y duplicarla completa en `REPO-HARNESS.md`. Evidencia: las busquedas, la inspeccion autorizada, las mediciones de 700 tokens estimados para este reglamento y 633 para el de `consumidor 3`, y los dos fallos observados estan verificadas. Decision humana: que palabras salen del reglamento; esta unidad posee la decision. Historial: registrada como `proposed` el 2026-08-24 con instruccion de planificar y no actuar; la revision autorizada del orden la coloco tercera, despues de `RH-W-0013`, sin cambiar el estado. Siguiente condicion: despues de que `RH-W-0013` retire la semantica bloqueante, avanzar con un diseno escrito que nombre el archivo duenio, la fila de gate, lo que conserva cada contrato diario y las palabras exactas que cede el reglamento, con pruebas enfocadas que fallen antes de implementar.
+
+-->
 
 ### RH-W-0066
 

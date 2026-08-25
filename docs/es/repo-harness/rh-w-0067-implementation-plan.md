@@ -8,11 +8,11 @@
 
 **Stack tecnico:** Python 3.10+ y biblioteca estandar, `unittest`, Markdown determinista y proyecciones canonica, OpenCode y Claude byte a byte identicas.
 
-**Propietario del ciclo de vida:** [RH-W-0067](roadmap.md#rh-w-0067), estado `completed`. El [diseno aprobado](rh-w-0067-design.md) posee el comportamiento exacto. RH-W-0013 completada satisfizo la dependencia. Este plan se ejecuto con autoridad directa separada, sin concurrencia RH-W-0060 ni acciones de entrega Git.
+**Propietario del ciclo de vida:** [RH-W-0067](roadmap.md#rh-w-0067), estado `completed`. El [diseno aprobado](rh-w-0067-design.md) posee el comportamiento exacto. RH-W-0013 completada satisfizo la dependencia. Este plan se ejecuto sin concurrencia RH-W-0060 y se entrego mediante el issue #104, el commit de implementacion `7ef4993`, el PR #105 y el commit de merge `5ebaf941d81e9b512584d13b2a08dd800a179824`.
 
 ## Resultado de implementacion
 
-Completado el 2026-08-24. Los fallos RED requeridos se observaron antes de editar produccion, GREEN enfocado paso 34 pruebas, canon/OpenCode/Claude pasaron 441 pruebas cada uno, maintenance apply ligado por digest devolvio `VALIDATED` y el checker generado informo `current` con cero escrituras. La hoja de ruta posee la evidencia completa de ciclo y entrega. Los comandos y casillas siguientes conservan la secuencia historica aprobada.
+Completado el 2026-08-24. Los fallos RED requeridos se observaron antes de editar produccion, GREEN enfocado paso 34 pruebas, canon/OpenCode/Claude pasaron 441 pruebas cada uno, maintenance apply ligado por digest devolvio `VALIDATED` y el checker generado informo `current` con cero escrituras. El issue #104, el commit de implementacion `7ef4993`, el PR #105 y el commit de merge `5ebaf941d81e9b512584d13b2a08dd800a179824` aportan evidencia de entrega. Los comandos y casillas siguientes conservan la secuencia historica aprobada.
 
 ## Mapa de archivos
 
@@ -213,7 +213,7 @@ No cambiar estado solo por GREEN local. No iniciar RH-W-0060.
 
 - [ ] **Paso 5: Limite de issue, commit, PR y publicacion**
 
-Issue, staging, commits, push y PR requieren autorizacion y acceso externo separados. Cuando se autorice, crear o elegir primero un issue RH-W-0067, conservar el numero devuelto, hacer stage por rutas exactas, usar Conventional Commits y abrir un PR enfocado cuyo cuerpo use `Closes #` seguido por ese numero. Nunca inventarlo. Informar alcance, RED, GREEN, checker, procedencia de proyecciones, riesgos y rollback.
+Resultado historico de entrega: se uso el issue aprobado #104, el commit de implementacion `7ef4993` se entrego mediante el PR #105 y el commit de merge `5ebaf941d81e9b512584d13b2a08dd800a179824` completo la entrega. Los detalles anteriores de comandos y staging permanecen como guia historica de ejecucion, no como trabajo pendiente.
 
 Rollback antes de entrega: revertir solo pruebas y renderer RH-W-0067, copiar canon revertido a ambas proyecciones, usar preview/apply de mantenimiento para restaurar salidas y repetir verificaciones. Preservar toda regla instalada evolucionada por humanos; nunca borrarla automaticamente. Despues de entrega, usar un commit revert normal revisado, no reescribir historia.
 
@@ -443,4 +443,4 @@ python -c "from pathlib import Path; import re; paths=[Path('docs/repo-harness/r
 
 ## Decisiones humanas restantes
 
-No queda decision de producto. La implementacion y el cierre de ciclo estan completos. Issue, commit, push y publicacion de PR no se realizaron y quedan fuera de este trabajo.
+No queda decision de producto. La implementacion, el cierre de ciclo y la entrega mediante el issue #104 y el PR #105 estan completos.
