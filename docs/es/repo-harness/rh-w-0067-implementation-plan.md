@@ -8,7 +8,11 @@
 
 **Stack tecnico:** Python 3.10+ y biblioteca estandar, `unittest`, Markdown determinista y proyecciones canonica, OpenCode y Claude byte a byte identicas.
 
-**Propietario del ciclo de vida:** [RH-W-0067](roadmap.md#rh-w-0067), estado `ready`. El [diseno aprobado](rh-w-0067-design.md) posee el comportamiento exacto. RH-W-0013 completada satisface la dependencia. La implementacion sigue sin realizarse y requiere autorizacion explicita separada. RH-W-0060 no debe editar los contratos diarios al mismo tiempo.
+**Propietario del ciclo de vida:** [RH-W-0067](roadmap.md#rh-w-0067), estado `completed`. El [diseno aprobado](rh-w-0067-design.md) posee el comportamiento exacto. RH-W-0013 completada satisfizo la dependencia. Este plan se ejecuto con autoridad directa separada, sin concurrencia RH-W-0060 ni acciones de entrega Git.
+
+## Resultado de implementacion
+
+Completado el 2026-08-24. Los fallos RED requeridos se observaron antes de editar produccion, GREEN enfocado paso 34 pruebas, canon/OpenCode/Claude pasaron 441 pruebas cada uno, maintenance apply ligado por digest devolvio `VALIDATED` y el checker generado informo `current` con cero escrituras. La hoja de ruta posee la evidencia completa de ciclo y entrega. Los comandos y casillas siguientes conservan la secuencia historica aprobada.
 
 ## Mapa de archivos
 
@@ -113,10 +117,10 @@ Copiar literalmente el Bloque E de este plan. Es la especificacion completa del 
 - [ ] **Paso 4: Ejecutar GREEN enfocado**
 
 ```powershell
-python -B skill/repo-harness-builder/tests/test_harness_tool.py RuleFileTests QuestionVisibilityTests ProductWorkflowTests.test_rulebook_stays_within_its_token_budget ProductWorkflowTests.test_rulebook_owns_proportional_verification_principle_for_all_core_skills ProductWorkflowTests.test_rulebook_follow_through_preserves_pause_and_scope_boundaries RepositoryLineEndingContractTests -v
+python -B skill/repo-harness-builder/tests/test_harness_tool.py RuleFileTests QuestionVisibilityTests GeneratedCoreTests.test_rulebook_stays_within_its_token_budget GeneratedCoreTests.test_rulebook_owns_proportional_verification_principle_for_all_core_skills GeneratedCoreTests.test_rulebook_follow_through_preserves_pause_and_scope_boundaries RepositoryLineEndingContractTests -v
 ```
 
-Esperado: todo pasa. Si la regla excede el presupuesto, acortar solo prosa redundante conservando aserciones y ejemplos. Nunca subir `RULEBOOK_TOKEN_BUDGET`.
+Resultado registrado: el comando reproducible corregido selecciona 34 pruebas y todas pasan. Si la regla excede el presupuesto, acortar solo prosa redundante conservando aserciones y ejemplos. Nunca subir `RULEBOOK_TOKEN_BUDGET`.
 
 - [ ] **Paso 5: Limite de unidad**
 
@@ -439,4 +443,4 @@ python -c "from pathlib import Path; import re; paths=[Path('docs/repo-harness/r
 
 ## Decisiones humanas restantes
 
-No queda decision de producto. Implementacion, cierre de ciclo, issue, commit, push y publicacion de PR son acciones autorizadas por separado.
+No queda decision de producto. La implementacion y el cierre de ciclo estan completos. Issue, commit, push y publicacion de PR no se realizaron y quedan fuera de este trabajo.

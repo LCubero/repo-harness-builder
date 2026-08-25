@@ -1,11 +1,11 @@
-# repo-harness-builder: guia operativa en espanol
+# repo-harness-builder
 
-[`REPO-HARNESS.md`](REPO-HARNESS.md) es la unica fuente operativa canonica y prevalece ante cualquier discrepancia.
+Este documento es la presentacion humana en espanol de [`REPO-HARNESS.md`](REPO-HARNESS.md). El archivo en ingles sigue siendo el unico reglamento canonico y ejecutable.
 
 ## Proposito
 <!-- doc-role:purpose -->
 
-Este repositorio contiene las fuentes canonicas de `repo-harness-builder`. Edite primero `skill/repo-harness-builder/` y `command/repo-harness-builder.md`; `.claude/` y `.opencode/` son proyecciones.
+`repo-harness-builder` crea o inspecciona arneses minimos de documentacion y continuidad. Las fuentes del producto viven en `skill/repo-harness-builder/` y `command/repo-harness-builder.md`; `.opencode/` y `.claude/` son proyecciones de prueba. Este repositorio se autoaloja.
 
 ## Reglas obligatorias
 <!-- doc-role:hard-rules -->
@@ -26,6 +26,7 @@ Este repositorio contiene las fuentes canonicas de `repo-harness-builder`. Edite
 | Pausar o cerrar trabajo | `.repo-harness/skills/repo-harness-session-stop/SKILL.md` |
 | Usar el harness como persona | [guia de uso](docs/es/repo-harness/usage.md) |
 | Cambio una habilidad canonica | `python3 .repo-harness/check.py` (`python` en Windows) |
+| Una respuesta requiere aviso, accion pendiente, pregunta, aprobacion, siguiente accion visible o explicacion contextual | `.repo-harness/rules/response-contract.md` |
 | Planificar, implementar, revisar o integrar una contribucion | [CONTRIBUTING.es.md](CONTRIBUTING.es.md) |
 | Consultar el estado y entregas | [estado actual](docs/es/repo-harness/current-state.md) y [CHANGELOG.md](CHANGELOG.md) |
 | Consultar razones o restricciones | [decisiones](docs/es/repo-harness/decisions.md) |

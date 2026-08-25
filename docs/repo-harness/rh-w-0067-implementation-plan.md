@@ -8,7 +8,11 @@
 
 **Tech Stack:** Python 3.10+ standard library, `unittest`, deterministic Markdown rendering, and byte-identical canonical, OpenCode, and Claude package projections.
 
-**Lifecycle owner:** [RH-W-0067](roadmap.md#rh-w-0067), status `ready`. The approved [design](rh-w-0067-design.md) owns exact behavior. Completed RH-W-0013 satisfies the implementation prerequisite. Implementation remains unperformed and requires separate explicit authorization. RH-W-0060 must not edit the daily contracts concurrently.
+**Lifecycle owner:** [RH-W-0067](roadmap.md#rh-w-0067), status `completed`. The approved [design](rh-w-0067-design.md) owns exact behavior. Completed RH-W-0013 satisfied the prerequisite. This plan was executed under separate direct implementation authority without RH-W-0060 concurrency or Git delivery actions.
+
+## Implementation Result
+
+Completed on 2026-08-24. The required RED failures were observed before production edits, focused GREEN passed 34 tests, canonical/OpenCode/Claude each passed 441 tests, digest-bound maintenance apply returned `VALIDATED`, and the generated checker reported `current` with zero writes. The roadmap owns complete lifecycle and delivery evidence. Commands and checkboxes below remain the approved historical execution sequence.
 
 ## File Map
 
@@ -326,10 +330,10 @@ Return it beside the two existing rules:
 Run:
 
 ```powershell
-python -B skill/repo-harness-builder/tests/test_harness_tool.py RuleFileTests QuestionVisibilityTests ProductWorkflowTests.test_rulebook_stays_within_its_token_budget ProductWorkflowTests.test_rulebook_owns_proportional_verification_principle_for_all_core_skills ProductWorkflowTests.test_rulebook_follow_through_preserves_pause_and_scope_boundaries RepositoryLineEndingContractTests -v
+python -B skill/repo-harness-builder/tests/test_harness_tool.py RuleFileTests QuestionVisibilityTests GeneratedCoreTests.test_rulebook_stays_within_its_token_budget GeneratedCoreTests.test_rulebook_owns_proportional_verification_principle_for_all_core_skills GeneratedCoreTests.test_rulebook_follow_through_preserves_pause_and_scope_boundaries RepositoryLineEndingContractTests -v
 ```
 
-Expected: all selected tests pass. If the response-rule wording exceeds the existing budget, shorten only redundant prose while preserving every asserted obligation and both literal examples. Never raise `RULEBOOK_TOKEN_BUDGET`.
+Recorded result: the corrected reproducible command selects 34 tests and all pass. If the response-rule wording exceeds the existing budget, shorten only redundant prose while preserving every asserted obligation and both literal examples. Never raise `RULEBOOK_TOKEN_BUDGET`.
 
 - [ ] **Step 5: Work-unit boundary**
 
@@ -477,4 +481,4 @@ Rollback before delivery: revert only RH-W-0067 canonical tests and renderer cha
 
 ## Remaining Human Decisions
 
-No product decision remains. Implementation, lifecycle completion, issue creation, commit, push, and PR publication each remain separately authorized actions.
+No product decision remains. Implementation and lifecycle completion are complete. Issue creation, commit, push, and PR publication remain unperformed and outside this work.
