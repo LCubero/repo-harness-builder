@@ -4,7 +4,7 @@
 
 Revisar este diseno contra el [registro canonico RH-W-0067](../../repo-harness/roadmap.md#rh-w-0067), el [Plan 17](../../repo-harness/roadmap.md#plan-17-rh-w-0067-reply-shaping-contract-placement), la evidencia completada de RH-W-0049, RH-W-0058 y RH-W-0064 en la hoja de ruta y el changelog, y el [diseno RH-W-0013](../../repo-harness/rh-w-0013-design.md) aprobado. Debe conservar equivalencia semantica con el [diseno en ingles](../../repo-harness/rh-w-0067-design.md).
 
-El estado del ciclo de vida ahora es `ready` tras una reconciliacion separada del propietario. Este documento de diseno no aprueba implementacion, commit, publicacion ni acceso externo; la implementacion sigue sin realizarse y requiere autorizacion explicita separada.
+El estado del ciclo de vida es `completed` tras implementacion directa autorizada por separado y verificacion local. No hubo commit, publicacion ni acceso externo.
 
 ## Decision
 
@@ -215,8 +215,8 @@ RH-W-0058 completada aporta visibilidad. RH-W-0049 completada aporta continuacio
 - La compresion exacta conserva obligaciones y presupuesto de desarrollo.
 - Rutas, propiedad humana, proyecciones, migracion, actualizacion y rollback usan mecanismos existentes sin schema ni dependencia nueva.
 - La verificacion enfocada y completa pasa con paridad, sin placeholders, enlaces validos y sin U+2013 ni U+2014.
-- El estado es `ready`; existe el plan bilingue completo y la implementacion sigue sin realizarse.
+- El estado es `completed`; el plan bilingue completo se ejecuto y verifico localmente.
 
 ## Decisiones humanas restantes
 
-Ninguna. La implementacion requiere autorizacion explicita separada; todo avance posterior del ciclo de vida requiere evidencia de implementacion y entrega.
+Ninguna. La implementacion y la reconciliacion del ciclo estan completas; la entrega Git queda fuera de este trabajo.

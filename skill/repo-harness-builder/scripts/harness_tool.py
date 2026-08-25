@@ -1114,25 +1114,11 @@ def frontmatter(name: str, description: str, source: str, license_id: str) -> st
     )
 
 
-VISIBILITY_CONTRACT = (
-    "Visibility: a notice, pending action, or question must survive skimming. Give it its own block, "
-    "delimited by a horizontal rule line above and below, with a short label line naming it in the reply "
-    "language. Never use side borders or box corners, which misalign in a terminal. Reserve the block for "
-    "input the human must act on: when nothing is pending, close with a plain status line and one concrete "
-    "recommendation, never an empty block. Two block forms exist and the choice between them is not "
-    "stylistic: draw the block with a line of `=` only when the reply is blocked and cannot continue until "
-    "the human answers, and draw it with a line of `+` only when the reply asks nothing and names what comes "
-    "next. Never use `=` for something the human does not have to answer, never use `+` to ask, and never "
-    "put both forms in one reply, so the reader knows from the shape alone whether the reply is waiting on "
-    "them. This binds the agent's own replies as well as "
-    "reported output, and strengthens the single-final-question rule rather than replacing it."
+RESPONSE_CONTRACT_REFERENCE = (
+    "Response shaping: for any notice, pending action, question, approval, visible next action, or "
+    "contextual explanation, apply `.repo-harness/rules/response-contract.md` to the agent's own "
+    "reply and reported output."
 )
-"""One obligation, shared by every daily contract.
-
-A position rule is not a visibility rule: a final line at the end of a long reply is
-still unfindable. It lives here rather than in the rulebook because the rulebook has
-four tokens of headroom and this is contract detail, not a never-miss rule.
-"""
 
 
 def references_section(rulebook_path: str) -> str:
@@ -1273,7 +1259,7 @@ Never use git pull, git rebase, git reset, force operations, merge on divergence
 Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
 Report the checker result in the reply language: `current` means every runtime projection is up to date, and `drift` is reported as needing an update, naming each drifted runtime projection.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
-{VISIBILITY_CONTRACT}
+{RESPONSE_CONTRACT_REFERENCE}
 {references_section(rulebook_path)}"""
 
 
@@ -1383,7 +1369,7 @@ Always report required continuity outcome separately from optional Git branch ou
 
 Deliver the complete Output Contract only after continuity is saved successfully. Return close outcome, required continuity outcome, optional Git branch outcome, completed work, decisions, unresolved issues, next steps, verified paths, documentation update result, {output_continuity}, classified Git state, proposed or completed work units, commit result, push result, transport receipts, safely-local state, and separately pending optional gates. When safe and relevant, ask exactly one blocking question and make it the final user-facing line.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
-{VISIBILITY_CONTRACT}
+{RESPONSE_CONTRACT_REFERENCE}
 If continuity saving fails, surface the failure and do not claim successful continuity or a final handoff.
 {references_section(rulebook_path)}"""
 
@@ -1458,7 +1444,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 
 Return canonical owners checked, links validated, stale or duplicate claims resolved, durable documents changed, temporary state left unpromoted, and remaining documentation risks.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
-{VISIBILITY_CONTRACT}
+{RESPONSE_CONTRACT_REFERENCE}
 {references_section(rulebook_path)}"""
 
 
@@ -1502,9 +1488,9 @@ Describe what this project does and who it serves.
 
 - Work only inside the selected repository.
 - Ask for explicit approval before reading or modifying paths outside it.
-- Apply the smallest change sufficient for the current objective.
-- Do not introduce unrelated tools, processes, abstractions, or scope.
-- Do not retry indefinitely. After a repeated failure, stop, present evidence, and request a decision.
+- Apply the smallest sufficient change.
+- Do not introduce unrelated scope.
+- Do not retry indefinitely. After repeated failure, stop with evidence and request a decision.
 - Do not continue automatically into unrequested tasks.
 - Do not stop after merely announcing an immediately executable verification or action inside the requested and authorized scope. Execute it and report the result. Pause only for approval, authority, evidence, safety, or a material decision.
 - Preserve unknown files and existing work.
@@ -1523,15 +1509,16 @@ Describe what this project does and who it serves.
 | A canonical skill changed, or a runtime copy may be stale | `python3 .repo-harness/check.py` (`python` on Windows) |
 | Sizing a change, deciding when to stop, how work is done | `.repo-harness/rules/working-agreements.md` |
 | {continuity_gate} | `.repo-harness/rules/memory.md` |
+| An answer requires a notice, pending action, question, approval, visible next action, or contextual explanation | `.repo-harness/rules/response-contract.md` |
 | Creating, moving, or deleting a document | [documentation map](docs/repo-harness/README.md) |
 | Where the project stands and what shipped | [current state](docs/repo-harness/current-state.md), then [CHANGELOG.md](CHANGELOG.md) |
 | Why something was decided, or a standing constraint | [decisions](docs/repo-harness/decisions.md) |
 
 ## Updating This File
 
-1. **When.** Update this file when a rule, gate destination, or statement changes.
-2. **Where.** Keep never-miss rules here. Move detail to `.repo-harness/rules/` with at most one gate row.
-3. **Budget.** Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. Growth moves down; the budget never rises.
+1. Update when a rule or gate changes.
+2. Keep never-miss rules here; move detail to `.repo-harness/rules/` with at most one gate row.
+3. Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. Growth moves down; the budget never rises.
 
 No dated status here. Completed changes go to `CHANGELOG.md`, current state and next step to `docs/repo-harness/current-state.md`, decisions and their reasons to `docs/repo-harness/decisions.md`.
 """
@@ -1620,7 +1607,58 @@ Replace this section with the agreements this project actually has. Delete it if
 
 Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. A file that outgrows it splits or sheds detail; it never raises the number.
 """
-    return {".repo-harness/rules/memory.md": memory, ".repo-harness/rules/working-agreements.md": agreements}
+    response_contract = f"""# Response Contract
+
+{marker}
+
+Load when: an answer requires a notice, pending action, question, approval, visible next action, or contextual explanation.
+
+## Visibility
+
+- A notice, pending action, or question that must survive skimming gets a separate block with a short label in the reply language.
+- A blocked reply that cannot continue until the human answers uses exactly 32 ASCII `=` bytes above and below the label, necessary explanation, and single final question.
+- A reply that asks nothing and names a visible next action uses exactly 32 ASCII `+` bytes above and below the label and action.
+- Never put both forms in one reply. Never use `=` for informational content or `+` to ask a question. Never use side borders or box corners.
+- When nothing is pending and no visible next action is useful, close with a plain status line and one concrete recommendation, never an empty block.
+- This binds the agent's own reply and reported output and strengthens, rather than replaces, the single-final-question rule.
+
+```text
+================================
+Decision required
+
+<Only the context needed to answer.>
+
+<One concrete final question?>
+================================
+```
+
+```text
+++++++++++++++++++++++++++++++++
+Next action
+
+<One concrete next action.>
+++++++++++++++++++++++++++++++++
+```
+
+A line of `=` directly below prose can become a Markdown setext heading and disappear as a delimiter. Keep a blank line before the opening `=` delimiter and keep both delimiter lines standalone.
+
+## Contextual Explanation
+
+When context helps the human understand or act, explain only the relevant dimensions among why, purpose, location, timing, and method. This semantic rule never requires five headings, a fixed template, empty dimensions, repeated information, or explanation when the answer is already self-explanatory.
+
+## Preserved Boundaries
+
+Use the existing owners for proportionality, evidence classification, authority, no-unrequested-work, and authorized-follow-through. This file does not expand those boundaries.
+
+## Budget
+
+Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. A file that outgrows it splits or sheds detail; it never raises the number.
+"""
+    return {
+        ".repo-harness/rules/memory.md": memory,
+        ".repo-harness/rules/response-contract.md": response_contract,
+        ".repo-harness/rules/working-agreements.md": agreements,
+    }
 
 
 def normalize_documentation_languages(values: list[str] | None) -> tuple[str, ...]:

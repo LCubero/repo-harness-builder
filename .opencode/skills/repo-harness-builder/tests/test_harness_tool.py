@@ -26,9 +26,9 @@ SPEC.loader.exec_module(TOOL)
 DISCIPLINE = (
     "Work only inside the selected repository.",
     "Ask for explicit approval before reading or modifying paths outside it.",
-    "Apply the smallest change sufficient for the current objective.",
-    "Do not introduce unrelated tools, processes, abstractions, or scope.",
-    "Do not retry indefinitely. After a repeated failure, stop, present evidence, and request a decision.",
+    "Apply the smallest sufficient change.",
+    "Do not introduce unrelated scope.",
+    "Do not retry indefinitely. After repeated failure, stop with evidence and request a decision.",
     "Do not continue automatically into unrequested tasks.",
     "Preserve unknown files and existing work.",
 )
@@ -4191,7 +4191,16 @@ class ContextBudgetBlockingTests(unittest.TestCase):
 class RuleFileTests(unittest.TestCase):
     """The rulebook can only stay small if detail has a budgeted place to go down to."""
 
-    SEEDS = (".repo-harness/rules/memory.md", ".repo-harness/rules/working-agreements.md")
+    RESPONSE_RULE = ".repo-harness/rules/response-contract.md"
+    GATE = (
+        "| An answer requires a notice, pending action, question, approval, visible next action, "
+        "or contextual explanation | `.repo-harness/rules/response-contract.md` |"
+    )
+    SEEDS = (
+        ".repo-harness/rules/memory.md",
+        RESPONSE_RULE,
+        ".repo-harness/rules/working-agreements.md",
+    )
 
     def test_rules_directory_is_seeded(self):
         outputs = TOOL.render("Example", [])
@@ -4220,6 +4229,90 @@ class RuleFileTests(unittest.TestCase):
         outputs = TOOL.render("Example", [])
         for path in self.SEEDS:
             self.assertLess(TOOL.token_proxy(outputs[path]), TOOL.RULEBOOK_TOKEN_BUDGET, path)
+
+    def test_response_contract_has_one_exact_six_trigger_gate(self):
+        outputs = TOOL.render("Example", [])
+        self.assertEqual(outputs[RULEBOOK].count(self.GATE), 1)
+        self.assertIn(
+            "Load when: an answer requires a notice, pending action, question, approval, visible next action, or contextual explanation.",
+            outputs[self.RESPONSE_RULE],
+        )
+
+    def test_response_contract_owns_literal_32_byte_forms_and_setext_safety(self):
+        text = TOOL.render("Example", [])[self.RESPONSE_RULE]
+        equals = "=" * 32
+        pluses = "+" * 32
+        self.assertEqual(text.splitlines().count(equals), 2)
+        self.assertEqual(text.splitlines().count(pluses), 2)
+        self.assertIn(f"```text\n{equals}\nDecision required", text)
+        self.assertIn(f"```text\n{pluses}\nNext action", text)
+        self.assertIn("setext heading", text)
+        self.assertIn("blank line", text)
+
+    def test_response_contract_keeps_context_proportional_without_five_headings(self):
+        text = TOOL.render("Example", [])[self.RESPONSE_RULE]
+        for dimension in ("why", "purpose", "location", "timing", "method"):
+            self.assertIn(dimension, text)
+        self.assertIn("only the relevant dimensions", text)
+        self.assertIn("never requires five headings", text)
+        self.assertIn("evidence classification", text)
+        self.assertIn("authority", text)
+        self.assertIn("no-unrequested-work", text)
+        self.assertIn("authorized-follow-through", text)
+
+    def test_rulebook_compression_preserves_obligations_and_budget(self):
+        text = TOOL.render("A Fairly Long Project Name Here", ["opencode", "claude-code", "pi"])[RULEBOOK]
+        for replacement in (
+            "Apply the smallest sufficient change.",
+            "Do not introduce unrelated scope.",
+            "After repeated failure, stop with evidence and request a decision.",
+            "1. Update when a rule or gate changes.",
+            "2. Keep never-miss rules here; move detail to",
+            "3. Stay under 700 tokens",
+        ):
+            self.assertIn(replacement, text)
+        for superseded in (
+            "Apply the smallest change sufficient for the current objective.",
+            "Do not introduce unrelated tools, processes, abstractions, or scope.",
+            "After a repeated failure, stop, present evidence, and request a decision.",
+            "1. **When.** Update this file when a rule, gate destination, or statement changes.",
+            "2. **Where.** Keep never-miss rules here. Move detail to",
+            "3. **Budget.** Stay under",
+        ):
+            self.assertNotIn(superseded, text)
+        self.assertLess(TOOL.token_proxy(text), TOOL.RULEBOOK_TOKEN_BUDGET)
+
+    def test_rulebook_contains_no_response_syntax_beyond_the_gate(self):
+        text = TOOL.render("Example", [])[RULEBOOK]
+        self.assertEqual(text.count(self.GATE), 1)
+        for syntax in ("Decision required", "Next action", "setext heading", "=" * 32, "+" * 32):
+            self.assertNotIn(syntax, text)
+
+    def test_response_rule_is_missing_then_human_evolved_without_schema_changes(self):
+        outputs = TOOL.render("Example", ["opencode"])
+        manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+        self.assertNotIn("responseContract", manifest)
+        expected_response_rule = outputs[self.RESPONSE_RULE]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("opencode",))
+            target = root / self.RESPONSE_RULE
+            target.unlink()
+            missing = TOOL.check(root, "Example", ["opencode"])
+            missing_entry = next(item for item in missing["files"] if item["path"] == self.RESPONSE_RULE)
+            self.assertEqual(missing_entry["state"], "missing")
+            target.write_text(expected_response_rule + "\nHuman note.\n", encoding="utf-8")
+            evolved = TOOL.check(root, "Example", ["opencode"])
+            evolved_entry = next(item for item in evolved["files"] if item["path"] == self.RESPONSE_RULE)
+            self.assertEqual(evolved_entry["state"], "human-evolved")
+            self.assertEqual(evolved["status"], "current")
+            self.assertEqual(evolved["writes"], 0)
+
+    def test_response_rule_is_not_byte_pinned_or_runtime_duplicated(self):
+        outputs = TOOL.render("Example", ["claude-code", "opencode", "pi"])
+        self.assertNotIn(f"{self.RESPONSE_RULE} text eol=lf", outputs[".gitattributes"])
+        for prefix in (".claude/", ".opencode/", ".pi/"):
+            self.assertNotIn(prefix + self.RESPONSE_RULE, outputs)
 
     def test_check_keeps_large_human_evolved_rule_current(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -6254,82 +6347,46 @@ class QuestionVisibilityTests(unittest.TestCase):
         ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
         ".repo-harness/skills/repo-harness-documentation/SKILL.md",
     )
+    REFERENCE = (
+        "Response shaping: for any notice, pending action, question, approval, visible next action, or "
+        "contextual explanation, apply `.repo-harness/rules/response-contract.md` to the agent's own "
+        "reply and reported output."
+    )
 
     def rendered_daily(self):
         outputs = TOOL.render("Example", ["opencode"])
         return {path: outputs[path] for path in self.DAILY_SKILLS}
 
-    def test_every_daily_contract_carries_the_visibility_obligation(self):
-        """Position is not visibility; all three daily contracts state the same obligation."""
+    def test_every_daily_contract_contains_the_exact_reference_once(self):
         for path, text in self.rendered_daily().items():
             with self.subTest(path=path):
-                self.assertIn("survive skimming", text)
+                output_contract = text.split("## Output Contract", 1)[1]
+                self.assertEqual(output_contract.count(self.REFERENCE), 1)
 
-    def test_the_obligation_names_the_delimiter_and_forbids_side_borders(self):
-        """A rule mechanical enough to follow, and the exact form that misaligns in a terminal."""
-        for path, text in self.rendered_daily().items():
-            with self.subTest(path=path):
-                self.assertIn("horizontal rule line", text)
-                self.assertIn("side borders", text)
-                self.assertIn("box corners", text)
+    def test_notice_and_pending_action_are_independent_gate_triggers(self):
+        gate = TOOL.render("Example", ["opencode"])["REPO-HARNESS.md"]
+        self.assertIn("notice, pending action, question", gate)
+        self.assertIn("pending action", self.REFERENCE)
+        self.assertIn("visible next action", self.REFERENCE)
 
-    def test_the_obligation_requires_a_label_in_the_reply_language(self):
-        """The block is generated English; its label follows the conversation the human is reading."""
-        for path, text in self.rendered_daily().items():
-            with self.subTest(path=path):
-                self.assertIn("label line", text)
-                self.assertIn("reply language", text)
-
-    def test_the_obligation_forbids_an_empty_block_and_requires_a_recommendation(self):
-        """A block reading no-question-pending spends the one visual device on nothing."""
-        for path, text in self.rendered_daily().items():
-            with self.subTest(path=path):
-                self.assertIn("never an empty block", text)
-                self.assertRegex(text, r"(?i)concrete recommendation")
-
-    def test_the_obligation_binds_the_agent_own_replies(self):
-        """The defect was a chat reply, so a rule bounded to generated output would not have prevented it."""
-        for path, text in self.rendered_daily().items():
-            with self.subTest(path=path):
-                self.assertIn("the agent's own replies", text)
-
-    def test_the_obligation_does_not_replace_the_single_final_question_rule(self):
-        """Two rules that look alike drift apart unless one names the other."""
-        start = self.rendered_daily()[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
-        self.assertIn("final user-facing line", start)
-        self.assertRegex(start, r"(?i)strengthens")
-
-    def test_a_question_block_and_a_next_action_block_are_told_apart_by_shape(self):
-        """One delimiter for both destroys the signal: the reader cannot see whether a reply waits on them."""
-        for path, text in self.rendered_daily().items():
-            with self.subTest(path=path):
-                self.assertIn("the choice between them is not", text)
-                self.assertIn("from the shape alone whether the reply is waiting on them", text)
-
-    def test_the_two_block_forms_name_their_characters_and_when_each_applies(self):
-        """A character without its condition is decoration; the reader has to know which one is coming."""
-        for path, text in self.rendered_daily().items():
-            with self.subTest(path=path):
-                self.assertIn("a line of `=`", text)
-                self.assertIn("a line of `+`", text)
-                self.assertIn("only when the reply is blocked", text)
-                self.assertIn("only when the reply asks nothing", text)
-                self.assertRegex(text, r"(?i)never put both forms in one reply")
-
-    def test_the_rulebook_is_untouched_by_the_visibility_obligation(self):
-        """RH-W-0058 lands in the daily contracts only; the rulebook has four tokens of headroom."""
-        rulebook = TOOL.render("Example", ["opencode"])["REPO-HARNESS.md"]
-        for token in (
-            "survive skimming",
-            "side borders",
-            "box corners",
+    def test_daily_contracts_do_not_duplicate_response_syntax(self):
+        forbidden = (
+            "=" * 32,
+            "+" * 32,
+            "setext heading",
+            "why, purpose, location, timing, and method",
             "a line of `=`",
             "a line of `+`",
-            "only when the reply is blocked",
-            "only when the reply asks nothing",
-        ):
-            with self.subTest(token=token):
-                self.assertNotIn(token, rulebook)
+        )
+        for path, text in self.rendered_daily().items():
+            with self.subTest(path=path):
+                for phrase in forbidden:
+                    self.assertNotIn(phrase, text)
+
+    def test_response_syntax_has_one_generated_owner(self):
+        outputs = TOOL.render("Example", ["opencode"])
+        owners = [path for path, text in outputs.items() if "Decision required" in text]
+        self.assertEqual(owners, [".repo-harness/rules/response-contract.md"])
 
 
 class BuilderApplyGenerationTests(unittest.TestCase):

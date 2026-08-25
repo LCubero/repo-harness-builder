@@ -4,7 +4,7 @@
 
 Review this design against the canonical [RH-W-0067 roadmap record](roadmap.md#rh-w-0067), [Plan 17](roadmap.md#plan-17-rh-w-0067-reply-shaping-contract-placement), the completed RH-W-0049, RH-W-0058, and RH-W-0064 evidence in the roadmap and changelog, and the approved [RH-W-0013 design](rh-w-0013-design.md). The [Spanish peer](../es/repo-harness/rh-w-0067-design.md) must remain semantically equivalent.
 
-Lifecycle status is now `ready` after separate owner reconciliation. This design document itself approves no implementation, commit, publication, or external access; implementation remains unperformed and requires separate explicit authorization.
+Lifecycle status is `completed` after separately authorized direct implementation and local verification. No commit, publication, or external access occurred.
 
 ## Decision
 
@@ -215,8 +215,8 @@ Completed RH-W-0058 supplies the visibility obligation. Completed RH-W-0049 supp
 - Exact rulebook compression preserves every obligation and the established development-time budget.
 - Generated paths, human-owned checking, runtime projections, migration, upgrade, and rollback follow existing mechanisms without a new schema or dependency.
 - Focused and full verification pass with parity, no placeholders, valid links, and no U+2013 or U+2014.
-- Status is `ready`; the complete bilingual implementation plan exists and implementation remains unperformed.
+- Status is `completed`; the complete bilingual implementation plan was executed and verified locally.
 
 ## Remaining Human Decisions
 
-None. Implementation requires separate explicit authorization; later lifecycle advancement requires implementation and delivery evidence.
+None. Implementation and lifecycle reconciliation are complete; Git delivery remains outside this work.

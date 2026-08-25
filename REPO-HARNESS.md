@@ -14,9 +14,9 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 
 - Work only inside the selected repository.
 - Ask for explicit approval before reading or modifying paths outside it.
-- Apply the smallest change sufficient for the current objective.
-- Do not introduce unrelated tools, processes, abstractions, or scope.
-- Do not retry indefinitely. After a repeated failure, stop, present evidence, and request a decision.
+- Apply the smallest sufficient change.
+- Do not introduce unrelated scope.
+- Do not retry indefinitely. After repeated failure, stop with evidence and request a decision.
 - Do not continue automatically into unrequested tasks.
 - Do not stop after merely announcing an immediately executable verification or action inside the requested and authorized scope. Execute it and report the result. Pause only for approval, authority, evidence, safety, or a material decision.
 - Preserve unknown files and existing work through informed, explicitly approved evolution; never freeze content by default.
@@ -35,6 +35,7 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 | A canonical skill changed, or a runtime copy may be stale | `python3 .repo-harness/check.py` (`python` on Windows) |
 | Sizing a change, deciding when to stop, how work is done | `.repo-harness/rules/working-agreements.md` |
 | Saving or recalling across sessions, memory unavailable | `.repo-harness/rules/memory.md` |
+| An answer requires a notice, pending action, question, approval, visible next action, or contextual explanation | `.repo-harness/rules/response-contract.md` |
 | Creating, moving, or deleting a document | [documentation map](docs/repo-harness/README.md) |
 | Planning, implementing, reviewing, or merging a contribution | [CONTRIBUTING.md](CONTRIBUTING.md) |
 | Where the project stands and what shipped | [current state](docs/repo-harness/current-state.md), then [CHANGELOG.md](CHANGELOG.md) |
@@ -44,8 +45,8 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 ## Updating This File
 <!-- doc-role:maintenance -->
 
-1. Update this file when rules or gates change.
-2. Keep never-miss rules here. Move detail to `.repo-harness/rules/` with at most one gate row.
-3. Keep the 700-token `wc -w` times 1.33 budget. Move growth down; never raise it.
+1. Update when a rule or gate changes.
+2. Keep never-miss rules here; move detail to `.repo-harness/rules/` with at most one gate row.
+3. Stay under 700 tokens, measured as `wc -w` times 1.33. Growth moves down; the budget never rises.
 
 No dated status here. Completed changes go to `CHANGELOG.md`, current state to `docs/repo-harness/current-state.md`, and rationale to `docs/repo-harness/decisions.md`.
