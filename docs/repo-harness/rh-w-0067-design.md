@@ -4,7 +4,7 @@
 
 Review this design against the canonical [RH-W-0067 roadmap record](roadmap.md#rh-w-0067), [Plan 17](roadmap.md#plan-17-rh-w-0067-reply-shaping-contract-placement), the completed RH-W-0049, RH-W-0058, and RH-W-0064 evidence in the roadmap and changelog, and the approved [RH-W-0013 design](rh-w-0013-design.md). The [Spanish peer](../es/repo-harness/rh-w-0067-design.md) must remain semantically equivalent.
 
-Status remains `proposed`. This document approves no implementation, implementation plan, lifecycle transition, commit, publication, or external access.
+Lifecycle status is now `ready` after separate owner reconciliation. This design document itself approves no implementation, commit, publication, or external access; implementation remains unperformed and requires separate explicit authorization.
 
 ## Decision
 
@@ -192,8 +192,8 @@ Rollback is one work unit: remove the response rule from `rule_outputs()`, resto
 
 - No RDD, schema, parser, AI analysis, runtime dependency, taxonomy, automatic rewriting, or unrelated refactor.
 - No new lifecycle ID and no split of the contextual clause into another unit.
-- No implementation plan in this work unit.
-- No change to lifecycle status.
+- The design work unit itself created no implementation plan; the complete bilingual plan was authorized and reviewed later.
+- The design work unit itself made no lifecycle change; the later owner reconciliation advanced RH-W-0067 to `ready`.
 - No change to evidence classification, authority, proportionality, no-unrequested-work, or authorized-follow-through semantics.
 - No session-continuity content in the response rule.
 - No duplicated full syntax in the rulebook or daily skills.
@@ -203,7 +203,7 @@ Rollback is one work unit: remove the response rule from `rule_outputs()`, resto
 
 ## Dependencies
 
-Completed RH-W-0058 supplies the visibility obligation. Completed RH-W-0049 supplies proportional contextual continuation without menus or automatic work. Completed RH-W-0064 supplies authorized follow-through without unrequested continuation. Ready RH-W-0013 remains a separate implementation dependency and must be implemented before RH-W-0067 implementation. RH-W-0060 must not implement the same daily contracts concurrently.
+Completed RH-W-0058 supplies the visibility obligation. Completed RH-W-0049 supplies proportional contextual continuation without menus or automatic work. Completed RH-W-0064 supplies authorized follow-through without unrequested continuation. Completed RH-W-0013 satisfies the separate implementation dependency. RH-W-0060 must not implement the same daily contracts concurrently.
 
 ## Acceptance Criteria
 
@@ -215,8 +215,8 @@ Completed RH-W-0058 supplies the visibility obligation. Completed RH-W-0049 supp
 - Exact rulebook compression preserves every obligation and the established development-time budget.
 - Generated paths, human-owned checking, runtime projections, migration, upgrade, and rollback follow existing mechanisms without a new schema or dependency.
 - Focused and full verification pass with parity, no placeholders, valid links, and no U+2013 or U+2014.
-- Status remains `proposed`; implementation and an implementation plan remain absent.
+- Status is `ready`; the complete bilingual implementation plan exists and implementation remains unperformed.
 
 ## Remaining Human Decisions
 
-None. Implementation authorization, later implementation-plan authorization, and lifecycle advancement remain separate future actions.
+None. Implementation requires separate explicit authorization; later lifecycle advancement requires implementation and delivery evidence.
