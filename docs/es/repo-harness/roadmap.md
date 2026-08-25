@@ -280,6 +280,18 @@ Preparacion `completed`. La implementacion delegada directa siguio las cinco tar
 
 Evidencia de entrega: el issue #104 registra el trabajo aprobado. El commit de implementacion `7ef4993` se entrego mediante el PR #105 y el commit de merge `5ebaf941d81e9b512584d13b2a08dd800a179824`. GREEN enfocado paso 34 pruebas. Canon, OpenCode y Claude pasaron 441 pruebas con 9, 21 y 21 omisiones. El preview de mantenimiento propuso una regla nueva y nueve reemplazos de skills sin bloqueos; el apply ligado por digest devolvio `VALIDATED`. El checker informa `current` y cero escrituras. Pasaron paridad SHA, procedencia de runtime, propiedad de regla, delimitadores, compuerta, referencias, presupuestos, enlaces, localizacion, conteo de ciclo, alcance prohibido y comprobaciones de diff. No hubo trabajo RH-W-0060.
 
+### Plan 18: cierre de mejora continua de session-stop RH-W-0068
+
+Preparacion `plannable now`. Prioridad `P1`. Registrado fuera del orden aprobado desde fallos vivos repetidos en este repositorio.
+
+1. Disenar una disposicion explicita del changelog en el Output Contract final: `updated`, `not needed`, `declined` o `pending approval`, con evidencia.
+2. Reconciliar el enrutamiento de commit y push acotado al resultado con la autoridad canonica del harness y los detalles de contribucion que delega, sin permitir que `CONTRIBUTING.md` reemplace a `REPO-HARNESS.md`.
+3. Agregar regresiones que fallen si un cierre significativo omite la disposicion del changelog u ofrece una ruta Git sin resolver la politica aplicable del repositorio.
+4. Conservar Engram como continuidad integrada normal del repo-harness cuando este disponible. Nunca activar las skills personales ajenas `wk-mem-write-ld9` o `wk-mem-read-ld9` sin una peticion explicita de esas skills.
+5. Corregir primero con pruebas el generador canonico de session-stop, sincronizar las proyecciones autoalojada, OpenCode y Claude, verificar, documentar y entregar por la ruta autorizada del repositorio.
+
+Decision humana: aprobar el diseno minimo antes de implementar. Este registro no autoriza cambio de producto.
+
 ### Todavia no planificables
 
 Estos registros tienen una condicion de avance no cumplida, asi que ningun artefacto puede producirse sin inventar la evidencia que esa condicion exige.
@@ -292,7 +304,7 @@ Estos registros tienen una condicion de avance no cumplida, asi que ningun artef
 
 ### Revision de coherencia de los planes
 
-Proyeccion vigente revisada el 2026-08-24 sobre los 16 planes y los 19 registros no terminales que cubren.
+Proyeccion vigente revisada el 2026-08-24 sobre los 17 planes no terminales y los 20 registros no terminales que cubren.
 
 La cobertura es completa y ningun plan contradice a otro. Cada registro no terminal tiene exactamente un plan duenio, con dos excepciones deliberadas: `RH-W-0051` lleva un plan de diseno y un plan de implementacion separado, y `RH-W-0046` junto con `RH-W-0018` comparten un unico plan de diseno conjunto mientras conservan implementaciones, estados y condiciones de avance separados. Los cinco registros de la lista de no planificables quedan cubiertos alli y no por un plan.
 
@@ -309,6 +321,10 @@ Tres planes consumen el namespace que reserva el Plan 1: el Plan 3 para los byte
 ## Registros activos
 
 <!-- doc-role:active-records -->
+
+### RH-W-0068
+
+Origen: fallos repetidos observados por el propietario durante session-stop el 2026-08-24. El agente omitio la disposicion del changelog, trato continuidad de Engram como sustituto de documentacion rastreada, activo sin peticion la skill personal ajena `wk-mem-write-ld9` y produjo explicaciones contradictorias de ruta Git en vez de convertir los fallos en trabajo durable del producto. Prioridad: `P1`, el harness existe para mejorar desde fallos observados; un cierre que oculta estado del changelog, elige una ruta de entrega sin resolver o sustituye verdad visible por continuidad no autoritativa puede repetir el defecto. Dependencias: reutilizar `RH-W-0050`, `RH-W-0064` y `RH-W-0067`, todas completadas. `REPO-HARNESS.md` sigue siendo canonico; `CONTRIBUTING.md` aporta detalles delegados y nunca reemplaza al harness. Estado: `proposed`. Trabajo completado: solo se registro el limite verificado. Engram `#10622` conserva continuidad semantica, pero esta hoja de ruta posee el trabajo pendiente durable. La fuente exige proponer una entrada significativa de changelog, mientras el Output Contract final no exige explicitamente su disposicion, y no se encontro una regresion enfocada. La ruta Git puede ofrecer commit y push a un upstream identificado sin reconciliar explicitamente la politica delegada. Trabajo restante: crear y aprobar un diseno bilingue minimo e implementar primero con pruebas. Exigir disposicion explicita del changelog, resolver politica Git antes de ofrecer entrega, conservar Engram como continuidad integrada e impedir que skills personales ajenas se activen sin peticion explicita. Adiciones: disposicion final del changelog, clasificacion de ruta Git correcta por autoridad, regresiones enfocadas y limite explicito de activacion de skills. Exclusiones: sin retirar Engram, sin afirmar que `CONTRIBUTING.md` supera al harness, sin store generico, reescritura automatica de historia, aprobacion oculta, SDD ni implementacion en este registro. Aplazamientos: ajustar las skills externas `wk-mem-write-ld9` y `wk-mem-read-ld9` es trabajo futuro separado fuera de este repositorio. Rechazos: memoria como unico registro, backup `.ld9` como verdad del repositorio, recordatorios de prompt y tratar aprobacion humana de una ruta mal ofrecida como prueba de clasificacion correcta. Evidencia: conversacion y repositorio verificados, commit publicado `1e78ddb824ad997a62a72a519fcf88851f3e6b8d`, fuente de session-stop, `REPO-HARNESS.md` y Engram `#10622`. Historial: registrada `proposed` el 2026-08-24 por exigencia repetida del propietario de escribir el fallo en el repositorio y mejorar duramente el harness; no hay diseno ni implementacion aprobados. Siguiente condicion: diseno bilingue aprobado que defina disposiciones, deteccion de cierre significativo, resolucion y precedencia Git, limites de activacion, RED/GREEN, sincronizacion y rollback.
 
 ### RH-W-0067
 

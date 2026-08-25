@@ -280,6 +280,18 @@ Readiness `completed`. Direct delegated implementation followed the approved fiv
 
 Delivery evidence: issue #104 records the approved work. Implementation commit `7ef4993` was delivered through PR #105 and merge commit `5ebaf941d81e9b512584d13b2a08dd800a179824`. Focused GREEN passed 34 tests. Canonical, OpenCode, and Claude each passed 441 tests, with 9, 21, and 21 skips. Maintenance preview proposed one rule creation and nine daily-skill replacements with no blocked action; digest-bound apply returned `VALIDATED`. The checker reports `current` and zero writes. Exact SHA parity, runtime provenance, rule ownership, delimiter counts, gate and daily references, budgets, links, localization, lifecycle count, forbidden scope, and diff checks passed. No RH-W-0060 work occurred.
 
+### Plan 18: RH-W-0068 session-stop self-improvement closure
+
+Readiness `plannable now`. Priority `P1`. Registered outside the approved order from repeated live failures in this repository.
+
+1. Design one explicit changelog disposition in the final session-stop Output Contract: `updated`, `not needed`, `declined`, or `pending approval`, with evidence.
+2. Reconcile outcome-scoped commit and push routing with the canonical harness authority and the contribution details it delegates, without allowing `CONTRIBUTING.md` to override `REPO-HARNESS.md`.
+3. Add regression tests that fail when a meaningful close omits changelog disposition or offers a Git route without resolving the applicable repository policy.
+4. Preserve Engram as normal integrated repo-harness continuity when available. Never activate unrelated personal `wk-mem-write-ld9` or `wk-mem-read-ld9` skills without an explicit request for those skills.
+5. Fix the canonical session-stop generator test-first, synchronize self-hosted, OpenCode, and Claude projections, verify, document, and deliver through the repository's authorized route.
+
+Human decision: approve the minimal design before implementation. This registration authorizes no product change.
+
 ### Not plannable yet
 
 These records have an unmet advancement condition, so no artifact can be produced without inventing the evidence the condition requires.
@@ -292,7 +304,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reviewed on 2026-08-24 across all 16 plans and the 19 non-terminal records they cover.
+Current projection reviewed on 2026-08-24 across all 17 non-terminal plans and the 20 non-terminal records they cover.
 
 Coverage is complete and no plan contradicts another. Every non-terminal record has exactly one owning plan, with two deliberate exceptions: `RH-W-0051` carries a design plan and a separate implementation plan, and `RH-W-0046` with `RH-W-0018` share one joint design plan while keeping separate implementations, statuses, and advancement conditions. The five records in the not-plannable list above are covered there rather than by a plan.
 
@@ -309,6 +321,23 @@ Three plans consume the namespace Plan 1 reserves: Plan 3 for checkpoint bytes, 
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0068
+| Field | Value |
+|---|---|
+| Origin | Repeated owner-observed failures during session stop on 2026-08-24. The agent omitted changelog disposition, treated Engram continuity as a substitute for tracked documentation, invoked the unrelated personal `wk-mem-write-ld9` skill without request, and then produced conflicting Git-route explanations instead of converting the failures into durable product work. |
+| Priority | P1: the harness exists to improve from observed failures. A close that can hide changelog state, choose an unresolved delivery route, or substitute non-authoritative continuity can lose visible project truth and repeat the same defect. |
+| Dependencies | Reuse completed `RH-W-0050` reconciliation and evidence classes, completed `RH-W-0064` authorized follow-through, and completed `RH-W-0067` response visibility. `REPO-HARNESS.md` remains canonical; `CONTRIBUTING.md` supplies delegated contribution details but never overrides the harness. |
+| Status | proposed |
+| Completed work | Registered the verified failure boundary only. Engram observation `#10622` preserves semantic continuity, but this roadmap is the durable pending-work owner. Verified source requires proposing a meaningful changelog entry, while the final Output Contract does not explicitly require its disposition. No focused regression was found for that omission. The Git path can offer commit and push to an identified upstream without explicitly reconciling delegated repository contribution policy. |
+| Remaining work | Create and approve a minimal bilingual design, then implement test-first. Require explicit changelog disposition in every meaningful close; resolve applicable Git policy before offering delivery; preserve Engram as integrated continuity; and prevent unrelated personal memory skills from activating without explicit request. |
+| Additions | Final-output changelog disposition, authority-correct Git-route classification, focused regressions, and one explicit boundary that repo-harness continuity never activates unrelated personal write/read skills by phrase matching. |
+| Exclusions | No removal of Engram from integrated continuity, no claim that `CONTRIBUTING.md` outranks the harness, no generic notes store, no automatic history rewrite, no hidden approval, no SDD requirement, and no implementation in this registration. |
+| Deferrals | Adjustment of the external personal `wk-mem-write-ld9` and `wk-mem-read-ld9` skills is separate future work outside this repository. |
+| Rejections | Rejected memory-only recording, ignored `.ld9` backup as repository truth, one-off prompt reminders, and treating user approval of an incorrectly offered route as proof the route was correctly classified. |
+| Evidence | Verified conversation and repository evidence: the changelog entry was initially local but the close reported completion without a published disposition; source inspection found the missing final-output requirement and no focused regression; commit `1e78ddb824ad997a62a72a519fcf88851f3e6b8d` later published the entry; `REPO-HARNESS.md` declares canonical workflow and delegates contribution details; Engram `#10622` records continuity but is not the backlog owner. |
+| Decision history | 2026-08-24: the owner repeatedly required the failure to be written in the repository, not only Engram, and required the harness to improve durably from observed problems. Registered as `proposed`; no design or implementation is approved. |
+| Next advancement condition | Advance after an owner-approved bilingual design defines exact changelog dispositions, meaningful-close detection, Git-policy resolution and precedence, explicit-skill activation boundaries, RED/GREEN cases, projection synchronization, and rollback. |
 
 ### RH-W-0067
 | Field | Value |
