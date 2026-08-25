@@ -4,7 +4,7 @@
 
 Review this design against the canonical [RH-W-0067 roadmap record](roadmap.md#rh-w-0067), [Plan 17](roadmap.md#plan-17-rh-w-0067-reply-shaping-contract-placement), the completed RH-W-0049, RH-W-0058, and RH-W-0064 evidence in the roadmap and changelog, and the approved [RH-W-0013 design](rh-w-0013-design.md). The [Spanish peer](../es/repo-harness/rh-w-0067-design.md) must remain semantically equivalent.
 
-Lifecycle status is `completed` after separately authorized direct implementation and local verification. No commit, publication, or external access occurred.
+Lifecycle status is `completed`. The implementation was delivered through issue #104, implementation commit `7ef4993`, PR #105, and merge commit `5ebaf941d81e9b512584d13b2a08dd800a179824`.
 
 ## Decision
 

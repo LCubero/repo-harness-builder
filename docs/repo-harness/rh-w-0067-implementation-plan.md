@@ -8,11 +8,11 @@
 
 **Tech Stack:** Python 3.10+ standard library, `unittest`, deterministic Markdown rendering, and byte-identical canonical, OpenCode, and Claude package projections.
 
-**Lifecycle owner:** [RH-W-0067](roadmap.md#rh-w-0067), status `completed`. The approved [design](rh-w-0067-design.md) owns exact behavior. Completed RH-W-0013 satisfied the prerequisite. This plan was executed under separate direct implementation authority without RH-W-0060 concurrency or Git delivery actions.
+**Lifecycle owner:** [RH-W-0067](roadmap.md#rh-w-0067), status `completed`. The approved [design](rh-w-0067-design.md) owns exact behavior. Completed RH-W-0013 satisfied the prerequisite. This plan was executed without RH-W-0060 concurrency and delivered through issue #104, implementation commit `7ef4993`, PR #105, and merge commit `5ebaf941d81e9b512584d13b2a08dd800a179824`.
 
 ## Implementation Result
 
-Completed on 2026-08-24. The required RED failures were observed before production edits, focused GREEN passed 34 tests, canonical/OpenCode/Claude each passed 441 tests, digest-bound maintenance apply returned `VALIDATED`, and the generated checker reported `current` with zero writes. The roadmap owns complete lifecycle and delivery evidence. Commands and checkboxes below remain the approved historical execution sequence.
+Completed on 2026-08-24. The required RED failures were observed before production edits, focused GREEN passed 34 tests, canonical/OpenCode/Claude each passed 441 tests, digest-bound maintenance apply returned `VALIDATED`, and the generated checker reported `current` with zero writes. Issue #104, implementation commit `7ef4993`, PR #105, and merge commit `5ebaf941d81e9b512584d13b2a08dd800a179824` provide delivery evidence. Commands and checkboxes below remain the approved historical execution sequence.
 
 ## File Map
 
@@ -459,7 +459,7 @@ Do not alter lifecycle status merely because code is locally green. Do not begin
 
 - [ ] **Step 5: Issue, commit, PR, and publication boundary**
 
-Issue creation, staging, commits, push, and PR creation require separate explicit authorization and external-access approval. When authorized, create or select one RH-W-0067 issue first, retain its returned number, stage exact paths by work unit, use Conventional Commits, and open one focused PR whose body uses `Closes #` followed by that returned number. The PR reports scope, observed RED messages, GREEN commands, checker zero-write result, mechanical projection provenance, risks, and rollback. Never invent an issue number in advance and never access the provider during plan execution.
+Historical delivery result: approved issue #104 was used, implementation commit `7ef4993` was delivered through PR #105, and merge commit `5ebaf941d81e9b512584d13b2a08dd800a179824` completed delivery. The command and staging details above remain historical execution guidance, not pending work.
 
 Rollback before delivery: revert only RH-W-0067 canonical tests and renderer changes, copy the reverted canonical package files to both projections, run the maintenance preview/apply to remove or restore generated outputs according to the reviewed rollback plan, and rerun all Task 5 checks. Preserve any human-evolved installed response rule; automatic deletion is forbidden. After delivery, use a normal reviewed revert commit rather than history rewriting.
 
@@ -481,4 +481,4 @@ Rollback before delivery: revert only RH-W-0067 canonical tests and renderer cha
 
 ## Remaining Human Decisions
 
-No product decision remains. Implementation and lifecycle completion are complete. Issue creation, commit, push, and PR publication remain unperformed and outside this work.
+No product decision remains. Implementation, lifecycle completion, and delivery through issue #104 and PR #105 are complete.

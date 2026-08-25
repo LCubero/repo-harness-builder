@@ -4,7 +4,7 @@
 
 Revisar este diseno contra el [registro canonico RH-W-0067](../../repo-harness/roadmap.md#rh-w-0067), el [Plan 17](../../repo-harness/roadmap.md#plan-17-rh-w-0067-reply-shaping-contract-placement), la evidencia completada de RH-W-0049, RH-W-0058 y RH-W-0064 en la hoja de ruta y el changelog, y el [diseno RH-W-0013](../../repo-harness/rh-w-0013-design.md) aprobado. Debe conservar equivalencia semantica con el [diseno en ingles](../../repo-harness/rh-w-0067-design.md).
 
-El estado del ciclo de vida es `completed` tras implementacion directa autorizada por separado y verificacion local. No hubo commit, publicacion ni acceso externo.
+El estado del ciclo de vida es `completed`. La implementacion se entrego mediante el issue #104, el commit de implementacion `7ef4993`, el PR #105 y el commit de merge `5ebaf941d81e9b512584d13b2a08dd800a179824`.
 
 ## Decision
 
