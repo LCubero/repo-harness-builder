@@ -22,12 +22,12 @@ Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 
 
 ## Orden de ejecucion aprobado restante
 
-Reconciliado el 2026-08-25 al registrar RH-W-0071. La secuencia historica queda en los planes. RH-W-0071 se inserta solo despues de que RH-W-0051 implemente almacenamiento de preferencias. RH-W-0070 queda fuera del orden y sin agendar hasta aprobar su limite proporcional de seguridad de recursos.
+Reconciliado el 2026-08-25 sobre los 23 registros no terminales. El orden aprobado de alto nivel comienza con el diseno RH-W-0070 ya completo y luego con la implementacion RH-W-0051 bajo autorizacion separada. La secuencia historica queda en los planes.
 
-La arquitectura de estado local encabeza:
+El diseno preventivo precede la arquitectura de estado local:
 
-1. Hacer que `RH-W-0051` lidere la arquitectura y reserve namespaces para `RH-W-0071`, `RH-W-0069`, `RH-W-0053`, `RH-W-0046`, `RH-W-0018` y `RH-W-0040` sin fusionar ciclos ni implementaciones.
-2. Implementar `RH-W-0051`.
+1. Completar y aprobar el diseno bilingue preventivo `RH-W-0070` sin fusionarlo con otra unidad. Este paso esta completo.
+2. Implementar `RH-W-0051` desde su plan aprobado existente, solo bajo autorizacion separada. Sus cuatro namespaces son `tmp`, `archive`, `state` y `memory-bk`; ninguno esta implementado.
 3. Implementar `RH-W-0071` despues del soporte `.repo-harness/state/preferences/`, sin absorber consentimiento ni idioma.
 4. Implementar `RH-W-0069` despues del soporte `.repo-harness/memory-bk/`, sin absorber checkpoints.
 5. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
@@ -49,7 +49,7 @@ Onboarding y el residuo restante cierran la ruta:
 15. Luego `RH-W-0065`.
 16. Luego `RH-W-0066`.
 
-Los cinco registros de la lista aplazada conservan sus condiciones y no se agendan: `RH-W-0012`, `RH-W-0014`, `RH-W-0015`, `RH-W-0026` y `RH-W-0063`.
+Los 6 registros aplazados conservan sus condiciones. `RH-W-0018` participa solo en el diseno conjunto con RH-W-0046 y conserva su condicion de avance. Los otros registros aplazados sin agendar son `RH-W-0012`, `RH-W-0014`, `RH-W-0015`, `RH-W-0026` y `RH-W-0063`.
 
 El diseno conjunto no fusiona las unidades de implementacion. Cada implementacion conserva pruebas, commit, issue, pull request, evidencia de ciclo de vida, limite de rollback y condicion de avance propios. `RH-W-0050`, ya completada, sigue como base independiente del paquete de arquitectura.
 
@@ -308,7 +308,7 @@ Decision humana: aprobar el diseno minimo antes de implementar. Este registro no
 
 ### Plan 19: limites de seguridad de recursos para agentes RH-W-0070
 
-Preparacion `plannable now`. Prioridad `P1`. Registrado fuera del orden aprobado despues de un incidente verificado durante revision delegada; este plan solo permite un futuro diseno bilingue, no implementacion.
+Preparacion `design completed`. Prioridad `P1`. El [diseno](rh-w-0070-design.md) bilingue aprobado define la politica preventiva. No se autoriza ni se requiere actualmente plan de implementacion o implementacion.
 
 1. Inventariar acciones potencialmente costosas, incluidos scripts, herramientas, pruebas, builds, cargas de modelos, revisores, verificacion delegada y trabajo similar de subprocess o administrado por proveedores, sobre CPU, GPU y RAM.
 2. Tratar 90 por ciento de utilizacion como techo operativo a considerar al disenar o ejecutar trabajo, no como promesa de medicion continua precisa ni de control duro universal.
@@ -317,7 +317,7 @@ Preparacion `plannable now`. Prioridad `P1`. Registrado fuera del orden aprobado
 5. Mantener intactos los procesos ajenos de la persona usuaria. Nunca terminarlos ni limitarlos, y no disenar daemon de monitoreo, telemetria, monitor de memoria, vigilante de GPU, planificador, terminador de procesos ni mecanismo universal de control.
 6. Nombrar pruebas RED enfocadas y evidencia de verificacion liviana y acotada por clausula preventiva, incluido el reporte honesto de limitaciones cuando la accion disponible no permita acotar el riesgo de saturacion.
 
-Decision humana: aprobar el futuro diseno bilingue y su limite preventivo proporcional antes de implementar. La medicion continua precisa y el control duro universal quedan fuera de esta unidad.
+Decision humana: cualquier plan de implementacion o implementacion futura exige evidencia separada de que la documentacion y la politica operativa no bastan, mas autorizacion explicita. La medicion continua precisa y el control duro universal quedan fuera.
 
 ### Plan 20: implementacion del modo de respuesta ADHD-friendly RH-W-0071
 
@@ -346,7 +346,7 @@ Estos registros tienen una condicion de avance no cumplida, asi que ningun artef
 
 Proyeccion vigente revisada el 2026-08-25 sobre los 20 planes no terminales y los 23 registros no terminales que cubren.
 
-La cobertura es completa y ningun plan contradice a otro. Cada registro no terminal tiene exactamente un plan duenio, con dos excepciones deliberadas: `RH-W-0051` lleva un plan de diseno y un plan de implementacion separado, y `RH-W-0046` junto con `RH-W-0018` comparten un unico plan de diseno conjunto mientras conservan implementaciones, estados y condiciones de avance separados. Los cinco registros de la lista de no planificables quedan cubiertos alli y no por un plan.
+La cobertura de ciclo de vida es completa. La redaccion obsoleta de siguientes artefactos corregida en esta reconciliacion demuestra que la afirmacion anterior de cero contradicciones era demasiado fuerte. No se aprueba ninguna fusion real de ciclo de vida. RH-W-0051 conserva planes separados de diseno e implementacion. El portafolio tiene un par explicito de diseno conjunto, `RH-W-0046` con `RH-W-0018`, y cuatro pares de coordinacion con ciclos de vida e implementaciones separados: secuencia coordinada para `RH-W-0055` con `RH-W-0062` y `RH-W-0069` con `RH-W-0068`, mas revision coordinada de limites para `RH-W-0065` con `RH-W-0022` y `RH-W-0066` con `RH-W-0044`. Los cinco aplazados sin agendar quedan en la lista no planificable; RH-W-0018 queda cubierto por el Plan 6.
 
 Aqui se declaran siete relaciones entre planes para que ninguno suponga en silencio el resultado de otro. Ninguna fusiona un ciclo de vida ni cambia estado.
 
@@ -370,6 +370,10 @@ Origen: peticion aprobada por el propietario el 2026-08-25 para un modo nativo, 
 
 ### RH-W-0070
 
+Estado activo vigente de `RH-W-0070`: `proposed`, con [diseno bilingue preventivo](rh-w-0070-design.md) aprobado. La politica cubre CPU, GPU y RAM cuando sean observables o aplicables, busca operar por debajo de 90 por ciento sin prometer control exacto, exige limites preventivos y fallback conservador sin telemetria, y requiere pronosticos antes de trabajo largo o muy largo. El trabajo restante es aplicar esta guia transversal. No se exige plan de implementacion y no ha comenzado ninguna implementacion. Un plan o implementacion solo procede si evidencia posterior demuestra que la documentacion y la politica operativa no bastan y el propietario lo autoriza. Nunca terminar, limitar ni interferir con procesos ajenos.
+
+<!-- Prosa de registro reemplazada por el estado activo vigente anterior.
+
 Origen: incidente verificado durante revision delegada de un plan el 2026-08-25, cuando se intentaron suites recursivas, la CPU local llego a 99 por ciento, los comandos agotaron su tiempo y despues no se encontro ningun proceso Python persistente. Prioridad: `P1`, una accion costosa sin limites puede saturar CPU, GPU o RAM, bloquear trabajo util y volver insegura la verificacion delegada. Dependencias: reutilizar las reglas actuales de proporcionalidad, autorizacion y fallo acotado; el futuro diseno debe definir controles preventivos disponibles para la accion sin prometer monitoreo preciso ni control universal. Estado: `proposed`. Trabajo completado: solo se registraron el requisito futuro y sus clases de evidencia. La seguridad de recursos cubre CPU, GPU y RAM. El umbral de 90 por ciento es un techo operativo a considerar al disenar o ejecutar scripts, herramientas, pruebas, builds, cargas de modelos, revisores y verificacion; no garantiza medicion continua precisa. Trabajo restante: crear y aprobar un diseno bilingue conciso de conciencia proporcional de recursos y defaults seguros, y luego autorizar por separado implementacion con pruebas primero y verificacion liviana y acotada. Adiciones: alcance enfocado, workers o paralelismo acotados, lotes acotados, timeouts explicitos, un lanzamiento, alternativas livianas, pronostico de costo o recursos antes de trabajo costoso, y parar o preguntar cuando no pueda acotarse el riesgo de saturacion. Exclusiones: sin cambio de comportamiento, documento de diseno, implementacion, codigo, prueba, archivo generado, skill, proceso, suite completa o recursiva, daemon de monitoreo, telemetria, monitor de memoria, vigilante de GPU, planificador, terminador de procesos, control duro universal ni medicion continua precisa. Nunca terminar ni limitar procesos ajenos. Aplazamientos: el limite preventivo proporcional entre hosts, runtimes y subagentes de proveedor se aplaza al diseno; no se exige mecanismo portable de monitoreo ni control duro. Rechazos: suites completas o recursivas casuales, workers, paralelismo o lotes sin limite, lanzamientos repetidos, acciones costosas sin timeout, continuar cuando no pueda acotarse la saturacion, interferir con procesos ajenos y prometer monitoreo o control universal. Evidencia: incidente verificado con CPU a 99 por ciento, timeout y sin proceso Python persistente; decision humana de aplicar conciencia proporcional de CPU, GPU y RAM, considerar el techo operativo de 90 por ciento, preferir controles preventivos simples y parar o preguntar cuando no pueda acotarse el riesgo. Historial: registrada `proposed` el 2026-08-25 fuera del orden; la intencion se corrigio a conciencia proporcional de CPU, GPU y RAM sin promesa de monitoreo ni control universal. No hay diseno ni implementacion aprobados. Siguiente condicion: aprobacion de un diseno bilingue con controles preventivos proporcionales, limitaciones honestas, procesos ajenos intactos y casos RED y de verificacion liviana y acotada.
 
 <!-- Instantanea inicial de RH-W-0070, reemplazada por la correccion activa anterior.
@@ -379,7 +383,11 @@ Origen: incidente verificado durante revision delegada de un plan el 2026-08-25,
 
 ### RH-W-0069
 
+Estado activo vigente de `RH-W-0069`: `proposed`, con [diseno](rh-w-0069-design.md) y [plan de implementacion](rh-w-0069-implementation-plan.md) bilingues completos. Tras probar RH-W-0051 y recibir autorizacion explicita de implementacion, se ejecuta el plan existente con RED, implementacion de contratos canonicos, sincronizacion y verificacion integrada y standalone. Ningun comportamiento esta implementado y no se requiere crear ni autorizar otro plan.
+
+<!-- Prosa de registro reemplazada por el estado activo vigente anterior.
 Origen: direccion aprobada por el propietario el 2026-08-25 que separa documentacion canonica de memoria operativa y exige fallback propiedad del harness independiente de Engram. Prioridad: `P2`, perder continuidad degrada sesiones futuras, pero el repositorio sigue autoritativo. Dependencias: RH-W-0051 debe implementar `.repo-harness/memory-bk/`; reutiliza RH-W-0050 sin reabrirla y mantiene separadas RH-W-0053, RH-W-0066 y RH-W-0068. Estado: `proposed`. Trabajo completado: registro y [diseno bilingue aprobado](rh-w-0069-design.md) con un Markdown por pausa o cierre, lectura con repositorio primero, escritura local primero, resultados Engram independientes, conflictos visibles, privacidad acotada, seguridad de rutas, sin borrado ni migracion automatica y sin Gentle AI o memoria incorporada en la mecanica. Trabajo restante: tras implementar RH-W-0051 y recibir autorizacion separada, planear, escribir RED, implementar contratos canonicos, sincronizar y verificar modos integrado y standalone. Adiciones: schema minimo, orden de autoridad, backup mas nuevo por defecto, resultados independientes y filtro sensible. Exclusiones: sin implementacion, skill, prueba, manifest, directorio, migracion, Git, red, base de datos, cifrado, daemon, API generica, borrado ni stores duplicados. Aplazamientos: implementacion, migracion y borrado esperan decisiones separadas. Rechazos: dependencia o migracion `.ld9/`, activacion de skills `wk`, memoria incorporada como autoridad, acoplar Gentle AI, fusion silenciosa y exito fabricado. Evidencia: decision humana completa; los contratos actuales no definen backup local, RH-W-0069 no existia y RH-W-0051 y RH-W-0050 poseen taxonomia y reconciliacion. Historial: registrada `proposed` el 2026-08-25 con diseno aprobado, recomendada despues de RH-W-0051 y antes de RH-W-0053. Siguiente condicion: soporte RH-W-0051 probado y autorizacion explicita de plan e implementacion.
+-->
 
 ### RH-W-0068
 
@@ -460,7 +468,9 @@ Origen: decision aprobada al reconciliar hallazgos del VPS, una carpeta informat
 
 ### RH-W-0051
 
-Origen: decision aprobada que separa almacenamiento personal de estado del harness. Prioridad: `P2`. Dependencias: ninguna. Estado: `proposed`. Trabajo completado: se registro el [diseno bilingue aprobado](rh-w-0051-design.md): `tmp`, `archive`, `state` y `memory-bk` son namespaces no autoritativos, ignorados por defecto, con propiedad, contencion, checker, manifest, compatibilidad y reservas exactas. No se implemento comportamiento. Trabajo restante: bajo autorizacion separada, crear plan bilingue e implementar render, ignore, checker, manifest, compatibilidad y verificacion. Se reservan `.repo-harness/memory-bk/` para RH-W-0069, `state/checkpoints/` para RH-W-0053, `state/preferences/` para RH-W-0046 y RH-W-0018, y `state/violations/` para RH-W-0040. Adiciones: cuatro namespaces con propiedad, retencion, arbol limpio, seguridad, no Git, workspace, manifest y checker. Exclusiones: no afirmar soporte actual ni implementar consumidores. Rechazos: usar almacenamiento personal y overrides silenciosos. Evidencia: el generador no soporta esta taxonomia; las decisiones registran la politica objetivo. Historial: arquitectura aprobada el 2026-08-20; diseno completo aprobado el 2026-08-25, ampliado solo para `state` y `memory-bk`, con estado aun `proposed`. Condicion: autorizacion explicita para plan e implementacion test-first.
+Actualizacion vigente del 2026-08-25. Estado: `proposed`. Trabajo completado: [diseno](rh-w-0051-design.md) y [plan de implementacion](rh-w-0051-implementation-plan.md) bilingues completos. Los cuatro namespaces aprobados son `tmp`, `archive`, `state` y `memory-bk`, todos no autoritativos e ignorados por defecto. No se implemento comportamiento de producto. Trabajo restante: bajo autorizacion separada, ejecutar el plan existente para render, ignore, checker, manifest, compatibilidad y verificacion. Condicion: autorizacion explicita para ejecutar el plan test-first. La instantanea anterior siguiente queda conservada como historia.
+
+Origen: decision aprobada que separa almacenamiento personal de estado del harness. Prioridad: `P2`. Dependencias: ninguna. Estado: `proposed`. Trabajo completado: se registro el [diseno bilingue aprobado](rh-w-0051-design.md): `tmp`, `archive`, `state` y `memory-bk` son namespaces no autoritativos, ignorados por defecto, con propiedad, contencion, checker, manifest, compatibilidad y reservas exactas. No se implemento comportamiento. En esta instantanea historica, quedaban por hacer bajo autorizacion separada el plan bilingue y la implementacion de render, ignore, checker, manifest, compatibilidad y verificacion. Se reservan `.repo-harness/memory-bk/` para RH-W-0069, `state/checkpoints/` para RH-W-0053, `state/preferences/` para RH-W-0046 y RH-W-0018, y `state/violations/` para RH-W-0040. Adiciones: cuatro namespaces con propiedad, retencion, arbol limpio, seguridad, no Git, workspace, manifest y checker. Exclusiones: no afirmar soporte actual ni implementar consumidores. Rechazos: usar almacenamiento personal y overrides silenciosos. Evidencia: el generador no soporta esta taxonomia; las decisiones registran la politica objetivo. Historial: arquitectura aprobada el 2026-08-20; diseno completo aprobado el 2026-08-25, ampliado solo para `state` y `memory-bk`, con estado aun `proposed`. Condicion historica: autorizacion explicita para plan e implementacion test-first.
 
 ### RH-W-0050
 

@@ -27,6 +27,7 @@
 | [rh-w-0051-implementation-plan.md](rh-w-0051-implementation-plan.md) | Canonical executable implementation plan for the approved local-state taxonomy |
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Owner-approved local memory backup and cross-source continuity design; implementation remains separately unauthorized |
 | [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Canonical executable implementation plan for native local backup and cross-source continuity |
+| [rh-w-0070-design.md](rh-w-0070-design.md) | Owner-approved proportional preventive resource-safety design for agent and harness operations |
 | [rh-w-0011-design.md](rh-w-0011-design.md) | Completed owner-approved reconciliation scope; historical design body retained |
 | [rh-w-0011-results.md](rh-w-0011-results.md) | Canonical completed reconciliation result, five-finding dispositions, and owner-accepted lifecycle closure |
 | [rh-w-0054-design.md](rh-w-0054-design.md) | Completed owner-approved stateless correction authority design; historical design body retained |

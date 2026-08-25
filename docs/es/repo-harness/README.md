@@ -25,6 +25,7 @@
 | [Plan de implementacion RH-W-0051](rh-w-0051-implementation-plan.md) | Par profesional completo del plan canonico ejecutable de taxonomia de estado local |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno aprobado de backup local de memoria y continuidad entre fuentes; la implementacion sigue sin autorizacion separada |
 | [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Par profesional completo del plan canonico ejecutable de continuidad nativa |
+| [Diseno RH-W-0070](rh-w-0070-design.md) | Par profesional del diseno aprobado de seguridad preventiva y proporcional de recursos |
 | [Diseno RH-W-0011](rh-w-0011-design.md) | Alcance de reconciliacion completado y aprobado por el propietario; se conserva el cuerpo historico |
 | [Resultados RH-W-0011](rh-w-0011-results.md) | Par completo del resultado canonico completado, las disposiciones de cinco hallazgos y el cierre aceptado por el propietario |
 | [Diseno RH-W-0054](rh-w-0054-design.md) | Diseno completado de autoridad de correccion sin estado aprobado por el propietario; se conserva el cuerpo historico |
