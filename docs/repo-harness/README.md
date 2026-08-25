@@ -28,6 +28,8 @@
 | [rh-w-0054-implementation-plan.md](rh-w-0054-implementation-plan.md) | Completed implementation plan for stateless correction authority transport; historical task instructions retained |
 | [rh-w-0059-design.md](rh-w-0059-design.md) | Completed owner-approved non-interactive transport design; delivered test-first with historical design body retained |
 | [rh-w-0057-design.md](rh-w-0057-design.md) | Completed owner-approved canonical command and wrapper coverage design; historical design body retained |
+| [rh-w-0013-design.md](rh-w-0013-design.md) | Canonical minimal design for removing two runtime context-budget blockers |
+| [rh-w-0013-implementation-plan.md](rh-w-0013-implementation-plan.md) | Canonical two-task implementation plan for the RH-W-0013 blockers |
 | [rh-w-0056-findings.md](rh-w-0056-findings.md) | Canonical findings and completed 64-recommendation disposition owner for the external harness review |
 | [archive/repo-bootstrap-handoff.md](archive/repo-bootstrap-handoff.md) | Archived 2026-08-12 split handoff, provenance only; not policy, not a plan, and not a source of pending work |
 | [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |

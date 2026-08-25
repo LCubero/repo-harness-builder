@@ -26,8 +26,8 @@ Revised on 2026-08-24. The owner delegated the technical ordering criterion afte
 
 Two insertions lead, because each is fully measured, has no unmet dependency, and unblocks or protects something behind it:
 
-1. `RH-W-0013` measured context budgets. Its deferral condition was observed on 2026-08-24 and fired, and `RH-W-0067` cannot place a gate row until this record decides the headroom.
-2. `RH-W-0067` reply-shaping contract placement. Depends on the budget outcome above and repairs a defect observed twice in one conversation.
+1. `RH-W-0013` measured context budgets. Its deferral condition was observed on 2026-08-24 and fired; it first removes the two blocking budget effects.
+2. `RH-W-0067` reply-shaping contract placement. Follows RH-W-0013 so placement and headroom work begins only after budget crossings stop blocking render and check; it repairs a defect observed twice in one conversation.
 
 The local-state architecture then runs unchanged:
 
@@ -259,23 +259,21 @@ Human decision: whether any part of this becomes generated builder behavior rath
 
 ### Plan 16: RH-W-0013 measured context budgets
 
-Readiness `plannable now`. The record moved from `deferred` to `proposed` on 2026-08-24 because the measurement its deferral condition named was taken and fired. It is first in the approved order, ahead of Plan 17, which cannot place a gate row until this record decides the headroom.
+Readiness `ready`. The owner approved the complete bilingual design and executable plan, and an independent final review approved both without an implementation-blocking finding. RH-W-0013 remains first in the approved order. RH-W-0067 independently owns response-rule placement and rulebook headroom.
 
-Measured on 2026-08-24 with the record's own `wc -w` times 1.33 proxy: `REPO-HARNESS.md` is 526 words, or 700 estimated tokens, against a budget that requires staying under 700, which leaves roughly one word of headroom. `REPO-HARNESS.es.md` is 475. The three generated daily skills carry no budget at all and measure 2954, 2899, and 1120 estimated tokens for session start, session stop, and documentation. The two rule files measure 344 and 317 against their own 700-token budget.
+Measured on 2026-08-24 with the record's own `wc -w` times 1.33 proxy: `REPO-HARNESS.md` is 526 words, or 700 estimated tokens, against a budget requiring less than 700. The two conditional rule files measure 344 and 317 against the same development-time template control. Daily skills and rule files are conditional, not always loaded.
 
-If the owner advances the record, the plan is:
+The approved executable plan is:
 
-1. Adopt the tiers the vendored `references/gentle-ai-style-guide.md` already declares instead of inventing numbers: target 180 to 450 body tokens, recommended maximum 700, hard maximum 1000. Resolve the one open discrepancy first, because the owner stated the hard maximum as 1200 on 2026-08-24 while both the vendored copy and the upstream document state 1000.
-2. Decide which always-loaded surfaces get a measured budget, given that the two largest have none. Generated session start at 2954 and session stop at 2899 estimated tokens exceed even the hard maximum by roughly three times, so a budget alone would fail them rather than fix them.
-3. Apply progressive disclosure rather than deletion, which is the mechanism the guide prescribes and which this product already owns: the builder skill carries six files under `references/`, while all three generated daily skills carry zero. Moving conceptual detail out is what brings a contract under budget without losing an obligation.
-4. Decide the warning behavior when a surface approaches its boundary, rather than only failing at it.
-5. Add boundary tests, following the RH-W-0039 precedent that a documented number nobody compares goes stale.
+1. Preserve `token_proxy()`, `RULEBOOK_TOKEN_BUDGET`, and the development-time template tests for the rulebook and rule files.
+2. Remove the budget `require()` from `render_with_skill_mapping()` and the `over-budget` drift branch from `check()`.
+3. Add focused RED/GREEN coverage for exact-700 render and a large human-evolved budgeted file, then synchronize only canonical script/tests and matching OpenCode/Claude projections.
 
-Human decision: which surfaces earn a budget, which belongs to this record's written design. The owner delegated the technical criterion on 2026-08-24 and the record already advanced out of `deferred`.
+Owner-approved guidance remains 180 to 450 target, 451 to 700 acceptable, 701 to 1000 warning, 1001 to 1200 priority attention, and immediate review advice above 1200. These bands create no runtime report, state, or blocker. The vendored style guide remains immutable. No product decision remains.
 
 ### Plan 17: RH-W-0067 reply-shaping contract placement
 
-Readiness `plannable after RH-W-0013`. Priority `P2`, dependencies: completed `RH-W-0058` owns the obligation, and proposed `RH-W-0013` must first decide the rulebook headroom this unit consumes. It is second in the approved order, immediately after `RH-W-0013`. Next artifact: a design document and its Spanish peer.
+Readiness `plannable after RH-W-0013`. Priority `P2`, dependencies: completed `RH-W-0058` owns the obligation, and ready `RH-W-0013` first removes the blocking render and check budget semantics. It is second in the approved order, immediately after `RH-W-0013`; RH-W-0067 itself owns placement and headroom. Next artifact: a design document and its Spanish peer.
 
 1. Decide the owning rule file. The evidence favors one generated `.repo-harness/rules/response-contract.md`, following the `consumer 3` consumer, over duplicating the syntax into `REPO-HARNESS.md`, which the `RH-W-0058` decision already declined.
 2. Write the gate row that routes any reply carrying a question, an approval, or a next step, so the contract is reachable from the always-loaded rulebook in any turn rather than only while a daily skill runs.
@@ -286,7 +284,7 @@ Readiness `plannable after RH-W-0013`. Priority `P2`, dependencies: completed `R
 7. Keep the new file inside the 700-token rule budget. The consumer file measures 883 and bundles session continuity that the two session skills already own, so it is a reference and not an import.
 8. Name the RED tests: the gate row exists, the rule file is generated with builder provenance, the three daily contracts do not duplicate the syntax, the file carries both delimiter examples at the exact specified run length, and both files stay inside their budgets.
 
-Human decision: which words leave `REPO-HARNESS.md` to make room for the gate row, informed by the completed `RH-W-0013` outcome.
+Human decision: which words leave `REPO-HARNESS.md` to make room for the gate row. RH-W-0067 owns that decision.
 
 ### Not plannable yet
 
@@ -306,7 +304,7 @@ Coverage is complete and no plan contradicts another. Every non-terminal record 
 
 Five cross-plan relationships are declared here so no plan silently assumes another's outcome. None merges a lifecycle and none changes a status.
 
-1. Plan 17 and Plan 16 share the rulebook budget, not a scope. Plan 16 runs first and decides which surfaces gain a budget they do not have today. Plan 17 then reads that outcome and sheds the exact words needed so the existing 700-token rulebook budget still holds once a gate row is added.
+1. Plan 16 runs first only to remove the blocking render and check budget semantics. Plan 17 then independently owns rule placement, the gate row, and the exact words the rulebook sheds so its existing 700-token template control still holds.
 2. Plan 4 now mutates the manifest field set alone, and Plan 11 no longer does. `.repo-harness/check.py` enforces exact field-set equality at line 79 with `set(manifest) != MANIFEST_FIELDS`, and a changed manifest and checker must move as one consistent pair, so any future unit adding a field inherits that constraint. This entry was recorded on 2026-08-24 as a two-unit collision and corrected the same day: the owner's license decision dissolved `RH-W-0061`'s manifest field, which removed it from this constraint entirely. What survives between the two plans is softer and still worth sequencing: both change what `check()` takes as input, so Plan 11 landing first spares Plan 4 a mid-design signature change.
 3. Plan 17 and Plan 12 both edit the three generated daily contracts. Plan 17 removes the reply-shaping syntax from them and Plan 12 may add branch listing and committed-blob comparison to them. Neither blocks the other, but they must not be implemented concurrently, because both rewrite the same canonical files and both then require the maintenance renderer to synchronize every runtime projection.
 4. Plan 17 does not depend on Plan 1, although both name paths under `.repo-harness/`. `.repo-harness/rules/` is generated authoritative content carrying builder provenance, while `RH-W-0051` owns only the non-authoritative, Git-ignored `tmp` and `archive` namespaces. Plan 17 is not blocked by the local-state chain.
@@ -323,7 +321,7 @@ Three plans consume the namespace Plan 1 reserves: Plan 3 for checkpoint bytes, 
 |---|---|
 | Origin | Owner observation on 2026-08-24, after the agent rendered the `=` and `+` visibility delimiter as three hyphens twice in one conversation while the contract was loaded. The owner then identified the placement as the real defect and named the `consumer 3` consumer, which had already solved the same problem by hand. |
 | Priority | P2: no state is at risk and no outcome is wrong, but an obligation that binds every reply lives only in files loaded when a daily skill runs, so it is absent from most turns, and `check.py` compares bytes and cannot detect a prose rule about prose output. |
-| Dependencies | Completed `RH-W-0058` owns the obligation and its syntax. Proposed `RH-W-0013` runs first and decides the rulebook headroom, because the measured rulebook has no budget room for the gate row this unit needs. |
+| Dependencies | Completed `RH-W-0058` owns the obligation and its syntax. Ready `RH-W-0013` runs first only to remove blocking render and check budget semantics; this unit owns rulebook headroom and placement. |
 | Status | proposed |
 | Completed work | Measured the placement instead of assuming it. The block syntax appears only in the three daily `SKILL.md` contracts and their canonical source, tests, and runtime projections. `REPO-HARNESS.md` and `.repo-harness/rules/` carry zero occurrences, and `decisions.md` records that omission as a deliberate `RH-W-0058` choice. Read the `consumer 3` consumer read-only under explicit owner approval: it carries a fourth rule file at `.repo-harness/rules/response-contract.md` plus one gate row routing any reply that carries a question, an approval, or a next step. That file carries no builder provenance marker while both siblings do, so it is a hand-written consumer innovation on the same generator `3.0` and therefore a product gap here rather than a local preference. It also holds two things this product lacks: literal rendered delimiter examples inside fenced blocks, and the Markdown setext-heading trap, where a line of `=` placed directly under a paragraph turns that paragraph into a heading and removes the delimiter from the rendered reply. |
 | Remaining work | Design the placement before implementing. Decide whether the complete syntax moves into one generated rule file reached by a gate row, decide exactly what each daily contract retains so the obligation is not duplicated, and resolve the rulebook budget collision by naming the words that leave. Then implement test-first and reconcile canonical, localized, runtime, and projection surfaces in the same work unit. |
@@ -331,9 +329,9 @@ Three plans consume the namespace Plan 1 reserves: Plan 3 for checkpoint bytes, 
 | Exclusions | No obligation beyond the one `RH-W-0058` already established, no session-continuity content that duplicates the two session skills, no verbatim import of the consumer file, which measures 883 estimated tokens against the 700 rule-file budget, no raising of any budget, and no third output contract competing with the existing ones. |
 | Deferrals | none |
 | Rejections | The owner confirmed on 2026-08-24 that the visible blocks are kept deliberately, so this unit repairs their placement and precision and never proposes removing or softening them. Rejected leaving the syntax only in the daily contracts, because a rule that binds every reply cannot live where it loads only when a daily skill runs. Rejected duplicating the full syntax into `REPO-HARNESS.md`, which the `RH-W-0058` decision already declined and which the measured budget now forbids outright. |
-| Evidence | Verified by search: zero occurrences of the block syntax in `REPO-HARNESS.md` and in `.repo-harness/rules/`, against occurrences in all three daily contracts and their source, tests, and projections. Verified by read-only inspection: `consumer 3` carries `.repo-harness/rules/response-contract.md` with its own gate row, no builder provenance marker, and manifest generator `3.0`. Verified by measurement: that consumer file is 664 words or 883 estimated tokens; this rulebook is 526 words or 700 estimated tokens with 12 gate rows, and one added row raises it to roughly 720; the `consumer 3` rulebook is 476 words or 633 estimated tokens with 10 gate rows, so its own row fits where this one does not. Verified by observation: the delimiter was rendered as three hyphens twice in one conversation with the contract loaded. Human decision: which words leave the rulebook to make room after `RH-W-0013` decides the available headroom. |
+| Evidence | Verified by search: zero occurrences of the block syntax in `REPO-HARNESS.md` and in `.repo-harness/rules/`, against occurrences in all three daily contracts and their source, tests, and projections. Verified by read-only inspection: `consumer 3` carries `.repo-harness/rules/response-contract.md` with its own gate row, no builder provenance marker, and manifest generator `3.0`. Verified by measurement: that consumer file is 664 words or 883 estimated tokens; this rulebook is 526 words or 700 estimated tokens with 12 gate rows, and one added row raises it to roughly 720; the `consumer 3` rulebook is 476 words or 633 estimated tokens with 10 gate rows, so its own row fits where this one does not. Verified by observation: the delimiter was rendered as three hyphens twice in one conversation with the contract loaded. This unit owns the human decision about which words leave the rulebook. |
 | Decision history | 2026-08-24: registered `proposed` on the owner's explicit instruction to plan and not to act, in the same work unit that recorded the measured placement evidence and the consumer comparison. After `RH-W-0061` completed, the remaining execution order places it second, after `RH-W-0013`; no lifecycle status changed. |
-| Next advancement condition | After `RH-W-0013` closes, advance with a written design that names the owning rule file, the gate row wording, what each daily contract retains, and the exact words the rulebook sheds to stay under its budget, with focused tests that fail before implementation. |
+| Next advancement condition | After `RH-W-0013` removes the blocking budget semantics, advance with a written design that names the owning rule file, the gate row wording, what each daily contract retains, and the exact words the rulebook sheds to stay under its budget, with focused tests that fail before implementation. |
 
 ### RH-W-0066
 | Field | Value |
@@ -1359,18 +1357,18 @@ Three plans consume the namespace Plan 1 reserves: Plan 3 for checkpoint bytes, 
 | Field | Value |
 |---|---|
 | Origin | Roadmap unit 13; context-budget wish |
-| Priority | P2: always-loaded contracts need measured growth limits |
-| Dependencies | none. The measurement this record waited for was taken on 2026-08-24 and the condition is satisfied. `RH-W-0067` consumes its outcome, because a gate row needs headroom this record decides. |
-| Status | proposed |
-| Completed work | Rulebook budget exists; indices, references, progressive disclosure, and justified exceptions are the approved direction. The waiting measurement was then taken: `REPO-HARNESS.md` is 526 words, or 700 estimated tokens, against a budget requiring less than 700, so it sits at the boundary with roughly one word of headroom, and the three generated daily skills carry no budget at all at 2954, 2899, and 1120 estimated tokens. |
-| Remaining work | Add measured skill and operational-contract budgets, warnings, and boundary tests, using the tiers the vendored style guide already declares rather than inventing new numbers, and using progressive disclosure rather than deletion where a surface is genuinely over. |
+| Priority | P2: the existing context-budget controls incorrectly block runtime behavior |
+| Dependencies | none. RH-W-0067 independently owns response-rule placement and rulebook headroom. |
+| Status | ready |
+| Completed work | The waiting measurement was taken and architecture was reassessed. Only `REPO-HARNESS.md` is always loaded; rules and daily skills are conditional. The existing proxy, 700 constant, template controls, and documentation guidance remain sufficient. The owner approved the complete bilingual design and executable plan, and an independent final review approved both without an implementation-blocking finding. This approval is documentation-only: implementation remains separately unperformed and no product behavior changed. |
+| Remaining work | Remove the budget `require()` from `render_with_skill_mapping()` and the `over-budget` drift branch from `check()`, add exact focused regressions, and synchronize only script/test projections. Remove `budgeted()` only if no caller remains. |
 | Additions | none |
 | Exclusions | No arbitrary cap on all human documentation. |
 | Deferrals | none. The deferral condition was observable, it was observed, and it fired. |
 | Rejections | Rejected staying `deferred` once the measurement it named was taken, because a deferral whose condition is met is no longer a deferral. |
-| Evidence | Verified by measurement on 2026-08-24 with this record's own `wc -w` times 1.33 proxy: `REPO-HARNESS.md` 526 words or 700 estimated tokens, `REPO-HARNESS.es.md` 475, generated session start 2954, session stop 2899, documentation 1120, and the two rule files 344 and 317. Verified: only the rulebook and the rule files declare a budget, so the two largest always-loaded surfaces have none. Verified on 2026-08-24 in the vendored `references/gentle-ai-style-guide.md`, whose numbers a fetch of the upstream document confirmed: target 180 to 450 body tokens, recommended maximum 700, hard maximum 1000, with conceptual detail in `references/` and templates in `assets/`. Verified lever: the builder skill already carries six files under `references/`, while all three generated daily skills carry zero, so the mechanism the guide prescribes exists in this product and was never applied to the surfaces that are over. Reported discrepancy, unresolved: the owner stated the hard maximum as 1200 on 2026-08-24 while both the vendored copy and the upstream document state 1000. Human decision, delegated by the owner for the technical criterion on 2026-08-24: which surfaces earn a budget belongs to this record's written design, but the hard-maximum discrepancy is not a technical criterion and remains open. |
-| Decision history | 2026-08-13: measurement required before adding more limits. 2026-08-24: the measurement was taken during a full portfolio planning pass, the advancement condition was met, and the owner delegated the technical criterion, so the record moved from `deferred` to `proposed` without approving any budget value. |
-| Next advancement condition | Advance after a written design names which always-loaded surfaces gain a measured budget, the warning behavior before a boundary rather than only at it, and the boundary tests, following the `RH-W-0039` precedent that a documented number nobody compares goes stale. |
+| Evidence | Verified call path: `render()` calls `render_with_skill_mapping()`, whose budget `require()` rejects exact-700 output; `check()` independently turns a large human-evolved budgeted file into `over-budget` drift. Existing tests already enforce rulebook and rule-file template budgets. The vendored style guide remains immutable. The [approved design](rh-w-0013-design.md) and [approved executable plan](rh-w-0013-implementation-plan.md) have complete Spanish peers and passed independent final review. |
+| Decision history | 2026-08-13: measurement required. 2026-08-24: measurement moved the record from `deferred` to `proposed`; the repository-wide reassessment then narrowed implementation to the two blocking effects and assigned all response-rule placement and headroom work to RH-W-0067. The owner then approved the complete bilingual design and executable plan, independent final review approved both, and the record advanced to `ready` without implementation or product behavior change. |
+| Next advancement condition | Receive separate implementation authorization, execute the approved plan test-first, synchronize its script/test projections, and retain `ready` until delivery evidence supports another lifecycle change. |
 
 ### RH-W-0014
 | Field | Value |

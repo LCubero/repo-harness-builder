@@ -26,6 +26,8 @@
 | [Plan de implementacion RH-W-0054](../../repo-harness/rh-w-0054-implementation-plan.md) | Plan de implementacion completado en ingles; se conservan las instrucciones historicas |
 | [Diseno RH-W-0059](rh-w-0059-design.md) | Diseno completado de transporte no interactivo aprobado por el propietario; entregado con pruebas primero y con el cuerpo historico conservado |
 | [Diseno RH-W-0057](rh-w-0057-design.md) | Diseno completado de comandos canonicos y cobertura de wrappers; se conserva el cuerpo historico |
+| [Diseno RH-W-0013](rh-w-0013-design.md) | Par humano completo del diseno minimo para retirar dos bloqueos de presupuesto en ejecucion |
+| [Plan de implementacion RH-W-0013](rh-w-0013-implementation-plan.md) | Par humano completo del plan canonico de dos tareas para RH-W-0013 |
 | [Hallazgos RH-W-0056](rh-w-0056-findings.md) | Propietario canonico de hallazgos y de la disposicion completada de 64 recomendaciones |
 | [Traspaso de arranque archivado](../../repo-harness/archive/repo-bootstrap-handoff.md) | Registro historico en ingles de la separacion del 2026-08-12; solo procedencia, no es politica ni plan ni fuente de trabajo pendiente |
 | [Mapa canonico en ingles](../../repo-harness/README.md) | Propiedad documental canonica |
