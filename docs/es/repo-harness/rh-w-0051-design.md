@@ -1,6 +1,6 @@
 # Diseno RH-W-0051 de taxonomia de estado local
 
-> **Estado: DISENO APROBADO POR EL PROPIETARIO. La implementacion no esta autorizada por separado.**
+> **Estado: IMPLEMENTADO Y VERIFICADO. Se conservan abajo las declaraciones historicas previas a implementar.**
 
 ## Contrato de revision
 
@@ -41,7 +41,7 @@ Los cuatro namespaces se ignoran en Git de forma predeterminada y quedan fuera d
 
 ## Impacto en manifest y checker
 
-La implementacion debe agregar un unico campo `localState`, no uno por consumidor. Su valor exacto es el mapa ordenado fijo de nombres hacia rutas relativas y clases. El manifest autenticado y el checker generado cambian atomicamente porque el checker exige campos exactos.
+La implementacion agrego un unico campo `localState`, no uno por consumidor. Su valor exacto es el mapa ordenado fijo de nombres hacia rutas relativas y clases. El manifest autenticado y el checker generado cambiaron atomicamente porque el checker exige campos exactos.
 
 El checker valida rutas, clases, contencion e ignore. No enumera ni analiza archivos locales, juzga contenido de backups, aplica retencion ni trata estado ignorado como salida generada. RH-W-0069 puede agregar pruebas de comportamiento sin otro campo de manifest.
 
@@ -53,9 +53,9 @@ El checker valida rutas, clases, contencion e ignore. No enumera ni analiza arch
 - El contenido existente bajo `.repo-harness/` queda intacto salvo el par manifest/checker autorizado por separado y la integracion acotada de `.gitignore`.
 - Una futura migracion explicita desde almacenamiento personal o heredado requiere otro diseno aprobado.
 
-## Pruebas RED enfocadas
+## Pruebas RED enfocadas historicas
 
-Antes de implementar deben fallar pruebas para:
+Los requisitos aprobados antes de implementar fueron:
 
 1. Declarar exactamente `tmp`, `archive`, `state` y `memory-bk` bajo `.repo-harness/`.
 2. Contencion raiz y rechazo de traversal, rutas absolutas, indirectas y entre raices.
@@ -74,19 +74,19 @@ Antes de implementar deben fallar pruebas para:
 - Sin schema, nombre de archivo, filtro, operacion Engram, conflicto ni limpieza de retencion.
 - Sin implementar checkpoints, preferencias, consentimiento, violaciones, borrado de archivo ni migracion.
 - Sin base de datos, cifrado, daemon, scheduler, servicio de fondo, API generica ni configuracion compleja.
-- Sin cambios de skills generadas, fuente, pruebas, manifest, checker, directorios, staging, commits, push o red en este trabajo.
+- El trabajo exclusivo de diseno no cambio skills, fuente, pruebas, manifest, checker, directorios, staging, commits, push ni red. La implementacion posterior cambio solo sus superficies autorizadas por separado.
 
 ## Rollback
 
-El rollback de diseno elimina este documento y sus referencias. Un rollback futuro de implementacion restaura el par manifest/checker y el ignore por la ruta atomica normal. Nunca elimina automaticamente contenido local.
+El rollback historico de diseno eliminaba este documento y sus referencias. El rollback de implementacion restaura el par manifest/checker y el ignore por la ruta atomica normal. Nunca elimina automaticamente contenido local.
 
 ## Condiciones de finalizacion
 
 - Ambos pares y mapas coinciden en los cuatro namespaces y sus limites.
-- RH-W-0051 sigue `proposed`; implementar exige otra autorizacion.
+- RH-W-0051 esta `completed`; su implementacion autorizada por separado cumplio este diseno sin agregar consumidores.
 - RH-W-0069 depende de esta taxonomia sin ampliar RH-W-0051 hacia comportamiento de sesion.
 - El orden coloca RH-W-0069 despues de RH-W-0051 y antes de consumidores que necesitan su continuidad.
 
 ## Decisiones humanas restantes
 
-Ninguna para este diseno. La sintaxis de anulacion, limpieza, migracion, implementacion o avance exige autorizacion explicita separada.
+Ninguna para este diseno completado. La sintaxis de anulacion, limpieza, migracion o implementacion consumidora exige autorizacion separada bajo su unidad propietaria.

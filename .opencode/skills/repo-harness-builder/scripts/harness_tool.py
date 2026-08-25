@@ -35,6 +35,13 @@ MANIFEST_PATH = ".repo-harness/manifest.json"
 RULEBOOK_PATH = "REPO-HARNESS.md"
 GITIGNORE_PATH = ".gitignore"
 CODEGRAPH_IGNORE_DIRECTIVE = ".codegraph/"
+LOCAL_STATE = {
+    "tmp": {"path": ".repo-harness/tmp/", "class": "disposable"},
+    "archive": {"path": ".repo-harness/archive/", "class": "recoverable"},
+    "state": {"path": ".repo-harness/state/", "class": "operational"},
+    "memory-bk": {"path": ".repo-harness/memory-bk/", "class": "continuity-backup"},
+}
+LOCAL_STATE_IGNORE_DIRECTIVES = tuple(f"/{item['path']}" for item in LOCAL_STATE.values())
 GITATTRIBUTES_PATH = ".gitattributes"
 README_PATH = "README.md"
 SPANISH_README_PATH = "README.es.md"
@@ -882,6 +889,23 @@ def has_codegraph_ignore_line(current: bytes) -> bool:
     return any(has_pointer_line(current, directive) for directive in (CODEGRAPH_IGNORE_DIRECTIVE, "/.codegraph/"))
 
 
+def has_local_state_ignore_line(current: bytes, directive: str) -> bool:
+    """Match either equivalent root form of one local-state ignore directive."""
+    return any(has_pointer_line(current, candidate) for candidate in (directive, directive.removeprefix("/")))
+
+
+def missing_gitignore_directives(current: bytes, ignore_codegraph: bool) -> tuple[str, ...]:
+    """Return exact rendered root directives that are not already represented."""
+    missing = [
+        directive
+        for directive in LOCAL_STATE_IGNORE_DIRECTIVES
+        if not has_local_state_ignore_line(current, directive)
+    ]
+    if ignore_codegraph and not has_codegraph_ignore_line(current):
+        missing.insert(0, CODEGRAPH_IGNORE_DIRECTIVE)
+    return tuple(missing)
+
+
 def byte_compared_paths(outputs: Mapping[str, str], rulebook_path: str) -> tuple[str, ...]:
     """Return generated paths whose exact bytes checking compares.
 
@@ -1332,6 +1356,22 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 - Incomplete delivery evidence, unknown baseline, bound exhaustion, owner-update failure, localized-update failure, or an unresolved retained finding stops only the affected branch. Preserve unrelated work and successful outcomes.
 - A wording-only parity repair is not lifecycle delivery unless it exposes or changes a semantic conflict.
 
+## Required Documentation Closure Gate
+
+Use this exact order:
+
+1. Implementation or delivery.
+2. Successful verification evidence.
+3. Applicable documentation reconciliation from proven facts.
+4. Continuity handoff.
+5. Completion eligibility.
+
+- Decide applicability after verification for the roadmap or lifecycle record, current-state projection, localized peers, meaningful changelog, documentation map, and other durable documentation that owns a changed fact.
+- An applicable required surface resolves `completed`. A genuinely irrelevant surface resolves `not_applicable` with a concise reason and creates no mandatory churn.
+- If any required reconciliation is `declined`, `pending`, `failed`, or `incomplete`, the close must be `paused` or `blocked`, never `completed`.
+- A user decline declines completion without discarding verified implementation, delivery, or evidence.
+- Never write documentation before successful verification. Never fabricate evidence, status, chronology, or parity.
+
 ## Self-Update And Runtime Cache
 
 - Distinguish on-disk canonical and projection parity, active-process registered skill freshness, and runtime reload or restart capability.
@@ -1345,7 +1385,7 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 2. Summarize completed work, decisions, unresolved issues, and next steps.
 3. Validate referenced paths and reconcile the summary with `{rulebook_path}` and deeper documentation, including lifecycle records and their current-state projection.
 4. Present the exact documentation changes and any meaningful completed-work changelog entry for conversational approval, one blocking question per turn, then pause.
-5. After the user answers, resume the same session-stop invocation from the next unfinished step. If approved, execute that exact approved action once, update only the canonical owners, refresh repository evidence, and verify paths, links, and claims. If documentation is declined, continue the close protocol without writing and record the proposal as declined or pending as appropriate.
+5. After the user answers, resume the same session-stop invocation from the next unfinished step. If approved, execute that exact approved action once, update only the canonical owners, refresh repository evidence, and verify paths, links, and claims. If documentation is declined, preserve verified work, record the required reconciliation as declined, and suppress completed closure.
 6. A session summary saved before an approved mutation is provisional. Save or update a final session summary that includes the approved mutation only after refreshed evidence and verification.
 7. {save_step.split('. ', 1)[1]}
 8. Only after documentation and continuity are complete, classify staged paths, unstaged tracked paths, untracked paths, renamed paths, deleted paths, unrelated pre-existing paths, excluded private, tool, and cache paths, and sensitive-looking paths. Perform mandatory per-path sensitive screening before any proposed staging. Filename screening is a warning baseline, not proof of safety. A sensitive candidate must pause before any staging.
@@ -1356,7 +1396,7 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 
 ## Outcome Model
 
-- `completed`: required close steps and continuity succeeded.
+- `completed`: successful verification, every applicable required documentation reconciliation, and continuity succeeded.
 - `paused`: human input is actually needed for approval or a material change. Do not classify an authorized happy-path substep as `paused`.
 - `blocked`: evidence or a human decision is required before that scoped branch can proceed.
 - `failed`: a required continuity step failed, or an attempted scoped operation failed.
@@ -2213,7 +2253,9 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
 MANIFEST_SHA256 = "{manifest_sha256}"
-MANIFEST_FIELDS = {{"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language"}}
+MANIFEST_FIELDS = {{"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState"}}
+LOCAL_STATE = {LOCAL_STATE!r}
+LOCAL_STATE_IGNORE_DIRECTIVES = {LOCAL_STATE_IGNORE_DIRECTIVES!r}
 REPORT_LANGUAGES = {{"english", "espanol"}}
 DOCUMENTATION_LANGUAGES = {{"en", "es"}}
 RUNTIMES = {{"claude-code", "opencode", "pi"}}
@@ -2294,6 +2336,10 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         raise ValueError("unexpected integration mode")
     if manifest["writeSemantics"] != "additive-create-with-bounded-root-append":
         raise ValueError("unexpected write semantics")
+    if manifest["localState"] != LOCAL_STATE:
+        raise ValueError("unexpected local-state taxonomy")
+    for item in manifest["localState"].values():
+        safe_relative(item["path"])
     language = manifest["language"]
     if not isinstance(language, dict) or set(language) != {{"conversation", "documentation"}}:
         raise ValueError("unexpected language schema")
@@ -2333,6 +2379,18 @@ def check_projections(root: Path) -> dict:
     manifest_path = guarded_path(root, ".repo-harness/manifest.json")
     manifest = parse_manifest(manifest_path.read_bytes(), MANIFEST_SHA256)
     entries = []
+    ignore_path = guarded_path(root, ".gitignore")
+    ignore_lines = ignore_path.read_bytes().splitlines() if ignore_path.is_file() else []
+    missing_ignores = [
+        directive
+        for directive in LOCAL_STATE_IGNORE_DIRECTIVES
+        if not any(candidate.encode("utf-8") in ignore_lines for candidate in (directive, directive.removeprefix("/")))
+    ]
+    entries.append({{
+        "path": ".gitignore",
+        "state": "directive-missing" if missing_ignores else "present",
+        **({{"missing": missing_ignores}} if missing_ignores else {{}}),
+    }})
     for name, canonical_relative in sorted(manifest["canonicalSkills"].items()):
         canonical = guarded_path(root, canonical_relative)
         if not canonical.is_file():
@@ -2372,7 +2430,7 @@ def check_projections(root: Path) -> dict:
                 else:
                     state = "current"
                 entries.append({{"command": name, "family": family, "runtime": runtime, "path": relative, "state": state}})
-    drifted = [entry for entry in entries if entry["state"] != "current"]
+    drifted = [entry for entry in entries if entry["state"] not in {"current", "present"}]
     return {{"status": "drift" if drifted else "current", "files": entries, "writes": 0}}
 
 
@@ -2472,8 +2530,8 @@ def render_with_skill_mapping(
         **rule_outputs(rulebook_path, standalone),
         **docs_outputs(project_id, rulebook_path, standalone, languages),
     }
-    if ignore_codegraph:
-        outputs[GITIGNORE_PATH] = CODEGRAPH_IGNORE_DIRECTIVE + "\n"
+    ignore_directives = (*((CODEGRAPH_IGNORE_DIRECTIVE,) if ignore_codegraph else ()), *LOCAL_STATE_IGNORE_DIRECTIVES)
+    outputs[GITIGNORE_PATH] = "\n".join(ignore_directives) + "\n"
     for name, content in skills.items():
         outputs[f".repo-harness/skills/{name}/SKILL.md"] = content
     canonical_commands: dict[str, dict[str, str]] = {
@@ -2525,6 +2583,7 @@ def render_with_skill_mapping(
         "writeSemantics": "additive-create-with-bounded-root-append",
         "integrationMode": "standalone" if standalone else "integrated",
         "language": {"conversation": conversation, "documentation": list(languages)},
+        "localState": LOCAL_STATE,
     })
     outputs[MANIFEST_PATH] = manifest
     outputs[".repo-harness/check.py"] = check_script(digest_text(manifest))
@@ -2680,21 +2739,25 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
             identical.append(relative)
         elif relative in (*POINTER_DIRECTIVES, GITIGNORE_PATH) and target.is_file() and not target.is_symlink():
             current = target.read_bytes()
-            directive = CODEGRAPH_IGNORE_DIRECTIVE if relative == GITIGNORE_PATH else POINTER_DIRECTIVES[relative]
-            present = has_codegraph_ignore_line(current) if relative == GITIGNORE_PATH else has_pointer_line(current, directive)
-            if present:
+            missing = (
+                missing_gitignore_directives(current, CODEGRAPH_IGNORE_DIRECTIVE in content.splitlines())
+                if relative == GITIGNORE_PATH
+                else (() if has_pointer_line(current, POINTER_DIRECTIVES[relative]) else (POINTER_DIRECTIVES[relative],))
+            )
+            if not missing:
                 existing.append({
                     "path": relative,
                     "reason": "required pointer line already present; left untouched",
                     "sha256": digest_bytes(current),
                 })
             else:
-                addition = pointer_addition(current, directive)
+                addition = pointer_additions(current, missing)
                 append.append({
                     "path": relative,
                     "action": "append",
                     "sha256": digest_bytes(current),
                     "resultSha256": digest_bytes(current + addition),
+                    "content": addition.decode("utf-8"),
                 })
         elif relative == GITATTRIBUTES_PATH and target.is_file() and not target.is_symlink():
             current = target.read_bytes()
@@ -3234,7 +3297,7 @@ def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> 
                 target = guarded_target(root, relative)
                 current = target.read_bytes()
                 appended[target] = current
-                if relative in (GITATTRIBUTES_PATH, README_PATH):
+                if relative in (GITIGNORE_PATH, GITATTRIBUTES_PATH, README_PATH):
                     addition = item["content"].encode("utf-8")
                 else:
                     directive = CODEGRAPH_IGNORE_DIRECTIVE if relative == GITIGNORE_PATH else POINTER_DIRECTIVES[relative]
@@ -3486,10 +3549,18 @@ def check(
         elif not target.is_file() or target.is_symlink():
             entry["state"] = "indirect-or-non-file"
         elif relative in (*POINTER_DIRECTIVES, GITIGNORE_PATH):
-            directive = CODEGRAPH_IGNORE_DIRECTIVE if relative == GITIGNORE_PATH else POINTER_DIRECTIVES[relative]
             current = target.read_bytes()
-            present = has_codegraph_ignore_line(current) if relative == GITIGNORE_PATH else has_pointer_line(current, directive)
-            entry["state"] = "present" if present else "directive-missing"
+            if relative == GITIGNORE_PATH:
+                missing = missing_gitignore_directives(
+                    current,
+                    CODEGRAPH_IGNORE_DIRECTIVE in content.splitlines(),
+                )
+            else:
+                directive = POINTER_DIRECTIVES[relative]
+                missing = () if has_pointer_line(current, directive) else (directive,)
+            entry["state"] = "present" if not missing else "directive-missing"
+            if missing:
+                entry["missing"] = list(missing)
         elif relative == GITATTRIBUTES_PATH:
             current = target.read_bytes()
             protected = byte_compared_paths(expected, rulebook_path)

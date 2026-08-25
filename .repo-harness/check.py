@@ -13,8 +13,10 @@ import re
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
-MANIFEST_SHA256 = "dc3a8f1f9db51441f24b3b97ce6040c7910cb140dc20a72f8e45e81e46b40efb"
-MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language"}
+MANIFEST_SHA256 = "2f4de2ed679988d650160bf28c3ed70c522fe1f1ddf3244b4679139832e9b2c3"
+MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState"}
+LOCAL_STATE = {'tmp': {'path': '.repo-harness/tmp/', 'class': 'disposable'}, 'archive': {'path': '.repo-harness/archive/', 'class': 'recoverable'}, 'state': {'path': '.repo-harness/state/', 'class': 'operational'}, 'memory-bk': {'path': '.repo-harness/memory-bk/', 'class': 'continuity-backup'}}
+LOCAL_STATE_IGNORE_DIRECTIVES = ('/.repo-harness/tmp/', '/.repo-harness/archive/', '/.repo-harness/state/', '/.repo-harness/memory-bk/')
 REPORT_LANGUAGES = {"english", "espanol"}
 DOCUMENTATION_LANGUAGES = {"en", "es"}
 RUNTIMES = {"claude-code", "opencode", "pi"}
@@ -95,6 +97,10 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         raise ValueError("unexpected integration mode")
     if manifest["writeSemantics"] != "additive-create-with-bounded-root-append":
         raise ValueError("unexpected write semantics")
+    if manifest["localState"] != LOCAL_STATE:
+        raise ValueError("unexpected local-state taxonomy")
+    for item in manifest["localState"].values():
+        safe_relative(item["path"])
     language = manifest["language"]
     if not isinstance(language, dict) or set(language) != {"conversation", "documentation"}:
         raise ValueError("unexpected language schema")
@@ -134,6 +140,18 @@ def check_projections(root: Path) -> dict:
     manifest_path = guarded_path(root, ".repo-harness/manifest.json")
     manifest = parse_manifest(manifest_path.read_bytes(), MANIFEST_SHA256)
     entries = []
+    ignore_path = guarded_path(root, ".gitignore")
+    ignore_lines = ignore_path.read_bytes().splitlines() if ignore_path.is_file() else []
+    missing_ignores = [
+        directive
+        for directive in LOCAL_STATE_IGNORE_DIRECTIVES
+        if not any(candidate.encode("utf-8") in ignore_lines for candidate in (directive, directive.removeprefix("/")))
+    ]
+    entries.append({
+        "path": ".gitignore",
+        "state": "directive-missing" if missing_ignores else "present",
+        **({"missing": missing_ignores} if missing_ignores else {}),
+    })
     for name, canonical_relative in sorted(manifest["canonicalSkills"].items()):
         canonical = guarded_path(root, canonical_relative)
         if not canonical.is_file():
@@ -173,7 +191,7 @@ def check_projections(root: Path) -> dict:
                 else:
                     state = "current"
                 entries.append({"command": name, "family": family, "runtime": runtime, "path": relative, "state": state})
-    drifted = [entry for entry in entries if entry["state"] != "current"]
+    drifted = [entry for entry in entries if entry["state"] not in ('current', 'present')]
     return {"status": "drift" if drifted else "current", "files": entries, "writes": 0}
 
 

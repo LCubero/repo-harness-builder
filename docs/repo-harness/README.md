@@ -23,10 +23,11 @@
 | [rh-w-0031-implementation-plan.md](rh-w-0031-implementation-plan.md) | Completed conversation-language remediation plan; historical task instructions retained |
 | [rh-w-0034-implementation-plan.md](rh-w-0034-implementation-plan.md) | Completed consumer recovery and Spanish-only correctness plan; historical task instructions retained |
 | [rh-w-0050-design.md](rh-w-0050-design.md) | Completed owner-approved bounded reconciliation design; delivered with historical design body retained |
-| [rh-w-0051-design.md](rh-w-0051-design.md) | Owner-approved local-state taxonomy design; implementation remains separately unauthorized |
-| [rh-w-0051-implementation-plan.md](rh-w-0051-implementation-plan.md) | Canonical executable implementation plan for the approved local-state taxonomy |
+| [rh-w-0051-design.md](rh-w-0051-design.md) | Completed owner-approved local-state taxonomy design; historical design body retained |
+| [rh-w-0051-implementation-plan.md](rh-w-0051-implementation-plan.md) | Completed local-state taxonomy implementation plan; historical execution instructions retained |
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Owner-approved local memory backup and cross-source continuity design; implementation remains separately unauthorized |
 | [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Canonical executable implementation plan for native local backup and cross-source continuity |
+| [rh-w-0068-documentation-closure-design.md](rh-w-0068-documentation-closure-design.md) | Implemented required post-verification documentation closure gate; other RH-W-0068 defects remain proposed |
 | [rh-w-0070-design.md](rh-w-0070-design.md) | Owner-approved proportional preventive resource-safety design for agent and harness operations |
 | [rh-w-0011-design.md](rh-w-0011-design.md) | Completed owner-approved reconciliation scope; historical design body retained |
 | [rh-w-0011-results.md](rh-w-0011-results.md) | Canonical completed reconciliation result, five-finding dispositions, and owner-accepted lifecycle closure |

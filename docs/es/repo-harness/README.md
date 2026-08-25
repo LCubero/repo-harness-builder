@@ -21,10 +21,11 @@
 | [Plan tecnico RH-W-0031](../../repo-harness/rh-w-0031-implementation-plan.md) | Plan completado en ingles para corregir los limites del idioma de conversacion; se conservan las instrucciones historicas |
 | [Plan de implementacion RH-W-0034](rh-w-0034-implementation-plan.md) | Par humano del plan completado para recuperacion de consumidores y correccion del modo solo en espanol; se conservan las instrucciones historicas |
 | [Diseno RH-W-0050](rh-w-0050-design.md) | Diseno completado de reconciliacion acotada aprobado por el propietario; entregado con el cuerpo historico conservado |
-| [Diseno RH-W-0051](rh-w-0051-design.md) | Diseno aprobado de taxonomia de estado local; la implementacion sigue sin autorizacion separada |
-| [Plan de implementacion RH-W-0051](rh-w-0051-implementation-plan.md) | Par profesional completo del plan canonico ejecutable de taxonomia de estado local |
+| [Diseno RH-W-0051](rh-w-0051-design.md) | Diseno aprobado y completado de taxonomia de estado local; cuerpo historico conservado |
+| [Plan de implementacion RH-W-0051](rh-w-0051-implementation-plan.md) | Plan completado de taxonomia de estado local; instrucciones historicas conservadas |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno aprobado de backup local de memoria y continuidad entre fuentes; la implementacion sigue sin autorizacion separada |
 | [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Par profesional completo del plan canonico ejecutable de continuidad nativa |
+| [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta implementada de cierre documental; los otros defectos RH-W-0068 siguen propuestos |
 | [Diseno RH-W-0070](rh-w-0070-design.md) | Par profesional del diseno aprobado de seguridad preventiva y proporcional de recursos |
 | [Diseno RH-W-0011](rh-w-0011-design.md) | Alcance de reconciliacion completado y aprobado por el propietario; se conserva el cuerpo historico |
 | [Resultados RH-W-0011](rh-w-0011-results.md) | Par completo del resultado canonico completado, las disposiciones de cinco hallazgos y el cierre aceptado por el propietario |

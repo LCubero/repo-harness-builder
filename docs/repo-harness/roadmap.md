@@ -22,12 +22,12 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-Reconciled on 2026-08-25 across all 23 non-terminal records. The approved high-level order starts with the now-complete RH-W-0070 design, then separately authorized RH-W-0051 implementation. Historical sequence remains in the action plans.
+Reconciled on 2026-08-25 across all 22 non-terminal records after RH-W-0051 completion. The approved high-level order now continues with RH-W-0071 planning, then separately authorized RH-W-0069 implementation. Historical sequence remains in the action plans.
 
 The preventive design precedes the local-state architecture:
 
 1. Complete and approve the bilingual `RH-W-0070` preventive resource-safety design without merging it into another unit. This step is complete.
-2. Implement `RH-W-0051` from its existing approved plan, only after separate authorization. Its four namespaces are `tmp`, `archive`, `state`, and `memory-bk`; none is implemented yet.
+2. `RH-W-0051` is complete. Its four implemented non-authoritative namespaces are `tmp`, `archive`, `state`, and `memory-bk`.
 3. Implement `RH-W-0071` after RH-W-0051 establishes `.repo-harness/state/preferences/`, without absorbing consent or language-preference semantics.
 4. Implement `RH-W-0069` after RH-W-0051 establishes `.repo-harness/memory-bk/`, without absorbing typed checkpoints.
 5. Implement `RH-W-0053` after RH-W-0051 establishes its storage semantics.
@@ -102,7 +102,7 @@ Done. Approval of the design does not authorize implementation.
 
 ### Plan 2: RH-W-0051 implementation
 
-Readiness `planned`. The owner-requested bilingual [implementation plan](rh-w-0051-implementation-plan.md) and its Spanish peer are complete. The record remains `proposed`; the plan authorizes no implementation or lifecycle change.
+Completed. The owner-requested bilingual [implementation plan](rh-w-0051-implementation-plan.md) and its Spanish peer are retained as historical execution evidence. The record is `completed`; implementation proceeded under separate owner authorization.
 
 1. Derive the task list from the approved design, one task per contract clause.
 2. Write the RED tests first and record the exact failure count and messages.
@@ -296,7 +296,7 @@ Delivery evidence: issue #104 records the approved work. Implementation commit `
 
 ### Plan 18: RH-W-0068 session-stop self-improvement closure
 
-Readiness `plannable now`. Priority `P1`. Registered outside the approved order from repeated live failures in this repository.
+Readiness `documentation closure slice implemented; remaining defects proposed`. Priority `P1`. Registered outside the approved order from repeated live failures in this repository. The focused [required documentation closure design](rh-w-0068-documentation-closure-design.md) is implemented without absorbing the other defects below.
 
 1. Design one explicit changelog disposition in the final session-stop Output Contract: `updated`, `not needed`, `declined`, or `pending approval`, with evidence.
 2. Reconcile outcome-scoped commit and push routing with the canonical harness authority and the contribution details it delegates, without allowing `CONTRIBUTING.md` to override `REPO-HARNESS.md`.
@@ -304,7 +304,7 @@ Readiness `plannable now`. Priority `P1`. Registered outside the approved order 
 4. Preserve Engram as normal integrated repo-harness continuity when available. Never activate unrelated personal `wk-mem-write-ld9` or `wk-mem-read-ld9` skills without an explicit request for those skills.
 5. Fix the canonical session-stop generator test-first, synchronize self-hosted, OpenCode, and Claude projections, verify, document, and deliver through the repository's authorized route.
 
-Human decision: approve the minimal design before implementation. This registration authorizes no product change.
+Human decision: separate design and implementation authority remains required for the changelog-disposition, Git-policy, and unrelated-skill activation defects.
 
 ### Plan 19: RH-W-0070 agent resource-safety limits
 
@@ -422,15 +422,15 @@ Five plans consume namespaces Plan 1 reserves: Plan 2A for local memory backups,
 | Priority | P1: the harness exists to improve from observed failures. A close that can hide changelog state, choose an unresolved delivery route, or substitute non-authoritative continuity can lose visible project truth and repeat the same defect. |
 | Dependencies | Reuse completed `RH-W-0050` reconciliation and evidence classes, completed `RH-W-0064` authorized follow-through, and completed `RH-W-0067` response visibility. `REPO-HARNESS.md` remains canonical; `CONTRIBUTING.md` supplies delegated contribution details but never overrides the harness. |
 | Status | proposed |
-| Completed work | Registered the verified failure boundary only. Engram observation `#10622` preserves semantic continuity, but this roadmap is the durable pending-work owner. Verified source requires proposing a meaningful changelog entry, while the final Output Contract does not explicitly require its disposition. No focused regression was found for that omission. The Git path can offer commit and push to an identified upstream without explicitly reconciling delegated repository contribution policy. |
-| Remaining work | Create and approve a minimal bilingual design, then implement test-first. Require explicit changelog disposition in every meaningful close; resolve applicable Git policy before offering delivery; preserve Engram as integrated continuity; and prevent unrelated personal memory skills from activating without explicit request. |
+| Completed work | Registered the verified failure boundary and implemented the bilingual [required documentation closure design](rh-w-0068-documentation-closure-design.md) with strict focused TDD. Generated session-stop now requires the exact implementation or delivery, successful verification, applicable documentation reconciliation, continuity, then completion-eligibility order. Required declined, pending, failed, or incomplete documentation suppresses completion while preserving verified work; genuine irrelevance is `not_applicable`. Engram preserves continuity, but this roadmap remains lifecycle authority. |
+| Remaining work | Separately design and implement the RH-W-0068 changelog disposition, Git-policy, and unrelated personal-skill activation defects. The unit cannot become `completed` until all three are resolved or receive an authoritative terminal disposition. |
 | Additions | Final-output changelog disposition, authority-correct Git-route classification, focused regressions, and one explicit boundary that repo-harness continuity never activates unrelated personal write/read skills by phrase matching. |
 | Exclusions | No removal of Engram from integrated continuity, no claim that `CONTRIBUTING.md` outranks the harness, no generic notes store, no automatic history rewrite, no hidden approval, no SDD requirement, and no implementation in this registration. |
 | Deferrals | Adjustment of the external personal `wk-mem-write-ld9` and `wk-mem-read-ld9` skills is separate future work outside this repository. |
 | Rejections | Rejected memory-only recording, ignored `.ld9` backup as repository truth, one-off prompt reminders, and treating user approval of an incorrectly offered route as proof the route was correctly classified. |
-| Evidence | Verified conversation and repository evidence: the changelog entry was initially local but the close reported completion without a published disposition; source inspection found the missing final-output requirement and no focused regression; commit `1e78ddb824ad997a62a72a519fcf88851f3e6b8d` later published the entry; `REPO-HARNESS.md` declares canonical workflow and delegates contribution details; Engram `#10622` records continuity but is not the backlog owner. |
-| Decision history | 2026-08-24: the owner repeatedly required the failure to be written in the repository, not only Engram, and required the harness to improve durably from observed problems. Registered as `proposed`; no design or implementation is approved. |
-| Next advancement condition | Advance after an owner-approved bilingual design defines exact changelog dispositions, meaningful-close detection, Git-policy resolution and precedence, explicit-skill activation boundaries, RED/GREEN cases, projection synchronization, and rollback. |
+| Evidence | RED failed because the exact ordered closure gate was absent. Focused GREEN passed 4 related session-stop tests. Maintenance plan `1db45a1a6d561fa44f34a5f4032874ea707b3acfda0851f14231f0d2b0630a1a` replaced only the self-hosted, OpenCode, and Claude session-stop projections and returned `VALIDATED`. The separate changelog, Git-policy, and unrelated-skill defects remain verified but unresolved. |
+| Decision history | 2026-08-24: registered as `proposed` from repeated owner-observed failures. 2026-08-25: completed and approved the bilingual documentation closure design, then implemented that focused slice under delegated direct authority with strict TDD. RH-W-0068 remains `proposed` because its other owned defects are unresolved. |
+| Next advancement condition | Separately design, authorize, implement, and verify the changelog-disposition, Git-policy, and unrelated personal-skill activation defects, or record an authoritative terminal disposition for each. |
 
 ### RH-W-0067
 | Field | Value |
@@ -710,16 +710,16 @@ Five plans consume namespaces Plan 1 reserves: Plan 2A for local memory backups,
 | Origin | Approved owner decision separating user-owned personal storage from harness-owned local state. |
 | Priority | P2: local state needs predictable ownership and clean-worktree semantics before recovery or archival behavior can depend on it. |
 | Dependencies | none |
-| Status | proposed |
-| Completed work | Recorded the owner-approved bilingual [local-state taxonomy design](rh-w-0051-design.md) and complete bilingual [implementation plan](rh-w-0051-implementation-plan.md). The approved four namespaces are `tmp`, `archive`, `state`, and `memory-bk`, all fixed, non-authoritative, and Git-ignored by default. No product behavior was implemented. |
-| Remaining work | On separate authorization, execute the existing plan for render, ignore, checker, manifest, compatibility, and verification behavior. RH-W-0048 and RH-W-0052 retain their conditional boundaries. The design reserves `.repo-harness/memory-bk/` for RH-W-0069, `.repo-harness/state/checkpoints/` for RH-W-0053, `.repo-harness/state/preferences/` for RH-W-0046 and RH-W-0018, and `.repo-harness/state/violations/` for RH-W-0040 without implementing any consumer. |
+| Status | completed |
+| Completed work | Executed the owner-approved bilingual [local-state taxonomy design](rh-w-0051-design.md) and [implementation plan](rh-w-0051-implementation-plan.md) test-first. The renderer declares fixed non-authoritative `tmp`, `archive`, `state`, and `memory-bk` namespaces in one `localState` manifest field and adds their four exact root ignore directives. The generated checker validates the exact taxonomy and ignore policy without creating or reading local-state contents. Canonical, OpenCode, Claude, and self-hosted projections are synchronized. No consumer behavior was implemented. |
+| Remaining work | none |
 | Additions | Four default local namespaces with explicit ownership, retention, clean-worktree, path-safety, non-Git, workspace, manifest, and checker rules. |
-| Exclusions | No claim that either directory currently exists or is supported; no ignore, render, checker, manifest, or migration behavior in this documentation work. |
+| Exclusions | No session behavior, backup schema, checkpoint, preference, consent, violation, retention cleanup, migration, generic state API, or automatic directory creation. |
 | Deferrals | none |
 | Rejections | Rejected using user-owned personal storage for harness state and silently applying repository overrides. |
-| Evidence | The canonical generator currently defines no supported `tmp` or `archive` namespace behavior; the standing decision records the approved target policy. |
-| Decision history | 2026-08-20: architecture approved and implementation retained as proposed work. 2026-08-25: owner approved the complete bilingual taxonomy design and widened it only enough to reserve `state` and `memory-bk`; status remains `proposed` and implementation remains unauthorized. |
-| Next advancement condition | Advance only after explicit owner authorization to execute the existing bilingual implementation plan test-first. |
+| Evidence | Declaration RED failed with `KeyError: 'localState'` and missing directives; checker RED exposed undetected ignore drift and schema rejection. Focused GREEN passed 24 tests. The canonical suite passed 445 tests with 9 skips. Maintenance plan `c459f3cb14b2731e75de14257c81b07c3dc4628461a6a1f5df65bf837d12a4be` appended only four `.gitignore` directives and replaced only the authenticated manifest/checker pair; apply returned `VALIDATED`. Projection SHA parity and checker `current` with zero writes passed. |
+| Decision history | 2026-08-20: architecture approved and implementation retained as proposed work. 2026-08-25: owner approved the complete bilingual taxonomy design and later delegated direct implementation from the approved plan. The language-bound maintenance preview excluded unrelated wrapper drift and the verified implementation completed without consumer behavior. |
+| Next advancement condition | none |
 
 ### RH-W-0050
 | Field | Value |

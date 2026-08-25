@@ -1,6 +1,6 @@
 # RH-W-0051 Local-State Taxonomy Design
 
-> **Status: OWNER-APPROVED DESIGN. Implementation is separately unauthorized.**
+> **Status: IMPLEMENTED AND VERIFIED. Historical pre-implementation design statements are retained below.**
 
 ## Review Contract
 
@@ -41,7 +41,7 @@ Plain `python .repo-harness/check.py` remains read-only. It reports taxonomy sup
 
 ## Manifest And Checker Impact
 
-Implementation should add one manifest field, `localState`, rather than one field per consumer. Its exact value is the fixed ordered mapping of namespace names to repository-relative paths and classes. The authenticated manifest and generated checker must change atomically because the checker enforces exact manifest fields.
+The implementation added one manifest field, `localState`, rather than one field per consumer. Its exact value is the fixed ordered mapping of namespace names to repository-relative paths and classes. The authenticated manifest and generated checker changed atomically because the checker enforces exact manifest fields.
 
 The checker validates exact declared paths, classes, root containment, and ignore directives. It does not enumerate or parse local files, judge backup content, enforce retention, or treat ignored local state as generated output. RH-W-0069 may add focused behavior tests without adding another manifest field.
 
@@ -53,9 +53,9 @@ The checker validates exact declared paths, classes, root containment, and ignor
 - Existing `.repo-harness/` generated and human-owned content remains untouched except for the separately authorized manifest/checker pair and bounded `.gitignore` integration.
 - A future explicit migration from personal or legacy storage requires its own approved design.
 
-## Focused RED Tests
+## Historical Focused RED Tests
 
-Before implementation, focused tests must fail for:
+The approved pre-implementation test requirements were:
 
 1. The render declaring exactly `tmp`, `archive`, `state`, and `memory-bk` under `.repo-harness/`.
 2. Exact root containment and rejection of traversal, absolute, indirect, and cross-root paths.
@@ -74,19 +74,19 @@ Before implementation, focused tests must fail for:
 - No backup schema, filename, content filter, Engram call, conflict resolution, or retention cleanup.
 - No implementation of checkpoints, preferences, consent, violations, archive deletion, or migration.
 - No database, encryption subsystem, daemon, scheduler, background service, generic state API, or complex configuration.
-- No generated skill, product source, test, manifest, checker, directory, staging, commit, push, or network change in this design work.
+- The design-only work changed no generated skill, product source, test, manifest, checker, directory, staging, commit, push, or network state. Later implementation changed only its separately authorized surfaces.
 
 ## Rollback
 
-Design rollback removes this document and its lifecycle references only. A future implementation rollback restores the prior manifest/checker pair and ignore behavior through the normal atomic generated-output path. It never deletes local-state contents automatically.
+The historical design rollback removed only this document and its lifecycle references. Implementation rollback restores the prior manifest/checker pair and ignore behavior through the normal atomic generated-output path. It never deletes local-state contents automatically.
 
 ## Done Conditions
 
 - Both design peers and documentation maps agree on the four namespaces and ownership boundaries.
-- RH-W-0051 remains `proposed`; implementation has separate authorization.
+- RH-W-0051 is `completed`; its separately authorized implementation satisfied this design without adding consumer behavior.
 - RH-W-0069 depends on this taxonomy but does not enlarge RH-W-0051 into session behavior.
 - Roadmap order places RH-W-0069 after RH-W-0051 and before consumers that need its session continuity behavior.
 
 ## Remaining Human Decisions
 
-None for this design. Any repository override syntax, retention cleanup, migration, implementation, or lifecycle advancement requires separate explicit authorization.
+None for this completed design. Any repository override syntax, retention cleanup, migration, or consumer implementation requires separate explicit authorization under its owning lifecycle unit.

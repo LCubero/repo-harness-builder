@@ -4,3 +4,7 @@ __pycache__/
 # Gentle AI owns and regenerates this directory
 .atl/
 .codegraph/
+/.repo-harness/tmp/
+/.repo-harness/archive/
+/.repo-harness/state/
+/.repo-harness/memory-bk/

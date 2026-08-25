@@ -1110,6 +1110,130 @@ def install(
     return outputs
 
 
+class LocalStateTaxonomyTests(unittest.TestCase):
+    EXPECTED_LOCAL_STATE = {
+        "tmp": {"path": ".repo-harness/tmp/", "class": "disposable"},
+        "archive": {"path": ".repo-harness/archive/", "class": "recoverable"},
+        "state": {"path": ".repo-harness/state/", "class": "operational"},
+        "memory-bk": {
+            "path": ".repo-harness/memory-bk/",
+            "class": "continuity-backup",
+        },
+    }
+
+    def test_render_declares_exact_ordered_local_state_taxonomy(self):
+        manifest = json.loads(TOOL.render("Example", [])[TOOL.MANIFEST_PATH])
+
+        self.assertEqual(manifest["localState"], self.EXPECTED_LOCAL_STATE)
+
+    def test_render_adds_exact_root_local_state_ignore_directives(self):
+        rendered = TOOL.render("Example", [])[TOOL.GITIGNORE_PATH].splitlines()
+        directives = (
+            "/.repo-harness/tmp/",
+            "/.repo-harness/archive/",
+            "/.repo-harness/state/",
+            "/.repo-harness/memory-bk/",
+        )
+
+        for directive in directives:
+            self.assertEqual(rendered.count(directive), 1)
+        self.assertNotIn("/.repo-harness/", rendered)
+
+    def test_rooted_and_rootless_local_state_ignore_directives_are_equivalent(self):
+        for directive in TOOL.LOCAL_STATE_IGNORE_DIRECTIVES:
+            with self.subTest(directive=directive):
+                rooted = f"{directive}\n".encode()
+                rootless = f"{directive.removeprefix('/')}\n".encode()
+                self.assertTrue(TOOL.has_local_state_ignore_line(rooted, directive))
+                self.assertTrue(TOOL.has_local_state_ignore_line(rootless, directive))
+                self.assertNotIn(directive, TOOL.missing_gitignore_directives(rooted, False))
+                self.assertNotIn(directive, TOOL.missing_gitignore_directives(rootless, False))
+
+    def test_local_state_paths_use_the_existing_containment_boundary(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            indirect = root / "indirect"
+            indirect.mkdir()
+            outside = root.parent / "other-root" / "state"
+            unsafe = ("../outside", outside.as_posix(), "C:/outside")
+
+            for relative in unsafe:
+                with self.subTest(relative=relative):
+                    with self.assertRaisesRegex(TOOL.ContractError, "unsafe relative path"):
+                        TOOL.guarded_target(root, relative)
+
+            with mock.patch.object(TOOL, "is_indirect", side_effect=lambda path: path == indirect):
+                with self.assertRaisesRegex(TOOL.ContractError, "indirect output ancestor"):
+                    TOOL.guarded_target(root, "indirect/state.json")
+
+    def test_local_state_targets_are_isolated_per_workspace_root(self):
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory)
+            first = workspace / "first"
+            second = workspace / "second"
+            first.mkdir()
+            second.mkdir()
+
+            for item in self.EXPECTED_LOCAL_STATE.values():
+                relative = item["path"] + "state.json"
+                first_target = TOOL.guarded_target(first, relative)
+                second_target = TOOL.guarded_target(second, relative)
+                self.assertTrue(first_target.is_relative_to(first))
+                self.assertTrue(second_target.is_relative_to(second))
+                self.assertNotEqual(first_target, second_target)
+
+    def test_local_state_adds_no_consumer_api_or_generated_content(self):
+        checking_api = {"has_local_state_ignore_line"}
+        local_state_callables = {
+            name
+            for name, value in vars(TOOL).items()
+            if callable(value) and "local_state" in name
+        }
+        outputs = TOOL.render("Example", ["opencode", "claude-code", "pi"])
+
+        self.assertEqual(local_state_callables, checking_api)
+        for item in self.EXPECTED_LOCAL_STATE.values():
+            self.assertFalse(any(path.startswith(item["path"]) for path in outputs))
+
+    def test_check_accepts_absent_local_state_directories_with_zero_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root)
+
+            for item in self.EXPECTED_LOCAL_STATE.values():
+                self.assertFalse((root / item["path"]).exists())
+
+            report = TOOL.check(root, "Example", [])
+
+            self.assertEqual(report["status"], "current")
+            self.assertEqual(report["writes"], 0)
+            for item in self.EXPECTED_LOCAL_STATE.values():
+                self.assertFalse((root / item["path"]).exists())
+
+    def test_check_reports_local_state_manifest_or_ignore_drift(self):
+        for drift in ("manifest", "ignore"):
+            with self.subTest(drift=drift), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                install(root)
+                if drift == "manifest":
+                    manifest_path = root / TOOL.MANIFEST_PATH
+                    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                    manifest["localState"]["state"]["class"] = "wrong"
+                    manifest_path.write_text(TOOL.dump_json(manifest), encoding="utf-8", newline="\n")
+                else:
+                    ignore_path = root / TOOL.GITIGNORE_PATH
+                    lines = ignore_path.read_text(encoding="utf-8").splitlines()
+                    lines.remove("/.repo-harness/state/")
+                    ignore_path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+
+                report = TOOL.check(root, "Example", [])
+
+                self.assertEqual(report["status"], "drift")
+                self.assertEqual(report["writes"], 0)
+                for item in self.EXPECTED_LOCAL_STATE.values():
+                    self.assertFalse((root / item["path"]).exists())
+
+
 class FixedGeneratedSkillNameTests(unittest.TestCase):
     EXPECTED_SKILLS = {
         "repo-harness-session-start",
@@ -1181,6 +1305,10 @@ class FixedGeneratedSkillNameTests(unittest.TestCase):
 class AdditiveWriteTests(unittest.TestCase):
     """Writes create absent files, with exact bounded root append exceptions."""
 
+    LOCAL_STATE_IGNORES = b"".join(
+        directive.encode("utf-8") + b"\n" for directive in TOOL.LOCAL_STATE_IGNORE_DIRECTIVES
+    )
+
     def test_render_emits_no_ownership_record(self):
         outputs = TOOL.render("Example", ["opencode"])
         self.assertFalse([path for path in outputs if "ownership" in path])
@@ -1196,20 +1324,25 @@ class AdditiveWriteTests(unittest.TestCase):
                     f"{path} belongs to {owned}, which this builder must not manage",
                 )
 
-    def test_default_install_creates_only_the_codegraph_ignore_directive(self):
+    def test_default_install_creates_only_required_ignore_directives(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             install(root, runtimes=("opencode", "claude-code", "pi"))
-            self.assertEqual((root / ".gitignore").read_bytes(), b".codegraph/\n")
+            self.assertEqual(
+                (root / ".gitignore").read_bytes(),
+                b".codegraph/\n" + self.LOCAL_STATE_IGNORES,
+            )
             for owned in TOOL_OWNED_PATHS:
                 self.assertFalse((root / owned).exists(), f"{owned} must stay untouched")
 
     def test_codegraph_ignore_append_preserves_bytes_and_line_endings(self):
+        lf_ignores = b".codegraph/\n" + self.LOCAL_STATE_IGNORES
+        crlf_ignores = lf_ignores.replace(b"\n", b"\r\n")
         cases = (
-            (b"node_modules", b"node_modules\n.codegraph/\n"),
-            (b"node_modules\n", b"node_modules\n.codegraph/\n"),
-            (b"node_modules\r\n", b"node_modules\r\n.codegraph/\r\n"),
-            (b"\xef\xbb\xbf# keep\r\n\r\nnode_modules", b"\xef\xbb\xbf# keep\r\n\r\nnode_modules\r\n.codegraph/\r\n"),
+            (b"node_modules", b"node_modules\n" + lf_ignores),
+            (b"node_modules\n", b"node_modules\n" + lf_ignores),
+            (b"node_modules\r\n", b"node_modules\r\n" + crlf_ignores),
+            (b"\xef\xbb\xbf# keep\r\n\r\nnode_modules", b"\xef\xbb\xbf# keep\r\n\r\nnode_modules\r\n" + crlf_ignores),
         )
         for original, expected in cases:
             with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
@@ -1227,7 +1360,8 @@ class AdditiveWriteTests(unittest.TestCase):
             with self.subTest(directive=directive), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 target = root / ".gitignore"
-                original = b"# human\r\n" + directive + b"\r\nnode_modules\r\n"
+                local = self.LOCAL_STATE_IGNORES.replace(b"\n", b"\r\n")
+                original = b"# human\r\n" + directive + b"\r\n" + local + b"node_modules\r\n"
                 target.write_bytes(original)
                 outputs = TOOL.render("Example", [])
                 plan = TOOL.plan_changes(root, outputs)
@@ -1255,16 +1389,19 @@ class AdditiveWriteTests(unittest.TestCase):
                 target.write_bytes(original)
                 outputs = TOOL.render("Example", [])
                 TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
-                self.assertEqual(target.read_bytes(), original + b"\n.codegraph/\n")
+                self.assertEqual(
+                    target.read_bytes(),
+                    original + b"\n.codegraph/\n" + self.LOCAL_STATE_IGNORES,
+                )
 
-    def test_opt_out_writes_no_gitignore_and_persists_choice(self):
+    def test_codegraph_opt_out_keeps_local_state_ignores_and_persists_choice(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             outputs = install(root, ignore_codegraph=False)
             manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
             self.assertFalse(manifest["project"]["ignoreCodegraph"])
-            self.assertNotIn(".gitignore", outputs)
-            self.assertFalse((root / ".gitignore").exists())
+            self.assertEqual(outputs[".gitignore"].encode("utf-8"), self.LOCAL_STATE_IGNORES)
+            self.assertEqual((root / ".gitignore").read_bytes(), self.LOCAL_STATE_IGNORES)
             self.assertEqual(TOOL.check(root, "Example", [])["status"], "current")
 
     def test_historical_manifest_without_codegraph_choice_uses_default_for_upgrade(self):
@@ -1332,7 +1469,8 @@ class AdditiveWriteTests(unittest.TestCase):
                 text=True,
             )
             plan = json.loads(result.stdout)
-            self.assertNotIn(".gitignore", [item["path"] for item in plan["create"]])
+            ignore = next(item for item in plan["create"] if item["path"] == ".gitignore")
+            self.assertEqual(ignore["sha256"], TOOL.digest_bytes(self.LOCAL_STATE_IGNORES))
 
     def test_apply_rejects_gitignore_changed_after_preview_before_any_write(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -1563,6 +1701,7 @@ class ApprovedGeneratedOutputReplacementTests(unittest.TestCase):
             desired = dict(installed)
             manifest = json.loads(installed[TOOL.MANIFEST_PATH])
             manifest["integrationMode"] = "standalone"
+            manifest["localState"] = LocalStateTaxonomyTests.EXPECTED_LOCAL_STATE
             desired[TOOL.MANIFEST_PATH] = TOOL.dump_json(manifest)
             desired[".repo-harness/check.py"] = TOOL.check_script(
                 TOOL.digest_text(desired[TOOL.MANIFEST_PATH])
@@ -1589,7 +1728,7 @@ class ApprovedGeneratedOutputReplacementTests(unittest.TestCase):
                 capture_output=True,
                 text=True,
             )
-            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
 
     def test_inconsistent_desired_checker_and_manifest_are_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -3374,12 +3513,42 @@ class GeneratedCoreTests(unittest.TestCase):
             "resumable intermediate checkpoint",
             "resume the same session-stop invocation from the next unfinished step",
             "execute that exact approved action once",
-            "If documentation is declined, continue the close protocol without writing",
+            "If documentation is declined, preserve verified work",
             "one blocking question per turn",
         ):
             self.assertIn(phrase, stop)
         self.assertNotIn("APROBAR", stop)
         self.assertNotIn("DENEGAR", stop)
+
+    def test_session_stop_requires_documentation_reconciliation_before_completion(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+
+        ordered_steps = (
+            "1. Implementation or delivery.",
+            "2. Successful verification evidence.",
+            "3. Applicable documentation reconciliation from proven facts.",
+            "4. Continuity handoff.",
+            "5. Completion eligibility.",
+        )
+        positions = [stop.index(step) for step in ordered_steps]
+        self.assertEqual(positions, sorted(positions))
+        for phrase in (
+            "roadmap or lifecycle record",
+            "current-state projection",
+            "localized peers",
+            "meaningful changelog",
+            "documentation map",
+            "other durable documentation",
+            "An applicable required surface resolves `completed`",
+            "A genuinely irrelevant surface resolves `not_applicable`",
+            "`declined`, `pending`, `failed`, or `incomplete`",
+            "must be `paused` or `blocked`, never `completed`",
+            "declines completion without discarding verified implementation, delivery, or evidence",
+            "Never write documentation before successful verification",
+            "Never fabricate evidence, status, chronology, or parity",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, stop)
 
     def test_session_stop_refreshes_final_continuity_after_approved_documentation(self):
         stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]

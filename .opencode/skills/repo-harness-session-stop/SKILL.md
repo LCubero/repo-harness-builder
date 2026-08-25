@@ -49,6 +49,22 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 - Incomplete delivery evidence, unknown baseline, bound exhaustion, owner-update failure, localized-update failure, or an unresolved retained finding stops only the affected branch. Preserve unrelated work and successful outcomes.
 - A wording-only parity repair is not lifecycle delivery unless it exposes or changes a semantic conflict.
 
+## Required Documentation Closure Gate
+
+Use this exact order:
+
+1. Implementation or delivery.
+2. Successful verification evidence.
+3. Applicable documentation reconciliation from proven facts.
+4. Continuity handoff.
+5. Completion eligibility.
+
+- Decide applicability after verification for the roadmap or lifecycle record, current-state projection, localized peers, meaningful changelog, documentation map, and other durable documentation that owns a changed fact.
+- An applicable required surface resolves `completed`. A genuinely irrelevant surface resolves `not_applicable` with a concise reason and creates no mandatory churn.
+- If any required reconciliation is `declined`, `pending`, `failed`, or `incomplete`, the close must be `paused` or `blocked`, never `completed`.
+- A user decline declines completion without discarding verified implementation, delivery, or evidence.
+- Never write documentation before successful verification. Never fabricate evidence, status, chronology, or parity.
+
 ## Self-Update And Runtime Cache
 
 - Distinguish on-disk canonical and projection parity, active-process registered skill freshness, and runtime reload or restart capability.
@@ -62,7 +78,7 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 2. Summarize completed work, decisions, unresolved issues, and next steps.
 3. Validate referenced paths and reconcile the summary with `REPO-HARNESS.md` and deeper documentation, including lifecycle records and their current-state projection.
 4. Present the exact documentation changes and any meaningful completed-work changelog entry for conversational approval, one blocking question per turn, then pause.
-5. After the user answers, resume the same session-stop invocation from the next unfinished step. If approved, execute that exact approved action once, update only the canonical owners, refresh repository evidence, and verify paths, links, and claims. If documentation is declined, continue the close protocol without writing and record the proposal as declined or pending as appropriate.
+5. After the user answers, resume the same session-stop invocation from the next unfinished step. If approved, execute that exact approved action once, update only the canonical owners, refresh repository evidence, and verify paths, links, and claims. If documentation is declined, preserve verified work, record the required reconciliation as declined, and suppress completed closure.
 6. A session summary saved before an approved mutation is provisional. Save or update a final session summary that includes the approved mutation only after refreshed evidence and verification.
 7. Save significant decisions, discoveries, fixes, and the session summary to Engram; report every save result.
 8. Only after documentation and continuity are complete, classify staged paths, unstaged tracked paths, untracked paths, renamed paths, deleted paths, unrelated pre-existing paths, excluded private, tool, and cache paths, and sensitive-looking paths. Perform mandatory per-path sensitive screening before any proposed staging. Filename screening is a warning baseline, not proof of safety. A sensitive candidate must pause before any staging.
@@ -73,7 +89,7 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 
 ## Outcome Model
 
-- `completed`: required close steps and continuity succeeded.
+- `completed`: successful verification, every applicable required documentation reconciliation, and continuity succeeded.
 - `paused`: human input is actually needed for approval or a material change. Do not classify an authorized happy-path substep as `paused`.
 - `blocked`: evidence or a human decision is required before that scoped branch can proceed.
 - `failed`: a required continuity step failed, or an attempted scoped operation failed.

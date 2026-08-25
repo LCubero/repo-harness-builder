@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0051 de taxonomia de estado local
 
-> **Para agentes ejecutores:** SUB-SKILLS OBLIGATORIAS: use `test-driven-development` para cada cambio, `work-unit-commits` para los limites planeados y `verification-before-completion` antes de entregar. Ejecute las tareas en orden. Este plan no autoriza implementacion, transicion de ciclo, accion Git, publicacion ni red.
+> **Estado: COMPLETADO EL 2026-08-25.** Las instrucciones siguientes se conservan como evidencia historica. Antes de ejecutar, este plan no otorgaba autoridad de implementacion, ciclo, Git, publicacion ni red; la implementacion procedio despues bajo autorizacion separada del propietario.
 
 **Objetivo:** Agregar la taxonomia fija aprobada, cuatro directivas raiz exactas, una politica minima `localState` en el manifest y validacion de checker de solo lectura, sin agregar consumidores.
 
@@ -8,7 +8,7 @@
 
 **Stack:** Python 3.10+ estandar, `unittest`, render determinista de JSON y Markdown, y proyecciones canonica, OpenCode y Claude identicas por bytes.
 
-**Propietario de ciclo:** [RH-W-0051](roadmap.md#rh-w-0051), estado `proposed`. El [diseno](rh-w-0051-design.md) aprobado posee el comportamiento. RH-W-0069 solo puede iniciar despues de implementar y probar esta unidad. Planificar no cambia el estado ni autoriza implementar.
+**Propietario de ciclo:** [RH-W-0051](roadmap.md#rh-w-0051), estado `completed`. El [diseno](rh-w-0051-design.md) aprobado posee el comportamiento. El prerrequisito de almacenamiento de RH-W-0069 esta probado. Historicamente, planificar no cambiaba estado ni autorizaba implementar.
 
 ## Mapa de archivos
 
@@ -109,4 +109,4 @@ if ($apply.status -ne "VALIDATED") { throw "maintenance apply was not VALIDATED"
 - [ ] No hay consumidor, migracion, creacion, inspeccion local ni comportamiento ajeno.
 - [ ] RH-W-0051 conserva ciclo y entrega separados antes de RH-W-0069.
 
-Pronostico: 4 tareas, 140 a 190 lineas autorales cambiadas mas proyecciones mecanicas y bytes autoalojados. El rango reducido reutiliza proteccion, ignore, checker, reemplazo y suite existentes. Implementacion y avance de ciclo siguen sin autorizacion.
+Pronostico historico: 4 tareas, 140 a 190 lineas autorales cambiadas mas proyecciones mecanicas y bytes autoalojados. La implementacion reutilizo proteccion, ignore, checker y reemplazo existentes, y se completo bajo autorizacion separada.

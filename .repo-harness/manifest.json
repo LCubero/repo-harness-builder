@@ -34,6 +34,24 @@
       "es"
     ]
   },
+  "localState": {
+    "archive": {
+      "class": "recoverable",
+      "path": ".repo-harness/archive/"
+    },
+    "memory-bk": {
+      "class": "continuity-backup",
+      "path": ".repo-harness/memory-bk/"
+    },
+    "state": {
+      "class": "operational",
+      "path": ".repo-harness/state/"
+    },
+    "tmp": {
+      "class": "disposable",
+      "path": ".repo-harness/tmp/"
+    }
+  },
   "project": {
     "id": "repo-harness-builder",
     "ignoreCodegraph": true,
