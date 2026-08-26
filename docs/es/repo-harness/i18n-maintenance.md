@@ -12,6 +12,13 @@ Actualice primero los propietarios factuales. Si una redaccion localizada contra
 
 Actualice cada par afectado en espanol dentro de la misma unidad de trabajo. Se exige significado equivalente, no igualdad literal de encabezados u oraciones. Se permite redaccion natural propia del idioma si hechos, restricciones, comandos, rutas y resultados permanecen equivalentes.
 
+## Correspondencia de entradas
+<!-- doc-role:entry-mapping -->
+
+En una lista que el lector cuenta, como una seccion fechada de `CHANGELOG.md`, el par en espanol corresponde una entrada a una entrada. Quien compare ambas versiones no debe tener que adivinar si una entrada ausente es una decision de traduccion o un hecho perdido.
+
+Existe una sola excepcion, y debe declararse donde aplica en vez de inferirse. Una seccion historica puede consolidar varias entradas en ingles en menos entradas tematicas en espanol solo cuando cada hecho sobrevive en alguna entrada y la propia seccion declara que esta consolidada. Una diferencia de conteo sin declarar es un defecto, no una eleccion de estilo. Las secciones nuevas son siempre una a una.
+
 ## Enlaces
 <!-- doc-role:link-validation -->
 

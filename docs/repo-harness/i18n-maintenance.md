@@ -12,6 +12,13 @@ Update factual owners first. If localized wording conflicts with a canonical fac
 
 Update each affected Spanish peer in the same work unit. Equivalent meaning is required, not literal heading or sentence equality. Natural locale-specific phrasing is allowed when facts, constraints, commands, paths, and outcomes remain equivalent.
 
+## Entry Mapping
+<!-- doc-role:entry-mapping -->
+
+In a list a reader counts, such as a dated `CHANGELOG.md` section, the Spanish peer maps one entry to one entry. A reader comparing the two must not have to guess whether a missing entry is a translation choice or a lost fact.
+
+One exception exists, and it must be declared where it applies rather than inferred. A historical section may consolidate several English entries into fewer thematic Spanish entries only when every fact survives in some entry and the section itself says it is consolidated. An undeclared count difference is a defect, not a style choice. New sections are always one to one.
+
 ## Links
 <!-- doc-role:link-validation -->
 
