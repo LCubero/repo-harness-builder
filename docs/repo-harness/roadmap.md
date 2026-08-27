@@ -22,7 +22,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-Reconciled on 2026-08-25 across all 26 non-terminal records: the 22 that existed after RH-W-0051 completion, plus `RH-W-0072` and `RH-W-0073`, registered the same day from read-only review evidence and deliberately left outside this order until the owner schedules them. The approved high-level order still continues with RH-W-0071 planning, then separately authorized RH-W-0069 implementation. Historical sequence remains in the action plans.
+Reconciled on 2026-08-25 across the 26 non-terminal records then existing, and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`, registered from full read-only review evidence and deliberately left outside this order until the owner schedules them. The owner scheduled `RH-W-0073` first on 2026-08-26, ahead of everything below. The approved high-level order still continues with RH-W-0071 planning, then separately authorized RH-W-0069 implementation. Historical sequence remains in the action plans.
 
 The preventive design precedes the local-state architecture:
 
@@ -348,16 +348,16 @@ Human decisions: whether a preventive control is in scope, and whether Pi covera
 
 ### Plan 22: RH-W-0073 rulebook budget enforcement gap
 
-Readiness `plannable now`. Priority `P1`, dependencies none. Registered outside the approved order. Next artifact: a bilingual design document and its Spanish peer.
+Readiness `plannable now`. Priority `P1`, dependencies none. Registered outside the approved order and then scheduled first by the owner on 2026-08-26. The owner-approved bilingual [design](rh-w-0073-design.md) is complete and settles every question the earlier plan steps asked. Next artifact: a bilingual implementation plan. This action plan records future work only; it authorizes no lifecycle advancement or product change.
 
-1. Restate the measured baseline: rendered rulebook 650 proxy, self-hosted `REPO-HARNESS.md` 763 proxy, budget 700, and the single non-emitting `over-budget` occurrence.
-2. Separate the two problems the owner may answer differently: the current breach in this repository, and the absence of any control over hand-evolved rulebooks and rule files.
-3. Decide the control surface without reintroducing what RH-W-0013 removed: a development-time check is permitted, a blocking runtime render or check refusal is not.
-4. Decide what happens to `references/validation.md`, whose `over-budget` criterion currently describes a removed mechanism, coordinating with Plan 21 so only one unit edits that file.
-5. Name the exact detail that moves down out of `REPO-HARNESS.md` to return it under budget, and which rule file receives it.
-6. Name the RED tests, including one that measures this repository's own rulebook rather than rendered output.
+1. Write the focused RED cases the design names, including one that measures this repository's `REPO-HARNESS.md` on disk rather than rendered output.
+2. Add the development-time budget test to the canonical suite next to the existing self-hosted assertions that already resolve the repository through `ROOT.parents[1]`.
+3. Move the two named Hard Rules blocks into `.repo-harness/rules/working-agreements.md` and leave one compressed line behind for each. Add no rule file and no gate row.
+4. Correct the `over-budget` acceptance criterion in `references/validation.md` and add the criterion covering the development-time measurement. Plan 21 does not edit that file.
+5. Reconcile `REPO-HARNESS.es.md` as an equivalent mirror in the same work unit, without adding it to the measured set.
+6. Verify no render refusal returned, no checker state was added, `RULEBOOK_TOKEN_BUDGET` is still 700, the checker reports `current` with zero writes, and both runtime projections stay byte-identical.
 
-Human decisions: whether a development-time control is wanted at all, and which obligations may move down out of the rulebook.
+Human decision: separate explicit authorization for the implementation plan and later implementation.
 
 ### Plan 23: RH-W-0074 comply-with-warning principle
 
@@ -386,6 +386,33 @@ Readiness `plannable now`. Priority `P2`, dependencies none. Registered outside 
 
 Human decisions: the definition of external, and whether network and provider tooling share it.
 
+### Plan 25: RH-W-0076 unenforced declared limits on product surfaces
+
+Readiness `plannable now`. Priority `P1`, dependencies none. Registered outside the approved order. Next artifact: a bilingual scope document and its Spanish peer.
+
+1. Freeze the measured inventory in the record above as the scope baseline, so correction stays bounded to surfaces that were actually verified.
+2. Correct `SKILL.md` Execution Step 6 first and alone if the owner wants the smallest useful slice, because it is the only defect that breaks a first install. Reuse the correct form already in `references/validation.md`.
+3. Get the owner's answer on the body ceiling before touching any generated contract, because it decides whether this is a compression job or a documentation correction.
+4. Decide one retirement mechanism for finished plans and apply it uniformly; do not mix a header in one file with a checkbox pass in another.
+5. Reuse the development-time assertion pattern the `RH-W-0073` design establishes rather than adding a second control surface. Implement `RH-W-0073` first so the pattern exists.
+6. Write the RED tests before each correction, including one that executes the documented command and one that measures a generated contract on disk.
+7. Synchronize both language peers and both runtime projections in the same work unit, and verify the checker reports `current` with zero writes.
+
+Human decisions: whether generated contracts are bound by the bundled 1000-token body ceiling, and which retirement mechanism finished plans receive.
+
+### Plan 26: RH-W-0077 repository containment and delivery hygiene
+
+Readiness `plannable now`. Priority `P2`, dependencies none. Registered outside the approved order. Next artifact: a bilingual scope document and its Spanish peer.
+
+1. Get the containment answer first, because it decides everything about the personal storage directory: is a personal directory sitting physically inside the repository inside or outside the Hard Rule boundary?
+2. Inventory what inside it names this project, and decide per document whether it must be promoted into a canonical owner before the directory stops being trusted. Promote nothing without approval, and delete nothing there at all.
+3. Decide the ignore question without violating `decisions.md`: the generated `.gitignore` may not name a personal path, so any repository-level rule is a human-owned addition or the answer is that no rule is added.
+4. Dispose of `docs/superpowers/` under the existing archive convention or delete it, and record the choice. Either way it stops being an unlisted tracked directory.
+5. Resolve the delivery contradiction by changing one side: either restore issue-first pull-request delivery, or amend `CONTRIBUTING.md` and `decisions.md` to describe the practice the owner actually wants. Do not leave both standing.
+6. Verify no product behavior, generated artifact, manifest, checker, or test changed.
+
+Human decisions: the containment boundary for a personal directory inside the repository, and whether the delivery policy or the delivery practice changes.
+
 ### Not plannable yet
 
 These records have an unmet advancement condition, so no artifact can be produced without inventing the evidence the condition requires.
@@ -398,7 +425,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reviewed on 2026-08-25 across the 20 non-terminal plans, the 4 completed plans retained as historical execution evidence, and the 26 non-terminal records they cover.
+Current projection reviewed on 2026-08-26 across the 22 non-terminal plans, the 4 completed plans retained as historical execution evidence, and the 28 non-terminal records they cover. Plan 25 and Plan 26 were added the same day. Neither shares a file with an existing plan, except that Plan 25 consumes the control pattern Plan 22 establishes and must therefore follow it.
 
 Coverage is complete at the lifecycle level. The stale next-artifact wording corrected in this reconciliation means the prior claim that no plans contradicted each other was too strong. No true lifecycle merge is approved. RH-W-0051 keeps separate design and implementation plans. The portfolio has one explicit joint-design pair, `RH-W-0046` with `RH-W-0018`, and four coordination pairs with separate lifecycles and implementations: coordinated sequencing for `RH-W-0055` with `RH-W-0062` and `RH-W-0069` with `RH-W-0068`, plus coordinated boundary review for `RH-W-0065` with `RH-W-0022` and `RH-W-0066` with `RH-W-0044`. The five unscheduled deferred records are covered in the not-plannable list; RH-W-0018 is covered by Plan 6.
 
@@ -416,13 +443,47 @@ Ten cross-plan relationships are declared here so no plan silently assumes anoth
 
 9. Plan 23 and Plan 18 both touch generated session-stop. Plan 18 owns the closure ordering that RH-W-0068 established and its remaining changelog, Git-policy, and unrelated-skill defects. Plan 23 owns only the one clause that treats an explicitly declined reconciliation as if it were failed or incomplete evidence. They must not be implemented concurrently, because both rewrite the same canonical contract and both then require the maintenance renderer to synchronize every runtime projection. Plan 23 also constrains Plan 6: a consent design must not reintroduce a question the consumer has already answered.
 
-10. Plan 24 and Plan 23 are two halves of the same principle and must not be merged. Plan 23 governs what the harness may do after the consumer has answered, where a denial is never available. Plan 24 governs whether the harness should be asking at all, and what it owes the consumer when it does. Both land in `.repo-harness/rules/working-agreements.md`, so they must not be implemented concurrently, and neither may add rulebook bytes while RH-W-0073 is open.
+10. Plan 22, Plan 23, and Plan 24 all write into `.repo-harness/rules/working-agreements.md`, so none of them may be implemented concurrently and Plan 22 goes first, because completing RH-W-0073 is what lifts the no-rulebook-bytes constraint on the other two. After Plan 22 that file sits near 499 of 700 proxy tokens, leaving roughly 150 words for Plan 23 and Plan 24 together. That is workable but not generous; a later unit needing more sheds detail rather than raising the budget. Plan 24 and Plan 23 are additionally two halves of the same principle and must not be merged. Plan 23 governs what the harness may do after the consumer has answered, where a denial is never available. Plan 24 governs whether the harness should be asking at all, and what it owes the consumer when it does. Both land in `.repo-harness/rules/working-agreements.md`, so they must not be implemented concurrently, and neither may add rulebook bytes while RH-W-0073 is open.
 
 Five plans consume namespaces Plan 1 reserves: Plan 2A for local memory backups, Plan 3 for checkpoint bytes, Plan 6 for consent preferences, Plan 10 for the violation record, and Plan 20 for response-mode preference. Plan 1 reserves each by name without implementing any consumer behavior.
 
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0077
+| Field | Value |
+|---|---|
+| Origin | Full read-only repository review on 2026-08-26 found three ways this repository's own housekeeping departs from what it declares, none of them consumer-facing product behavior. |
+| Priority | P2: no consumer receives any of these, and the repository is recoverable from Git in every case. The cost is portability, reviewability, and a stated policy that stopped describing practice. |
+| Dependencies | None. Reuse the `decisions.md` self-containment and personal-storage boundaries, the archive convention established by `docs/repo-harness/archive/`, and `CONTRIBUTING.md` as the delivery-policy owner. `RH-W-0068` keeps its separate Git-route classification defect and does not reopen. |
+| Status | proposed |
+| Completed work | Measured all three. `.ld9/` holds 179 MB inside the repository, including full checkouts of `gentle-ai` and `engram`, and is ignored only by a machine-global excludes file, not by the repository's own `.gitignore`, which covers `.atl/`, `.codegraph/`, and the four `.repo-harness/` namespaces. It also holds `rh-w-0047-implementation-plan.md`, `rh-w-0049-implementation-plan.md`, `post-delivery-continuation-gap.md`, and three research or findings documents, none of which exist under `docs/`. `docs/superpowers/` holds two tracked files dated 2026-08-14, absent from both documentation maps, instructing a reader to use an external `superpowers:subagent-driven-development` sub-skill and carrying the stale line `RDD is disabled at clone scope`. Commits `95d8044` and older were delivered through merge commits naming pull requests #97, #99, #101, #103, #105, #107, and #109, while `41a23d7`, `7c9f8b1`, `a67a6c7`, `1db761e`, and `e290c53`, all dated 2026-08-25, are single-parent commits made directly on `main` with no issue, branch, pull request, or recorded emergency. |
+| Remaining work | Decide the disposition of each surface, then execute it. For `.ld9/`, decide where the boundary runs and whether anything in it must be promoted into a canonical owner before the directory stops being trusted. For `docs/superpowers/`, decide between archiving under the existing convention and deleting it. For delivery, decide whether the policy or the practice changes. This unit bundles three surfaces under one shared cause, so it cannot become `completed` until all three are resolved or receive an authoritative terminal disposition. |
+| Additions | None yet. A scope may add a repository-level ignore rule, an archive entry, or a corrected delivery policy. |
+| Exclusions | No product behavior change, no generated-content change, no builder rule naming a personal path, which `decisions.md` forbids, no reopening of `RH-W-0068`, no history rewrite, and no deletion of anything under `.ld9/`, which is the owner's storage and not this repository's to remove. |
+| Deferrals | Whether a personal directory sitting physically inside the repository is inside or outside the Hard Rule containment boundary waits for the owner, because the rule names paths outside the repository and does not answer this case. |
+| Rejections | Rejected adding the personal storage directory to the generated `.gitignore`, because `decisions.md` forbids generated content from naming personal storage paths. Rejected treating the direct-`main` commits as a silent exception, because `CONTRIBUTING.md` permits one only as an explicitly authorized emergency and none is recorded. Rejected claiming the stored plans lost their reasoning, because the `RH-W-0047` record independently carries code locations, RED and GREEN evidence, issue #77, pull request #78, both commit hashes, and the Judgment Day outcome. |
+| Evidence | Verified fact: the 179 MB measurement, the `git check-ignore -v` result naming the machine-global excludes file, the absence of `rh-w-0047` and `rh-w-0049` documents under `docs/`, the two tracked files under `docs/superpowers/` and their absence from both maps, and the single-parent status of the five commits against the merge commits before them. Supported inference: an ignore rule that lives only in machine-global configuration makes the repository behave differently on another machine; a fresh clone elsewhere would raise this to verified. Human decision required: the containment boundary for a personal directory inside the repository, and whether policy or practice changes for delivery. |
+| Decision history | 2026-08-26: registered as `proposed` under immutable ID RH-W-0077 from full read-only review evidence, after the owner asked whether the project still honors its philosophy. No scope, design, implementation, or lifecycle advancement is authorized. |
+| Next advancement condition | Advance only after the owner answers the containment boundary and the delivery-policy question, and approves a bilingual scope naming the disposition of each of the three surfaces. |
+
+### RH-W-0076
+| Field | Value |
+|---|---|
+| Origin | Full read-only repository review on 2026-08-26 found three declared limits with nothing able to detect a breach, one of which makes the product's primary execution instruction unrunnable. |
+| Priority | P1: an agent following `SKILL.md` step 6 literally fails on its first install, and the skill-body ceiling is exceeded by roughly 185 percent in output that ships into every consumer repository. |
+| Dependencies | None. Reuse the development-time control surface the owner-approved `RH-W-0073` design establishes rather than inventing a second one. `RH-W-0072` keeps product documentation that describes removed or missing behavior; `RH-W-0073` keeps the rulebook and rule-file budget. Neither reopens. |
+| Status | proposed |
+| Completed work | Measured all three. `SKILL.md` Execution Step 6 prints a command that cannot run: it omits the required `--root` and `--project-name`, proven by executing it and receiving `error: the following arguments are required: --root, --project-name`; it omits `--activation builder` while passing `--approval`, which `harness_tool.py` refuses through `require(builder_active or not args.approval, ...)`; and it omits `--runtime`, so on a first install, where no manifest exists to fall back to, it renders the core only and discards the runtime permission Execution Step 2 exists to obtain. `references/validation.md` already carries the correct form. `references/gentle-ai-style-guide.md` declares a hard maximum of 1000 body tokens scoped to this skill and everything it generates, while `TOOL.token_proxy` measures the builder `SKILL.md` body at 2885, generated `repo-harness-session-stop` at 2854, `repo-harness-session-start` at 2738, and `repo-harness-documentation` at 904; the generated rulebook renders at 650 against the same 700 ceiling, leaving 50 tokens of headroom. Seven implementation plans for units this roadmap marks `completed` retain 324 unchecked task boxes and open with imperatives such as `Execute the checkboxes in order`; three of them, `rh-w-0013`, `rh-w-0025`, and `rh-w-0067`, never state that the work finished, and the documentation map labels `rh-w-0025-implementation-plan.md` as a canonical executable implementation plan. |
+| Remaining work | Decide whether one control covers all three surfaces or each needs its own, correct each surface, and implement test-first after a separately approved bilingual scope. The generated skills carry no `references/` directory, so decide whether the body ceiling is met by moving detail down, by revising the ceiling's scope, or by declaring generated contracts a stated exception. This unit bundles three defects under one shared cause, so it cannot become `completed` until all three are resolved or receive an authoritative terminal disposition. |
+| Additions | None yet. A scope may add development-time assertions covering runnable documented commands, skill-body size, and retirement of plans whose unit reached a terminal status. |
+| Exclusions | No runtime render or check refusal, which completed `RH-W-0013` deliberately removed, no raised ceiling without an owner decision, no reopening of `RH-W-0072` or `RH-W-0073`, no deletion of retained historical execution evidence, and no implementation before a separately approved scope. |
+| Deferrals | Whether the retained plans are retired by a header, by checkbox reconciliation, by archiving, or by a documentation-map label waits for that scope. |
+| Rejections | Rejected folding these into `RH-W-0072`, whose measured inventory is frozen as its scope baseline and covers documentation describing removed behavior rather than a command that never worked, a size ceiling, or plan retirement. Rejected raising the 1000-token ceiling to match current output, for the same reason `RH-W-0073` rejected raising 700. Rejected treating `references/validation.md` carrying the correct command as evidence that `SKILL.md` is adequate, because an agent executing the skill reads step 6. |
+| Evidence | Verified fact: the executed argparse failure, the `require()` call refusing `--approval` outside builder activation, every `token_proxy` measurement, the unchecked-box counts per plan, and the documentation-map label. Supported inference: the shared cause is the same one `decisions.md` already names, that a prose rule is defended by review rather than by exit code; the external review recorded it twice, as its second structural insight and as finding F9, and F9 was dispositioned `Close` on 2026-08-23. Human decision required: whether the generated skill contracts are held to the bundled style guide's ceiling or declared a stated exception. |
+| Decision history | 2026-08-26: registered as `proposed` under immutable ID RH-W-0076 from full read-only review evidence, after the owner asked whether the project still honors its philosophy. No scope, design, implementation, or lifecycle advancement is authorized. |
+| Next advancement condition | Advance only after the owner answers whether generated contracts are bound by the bundled body ceiling, and approves a bilingual scope naming the control surface and the correction for each of the three defects. |
 
 ### RH-W-0075
 | Field | Value |
@@ -466,14 +527,14 @@ Five plans consume namespaces Plan 1 reserves: Plan 2A for local memory backups,
 | Dependencies | None. Completed RH-W-0013 is the origin of the removal and must not be reopened; its measured-budget outcome stands. |
 | Status | proposed |
 | Completed work | Verified the breach and its cause. `TOOL.token_proxy` reports 763 for `REPO-HARNESS.md` against `RULEBOOK_TOKEN_BUDGET` 700, while the rendered rulebook reports 650. Git history of the file shows 526 words and 699.58 proxy at `a2257ef` on 2026-08-23, 538 words and 715.54 at `7ef4993` on 2026-08-24, and 574 words and 763.42 at `41a23d7` on 2026-08-25. Completed RH-W-0013 records removing the checker `over-budget` branch, and `over-budget` now appears exactly once in the product, in `references/validation.md`, with no emitting code, test, or checker branch. |
-| Remaining work | Decide whether the self-hosted rulebook is brought back under 700 by moving detail down, whether a development-time control covers hand-evolved rulebooks and rule files, and whether the dead acceptance criterion is corrected or replaced. Implement test-first after a separately approved bilingual design. |
-| Additions | None yet. A design may add a development-time budget control and a corrected acceptance criterion. |
+| Remaining work | Implement test-first after a separately approved implementation plan. The [design](rh-w-0073-design.md) and its Spanish peer answer all three open questions: a development-time test in the canonical suite measures `REPO-HARNESS.md` and every `.repo-harness/rules/` file on disk, two named Hard Rules blocks move into the existing `working-agreements.md`, and the dead acceptance criterion is corrected rather than deleted. |
+| Additions | The approved design adds one development-time budget test and one corrected acceptance criterion. It adds no rule file, gate row, runtime feature, manifest field, or checker state. |
 | Exclusions | No reopening of completed RH-W-0013, no restored runtime render or check refusal, no arbitrary cap on human documentation, no raised budget, and no implementation before a separately approved design. |
-| Deferrals | The exact control surface and the exact compression of the self-hosted rulebook wait for that design. |
+| Deferrals | The exact replacement wording for both moved blocks waits for the implementation plan. The blocks themselves are the design's commitment and may not be substituted without returning to the owner. One question the approved design does not answer, found on 2026-08-26: `rulebook()` still renders both moved blocks into every generated rulebook, so the design as written corrects this repository while leaving a new consumer at 650 proxy with 50 tokens of headroom and both blocks inline. Whether the compression also changes the generator template is an owner decision required before the implementation plan. |
 | Rejections | Rejected raising the 700 constant, because the rulebook itself states the budget never rises. Rejected treating the breach as acceptable drift, and rejected reintroducing a blocking runtime refusal that RH-W-0013 deliberately removed. |
 | Evidence | Verified fact: the proxy measurements, the git word counts, the single `over-budget` occurrence, and that `test_harness_tool.py` budget tests assert on `TOOL.render(...)` output rather than this repository's file. Supported inference: the removal and the first breach landing on the same date explains why nothing detected it; a written design naming the intended control would raise this to verified. Human decision required: whether a development-time control is wanted at all. |
-| Decision history | 2026-08-25: registered as `proposed` under immutable ID RH-W-0073 from read-only review evidence. No design, implementation, or lifecycle advancement is authorized. |
-| Next advancement condition | Advance only after the owner approves a bilingual design that names the intended control surface and the corrected acceptance criterion. |
+| Decision history | 2026-08-25: registered as `proposed` under immutable ID RH-W-0073 from read-only review evidence. 2026-08-26: the owner scheduled it ahead of the approved order, a first design draft was corrected against the project's own proportionality rules before approval, dropping a proposed new `evidence-classification.md` rule file and dropping the already-compliant Spanish peer from the measured set, and the owner then approved the corrected bilingual design. No implementation plan or implementation is authorized. |
+| Next advancement condition | Advance only after the owner separately approves a bilingual implementation plan. The design condition is met. |
 
 ### RH-W-0072
 | Field | Value |
@@ -482,7 +543,7 @@ Five plans consume namespaces Plan 1 reserves: Plan 2A for local memory backups,
 | Priority | P1: an agent executing this skill receives instructions for a licensing mechanism that does not exist and never learns about three surfaces the tool generates. |
 | Dependencies | None. Reuse completed RH-W-0061, RH-W-0051, RH-W-0057, and RH-W-0067 as the owners of the behavior the documentation must now describe; none of them reopens. |
 | Status | proposed |
-| Completed work | Inventoried the drift. `SKILL.md` still routes a repository SPDX value into generated skill metadata and still promises an `UNLICENSED` fallback, and `references/audit-and-interview.md` documents reading root `LICENSE`, `package.json`, `pyproject.toml`, or `Cargo.toml`, while the code carries only `GENERATED_SKILL_LICENSE = "MIT"` and reads none of those files. `test_harness_tool.py` pins the stale `SKILL.md` wording. Across `SKILL.md` and all six references, `response-contract`, `localState`, and `memory-bk` each occur zero times. `.pi/` occurs zero times across all eight human-facing documents in both languages, while `README.md`, `README.es.md`, and `CONTRIBUTING.md` instruct maintainers to synchronize only `.claude/` and `.opencode/`. `references/architecture.md` describes two seeded rule files and a five-item manifest against three files and ten enforced fields. `references/preservation-and-safety.md`, `README.md`, and `README.es.md` describe the default ignore integration as `.codegraph/` alone. `docs/repo-harness/usage.md` and `docs/repo-harness/decisions.md` describe the `.gitattributes` contract as two exact rules, and `decisions.md` also denies any repository-wide line-ending policy and omits Pi from the projection roots. |
+| Completed work | Inventoried the drift. `SKILL.md` still routes a repository SPDX value into generated skill metadata and still promises an `UNLICENSED` fallback, and `references/audit-and-interview.md` documents reading root `LICENSE`, `package.json`, `pyproject.toml`, or `Cargo.toml`, while the code carries only `GENERATED_SKILL_LICENSE = "MIT"` and reads none of those files. `test_harness_tool.py` pins the stale `SKILL.md` wording. Across `SKILL.md` and all six references, `response-contract`, `localState`, and `memory-bk` each occur zero times. `.pi/` occurs zero times across all eight human-facing documents in both languages, while `README.md`, `README.es.md`, and `CONTRIBUTING.md` instruct maintainers to synchronize only `.claude/` and `.opencode/`. `references/architecture.md` describes two seeded rule files and a five-item manifest against three files and ten enforced fields. `references/preservation-and-safety.md`, `README.md`, and `README.es.md` describe the default ignore integration as `.codegraph/` alone. `docs/repo-harness/usage.md` and `docs/repo-harness/decisions.md` describe the `.gitattributes` contract as two exact rules, and `decisions.md` also denies any repository-wide line-ending policy and omits Pi from the projection roots. Extended on 2026-08-26 by two further measured items in the same class: `references/preservation-and-safety.md:67` reports generated drift as `modified`, a state no code path emits, and `references/validation.md:48` calls the root `.codegraph/` directive the sole ignore-file exception, which completed `RH-W-0051` ended by adding four local-state ignore directives. |
 | Remaining work | Correct each surface against current behavior and update the test that pins the stale licensing wording, test-first, after a separately approved bilingual scope. Decide whether a control should prevent a completed unit from leaving product documentation behind. |
 | Additions | None yet. A scope may add a control that ties generated-surface changes to their product-facing documentation. |
 | Exclusions | No product behavior change, no reopening of RH-W-0061, RH-W-0051, RH-W-0057, or RH-W-0067, no new runtime, no manifest or checker schema change, and no implementation before a separately approved scope. |
