@@ -35,7 +35,7 @@
 | [Diseno RH-W-0057](rh-w-0057-design.md) | Diseno completado de comandos canonicos y cobertura de wrappers; se conserva el cuerpo historico |
 | [Diseno RH-W-0013](rh-w-0013-design.md) | Par humano completo del diseno minimo para retirar dos bloqueos de presupuesto en ejecucion |
 | [Plan de implementacion RH-W-0013](rh-w-0013-implementation-plan.md) | Par humano completo del plan canonico de dos tareas para RH-W-0013 |
-| [Diseno RH-W-0073](rh-w-0073-design.md) | Diseno propuesto de control del presupuesto del rulebook; la aprobacion y la implementacion siguen sin autorizacion separada |
+| [Diseno RH-W-0073](rh-w-0073-design.md) | Diseno aprobado de control del presupuesto del rulebook; el plan de implementacion y la implementacion siguen sin autorizacion separada |
 | [Diseno RH-W-0067](rh-w-0067-design.md) | Par humano del diseno completado del contrato de respuesta; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0067](rh-w-0067-implementation-plan.md) | Par humano del plan de implementacion completado; instrucciones historicas conservadas |
 | [Diseno RH-W-0071](rh-w-0071-design.md) | Diseno nativo aprobado del modo de respuesta ADHD-friendly; la implementacion sigue sin autorizacion separada |

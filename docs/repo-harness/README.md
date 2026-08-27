@@ -37,7 +37,7 @@
 | [rh-w-0057-design.md](rh-w-0057-design.md) | Completed owner-approved canonical command and wrapper coverage design; historical design body retained |
 | [rh-w-0013-design.md](rh-w-0013-design.md) | Canonical minimal design for removing two runtime context-budget blockers |
 | [rh-w-0013-implementation-plan.md](rh-w-0013-implementation-plan.md) | Canonical two-task implementation plan for the RH-W-0013 blockers |
-| [rh-w-0073-design.md](rh-w-0073-design.md) | Proposed rulebook budget enforcement design; owner approval and implementation remain separately unauthorized |
+| [rh-w-0073-design.md](rh-w-0073-design.md) | Owner-approved rulebook budget enforcement design; the implementation plan and implementation remain separately unauthorized |
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
 | [rh-w-0071-design.md](rh-w-0071-design.md) | Owner-approved native ADHD-friendly response mode design; implementation remains separately unauthorized |
