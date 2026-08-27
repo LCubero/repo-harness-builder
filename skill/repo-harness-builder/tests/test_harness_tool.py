@@ -3007,6 +3007,74 @@ class GeneratedCoreTests(unittest.TestCase):
                     f"mixed line endings: {crlf} CRLF and {stray_lf} bare LF",
                 )
 
+    def test_self_hosted_budgeted_surfaces_stay_under_the_budget_they_declare(self):
+        """A budget nobody measures on disk decays. This repository's rulebook went from 699 to 763
+        proxy tokens in two days after the runtime refusal was removed, with nothing able to notice."""
+        repository = ROOT.parents[1]
+        rulebook = repository / "REPO-HARNESS.md"
+        if not rulebook.is_file():
+            self.skipTest("repository rulebook fixture is outside the portable package")
+        measured = [rulebook] + sorted((repository / ".repo-harness/rules").glob("*.md"))
+        self.assertGreater(len(measured), 1, "the rule files must be part of the measured set")
+        for surface in measured:
+            with self.subTest(surface=surface.relative_to(repository).as_posix()):
+                tokens = TOOL.token_proxy(surface.read_text(encoding="utf-8"))
+                self.assertLess(
+                    tokens,
+                    TOOL.RULEBOOK_TOKEN_BUDGET,
+                    f"{surface.relative_to(repository).as_posix()} holds {tokens} proxy tokens against "
+                    f"{TOOL.RULEBOOK_TOKEN_BUDGET}; shed detail into an existing rule file rather than raising the budget",
+                )
+
+    def test_every_block_moved_out_of_the_rulebook_survives_in_its_rule_file(self):
+        """The rulebook keeps one short line and delegates the detail. `.repo-harness/rules/` is
+        render-owned, so a regeneration would silently drop the moved detail and leave the short
+        line pointing at nothing. This assertion is what notices."""
+        repository = ROOT.parents[1]
+        rulebook = repository / "REPO-HARNESS.md"
+        agreements = repository / ".repo-harness/rules/working-agreements.md"
+        if not (rulebook.is_file() and agreements.is_file()):
+            self.skipTest("repository rulebook fixture is outside the portable package")
+        rulebook_text = rulebook.read_text(encoding="utf-8")
+        agreements_text = agreements.read_text(encoding="utf-8")
+        self.assertIn(
+            "`.repo-harness/rules/working-agreements.md`",
+            rulebook_text,
+            "the rulebook must keep exactly one gate row routing to the file that owns the moved detail",
+        )
+        for short_line, moved_detail in (
+            (
+                "Execute authorized work you have announced",
+                "Do not stop after merely announcing an immediately executable verification or action",
+            ),
+            (
+                "Label every claim as verified fact",
+                "A verified fact needs applicable, trustworthy, proportionate evidence",
+            ),
+        ):
+            with self.subTest(rule=short_line):
+                self.assertIn(short_line, rulebook_text, "the compressed obligation left the rulebook entirely")
+                self.assertIn(
+                    moved_detail,
+                    agreements_text,
+                    "the rulebook delegates this detail and the rule file no longer carries it; "
+                    "a regeneration of .repo-harness/rules/ drops it silently",
+                )
+
+    def test_the_budget_constant_and_the_runtime_stay_non_blocking(self):
+        """Completed RH-W-0013 removed the render refusal on purpose. The development-time control
+        must not be a doorway back to it."""
+        self.assertEqual(TOOL.RULEBOOK_TOKEN_BUDGET, 700)
+        source = Path(TOOL.__file__).read_text(encoding="utf-8")
+        render_body = source[source.index("def render_with_skill_mapping"):]
+        render_body = render_body[: render_body.index("\ndef ")]
+        self.assertNotIn(
+            "RULEBOOK_TOKEN_BUDGET",
+            render_body,
+            "render must not regain a budget refusal; RH-W-0013 removed it deliberately",
+        )
+        self.assertNotIn("over-budget", source, "check() must not regain an over-budget state")
+
     def test_documented_render_command_parses_and_keeps_every_interview_answer(self):
         """Execution Step 6 prints the command a first install runs; a form that cannot parse, or that
         drops a flag the interview exists to fill, breaks that install or silently installs the wrong harness."""

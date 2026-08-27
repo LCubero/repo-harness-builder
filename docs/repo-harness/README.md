@@ -37,7 +37,8 @@
 | [rh-w-0057-design.md](rh-w-0057-design.md) | Completed owner-approved canonical command and wrapper coverage design; historical design body retained |
 | [rh-w-0013-design.md](rh-w-0013-design.md) | Canonical minimal design for removing two runtime context-budget blockers |
 | [rh-w-0013-implementation-plan.md](rh-w-0013-implementation-plan.md) | Canonical two-task implementation plan for the RH-W-0013 blockers |
-| [rh-w-0073-design.md](rh-w-0073-design.md) | Owner-approved rulebook budget enforcement design; the implementation plan and implementation remain separately unauthorized |
+| [rh-w-0073-design.md](rh-w-0073-design.md) | Completed rulebook budget enforcement design; historical design body retained |
+| [rh-w-0073-implementation-plan.md](rh-w-0073-implementation-plan.md) | Completed RH-W-0073 implementation plan; historical execution evidence retained |
 | [rh-w-0076-scope.md](rh-w-0076-scope.md) | Proposed correction scope for three unenforced declared limits; owner approval and implementation remain separately unauthorized |
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
