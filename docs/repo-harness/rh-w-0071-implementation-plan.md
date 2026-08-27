@@ -60,7 +60,7 @@ The smallest thing that can be true first: a deterministic mode resolver and a p
 
 ### Slice 2: the generated contract
 
-7. RED: the generated response contract contains a mode-resolution section and an ADHD-friendly shaping section, and `.repo-harness/rules/response-contract.md` still measures under `RULEBOOK_TOKEN_BUDGET` afterwards. It sits at 436 of 700 today, so the shaping section has roughly 198 proxy tokens of room before it must shed detail rather than raise the budget.
+7. RED: the generated response contract contains a mode-resolution section and an ADHD-friendly shaping section, and `.repo-harness/rules/response-contract.md` still measures under `RULEBOOK_TOKEN_BUDGET` afterwards. It sits at 436 of 700 today, so the shaping section has 264 proxy tokens of room before it must shed detail rather than raise the budget.
 8. RED: the contract states the three-level precedence, both change scopes, the one-question rule for omitted scope, how to request more detail, and how to return to standard.
 9. RED: safety, evidence, authority, contradictions, blocking prompts, and necessary technical context are named as never-omitted, so brevity cannot delete them.
 10. Extend the existing RH-W-0067 contract. Add no second response owner, no rule file, and no gate row.
@@ -109,7 +109,7 @@ No diagnosis, classification, telemetry, or behavioural monitoring. No consent a
 
 ## Risks
 
-- **The shaping section competes for a shared budget.** `response-contract.md` has roughly 198 proxy tokens of headroom. If the shaping section needs more, it sheds detail; the budget does not rise. RH-W-0073's assertion now enforces that automatically.
+- **The shaping section competes for a shared budget.** `response-contract.md` has 264 proxy tokens of headroom. If the shaping section needs more, it sheds detail; the budget does not rise. RH-W-0073's assertion now enforces that automatically.
 - **The prohibited-signal tests are the whole no-inference guarantee.** Asserted per signal rather than in aggregate, because an aggregate assertion passes while one signal leaks.
 - **Slice 3 touches the builder interview**, which is the surface an installation depends on. It ships after slices 1 and 2 so the behaviour it exposes already exists and is already asserted.
 

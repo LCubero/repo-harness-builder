@@ -60,7 +60,7 @@ Lo mas pequeno que puede ser cierto primero: un resolutor de modo determinista y
 
 ### Corte 2: el contrato generado
 
-7. RED: el contrato de respuesta generado contiene una seccion de resolucion de modo y una seccion de forma ADHD-friendly, y `.repo-harness/rules/response-contract.md` sigue midiendo por debajo de `RULEBOOK_TOKEN_BUDGET` despues. Hoy esta en 436 de 700, asi que la seccion de forma tiene unos 198 tokens proxy de margen antes de tener que bajar detalle en vez de subir el presupuesto.
+7. RED: el contrato de respuesta generado contiene una seccion de resolucion de modo y una seccion de forma ADHD-friendly, y `.repo-harness/rules/response-contract.md` sigue midiendo por debajo de `RULEBOOK_TOKEN_BUDGET` despues. Hoy esta en 436 de 700, asi que la seccion de forma tiene 264 tokens proxy de margen antes de tener que bajar detalle en vez de subir el presupuesto.
 8. RED: el contrato declara la precedencia de tres niveles, ambos alcances de cambio, la regla de una pregunta cuando falta el alcance, como pedir mas detalle y como volver a `standard`.
 9. RED: seguridad, evidencia, autoridad, contradicciones, avisos bloqueantes y contexto tecnico necesario quedan nombrados como no omitibles, de modo que la brevedad no pueda borrarlos.
 10. Extender el contrato RH-W-0067 existente. No agregar segundo propietario de respuesta, ni archivo de reglas, ni fila de compuerta.
@@ -109,7 +109,7 @@ Sin diagnostico, clasificacion, telemetria ni monitoreo conductual. Sin arquitec
 
 ## Riesgos
 
-- **La seccion de forma compite por un presupuesto compartido.** `response-contract.md` tiene unos 198 tokens proxy de margen. Si la seccion de forma necesita mas, baja detalle; el presupuesto no sube. La asercion de RH-W-0073 ya lo exige de forma automatica.
+- **La seccion de forma compite por un presupuesto compartido.** `response-contract.md` tiene 264 tokens proxy de margen. Si la seccion de forma necesita mas, baja detalle; el presupuesto no sube. La asercion de RH-W-0073 ya lo exige de forma automatica.
 - **Las pruebas de senales prohibidas son toda la garantia de no inferencia.** Afirmadas por senal y no en agregado, porque una asercion agregada pasa mientras una senal se filtra.
 - **El corte 3 toca la entrevista del constructor**, que es la superficie de la que depende una instalacion. Va despues de los cortes 1 y 2 para que el comportamiento que expone ya exista y ya este afirmado.
 
