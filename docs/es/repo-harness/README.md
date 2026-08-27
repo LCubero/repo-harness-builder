@@ -41,6 +41,7 @@
 | [Diseno RH-W-0067](rh-w-0067-design.md) | Par humano del diseno completado del contrato de respuesta; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0067](rh-w-0067-implementation-plan.md) | Par humano del plan de implementacion completado; instrucciones historicas conservadas |
 | [Diseno RH-W-0071](rh-w-0071-design.md) | Diseno nativo aprobado del modo de respuesta ADHD-friendly; la implementacion sigue sin autorizacion separada |
+| [Plan de implementacion RH-W-0071](rh-w-0071-implementation-plan.md) | Plan de implementacion RH-W-0071 propuesto en cuatro cortes; la aprobacion del propietario y la implementacion siguen sin autorizacion separada |
 | [Hallazgos RH-W-0056](rh-w-0056-findings.md) | Propietario canonico de hallazgos y de la disposicion completada de 64 recomendaciones |
 | [Traspaso de arranque archivado](../../repo-harness/archive/repo-bootstrap-handoff.md) | Registro historico en ingles de la separacion del 2026-08-12; solo procedencia, no es politica ni plan ni fuente de trabajo pendiente |
 | [Mapa canonico en ingles](../../repo-harness/README.md) | Propiedad documental canonica |

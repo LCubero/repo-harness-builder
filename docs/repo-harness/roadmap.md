@@ -321,7 +321,7 @@ Human decision: any future implementation plan or implementation requires separa
 
 ### Plan 20: RH-W-0071 ADHD-friendly response mode implementation
 
-Readiness `plannable now`, because completed RH-W-0051 implemented the `state/preferences/` reservation this plan consumes. Priority `P2`. The owner-approved bilingual [design](rh-w-0071-design.md) is complete. This action plan records future work only; it is not an implementation plan and authorizes no lifecycle advancement or product change.
+Readiness `plannable now`, because completed RH-W-0051 reserved and Git-ignored `.repo-harness/state/`, inside which this unit owns its own `preferences/` sub-path. RH-W-0051 did not reserve `state/preferences/` itself; the string `preferences` occurs zero times in `harness_tool.py`, and the earlier wording here overstated it. Priority `P2`. The owner-approved bilingual [design](rh-w-0071-design.md) is complete and the proposed bilingual [implementation plan](rh-w-0071-implementation-plan.md) is written and awaiting approval. This action plan records future work only and authorizes no lifecycle advancement or product change.
 
 1. Derive focused deterministic RED cases without live-model evaluation or expensive verification.
 2. Reuse RH-W-0051 `.repo-harness/state/preferences/` for repository persistence and keep session-only state non-persistent.
@@ -599,7 +599,7 @@ Five plans consume namespaces Plan 1 reserves: Plan 2A for local memory backups,
 | Rejections | Rejected inferred activation, diagnosis or behavior classification, personal or memory-derived activation, session override rewriting repository preference, more-detail requests changing mode, external-skill dependency or provenance, tracked active preference, duplicate response owner, and resource-heavy machinery. |
 | Evidence | Human decision: the owner supplied and approved the complete behavior and constraints. Verified repository evidence: RH-W-0031 owns explicit instruction over persisted preference and opaque-context exclusion; RH-W-0051 reserves `.repo-harness/state/preferences/`; RH-W-0067 owns the complete response contract; existing smallest-change and proportionality owners already cover no-overengineering, so no duplicate rule is added. |
 | Decision history | 2026-08-25: RH-W-0071 verified as the next available immutable ID and registered `proposed` with complete owner-approved bilingual design. No implementation plan, lifecycle advancement, or product implementation is authorized. |
-| Next advancement condition | The RH-W-0051 preference-storage reservation is proven, so advance as soon as the owner separately authorizes an implementation plan based on this design. |
+| Next advancement condition | `.repo-harness/state/` is reserved and Git-ignored, which is the containment this unit needs; `state/preferences/` is this unit's own sub-path rather than an RH-W-0051 reservation, and the earlier claim that it was overstated the evidence. A bilingual [implementation plan](rh-w-0071-implementation-plan.md) is written in four slices. Advance only after the owner approves that plan, and implement only under its own separate authorization. |
 
 ### RH-W-0070
 | Field | Value |
