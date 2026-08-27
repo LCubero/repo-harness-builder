@@ -35,7 +35,8 @@
 | [Diseno RH-W-0057](rh-w-0057-design.md) | Diseno completado de comandos canonicos y cobertura de wrappers; se conserva el cuerpo historico |
 | [Diseno RH-W-0013](rh-w-0013-design.md) | Par humano completo del diseno minimo para retirar dos bloqueos de presupuesto en ejecucion |
 | [Plan de implementacion RH-W-0013](rh-w-0013-implementation-plan.md) | Par humano completo del plan canonico de dos tareas para RH-W-0013 |
-| [Diseno RH-W-0073](rh-w-0073-design.md) | Diseno aprobado de control del presupuesto del rulebook; el plan de implementacion y la implementacion siguen sin autorizacion separada |
+| [Diseno RH-W-0073](rh-w-0073-design.md) | Diseno completado de control del presupuesto del rulebook; se conserva el cuerpo historico del diseno |
+| [Plan de implementacion RH-W-0073](rh-w-0073-implementation-plan.md) | Plan de implementacion RH-W-0073 completado; se conserva la evidencia historica de ejecucion |
 | [Alcance RH-W-0076](rh-w-0076-scope.md) | Alcance propuesto de correccion de tres limites declarados sin control; la aprobacion y la implementacion siguen sin autorizacion separada |
 | [Diseno RH-W-0067](rh-w-0067-design.md) | Par humano del diseno completado del contrato de respuesta; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0067](rh-w-0067-implementation-plan.md) | Par humano del plan de implementacion completado; instrucciones historicas conservadas |

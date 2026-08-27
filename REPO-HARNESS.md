@@ -18,9 +18,9 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 - Do not introduce unrelated scope.
 - Do not retry indefinitely. After repeated failure, stop with evidence and request a decision.
 - Do not continue automatically into unrequested tasks.
-- Do not stop after merely announcing an immediately executable verification or action inside the requested and authorized scope. Execute it and report the result. Pause only for approval, authority, evidence, safety, or a material decision.
+- Execute authorized work you have announced; do not stop at the announcement.
 - Preserve unknown files and existing work through informed, explicitly approved evolution; never freeze content by default.
-- Classify each claim as verified fact, supported inference, unknown or unverifiable, or human decision required. A verified fact needs applicable, trustworthy, proportionate evidence; an inference names its evidence and reasoning; unknown applies when no valid mechanism exists; a human decision applies when authority or a criterion is human-owned. Never substitute missing evidence, stale memory, unrelated proxies, assumptions, or confidence wording. Verify before asking; if unavailable or contradictory, name the missing capability and request only the minimum evidence, criterion, authority, or decision.
+- Label every claim as verified fact, supported inference, unknown, or human decision required, and never substitute confidence for evidence.
 - Gentle AI and Engram are required for integrated continuity; repository evidence remains authoritative.
 - Keep Git consent outcome-scoped and conversational. Combined intent may cover unchanged safe prerequisites; provider changes, backup, publication, destructive actions, and material risk changes require separate approval.
 

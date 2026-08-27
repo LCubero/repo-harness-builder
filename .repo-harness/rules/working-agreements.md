@@ -16,11 +16,14 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 - Stop and ask when a decision is the human's, when evidence runs out, or when the same approach failed twice. There is no retry loop here; a repeated failure is a signal, not a reason to try harder.
 - Ask one blocking question at a time, then wait. Do not stack questions or guess an answer to keep moving.
 - Do not continue into work nobody asked for, even when it looks adjacent and cheap.
+- Do not stop after merely announcing an immediately executable verification or action inside the requested and authorized scope. Execute it and report the result. Pause only for approval, authority, evidence, safety, or a material decision.
 
 ## Honesty
 
 - Verify before claiming. A failing test, a skipped step, or an unverified assumption gets said out loud.
 - Report what happened, not what was intended.
+- A verified fact needs applicable, trustworthy, proportionate evidence. An inference names its evidence and reasoning. Unknown applies when no valid mechanism exists. A human decision applies when authority or a criterion is human-owned.
+- Never substitute missing evidence, stale memory, unrelated proxies, assumptions, or confidence wording. Verify before asking; if unavailable or contradictory, name the missing capability and request only the minimum evidence, criterion, authority, or decision.
 
 ## Project Agreements
 

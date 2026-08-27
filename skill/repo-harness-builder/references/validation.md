@@ -9,7 +9,8 @@
 - Bootstrap a temporary empty project with the complete canonical core, then run it again and confirm the second run creates nothing.
 - Confirm an existing file is never overwritten: seed one by hand, run the builder, and prove its bytes are unchanged and its path is absent from the created list.
 - Confirm root `REPO-HARNESS.md` contains every required concise section, holds no dated project status, and that deeper references resolve. Confirm no project-id rulebook remains.
-- Confirm `.repo-harness/rules/` is seeded, every seed has a gate row in the rulebook, seeds are human-owned, and each budgeted file reports `over-budget` once it passes the limit.
+- Confirm `.repo-harness/rules/` is seeded, every seed has a gate row in the rulebook, seeds are human-owned, and each budgeted file declares its own limit. Runtime render and check stay non-blocking on size: completed RH-W-0013 removed the render refusal and the checker `over-budget` branch, and neither returns.
+- Confirm the development-time suite measures this repository's own `REPO-HARNESS.md` and every `.repo-harness/rules/` file on disk against `RULEBOOK_TOKEN_BUDGET`, names the offending path when one reaches it, and asserts that each block the rulebook delegates still exists in the rule file that owns it.
 - Confirm a dated root `CHANGELOG.md` is created when absent and left alone when present.
 - Confirm start reads only the latest relevant changelog entries after canonical state, stop proposes entries only for meaningful completed work under existing approval, and documentation keeps history factual and separate from plans.
 - Confirm default integrated output records exactly `integrationMode: integrated`, requires Gentle AI and Engram, reconciles Engram with authoritative repository evidence, and refuses to claim continuity when recovery fails.
