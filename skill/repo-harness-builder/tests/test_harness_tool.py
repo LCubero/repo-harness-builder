@@ -3007,6 +3007,74 @@ class GeneratedCoreTests(unittest.TestCase):
                     f"mixed line endings: {crlf} CRLF and {stray_lf} bare LF",
                 )
 
+    def test_documented_render_command_parses_and_keeps_every_interview_answer(self):
+        """Execution Step 6 prints the command a first install runs; a form that cannot parse, or that
+        drops a flag the interview exists to fill, breaks that install or silently installs the wrong harness."""
+        repository = ROOT.parents[1]
+        skill = repository / "skill/repo-harness-builder/SKILL.md"
+        if not skill.is_file():
+            self.skipTest("builder skill source is outside the portable package")
+        printed = re.search(r"`scripts/harness_tool\.py (render [^`]+)`", skill.read_text(encoding="utf-8"))
+        self.assertIsNotNone(printed, "Execution Step 6 must print a runnable render invocation")
+
+        with tempfile.TemporaryDirectory() as directory:
+            substitutions = {
+                "ROOT": directory,
+                "DIR": directory,
+                "NAME": "demo",
+                "RUNTIME": "claude-code",
+                "LICENSE": "MIT",
+                "REPORT_LANGUAGE": "english",
+                "CONVERSATION_LANGUAGE": "espanol",
+                "HOST_EVIDENCE": "{}",
+                "HASH": "0" * 64,
+                "TOKEN": "APPROVE",
+            }
+            # Keep the first alternative of any "[a | b | c]" group the documentation offers.
+            form = re.sub(r"\[([^\]]+)\]", lambda group: group.group(1).split("|")[0].strip(), printed.group(1))
+            argv = [substitutions.get(word, word) for word in form.split()]
+
+            captured = {}
+            real_parse = argparse.ArgumentParser.parse_args
+
+            class _Parsed(Exception):
+                """Stop before any side effect; this test asserts on parsing, not on rendering."""
+
+            def spy(parser, args=None, namespace=None):
+                captured["args"] = real_parse(parser, args, namespace)
+                raise _Parsed
+
+            try:
+                with mock.patch.object(argparse.ArgumentParser, "parse_args", spy):
+                    TOOL.main(argv)
+            except _Parsed:
+                pass
+            except SystemExit as refusal:
+                self.fail(
+                    f"the documented command does not parse: argparse exited {refusal.code}. "
+                    "An agent following Execution Step 6 fails on its first install."
+                )
+
+        args = captured["args"]
+        self.assertEqual(args.command, "render")
+        self.assertTrue(str(args.root), "--root is required and must be printed")
+        self.assertTrue(args.project_name, "--project-name is required and must be printed")
+        self.assertTrue(args.runtime, "omitting --runtime discards the runtime permission Execution Step 2 obtains")
+        self.assertEqual(args.activation, "builder", "--approval is refused outside builder activation")
+        self.assertTrue(
+            args.conversation_language,
+            "omitting --conversation-language falls back to English through "
+            "args.conversation_language or DEFAULT_REPORT_LANGUAGE and installs a different harness",
+        )
+        self.assertTrue(
+            args.documentation_languages,
+            "omitting --documentation-language discards the answer Execution Step 1 obtains",
+        )
+        self.assertTrue(
+            args.engram_evidence_json,
+            "omitting --engram-evidence-json discards the evidence Execution Step 3 obtains",
+        )
+
     def test_current_state_projection_agrees_with_the_roadmap_owner(self):
         """The roadmap owns lifecycle; a projection that contradicts it is false evidence."""
         repository = ROOT.parents[1]
