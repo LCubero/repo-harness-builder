@@ -36,7 +36,7 @@ Que las banderas omitidas son materiales es evidencia ejecutada, no razonamiento
 
 ### 2. El techo de la guia de estilo
 
-Reescribir la frase del presupuesto en `references/gentle-ai-style-guide.md` para que nombre a que obliga: la skill del constructor y toda skill que genera. Registrar, en el mismo lugar, que los contratos generados hoy lo exceden con 2822 y 2707, que `RH-W-0078` posee el cierre de ese incumplimiento, y que no se concede exencion. Luego llevar el cuerpo de `SKILL.md` del constructor por debajo del techo declarado, bajando detalle a los archivos de `references/` que ya poseen esos temas. Ninguna referencia gana un presupuesto que no tenia.
+Reescribir la frase del presupuesto en `references/gentle-ai-style-guide.md` para que nombre a que obliga: la skill del constructor y toda skill que genera. Registrar, en el mismo lugar, que los contratos generados hoy lo exceden con 2822 y 2707, que `RH-W-0078` posee el cierre de ese incumplimiento, y que no se concede exencion. Decir las dos cosas que un lector confunde: el techo es un limite, verificado en tiempo de desarrollo y nunca en tiempo de ejecucion, y las bandas aprobadas por el propietario que registra la completada `RH-W-0013` son un vocabulario de gravedad, no una escala de permiso. Una revision del 2026-08-27 de este repositorio confundio una con la otra teniendo todos los archivos delante, lo que es evidencia de que un lector futuro tambien lo hara. Luego llevar el cuerpo de `SKILL.md` del constructor por debajo del techo declarado, bajando detalle a los archivos de `references/` que ya poseen esos temas. Ninguna referencia gana un presupuesto que no tenia.
 
 ### 3. Planes de unidades terminadas
 
@@ -65,7 +65,7 @@ El corte 1 puede entregarse antes que RH-W-0073 porque no necesita control de pr
 ## Criterios de aceptacion
 
 - El comando impreso en el paso 6 de `SKILL.md` parsea contra el parser real de la CLI, comprobado por una prueba y no por lectura, y lleva cada valor que resuelven los pasos 1 al 4, de modo que ninguna respuesta de la entrevista se descarta en silencio por un valor por defecto de bandera.
-- `references/gentle-ai-style-guide.md` declara que su techo de cuerpo obliga a la skill del constructor y a toda skill que genera, y registra el incumplimiento de los contratos generados y su unidad duenia en vez de una exencion.
+- `references/gentle-ai-style-guide.md` declara que su techo de cuerpo obliga a la skill del constructor y a toda skill que genera, y registra el incumplimiento de los contratos generados y su unidad duenia en vez de una exencion, y distingue el techo como limite de las bandas de `RH-W-0013` como vocabulario de gravedad.
 - El cuerpo de `SKILL.md` del constructor mide por debajo del techo declarado, y el detalle movido aterriza en un archivo existente de `references/`.
 - Cada paso de ejecucion que sobrevive a la compresion sigue nombrando la referencia que ahora posee su detalle movido, de modo que ninguna instruccion queda inalcanzable para un agente que solo lee `SKILL.md`. El corte 3 no se integra hasta que eso se compruebe paso por paso contra el cuerpo previo a la compresion.
 - Todo plan de implementacion de una unidad terminal lleva su linea de estado, y ninguna fila del mapa de documentacion llama ejecutable a un plan terminado.

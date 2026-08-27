@@ -36,7 +36,7 @@ That the dropped flags are material is executed evidence, not reasoning: renderi
 
 ### 2. The style-guide ceiling
 
-Rewrite the budget sentence in `references/gentle-ai-style-guide.md` to name what it binds: the builder skill and every skill it generates. Record, in the same place, that the generated contracts currently exceed it at 2822 and 2707, that `RH-W-0078` owns closing that breach, and that no exemption is granted. Then bring the builder `SKILL.md` body under the stated ceiling by moving detail into the `references/` files that already own those topics. No reference gains a budget it did not have.
+Rewrite the budget sentence in `references/gentle-ai-style-guide.md` to name what it binds: the builder skill and every skill it generates. Record, in the same place, that the generated contracts currently exceed it at 2822 and 2707, that `RH-W-0078` owns closing that breach, and that no exemption is granted. Say the two things a reader otherwise conflates: the ceiling is a limit, verified at development time and never at runtime, and the owner-approved bands from completed `RH-W-0013` are a severity vocabulary rather than a permission scale. A 2026-08-27 review of this repository mistook one for the other with every file in front of it, which is evidence that a future reader will. Then bring the builder `SKILL.md` body under the stated ceiling by moving detail into the `references/` files that already own those topics. No reference gains a budget it did not have.
 
 ### 3. Plans for finished units
 
@@ -65,7 +65,7 @@ Slice 1 may ship before RH-W-0073 because it needs no budget control. Slices 2 a
 ## Acceptance Criteria
 
 - The command printed in `SKILL.md` Execution Step 6 parses against the real CLI parser, proven by a test rather than by reading, and carries every value Execution Steps 1 through 4 resolve, so no interview answer is silently discarded by a flag default.
-- `references/gentle-ai-style-guide.md` states that its body ceiling binds the builder skill and every skill it generates, and records the generated-contract breach and its owning unit rather than an exemption.
+- `references/gentle-ai-style-guide.md` states that its body ceiling binds the builder skill and every skill it generates, and records the generated-contract breach and its owning unit rather than an exemption, and distinguishes the ceiling as a limit from the `RH-W-0013` bands as a severity vocabulary.
 - The builder `SKILL.md` body measures under the stated ceiling, with moved detail landing in an existing `references/` file.
 - Every Execution Step that survives the compression still names the reference that now owns its moved detail, so no instruction becomes unreachable by an agent that reads only `SKILL.md`. Slice 3 does not merge until that is checked step by step against the pre-compression body.
 - Every implementation plan for a terminal unit carries its status line, and no documentation map row calls a finished plan executable.
