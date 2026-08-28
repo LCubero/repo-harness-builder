@@ -52,7 +52,7 @@ Necessary safety, evidence, authority, contradictions, blocking prompts, and tec
 
 The builder interview gains one explicit response-mode decision with two machine-stable conceptual values: `standard` and `adhd-friendly`. These are design values, not a commitment to an implementation API, CLI flag, schema name, or function signature.
 
-The persisted repository preference belongs under `.repo-harness/state/preferences/`, the location reserved by RH-W-0051. RH-W-0071 owns the response-mode value and update semantics. RH-W-0051 owns path, containment, Git-ignore, and local-state mechanics. RH-W-0046 and deferred RH-W-0018 retain consent and preference architecture without absorbing this mode or sharing lifecycle.
+The persisted repository preference belongs under `.repo-harness/state/preferences/`. RH-W-0051 established the containing `.repo-harness/state/` namespace; RH-W-0071 owns the `preferences/` sub-path, response-mode value, and update semantics. RH-W-0051 retains containment, Git-ignore, and local-state mechanics. RH-W-0046 and deferred RH-W-0018 retain consent and preference architecture without absorbing this mode or sharing lifecycle.
 
 The persisted value is local operational state, never canonical documentation, memory evidence, or a manifest-owned current value. Engram may mirror continuity after repository evidence exists, but it never activates the mode or outranks the repository preference.
 

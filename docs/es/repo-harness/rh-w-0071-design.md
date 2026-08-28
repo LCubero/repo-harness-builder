@@ -52,7 +52,7 @@ La seguridad, evidencia, autoridad, contradicciones, preguntas bloqueantes y con
 
 La entrevista del builder gana una decision explicita de modo con dos valores conceptuales estables para maquina: `standard` y `adhd-friendly`. Son valores de diseno, no un compromiso con API, flag CLI, nombre de schema ni firma de funcion.
 
-La preferencia persistida pertenece bajo `.repo-harness/state/preferences/`, la ubicacion reservada por RH-W-0051. RH-W-0071 posee el valor del modo y la semantica de actualizacion. RH-W-0051 posee ruta, contencion, ignore Git y mecanica de estado local. RH-W-0046 y la aplazada RH-W-0018 conservan la arquitectura de consentimiento y preferencias sin absorber este modo ni compartir ciclo de vida.
+La preferencia persistida pertenece bajo `.repo-harness/state/preferences/`. RH-W-0051 establecio el namespace contenedor `.repo-harness/state/`; RH-W-0071 posee la subruta `preferences/`, el valor del modo y la semantica de actualizacion. RH-W-0051 conserva la contencion, el ignore Git y la mecanica de estado local. RH-W-0046 y la aplazada RH-W-0018 conservan la arquitectura de consentimiento y preferencias sin absorber este modo ni compartir ciclo de vida.
 
 El valor persistido es estado operativo local, nunca documentacion canonica, evidencia de memoria ni valor actual propiedad del manifiesto. Engram puede reflejar continuidad despues de existir evidencia del repositorio, pero nunca activa el modo ni supera la preferencia del repositorio.
 
