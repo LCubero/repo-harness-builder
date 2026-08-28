@@ -6,7 +6,7 @@
 <!-- doc-role:verified-state -->
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes. The manifest-matched owner check also reports `current` with 21 current, 18 human-evolved, 4 present, and 0 stale.
-- Canonical suite green: 458 tests passed in one full run with 9 skips, verified directly in this review rather than composed from retained partial evidence. The 453rd asserts that the render invocation printed in the builder `SKILL.md` Execution Step 6 parses against the real CLI parser and carries every value Execution Steps 1 through 4 resolve.
+- Canonical suite green: 467 tests passed in one full run with 9 skips, verified directly in this review rather than composed from retained partial evidence. The 453rd asserts that the render invocation printed in the builder `SKILL.md` Execution Step 6 parses against the real CLI parser and carries every value Execution Steps 1 through 4 resolve.
 - Root `.gitattributes` protects 31 byte-compared generated paths, derived from render outputs rather than a fixed pair.
 - Runtime set `claude-code`, `opencode`, and `pi`. Completed `RH-W-0057` gives every generated command or prompt a family-specific canonical peer and makes the generated checker compare all recorded runtime surfaces, including Pi's four prompts. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1. The checked-in checker and manifest remain a consistent pair.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
