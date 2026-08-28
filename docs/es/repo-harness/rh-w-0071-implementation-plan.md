@@ -63,6 +63,9 @@ Lo mas pequeno que puede ser cierto primero: un resolutor de modo determinista y
 7. RED: el contrato de respuesta generado contiene una seccion de resolucion de modo y una seccion de forma ADHD-friendly, y `.repo-harness/rules/response-contract.md` sigue midiendo por debajo de `RULEBOOK_TOKEN_BUDGET` despues. Hoy esta en 436 de 700, asi que la seccion de forma tiene 264 tokens proxy de margen antes de tener que bajar detalle en vez de subir el presupuesto.
 8. RED: el contrato declara la precedencia de tres niveles, ambos alcances de cambio, la regla de una pregunta cuando falta el alcance, como pedir mas detalle y como volver a `standard`.
 9. RED: seguridad, evidencia, autoridad, contradicciones, avisos bloqueantes y contexto tecnico necesario quedan nombrados como no omitibles, de modo que la brevedad no pueda borrarlos.
+9a. RED: la seccion de forma exige un restablecimiento del estado actual mientras hay trabajo de varios pasos en curso, nombrando el paso y el total.
+9b. RED: la seccion de forma lleva una lista de borrado previo al envio que nombra el arranque que anuncia, el cierre que recapitula o pide mas trabajo, la acotacion al margen, el adverbio de cobertura vacio, y el modismo que reemplaza la accion literal, y declara que una cobertura con incertidumbre real se queda.
+9c. RED: la seccion de forma no exige ninguna estimacion de tiempo que el agente no pueda derivar. Se afirma en vez de suponerse, porque el contrato externo revisado las hace obligatorias y el reglamento prohibe sustituir evidencia por lenguaje de confianza.
 10. Extender el contrato RH-W-0067 existente. No agregar segundo propietario de respuesta, ni archivo de reglas, ni fila de compuerta.
 11. Sincronizar las tres proyecciones de runtime y confirmar que el checker informa `current` con cero escrituras.
 
@@ -96,7 +99,7 @@ Nombrados aqui para que un lector posterior no los reabra:
 - La resolucion es determinista en los tres niveles y comprobablemente inmutable ante cada senal prohibida, afirmado por senal y no en agregado.
 - Una instruccion de solo sesion nunca reescribe la preferencia del repositorio, y un pedido de mas detalle nunca cambia el modo.
 - Un alcance omitido produce exactamente una pregunta y ninguna mutacion.
-- El contrato generado lleva resolucion de modo y forma ADHD-friendly, nombra las categorias no omitibles, y `response-contract.md` sigue bajo `RULEBOOK_TOKEN_BUDGET`.
+- El contrato generado lleva resolucion de modo y forma ADHD-friendly, nombra las categorias no omitibles, lleva el restablecimiento de estado y la lista de borrado previo al envio, no exige ninguna estimacion de tiempo no derivable, y `response-contract.md` sigue bajo `RULEBOOK_TOKEN_BUDGET`.
 - El constructor registra una eleccion `standard` explicita por defecto y nunca preselecciona `adhd-friendly`.
 - No aparece campo de manifiesto, estado de checker ni cambio de esquema. `render()` y `check()` quedan identicos byte a byte para toda entrada que no seleccione el modo.
 - Las tres proyecciones de runtime quedan identicas byte a byte a la canonica y el checker informa `current` con cero escrituras.
@@ -109,7 +112,7 @@ Sin diagnostico, clasificacion, telemetria ni monitoreo conductual. Sin arquitec
 
 ## Riesgos
 
-- **La seccion de forma compite por un presupuesto compartido.** `response-contract.md` tiene 264 tokens proxy de margen. Si la seccion de forma necesita mas, baja detalle; el presupuesto no sube. La asercion de RH-W-0073 ya lo exige de forma automatica.
+- **La seccion de forma compite por un presupuesto compartido.** `response-contract.md` tiene 264 tokens proxy de margen, y la revision de diseno del 2026-08-27 agrego dos requisitos a lo que debe entrar ahi. Si la seccion de forma necesita mas, baja detalle; el presupuesto no sube. La asercion de RH-W-0073 ya lo exige de forma automatica, que es justo por que otros cuatro candidatos de esa revision se declinaron en vez de absorberse.
 - **Las pruebas de senales prohibidas son toda la garantia de no inferencia.** Afirmadas por senal y no en agregado, porque una asercion agregada pasa mientras una senal se filtra.
 - **El corte 3 toca la entrevista del constructor**, que es la superficie de la que depende una instalacion. Va despues de los cortes 1 y 2 para que el comportamiento que expone ya exista y ya este afirmado.
 
