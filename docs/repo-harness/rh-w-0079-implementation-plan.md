@@ -1,6 +1,6 @@
 # RH-W-0079 Optional Capability Implementation Plan
 
-Status: `ready`, complete and owner-approved on 2026-08-28 after a fresh final review returned PASS. The owner-approved [design](rh-w-0079-design.md) is authoritative. The owner's `ok comitear entonces ?` and selection of the normal contribution flow approved committing the reviewed plan and therefore approved the plan, but did not authorize implementation. Local repository issue [#129](https://github.com/LCubero/repo-harness-builder/issues/129) tracks documentation, lifecycle, design, and planning delivery only. This plan authorizes no implementation, release, Git initialization, commit beyond the separately approved documentation contribution, push, issue closure, or pull request.
+Status: `ready`, complete and owner-approved on 2026-08-28 after a fresh final review returned PASS. The owner-approved [design](rh-w-0079-design.md) is authoritative. The owner's `ok comitear entonces ?` and selection of the normal contribution flow approved committing the reviewed plan and therefore approved the plan, but did not authorize implementation. The documentation, lifecycle, design, and planning contribution was delivered through closed issue [#129](https://github.com/LCubero/repo-harness-builder/issues/129) and merged PR [#130](https://github.com/LCubero/repo-harness-builder/pull/130) at `dedf74ec7fe3a2d3f2f7ead0fe6f98dc93eb0f55`. This plan authorizes no implementation, release, Git initialization, further commit, push, issue, or pull request.
 
 Spanish peer: [Plan de implementacion RH-W-0079](../es/repo-harness/rh-w-0079-implementation-plan.md).
 
@@ -162,4 +162,4 @@ Forecast: 740-1,410 authored changed lines plus 300-700 renderer-owned lines acr
 
 ## Owner Gate
 
-`next_recommended`: request separate owner authorization for one bounded implementation scope. Plan approval and local issue #129 authorize only the reviewed documentation contribution; they do not authorize implementation, release, push, issue closure, or pull-request delivery.
+`next_recommended`: request separate owner authorization for one bounded implementation scope. Plan approval and the completed issue #129 and PR #130 documentation delivery do not authorize implementation, release, push, another issue, or further pull-request delivery.
