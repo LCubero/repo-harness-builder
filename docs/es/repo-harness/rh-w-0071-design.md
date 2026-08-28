@@ -28,7 +28,11 @@ Una instruccion de sesion actual expira con esa sesion. Una instruccion permanen
 
 ## Contrato de respuesta ADHD-friendly
 
-El modo cambia la presentacion, no la evidencia ni la autoridad. Exige:
+El modo cambia la presentacion, no la evidencia ni la autoridad.
+
+Su proposito es la **baja carga cognitiva**: cuanto trabajo cuesta leer la respuesta. Ese es el objetivo; los requisitos de abajo son medios hacia el y no lo reemplazan. Una respuesta puede cumplir todos y aun asi ser pesada, porque el contenido pertinente no es una tangente y la estructura no es brevedad. Cuando un requisito y el proposito no coinciden, decide el proposito.
+
+Exige:
 
 - respuesta o accion primero;
 - capa inicial concisa;
@@ -72,7 +76,7 @@ Siete requisitos de ese contrato estan ausentes aqui. Dos se adoptan, uno se rec
 - **Restablecer el estado actual entre turnos.** Cada uno de los nueve requisitos de arriba moldea una sola respuesta. Ninguno atiende lo que un lector perdio entre dos respuestas, que es el eje donde la memoria de trabajo realmente falla. Cuando hay trabajo de varios pasos en curso, la respuesta declara en que paso va de cuantos, sin volver a narrar el plan entero.
 - **Un chequeo previo al envio con lista concreta de borrado.** `suprimir tangentes y relleno` nombra un valor y no le da nada a un agente que aplicar. El chequeo nombra que borrar: una frase inicial que anuncia lo que esta por pasar, una frase final que pide mas trabajo o recapitula lo que acaba de pasar, una acotacion al margen a mitad de respuesta, un adverbio de cobertura que no carga incertidumbre, y un modismo en lugar de la accion literal. Una cobertura que carga incertidumbre real se queda, porque borrarla fabrica confianza.
 
-Los dos son una sola adicion en la practica: el chequeo es lo que hace exigible al noveno requisito, y la linea de estado es lo que el chequeo verifica que este.
+Los dos son una sola adicion en la practica: el chequeo es lo que hace exigible al noveno requisito, y la linea de estado es lo que el chequeo verifica que este. El chequeo termina en el proposito: si se cumplen todos los requisitos y la respuesta sigue costando trabajo de leer, no esta terminada.
 
 ### Rechazado, y por que
 

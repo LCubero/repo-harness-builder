@@ -28,7 +28,11 @@ A current-session instruction expires with that session. A permanent instruction
 
 ## ADHD-Friendly Response Contract
 
-The mode changes presentation, not evidence or authority. It requires:
+The mode changes presentation, not evidence or authority.
+
+Its purpose is **low cognitive load**: how much work the reply costs to read. That is the goal; the requirements below are means to it, and they do not replace it. A reply can satisfy every one of them and still be heavy, because on-topic content is not a tangent and structure is not brevity. Where a requirement and the purpose disagree, the purpose decides.
+
+It requires:
 
 - answer or action first;
 - a concise initial layer;
@@ -72,7 +76,7 @@ Seven requirements in that contract are absent here. Two are adopted, one is rej
 - **Restate current state across turns.** Every one of the nine requirements above shapes a single response. None of them addresses what a reader has lost between two responses, which is the axis working memory actually fails on. When multi-step work is in progress, the reply states which step it is on out of how many, without re-narrating the whole plan.
 - **A pre-send check with a concrete removal list.** `suppression of tangents and filler` names a value and gives an agent nothing to apply. The check names what to delete: an opening sentence that announces what is about to happen, a closing sentence that asks for more work or recaps what just happened, a mid-answer sidebar, a hedging adverb that carries no uncertainty, and an idiom in place of the literal action. A hedge carrying real uncertainty stays, because deleting it manufactures confidence.
 
-The two are one addition in practice: the check is what makes the ninth requirement enforceable, and the state line is what the check verifies is present.
+The two are one addition in practice: the check is what makes the ninth requirement enforceable, and the state line is what the check verifies is present. The check ends on the purpose: if every requirement is met and the reply still costs work to read, it is not done.
 
 ### Rejected, and why
 
