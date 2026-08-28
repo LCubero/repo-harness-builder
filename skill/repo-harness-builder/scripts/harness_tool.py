@@ -275,6 +275,7 @@ class AuthorityBuilderConfig(TypedDict):
     conversationLanguage: str
     ignoreCodegraph: bool
     activation: Literal["builder"]
+    effectiveCapabilities: dict[str, str]
 
 
 AuthorityPremise = TypedDict(
@@ -346,6 +347,7 @@ BUILDER_FIELDS = {
     "conversationLanguage",
     "ignoreCodegraph",
     "activation",
+    "effectiveCapabilities",
 }
 PREMISE_FIELDS = {"id", "class", "value", "decisionIds", "evidenceIds"}
 DECISION_FIELDS = {"id", "kind", "statement"}
@@ -442,6 +444,12 @@ def _validate_authority_context_schema(value: Any) -> AuthorityContext:
     require(_non_empty_string(builder["conversationLanguage"]), "authority context schema mismatch")
     require(type(builder["ignoreCodegraph"]) is bool, "authority context schema mismatch")
     require(builder["activation"] == "builder", "authority context schema mismatch")
+    capabilities = _exact_object(builder["effectiveCapabilities"], {"gentleAi", "engram"})
+    for state in capabilities.values():
+        require(
+            state in {"available", "unavailable", "partial", "disabled", "policy-required"},
+            "authority context schema mismatch",
+        )
 
     premises = context["premises"]
     decisions = context["decisions"]
@@ -580,6 +588,13 @@ def expected_authority_builder_config(args: argparse.Namespace) -> AuthorityBuil
     what the caller typed, because the plan is rendered from the normalized order and a
     context bound to the typed order would disagree with the plan it claims to justify.
     """
+    effective_capabilities = getattr(args, "effective_capabilities", None)
+    if effective_capabilities is None:
+        effective_capabilities = (
+            {"gentleAi": "disabled", "engram": "disabled"}
+            if args.standalone
+            else {"gentleAi": "available", "engram": "available"}
+        )
     return {
         "runtimes": sorted(set(args.runtime or [])),
         "license": args.license_id,
@@ -589,6 +604,7 @@ def expected_authority_builder_config(args: argparse.Namespace) -> AuthorityBuil
         "conversationLanguage": args.conversation_language or DEFAULT_REPORT_LANGUAGE,
         "ignoreCodegraph": args.ignore_codegraph,
         "activation": args.activation,
+        "effectiveCapabilities": effective_capabilities,
     }
 
 
@@ -3819,6 +3835,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             print(dump_json({**check(root, args.project_name, selected, args.standalone), "gitState": git_state}), end="")
             return 0
         capability_preflight: dict[str, Any] = {}
+        args.effective_capabilities = {"gentleAi": "disabled", "engram": "disabled"}
         if not args.standalone:
             host_evidence = json.loads(args.engram_evidence_json) if args.engram_evidence_json else None
             require(host_evidence is None or isinstance(host_evidence, dict), "Engram host evidence must be a JSON object")
@@ -3828,17 +3845,10 @@ def main(argv: Optional[list[str]] = None) -> int:
                 detect_engram(host_evidence),
             )
             capability_preflight = capability_projection(preflight)
-            if args.apply and not preflight["applyAllowed"]:
-                print(
-                    dump_json({
-                        "status": "FAILED_CLOSED",
-                        "error": "integrated mode requires verified Gentle AI and Engram capabilities",
-                        "capabilityPreflight": capability_preflight,
-                    }),
-                    end="",
-                    file=sys.stderr,
-                )
-                return 2
+            args.effective_capabilities = {
+                "gentleAi": preflight["gentleAiState"],
+                "engram": preflight["engramState"],
+            }
         outputs = render(
             args.project_name,
             selected,

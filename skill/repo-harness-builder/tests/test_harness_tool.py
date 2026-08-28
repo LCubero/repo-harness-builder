@@ -71,6 +71,7 @@ class AuthorityContextTests(unittest.TestCase):
                 "conversationLanguage": "espanol",
                 "ignoreCodegraph": True,
                 "activation": "builder",
+                "effectiveCapabilities": {"gentleAi": "available", "engram": "available"},
             },
             "premises": [
                 {
@@ -4791,7 +4792,7 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
                     )
                     self.assertFalse((Path(directory) / RULEBOOK).exists())
 
-    def test_cli_apply_still_fails_closed_for_every_unverified_pair(self):
+    def test_cli_apply_without_authority_reaches_the_plan_binding_for_every_pair(self):
         classifications = ("not_found", "found_on_path", "verified")
         with tempfile.TemporaryDirectory() as directory:
             base = [
@@ -4815,9 +4816,134 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
                         self.assertEqual(result, 2)
                         payload = json.loads("".join(call.args[0] for call in stderr.write.call_args_list))
                         self.assertEqual(payload["status"], "FAILED_CLOSED")
-                        self.assertIn("verified Gentle AI and Engram", payload["error"])
+                        self.assertIn("approved plan does not match", payload["error"])
                         self.assertNotIn("private-", json.dumps(payload))
                         self.assertFalse((Path(directory) / RULEBOOK).exists())
+
+    def test_authority_configuration_projects_effective_capabilities_canonically(self):
+        base = argparse.Namespace(
+            runtime=["opencode"], license_id="MIT", standalone=False,
+            report_language="english", documentation_languages=["en"],
+            conversation_language="english", ignore_codegraph=True, activation="builder",
+        )
+        for gentle_state, engram_state in (
+            ("unavailable", "unavailable"), ("available", "unavailable"),
+            ("unavailable", "available"), ("available", "available"),
+            ("partial", "disabled"),
+        ):
+            with self.subTest(gentle=gentle_state, engram=engram_state):
+                base.effective_capabilities = {
+                    "gentleAi": gentle_state, "engram": engram_state,
+                }
+                config = TOOL.expected_authority_builder_config(base)
+                self.assertEqual(config["effectiveCapabilities"], base.effective_capabilities)
+                self.assertEqual(
+                    TOOL.canonical_json(config["effectiveCapabilities"]),
+                    json.dumps(base.effective_capabilities, sort_keys=True, separators=(",", ":")),
+                )
+
+        base.standalone = True
+        del base.effective_capabilities
+        self.assertEqual(
+            TOOL.expected_authority_builder_config(base)["effectiveCapabilities"],
+            {"gentleAi": "disabled", "engram": "disabled"},
+        )
+
+    def test_authority_apply_accepts_stable_combinations_and_rejects_material_drift(self):
+        def capability(state):
+            value = {
+                "classification": "verified" if state == "available" else "not_found",
+                "evidence": f"private-{state}-evidence",
+            }
+            if state in {"partial", "disabled"}:
+                value["classification"] = "found_on_path" if state == "partial" else "not_found"
+                value["state"] = state
+            return value
+
+        def invoke(arguments, gentle, engram):
+            stdout = unittest.mock.MagicMock()
+            stderr = unittest.mock.MagicMock()
+            with mock.patch.object(TOOL, "detect_gentle_ai", return_value=gentle), \
+                 mock.patch.object(TOOL, "detect_engram", return_value=engram), \
+                 mock.patch.object(sys, "stdout", stdout), \
+                 mock.patch.object(sys, "stderr", stderr):
+                code = TOOL.main(arguments)
+            return code, "".join(call.args[0] for call in stdout.write.call_args_list), \
+                "".join(call.args[0] for call in stderr.write.call_args_list)
+
+        for gentle_state, engram_state in (
+            ("unavailable", "unavailable"), ("available", "unavailable"),
+            ("unavailable", "available"), ("available", "available"),
+            ("partial", "disabled"),
+        ):
+            with self.subTest(gentle=gentle_state, engram=engram_state), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                gentle = capability(gentle_state)
+                engram = capability(engram_state)
+                arguments = [
+                    "render", "--root", directory, "--project-name", "Example",
+                    "--runtime", "opencode", "--activation", "builder",
+                    "--project-id", "example",
+                ]
+                config_args = argparse.Namespace(
+                    runtime=["opencode"], license_id="MIT", standalone=False,
+                    report_language="english", documentation_languages=None,
+                    conversation_language=None, ignore_codegraph=True, activation="builder",
+                    effective_capabilities={"gentleAi": gentle_state, "engram": engram_state},
+                )
+                context = AuthorityContextTests.context(AuthorityContextTests(), evidence=[])
+                context["builder"] = TOOL.expected_authority_builder_config(config_args)
+                context_path = root / "authority.json"
+                context_path.write_text(TOOL.canonical_json(context), encoding="utf-8")
+                preview_args = [*arguments, "--authority-context-file", str(context_path)]
+                code, output, error = invoke(preview_args, gentle, engram)
+                self.assertEqual(code, 0, error)
+                preview = json.loads(output)
+                self.assertNotIn("private-", output)
+
+                apply_args = [
+                    *preview_args, "--apply", "--approved-plan-sha256", preview["planSha256"],
+                    "--approval", "APPROVE", "--approved-generation-sha256", preview["generationSha256"],
+                ]
+                apply_gentle = (
+                    {"classification": "found_on_path", "evidence": "equivalent-unavailable"}
+                    if gentle_state == engram_state == "unavailable" else gentle
+                )
+                code, output, error = invoke(apply_args, apply_gentle, engram)
+                self.assertEqual(code, 0, error)
+                self.assertEqual(json.loads(output)["status"], "VALIDATED")
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            unavailable = capability("unavailable")
+            available = capability("available")
+            arguments = [
+                "render", "--root", directory, "--project-name", "Example",
+                "--runtime", "opencode", "--activation", "builder", "--project-id", "example",
+            ]
+            config_args = argparse.Namespace(
+                runtime=["opencode"], license_id="MIT", standalone=False,
+                report_language="english", documentation_languages=None,
+                conversation_language=None, ignore_codegraph=True, activation="builder",
+                effective_capabilities={"gentleAi": "unavailable", "engram": "unavailable"},
+            )
+            context = AuthorityContextTests.context(AuthorityContextTests(), evidence=[])
+            context["builder"] = TOOL.expected_authority_builder_config(config_args)
+            context_path = root / "authority.json"
+            context_path.write_text(TOOL.canonical_json(context), encoding="utf-8")
+            preview_args = [*arguments, "--authority-context-file", str(context_path)]
+            code, output, error = invoke(preview_args, unavailable, unavailable)
+            self.assertEqual(code, 0, error)
+            preview = json.loads(output)
+            apply_args = [
+                *preview_args, "--apply", "--approved-plan-sha256", preview["planSha256"],
+                "--approval", "APPROVE", "--approved-generation-sha256", preview["generationSha256"],
+            ]
+            code, output, error = invoke(apply_args, available, unavailable)
+            self.assertEqual(code, 2)
+            self.assertIn("fresh_preview_required", error)
+            self.assertFalse((root / RULEBOOK).exists())
+            self.assertFalse((root / ".repo-harness" / "state").exists())
 
     def test_cli_integrated_preview_and_apply_proceed_when_both_capabilities_verify(self):
         verified = {"classification": "verified", "evidence": "verified"}
@@ -6607,6 +6733,7 @@ class AuthorityConfigurationProjectionTests(unittest.TestCase):
                 "conversationLanguage": "espanol",
                 "ignoreCodegraph": True,
                 "activation": "builder",
+                "effectiveCapabilities": {"gentleAi": "available", "engram": "available"},
             },
         )
 
@@ -6923,6 +7050,7 @@ class MaterialCorrectionCliTests(unittest.TestCase):
                 "conversationLanguage": "espanol",
                 "ignoreCodegraph": True,
                 "activation": "builder",
+                "effectiveCapabilities": {"gentleAi": "available", "engram": "available"},
             },
             "premises": [
                 {
