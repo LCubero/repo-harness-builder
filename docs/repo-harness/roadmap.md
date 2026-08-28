@@ -22,13 +22,13 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-Reconciled on 2026-08-25 across the 26 non-terminal records then existing, extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`, and to 29 on 2026-08-27 by `RH-W-0078`, all registered from full read-only review evidence or a direct owner answer and deliberately left outside this order until the owner schedules them. The owner scheduled `RH-W-0073` first on 2026-08-26, ahead of everything below. The approved high-level order still continues with RH-W-0071 planning, then separately authorized RH-W-0069 implementation. Historical sequence remains in the action plans.
+Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the then-existing portfolio to 29 on 2026-08-27; completion of `RH-W-0073` later that day reduced it to 28; and `RH-W-0079` returned it to 29 on 2026-08-28. These records were registered from full read-only review evidence or a direct owner answer and deliberately left outside this order until the owner schedules them. The owner scheduled `RH-W-0073` first on 2026-08-26, ahead of everything below. The approved high-level order now continues with owner approval of the completed `RH-W-0071` implementation plan, then separately authorized RH-W-0069 implementation. Historical sequence remains in the action plans.
 
 The preventive design precedes the local-state architecture:
 
 1. Complete and approve the bilingual `RH-W-0070` preventive resource-safety design without merging it into another unit. This step is complete.
 2. `RH-W-0051` is complete. Its four implemented non-authoritative namespaces are `tmp`, `archive`, `state`, and `memory-bk`.
-3. Implement `RH-W-0071` after RH-W-0051 establishes `.repo-harness/state/preferences/`, without absorbing consent or language-preference semantics.
+3. Implement `RH-W-0071` after owner approval of its completed implementation plan. Completed RH-W-0051 established `.repo-harness/state/`; RH-W-0071 owns its `preferences/` sub-path, without absorbing consent or language-preference semantics.
 4. Implement `RH-W-0069` after RH-W-0051 establishes `.repo-harness/memory-bk/`, without absorbing typed checkpoints.
 5. Implement `RH-W-0053` after RH-W-0051 establishes its storage semantics.
 6. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
@@ -415,7 +415,7 @@ Human decisions: the containment boundary for a personal directory inside the re
 
 ### Plan 27: RH-W-0078 generated skills cannot meet the ceiling they are bound by
 
-Readiness `blocked`, because the ceiling's scope had to be settled first and `RH-W-0076` must land the corrected guide sentence before this unit has a rule to satisfy. Priority `P2`. Registered outside the approved order. Next artifact: a bilingual scope document and its Spanish peer.
+Readiness `plannable after RH-W-0076`, because `RH-W-0076` must land the corrected guide sentence before this unit has a rule to satisfy. The ceiling's scope is already settled. Priority `P2`. Registered outside the approved order. Next artifact: a bilingual scope document and its Spanish peer.
 
 1. Take the settled answer as given: the owner decided on 2026-08-27 that the ceiling binds the builder skill and every skill it generates, so this unit closes a breach and never reopens whether the breach exists.
 2. Measure the real gap before designing anything. The three generated skills measure 2822, 2707, and 878 body proxy tokens against 1000, so two breach and one does not; the smallest honest change may be two skills, not three.
@@ -426,6 +426,19 @@ Readiness `blocked`, because the ceiling's scope had to be settled first and `RH
 7. Verify no consumer behavior changes beyond the generated skill bodies themselves, and that the checker reports `current` with zero writes.
 
 Human decisions: whether the remedy is a new generated surface or a content cut, since both satisfy the rule and only one adds a layer.
+
+### Plan 28: RH-W-0079 generic baseline and self-hosting release boundary
+
+Readiness `ready for separately authorized implementation`. Priority `P0`, because release under the current contradiction could encode self-hosted policy as a generic contract or retain mandatory integrated preflight despite optional capabilities. Dependencies: completed `RH-W-0025` and `RH-W-0051` remain closed evidence owners; pending `RH-W-0048` and `RH-W-0052` coordinate recovery and reinstall consequences without merging or reopening. The owner-approved design is [rh-w-0079-design.md](rh-w-0079-design.md), and the owner-approved five-slice plan is [rh-w-0079-implementation-plan.md](rh-w-0079-implementation-plan.md). Local issue [#129](https://github.com/LCubero/repo-harness-builder/issues/129) covers documentation, lifecycle, design, and planning delivery only.
+
+1. Inventory every relevant builder, generated session, manifest, checker, documentation, and test behavior and classify it as builder-only scaffolding, repository-specific policy, or generic consumer contract.
+2. Define generic optional capability degradation for Git, GitHub, issues, pull requests, `CONTRIBUTING.md`, Gentle AI, Engram, CodeGraph, provider tooling, and similar integrations. A missing capability may degrade only its owned behavior and may never claim unavailable guarantees.
+3. Retain Git as the highly recommended preferred minimum for full safety: give one useful recommendation when absent without refusal or repeated prompting, and require explicit human approval before offering initialization when Git exists but the selected folder is not initialized.
+4. Remove mandatory default integrated Gentle AI and Engram preflight from selection and apply without reopening completed `RH-W-0025` capability detection or owner boundaries.
+5. Coordinate the generic recovery and reinstall contract with `RH-W-0048` and `RH-W-0052`, preserving their separate lifecycle, tests, implementation, rollback, and delivery boundaries.
+6. Specify focused RED evidence, capability-degradation compatibility, cross-platform and compatible-agent acceptance, release classification review, and recovery proofs before any implementation authority is requested.
+
+Human decisions: the owner approved the bilingual design and, after a fresh final review returned PASS, approved the separate bilingual implementation plan on 2026-08-28 through `ok comitear entonces ?` plus selection of the normal contribution flow. Implementation authority remains separate. Issue #129 and plan approval grant no implementation, release, issue-closure, or pull-request authority.
 
 ### Not plannable yet
 
@@ -439,11 +452,11 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reviewed on 2026-08-26 across the 23 non-terminal plans, the 4 completed plans retained as historical execution evidence, and the 28 non-terminal records they cover after `RH-W-0073` reached `completed` on 2026-08-27. Plan 25 and Plan 26 were added on 2026-08-26 and Plan 27 on 2026-08-27. None shares a file with an existing plan, except that Plan 25 consumes the control pattern Plan 22 establishes and must therefore follow it, and Plan 27 consumes the corrected guide sentence Plan 25 lands and must therefore follow both.
+Current projection reviewed through 2026-08-28 across 24 non-terminal plans, 4 completed plans retained as historical execution evidence, and the 29 non-terminal records they cover. Plan 28 now has an owner-approved bilingual design and implementation plan, is `ready`, and remains implementation-free. No true lifecycle merge is approved.
 
 Coverage is complete at the lifecycle level. The stale next-artifact wording corrected in this reconciliation means the prior claim that no plans contradicted each other was too strong. No true lifecycle merge is approved. RH-W-0051 keeps separate design and implementation plans. The portfolio has one explicit joint-design pair, `RH-W-0046` with `RH-W-0018`, and four coordination pairs with separate lifecycles and implementations: coordinated sequencing for `RH-W-0055` with `RH-W-0062` and `RH-W-0069` with `RH-W-0068`, plus coordinated boundary review for `RH-W-0065` with `RH-W-0022` and `RH-W-0066` with `RH-W-0044`. The five unscheduled deferred records are covered in the not-plannable list; RH-W-0018 is covered by Plan 6.
 
-Ten cross-plan relationships are declared here so no plan silently assumes another's outcome. None merges a lifecycle and none changes a status.
+Twelve cross-plan relationships are declared here so no plan silently assumes another's outcome. None merges a lifecycle and none changes a status.
 
 1. Plan 16 runs first only to remove the blocking render and check budget semantics. Plan 17 then independently owns rule placement, the gate row, and the exact words the rulebook sheds so its existing 700-token template control still holds.
 2. Plan 4 is now the only non-terminal plan that mutates the manifest field set. `.repo-harness/check.py` enforces exact field-set equality with `set(manifest) != MANIFEST_FIELDS`, so a changed manifest and checker must move as one consistent pair and any future unit adding a field inherits that constraint. This entry was recorded on 2026-08-24 as a two-unit collision with the plan then held by `RH-W-0061`; the owner's license decision dissolved that unit's manifest field the same day, and completing `RH-W-0061` retired its plan, so no second plan remains under this constraint. Completed `RH-W-0051` has since exercised it by adding `localState` to the field set through a matched manifest and checker pair.
@@ -458,12 +471,31 @@ Ten cross-plan relationships are declared here so no plan silently assumes anoth
 9. Plan 23 and Plan 18 both touch generated session-stop. Plan 18 owns the closure ordering that RH-W-0068 established and its remaining changelog, Git-policy, and unrelated-skill defects. Plan 23 owns only the one clause that treats an explicitly declined reconciliation as if it were failed or incomplete evidence. They must not be implemented concurrently, because both rewrite the same canonical contract and both then require the maintenance renderer to synchronize every runtime projection. Plan 23 also constrains Plan 6: a consent design must not reintroduce a question the consumer has already answered.
 
 10. Plan 22, Plan 23, and Plan 24 all write into `.repo-harness/rules/working-agreements.md`, so none of them may be implemented concurrently and Plan 22 goes first, because completing RH-W-0073 is what lifts the no-rulebook-bytes constraint on the other two. After Plan 22 that file sits near 499 of 700 proxy tokens, leaving roughly 150 words for Plan 23 and Plan 24 together. That is workable but not generous; a later unit needing more sheds detail rather than raising the budget. Plan 24 and Plan 23 are additionally two halves of the same principle and must not be merged. Plan 23 governs what the harness may do after the consumer has answered, where a denial is never available. Plan 24 governs whether the harness should be asking at all, and what it owes the consumer when it does. Both land in `.repo-harness/rules/working-agreements.md`, so they must not be implemented concurrently, and neither may add rulebook bytes while RH-W-0073 is open.
+11. Plan 28 coordinates completed RH-W-0025 and RH-W-0051 as evidence and pending Plans 4 and 5 for recovery and reinstall consequences. It does not reopen or merge any of them. Its approved implementation plan classifies Plan 4 as a sequencing dependency plus shared-file serialization and Plan 5 as a sequencing dependency for later reinstall consequences. It also requires shared-file serialization with RH-W-0068, RH-W-0071, RH-W-0072, RH-W-0074, RH-W-0076, and conditionally RH-W-0078. No true blocker prevents RH-W-0079 selection and classification slices, but separate implementation authority still precedes implementation.
+12. Plan 28 and Plan 12 coordinate semantically and share generated daily-contract files. RH-W-0060 retains branch-listing and committed-blob comparison ownership. RH-W-0079 Slice 2 must serialize any overlapping generated daily-contract changes and may not absorb either behavior.
 
 Five plans consume namespaces Plan 1 reserves: Plan 2A for local memory backups, Plan 3 for checkpoint bytes, Plan 6 for consent preferences, Plan 10 for the violation record, and Plan 20 for response-mode preference. Plan 1 reserves each by name without implementing any consumer behavior.
 
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0079
+| Field | Value |
+|---|---|
+| Origin | Owner clarification on 2026-08-28 that this repository reciprocally develops the builder and self-hosts its generated harness as a proving ground, while self-hosted policy must not become generic behavior without classification. The revised clarification makes Git and all named ecosystem integrations optional, with Git highly recommended as the preferred minimum for full safety. |
+| Priority | P0: the contradiction crosses the release boundary. Shipping before classification could preserve mandatory default integrated selection and apply for optional Gentle AI and Engram capabilities or misstate Git-backed guarantees in supported non-Git operation. |
+| Dependencies | Coordinate completed `RH-W-0025` and `RH-W-0051` as closed evidence, without reopening them. Coordinate pending `RH-W-0048` and `RH-W-0052` for recovery, archive, uninstall, reinstall, and capability-degradation consequences, without merging their lifecycles. |
+| Status | ready |
+| Completed work | Registered this lifecycle owner, completed and obtained owner approval for the [bilingual design](rh-w-0079-design.md) and separate bilingual [implementation plan](rh-w-0079-implementation-plan.md), and recorded local documentation delivery issue [#129](https://github.com/LCubero/repo-harness-builder/issues/129). A fresh final review returned PASS before the owner approved committing the reviewed plan through the normal contribution flow. The five slices keep each focused RED with its owning GREEN and cover exact traceability, measured baselines, migration, capability and Git matrices, three-way classification, renderer synchronization, rollback, compatibility limitations, workload, and collisions. No implementation, generated projection, product test, product behavior, release, issue closure, pull request, or product delivery changed. |
+| Remaining work | Obtain separate owner authorization for a bounded implementation scope, then execute only that scope test-first. |
+| Additions | A release classification gate, generic optional capability-scoped contract, bounded Git recommendation and initialization approval behavior, and cross-platform recovery and self-improvement acceptance evidence. |
+| Exclusions | No implementation authority; no reopening or merging of `RH-W-0025`, `RH-W-0051`, `RH-W-0048`, or `RH-W-0052`; no automatic inheritance of this repository's issue-first, GitHub, contribution, Gentle AI, Engram, CodeGraph, provider, or self-hosting policy; no mandatory integration; no release, network, issue, pull request, commit, or push. |
+| Deferrals | Exact final wording and any authority schema expansion wait for RED evidence. A proven need for a new authority field requires another owner decision. Recovery UX remains with RH-W-0048 and RH-W-0052. |
+| Rejections | Rejected treating self-hosted policy as generic by default. Rejected making Git or default integrated tooling a universal prerequisite. Rejected claiming Git-backed guarantees without Git, refusing supported non-Git operation, or repeatedly prompting for Git. Rejected reopening completed capability detection or local-state work when their evidence can be coordinated instead. |
+| Evidence | Verified fact: `harness_tool.py` allows `standalone` without Gentle AI or Engram, generated session-start says a non-Git repository continues normally, tests require that non-Git matrix, and the current preservation contract reports a non-Git consumer locally. Verified fact: default mode is `integrated`; `select_integration_mode()` allows it only when both Gentle AI and Engram classify `verified`; the canonical builder skill and tests require both before integrated selection, approval, and apply. Verified fact: completed `RH-W-0025` owns capability detection and integrated coordination, completed `RH-W-0051` includes non-Git taxonomy rules, and pending `RH-W-0048` and `RH-W-0052` explicitly include non-Git recovery or reinstall behavior. Human decision: Git and the named integrations are optional; Git is highly recommended, absence receives one useful recommendation without refusal, Git-backed guarantees are unavailable without Git, and initialization offers require explicit approval. |
+| Decision history | 2026-08-28: the complete canonical roadmap ID set was checked as the contiguous immutable range `RH-W-0001` through `RH-W-0078`; `RH-W-0079` was allocated next and registered `proposed`. The owner authorized and approved design work with `daale`. The corrected bilingual implementation plan was authored, self-reviewed, and received a fresh final PASS recommendation. The owner then said `ok comitear entonces ?` and selected the normal contribution flow, approving the reviewed plan and its documentation commit but not implementation. Issue #129 records the local documentation, lifecycle, design, and planning delivery scope. With design and executable plan approved and no unresolved plan decision or true blocker, lifecycle precedent supports advancement to `ready`. |
+| Next advancement condition | Obtain separate explicit owner authorization for a bounded implementation scope. Issue #129 and plan approval do not authorize implementation, release, issue closure, or pull-request delivery. |
 
 ### RH-W-0078
 | Field | Value |
