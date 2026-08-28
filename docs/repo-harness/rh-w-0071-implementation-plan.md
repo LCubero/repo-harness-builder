@@ -65,6 +65,7 @@ The smallest thing that can be true first: a deterministic mode resolver and a p
 9. RED: safety, evidence, authority, contradictions, blocking prompts, and necessary technical context are named as never-omitted, so brevity cannot delete them.
 9a. RED: the shaping section requires a current-state restatement while multi-step work is in progress, naming the step and the total.
 9b. RED: the shaping section carries a pre-send removal list naming the announcing opener, the closing recap or request for more work, the mid-answer sidebar, the empty hedging adverb, and the idiom standing in for a literal action, and it states that a hedge carrying real uncertainty stays.
+9c0. RED: the shaping section states low cognitive load as its purpose, subordinates the requirements to it, and closes the pre-send check on it, so satisfying every requirement is not sufficient on its own.
 9c. RED: the shaping section requires no time estimate the agent cannot derive. This is asserted rather than assumed, because the reviewed external contract makes concrete estimates mandatory and the rulebook forbids substituting confidence for evidence.
 10. Extend the existing RH-W-0067 contract. Add no second response owner, no rule file, and no gate row.
 11. Synchronize all three runtime projections and confirm the checker reports `current` with zero writes.
@@ -99,7 +100,7 @@ Named here so a later reader does not reopen them:
 - Resolution is deterministic across the three levels and provably unchanged by every prohibited signal, asserted per signal rather than in aggregate.
 - A session-only instruction never rewrites the repository preference, and a more-detail request never changes the mode.
 - An omitted scope produces exactly one question and no mutation.
-- The generated contract carries mode resolution and ADHD-friendly shaping, names the never-omitted categories, carries the current-state restatement and the pre-send removal list, requires no underivable time estimate, and `response-contract.md` stays under `RULEBOOK_TOKEN_BUDGET`.
+- The generated contract carries mode resolution and ADHD-friendly shaping, states low cognitive load as the purpose the requirements serve, names the never-omitted categories, carries the current-state restatement and the pre-send removal list, requires no underivable time estimate, and `response-contract.md` stays under `RULEBOOK_TOKEN_BUDGET`.
 - The builder records an explicit standard choice by default and never preselects ADHD-friendly.
 - No manifest field, checker state, or schema change appears. `render()` and `check()` stay byte-identical for every input that does not select the mode.
 - All three runtime projections stay byte-identical to canonical and the checker reports `current` with zero writes.
