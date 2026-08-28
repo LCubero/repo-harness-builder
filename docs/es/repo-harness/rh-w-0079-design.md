@@ -2,7 +2,7 @@
 
 Estado: `ready`, diseno completo y aprobado por el propietario el 2026-08-28. El plan de implementacion bilingue separado tambien esta aprobado por el propietario. Ninguna aprobacion concede autoridad de implementacion, release ni entrega.
 
-Progreso de implementacion: el Corte 1 autorizado por el propietario esta implementado localmente con evidencia RED y GREEN. Los Cortes 2 a 5, el release y la entrega quedan fuera de este resultado, por lo que el ciclo sigue `ready`.
+Progreso de implementacion: el Corte 1 autorizado por el propietario se entrego mediante el issue #133, ya cerrado, y el PR #134, ya fusionado, en `5d8b87c`, con evidencia RED y GREEN. Los Cortes 2 a 5 y el release quedan fuera de este resultado, por lo que el ciclo sigue `ready`.
 
 ## Proposito
 
