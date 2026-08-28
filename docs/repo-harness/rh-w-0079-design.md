@@ -2,7 +2,7 @@
 
 Status: `ready`, design complete and owner-approved on 2026-08-28. The separate bilingual implementation plan is also owner-approved. Neither approval grants implementation, release, or delivery authority.
 
-Implementation progress: owner-authorized Slice 1 is implemented locally with RED and GREEN evidence. Slices 2 through 5, release, and delivery remain outside this result, so the lifecycle stays `ready`.
+Implementation progress: owner-authorized Slice 1 was delivered through closed issue #133 and merged PR #134 at `5d8b87c`, with RED and GREEN evidence. Slices 2 through 5 and release remain outside this result, so the lifecycle stays `ready`.
 
 ## Purpose
 
