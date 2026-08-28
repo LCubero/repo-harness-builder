@@ -816,6 +816,109 @@ def documentation_entry_points(
     return {"readme": "README.md", "usage": "docs/repo-harness/usage.md"}
 
 
+def inspect_git_state(
+    root: Path,
+    execute: Callable[..., subprocess.CompletedProcess[str]] = subprocess.run,
+) -> dict[str, Any]:
+    """Inspect local Git capability without initialization, network, or provider inference."""
+    command = ("git", "-C", str(root))
+
+    def run(*args: str) -> subprocess.CompletedProcess[str]:
+        try:
+            return execute(
+                (*command, *args),
+                capture_output=True,
+                text=True,
+                check=False,
+                shell=False,
+            )
+        except FileNotFoundError:
+            if args == ("rev-parse", "--git-dir"):
+                raise
+            raise RuntimeError("Git inspection failed") from None
+        except Exception:
+            raise RuntimeError("Git inspection failed") from None
+
+    try:
+        repository = run("rev-parse", "--git-dir")
+    except FileNotFoundError:
+        return {"state": "executable-absent", "gitAvailable": False, "initialized": False}
+    except RuntimeError:
+        return {"state": "inspection-failed", "gitAvailable": False, "initialized": False}
+
+    if repository.returncode != 0:
+        if repository.returncode == 128 and not (root / ".git").exists():
+            return {"state": "uninitialized", "gitAvailable": True, "initialized": False}
+        return {"state": "inspection-failed", "gitAvailable": True, "initialized": False}
+
+    result: dict[str, Any] = {"gitAvailable": True, "initialized": True}
+    try:
+        for marker in ("MERGE_HEAD", "REBASE_HEAD", "CHERRY_PICK_HEAD", "REVERT_HEAD"):
+            marker_path = run("rev-parse", "--git-path", marker)
+            if marker_path.returncode != 0:
+                return {**result, "state": "inspection-failed"}
+            candidate = Path(marker_path.stdout.strip())
+            if not candidate.is_absolute():
+                candidate = root / candidate
+            if candidate.exists():
+                return {**result, "state": "diverged-or-unresolved"}
+
+        status = run("status", "--porcelain=v1", "--untracked-files=normal")
+        if status.returncode != 0:
+            return {**result, "state": "inspection-failed"}
+        dirty = bool(status.stdout)
+
+        head = run("rev-parse", "--verify", "HEAD")
+        if head.returncode == 128:
+            return {**result, "state": "unborn", "dirty": dirty}
+        if head.returncode != 0:
+            return {**result, "state": "inspection-failed"}
+
+        branch = run("symbolic-ref", "--quiet", "--short", "HEAD")
+        if branch.returncode == 1:
+            return {**result, "state": "detached", "dirty": dirty}
+        if branch.returncode != 0:
+            return {**result, "state": "inspection-failed"}
+
+    except RuntimeError:
+        return {**result, "state": "inspection-failed"}
+    if dirty:
+        return {**result, "state": "dirty"}
+
+    try:
+        remotes = run("remote")
+    except RuntimeError:
+        return {**result, "state": "inspection-failed"}
+    if remotes.returncode != 0:
+        return {**result, "state": "inspection-failed"}
+    remote_names = tuple(item for item in remotes.stdout.splitlines() if item)
+    if not remote_names:
+        return {**result, "state": "no-remote"}
+
+    try:
+        upstream = run("rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}")
+    except RuntimeError:
+        return {**result, "state": "inspection-failed"}
+    if upstream.returncode == 128:
+        return {**result, "state": "no-upstream"}
+    if upstream.returncode != 0:
+        return {**result, "state": "inspection-failed"}
+
+    try:
+        comparison = run("rev-list", "--left-right", "--count", "HEAD...@{upstream}")
+    except RuntimeError:
+        return {**result, "state": "inspection-failed"}
+    if comparison.returncode != 0:
+        return {**result, "state": "inspection-failed"}
+    fields = comparison.stdout.split()
+    if len(fields) != 2 or not all(field.isdigit() for field in fields):
+        return {**result, "state": "inspection-failed"}
+    ahead, behind = (int(field) for field in fields)
+    if ahead and behind:
+        return {**result, "state": "diverged-or-unresolved", "ahead": ahead, "behind": behind}
+    return {**result, "state": "clean", "ahead": ahead, "behind": behind}
+
+
 def git_consent_steps(outcome: str, material_changes: tuple[str, ...] = ()) -> tuple[str, ...]:
     """Return safe steps covered by one unchanged outcome approval."""
     require(outcome in GIT_CONSENT_STEPS, f"unknown Git consent outcome: {outcome}")
@@ -1264,6 +1367,11 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 ## Optional Git Synchronization Gate
 
 Outcomes are scoped. Startup uses `ready`, `paused`, `blocked`, `failed`, or `degraded`; a successful close uses `completed`. A required continuity failure is `failed`. An optional Git branch may be `paused`, `blocked`, `failed`, or `degraded` while local startup remains `ready`; optional synchronization failure must not make the whole session `failed`.
+
+- Continue useful non-Git work when Git is absent or the folder is uninitialized, withhold every Git-backed guarantee, and emit at most one useful operation-scoped Git recommendation when it names concrete safety the current operation would gain. Persist no warning state, counter, or ledger.
+- Require explicit current human approval before `git init`. Render, preview, check, repair, recovery, and apply must never initialize Git as a side effect.
+- Native Git capability is distinct from provider capability. Never infer GitHub, issues, pull requests, checks, or contribution workflow from Git, `.git`, remote names, `origin`, or GitHub-like URLs.
+- An applicable `CONTRIBUTING.md` is repository-specific authority only. Its absence creates no provider, issue-first, branch, review, or publication policy.
 
 | Observed state | Required behavior |
 |---|---|
@@ -3706,8 +3814,9 @@ def main(argv: Optional[list[str]] = None) -> int:
         root = args.root.resolve(strict=True)
         require(root.is_dir(), "root must be a directory")
         selected = args.runtime or (recorded_runtimes(root) or [])
+        git_state = inspect_git_state(root)
         if args.command == "check":
-            print(dump_json(check(root, args.project_name, selected, args.standalone)), end="")
+            print(dump_json({**check(root, args.project_name, selected, args.standalone), "gitState": git_state}), end="")
             return 0
         capability_preflight: dict[str, Any] = {}
         if not args.standalone:
@@ -3788,7 +3897,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "gitState": git_state, "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")
@@ -3813,7 +3922,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 except ContractError as error:
                     raise ContractError(FRESH_PREVIEW_REQUIRED) from error
             changed = write_outputs(root, outputs, plan)
-            print(dump_json({"status": "VALIDATED", "changed": changed, "planSha256": digest, "reportLanguage": args.report_language, "plan": plan}), end="")
+            print(dump_json({"status": "VALIDATED", "changed": changed, "planSha256": digest, "reportLanguage": args.report_language, "plan": plan, "gitState": git_state}), end="")
         return 0
     except (ContractError, OSError, json.JSONDecodeError) as error:
         print(dump_json({"status": "FAILED_CLOSED", "error": str(error)}), end="", file=sys.stderr)
