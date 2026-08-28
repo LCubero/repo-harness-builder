@@ -38,7 +38,9 @@ The mode changes presentation, not evidence or authority. It requires:
 - progressive disclosure;
 - a visible next action;
 - suppression of tangents and filler;
-- an offer of more detail, or more detail when requested.
+- an offer of more detail, or more detail when requested;
+- a restatement of current state while multi-step work is in progress, naming the step and the total without re-narrating the plan;
+- a pre-send removal check with a concrete list, so `suppression of tangents and filler` is something an agent applies rather than a value it agrees with.
 
 Necessary safety, evidence, authority, contradictions, blocking prompts, and technical context are never omitted merely for brevity. RH-W-0067 remains the owner of visibility blocks, setext safety, contextual explanation, and response-contract routing. RH-W-0071 adds one mode-specific shaping section to that same native generated contract rather than creating a second response owner.
 
@@ -58,6 +60,34 @@ The persisted value is local operational state, never canonical documentation, m
 - Standalone and integrated modes: behave identically for selection, persistence, precedence, and shaping. Integrated continuity may report verified state but cannot choose or change it.
 
 Product artifacts contain no references to external ADHD skills, repositories, provenance, dependencies, or eventual removal. This is a native repo-harness contract.
+
+## Reviewed Against An External Contract
+
+On 2026-08-27 the owner asked whether an external ADHD response-shaping skill installed on their machine contributed anything this design lacks. It was read read-only and not modified. Its provenance is recorded here, in repository documentation, and stays out of every product artifact under this design's own rule. It is MIT-licensed and its author is credited in its own frontmatter; nothing in this repository copies its wording, so no notice travels with our text. If a later implementation lifts its phrasing rather than its ideas, that changes and the notice must travel with it.
+
+Seven requirements in that contract are absent here. Two are adopted, one is rejected on the project's own rules, and four are declined as refinements of requirements this design already states.
+
+### Adopted
+
+- **Restate current state across turns.** Every one of the nine requirements above shapes a single response. None of them addresses what a reader has lost between two responses, which is the axis working memory actually fails on. When multi-step work is in progress, the reply states which step it is on out of how many, without re-narrating the whole plan.
+- **A pre-send check with a concrete removal list.** `suppression of tangents and filler` names a value and gives an agent nothing to apply. The check names what to delete: an opening sentence that announces what is about to happen, a closing sentence that asks for more work or recaps what just happened, a mid-answer sidebar, a hedging adverb that carries no uncertainty, and an idiom in place of the literal action. A hedge carrying real uncertainty stays, because deleting it manufactures confidence.
+
+The two are one addition in practice: the check is what makes the ninth requirement enforceable, and the state line is what the check verifies is present.
+
+### Rejected, and why
+
+- **Mandatory concrete time estimates.** The external contract requires them because vague estimates read as uniform. This project forbids them: the rulebook says never substitute confidence for evidence, and the working agreements say never substitute missing evidence, assumptions, or confidence wording. An agent required to produce a time estimate it cannot derive will invent one. A response mode may not create an obligation the rulebook prohibits satisfying. Where a duration is actually known it may be stated, which the existing requirements already permit.
+
+### Declined as already covered
+
+- Making completed work visible restates `answer or action first` for the case where the answer is a finished change.
+- A hard cap of five list items makes `small chunks` measurable but fixes an arbitrary number this project has no evidence for, and the budget control added by RH-W-0073 already forces shedding when a section grows.
+- A matter-of-fact tone for errors belongs to the existing `Honesty` section of the working agreements, which already requires reporting what happened rather than what was intended, not to a presentation mode.
+- The debug-spiral rule is already a Hard Rule: do not retry indefinitely, stop with evidence, request a decision.
+
+### What this review did not change
+
+Precedence, the no-inference boundary, persistence, the builder interview, migration, rollback, and the resource boundary are untouched. The external contract is weaker than this design on exactly the point that matters most: it resolves ambiguity with `if you are unsure whether they still apply, they do`, while this design resolves it with three deterministic levels and a prohibition on inferring the mode from any signal. That asymmetry is why this remains a native contract rather than an adaptation.
 
 ## Manifest And Checker Design
 

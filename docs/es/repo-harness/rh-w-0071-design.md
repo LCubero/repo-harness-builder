@@ -38,7 +38,9 @@ El modo cambia la presentacion, no la evidencia ni la autoridad. Exige:
 - divulgacion progresiva;
 - siguiente accion visible;
 - supresion de tangentes y relleno;
-- oferta de mas detalle, o entrega de mas detalle cuando se solicite.
+- oferta de mas detalle, o entrega de mas detalle cuando se solicite;
+- restablecimiento del estado actual mientras hay trabajo de varios pasos en curso, nombrando el paso y el total sin volver a narrar el plan;
+- un chequeo previo al envio con lista concreta de borrado, para que `suprimir tangentes y relleno` sea algo que un agente aplica y no un valor con el que esta de acuerdo.
 
 La seguridad, evidencia, autoridad, contradicciones, preguntas bloqueantes y contexto tecnico necesarios nunca se omiten solo por brevedad. RH-W-0067 sigue como propietario de bloques visibles, seguridad setext, explicacion contextual y enrutamiento del contrato de respuesta. RH-W-0071 agrega una seccion de forma especifica del modo al mismo contrato generado nativo, en vez de crear un segundo propietario de respuesta.
 
@@ -58,6 +60,34 @@ El valor persistido es estado operativo local, nunca documentacion canonica, evi
 - Modos standalone e integrated: comportamiento identico para seleccion, persistencia, precedencia y forma. La continuidad integrada puede informar estado verificado, pero no elegirlo ni cambiarlo.
 
 Los artefactos del producto no contienen referencias a skills ADHD externas, repositorios, procedencia, dependencias ni eliminacion futura. Este es un contrato nativo de repo-harness.
+
+## Revisado contra un contrato externo
+
+El 2026-08-27 el propietario pregunto si una skill externa de forma de respuesta para TDAH instalada en su maquina aportaba algo que a este diseno le falte. Se leyo en solo lectura y no se modifico. Su procedencia queda registrada aqui, en documentacion del repositorio, y queda fuera de todo artefacto de producto por la propia regla de este diseno. Tiene licencia MIT y su autor esta acreditado en su propio frontmatter; nada en este repositorio copia su redaccion, asi que ningun aviso viaja con nuestro texto. Si una implementacion posterior levanta su fraseo en vez de sus ideas, eso cambia y el aviso debe viajar con el.
+
+Siete requisitos de ese contrato estan ausentes aqui. Dos se adoptan, uno se rechaza por las reglas del propio proyecto, y cuatro se declinan como refinamientos de requisitos que este diseno ya declara.
+
+### Adoptados
+
+- **Restablecer el estado actual entre turnos.** Cada uno de los nueve requisitos de arriba moldea una sola respuesta. Ninguno atiende lo que un lector perdio entre dos respuestas, que es el eje donde la memoria de trabajo realmente falla. Cuando hay trabajo de varios pasos en curso, la respuesta declara en que paso va de cuantos, sin volver a narrar el plan entero.
+- **Un chequeo previo al envio con lista concreta de borrado.** `suprimir tangentes y relleno` nombra un valor y no le da nada a un agente que aplicar. El chequeo nombra que borrar: una frase inicial que anuncia lo que esta por pasar, una frase final que pide mas trabajo o recapitula lo que acaba de pasar, una acotacion al margen a mitad de respuesta, un adverbio de cobertura que no carga incertidumbre, y un modismo en lugar de la accion literal. Una cobertura que carga incertidumbre real se queda, porque borrarla fabrica confianza.
+
+Los dos son una sola adicion en la practica: el chequeo es lo que hace exigible al noveno requisito, y la linea de estado es lo que el chequeo verifica que este.
+
+### Rechazado, y por que
+
+- **Estimaciones de tiempo concretas obligatorias.** El contrato externo las exige porque las estimaciones vagas se leen todas iguales. Este proyecto las prohibe: el reglamento dice nunca sustituir evidencia por lenguaje de confianza, y los acuerdos de trabajo dicen nunca sustituir evidencia faltante, supuestos ni lenguaje de confianza. Un agente obligado a producir una estimacion de tiempo que no puede derivar va a inventarla. Un modo de respuesta no puede crear una obligacion que el reglamento prohibe satisfacer. Donde la duracion si se conoce puede declararse, cosa que los requisitos existentes ya permiten.
+
+### Declinados por ya estar cubiertos
+
+- Hacer visible el trabajo completado replantea `respuesta o accion primero` para el caso en que la respuesta es un cambio terminado.
+- Un tope duro de cinco items hace medible `trozos pequenos` pero fija un numero arbitrario para el que este proyecto no tiene evidencia, y el control de presupuesto que agrego RH-W-0073 ya obliga a bajar detalle cuando una seccion crece.
+- Un tono neutro para errores pertenece a la seccion `Honesty` existente de los acuerdos de trabajo, que ya exige reportar lo que paso y no lo que se pretendia, no a un modo de presentacion.
+- La regla de espiral de depuracion ya es regla obligatoria: no reintentar indefinidamente, parar con evidencia, pedir una decision.
+
+### Lo que esta revision no cambio
+
+Precedencia, el limite de no inferencia, persistencia, la entrevista del constructor, migracion, rollback y el limite de recursos quedan intactos. El contrato externo es mas debil que este diseno justo en el punto que mas importa: resuelve la ambiguedad con `si dudas de si siguen aplicando, aplican`, mientras este diseno la resuelve con tres niveles deterministas y una prohibicion de inferir el modo desde cualquier senal. Esa asimetria es por que esto sigue siendo un contrato nativo y no una adaptacion.
 
 ## Diseno de manifiesto y checker
 
