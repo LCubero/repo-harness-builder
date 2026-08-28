@@ -2,7 +2,7 @@
 
 Estado: `ready`, diseno completo y aprobado por el propietario el 2026-08-28. El plan de implementacion bilingue separado tambien esta aprobado por el propietario. Ninguna aprobacion concede autoridad de implementacion, release ni entrega.
 
-Progreso de implementacion: el Corte 1 autorizado por el propietario se entrego mediante el issue #133, ya cerrado, y el PR #134, ya fusionado, en `5d8b87c`, con evidencia RED y GREEN. Los Cortes 2 a 5 y el release quedan fuera de este resultado, por lo que el ciclo sigue `ready`.
+Progreso de implementacion: los Cortes 1 y 2 autorizados por el propietario estan entregados. El Corte 1 llego mediante el issue #133, ya cerrado, y el PR #134, ya fusionado, en `5d8b87c`. El Corte 2 llego mediante el issue #137, ya cerrado, el commit de implementacion `9c5cd94` y el PR #138, ya fusionado, en `c4265e57368944afc82f871cae28f197f3fcbb6a`. Los Cortes 3 a 5 y el release quedan fuera de estos resultados, por lo que el ciclo sigue `ready`. La sincronizacion de proyecciones de runtime sigue siendo trabajo del Corte 4 y no se afirma como parte de la entrega del Corte 2.
 
 ## Proposito
 

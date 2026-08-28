@@ -2,7 +2,7 @@
 
 Status: `ready`, design complete and owner-approved on 2026-08-28. The separate bilingual implementation plan is also owner-approved. Neither approval grants implementation, release, or delivery authority.
 
-Implementation progress: owner-authorized Slice 1 was delivered through closed issue #133 and merged PR #134 at `5d8b87c`, with RED and GREEN evidence. Slices 2 through 5 and release remain outside this result, so the lifecycle stays `ready`.
+Implementation progress: owner-authorized Slices 1 and 2 are delivered. Slice 1 landed through closed issue #133 and merged PR #134 at `5d8b87c`. Slice 2 landed through closed issue #137, implementation commit `9c5cd94`, and merged PR #138 at `c4265e57368944afc82f871cae28f197f3fcbb6a`. Slices 3 through 5 and release remain outside these results, so the lifecycle stays `ready`. Runtime projection synchronization remains Slice 4 work and is not claimed by Slice 2 delivery.
 
 ## Purpose
 

@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0079 de capacidades opcionales
 
-Progreso de implementacion: el Corte 1 fue autorizado por separado y se entrego mediante el issue #133, ya cerrado, y el PR #134, ya fusionado, en `5d8b87c`, con evidencia RED y GREEN estricta. Los Cortes 2 a 5 siguen sin implementarse y no se afirma release.
+Progreso de implementacion: los Cortes 1 y 2 fueron autorizados y entregados por separado. El Corte 1 llego mediante el issue #133, ya cerrado, y el PR #134, ya fusionado, en `5d8b87c`, con evidencia RED y GREEN estricta. El Corte 2 llego mediante el issue #137, ya cerrado, el commit de implementacion `9c5cd94` y el PR #138, ya fusionado, en `c4265e57368944afc82f871cae28f197f3fcbb6a`. Su matriz enfocada cubre Git ausente y carpeta no inicializada, rama sin commits, HEAD separado, estado sucio, limpio, sin remoto, sin upstream, divergente o sin resolver, separacion de proveedor, politica de contribucion ausente, recomendacion acotada y aprobacion antes de inicializar. Los Cortes 3 a 5 siguen sin implementarse bajo autorizacion separada, la sincronizacion de proyecciones de runtime sigue siendo trabajo del Corte 4 y no se afirma release.
 
 Evidencia correctiva del Corte 1: `python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.CapabilityAwareIntegrationContractTests.test_policy_required_is_a_contextual_selection_state skill.repo-harness-builder.tests.test_harness_tool.CapabilityAwareIntegrationContractTests.test_cli_default_preview_proceeds_for_every_capability_pair skill.repo-harness-builder.tests.test_harness_tool.CapabilityAwareIntegrationContractTests.test_cli_apply_still_fails_closed_for_every_unverified_pair` ejecuto primero 3 pruebas con 9 errores y 9 fallos. Los previews exitosos no incluian `capabilityPreflight`, `policy-required` se reducia a `unavailable` y apply con capacidades no verificadas alcanzaba la compuerta del digest del plan en vez del rechazo emparejado existente. Despues de la correccion minima, las mismas 3 pruebas pasaron. Este RED correctivo es distinto del RED original del preflight emparejado: el Corte 1 ahora compone solamente la proyeccion de capacidades de solo lectura en la salida exitosa del preview, mientras apply no verificado conserva su fallo anterior al Corte 3.
 
@@ -162,10 +162,10 @@ Total: 740-1,410 lineas autoradas mas 300-700 de renderer en unos 10-18 archivos
 
 ## Decisiones humanas restantes
 
-1. Autorizar por separado un alcance acotado de implementacion antes de iniciar cualquier corte.
+1. Autorizar por separado el Corte 3 antes de iniciarlo. Los Cortes 4 y 5 conservan su orden aprobado y autorizacion separada.
 2. Si RED del Corte 3 exige campo/ruta nueva, aprobar diseno revisado.
 3. Al ejecutar/entregar, autorizar por separado Git, ruta, release, proveedor o publicacion tras verificar el repositorio.
 
 ## Compuerta del propietario
 
-`next_recommended`: solicitar autorizacion separada del propietario para un alcance acotado de implementacion. La aprobacion del plan y la entrega documental completada mediante el issue #129 y el PR #130 no autorizan implementacion, release, push, otro issue ni otra entrega por pull request.
+`next_recommended`: solicitar autorizacion separada del propietario para el Corte 3. Los Cortes 1 y 2 entregados no autorizan los Cortes 3 a 5, release, push, otro issue ni otra entrega por pull request.
