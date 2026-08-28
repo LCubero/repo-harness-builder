@@ -3007,6 +3007,142 @@ class GeneratedCoreTests(unittest.TestCase):
                     f"mixed line endings: {crlf} CRLF and {stray_lf} bare LF",
                 )
 
+    def test_self_hosted_budgeted_surfaces_stay_under_the_budget_they_declare(self):
+        """A budget nobody measures on disk decays. This repository's rulebook went from 699 to 763
+        proxy tokens in two days after the runtime refusal was removed, with nothing able to notice."""
+        repository = ROOT.parents[1]
+        rulebook = repository / "REPO-HARNESS.md"
+        if not rulebook.is_file():
+            self.skipTest("repository rulebook fixture is outside the portable package")
+        measured = [rulebook] + sorted((repository / ".repo-harness/rules").glob("*.md"))
+        self.assertGreater(len(measured), 1, "the rule files must be part of the measured set")
+        for surface in measured:
+            with self.subTest(surface=surface.relative_to(repository).as_posix()):
+                tokens = TOOL.token_proxy(surface.read_text(encoding="utf-8"))
+                self.assertLess(
+                    tokens,
+                    TOOL.RULEBOOK_TOKEN_BUDGET,
+                    f"{surface.relative_to(repository).as_posix()} holds {tokens} proxy tokens against "
+                    f"{TOOL.RULEBOOK_TOKEN_BUDGET}; shed detail into an existing rule file rather than raising the budget",
+                )
+
+    def test_every_block_moved_out_of_the_rulebook_survives_in_its_rule_file(self):
+        """The rulebook keeps one short line and delegates the detail. `.repo-harness/rules/` is
+        render-owned, so a regeneration would silently drop the moved detail and leave the short
+        line pointing at nothing. This assertion is what notices."""
+        repository = ROOT.parents[1]
+        rulebook = repository / "REPO-HARNESS.md"
+        agreements = repository / ".repo-harness/rules/working-agreements.md"
+        if not (rulebook.is_file() and agreements.is_file()):
+            self.skipTest("repository rulebook fixture is outside the portable package")
+        rulebook_text = rulebook.read_text(encoding="utf-8")
+        agreements_text = agreements.read_text(encoding="utf-8")
+        self.assertIn(
+            "`.repo-harness/rules/working-agreements.md`",
+            rulebook_text,
+            "the rulebook must keep exactly one gate row routing to the file that owns the moved detail",
+        )
+        for short_line, moved_detail in (
+            (
+                "Execute authorized work you have announced",
+                "Do not stop after merely announcing an immediately executable verification or action",
+            ),
+            (
+                "Label every claim as verified fact",
+                "A verified fact needs applicable, trustworthy, proportionate evidence",
+            ),
+        ):
+            with self.subTest(rule=short_line):
+                self.assertIn(short_line, rulebook_text, "the compressed obligation left the rulebook entirely")
+                self.assertIn(
+                    moved_detail,
+                    agreements_text,
+                    "the rulebook delegates this detail and the rule file no longer carries it; "
+                    "a regeneration of .repo-harness/rules/ drops it silently",
+                )
+
+    def test_the_budget_constant_and_the_runtime_stay_non_blocking(self):
+        """Completed RH-W-0013 removed the render refusal on purpose. The development-time control
+        must not be a doorway back to it."""
+        self.assertEqual(TOOL.RULEBOOK_TOKEN_BUDGET, 700)
+        source = Path(TOOL.__file__).read_text(encoding="utf-8")
+        render_body = source[source.index("def render_with_skill_mapping"):]
+        render_body = render_body[: render_body.index("\ndef ")]
+        self.assertNotIn(
+            "RULEBOOK_TOKEN_BUDGET",
+            render_body,
+            "render must not regain a budget refusal; RH-W-0013 removed it deliberately",
+        )
+        self.assertNotIn("over-budget", source, "check() must not regain an over-budget state")
+
+    def test_documented_render_command_parses_and_keeps_every_interview_answer(self):
+        """Execution Step 6 prints the command a first install runs; a form that cannot parse, or that
+        drops a flag the interview exists to fill, breaks that install or silently installs the wrong harness."""
+        repository = ROOT.parents[1]
+        skill = repository / "skill/repo-harness-builder/SKILL.md"
+        if not skill.is_file():
+            self.skipTest("builder skill source is outside the portable package")
+        printed = re.search(r"`scripts/harness_tool\.py (render [^`]+)`", skill.read_text(encoding="utf-8"))
+        self.assertIsNotNone(printed, "Execution Step 6 must print a runnable render invocation")
+
+        with tempfile.TemporaryDirectory() as directory:
+            substitutions = {
+                "ROOT": directory,
+                "DIR": directory,
+                "NAME": "demo",
+                "RUNTIME": "claude-code",
+                "LICENSE": "MIT",
+                "REPORT_LANGUAGE": "english",
+                "CONVERSATION_LANGUAGE": "espanol",
+                "HOST_EVIDENCE": "{}",
+                "HASH": "0" * 64,
+                "TOKEN": "APPROVE",
+            }
+            # Keep the first alternative of any "[a | b | c]" group the documentation offers.
+            form = re.sub(r"\[([^\]]+)\]", lambda group: group.group(1).split("|")[0].strip(), printed.group(1))
+            argv = [substitutions.get(word, word) for word in form.split()]
+
+            captured = {}
+            real_parse = argparse.ArgumentParser.parse_args
+
+            class _Parsed(Exception):
+                """Stop before any side effect; this test asserts on parsing, not on rendering."""
+
+            def spy(parser, args=None, namespace=None):
+                captured["args"] = real_parse(parser, args, namespace)
+                raise _Parsed
+
+            try:
+                with mock.patch.object(argparse.ArgumentParser, "parse_args", spy):
+                    TOOL.main(argv)
+            except _Parsed:
+                pass
+            except SystemExit as refusal:
+                self.fail(
+                    f"the documented command does not parse: argparse exited {refusal.code}. "
+                    "An agent following Execution Step 6 fails on its first install."
+                )
+
+        args = captured["args"]
+        self.assertEqual(args.command, "render")
+        self.assertTrue(str(args.root), "--root is required and must be printed")
+        self.assertTrue(args.project_name, "--project-name is required and must be printed")
+        self.assertTrue(args.runtime, "omitting --runtime discards the runtime permission Execution Step 2 obtains")
+        self.assertEqual(args.activation, "builder", "--approval is refused outside builder activation")
+        self.assertTrue(
+            args.conversation_language,
+            "omitting --conversation-language falls back to English through "
+            "args.conversation_language or DEFAULT_REPORT_LANGUAGE and installs a different harness",
+        )
+        self.assertTrue(
+            args.documentation_languages,
+            "omitting --documentation-language discards the answer Execution Step 1 obtains",
+        )
+        self.assertTrue(
+            args.engram_evidence_json,
+            "omitting --engram-evidence-json discards the evidence Execution Step 3 obtains",
+        )
+
     def test_current_state_projection_agrees_with_the_roadmap_owner(self):
         """The roadmap owns lifecycle; a projection that contradicts it is false evidence."""
         repository = ROOT.parents[1]
@@ -4129,24 +4265,58 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
         self.assertEqual(observed, {"not_found", "found_on_path", "verified"})
         self.assertEqual(TOOL.CAPABILITY_CLASSIFICATIONS, observed)
 
-    def test_integrated_selection_requires_both_verified_outcomes(self):
+    def test_default_selection_composes_verified_capabilities_independently(self):
         verified = {"classification": "verified", "evidence": "ok"}
         unavailable = {"classification": "not_found", "evidence": "missing"}
-        selected = TOOL.select_integration_mode("integrated", verified, verified)
-        self.assertEqual(selected["mode"], "integrated")
-        self.assertTrue(selected["allowed"])
-        for gentle, engram in ((verified, unavailable), (unavailable, verified), (unavailable, unavailable)):
+        for gentle, engram, gentle_state, engram_state in (
+            (verified, verified, "available", "available"),
+            (verified, unavailable, "available", "unavailable"),
+            (unavailable, verified, "unavailable", "available"),
+            (unavailable, unavailable, "unavailable", "unavailable"),
+        ):
             with self.subTest(gentle=gentle, engram=engram):
-                refused = TOOL.select_integration_mode("integrated", gentle, engram)
-                self.assertFalse(refused["allowed"])
-                self.assertEqual(refused["gentleAi"], gentle)
-                self.assertEqual(refused["engram"], engram)
-                self.assertEqual(refused["nextAction"], "select standalone or restore the unverified capability")
+                selected = TOOL.select_integration_mode("integrated", gentle, engram)
+                self.assertTrue(selected["allowed"])
+                self.assertEqual(selected.get("gentleAiState"), gentle_state)
+                self.assertEqual(selected.get("engramState"), engram_state)
+                self.assertEqual(selected["gentleAi"], gentle)
+                self.assertEqual(selected["engram"], engram)
         standalone = TOOL.select_integration_mode("standalone", unavailable, unavailable)
         self.assertEqual(standalone["mode"], "standalone")
         self.assertTrue(standalone["allowed"])
 
-    def test_cli_integrated_preview_and_apply_fail_closed_for_every_unverified_pair(self):
+    def test_effective_partial_and_disabled_states_do_not_expand_detector_vocabulary(self):
+        for state in ("partial", "disabled"):
+            with self.subTest(state=state):
+                selected = TOOL.select_integration_mode(
+                    "integrated",
+                    {"classification": "found_on_path", "state": state, "evidence": "bounded"},
+                    {"classification": "not_found", "evidence": "missing"},
+                )
+                self.assertTrue(selected["allowed"])
+                self.assertEqual(selected.get("gentleAiState"), state)
+                self.assertEqual(TOOL.CAPABILITY_CLASSIFICATIONS, {"not_found", "found_on_path", "verified"})
+
+    def test_policy_required_is_a_contextual_selection_state(self):
+        selected = TOOL.select_integration_mode(
+            "integrated",
+            {
+                "classification": "not_found",
+                "state": "policy-required",
+                "requiredFor": "delivery",
+                "evidence": "private-policy-evidence",
+            },
+            {"classification": "verified", "evidence": "private-engram-evidence"},
+        )
+
+        projected = TOOL.capability_projection(selected)
+
+        self.assertEqual(projected["gentleAiState"], "policy-required")
+        self.assertEqual(projected["gentleAi"]["requiredFor"], "delivery")
+        self.assertNotIn("evidence", projected["gentleAi"])
+        self.assertEqual(TOOL.CAPABILITY_CLASSIFICATIONS, {"not_found", "found_on_path", "verified"})
+
+    def test_cli_default_preview_proceeds_for_every_capability_pair(self):
         classifications = ("not_found", "found_on_path", "verified")
         with tempfile.TemporaryDirectory() as directory:
             base = [
@@ -4154,29 +4324,132 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
             ]
             for gentle_classification in classifications:
                 for engram_classification in classifications:
-                    if gentle_classification == engram_classification == "verified":
-                        continue
                     gentle = {"classification": gentle_classification, "evidence": f"gentle-{gentle_classification}"}
                     engram = {"classification": engram_classification, "evidence": f"engram-{engram_classification}"}
-                    for apply_args in ([], ["--apply", "--approved-plan-sha256", "unused"]):
-                        with self.subTest(gentle=gentle_classification, engram=engram_classification, apply=bool(apply_args)):
-                            stdout = unittest.mock.MagicMock()
-                            stderr = unittest.mock.MagicMock()
-                            with mock.patch.object(TOOL, "detect_gentle_ai", return_value=gentle), \
-                                 mock.patch.object(TOOL, "detect_engram", return_value=engram), \
-                                 mock.patch.object(sys, "stdout", stdout), \
-                                 mock.patch.object(sys, "stderr", stderr):
-                                result = TOOL.main([*base, *apply_args])
-                            self.assertEqual(result, 2)
-                            payload = json.loads("".join(call.args[0] for call in stderr.write.call_args_list))
-                            # RH-W-0054 Task 6 removed the evidence each component was judged
-                            # from: the host supplies Engram's, so echoing it back published
-                            # whatever that payload carried. The classification this test cares
-                            # about is unchanged.
-                            projected = payload["capabilityPreflight"]
-                            self.assertEqual(projected["gentleAi"], {"classification": gentle_classification})
-                            self.assertEqual(projected["engram"], {"classification": engram_classification})
-                            self.assertFalse((Path(directory) / RULEBOOK).exists())
+                    with self.subTest(gentle=gentle_classification, engram=engram_classification):
+                        stdout = unittest.mock.MagicMock()
+                        stderr = unittest.mock.MagicMock()
+                        with mock.patch.object(TOOL, "detect_gentle_ai", return_value=gentle), \
+                             mock.patch.object(TOOL, "detect_engram", return_value=engram), \
+                             mock.patch.object(sys, "stdout", stdout), \
+                             mock.patch.object(sys, "stderr", stderr):
+                            result = TOOL.main(base)
+                        self.assertEqual(result, 0)
+                        payload = json.loads("".join(call.args[0] for call in stdout.write.call_args_list))
+                        self.assertEqual(payload["status"], "plan")
+                        self.assertEqual(payload["writes"], 0)
+                        projected = payload["capabilityPreflight"]
+                        self.assertEqual(
+                            projected["gentleAiState"],
+                            "available" if gentle_classification == "verified" else "unavailable",
+                        )
+                        self.assertEqual(
+                            projected["engramState"],
+                            "available" if engram_classification == "verified" else "unavailable",
+                        )
+                        self.assertNotIn("evidence", projected["gentleAi"])
+                        self.assertNotIn("evidence", projected["engram"])
+                        self.assertFalse((Path(directory) / RULEBOOK).exists())
+
+    def test_cli_preview_projects_sanitized_effective_capability_compositions(self):
+        cases = (
+            ("available", "unavailable"),
+            ("unavailable", "available"),
+            ("partial", "unavailable"),
+            ("unavailable", "partial"),
+            ("disabled", "unavailable"),
+            ("unavailable", "disabled"),
+            ("policy-required", "unavailable"),
+            ("unavailable", "policy-required"),
+            ("available", "partial"),
+            ("disabled", "available"),
+            ("partial", "disabled"),
+            ("policy-required", "available"),
+            ("available", "policy-required"),
+            ("policy-required", "partial"),
+        )
+
+        def capability(component, state):
+            value = {
+                "classification": "verified" if state == "available" else "not_found",
+                "evidence": f"private-{component}-{state}-evidence",
+            }
+            if state in {"partial", "disabled", "policy-required"}:
+                value["classification"] = "found_on_path" if state == "partial" else "not_found"
+                value["state"] = state
+            if state == "policy-required":
+                value["requiredFor"] = f"{component}-owned-workflow"
+            return value
+
+        with tempfile.TemporaryDirectory() as directory:
+            base = ["render", "--root", directory, "--project-name", "Example"]
+            for gentle_state, engram_state in cases:
+                gentle = capability("gentle", gentle_state)
+                engram = capability("engram", engram_state)
+                with self.subTest(gentle=gentle_state, engram=engram_state):
+                    stdout = unittest.mock.MagicMock()
+                    stderr = unittest.mock.MagicMock()
+                    with mock.patch.object(TOOL, "detect_gentle_ai", return_value=gentle), \
+                         mock.patch.object(TOOL, "detect_engram", return_value=engram), \
+                         mock.patch.object(sys, "stdout", stdout), \
+                         mock.patch.object(sys, "stderr", stderr):
+                        result = TOOL.main(base)
+
+                    self.assertEqual(result, 0)
+                    payload = json.loads("".join(call.args[0] for call in stdout.write.call_args_list))
+                    projected = payload["capabilityPreflight"]
+                    self.assertEqual(payload["status"], "plan")
+                    self.assertEqual(payload["writes"], 0)
+                    self.assertEqual(projected["gentleAiState"], gentle_state)
+                    self.assertEqual(projected["engramState"], engram_state)
+                    self.assertEqual(
+                        projected["applyAllowed"],
+                        gentle_state == engram_state == "available",
+                    )
+                    self.assertNotIn("evidence", projected["gentleAi"])
+                    self.assertNotIn("evidence", projected["engram"])
+                    self.assertNotIn("private-", json.dumps(payload))
+                    if gentle_state == "policy-required":
+                        self.assertEqual(
+                            projected["gentleAi"]["requiredFor"], "gentle-owned-workflow"
+                        )
+                    if engram_state == "policy-required":
+                        self.assertEqual(
+                            projected["engram"]["requiredFor"], "engram-owned-workflow"
+                        )
+                    self.assertEqual(
+                        TOOL.CAPABILITY_CLASSIFICATIONS,
+                        {"not_found", "found_on_path", "verified"},
+                    )
+                    self.assertFalse((Path(directory) / RULEBOOK).exists())
+
+    def test_cli_apply_still_fails_closed_for_every_unverified_pair(self):
+        classifications = ("not_found", "found_on_path", "verified")
+        with tempfile.TemporaryDirectory() as directory:
+            base = [
+                "render", "--root", directory, "--project-name", "Example",
+                "--runtime", "opencode", "--apply", "--approved-plan-sha256", "unused",
+            ]
+            for gentle_classification in classifications:
+                for engram_classification in classifications:
+                    if gentle_classification == engram_classification == "verified":
+                        continue
+                    gentle = {"classification": gentle_classification, "evidence": "private-gentle-evidence"}
+                    engram = {"classification": engram_classification, "evidence": "private-engram-evidence"}
+                    with self.subTest(gentle=gentle_classification, engram=engram_classification):
+                        stdout = unittest.mock.MagicMock()
+                        stderr = unittest.mock.MagicMock()
+                        with mock.patch.object(TOOL, "detect_gentle_ai", return_value=gentle), \
+                             mock.patch.object(TOOL, "detect_engram", return_value=engram), \
+                             mock.patch.object(sys, "stdout", stdout), \
+                             mock.patch.object(sys, "stderr", stderr):
+                            result = TOOL.main(base)
+                        self.assertEqual(result, 2)
+                        payload = json.loads("".join(call.args[0] for call in stderr.write.call_args_list))
+                        self.assertEqual(payload["status"], "FAILED_CLOSED")
+                        self.assertIn("verified Gentle AI and Engram", payload["error"])
+                        self.assertNotIn("private-", json.dumps(payload))
+                        self.assertFalse((Path(directory) / RULEBOOK).exists())
 
     def test_cli_integrated_preview_and_apply_proceed_when_both_capabilities_verify(self):
         verified = {"classification": "verified", "evidence": "verified"}
@@ -6832,8 +7105,8 @@ class StatelessBoundaryTests(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertFalse(hasattr(TOOL, name), f"{name} would make the authority path stateful")
 
-    def test_capability_preflight_reports_classification_without_raw_host_evidence(self):
-        """The host hands its own evidence in; printing it back publishes whatever it contained."""
+    def test_capability_preview_omits_raw_host_evidence(self):
+        """Independent selection must not publish the host evidence it used."""
         with tempfile.TemporaryDirectory() as directory:
             result = subprocess.run(
                 [
@@ -6845,14 +7118,11 @@ class StatelessBoundaryTests(unittest.TestCase):
                 check=False, capture_output=True, text=True,
             )
 
-            self.assertEqual(result.returncode, 2)
+            self.assertEqual(result.returncode, 0)
             self.assertNotIn(self.HOST, result.stdout)
             self.assertNotIn(self.HOST, result.stderr)
-            preflight = json.loads(result.stderr)["capabilityPreflight"]
-            self.assertEqual(preflight["engram"]["classification"], "found_on_path")
-            for component in ("engram", "gentleAi"):
-                with self.subTest(component=component):
-                    self.assertNotIn("evidence", preflight[component])
+            self.assertEqual(json.loads(result.stdout)["status"], "plan")
+            self.assertEqual(result.stderr, "")
 
     def test_detect_engram_keeps_the_whole_evidence_for_internal_verification(self):
         """The projection must narrow the output, never weaken the check behind it."""

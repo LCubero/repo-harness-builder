@@ -2,6 +2,8 @@
 
 Estado: `ready`, diseno completo y aprobado por el propietario el 2026-08-28. El plan de implementacion bilingue separado tambien esta aprobado por el propietario. Ninguna aprobacion concede autoridad de implementacion, release ni entrega.
 
+Progreso de implementacion: el Corte 1 autorizado por el propietario esta implementado localmente con evidencia RED y GREEN. Los Cortes 2 a 5, el release y la entrega quedan fuera de este resultado, por lo que el ciclo sigue `ready`.
+
 ## Proposito
 
 Definir un unico contrato generico de repo-harness que siga siendo util cuando Git o una integracion del ecosistema no esten disponibles, mientras conserva comportamiento mas fuerte respaldado por capacidades disponibles. El autoalojamiento reciproco es el campo de prueba, no permiso para exportar la politica de este repositorio a consumidores.
