@@ -44,8 +44,8 @@
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
 | [rh-w-0071-design.md](rh-w-0071-design.md) | Owner-approved native ADHD-friendly response mode design; implementation remains separately unauthorized |
 | [rh-w-0071-implementation-plan.md](rh-w-0071-implementation-plan.md) | Proposed RH-W-0071 implementation plan in four slices; owner approval and implementation remain separately unauthorized |
-| [rh-w-0079-design.md](rh-w-0079-design.md) | Owner-approved optional-capability and self-hosting release-boundary design; Slices 1 and 2 are delivered and Slices 3 through 5 remain pending |
-| [rh-w-0079-implementation-plan.md](rh-w-0079-implementation-plan.md) | Owner-approved executable plan in five test-first slices; Slices 1 and 2 are delivered and Slices 3 through 5 remain separately unauthorized |
+| [rh-w-0079-design.md](rh-w-0079-design.md) | Owner-approved optional-capability and self-hosting release-boundary design; Slices 1 through 3 are delivered and Slices 4 and 5 remain pending |
+| [rh-w-0079-implementation-plan.md](rh-w-0079-implementation-plan.md) | Owner-approved executable plan in five test-first slices; Slices 1 through 3 are delivered and Slices 4 and 5 remain separately unauthorized |
 | [rh-w-0056-findings.md](rh-w-0056-findings.md) | Canonical findings and completed 64-recommendation disposition owner for the external harness review |
 | [archive/repo-bootstrap-handoff.md](archive/repo-bootstrap-handoff.md) | Archived 2026-08-12 split handoff, provenance only; not policy, not a plan, and not a source of pending work |
 | [Spanish documentation map](../es/repo-harness/README.md) | Complete Spanish documentation map |
