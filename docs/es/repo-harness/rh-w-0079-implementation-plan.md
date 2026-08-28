@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0079 de capacidades opcionales
 
-Estado: `ready`, completo y aprobado por el propietario el 2026-08-28 despues de que una revision final nueva devolviera PASS. El [diseno](rh-w-0079-design.md) aprobado es autoritativo. El `ok comitear entonces ?` del propietario y su seleccion del flujo normal de contribucion aprobaron commitear el plan revisado y, por tanto, aprobaron el plan, pero no autorizaron implementacion. El issue local [#129](https://github.com/LCubero/repo-harness-builder/issues/129) cubre solo entrega de documentacion, ciclo de vida, diseno y planificacion. Este plan no autoriza implementacion, release, inicializacion Git, commit fuera de la contribucion documental aprobada por separado, push, cierre del issue ni pull request.
+Estado: `ready`, completo y aprobado por el propietario el 2026-08-28 despues de que una revision final nueva devolviera PASS. El [diseno](rh-w-0079-design.md) aprobado es autoritativo. El `ok comitear entonces ?` del propietario y su seleccion del flujo normal de contribucion aprobaron commitear el plan revisado y, por tanto, aprobaron el plan, pero no autorizaron implementacion. La contribucion de documentacion, ciclo de vida, diseno y planificacion se entrego mediante el issue [#129](https://github.com/LCubero/repo-harness-builder/issues/129), ya cerrado, y el PR [#130](https://github.com/LCubero/repo-harness-builder/pull/130), ya fusionado, en `dedf74ec7fe3a2d3f2f7ead0fe6f98dc93eb0f55`. Este plan no autoriza implementacion, release, inicializacion Git, otro commit, push, issue ni pull request.
 
 Par canonico: [RH-W-0079 Optional Capability Implementation Plan](../../repo-harness/rh-w-0079-implementation-plan.md).
 
@@ -162,4 +162,4 @@ Total: 740-1,410 lineas autoradas mas 300-700 de renderer en unos 10-18 archivos
 
 ## Compuerta del propietario
 
-`next_recommended`: solicitar autorizacion separada del propietario para un alcance acotado de implementacion. La aprobacion del plan y el issue local #129 autorizan solo la contribucion documental revisada; no autorizan implementacion, release, push, cierre del issue ni entrega por pull request.
+`next_recommended`: solicitar autorizacion separada del propietario para un alcance acotado de implementacion. La aprobacion del plan y la entrega documental completada mediante el issue #129 y el PR #130 no autorizan implementacion, release, push, otro issue ni otra entrega por pull request.
