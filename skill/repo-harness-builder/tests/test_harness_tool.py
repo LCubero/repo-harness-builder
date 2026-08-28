@@ -4265,24 +4265,58 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
         self.assertEqual(observed, {"not_found", "found_on_path", "verified"})
         self.assertEqual(TOOL.CAPABILITY_CLASSIFICATIONS, observed)
 
-    def test_integrated_selection_requires_both_verified_outcomes(self):
+    def test_default_selection_composes_verified_capabilities_independently(self):
         verified = {"classification": "verified", "evidence": "ok"}
         unavailable = {"classification": "not_found", "evidence": "missing"}
-        selected = TOOL.select_integration_mode("integrated", verified, verified)
-        self.assertEqual(selected["mode"], "integrated")
-        self.assertTrue(selected["allowed"])
-        for gentle, engram in ((verified, unavailable), (unavailable, verified), (unavailable, unavailable)):
+        for gentle, engram, gentle_state, engram_state in (
+            (verified, verified, "available", "available"),
+            (verified, unavailable, "available", "unavailable"),
+            (unavailable, verified, "unavailable", "available"),
+            (unavailable, unavailable, "unavailable", "unavailable"),
+        ):
             with self.subTest(gentle=gentle, engram=engram):
-                refused = TOOL.select_integration_mode("integrated", gentle, engram)
-                self.assertFalse(refused["allowed"])
-                self.assertEqual(refused["gentleAi"], gentle)
-                self.assertEqual(refused["engram"], engram)
-                self.assertEqual(refused["nextAction"], "select standalone or restore the unverified capability")
+                selected = TOOL.select_integration_mode("integrated", gentle, engram)
+                self.assertTrue(selected["allowed"])
+                self.assertEqual(selected.get("gentleAiState"), gentle_state)
+                self.assertEqual(selected.get("engramState"), engram_state)
+                self.assertEqual(selected["gentleAi"], gentle)
+                self.assertEqual(selected["engram"], engram)
         standalone = TOOL.select_integration_mode("standalone", unavailable, unavailable)
         self.assertEqual(standalone["mode"], "standalone")
         self.assertTrue(standalone["allowed"])
 
-    def test_cli_integrated_preview_and_apply_fail_closed_for_every_unverified_pair(self):
+    def test_effective_partial_and_disabled_states_do_not_expand_detector_vocabulary(self):
+        for state in ("partial", "disabled"):
+            with self.subTest(state=state):
+                selected = TOOL.select_integration_mode(
+                    "integrated",
+                    {"classification": "found_on_path", "state": state, "evidence": "bounded"},
+                    {"classification": "not_found", "evidence": "missing"},
+                )
+                self.assertTrue(selected["allowed"])
+                self.assertEqual(selected.get("gentleAiState"), state)
+                self.assertEqual(TOOL.CAPABILITY_CLASSIFICATIONS, {"not_found", "found_on_path", "verified"})
+
+    def test_policy_required_is_a_contextual_selection_state(self):
+        selected = TOOL.select_integration_mode(
+            "integrated",
+            {
+                "classification": "not_found",
+                "state": "policy-required",
+                "requiredFor": "delivery",
+                "evidence": "private-policy-evidence",
+            },
+            {"classification": "verified", "evidence": "private-engram-evidence"},
+        )
+
+        projected = TOOL.capability_projection(selected)
+
+        self.assertEqual(projected["gentleAiState"], "policy-required")
+        self.assertEqual(projected["gentleAi"]["requiredFor"], "delivery")
+        self.assertNotIn("evidence", projected["gentleAi"])
+        self.assertEqual(TOOL.CAPABILITY_CLASSIFICATIONS, {"not_found", "found_on_path", "verified"})
+
+    def test_cli_default_preview_proceeds_for_every_capability_pair(self):
         classifications = ("not_found", "found_on_path", "verified")
         with tempfile.TemporaryDirectory() as directory:
             base = [
@@ -4290,29 +4324,132 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
             ]
             for gentle_classification in classifications:
                 for engram_classification in classifications:
-                    if gentle_classification == engram_classification == "verified":
-                        continue
                     gentle = {"classification": gentle_classification, "evidence": f"gentle-{gentle_classification}"}
                     engram = {"classification": engram_classification, "evidence": f"engram-{engram_classification}"}
-                    for apply_args in ([], ["--apply", "--approved-plan-sha256", "unused"]):
-                        with self.subTest(gentle=gentle_classification, engram=engram_classification, apply=bool(apply_args)):
-                            stdout = unittest.mock.MagicMock()
-                            stderr = unittest.mock.MagicMock()
-                            with mock.patch.object(TOOL, "detect_gentle_ai", return_value=gentle), \
-                                 mock.patch.object(TOOL, "detect_engram", return_value=engram), \
-                                 mock.patch.object(sys, "stdout", stdout), \
-                                 mock.patch.object(sys, "stderr", stderr):
-                                result = TOOL.main([*base, *apply_args])
-                            self.assertEqual(result, 2)
-                            payload = json.loads("".join(call.args[0] for call in stderr.write.call_args_list))
-                            # RH-W-0054 Task 6 removed the evidence each component was judged
-                            # from: the host supplies Engram's, so echoing it back published
-                            # whatever that payload carried. The classification this test cares
-                            # about is unchanged.
-                            projected = payload["capabilityPreflight"]
-                            self.assertEqual(projected["gentleAi"], {"classification": gentle_classification})
-                            self.assertEqual(projected["engram"], {"classification": engram_classification})
-                            self.assertFalse((Path(directory) / RULEBOOK).exists())
+                    with self.subTest(gentle=gentle_classification, engram=engram_classification):
+                        stdout = unittest.mock.MagicMock()
+                        stderr = unittest.mock.MagicMock()
+                        with mock.patch.object(TOOL, "detect_gentle_ai", return_value=gentle), \
+                             mock.patch.object(TOOL, "detect_engram", return_value=engram), \
+                             mock.patch.object(sys, "stdout", stdout), \
+                             mock.patch.object(sys, "stderr", stderr):
+                            result = TOOL.main(base)
+                        self.assertEqual(result, 0)
+                        payload = json.loads("".join(call.args[0] for call in stdout.write.call_args_list))
+                        self.assertEqual(payload["status"], "plan")
+                        self.assertEqual(payload["writes"], 0)
+                        projected = payload["capabilityPreflight"]
+                        self.assertEqual(
+                            projected["gentleAiState"],
+                            "available" if gentle_classification == "verified" else "unavailable",
+                        )
+                        self.assertEqual(
+                            projected["engramState"],
+                            "available" if engram_classification == "verified" else "unavailable",
+                        )
+                        self.assertNotIn("evidence", projected["gentleAi"])
+                        self.assertNotIn("evidence", projected["engram"])
+                        self.assertFalse((Path(directory) / RULEBOOK).exists())
+
+    def test_cli_preview_projects_sanitized_effective_capability_compositions(self):
+        cases = (
+            ("available", "unavailable"),
+            ("unavailable", "available"),
+            ("partial", "unavailable"),
+            ("unavailable", "partial"),
+            ("disabled", "unavailable"),
+            ("unavailable", "disabled"),
+            ("policy-required", "unavailable"),
+            ("unavailable", "policy-required"),
+            ("available", "partial"),
+            ("disabled", "available"),
+            ("partial", "disabled"),
+            ("policy-required", "available"),
+            ("available", "policy-required"),
+            ("policy-required", "partial"),
+        )
+
+        def capability(component, state):
+            value = {
+                "classification": "verified" if state == "available" else "not_found",
+                "evidence": f"private-{component}-{state}-evidence",
+            }
+            if state in {"partial", "disabled", "policy-required"}:
+                value["classification"] = "found_on_path" if state == "partial" else "not_found"
+                value["state"] = state
+            if state == "policy-required":
+                value["requiredFor"] = f"{component}-owned-workflow"
+            return value
+
+        with tempfile.TemporaryDirectory() as directory:
+            base = ["render", "--root", directory, "--project-name", "Example"]
+            for gentle_state, engram_state in cases:
+                gentle = capability("gentle", gentle_state)
+                engram = capability("engram", engram_state)
+                with self.subTest(gentle=gentle_state, engram=engram_state):
+                    stdout = unittest.mock.MagicMock()
+                    stderr = unittest.mock.MagicMock()
+                    with mock.patch.object(TOOL, "detect_gentle_ai", return_value=gentle), \
+                         mock.patch.object(TOOL, "detect_engram", return_value=engram), \
+                         mock.patch.object(sys, "stdout", stdout), \
+                         mock.patch.object(sys, "stderr", stderr):
+                        result = TOOL.main(base)
+
+                    self.assertEqual(result, 0)
+                    payload = json.loads("".join(call.args[0] for call in stdout.write.call_args_list))
+                    projected = payload["capabilityPreflight"]
+                    self.assertEqual(payload["status"], "plan")
+                    self.assertEqual(payload["writes"], 0)
+                    self.assertEqual(projected["gentleAiState"], gentle_state)
+                    self.assertEqual(projected["engramState"], engram_state)
+                    self.assertEqual(
+                        projected["applyAllowed"],
+                        gentle_state == engram_state == "available",
+                    )
+                    self.assertNotIn("evidence", projected["gentleAi"])
+                    self.assertNotIn("evidence", projected["engram"])
+                    self.assertNotIn("private-", json.dumps(payload))
+                    if gentle_state == "policy-required":
+                        self.assertEqual(
+                            projected["gentleAi"]["requiredFor"], "gentle-owned-workflow"
+                        )
+                    if engram_state == "policy-required":
+                        self.assertEqual(
+                            projected["engram"]["requiredFor"], "engram-owned-workflow"
+                        )
+                    self.assertEqual(
+                        TOOL.CAPABILITY_CLASSIFICATIONS,
+                        {"not_found", "found_on_path", "verified"},
+                    )
+                    self.assertFalse((Path(directory) / RULEBOOK).exists())
+
+    def test_cli_apply_still_fails_closed_for_every_unverified_pair(self):
+        classifications = ("not_found", "found_on_path", "verified")
+        with tempfile.TemporaryDirectory() as directory:
+            base = [
+                "render", "--root", directory, "--project-name", "Example",
+                "--runtime", "opencode", "--apply", "--approved-plan-sha256", "unused",
+            ]
+            for gentle_classification in classifications:
+                for engram_classification in classifications:
+                    if gentle_classification == engram_classification == "verified":
+                        continue
+                    gentle = {"classification": gentle_classification, "evidence": "private-gentle-evidence"}
+                    engram = {"classification": engram_classification, "evidence": "private-engram-evidence"}
+                    with self.subTest(gentle=gentle_classification, engram=engram_classification):
+                        stdout = unittest.mock.MagicMock()
+                        stderr = unittest.mock.MagicMock()
+                        with mock.patch.object(TOOL, "detect_gentle_ai", return_value=gentle), \
+                             mock.patch.object(TOOL, "detect_engram", return_value=engram), \
+                             mock.patch.object(sys, "stdout", stdout), \
+                             mock.patch.object(sys, "stderr", stderr):
+                            result = TOOL.main(base)
+                        self.assertEqual(result, 2)
+                        payload = json.loads("".join(call.args[0] for call in stderr.write.call_args_list))
+                        self.assertEqual(payload["status"], "FAILED_CLOSED")
+                        self.assertIn("verified Gentle AI and Engram", payload["error"])
+                        self.assertNotIn("private-", json.dumps(payload))
+                        self.assertFalse((Path(directory) / RULEBOOK).exists())
 
     def test_cli_integrated_preview_and_apply_proceed_when_both_capabilities_verify(self):
         verified = {"classification": "verified", "evidence": "verified"}
@@ -6968,8 +7105,8 @@ class StatelessBoundaryTests(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertFalse(hasattr(TOOL, name), f"{name} would make the authority path stateful")
 
-    def test_capability_preflight_reports_classification_without_raw_host_evidence(self):
-        """The host hands its own evidence in; printing it back publishes whatever it contained."""
+    def test_capability_preview_omits_raw_host_evidence(self):
+        """Independent selection must not publish the host evidence it used."""
         with tempfile.TemporaryDirectory() as directory:
             result = subprocess.run(
                 [
@@ -6981,14 +7118,11 @@ class StatelessBoundaryTests(unittest.TestCase):
                 check=False, capture_output=True, text=True,
             )
 
-            self.assertEqual(result.returncode, 2)
+            self.assertEqual(result.returncode, 0)
             self.assertNotIn(self.HOST, result.stdout)
             self.assertNotIn(self.HOST, result.stderr)
-            preflight = json.loads(result.stderr)["capabilityPreflight"]
-            self.assertEqual(preflight["engram"]["classification"], "found_on_path")
-            for component in ("engram", "gentleAi"):
-                with self.subTest(component=component):
-                    self.assertNotIn("evidence", preflight[component])
+            self.assertEqual(json.loads(result.stdout)["status"], "plan")
+            self.assertEqual(result.stderr, "")
 
     def test_detect_engram_keeps_the_whole_evidence_for_internal_verification(self):
         """The projection must narrow the output, never weaken the check behind it."""

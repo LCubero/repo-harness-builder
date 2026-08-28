@@ -187,21 +187,26 @@ def select_integration_mode(
     gentle_ai: Mapping[str, object],
     engram: Mapping[str, object],
 ) -> dict[str, Any]:
-    """Authorize one of the two generation modes from component evidence."""
+    """Compose optional capabilities independently from component evidence."""
     require(requested_mode in {"integrated", "standalone"}, "unsupported integration mode")
-    allowed = requested_mode == "standalone" or (
-        gentle_ai.get("classification") == "verified" and engram.get("classification") == "verified"
-    )
+
+    def effective_state(capability: Mapping[str, object]) -> str:
+        explicit = capability.get("state")
+        if explicit in {"partial", "disabled", "policy-required"}:
+            return str(explicit)
+        return "available" if capability.get("classification") == "verified" else "unavailable"
+
+    gentle_state = effective_state(gentle_ai)
+    engram_state = effective_state(engram)
     return {
         "mode": requested_mode,
-        "allowed": allowed,
+        "allowed": True,
+        "applyAllowed": gentle_state == "available" and engram_state == "available",
         "gentleAi": dict(gentle_ai),
         "engram": dict(engram),
-        "nextAction": (
-            "continue with the selected mode"
-            if allowed
-            else "select standalone or restore the unverified capability"
-        ),
+        "gentleAiState": gentle_state,
+        "engramState": engram_state,
+        "nextAction": "continue with available capabilities and report unavailable guarantees",
     }
 
 
@@ -3704,6 +3709,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         if args.command == "check":
             print(dump_json(check(root, args.project_name, selected, args.standalone)), end="")
             return 0
+        capability_preflight: dict[str, Any] = {}
         if not args.standalone:
             host_evidence = json.loads(args.engram_evidence_json) if args.engram_evidence_json else None
             require(host_evidence is None or isinstance(host_evidence, dict), "Engram host evidence must be a JSON object")
@@ -3712,12 +3718,13 @@ def main(argv: Optional[list[str]] = None) -> int:
                 detect_gentle_ai(),
                 detect_engram(host_evidence),
             )
-            if not preflight["allowed"]:
+            capability_preflight = capability_projection(preflight)
+            if args.apply and not preflight["applyAllowed"]:
                 print(
                     dump_json({
                         "status": "FAILED_CLOSED",
                         "error": "integrated mode requires verified Gentle AI and Engram capabilities",
-                        "capabilityPreflight": capability_projection(preflight),
+                        "capabilityPreflight": capability_preflight,
                     }),
                     end="",
                     file=sys.stderr,
@@ -3781,7 +3788,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")

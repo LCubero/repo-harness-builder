@@ -2,6 +2,8 @@
 
 Status: `ready`, design complete and owner-approved on 2026-08-28. The separate bilingual implementation plan is also owner-approved. Neither approval grants implementation, release, or delivery authority.
 
+Implementation progress: owner-authorized Slice 1 is implemented locally with RED and GREEN evidence. Slices 2 through 5, release, and delivery remain outside this result, so the lifecycle stays `ready`.
+
 ## Purpose
 
 Define one generic repo-harness contract that remains useful when Git or an ecosystem integration is absent, while preserving stronger capability-backed behavior when it is available. Reciprocal self-hosting is the proving ground, not permission to export this repository's policy to consumers.
