@@ -132,7 +132,7 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-Six units were delivered on 2026-08-27, each through its own issue and pull request with no direct commit to `main`: PRs #115, #117, #119, #121, #123, and #125. The next three documentation corrections arrived through PRs #126, #127, and #128. On 2026-08-28, PR #130 delivered the RH-W-0079 documentation contribution and closed issue #129. PRs #134, #138, #142, #146, and #148 then delivered all five RH-W-0079 slices. `main` and `origin/main` are at Slice 5 merge commit `7e7f57081a637f6a0f9078bb01bd2b59abd3104c`.
+Six units were delivered on 2026-08-27, each through its own issue and pull request with no direct commit to `main`: PRs #115, #117, #119, #121, #123, and #125. The next three documentation corrections arrived through PRs #126, #127, and #128. On 2026-08-28, PR #130 delivered the RH-W-0079 documentation contribution and closed issue #129. PRs #134, #138, #142, #146, and #148 then delivered all five RH-W-0079 slices. `main` and `origin/main` are synchronized at commit `fac022c6bd070079fa0aaa54a19b5e6757172059`.
 
 The existing `RH-W-0071` plan approval and `RH-W-0076` scope approval remain pending. `RH-W-0079` is completed; any actual release remains separate.
 

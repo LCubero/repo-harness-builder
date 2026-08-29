@@ -126,7 +126,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-El 2026-08-27 se entregaron seis unidades, cada una por su propio issue y pull request y sin ningun commit directo a `main`: PRs #115, #117, #119, #121, #123 y #125. Las tres correcciones documentales siguientes llegaron mediante los PRs #126, #127 y #128. El 2026-08-28, el PR #130 entrego la contribucion documental RH-W-0079 y cerro el issue #129. Los PRs #134, #138, #142, #146 y #148 entregaron despues los cinco Cortes de RH-W-0079. `main` y `origin/main` estan en el commit de merge del Corte 5 `7e7f57081a637f6a0f9078bb01bd2b59abd3104c`.
+El 2026-08-27 se entregaron seis unidades, cada una por su propio issue y pull request y sin ningun commit directo a `main`: PRs #115, #117, #119, #121, #123 y #125. Las tres correcciones documentales siguientes llegaron mediante los PRs #126, #127 y #128. El 2026-08-28, el PR #130 entrego la contribucion documental RH-W-0079 y cerro el issue #129. Los PRs #134, #138, #142, #146 y #148 entregaron despues los cinco Cortes de RH-W-0079. `main` y `origin/main` estan sincronizados en el commit `fac022c6bd070079fa0aaa54a19b5e6757172059`.
 
 Siguen pendientes la aprobacion del plan `RH-W-0071` y la aprobacion del alcance `RH-W-0076`. `RH-W-0079` esta completado; todo release real sigue separado.
 
