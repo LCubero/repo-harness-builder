@@ -1,0 +1,61 @@
+{
+  "deliveredRange": "5d8b87c^..9a04008",
+  "changedBehaviors": [
+    "independent optional capability selection",
+    "effective availability states remain separate from detector classifications",
+    "sanitized capability preflight projection",
+    "read-only local Git state inspection",
+    "useful degradation when Git is unavailable",
+    "explicit consent before Git initialization",
+    "provider capability remains separate from Git capability",
+    "contribution policy remains repository-specific",
+    "effective capability authority binding"
+  ],
+  "classifications": [
+    {
+      "behavior": "independent optional capability selection",
+      "category": "generic consumer contract",
+      "diffEvidence": "def select_integration_mode"
+    },
+    {
+      "behavior": "effective availability states remain separate from detector classifications",
+      "category": "generic consumer contract",
+      "diffEvidence": "gentleAiState"
+    },
+    {
+      "behavior": "sanitized capability preflight projection",
+      "category": "builder-only scaffolding",
+      "diffEvidence": "capabilityPreflight"
+    },
+    {
+      "behavior": "read-only local Git state inspection",
+      "category": "builder-only scaffolding",
+      "diffEvidence": "def inspect_git_state"
+    },
+    {
+      "behavior": "useful degradation when Git is unavailable",
+      "category": "generic consumer contract",
+      "diffEvidence": "at most one useful operation-scoped Git recommendation"
+    },
+    {
+      "behavior": "explicit consent before Git initialization",
+      "category": "generic consumer contract",
+      "diffEvidence": "explicit current human approval before `git init`"
+    },
+    {
+      "behavior": "provider capability remains separate from Git capability",
+      "category": "generic consumer contract",
+      "diffEvidence": "Native Git capability is distinct from provider capability"
+    },
+    {
+      "behavior": "contribution policy remains repository-specific",
+      "category": "generic consumer contract",
+      "diffEvidence": "An applicable `CONTRIBUTING.md` is repository-specific authority only"
+    },
+    {
+      "behavior": "effective capability authority binding",
+      "category": "builder-only scaffolding",
+      "diffEvidence": "effectiveCapabilities"
+    }
+  ]
+}

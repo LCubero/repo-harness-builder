@@ -847,6 +847,7 @@ def inspect_git_state(
                 text=True,
                 check=False,
                 shell=False,
+                timeout=10,
             )
         except FileNotFoundError:
             if args == ("rev-parse", "--git-dir"):

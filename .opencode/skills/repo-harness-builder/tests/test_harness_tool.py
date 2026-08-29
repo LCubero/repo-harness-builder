@@ -1,6 +1,8 @@
 import argparse
 import ast
+import contextlib
 import importlib.util
+import io
 import inspect
 import hashlib
 import json
@@ -22,6 +24,14 @@ SPEC = importlib.util.spec_from_file_location("harness_tool", SCRIPT)
 assert SPEC and SPEC.loader
 TOOL = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(TOOL)
+
+
+def repository_root() -> Path | None:
+    """Return the checkout root from canonical or runtime package tests."""
+    for candidate in (ROOT, *ROOT.parents):
+        if (candidate / "skill/repo-harness-builder/scripts/harness_tool.py").is_file():
+            return candidate
+    return None
 
 DISCIPLINE = (
     "Work only inside the selected repository.",
@@ -69,6 +79,7 @@ class AuthorityContextTests(unittest.TestCase):
                 "conversationLanguage": "espanol",
                 "ignoreCodegraph": True,
                 "activation": "builder",
+                "effectiveCapabilities": {"gentleAi": "available", "engram": "available"},
             },
             "premises": [
                 {
@@ -3419,6 +3430,381 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertIn("fast-forward-only", start)
         self.assertIn("Never use git pull, git rebase, git reset", start)
 
+    def test_git_inspection_distinguishes_supported_local_states(self):
+        def git(root, *args, check=True):
+            return subprocess.run(
+                ("git", "-C", str(root), *args),
+                capture_output=True,
+                text=True,
+                check=check,
+            )
+
+        def commit(root, message):
+            git(root, "-c", "user.name=Harness Test", "-c", "user.email=harness@example.invalid", "commit", "-qm", message)
+
+        cases = (
+            ("uninitialized", lambda root: None, "uninitialized"),
+            ("unborn", lambda root: git(root, "init", "-q"), "unborn"),
+            (
+                "no-remote",
+                lambda root: (
+                    git(root, "init", "-q"),
+                    (root / "tracked.txt").write_text("one\n", encoding="utf-8"),
+                    git(root, "add", "tracked.txt"),
+                    commit(root, "initial"),
+                ),
+                "no-remote",
+            ),
+            (
+                "no-upstream",
+                lambda root: (
+                    git(root, "init", "-q"),
+                    (root / "tracked.txt").write_text("one\n", encoding="utf-8"),
+                    git(root, "add", "tracked.txt"),
+                    commit(root, "initial"),
+                    git(root, "remote", "add", "elsewhere", str(root / "unused.git")),
+                ),
+                "no-upstream",
+            ),
+            (
+                "clean",
+                lambda root: (
+                    git(root, "init", "-q"),
+                    (root / "tracked.txt").write_text("one\n", encoding="utf-8"),
+                    git(root, "add", "tracked.txt"),
+                    commit(root, "initial"),
+                    git(root, "remote", "add", "elsewhere", str(root / "unused.git")),
+                    git(root, "update-ref", "refs/remotes/elsewhere/main", "HEAD"),
+                    git(root, "branch", "--set-upstream-to=elsewhere/main"),
+                ),
+                "clean",
+            ),
+            (
+                "dirty",
+                lambda root: (
+                    git(root, "init", "-q"),
+                    (root / "tracked.txt").write_text("one\n", encoding="utf-8"),
+                    git(root, "add", "tracked.txt"),
+                    commit(root, "initial"),
+                    (root / "tracked.txt").write_text("two\n", encoding="utf-8"),
+                ),
+                "dirty",
+            ),
+            (
+                "detached",
+                lambda root: (
+                    git(root, "init", "-q"),
+                    (root / "tracked.txt").write_text("one\n", encoding="utf-8"),
+                    git(root, "add", "tracked.txt"),
+                    commit(root, "initial"),
+                    git(root, "checkout", "--detach", "-q"),
+                ),
+                "detached",
+            ),
+        )
+
+        for name, arrange, expected in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                arrange(root)
+                observed = TOOL.inspect_git_state(root)
+                self.assertEqual(observed["state"], expected)
+                self.assertNotIn("github", repr(observed).lower())
+
+    def test_git_inspection_preserves_dirty_evidence_for_unborn_and_detached_states(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(("git", "-C", str(root), "init", "-q"), check=True)
+            (root / "untracked.txt").write_text("unborn dirty\n", encoding="utf-8")
+            observed = TOOL.inspect_git_state(root)
+            self.assertEqual(observed["state"], "unborn")
+            self.assertTrue(observed["dirty"])
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(("git", "-C", str(root), "init", "-q"), check=True)
+            (root / "tracked.txt").write_text("base\n", encoding="utf-8")
+            subprocess.run(("git", "-C", str(root), "add", "tracked.txt"), check=True)
+            subprocess.run((
+                "git", "-C", str(root), "-c", "user.name=Harness Test",
+                "-c", "user.email=harness@example.invalid", "commit", "-qm", "base",
+            ), check=True)
+            subprocess.run(("git", "-C", str(root), "checkout", "--detach", "-q"), check=True)
+            (root / "tracked.txt").write_text("detached dirty\n", encoding="utf-8")
+            observed = TOOL.inspect_git_state(root)
+            self.assertEqual(observed["state"], "detached")
+            self.assertTrue(observed["dirty"])
+
+    def test_git_inspection_handles_absent_git_and_diverged_or_unresolved_integration(self):
+        def absent(*args, **kwargs):
+            raise FileNotFoundError("git unavailable")
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.assertEqual(TOOL.inspect_git_state(root, execute=absent)["state"], "executable-absent")
+            self.assertFalse((root / ".git").exists())
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+
+            def merge_git(*args, check=True):
+                return subprocess.run(
+                    ("git", "-C", str(root), *args), capture_output=True, text=True, check=check,
+                )
+
+            merge_git("init", "-q")
+            (root / "conflict.txt").write_text("base\n", encoding="utf-8")
+            merge_git("add", "conflict.txt")
+            merge_git("-c", "user.name=Harness Test", "-c", "user.email=harness@example.invalid", "commit", "-qm", "base")
+            branch = merge_git("branch", "--show-current").stdout.strip()
+            merge_git("checkout", "-qb", "other")
+            (root / "conflict.txt").write_text("other\n", encoding="utf-8")
+            merge_git("add", "conflict.txt")
+            merge_git("-c", "user.name=Harness Test", "-c", "user.email=harness@example.invalid", "commit", "-qm", "other")
+            merge_git("checkout", "-q", branch)
+            (root / "conflict.txt").write_text("main\n", encoding="utf-8")
+            merge_git("add", "conflict.txt")
+            merge_git("-c", "user.name=Harness Test", "-c", "user.email=harness@example.invalid", "commit", "-qm", "main")
+            conflict = merge_git("merge", "other", check=False)
+            self.assertNotEqual(conflict.returncode, 0)
+            self.assertEqual(TOOL.inspect_git_state(root)["state"], "diverged-or-unresolved")
+
+    def test_git_remote_and_contributing_files_never_imply_provider_capability(self):
+        for remote in (None, "https://github.com/example/project.git", "https://gitlab.example/project.git"):
+            for contributing in (False, True):
+                with self.subTest(remote=remote, contributing=contributing), tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    subprocess.run(("git", "-C", str(root), "init", "-q"), check=True)
+                    (root / "tracked.txt").write_text("base\n", encoding="utf-8")
+                    subprocess.run(("git", "-C", str(root), "add", "tracked.txt"), check=True)
+                    subprocess.run((
+                        "git", "-C", str(root), "-c", "user.name=Harness Test",
+                        "-c", "user.email=harness@example.invalid", "commit", "-qm", "base",
+                    ), check=True)
+                    if remote:
+                        subprocess.run(("git", "-C", str(root), "remote", "add", "origin", remote), check=True)
+                    if contributing:
+                        (root / "CONTRIBUTING.md").write_text("Use provider workflow.\n", encoding="utf-8")
+                    observed = TOOL.inspect_git_state(root)
+                    self.assertFalse(set(observed) & {"provider", "github", "issues", "pullRequests", "checks"})
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+
+            def git(*args):
+                return subprocess.run(
+                    ("git", "-C", str(root), *args),
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
+
+            git("init", "-q")
+            (root / "tracked.txt").write_text("base\n", encoding="utf-8")
+            git("add", "tracked.txt")
+            git("-c", "user.name=Harness Test", "-c", "user.email=harness@example.invalid", "commit", "-qm", "base")
+            branch = git("branch", "--show-current").stdout.strip()
+            git("checkout", "-qb", "remote-side")
+            (root / "tracked.txt").write_text("remote\n", encoding="utf-8")
+            git("add", "tracked.txt")
+            git("-c", "user.name=Harness Test", "-c", "user.email=harness@example.invalid", "commit", "-qm", "remote")
+            remote_head = git("rev-parse", "HEAD").stdout.strip()
+            git("checkout", "-q", branch)
+            (root / "tracked.txt").write_text("local\n", encoding="utf-8")
+            git("add", "tracked.txt")
+            git("-c", "user.name=Harness Test", "-c", "user.email=harness@example.invalid", "commit", "-qm", "local")
+            git("remote", "add", "elsewhere", str(root / "unused.git"))
+            git("update-ref", "refs/remotes/elsewhere/main", remote_head)
+            git("branch", "--set-upstream-to=elsewhere/main")
+            observed = TOOL.inspect_git_state(root)
+            self.assertEqual(observed["state"], "diverged-or-unresolved")
+            self.assertEqual((observed["ahead"], observed["behind"]), (1, 1))
+
+    def test_git_inspection_fails_closed_at_every_command_boundary(self):
+        timeouts = []
+        successful = {
+            ("rev-parse", "--git-dir"): ".git\n",
+            ("rev-parse", "--verify", "HEAD"): "a" * 40 + "\n",
+            ("symbolic-ref", "--quiet", "--short", "HEAD"): "main\n",
+            ("status", "--porcelain=v1", "--untracked-files=normal"): "",
+            ("remote",): "origin\n",
+            ("rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"): "origin/main\n",
+            ("rev-list", "--left-right", "--count", "HEAD...@{upstream}"): "0 0\n",
+        }
+
+        def executor_failing_at(boundary, error_factory):
+            calls = 0
+
+            def execute(command, **kwargs):
+                nonlocal calls
+                calls += 1
+                timeouts.append(kwargs.get("timeout"))
+                if calls == boundary:
+                    raise error_factory()
+                args = tuple(command[3:])
+                if args[:2] == ("rev-parse", "--git-path"):
+                    stdout = f".git/{args[-1]}\n"
+                else:
+                    stdout = successful[args]
+                return subprocess.CompletedProcess(command, 0, stdout, "")
+
+            return execute
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for boundary in range(1, 12):
+                with self.subTest(boundary=boundary):
+                    observed = TOOL.inspect_git_state(
+                        root,
+                        execute=executor_failing_at(boundary, lambda: PermissionError("secret path")),
+                    )
+                    self.assertEqual(observed["state"], "inspection-failed")
+                    self.assertNotIn("secret", repr(observed).lower())
+            self.assertEqual(set(timeouts), {10})
+
+            observed = TOOL.inspect_git_state(
+                root,
+                execute=executor_failing_at(
+                    4,
+                    lambda: UnicodeDecodeError("utf-8", b"\xff", 0, 1, "invalid"),
+                ),
+            )
+            self.assertEqual(observed["state"], "inspection-failed")
+
+            observed = TOOL.inspect_git_state(
+                root,
+                execute=executor_failing_at(3, lambda: subprocess.TimeoutExpired("git", 10)),
+            )
+            self.assertEqual(observed["state"], "inspection-failed")
+
+    def test_git_inspection_contains_unexpected_ordinary_boundary_exceptions_only(self):
+        def raises(error):
+            def execute(*args, **kwargs):
+                raise error
+
+            return execute
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for error in (ValueError("sensitive decoder detail"), TypeError("sensitive invocation detail")):
+                with self.subTest(error=type(error).__name__):
+                    observed = TOOL.inspect_git_state(root, execute=raises(error))
+                    self.assertEqual(observed["state"], "inspection-failed")
+                    self.assertNotIn("sensitive", repr(observed).lower())
+
+            for error in (KeyboardInterrupt(), SystemExit(7), GeneratorExit()):
+                with self.subTest(error=type(error).__name__):
+                    with self.assertRaises(type(error)):
+                        TOOL.inspect_git_state(root, execute=raises(error))
+
+    def test_git_inspection_accepts_only_stable_negative_return_codes(self):
+        def completed(command, returncode, stdout="", stderr="sensitive evidence"):
+            return subprocess.CompletedProcess(command, returncode, stdout, stderr)
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            scenarios = (
+                ((2,), "inspection-failed"),
+                ((0, 0, 0, 0, 0, 0, 128), "unborn"),
+                ((0, 0, 0, 0, 0, 0, 0, 1), "detached"),
+            )
+            for codes, expected in scenarios:
+                calls = iter(codes)
+
+                def execute(command, **kwargs):
+                    code = next(calls)
+                    args = tuple(command[3:])
+                    stdout = ".git\n" if args == ("rev-parse", "--git-dir") else ""
+                    if args[:2] == ("rev-parse", "--git-path"):
+                        stdout = f".git/{args[-1]}\n"
+                    return completed(command, code, stdout)
+
+                with self.subTest(codes=codes):
+                    observed = TOOL.inspect_git_state(root, execute=execute)
+                    self.assertEqual(observed["state"], expected)
+                    self.assertNotIn("sensitive", repr(observed).lower())
+
+    def test_non_mutating_cli_entry_points_and_apply_never_initialize_git(self):
+        def inventory(root):
+            evidence = {}
+            for path in sorted(root.rglob("*"), key=lambda item: item.as_posix()):
+                relative = path.relative_to(root).as_posix()
+                if path.is_dir():
+                    evidence[relative] = ("directory",)
+                else:
+                    content = path.read_bytes()
+                    evidence[relative] = ("file", len(content), hashlib.sha256(content).hexdigest())
+            return evidence
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            before = inventory(root)
+            preview = io.StringIO()
+            with contextlib.redirect_stdout(preview):
+                self.assertEqual(
+                    TOOL.main(["render", "--root", str(root), "--project-name", "Example", "--standalone"]),
+                    0,
+                )
+            self.assertEqual(inventory(root), before)
+            self.assertFalse((root / ".git").exists())
+            self.assertEqual(json.loads(preview.getvalue())["gitState"]["state"], "uninitialized")
+
+            check_output = io.StringIO()
+            with contextlib.redirect_stdout(check_output):
+                self.assertEqual(
+                    TOOL.main(["check", "--root", str(root), "--project-name", "Example", "--standalone"]),
+                    0,
+                )
+            self.assertEqual(inventory(root), before)
+            self.assertFalse((root / ".git").exists())
+            self.assertEqual(json.loads(check_output.getvalue())["gitState"]["state"], "uninitialized")
+
+            plan = json.loads(preview.getvalue())
+            apply_output = io.StringIO()
+            with contextlib.redirect_stdout(apply_output):
+                self.assertEqual(
+                    TOOL.main([
+                        "render", "--root", str(root), "--project-name", "Example", "--standalone",
+                        "--apply", "--approved-plan-sha256", plan["planSha256"],
+                    ]),
+                    0,
+                )
+            self.assertFalse((root / ".git").exists())
+            apply_report = json.loads(apply_output.getvalue())
+            changed = set(apply_report["changed"])
+            approved_files = {item["path"] for item in plan["create"]}
+            approved_paths = set(approved_files)
+            for output in approved_files:
+                parent = Path(output).parent
+                while parent != Path("."):
+                    approved_paths.add(parent.as_posix())
+                    parent = parent.parent
+            after = inventory(root)
+            actual_changes = {
+                path for path in before.keys() | after.keys()
+                if before.get(path) != after.get(path)
+            }
+            self.assertEqual(changed, approved_files)
+            self.assertLessEqual(actual_changes, approved_paths)
+            self.assertNotIn(".git", after)
+            self.assertEqual(json.loads(apply_output.getvalue())["gitState"]["state"], "uninitialized")
+
+        outputs = TOOL.render("Example", [])
+
+    def test_session_contract_keeps_provider_policy_separate(self):
+        outputs = TOOL.render("Example", [])
+
+        start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        for phrase in (
+            "at most one useful operation-scoped Git recommendation",
+            "explicit current human approval before `git init`",
+            "never initialize Git as a side effect",
+            "Native Git capability is distinct from provider capability",
+            "Never infer GitHub, issues, pull requests, checks, or contribution workflow",
+            "An applicable `CONTRIBUTING.md` is repository-specific authority only",
+        ):
+            self.assertIn(phrase, start)
+
     def test_session_start_requires_one_resumable_network_approval(self):
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         for phrase in (
@@ -4156,6 +4542,79 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
             delattr(TOOL, name)
 
     def test_generated_contract_assigns_each_owner_without_copying_state(self):
+        fixture = json.loads(
+            (ROOT / "tests/fixtures/rh_w_0079_changed_behavior_inventory.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        expected = fixture["changedBehaviors"]
+        classified = [item["behavior"] for item in fixture["classifications"]]
+
+        self.assertEqual(len(expected), len(set(expected)), "changed behavior inventory has duplicates")
+        self.assertEqual(set(classified), set(expected), "classification is missing a changed behavior")
+        categories = {item["category"] for item in fixture["classifications"]}
+        self.assertLessEqual(
+            categories,
+            {
+                "builder-only scaffolding",
+                "repository-specific policy",
+                "generic consumer contract",
+            },
+        )
+        self.assertIn("builder-only scaffolding", categories)
+        self.assertIn("generic consumer contract", categories)
+
+        self.assertEqual(len(classified), len(set(classified)), "a changed behavior is classified twice")
+        checkout_root = repository_root()
+        if checkout_root is not None:
+            delivered_diff = subprocess.run(
+                (
+                    "git", "-C", str(checkout_root), "diff", "--unified=0",
+                    fixture["deliveredRange"], "--",
+                    "skill/repo-harness-builder/scripts/harness_tool.py",
+                ),
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout
+            for item in fixture["classifications"]:
+                with self.subTest(behavior=item["behavior"]):
+                    self.assertIn(item["diffEvidence"], delivered_diff)
+
+        generic_output = "\n".join(
+            TOOL.render("Consumer", ["opencode", "claude-code", "pi"]).values()
+        )
+        forbidden_mandates = (
+            r"(?i)must (?:use|have|enable) github",
+            r"(?i)must (?:open|create|link) (?:a |an )?(?:github )?issue",
+            r"(?i)must (?:open|create) (?:a )?(?:pull request|pr)",
+            r"(?i)requires? (?:github )?(?:checks|pull requests|issues)",
+            r"(?i)requires? contributing\.md",
+            r"(?i)must (?:use|enable) (?:gentle ai|engram|codegraph)",
+            r"(?i)must (?:create|use) (?:a )?branch",
+            r"(?i)must (?:commit|push|publish)",
+            r"(?i)(?:must|required to|requires?) [^.\n]{0,40}issue-first",
+            r"(?i)bilingual self-hosting",
+        )
+        for pattern in forbidden_mandates:
+            with self.subTest(pattern=pattern):
+                self.assertNotRegex(generic_output, pattern)
+        if checkout_root is not None:
+            local_contract = "\n".join(
+                (
+                    (checkout_root / "REPO-HARNESS.md").read_text(encoding="utf-8"),
+                    (checkout_root / "CONTRIBUTING.md").read_text(encoding="utf-8"),
+                )
+            )
+            for local_policy in (
+                "This repository self-hosts",
+                "Contributions start with an issue",
+                "Do not commit directly to `main`",
+            ):
+                with self.subTest(local_policy=local_policy):
+                    self.assertIn(local_policy, local_contract)
+                    self.assertNotIn(local_policy, generic_output)
+
         combined = "\n".join(TOOL.render("Example", []).values())
         for phrase in (
             "The repository owns durable truth, source, tests, policy, backlog, and approvals.",
@@ -4423,7 +4882,7 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
                     )
                     self.assertFalse((Path(directory) / RULEBOOK).exists())
 
-    def test_cli_apply_still_fails_closed_for_every_unverified_pair(self):
+    def test_cli_apply_without_authority_reaches_the_plan_binding_for_every_pair(self):
         classifications = ("not_found", "found_on_path", "verified")
         with tempfile.TemporaryDirectory() as directory:
             base = [
@@ -4447,9 +4906,134 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
                         self.assertEqual(result, 2)
                         payload = json.loads("".join(call.args[0] for call in stderr.write.call_args_list))
                         self.assertEqual(payload["status"], "FAILED_CLOSED")
-                        self.assertIn("verified Gentle AI and Engram", payload["error"])
+                        self.assertIn("approved plan does not match", payload["error"])
                         self.assertNotIn("private-", json.dumps(payload))
                         self.assertFalse((Path(directory) / RULEBOOK).exists())
+
+    def test_authority_configuration_projects_effective_capabilities_canonically(self):
+        base = argparse.Namespace(
+            runtime=["opencode"], license_id="MIT", standalone=False,
+            report_language="english", documentation_languages=["en"],
+            conversation_language="english", ignore_codegraph=True, activation="builder",
+        )
+        for gentle_state, engram_state in (
+            ("unavailable", "unavailable"), ("available", "unavailable"),
+            ("unavailable", "available"), ("available", "available"),
+            ("partial", "disabled"),
+        ):
+            with self.subTest(gentle=gentle_state, engram=engram_state):
+                base.effective_capabilities = {
+                    "gentleAi": gentle_state, "engram": engram_state,
+                }
+                config = TOOL.expected_authority_builder_config(base)
+                self.assertEqual(config["effectiveCapabilities"], base.effective_capabilities)
+                self.assertEqual(
+                    TOOL.canonical_json(config["effectiveCapabilities"]),
+                    json.dumps(base.effective_capabilities, sort_keys=True, separators=(",", ":")),
+                )
+
+        base.standalone = True
+        del base.effective_capabilities
+        self.assertEqual(
+            TOOL.expected_authority_builder_config(base)["effectiveCapabilities"],
+            {"gentleAi": "disabled", "engram": "disabled"},
+        )
+
+    def test_authority_apply_accepts_stable_combinations_and_rejects_material_drift(self):
+        def capability(state):
+            value = {
+                "classification": "verified" if state == "available" else "not_found",
+                "evidence": f"private-{state}-evidence",
+            }
+            if state in {"partial", "disabled"}:
+                value["classification"] = "found_on_path" if state == "partial" else "not_found"
+                value["state"] = state
+            return value
+
+        def invoke(arguments, gentle, engram):
+            stdout = unittest.mock.MagicMock()
+            stderr = unittest.mock.MagicMock()
+            with mock.patch.object(TOOL, "detect_gentle_ai", return_value=gentle), \
+                 mock.patch.object(TOOL, "detect_engram", return_value=engram), \
+                 mock.patch.object(sys, "stdout", stdout), \
+                 mock.patch.object(sys, "stderr", stderr):
+                code = TOOL.main(arguments)
+            return code, "".join(call.args[0] for call in stdout.write.call_args_list), \
+                "".join(call.args[0] for call in stderr.write.call_args_list)
+
+        for gentle_state, engram_state in (
+            ("unavailable", "unavailable"), ("available", "unavailable"),
+            ("unavailable", "available"), ("available", "available"),
+            ("partial", "disabled"),
+        ):
+            with self.subTest(gentle=gentle_state, engram=engram_state), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                gentle = capability(gentle_state)
+                engram = capability(engram_state)
+                arguments = [
+                    "render", "--root", directory, "--project-name", "Example",
+                    "--runtime", "opencode", "--activation", "builder",
+                    "--project-id", "example",
+                ]
+                config_args = argparse.Namespace(
+                    runtime=["opencode"], license_id="MIT", standalone=False,
+                    report_language="english", documentation_languages=None,
+                    conversation_language=None, ignore_codegraph=True, activation="builder",
+                    effective_capabilities={"gentleAi": gentle_state, "engram": engram_state},
+                )
+                context = AuthorityContextTests.context(AuthorityContextTests(), evidence=[])
+                context["builder"] = TOOL.expected_authority_builder_config(config_args)
+                context_path = root / "authority.json"
+                context_path.write_text(TOOL.canonical_json(context), encoding="utf-8")
+                preview_args = [*arguments, "--authority-context-file", str(context_path)]
+                code, output, error = invoke(preview_args, gentle, engram)
+                self.assertEqual(code, 0, error)
+                preview = json.loads(output)
+                self.assertNotIn("private-", output)
+
+                apply_args = [
+                    *preview_args, "--apply", "--approved-plan-sha256", preview["planSha256"],
+                    "--approval", "APPROVE", "--approved-generation-sha256", preview["generationSha256"],
+                ]
+                apply_gentle = (
+                    {"classification": "found_on_path", "evidence": "equivalent-unavailable"}
+                    if gentle_state == engram_state == "unavailable" else gentle
+                )
+                code, output, error = invoke(apply_args, apply_gentle, engram)
+                self.assertEqual(code, 0, error)
+                self.assertEqual(json.loads(output)["status"], "VALIDATED")
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            unavailable = capability("unavailable")
+            available = capability("available")
+            arguments = [
+                "render", "--root", directory, "--project-name", "Example",
+                "--runtime", "opencode", "--activation", "builder", "--project-id", "example",
+            ]
+            config_args = argparse.Namespace(
+                runtime=["opencode"], license_id="MIT", standalone=False,
+                report_language="english", documentation_languages=None,
+                conversation_language=None, ignore_codegraph=True, activation="builder",
+                effective_capabilities={"gentleAi": "unavailable", "engram": "unavailable"},
+            )
+            context = AuthorityContextTests.context(AuthorityContextTests(), evidence=[])
+            context["builder"] = TOOL.expected_authority_builder_config(config_args)
+            context_path = root / "authority.json"
+            context_path.write_text(TOOL.canonical_json(context), encoding="utf-8")
+            preview_args = [*arguments, "--authority-context-file", str(context_path)]
+            code, output, error = invoke(preview_args, unavailable, unavailable)
+            self.assertEqual(code, 0, error)
+            preview = json.loads(output)
+            apply_args = [
+                *preview_args, "--apply", "--approved-plan-sha256", preview["planSha256"],
+                "--approval", "APPROVE", "--approved-generation-sha256", preview["generationSha256"],
+            ]
+            code, output, error = invoke(apply_args, available, unavailable)
+            self.assertEqual(code, 2)
+            self.assertIn("fresh_preview_required", error)
+            self.assertFalse((root / RULEBOOK).exists())
+            self.assertFalse((root / ".repo-harness" / "state").exists())
 
     def test_cli_integrated_preview_and_apply_proceed_when_both_capabilities_verify(self):
         verified = {"classification": "verified", "evidence": "verified"}
@@ -6239,6 +6823,7 @@ class AuthorityConfigurationProjectionTests(unittest.TestCase):
                 "conversationLanguage": "espanol",
                 "ignoreCodegraph": True,
                 "activation": "builder",
+                "effectiveCapabilities": {"gentleAi": "available", "engram": "available"},
             },
         )
 
@@ -6555,6 +7140,7 @@ class MaterialCorrectionCliTests(unittest.TestCase):
                 "conversationLanguage": "espanol",
                 "ignoreCodegraph": True,
                 "activation": "builder",
+                "effectiveCapabilities": {"gentleAi": "available", "engram": "available"},
             },
             "premises": [
                 {
