@@ -77,6 +77,11 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 
 Outcomes are scoped. Startup uses `ready`, `paused`, `blocked`, `failed`, or `degraded`; a successful close uses `completed`. A required continuity failure is `failed`. An optional Git branch may be `paused`, `blocked`, `failed`, or `degraded` while local startup remains `ready`; optional synchronization failure must not make the whole session `failed`.
 
+- Continue useful non-Git work when Git is absent or the folder is uninitialized, withhold every Git-backed guarantee, and emit at most one useful operation-scoped Git recommendation when it names concrete safety the current operation would gain. Persist no warning state, counter, or ledger.
+- Require explicit current human approval before `git init`. Render, preview, check, repair, recovery, and apply must never initialize Git as a side effect.
+- Native Git capability is distinct from provider capability. Never infer GitHub, issues, pull requests, checks, or contribution workflow from Git, `.git`, remote names, `origin`, or GitHub-like URLs.
+- An applicable `CONTRIBUTING.md` is repository-specific authority only. Its absence creates no provider, issue-first, branch, review, or publication policy.
+
 | Observed state | Required behavior |
 |---|---|
 | Root is not a Git repository | Continue normal local startup. Git initialization is only a separate later capability, never a blocker. |

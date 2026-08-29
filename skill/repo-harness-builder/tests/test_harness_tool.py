@@ -25,6 +25,14 @@ assert SPEC and SPEC.loader
 TOOL = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(TOOL)
 
+
+def repository_root() -> Path | None:
+    """Return the checkout root from canonical or runtime package tests."""
+    for candidate in (ROOT, *ROOT.parents):
+        if (candidate / "skill/repo-harness-builder/scripts/harness_tool.py").is_file():
+            return candidate
+    return None
+
 DISCIPLINE = (
     "Work only inside the selected repository.",
     "Ask for explicit approval before reading or modifying paths outside it.",
@@ -3613,6 +3621,7 @@ class GeneratedCoreTests(unittest.TestCase):
             self.assertEqual((observed["ahead"], observed["behind"]), (1, 1))
 
     def test_git_inspection_fails_closed_at_every_command_boundary(self):
+        timeouts = []
         successful = {
             ("rev-parse", "--git-dir"): ".git\n",
             ("rev-parse", "--verify", "HEAD"): "a" * 40 + "\n",
@@ -3629,6 +3638,7 @@ class GeneratedCoreTests(unittest.TestCase):
             def execute(command, **kwargs):
                 nonlocal calls
                 calls += 1
+                timeouts.append(kwargs.get("timeout"))
                 if calls == boundary:
                     raise error_factory()
                 args = tuple(command[3:])
@@ -3650,6 +3660,7 @@ class GeneratedCoreTests(unittest.TestCase):
                     )
                     self.assertEqual(observed["state"], "inspection-failed")
                     self.assertNotIn("secret", repr(observed).lower())
+            self.assertEqual(set(timeouts), {10})
 
             observed = TOOL.inspect_git_state(
                 root,
@@ -3657,6 +3668,12 @@ class GeneratedCoreTests(unittest.TestCase):
                     4,
                     lambda: UnicodeDecodeError("utf-8", b"\xff", 0, 1, "invalid"),
                 ),
+            )
+            self.assertEqual(observed["state"], "inspection-failed")
+
+            observed = TOOL.inspect_git_state(
+                root,
+                execute=executor_failing_at(3, lambda: subprocess.TimeoutExpired("git", 10)),
             )
             self.assertEqual(observed["state"], "inspection-failed")
 
@@ -4525,6 +4542,79 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
             delattr(TOOL, name)
 
     def test_generated_contract_assigns_each_owner_without_copying_state(self):
+        fixture = json.loads(
+            (ROOT / "tests/fixtures/rh_w_0079_changed_behavior_inventory.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        expected = fixture["changedBehaviors"]
+        classified = [item["behavior"] for item in fixture["classifications"]]
+
+        self.assertEqual(len(expected), len(set(expected)), "changed behavior inventory has duplicates")
+        self.assertEqual(set(classified), set(expected), "classification is missing a changed behavior")
+        categories = {item["category"] for item in fixture["classifications"]}
+        self.assertLessEqual(
+            categories,
+            {
+                "builder-only scaffolding",
+                "repository-specific policy",
+                "generic consumer contract",
+            },
+        )
+        self.assertIn("builder-only scaffolding", categories)
+        self.assertIn("generic consumer contract", categories)
+
+        self.assertEqual(len(classified), len(set(classified)), "a changed behavior is classified twice")
+        checkout_root = repository_root()
+        if checkout_root is not None:
+            delivered_diff = subprocess.run(
+                (
+                    "git", "-C", str(checkout_root), "diff", "--unified=0",
+                    fixture["deliveredRange"], "--",
+                    "skill/repo-harness-builder/scripts/harness_tool.py",
+                ),
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout
+            for item in fixture["classifications"]:
+                with self.subTest(behavior=item["behavior"]):
+                    self.assertIn(item["diffEvidence"], delivered_diff)
+
+        generic_output = "\n".join(
+            TOOL.render("Consumer", ["opencode", "claude-code", "pi"]).values()
+        )
+        forbidden_mandates = (
+            r"(?i)must (?:use|have|enable) github",
+            r"(?i)must (?:open|create|link) (?:a |an )?(?:github )?issue",
+            r"(?i)must (?:open|create) (?:a )?(?:pull request|pr)",
+            r"(?i)requires? (?:github )?(?:checks|pull requests|issues)",
+            r"(?i)requires? contributing\.md",
+            r"(?i)must (?:use|enable) (?:gentle ai|engram|codegraph)",
+            r"(?i)must (?:create|use) (?:a )?branch",
+            r"(?i)must (?:commit|push|publish)",
+            r"(?i)(?:must|required to|requires?) [^.\n]{0,40}issue-first",
+            r"(?i)bilingual self-hosting",
+        )
+        for pattern in forbidden_mandates:
+            with self.subTest(pattern=pattern):
+                self.assertNotRegex(generic_output, pattern)
+        if checkout_root is not None:
+            local_contract = "\n".join(
+                (
+                    (checkout_root / "REPO-HARNESS.md").read_text(encoding="utf-8"),
+                    (checkout_root / "CONTRIBUTING.md").read_text(encoding="utf-8"),
+                )
+            )
+            for local_policy in (
+                "This repository self-hosts",
+                "Contributions start with an issue",
+                "Do not commit directly to `main`",
+            ):
+                with self.subTest(local_policy=local_policy):
+                    self.assertIn(local_policy, local_contract)
+                    self.assertNotIn(local_policy, generic_output)
+
         combined = "\n".join(TOOL.render("Example", []).values())
         for phrase in (
             "The repository owns durable truth, source, tests, policy, backlog, and approvals.",
