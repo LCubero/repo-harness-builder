@@ -465,15 +465,15 @@ Decision humana: aprobar o corregir el plan. Implementar requiere autoridad sepa
 
 ### Plan 30: cronologia local del host para el changelog RH-W-0081
 
-Preparacion `plan escrito; espera aprobacion`. Prioridad `P2`, sin dependencias. El [diseno](rh-w-0081-design.md) aprobado y el [plan bilingue](rh-w-0081-implementation-plan.md) propuesto estan completos. Implementacion y correccion siguen sin autorizar.
+Preparacion `plan escrito; espera aprobacion`. Prioridad `P2`, sin dependencias. El [diseno](rh-w-0081-design.md) aprobado y el [plan bilingue](rh-w-0081-implementation-plan.md) propuesto estan completos. La correccion autorizada del changelog esta completa; la implementacion sigue sin autorizar.
 
 1. Derivar fechas humanas del changelog desde evidencia local verificada del host, conservando timestamps exactos o fecha local y offset sin inventar minuto.
 2. Conservar RH-W-0068 como propietaria de disposicion y RH-W-0081 como propietaria de derivacion de fecha.
 3. Conservar nombre y metadata UTC de RH-W-0069 como identidad y ordenamiento orientados a maquina, independientes en ambas direcciones de la cronologia del changelog.
 4. Preguntar por separado y de forma reanudable solo ante evidencia local ausente, contradictoria o ambigua.
-5. Corregir despues ambos encabezados falsos `2026-08-29` a `2026-08-28` bajo autorizacion separada.
+5. Completado: la correccion documental autorizada movio las entradas de los commits `1e5759e0` y `c892cfb` desde el encabezado falso `2026-08-29` hasta la fecha local exacta del host `2026-08-28`.
 
-Decision humana: aprobar o corregir el plan. Implementacion y correccion requieren autoridad separada.
+Decision humana: aprobar o corregir el plan. La implementacion requiere autoridad separada.
 
 ### Revision de coherencia de los planes
 

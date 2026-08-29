@@ -455,15 +455,15 @@ Human decision: approve or correct the implementation plan. Implementation requi
 
 ### Plan 30: RH-W-0081 host-local changelog chronology
 
-Readiness `plan written; awaiting owner approval`. Priority `P2`, dependencies none. The owner-approved [design](rh-w-0081-design.md) and proposed bilingual [implementation plan](rh-w-0081-implementation-plan.md) are complete. Implementation and changelog correction remain separately unauthorized.
+Readiness `plan written; awaiting owner approval`. Priority `P2`, dependencies none. The owner-approved [design](rh-w-0081-design.md) and proposed bilingual [implementation plan](rh-w-0081-implementation-plan.md) are complete. The authorized changelog correction is complete; implementation remains separately unauthorized.
 
 1. Derive human-facing changelog dates from verified host-local evidence, preserving exact timestamps or local date and offset without inventing a minute.
 2. Keep RH-W-0068 as changelog-disposition owner and RH-W-0081 as date-derivation owner.
 3. Keep RH-W-0069 UTC backup filename and metadata as machine-oriented identity and ordering, independent in both directions from changelog chronology.
 4. Ask one separate resumable clarification only when local evidence is unavailable, contradictory, or ambiguous.
-5. Later correct both false `2026-08-29` headings to `2026-08-28` under separate authorization.
+5. Completed: the authorized documentation correction moved the entries from commits `1e5759e0` and `c892cfb` from the false `2026-08-29` heading to the exact host-local date `2026-08-28`.
 
-Human decision: approve or correct the implementation plan. Implementation and correction require separate authorization.
+Human decision: approve or correct the implementation plan. Implementation requires separate authorization.
 
 ### Not plannable yet
 
