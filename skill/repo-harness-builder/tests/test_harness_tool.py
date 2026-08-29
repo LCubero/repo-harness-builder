@@ -3002,6 +3002,29 @@ class GeneratedCoreTests(unittest.TestCase):
             "current-state claims a suite size the suite does not have; update it in the same change",
         )
 
+    def test_rh_w_0079_decision_records_independent_optional_capabilities(self):
+        repository = ROOT.parents[1]
+        decisions = repository / "docs/repo-harness/decisions.md"
+        spanish = repository / "docs/es/repo-harness/decisions.md"
+        if not (decisions.is_file() and spanish.is_file()):
+            self.skipTest("repository decision fixtures are outside the portable package")
+        peers = (decisions.read_text(encoding="utf-8"), spanish.read_text(encoding="utf-8"))
+        stale = (
+            "`integrated` mode uses Gentle AI and Engram together",
+            "El modo `integrated` usa Gentle AI y Engram juntos",
+        )
+        required = (
+            ("compose independently", "se componen de forma independiente"),
+            ("`not_found`, `found_on_path`, and `verified`", "`not_found`, `found_on_path` y `verified`"),
+            ("effective states", "estados efectivos"),
+            ("operation-scoped", "acotada a la operacion"),
+        )
+        for index, text in enumerate(peers):
+            with self.subTest(peer=index):
+                self.assertNotIn(stale[index], text)
+                for phrases in required:
+                    self.assertIn(phrases[index], text)
+
     def test_checked_in_documents_do_not_mix_line_endings(self):
         """One edit written with the wrong newline leaves a file half CRLF and half LF."""
         repository = ROOT.parents[1]

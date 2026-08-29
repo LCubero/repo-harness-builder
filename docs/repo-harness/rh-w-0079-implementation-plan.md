@@ -2,7 +2,7 @@
 
 Status: `ready`, complete and owner-approved on 2026-08-28 after a fresh final review returned PASS. The owner-approved [design](rh-w-0079-design.md) is authoritative. The owner's `ok comitear entonces ?` and selection of the normal contribution flow approved committing the reviewed plan and therefore approved the plan, but did not authorize implementation. The documentation, lifecycle, design, and planning contribution was delivered through closed issue [#129](https://github.com/LCubero/repo-harness-builder/issues/129) and merged PR [#130](https://github.com/LCubero/repo-harness-builder/pull/130) at `dedf74ec7fe3a2d3f2f7ead0fe6f98dc93eb0f55`. This plan authorizes no implementation, release, Git initialization, further commit, push, issue, or pull request.
 
-Implementation progress: Slices 1 through 3 were separately authorized and delivered. Slice 1 landed through closed issue #133 and merged PR #134 at `5d8b87c`, with strict RED then GREEN evidence. Slice 2 landed through closed issue #137, implementation commit `9c5cd94`, and merged PR #138 at `c4265e57368944afc82f871cae28f197f3fcbb6a`. Its focused matrix covers absent and uninitialized Git, unborn, detached, dirty, clean, no-remote, no-upstream, diverged or unresolved, provider separation, missing contribution policy, bounded recommendation, and approval before initialization. Slice 3 landed through closed issue #141, feature commit `ab18ada`, and merged PR #142 at `9a040084eb6a43ccd9abd775a6161eef1b0b1842`. Existing authority, context, plan, and generation protections now bind effective capability configuration: stable absence and supported combinations succeed, while material effective-state drift refuses before writes. Native RDD approved the delivery, and the canonical suite passed 469 tests with 9 skips. Slices 4 and 5 remain unimplemented under separate authorization, runtime projection synchronization remains Slice 4 work, and no release is claimed.
+Implementation progress: Slices 1 through 3 retain their documented delivery evidence. Slice 4 was delivered through issue #145, feature commit `9313d5768319602f0ca34ff3d97b195fb9405638`, and merged PR #146 at `94fe46933a04b82ae9ce5cbbd6dd60f59b04e9a4`. Slice 5 is authorized by issue #147 and reconciles documentation, continuity, and release acceptance through PR `SLICE5_PR_PENDING`. The plan and RH-W-0079 become `completed` only when that PR merges. No actual release, tag, publication, version bump, RH-W-0048 change, or RH-W-0052 change is claimed.
 
 Corrective Slice 1 evidence: `python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.CapabilityAwareIntegrationContractTests.test_policy_required_is_a_contextual_selection_state skill.repo-harness-builder.tests.test_harness_tool.CapabilityAwareIntegrationContractTests.test_cli_default_preview_proceeds_for_every_capability_pair skill.repo-harness-builder.tests.test_harness_tool.CapabilityAwareIntegrationContractTests.test_cli_apply_still_fails_closed_for_every_unverified_pair` first ran 3 tests with 9 errors and 9 failures. Successful previews lacked `capabilityPreflight`, `policy-required` collapsed to `unavailable`, and unverified apply reached the plan-digest gate instead of the existing paired-capability refusal. After the minimum correction, the same 3 tests passed. This corrective RED is separate from the original paired-preflight RED: Slice 1 now composes only the read-only capability projection into successful preview output, while unverified apply retains its pre-Slice-3 failure behavior.
 
@@ -17,7 +17,7 @@ Spanish peer: [Plan de implementacion RH-W-0079](../es/repo-harness/rh-w-0079-im
 - Change canonical source and tests only after RED. Synchronize `.opencode/` and `.claude/` projections through the existing renderer, never by hand.
 - Serialize every shared canonical change, and keep each RED in the same review slice as its owning GREEN.
 - Keep RH-W-0025 detectors and RH-W-0051 local-state ownership closed. Add no universal adapter, plugin framework, state machine, store, ledger, migration registry, or second authority route.
-- Keep `RH-W-0079` `ready` until separately authorized implementation evidence supports another lifecycle transition. Plan approval and implementation approval are separate human decisions.
+- Keep the conditional `completed` transition tied explicitly to merge of `SLICE5_PR_PENDING`. Slice 5 documentation reconciliation does not authorize an actual release.
 - Treat work-unit commits below as planning boundaries only. Discover the selected repository's delivery authority at execution time. Never make GitHub, issues, pull requests, or `CONTRIBUTING.md` generic prerequisites.
 
 ## Design Traceability
@@ -92,6 +92,8 @@ Likely baseline surfaces: `skill/repo-harness-builder/scripts/harness_tool.py`, 
 
 ## Slice 5: Documentation, Continuity, and Release Acceptance
 
+Execution status: completed upon merge of PR `SLICE5_PR_PENDING`. The focused documentation contract failed before the standing decision changed and passes after the bilingual reconciliation. Repository documentation records Slice 4 delivery and Slice 5 release-acceptance reconciliation without claiming an actual release. Runtime and platform evidence unavailable to this work remains explicitly unknown.
+
 1. Reconcile roadmap plan/record, current state, decisions only for a new durable decision, changelogs only for completed behavior, maps, and localized peers.
 2. **RED first:** add a focused documentation assertion that fails while the standing paired-mode decision in `decisions.md` says `integrated` uses Gentle AI and Engram together and `standalone` applies when neither is available. **Documentation GREEN:** replace that contradictory wording with the approved independent optional-capability model while preserving RH-W-0025 detector semantics and operation-level degradation.
 3. Update Engram topic `work/RH-W-0079` after repository evidence, preserving repository authority and operation-level outcomes.
@@ -162,9 +164,9 @@ Forecast: 740-1,410 authored changed lines plus 300-700 renderer-owned lines acr
 
 ## Remaining Human Decisions
 
-1. Separately authorize Slice 4 before it begins. Slice 5 retains its approved order and separate authorization.
-2. At execution/delivery time, separately authorize applicable Git mutation, delivery route, release, provider action, or publication after verifying selected-repository capabilities and policy.
+1. Merge Slice 5 PR `SLICE5_PR_PENDING` to make the documented conditional completion and post-merge portfolio projection effective.
+2. Any actual release, tag, package publication, version bump, provider action, or later delivery remains a separate owner decision.
 
 ## Owner Gate
 
-`next_recommended`: request separate owner authorization for Slice 4. Delivered Slices 1 through 3 do not authorize Slices 4 or 5, release, push, another issue, or further pull-request delivery.
+`next_recommended`: replace `SLICE5_PR_PENDING` with the final PR reference, then merge that PR if approved. Slice 5 authorizes documentation reconciliation only and does not authorize an actual release, tag, package publication, version bump, push, or unrelated work.

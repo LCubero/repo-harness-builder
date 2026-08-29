@@ -1,8 +1,8 @@
 # RH-W-0079 Optional Capability and Release Boundary Design
 
-Status: `ready`, design complete and owner-approved on 2026-08-28. The separate bilingual implementation plan is also owner-approved. Neither approval grants implementation, release, or delivery authority.
+Status: `completed` upon merge of Slice 5 PR `SLICE5_PR_PENDING`. The design and separate bilingual implementation plan were owner-approved on 2026-08-28. This conditional completion records release-acceptance documentation reconciliation, not an actual release, tag, publication, or version change.
 
-Implementation progress: owner-authorized Slices 1 through 3 are delivered. Slice 1 landed through closed issue #133 and merged PR #134 at `5d8b87c`. Slice 2 landed through closed issue #137, implementation commit `9c5cd94`, and merged PR #138 at `c4265e57368944afc82f871cae28f197f3fcbb6a`. Slice 3 landed through closed issue #141, feature commit `ab18ada`, and merged PR #142 at `9a040084eb6a43ccd9abd775a6161eef1b0b1842`. It binds effective capability configuration through the existing authority, context, plan, and generation protections: stable absence and supported combinations succeed, while material effective-state drift refuses before writes. Native RDD approved the delivery, and the canonical suite passed 469 tests with 9 skips. Slices 4 and 5 and release remain outside these results, so the lifecycle stays `ready`. Runtime projection synchronization remains Slice 4 work and is not claimed by Slice 3 delivery.
+Implementation progress: Slices 1 through 3 retain their documented delivery evidence. Slice 4 was delivered through issue #145, feature commit `9313d5768319602f0ca34ff3d97b195fb9405638`, and merged PR #146 at `94fe46933a04b82ae9ce5cbbd6dd60f59b04e9a4`, completing three-way behavior classification and renderer synchronization. Slice 5 is authorized by issue #147 and reconciles documentation, continuity, and release acceptance through PR `SLICE5_PR_PENDING`. RH-W-0079 completes only when that PR merges. No actual release, tag, package publication, version bump, RH-W-0048 work, or RH-W-0052 work is claimed.
 
 ## Purpose
 
@@ -145,7 +145,7 @@ Tests use fakes or temporary repositories and no live provider, network, daemon,
 - Commands and paths use the project's existing cross-platform Python and Git boundaries, with no POSIX-only shell assumption.
 - OpenCode, Claude-compatible, Pi-compatible, and generic file-following agents receive equivalent semantics on surfaces they support.
 - An agent lacking an integration follows repository-only behavior rather than failing the harness.
-- Current behavior remains the baseline until implementation and release verification prove the replacement.
+- Windows-local canonical and projection evidence is recorded where executed. Real macOS, Linux, unavailable agent-runtime, and unavailable platform evidence remains unknown and is not inferred.
 
 ## Release and Rollback Acceptance
 
