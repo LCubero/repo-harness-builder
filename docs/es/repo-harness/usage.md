@@ -13,7 +13,7 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 ## Disponibilidad integrada
 <!-- doc-role:availability -->
 
-Confirme que las habilidades, Gentle AI y Engram esten disponibles. Si falla una dependencia de continuidad, informe el fallo y no declare continuidad integrada exitosa.
+Confirme que las habilidades esten disponibles y clasifique Gentle AI y Engram de forma independiente. Si una capacidad no esta disponible, informe su degradacion acotada y no declare garantias que le pertenecen; bloquee solo una operacion que la requiera.
 
 ## Congruencia y propiedad
 <!-- doc-role:ownership -->

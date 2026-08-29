@@ -14,7 +14,7 @@
 ## Posicionamiento del producto
 <!-- doc-role:positioning -->
 
-El harness conserva su utilidad por si solo. Puede operar con o sin Gentle AI, Engram y CodeGraph segun el modo de integracion seleccionado explicitamente. Cuando el modo integrado selecciona componentes obligatorios, esos componentes deben estar disponibles.
+El harness conserva su utilidad por si solo. El modo integrado predeterminado compone de forma independiente las capacidades disponibles de Gentle AI y Engram, mientras CodeGraph sigue siendo opcional. Una capacidad no disponible degrada solo el comportamiento que posee, salvo que la operacion seleccionada o la politica del repositorio la exija. El modo `--standalone` explicito usa continuidad solo del repositorio.
 
 | Componente | Limite |
 |---|---|
@@ -55,7 +55,7 @@ Un harness es solo en ingles salvo que se declaren mas locales de documentacion.
 | `REPO-HARNESS.md` | Libro de reglas conciso que siempre se lee: proposito, reglas obligatorias y rutas hacia detalles. |
 | `docs/repo-harness/` | Propietarios durables de uso, estado actual y decisiones. |
 | `CHANGELOG.md` | Registro fechado de cambios completados, separado del estado y trabajo futuro. |
-| Continuidad en Engram | Memoria temporal entre sesiones en modo integrado, reconciliada siempre con evidencia del repositorio. |
+| Continuidad en Engram | Memoria temporal opcional entre sesiones cuando esta disponible, reconciliada siempre con evidencia del repositorio. |
 | Proyecciones | Superficies delgadas para Claude Code, OpenCode o Pi generadas desde habilidades canonicas y pares de comandos por familia. |
 | `.repo-harness/check.py` | Comprobacion de solo lectura que detecta proyecciones de habilidades, comandos y prompts faltantes u obsoletas. |
 
@@ -89,7 +89,7 @@ Sesion normal
   -> session-stop verifica y registra la transferencia
 ```
 
-En modo integrado, Gentle AI y Engram deben estar disponibles. Engram conecta sesiones, pero nunca reemplaza los archivos actuales. En modo independiente, la continuidad permanece solo en el repositorio.
+El modo integrado compone de forma independiente las capacidades disponibles de Gentle AI y Engram y omite solo las garantias que pertenecen a una capacidad no disponible. Engram conecta sesiones cuando esta disponible, pero nunca reemplaza los archivos actuales. El modo standalone explicito conserva continuidad solo en el repositorio.
 
 ## Flujo de ejemplo
 <!-- doc-role:example -->
