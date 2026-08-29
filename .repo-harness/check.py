@@ -13,8 +13,9 @@ import re
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
-MANIFEST_SHA256 = "2f4de2ed679988d650160bf28c3ed70c522fe1f1ddf3244b4679139832e9b2c3"
+MANIFEST_SHA256 = "9b0ecfb0fe1a729ebabd11f9d5ef25b72eb34933a180574291fc44289a01e3b2"
 MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState"}
+OPTIONAL_MANIFEST_FIELDS = {"canonicalProjections"}
 LOCAL_STATE = {'tmp': {'path': '.repo-harness/tmp/', 'class': 'disposable'}, 'archive': {'path': '.repo-harness/archive/', 'class': 'recoverable'}, 'state': {'path': '.repo-harness/state/', 'class': 'operational'}, 'memory-bk': {'path': '.repo-harness/memory-bk/', 'class': 'continuity-backup'}}
 LOCAL_STATE_IGNORE_DIRECTIVES = ('/.repo-harness/tmp/', '/.repo-harness/archive/', '/.repo-harness/state/', '/.repo-harness/memory-bk/')
 REPORT_LANGUAGES = {"english", "espanol"}
@@ -23,6 +24,7 @@ RUNTIMES = {"claude-code", "opencode", "pi"}
 SKILL_SURFACES = {
     "claude-code": ".claude/skills/{name}/SKILL.md",
     "opencode": ".opencode/skills/{name}/SKILL.md",
+    "pi": ".pi/skills/{name}/SKILL.md",
 }
 COMMAND_SURFACES = {
     "claude-code": ("commands", ".claude/commands/{name}.md"),
@@ -78,7 +80,7 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
     if hashlib.sha256(raw).hexdigest() != expected_sha256:
         raise ValueError("manifest digest mismatch")
     manifest = json.loads(raw.decode("utf-8"))
-    if not isinstance(manifest, dict) or set(manifest) != MANIFEST_FIELDS:
+    if not isinstance(manifest, dict) or not MANIFEST_FIELDS <= set(manifest) or not set(manifest) - MANIFEST_FIELDS <= OPTIONAL_MANIFEST_FIELDS:
         raise ValueError("unexpected manifest schema")
     if manifest["schemaVersion"] != "3.0":
         raise ValueError("unsupported manifest schema")
@@ -131,6 +133,17 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         if not isinstance(families, dict) or not families or not set(families) <= {"commands", "prompts"}:
             raise ValueError("unexpected canonical command families")
         for relative in families.values():
+            safe_relative(relative)
+    projections = manifest.get("canonicalProjections", {})
+    if not isinstance(projections, dict):
+        raise ValueError("unexpected canonical projections")
+    for canonical, targets in projections.items():
+        safe_relative(canonical)
+        if not isinstance(targets, dict) or set(targets) != set(runtimes):
+            raise ValueError("unexpected canonical projection runtimes")
+        for runtime, relative in targets.items():
+            if runtime not in RUNTIMES:
+                raise ValueError("unexpected canonical projection runtime")
             safe_relative(relative)
     return manifest
 
@@ -191,6 +204,21 @@ def check_projections(root: Path) -> dict:
                 else:
                     state = "current"
                 entries.append({"command": name, "family": family, "runtime": runtime, "path": relative, "state": state})
+    for canonical_relative, targets in sorted(manifest.get("canonicalProjections", {}).items()):
+        canonical = guarded_path(root, canonical_relative)
+        if not canonical.is_file():
+            entries.append({"canonical": canonical_relative, "path": canonical_relative, "state": "canonical-missing"})
+            continue
+        expected = canonical.read_bytes()
+        for runtime, relative in sorted(targets.items()):
+            target = guarded_path(root, relative)
+            if not target.is_file():
+                state = "missing"
+            elif target.read_bytes() != expected:
+                state = "stale"
+            else:
+                state = "current"
+            entries.append({"canonical": canonical_relative, "runtime": runtime, "path": relative, "state": state})
     drifted = [entry for entry in entries if entry["state"] not in ('current', 'present')]
     return {"status": "drift" if drifted else "current", "files": entries, "writes": 0}
 

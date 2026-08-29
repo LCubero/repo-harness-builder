@@ -5,7 +5,7 @@ Este documento es la presentacion humana en espanol de [`REPO-HARNESS.md`](REPO-
 ## Proposito
 <!-- doc-role:purpose -->
 
-`repo-harness-builder` crea, audita, instala y evoluciona con seguridad sistemas acotados al repositorio de prompts, guardrails, reglas, documentacion durable, habilidades y comandos que asisten a agentes de programacion con IA. Las fuentes del producto viven en `skill/repo-harness-builder/` y `command/repo-harness-builder.md`; `.opencode/` y `.claude/` son proyecciones de prueba. Este repositorio se autoaloja: usa el harness generado aqui para mejorar el propio builder. Los harness de consumidores siguen acotados a sus repositorios y no heredan identidad de builder.
+`repo-harness-builder` crea, audita, instala y evoluciona con seguridad sistemas acotados al repositorio de prompts, guardrails, reglas, documentacion durable, habilidades y comandos que asisten a agentes de programacion con IA. Las fuentes del producto viven en `skill/repo-harness-builder/` y `command/repo-harness-builder.md`; `.claude/`, `.opencode/` y `.pi/` son proyecciones de los entornos seleccionados. Este repositorio se autoaloja: usa el harness generado aqui para mejorar el propio builder. Los harness de consumidores siguen acotados a sus repositorios y no heredan identidad de builder.
 
 ## Reglas obligatorias
 <!-- doc-role:hard-rules -->

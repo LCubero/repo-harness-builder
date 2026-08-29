@@ -4,6 +4,8 @@
 
 ## 2026-08-29
 
+- Se entrego el corte de paridad reciproca completa de Pi autorizado por el propietario bajo `RH-W-0048`. El render autoalojado con raiz ahora genera el paquete completo `.pi/skills/repo-harness-builder/` desde la fuente canonica del producto, agrega la entrada delgada y sin rutas `.pi/prompts/repo-harness-builder.md`, conserva las tres habilidades operativas generadas y los cuatro prompts operativos existentes, y declara proyecciones exactas del paquete y la entrada del builder para todos los entornos seleccionados mediante `canonicalProjections` autenticado y opcional. El checker detecta proyecciones de producto faltantes u obsoletas, los manifests de consumidores ordinarios no cambian y reglas LF exactas protegen cada destino nuevo comparado byte a byte. `RH-W-0048` sigue `proposed` porque aun no se implementan la politica rastreada frente a local ni la recuperacion aditiva explicita de un clon nuevo.
+
 - El commit `ae89ccff35edebe577239ce034bd1886b435ac4b` completo los disenos y planes de implementacion bilingues aprobados de `RH-W-0069`, `RH-W-0075`, `RH-W-0080` y `RH-W-0081`, y reconcilio su registro de ciclo de vida y sus proyecciones documentales. No se afirma implementacion de producto ni cambio en pruebas de producto.
 
 ## 2026-08-28

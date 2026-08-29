@@ -2384,6 +2384,7 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 HARNESS = Path(__file__).resolve().parent
 MANIFEST_SHA256 = "{manifest_sha256}"
 MANIFEST_FIELDS = {{"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState"}}
+OPTIONAL_MANIFEST_FIELDS = {{"canonicalProjections"}}
 LOCAL_STATE = {LOCAL_STATE!r}
 LOCAL_STATE_IGNORE_DIRECTIVES = {LOCAL_STATE_IGNORE_DIRECTIVES!r}
 REPORT_LANGUAGES = {{"english", "espanol"}}
@@ -2392,6 +2393,7 @@ RUNTIMES = {{"claude-code", "opencode", "pi"}}
 SKILL_SURFACES = {{
     "claude-code": ".claude/skills/{{name}}/SKILL.md",
     "opencode": ".opencode/skills/{{name}}/SKILL.md",
+    "pi": ".pi/skills/{{name}}/SKILL.md",
 }}
 COMMAND_SURFACES = {{
     "claude-code": ("commands", ".claude/commands/{{name}}.md"),
@@ -2447,7 +2449,7 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
     if hashlib.sha256(raw).hexdigest() != expected_sha256:
         raise ValueError("manifest digest mismatch")
     manifest = json.loads(raw.decode("utf-8"))
-    if not isinstance(manifest, dict) or set(manifest) != MANIFEST_FIELDS:
+    if not isinstance(manifest, dict) or not MANIFEST_FIELDS <= set(manifest) or not set(manifest) - MANIFEST_FIELDS <= OPTIONAL_MANIFEST_FIELDS:
         raise ValueError("unexpected manifest schema")
     if manifest["schemaVersion"] != "3.0":
         raise ValueError("unsupported manifest schema")
@@ -2500,6 +2502,17 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         if not isinstance(families, dict) or not families or not set(families) <= {{"commands", "prompts"}}:
             raise ValueError("unexpected canonical command families")
         for relative in families.values():
+            safe_relative(relative)
+    projections = manifest.get("canonicalProjections", {{}})
+    if not isinstance(projections, dict):
+        raise ValueError("unexpected canonical projections")
+    for canonical, targets in projections.items():
+        safe_relative(canonical)
+        if not isinstance(targets, dict) or set(targets) != set(runtimes):
+            raise ValueError("unexpected canonical projection runtimes")
+        for runtime, relative in targets.items():
+            if runtime not in RUNTIMES:
+                raise ValueError("unexpected canonical projection runtime")
             safe_relative(relative)
     return manifest
 
@@ -2560,6 +2573,21 @@ def check_projections(root: Path) -> dict:
                 else:
                     state = "current"
                 entries.append({{"command": name, "family": family, "runtime": runtime, "path": relative, "state": state}})
+    for canonical_relative, targets in sorted(manifest.get("canonicalProjections", {{}}).items()):
+        canonical = guarded_path(root, canonical_relative)
+        if not canonical.is_file():
+            entries.append({{"canonical": canonical_relative, "path": canonical_relative, "state": "canonical-missing"}})
+            continue
+        expected = canonical.read_bytes()
+        for runtime, relative in sorted(targets.items()):
+            target = guarded_path(root, relative)
+            if not target.is_file():
+                state = "missing"
+            elif target.read_bytes() != expected:
+                state = "stale"
+            else:
+                state = "current"
+            entries.append({{"canonical": canonical_relative, "runtime": runtime, "path": relative, "state": state}})
     drifted = [entry for entry in entries if entry["state"] not in {"current", "present"}]
     return {{"status": "drift" if drifted else "current", "files": entries, "writes": 0}}
 
@@ -2609,6 +2637,97 @@ def render(
         ignore_codegraph,
         COMMAND_TO_SKILL,
     )
+
+
+def product_package_files(root: Path) -> list[str]:
+    """Return safe text files from this repository's canonical builder package."""
+    package = guarded_target(root, "skill/repo-harness-builder")
+    command = guarded_target(root, "command/repo-harness-builder.md")
+    if not package.exists() and not command.exists():
+        return []
+    require(package.is_dir() and not is_indirect(package), "self-hosted builder package must be a direct directory")
+    require(command.is_file() and not is_indirect(command), "self-hosted builder command must be a direct file")
+    files: list[str] = []
+    for current, directories, names in os.walk(package, followlinks=False):
+        current_path = Path(current)
+        directories[:] = [
+            name
+            for name in directories
+            if name != "__pycache__" and not is_indirect(current_path / name)
+        ]
+        for name in names:
+            path = current_path / name
+            if path.suffix == ".pyc" or is_indirect(path):
+                continue
+            relative = path.relative_to(root).as_posix()
+            guarded_target(root, relative).read_text(encoding="utf-8")
+            files.append(relative)
+    return sorted(files)
+
+
+def render_repository(
+    root: Path,
+    project_name: str,
+    runtimes: list[str],
+    license_id: str = GENERATED_SKILL_LICENSE,
+    standalone: bool = False,
+    report_language: str = DEFAULT_REPORT_LANGUAGE,
+    documentation_languages: list[str] | None = None,
+    conversation_language: str | None = None,
+    ignore_codegraph: bool = True,
+) -> dict[str, str]:
+    """Render a harness and, when present, its reciprocal builder projections."""
+    outputs = render(
+        project_name,
+        runtimes,
+        license_id,
+        standalone,
+        report_language,
+        documentation_languages,
+        conversation_language,
+        ignore_codegraph,
+    )
+    canonical_files = product_package_files(root)
+    if not canonical_files:
+        return outputs
+    selected = sorted(set(runtimes))
+    projections: dict[str, dict[str, str]] = {}
+    package_bases = {
+        "claude-code": ".claude/skills/repo-harness-builder",
+        "opencode": ".opencode/skills/repo-harness-builder",
+        "pi": ".pi/skills/repo-harness-builder",
+    }
+    for canonical in canonical_files:
+        relative = canonical.removeprefix("skill/repo-harness-builder/")
+        targets = {runtime: f"{package_bases[runtime]}/{relative}" for runtime in selected}
+        content = guarded_target(root, canonical).read_text(encoding="utf-8")
+        for target in targets.values():
+            outputs[target] = content
+        projections[canonical] = targets
+    command = "command/repo-harness-builder.md"
+    command_targets = {
+        runtime: (
+            ".pi/prompts/repo-harness-builder.md"
+            if runtime == "pi"
+            else f"{'.claude' if runtime == 'claude-code' else '.opencode'}/commands/repo-harness-builder.md"
+        )
+        for runtime in selected
+    }
+    command_content = guarded_target(root, command).read_text(encoding="utf-8")
+    for target in command_targets.values():
+        outputs[target] = command_content
+    projections[command] = command_targets
+    manifest = json.loads(outputs[MANIFEST_PATH])
+    manifest["canonicalProjections"] = projections
+    outputs[MANIFEST_PATH] = dump_json(manifest)
+    outputs[".repo-harness/check.py"] = check_script(digest_text(outputs[MANIFEST_PATH]))
+    outputs[GITATTRIBUTES_PATH] = "".join(
+        f"{rule}\n" for rule in git_attribute_rules(outputs, RULEBOOK_PATH)
+    )
+    for path, content in outputs.items():
+        safe_relative(path)
+        require(chr(0x2013) not in content and chr(0x2014) not in content, f"forbidden Unicode in {path}")
+    return dict(sorted(outputs.items()))
 
 
 def legacy_command_to_skill(project_id: str) -> dict[str, str]:
@@ -2687,12 +2806,12 @@ def render_with_skill_mapping(
         for command, name in skill_mapping.items():
             if runtime == "pi":
                 outputs[f".pi/prompts/{command}.md"] = wrapper(runtime, name)
-                continue
-            base = ".opencode" if runtime == "opencode" else ".claude"
+            base = {"claude-code": ".claude", "opencode": ".opencode", "pi": ".pi"}[runtime]
             outputs[f"{base}/skills/{name}/SKILL.md"] = skills[name].replace(
                 "canonical-source: core/", f"canonical-source: .repo-harness/skills/{name}/SKILL.md#core/", 1
             )
-            outputs[f"{base}/commands/{command}.md"] = wrapper(runtime, name)
+            if runtime != "pi":
+                outputs[f"{base}/commands/{command}.md"] = wrapper(runtime, name)
         help_path = (
             ".pi/prompts/repo-harness-help.md"
             if runtime == "pi"
@@ -2861,6 +2980,12 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
     blocked: list[dict[str, str]] = []
     generated_paths = manifest_owned_generated_paths(root)
     wrapper_versions = authenticated_wrapper_versions(root)
+    desired_manifest = json.loads(outputs[MANIFEST_PATH])
+    projection_targets = {
+        target
+        for targets in desired_manifest.get("canonicalProjections", {}).values()
+        for target in targets.values()
+    }
     for relative, content in sorted(outputs.items()):
         target = guarded_target(root, relative)
         if not target.exists() and not target.is_symlink():
@@ -2916,7 +3041,7 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
                     "sha256": digest_bytes(current),
                 })
         elif (
-            relative in generated_paths
+            (relative in generated_paths or relative in projection_targets)
             and target.is_file()
             and not target.is_symlink()
             # Provenance, not exact version equality. An installed file carries the
@@ -2925,6 +3050,7 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
             # versions. A file without provenance is human-owned and still refused.
             and (
                 relative == MANIFEST_PATH
+                or relative in projection_targets
                 or generated_version(target.read_bytes(), wrapper_versions.get(relative)) is not None
             )
         ):
@@ -3659,7 +3785,8 @@ def check(
             commands_declared = "canonicalCommands" in json.loads(installed_manifest.read_bytes())
         except (json.JSONDecodeError, TypeError):
             commands_declared = False
-    expected = render(
+    expected = render_repository(
+        root,
         project_name,
         runtimes,
         GENERATED_SKILL_LICENSE,
@@ -3850,7 +3977,8 @@ def main(argv: Optional[list[str]] = None) -> int:
                 "gentleAi": preflight["gentleAiState"],
                 "engram": preflight["engramState"],
             }
-        outputs = render(
+        outputs = render_repository(
+            root,
             args.project_name,
             selected,
             args.license_id,

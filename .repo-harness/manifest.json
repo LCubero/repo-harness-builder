@@ -17,6 +17,78 @@
       "prompts": ".repo-harness/prompts/session-stop.md"
     }
   },
+  "canonicalProjections": {
+    "command/repo-harness-builder.md": {
+      "claude-code": ".claude/commands/repo-harness-builder.md",
+      "opencode": ".opencode/commands/repo-harness-builder.md",
+      "pi": ".pi/prompts/repo-harness-builder.md"
+    },
+    "skill/repo-harness-builder/LICENSE": {
+      "claude-code": ".claude/skills/repo-harness-builder/LICENSE",
+      "opencode": ".opencode/skills/repo-harness-builder/LICENSE",
+      "pi": ".pi/skills/repo-harness-builder/LICENSE"
+    },
+    "skill/repo-harness-builder/SKILL.md": {
+      "claude-code": ".claude/skills/repo-harness-builder/SKILL.md",
+      "opencode": ".opencode/skills/repo-harness-builder/SKILL.md",
+      "pi": ".pi/skills/repo-harness-builder/SKILL.md"
+    },
+    "skill/repo-harness-builder/assets/audit-report.template.md": {
+      "claude-code": ".claude/skills/repo-harness-builder/assets/audit-report.template.md",
+      "opencode": ".opencode/skills/repo-harness-builder/assets/audit-report.template.md",
+      "pi": ".pi/skills/repo-harness-builder/assets/audit-report.template.md"
+    },
+    "skill/repo-harness-builder/assets/validation-report.template.md": {
+      "claude-code": ".claude/skills/repo-harness-builder/assets/validation-report.template.md",
+      "opencode": ".opencode/skills/repo-harness-builder/assets/validation-report.template.md",
+      "pi": ".pi/skills/repo-harness-builder/assets/validation-report.template.md"
+    },
+    "skill/repo-harness-builder/references/architecture.md": {
+      "claude-code": ".claude/skills/repo-harness-builder/references/architecture.md",
+      "opencode": ".opencode/skills/repo-harness-builder/references/architecture.md",
+      "pi": ".pi/skills/repo-harness-builder/references/architecture.md"
+    },
+    "skill/repo-harness-builder/references/audit-and-interview.md": {
+      "claude-code": ".claude/skills/repo-harness-builder/references/audit-and-interview.md",
+      "opencode": ".opencode/skills/repo-harness-builder/references/audit-and-interview.md",
+      "pi": ".pi/skills/repo-harness-builder/references/audit-and-interview.md"
+    },
+    "skill/repo-harness-builder/references/gentle-ai-style-guide.md": {
+      "claude-code": ".claude/skills/repo-harness-builder/references/gentle-ai-style-guide.md",
+      "opencode": ".opencode/skills/repo-harness-builder/references/gentle-ai-style-guide.md",
+      "pi": ".pi/skills/repo-harness-builder/references/gentle-ai-style-guide.md"
+    },
+    "skill/repo-harness-builder/references/license-selection.md": {
+      "claude-code": ".claude/skills/repo-harness-builder/references/license-selection.md",
+      "opencode": ".opencode/skills/repo-harness-builder/references/license-selection.md",
+      "pi": ".pi/skills/repo-harness-builder/references/license-selection.md"
+    },
+    "skill/repo-harness-builder/references/preservation-and-safety.md": {
+      "claude-code": ".claude/skills/repo-harness-builder/references/preservation-and-safety.md",
+      "opencode": ".opencode/skills/repo-harness-builder/references/preservation-and-safety.md",
+      "pi": ".pi/skills/repo-harness-builder/references/preservation-and-safety.md"
+    },
+    "skill/repo-harness-builder/references/validation.md": {
+      "claude-code": ".claude/skills/repo-harness-builder/references/validation.md",
+      "opencode": ".opencode/skills/repo-harness-builder/references/validation.md",
+      "pi": ".pi/skills/repo-harness-builder/references/validation.md"
+    },
+    "skill/repo-harness-builder/scripts/harness_tool.py": {
+      "claude-code": ".claude/skills/repo-harness-builder/scripts/harness_tool.py",
+      "opencode": ".opencode/skills/repo-harness-builder/scripts/harness_tool.py",
+      "pi": ".pi/skills/repo-harness-builder/scripts/harness_tool.py"
+    },
+    "skill/repo-harness-builder/tests/fixtures/rh_w_0079_changed_behavior_inventory.json": {
+      "claude-code": ".claude/skills/repo-harness-builder/tests/fixtures/rh_w_0079_changed_behavior_inventory.json",
+      "opencode": ".opencode/skills/repo-harness-builder/tests/fixtures/rh_w_0079_changed_behavior_inventory.json",
+      "pi": ".pi/skills/repo-harness-builder/tests/fixtures/rh_w_0079_changed_behavior_inventory.json"
+    },
+    "skill/repo-harness-builder/tests/test_harness_tool.py": {
+      "claude-code": ".claude/skills/repo-harness-builder/tests/test_harness_tool.py",
+      "opencode": ".opencode/skills/repo-harness-builder/tests/test_harness_tool.py",
+      "pi": ".pi/skills/repo-harness-builder/tests/test_harness_tool.py"
+    }
+  },
   "canonicalSkills": {
     "repo-harness-documentation": ".repo-harness/skills/repo-harness-documentation/SKILL.md",
     "repo-harness-session-start": ".repo-harness/skills/repo-harness-session-start/SKILL.md",
