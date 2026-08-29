@@ -3025,6 +3025,63 @@ class GeneratedCoreTests(unittest.TestCase):
                 for phrases in required:
                     self.assertIn(phrases[index], text)
 
+    def test_rh_w_0079_active_contracts_match_independent_capability_delivery(self):
+        repository = ROOT.parents[1]
+        if not (repository / "docs/repo-harness/current-state.md").is_file():
+            self.skipTest("repository documentation fixtures are outside the portable package")
+
+        package = repository / "skill/repo-harness-builder"
+        skill = (package / "SKILL.md").read_text(encoding="utf-8")
+        architecture = (package / "references/architecture.md").read_text(encoding="utf-8")
+        audit = (package / "references/audit-and-interview.md").read_text(encoding="utf-8")
+        validation = (package / "references/validation.md").read_text(encoding="utf-8")
+        safety = (package / "references/preservation-and-safety.md").read_text(encoding="utf-8")
+        self.assertIn("compose Gentle AI and Engram independently", skill)
+        self.assertIn("`not_found`, `found_on_path`, and `verified`", skill)
+        self.assertIn("required by the selected operation or repository policy", skill)
+        self.assertIn("`integrated` or `standalone`", skill)
+        self.assertNotIn("Default integrated mode requires Gentle AI and Engram", skill)
+        for reference in (architecture, audit):
+            self.assertIn("required by the selected operation or explicit repository policy", reference)
+            self.assertIn("`not_found`, `found_on_path`, and `verified`", reference)
+            self.assertIn("degrades only its owned workflow", reference)
+            self.assertIn("`--standalone`", reference)
+        self.assertNotIn("requires verified Gentle AI plus Engram capabilities", architecture)
+        self.assertNotIn("require both results to be `verified`", audit)
+        self.assertNotIn("Require separate `verified` Gentle AI and Engram outcomes", safety)
+        self.assertNotIn("requires Gentle AI and Engram", validation)
+
+        readme_contracts = (
+            (repository / "README.md").read_text(encoding="utf-8"),
+            (repository / "README.es.md").read_text(encoding="utf-8"),
+        )
+        self.assertIn("composes available Gentle AI and Engram capabilities independently", readme_contracts[0])
+        self.assertIn("compone de forma independiente las capacidades disponibles de Gentle AI y Engram", readme_contracts[1])
+
+        current_state = (
+            (repository / "docs/repo-harness/current-state.md").read_text(encoding="utf-8"),
+            (repository / "docs/es/repo-harness/current-state.md").read_text(encoding="utf-8"),
+        )
+        stale_state = (
+            ("29 non-terminal records", "at Slice 3 merge commit", "awaits only replacement and merge"),
+            ("29 registros no terminales", "en el commit de merge del Corte 3", "solo espera el reemplazo y merge"),
+        )
+        for text, stale_phrases in zip(current_state, stale_state):
+            for phrase in stale_phrases:
+                self.assertNotIn(phrase, text)
+
+        roadmaps = (
+            (repository / "docs/repo-harness/roadmap.md").read_text(encoding="utf-8"),
+            (repository / "docs/es/repo-harness/roadmap.md").read_text(encoding="utf-8"),
+        )
+        stale_roadmap = (
+            ("Readiness `ready for separately authorized implementation`", "remains implementation-free"),
+            ("Preparacion `ready for separately authorized implementation`", "sigue libre de implementacion"),
+        )
+        for text, stale_phrases in zip(roadmaps, stale_roadmap):
+            for phrase in stale_phrases:
+                self.assertNotIn(phrase, text)
+
     def test_checked_in_documents_do_not_mix_line_endings(self):
         """One edit written with the wrong newline leaves a file half CRLF and half LF."""
         repository = ROOT.parents[1]
@@ -4345,11 +4402,12 @@ class GeneratedCoreTests(unittest.TestCase):
                 "standalone",
             )
 
-    def test_integrated_workflow_preflights_gentle_ai_and_engram_before_approval(self):
+    def test_integrated_workflow_composes_gentle_ai_and_engram_independently(self):
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn("Gentle AI CLI", skill)
         self.assertIn("Engram MCP or CLI", skill)
-        self.assertIn("before approving or applying", skill)
+        self.assertIn("Derive each effective state independently", skill)
+        self.assertIn("refuse only when an unavailable capability is required", skill)
         self.assertIn("--standalone", skill)
 
     def test_wrappers_match_only_enabled_runtime_profiles(self):

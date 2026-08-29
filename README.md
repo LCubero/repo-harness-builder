@@ -14,7 +14,7 @@
 ## Product Positioning
 <!-- doc-role:positioning -->
 
-The harness remains useful on its own. It can operate with or without Gentle AI, Engram, and CodeGraph according to the explicitly selected integration mode. When integrated mode selects required components, those components must be available.
+The harness remains useful on its own. Default integrated mode composes available Gentle AI and Engram capabilities independently, while CodeGraph remains optional. An unavailable capability degrades only its owned behavior unless the selected operation or repository policy explicitly requires it. Explicit `--standalone` mode uses repository-only continuity.
 
 | Component | Boundary |
 |---|---|
@@ -56,7 +56,7 @@ A harness is English-only unless you declare more documentation locales. See [Do
 | `REPO-HARNESS.md` | The concise, always-read rulebook: purpose, hard rules, and routing to deeper guidance. |
 | `docs/repo-harness/` | Durable owners for usage, current state, and decisions, so facts have one home. |
 | `CHANGELOG.md` | A dated record of meaningful completed changes, separate from current and future work. |
-| Engram continuity | Temporary cross-session memory in integrated mode, always reconciled with repository evidence. |
+| Engram continuity | Optional temporary cross-session memory when available, always reconciled with repository evidence. |
 | Runtime projections | Thin Claude Code, OpenCode, or Pi surfaces generated from canonical skills and family-specific command peers. |
 | `.repo-harness/check.py` | A read-only congruence check that detects missing or stale skill, command, and prompt projections. |
 
@@ -91,7 +91,7 @@ Normal session
   -> next session-start continues from current files and continuity memory
 ```
 
-In integrated mode, Gentle AI and Engram must be available for continuity. Engram helps bridge sessions, but it never overrides current repository files. In standalone mode, continuity remains repository-only.
+Integrated mode composes available Gentle AI and Engram capabilities independently and withholds only guarantees owned by an unavailable capability. Engram can bridge sessions when available, but it never overrides current repository files. Explicit standalone mode remains repository-only.
 
 ## Example Workflow
 <!-- doc-role:example -->

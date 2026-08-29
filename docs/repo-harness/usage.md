@@ -15,7 +15,7 @@ Use the three generated skills as a loop: recover context, keep durable document
 ## Integrated Availability
 <!-- doc-role:availability -->
 
-Confirm the generated skills are available in the selected runtime and that Gentle AI and Engram are available. If either continuity dependency is unavailable, report it and do not claim integrated continuity.
+Confirm the generated skills are available in the selected runtime and classify Gentle AI and Engram independently. If either capability is unavailable, report its scoped degradation and do not claim guarantees owned by it; block only an operation that requires it.
 
 ## Congruence And Ownership
 <!-- doc-role:ownership -->
