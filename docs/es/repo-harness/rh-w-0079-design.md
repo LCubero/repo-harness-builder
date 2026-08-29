@@ -1,8 +1,8 @@
 # Diseno RH-W-0079 de capacidades opcionales y limite de release
 
-Estado: `ready`, diseno completo y aprobado por el propietario el 2026-08-28. El plan de implementacion bilingue separado tambien esta aprobado por el propietario. Ninguna aprobacion concede autoridad de implementacion, release ni entrega.
+Estado: `completed`. El diseno y el plan de implementacion bilingue separado fueron aprobados por el propietario el 2026-08-28. La entrega del Corte 5 mediante el issue #147 y el PR #148 registra reconciliacion documental de aceptacion de release, no un release, tag, publicacion de paquete ni cambio de version real.
 
-Progreso de implementacion: los Cortes 1 a 3 autorizados por el propietario estan entregados. El Corte 1 llego mediante el issue #133, ya cerrado, y el PR #134, ya fusionado, en `5d8b87c`. El Corte 2 llego mediante el issue #137, ya cerrado, el commit de implementacion `9c5cd94` y el PR #138, ya fusionado, en `c4265e57368944afc82f871cae28f197f3fcbb6a`. El Corte 3 llego mediante el issue #141, ya cerrado, el commit de funcionalidad `ab18ada` y el PR #142, ya fusionado, en `9a040084eb6a43ccd9abd775a6161eef1b0b1842`. Liga la configuracion efectiva de capacidades mediante las protecciones existentes de autoridad, contexto, plan y generacion: la ausencia estable y las combinaciones compatibles avanzan, mientras la deriva material del estado efectivo rechaza antes de escribir. RDD nativo aprobo la entrega y la suite canonica paso 469 pruebas con 9 omisiones. Los Cortes 4 y 5 y el release quedan fuera de estos resultados, por lo que el ciclo sigue `ready`. La sincronizacion de proyecciones de runtime sigue siendo trabajo del Corte 4 y no se afirma como parte de la entrega del Corte 3.
+Progreso de implementacion: los Cortes 1 a 3 conservan su evidencia de entrega documentada. El Corte 4 se entrego mediante el issue #145, el commit de funcionalidad `9313d5768319602f0ca34ff3d97b195fb9405638` y el PR #146, ya fusionado, en `94fe46933a04b82ae9ce5cbbd6dd60f59b04e9a4`, completando la clasificacion de tres vias y la sincronizacion por renderer. El Corte 5 se entrego mediante el issue #147 y el PR #148, reconciliando documentacion, continuidad y aceptacion de release. No se afirma release, tag, publicacion de paquete, cambio de version ni trabajo de RH-W-0048 o RH-W-0052.
 
 ## Proposito
 
@@ -145,7 +145,7 @@ Las pruebas usan fakes o repositorios temporales, sin proveedor vivo, red, daemo
 - Comandos y rutas usan limites Python y Git ya existentes, sin suponer shell POSIX.
 - Agentes compatibles con OpenCode, Claude y Pi y agentes genericos reciben semantica equivalente en superficies compatibles.
 - Un agente sin integracion sigue comportamiento solo de repositorio en vez de fallar.
-- El comportamiento actual sigue como base hasta que implementacion y release prueben el reemplazo.
+- Se registra evidencia canonica y de proyecciones local en Windows donde se ejecuto. La evidencia real no disponible de macOS, Linux, runtimes de agente y otras plataformas queda desconocida y no se infiere.
 
 ## Aceptacion de release y rollback
 
