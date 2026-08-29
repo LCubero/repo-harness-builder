@@ -10,9 +10,9 @@ Revise este diseno contra el [registro RH-W-0069](roadmap.md#rh-w-0069), la [tax
 
 Cada pausa o cierre deliberado escribe un backup Markdown estructurado en `.repo-harness/memory-bk/`. Cuando Engram esta disponible, session-stop tambien escribe Engram. Las dos escrituras son independientes y visibles. El exito parcial es `degraded`; ninguna operacion fabrica el exito de la otra.
 
-Session-start lee primero la evidencia actual del repositorio, despues Engram cuando esta disponible y luego el backup local mas nuevo. Comprueba Engram y el backup entre si y contra los propietarios actuales. Los conflictos se informan y nunca se fusionan en silencio. Backups anteriores se leen solo cuando el objetivo, un conflicto o continuidad faltante los vuelve relevantes.
+Session-start lee primero la evidencia actual del repositorio, despues el backup local mas nuevo y luego Engram, cuando esta disponible, como comprobacion cruzada. Comprueba Engram y el backup entre si y contra los propietarios actuales. Los conflictos se informan y nunca se fusionan en silencio. Backups anteriores se leen solo cuando el objetivo, un conflicto o continuidad faltante los vuelve relevantes.
 
-La disponibilidad de Gentle AI es independiente de memoria y queda fuera de la mecanica. La memoria incorporada de Claude, OpenCode o Pi no es autoridad ni dependencia de continuidad.
+La disponibilidad de Gentle AI es independiente de memoria y queda fuera de la mecanica. El harness nunca lee, escribe, importa ni depende de memoria privada incorporada de Claude, OpenCode o Pi.
 
 ## Schema minimo
 
@@ -22,7 +22,7 @@ Nombre:
 YYYYMMDDTHHMMSSZ-<source>-<short-session-id>.md
 ```
 
-El timestamp es UTC. `source` es `pause` o `close`. El ID corto usa solo letras ASCII minusculas, digitos y guiones. La creacion es exclusiva; una colision falla visiblemente y nunca sobrescribe.
+El timestamp es UTC. Es identidad y ordenamiento de backup orientados a maquina, no cronologia humana del changelog. La derivacion local del host que posee RH-W-0081 no controla ni es controlada por este nombre o metadata. `source` es `pause` o `close`. El ID corto usa solo letras ASCII minusculas, digitos y guiones. La creacion es exclusiva; una colision falla visiblemente y nunca sobrescribe.
 
 Forma obligatoria:
 
@@ -73,8 +73,8 @@ Cuando difieren propietarios, gana el mas especifico y aplicable. Si el reposito
 1. Resolver y validar la raiz seleccionada.
 2. Leer `REPO-HARNESS.md`, documentacion aplicable, estado actual, registros exactos, decisiones relevantes y ultimas entradas pertinentes del changelog.
 3. Inspeccionar fuente, pruebas, Git y checker requeridos.
-4. Resolver proyecto Engram explicito y leer contexto relevante cuando exista, con resultados por operacion.
-5. Ubicar y leer el Markdown regular valido mas nuevo dentro de `.repo-harness/memory-bk/`; el orden por nombre solo vale si la metadata coincide.
+4. Ubicar y leer el Markdown regular valido mas nuevo dentro de `.repo-harness/memory-bk/`; el orden por nombre solo vale si la metadata coincide.
+5. Resolver proyecto Engram explicito y leer contexto relevante cuando exista, con resultados por operacion.
 6. Leer uno anterior solo si el mas nuevo es invalido, el objetivo lo nombra, un conflicto requiere cronologia o falta continuidad relevante.
 7. Comprobar cada afirmacion Engram y local contra el repositorio y despues entre fuentes.
 8. Informar continuidad aceptada, obsoleta, conflictiva, no disponible y no verificable. Nunca mutar ni continuar automaticamente una operacion inconclusa.
@@ -127,7 +127,7 @@ No se crea store de conflictos. Se reutilizan RH-W-0050 y relaciones consultivas
 ## Compatibilidad y migracion
 
 - Sin directorio significa sin historia local y es valido.
-- Sin importacion automatica desde memoria incorporada, handoffs viejos o ubicaciones fuera del directorio exacto de backups del repositorio.
+- Sin lectura, escritura, dependencia ni importacion automatica de memoria privada incorporada, handoffs viejos o ubicaciones fuera del directorio exacto de backups del repositorio.
 - Repo-harness posee este contrato nativo de continuidad. Solo el propietario controla la politica de continuidad y autoriza cada operacion que cambia la continuidad conservada.
 - Las observaciones Engram existentes quedan intactas y solo se leen cuando son relevantes.
 - Markdown plano no necesita base de datos, cifrado, daemon, servicio ni API generica.
@@ -145,7 +145,7 @@ Antes de implementar deben fallar pruebas para:
 3. Creacion exclusiva, diferida, con readback y sin overwrite.
 4. Escritura local antes de Engram y resultados independientes en cada combinacion.
 5. Comprobacion cruzada con casos obsoletos, conflictos resueltos o no, fuente malformada y faltante.
-6. Orden repositorio, Engram, backup mas nuevo y lectura acotada de anteriores.
+6. Orden repositorio, backup local mas nuevo, Engram y lectura acotada de anteriores.
 7. Verificacion de cada afirmacion contra su propietario.
 8. Rechazo de credenciales, entorno crudo, rutas absolutas, fuente innecesaria y datos personales.
 9. Contencion, archivos regulares, cero rutas indirectas y cero staging.

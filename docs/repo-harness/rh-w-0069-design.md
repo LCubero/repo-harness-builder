@@ -10,9 +10,9 @@ Review this design against the canonical [RH-W-0069 roadmap record](roadmap.md#r
 
 Every deliberate session pause or close writes one local structured Markdown backup under `.repo-harness/memory-bk/`. When Engram is available, session-stop also writes Engram. The two writes are independent and visible. Partial success is `degraded`; no operation fabricates success for the other.
 
-Session-start reads current repository evidence first, then Engram when available, then the newest local backup by default. It cross-checks Engram and local backup claims against each other and against current repository owners. Conflicts are reported, never silently merged. Older backups are read only when the current objective, a conflict, or missing continuity makes them relevant.
+Session-start reads current repository evidence first, then the newest local backup by default, then Engram when available as a cross-check. It cross-checks Engram and local backup claims against each other and against current repository owners. Conflicts are reported, never silently merged. Older backups are read only when the current objective, a conflict, or missing continuity makes them relevant.
 
-Gentle AI availability is independent from memory availability and stays outside backup mechanics. Built-in Claude, OpenCode, or Pi memory is neither authority nor a continuity dependency.
+Gentle AI availability is independent from memory availability and stays outside backup mechanics. The harness never reads, writes, imports, or depends on private built-in Claude, OpenCode, or Pi memory.
 
 ## Smallest Backup Schema
 
@@ -22,7 +22,7 @@ Filename:
 YYYYMMDDTHHMMSSZ-<source>-<short-session-id>.md
 ```
 
-The timestamp is UTC. `source` is `pause` or `close`. The short session ID contains only lowercase ASCII letters, digits, and hyphens. Creation uses exclusive write semantics; a collision fails visibly and never overwrites an existing backup.
+The timestamp is UTC. It is machine-oriented backup identity and ordering, not human-facing changelog chronology. RH-W-0081 host-local changelog date derivation neither controls nor is controlled by this filename or metadata. `source` is `pause` or `close`. The short session ID contains only lowercase ASCII letters, digits, and hyphens. Creation uses exclusive write semantics; a collision fails visibly and never overwrites an existing backup.
 
 Required document shape:
 
@@ -73,8 +73,8 @@ When owners differ, the most specific currently applicable owner wins. If reposi
 1. Resolve and validate the selected repository root.
 2. Read `REPO-HARNESS.md`, applicable canonical documentation, current state, the exact roadmap records in scope, decisions when relevant, and latest relevant changelog entries.
 3. Inspect current source, tests, Git, and checker evidence required by the objective.
-4. Resolve explicit Engram project scope and read relevant recent context when Engram is available. Record each operation outcome independently.
-5. Locate the newest valid regular Markdown backup inside `.repo-harness/memory-bk/` and read it. Ignore filename order unless metadata parses and agrees with the filename.
+4. Locate the newest valid regular Markdown backup inside `.repo-harness/memory-bk/` and read it. Ignore filename order unless metadata parses and agrees with the filename.
+5. Resolve explicit Engram project scope and read relevant recent context when Engram is available. Record each operation outcome independently.
 6. Read an older backup only when the newest file is invalid, the objective names it, a conflict needs chronology, or the newest file explicitly lacks relevant continuity.
 7. Cross-check every Engram and backup claim against current repository evidence, then cross-check Engram and backup with each other.
 8. Report accepted, stale, conflicting, unavailable, and unverifiable continuity separately. Never mutate during startup or continue an unfinished operation automatically.
@@ -127,7 +127,7 @@ No conflict creates a new conflict store. RH-W-0050 classifications and Engram a
 ## Compatibility And Migration
 
 - Existing repositories without the directory start with no local backup history; this is valid.
-- No automatic import from built-in runtime memory, old handoffs, or locations outside the exact repository backup directory.
+- No read, write, dependency, or automatic import involving private built-in runtime memory, old handoffs, or locations outside the exact repository backup directory.
 - Repo-harness owns this native continuity contract. The owner alone controls continuity policy and authorizes each operation that changes retained continuity.
 - Existing Engram observations remain untouched and are checked only when relevant.
 - Plain Markdown needs no database, encryption, daemon, background service, or generic memory API.
@@ -145,7 +145,7 @@ Before implementation, focused tests must fail for:
 3. Exclusive collision-safe creation, lazy directory creation, structural readback, and no overwrite.
 4. Local write before Engram write and independent visible outcomes for every success/failure combination.
 5. Engram/local cross-check with stale, resolved conflict, unresolved material conflict, malformed source, and missing-source cases.
-6. Session-start repository-first, Engram-second, newest-backup-third ordering and bounded older-backup reads.
+6. Session-start repository-first, newest-backup-second, Engram-third ordering and bounded older-backup reads.
 7. Verification of every recalled claim against its current applicable owner.
 8. Rejection of credentials, raw environment values, absolute paths, unnecessary source, and sensitive personal data.
 9. Path containment, regular-file-only reads, no indirect paths, and no staging or tracking.

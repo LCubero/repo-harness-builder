@@ -44,6 +44,12 @@
 | [Plan de implementacion RH-W-0071](rh-w-0071-implementation-plan.md) | Plan de implementacion RH-W-0071 propuesto en cuatro cortes; la aprobacion del propietario y la implementacion siguen sin autorizacion separada |
 | [Diseno RH-W-0079](rh-w-0079-design.md) | Diseno completado de capacidades opcionales y limite autoalojado; los cinco Cortes estan entregados sin afirmar un release real |
 | [Plan de implementacion RH-W-0079](rh-w-0079-implementation-plan.md) | Plan completado de cinco Cortes con pruebas primero; registra la evidencia de entrega de los Cortes 4 y 5 |
+| [Diseno RH-W-0080](rh-w-0080-design.md) | Diseno aprobado de interaccion efimera por lotes; implementacion sigue sin autorizacion |
+| [Plan RH-W-0080](rh-w-0080-implementation-plan.md) | Plan propuesto de interaccion efimera por lotes a la espera de aprobacion |
+| [Diseno RH-W-0081](rh-w-0081-design.md) | Diseno aprobado de cronologia local del host para el changelog; implementacion sigue sin autorizacion |
+| [Plan RH-W-0081](rh-w-0081-implementation-plan.md) | Plan propuesto de cronologia local a la espera de aprobacion |
+| [Diseno RH-W-0075](rh-w-0075-design.md) | Diseno aprobado de necesidad externa estricta y justificacion de solicitudes; la implementacion sigue sin autorizacion |
+| [Plan RH-W-0075](rh-w-0075-implementation-plan.md) | Plan propuesto de necesidad externa a la espera de aprobacion |
 | [Hallazgos RH-W-0056](rh-w-0056-findings.md) | Propietario canonico de hallazgos y de la disposicion completada de 64 recomendaciones |
 | [Traspaso de arranque archivado](../../repo-harness/archive/repo-bootstrap-handoff.md) | Registro historico en ingles de la separacion del 2026-08-12; solo procedencia, no es politica ni plan ni fuente de trabajo pendiente |
 | [Mapa canonico en ingles](../../repo-harness/README.md) | Propiedad documental canonica |
