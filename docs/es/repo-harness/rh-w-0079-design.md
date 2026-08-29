@@ -1,8 +1,8 @@
 # Diseno RH-W-0079 de capacidades opcionales y limite de release
 
-Estado: `completed` cuando se fusione el PR del Corte 5 `SLICE5_PR_PENDING`. El diseno y el plan de implementacion bilingue separado fueron aprobados por el propietario el 2026-08-28. Esta finalizacion condicional registra reconciliacion documental de aceptacion de release, no un release, tag, publicacion de paquete ni cambio de version real.
+Estado: `completed`. El diseno y el plan de implementacion bilingue separado fueron aprobados por el propietario el 2026-08-28. La entrega del Corte 5 mediante el issue #147 y el PR #148 registra reconciliacion documental de aceptacion de release, no un release, tag, publicacion de paquete ni cambio de version real.
 
-Progreso de implementacion: los Cortes 1 a 3 conservan su evidencia de entrega documentada. El Corte 4 se entrego mediante el issue #145, el commit de funcionalidad `9313d5768319602f0ca34ff3d97b195fb9405638` y el PR #146, ya fusionado, en `94fe46933a04b82ae9ce5cbbd6dd60f59b04e9a4`, completando la clasificacion de tres vias y la sincronizacion por renderer. El Corte 5 esta autorizado por el issue #147 y reconcilia documentacion, continuidad y aceptacion de release mediante el PR `SLICE5_PR_PENDING`. RH-W-0079 se completa solo cuando ese PR se fusione. No se afirma release, tag, publicacion de paquete, cambio de version ni trabajo de RH-W-0048 o RH-W-0052.
+Progreso de implementacion: los Cortes 1 a 3 conservan su evidencia de entrega documentada. El Corte 4 se entrego mediante el issue #145, el commit de funcionalidad `9313d5768319602f0ca34ff3d97b195fb9405638` y el PR #146, ya fusionado, en `94fe46933a04b82ae9ce5cbbd6dd60f59b04e9a4`, completando la clasificacion de tres vias y la sincronizacion por renderer. El Corte 5 se entrego mediante el issue #147 y el PR #148, reconciliando documentacion, continuidad y aceptacion de release. No se afirma release, tag, publicacion de paquete, cambio de version ni trabajo de RH-W-0048 o RH-W-0052.
 
 ## Proposito
 

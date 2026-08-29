@@ -1,8 +1,8 @@
 # RH-W-0079 Optional Capability and Release Boundary Design
 
-Status: `completed` upon merge of Slice 5 PR `SLICE5_PR_PENDING`. The design and separate bilingual implementation plan were owner-approved on 2026-08-28. This conditional completion records release-acceptance documentation reconciliation, not an actual release, tag, publication, or version change.
+Status: `completed`. The design and separate bilingual implementation plan were owner-approved on 2026-08-28. Slice 5 delivery through issue #147 and PR #148 records release-acceptance documentation reconciliation, not an actual release, tag, publication, or version change.
 
-Implementation progress: Slices 1 through 3 retain their documented delivery evidence. Slice 4 was delivered through issue #145, feature commit `9313d5768319602f0ca34ff3d97b195fb9405638`, and merged PR #146 at `94fe46933a04b82ae9ce5cbbd6dd60f59b04e9a4`, completing three-way behavior classification and renderer synchronization. Slice 5 is authorized by issue #147 and reconciles documentation, continuity, and release acceptance through PR `SLICE5_PR_PENDING`. RH-W-0079 completes only when that PR merges. No actual release, tag, package publication, version bump, RH-W-0048 work, or RH-W-0052 work is claimed.
+Implementation progress: Slices 1 through 3 retain their documented delivery evidence. Slice 4 was delivered through issue #145, feature commit `9313d5768319602f0ca34ff3d97b195fb9405638`, and merged PR #146 at `94fe46933a04b82ae9ce5cbbd6dd60f59b04e9a4`, completing three-way behavior classification and renderer synchronization. Slice 5 was delivered through issue #147 and PR #148, reconciling documentation, continuity, and release acceptance. No actual release, tag, package publication, version bump, RH-W-0048 work, or RH-W-0052 work is claimed.
 
 ## Purpose
 

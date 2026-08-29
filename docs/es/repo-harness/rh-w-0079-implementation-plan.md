@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0079 de capacidades opcionales
 
-Progreso de implementacion: los Cortes 1 a 3 conservan su evidencia de entrega documentada. El Corte 4 se entrego mediante el issue #145, el commit de funcionalidad `9313d5768319602f0ca34ff3d97b195fb9405638` y el PR #146, ya fusionado, en `94fe46933a04b82ae9ce5cbbd6dd60f59b04e9a4`. El Corte 5 esta autorizado por el issue #147 y reconcilia documentacion, continuidad y aceptacion de release mediante el PR `SLICE5_PR_PENDING`. El plan y RH-W-0079 pasan a `completed` solo cuando ese PR se fusione. No se afirma release, tag, publicacion, cambio de version ni cambio de RH-W-0048 o RH-W-0052.
+Progreso de implementacion: los Cortes 1 a 3 conservan su evidencia de entrega documentada. El Corte 4 se entrego mediante el issue #145, el commit de funcionalidad `9313d5768319602f0ca34ff3d97b195fb9405638` y el PR #146, ya fusionado, en `94fe46933a04b82ae9ce5cbbd6dd60f59b04e9a4`. El Corte 5 se entrego mediante el issue #147 y el PR #148, reconciliando documentacion, continuidad y aceptacion de release. El plan y RH-W-0079 estan `completed`. No se afirma release, tag, publicacion, cambio de version ni cambio de RH-W-0048 o RH-W-0052.
 
 Evidencia correctiva del Corte 1: `python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.CapabilityAwareIntegrationContractTests.test_policy_required_is_a_contextual_selection_state skill.repo-harness-builder.tests.test_harness_tool.CapabilityAwareIntegrationContractTests.test_cli_default_preview_proceeds_for_every_capability_pair skill.repo-harness-builder.tests.test_harness_tool.CapabilityAwareIntegrationContractTests.test_cli_apply_still_fails_closed_for_every_unverified_pair` ejecuto primero 3 pruebas con 9 errores y 9 fallos. Los previews exitosos no incluian `capabilityPreflight`, `policy-required` se reducia a `unavailable` y apply con capacidades no verificadas alcanzaba la compuerta del digest del plan en vez del rechazo emparejado existente. Despues de la correccion minima, las mismas 3 pruebas pasaron. Este RED correctivo es distinto del RED original del preflight emparejado: el Corte 1 ahora compone solamente la proyeccion de capacidades de solo lectura en la salida exitosa del preview, mientras apply no verificado conserva su fallo anterior al Corte 3.
 
@@ -17,7 +17,7 @@ Par canonico: [RH-W-0079 Optional Capability Implementation Plan](../../repo-har
 - Cambiar fuente/pruebas canonicas solo despues de RED. Sincronizar `.opencode/` y `.claude/` con el renderer existente, nunca a mano.
 - Serializar cada cambio canonico compartido y mantener cada RED en el mismo corte que su GREEN propietario.
 - Mantener cerrados detectores RH-W-0025 y estado local RH-W-0051. Sin adapter universal, plugins, maquina de estados, store, ledger, registro de migracion ni segunda autoridad.
-- Mantener la transicion condicional a `completed` ligada explicitamente al merge de `SLICE5_PR_PENDING`. La reconciliacion documental del Corte 5 no autoriza un release real.
+- Mantener la autoridad de release real separada de la reconciliacion documental completada del Corte 5.
 - Los commits indicados son solo limites de planificacion. Descubrir la ruta real al ejecutar. GitHub, issues, PRs y `CONTRIBUTING.md` nunca son requisitos genericos.
 
 ## Trazabilidad del diseno
@@ -92,7 +92,7 @@ Superficies: script/pruebas canonicos, templates existentes, configuracion de au
 
 ## Corte 5: Documentacion, continuidad y aceptacion de release
 
-Estado de ejecucion: completado cuando se fusione el PR `SLICE5_PR_PENDING`. El contrato documental enfocado fallo antes de cambiar la decision permanente y pasa despues de la reconciliacion bilingue. La documentacion registra la entrega del Corte 4 y la reconciliacion de aceptacion de release del Corte 5 sin afirmar un release real. La evidencia de runtimes y plataformas no disponible para este trabajo queda explicitamente desconocida.
+Estado de ejecucion: completado mediante el issue #147 y el PR #148. El contrato documental enfocado fallo antes de cambiar la decision permanente y pasa despues de la reconciliacion bilingue. La documentacion registra la entrega del Corte 4 y la reconciliacion de aceptacion de release del Corte 5 sin afirmar un release real. La evidencia de runtimes y plataformas no disponible para este trabajo queda explicitamente desconocida.
 
 1. Reconciliar roadmap, estado, decisiones solo si nuevas, changelogs solo por conducta completada, mapas y pares.
 2. **RED primero:** agregar una asercion documental enfocada que falle mientras la decision permanente de `decisions.md` diga que `integrated` usa Gentle AI y Engram juntos y `standalone` aplica cuando ninguno esta disponible. **GREEN documental:** reemplazar esa redaccion contradictoria por el modelo opcional independiente aprobado, conservando semantica de detectores RH-W-0025 y degradacion por operacion.
@@ -164,9 +164,8 @@ Total: 740-1,410 lineas autoradas mas 300-700 de renderer en unos 10-18 archivos
 
 ## Decisiones humanas restantes
 
-1. Fusionar el PR del Corte 5 `SLICE5_PR_PENDING` para hacer efectiva la finalizacion condicional documentada y la proyeccion del portafolio posterior al merge.
-2. Todo release, tag, publicacion de paquete, cambio de version, accion de proveedor o entrega posterior sigue siendo una decision separada del propietario.
+1. Todo release, tag, publicacion de paquete, cambio de version, accion de proveedor o entrega posterior sigue siendo una decision separada del propietario.
 
 ## Compuerta del propietario
 
-`next_recommended`: reemplazar `SLICE5_PR_PENDING` por la referencia final del PR y luego fusionarlo si se aprueba. El Corte 5 solo autoriza reconciliacion documental y no autoriza release, tag, publicacion de paquete, cambio de version, push ni trabajo ajeno.
+`next_recommended`: no queda trabajo de RH-W-0079. Cualquier release, tag, publicacion de paquete, cambio de version, push o trabajo ajeno requiere autoridad separada.
