@@ -41,7 +41,7 @@
 | [Diseno RH-W-0067](rh-w-0067-design.md) | Par humano del diseno completado del contrato de respuesta; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0067](rh-w-0067-implementation-plan.md) | Par humano del plan de implementacion completado; instrucciones historicas conservadas |
 | [Diseno RH-W-0071](rh-w-0071-design.md) | Diseno nativo aprobado del modo de respuesta ADHD-friendly; la implementacion sigue sin autorizacion separada |
-| [Plan de implementacion RH-W-0071](rh-w-0071-implementation-plan.md) | Plan de implementacion RH-W-0071 propuesto en cuatro cortes; la aprobacion del propietario y la implementacion siguen sin autorizacion separada |
+| [Plan de implementacion RH-W-0071](rh-w-0071-implementation-plan.md) | Plan de implementacion RH-W-0071 aprobado por el propietario en cuatro cortes; la implementacion sigue sin autorizacion separada tras tres compuertas sin resolver |
 | [Diseno RH-W-0079](rh-w-0079-design.md) | Diseno completado de capacidades opcionales y limite autoalojado; los cinco Cortes estan entregados sin afirmar un release real |
 | [Plan de implementacion RH-W-0079](rh-w-0079-implementation-plan.md) | Plan completado de cinco Cortes con pruebas primero; registra la evidencia de entrega de los Cortes 4 y 5 |
 | [Diseno RH-W-0080](rh-w-0080-design.md) | Diseno aprobado de interaccion efimera por lotes; implementacion sigue sin autorizacion |

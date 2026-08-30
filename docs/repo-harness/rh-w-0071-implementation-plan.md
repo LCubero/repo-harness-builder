@@ -1,6 +1,6 @@
 # RH-W-0071 Implementation Plan
 
-> **Status: proposed. This plan requires separate owner approval, and the implementation it describes requires its own authorization after that.**
+> **Status: approved by the owner on 2026-08-30. RH-W-0071 remains `proposed`, and implementation requires separate authorization after all three pre-implementation gates are resolved.**
 
 Derived from the owner-approved [RH-W-0071 design](rh-w-0071-design.md) and roadmap Plan 20. Its Spanish peer is [rh-w-0071-implementation-plan.md](../es/repo-harness/rh-w-0071-implementation-plan.md).
 
@@ -68,7 +68,7 @@ The persistence, resolver, and runtime reader symbol names are intentionally abs
 
 ## Slicing
 
-Four proposed slices in this order. Their commit and shipping boundaries remain a human decision under Gate 2.
+Four proposed slices in this order. Their commit and shipping boundaries remain a human decision under Gate 3.
 
 ### Slice 1: resolution and persistence, no interface
 
@@ -155,7 +155,7 @@ git diff --check
 ```
 
 ```powershell
-python -c "from pathlib import Path; e=Path('docs/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); s=Path('docs/es/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); ep=e.split('## Executable Verification Contract')[0]; sp=s.split('## Contrato ejecutable de verificacion')[0]; er=['answer or action first','concise initial layer','small chunks','numbered bounded steps where useful','one question at a time','progressive disclosure','visible next action','suppress tangents and filler','offer or provide more detail','restate current state during multi-step work','pre-send removal check']; sr=['respuesta o accion primero','capa inicial concisa','trozos pequenos','pasos numerados y acotados cuando sirvan','una pregunta por vez','divulgacion progresiva','siguiente accion visible','suprimir tangentes y relleno','ofrecer o dar mas detalle','restablecer estado durante trabajo de varios pasos','chequeo de borrado previo al envio']; assert ep.count('### Slice ')==4 and sp.count('### Corte ')==4; assert all(x in ep for x in er) and all(x in sp for x in sr); assert ep.count('**Persistence contract gate:**')==1 and ep.count('**Runtime reader architecture gate:**')==1 and ep.count('**Delivery gate:**')==1; assert sp.count('**Compuerta del contrato de persistencia:**')==1 and sp.count('**Compuerta de arquitectura del lector de runtime:**')==1 and sp.count('**Compuerta de entrega:**')==1; assert 'Status: proposed' in e and 'Estado:' in s and 'proposed' in s; assert not any(chr(c) in e+s for c in (0x2013,0x2014))"
+python -c "from pathlib import Path; e=Path('docs/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); s=Path('docs/es/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); ep=e.split('## Executable Verification Contract')[0]; sp=s.split('## Contrato ejecutable de verificacion')[0]; er=['answer or action first','concise initial layer','small chunks','numbered bounded steps where useful','one question at a time','progressive disclosure','visible next action','suppress tangents and filler','offer or provide more detail','restate current state during multi-step work','pre-send removal check']; sr=['respuesta o accion primero','capa inicial concisa','trozos pequenos','pasos numerados y acotados cuando sirvan','una pregunta por vez','divulgacion progresiva','siguiente accion visible','suprimir tangentes y relleno','ofrecer o dar mas detalle','restablecer estado durante trabajo de varios pasos','chequeo de borrado previo al envio']; assert ep.count('### Slice ')==4 and sp.count('### Corte ')==4; assert all(x in ep for x in er) and all(x in sp for x in sr); assert ep.count('**Persistence contract gate:**')==1 and ep.count('**Runtime reader architecture gate:**')==1 and ep.count('**Delivery gate:**')==1; assert sp.count('**Compuerta del contrato de persistencia:**')==1 and sp.count('**Compuerta de arquitectura del lector de runtime:**')==1 and sp.count('**Compuerta de entrega:**')==1; assert 'Status: approved by the owner' in e and 'Estado: aprobado por el propietario' in s; assert not any(chr(c) in e+s for c in (0x2013,0x2014))"
 ```
 
 Then run the focused RH-W-0071 tests plus the three regression tests above. Do not run the broad unrelated suite. Record command, exit status, test count, checker `current` status, and `writes: 0`.
@@ -206,7 +206,7 @@ If Gate 3 requires one delivery, treat these as internal rollback boundaries in 
 
 ## Human Decisions Required Before Implementation
 
-1. Approve this corrected plan. Approval does not authorize product implementation.
+1. Completed on 2026-08-30: the owner approved this corrected plan. Approval does not authorize product implementation.
 2. Resolve the persistence contract gate completely.
 3. Name and approve the runtime reader or transport and its API under the architecture gate.
 4. Resolve the slice-delivery gate.

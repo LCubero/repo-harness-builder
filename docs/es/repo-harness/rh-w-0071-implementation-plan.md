@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0071
 
-> **Estado: `proposed`. Este plan requiere aprobacion separada del propietario, y la implementacion que describe requiere su propia autorizacion despues de esa.**
+> **Estado: aprobado por el propietario el 2026-08-30. RH-W-0071 sigue `proposed`, y la implementacion requiere autorizacion separada despues de resolver las tres compuertas previas a la implementacion.**
 
 Derivado del [diseno RH-W-0071](rh-w-0071-design.md) aprobado por el propietario y del Plan 20 de la hoja de ruta. Su par en ingles es [rh-w-0071-implementation-plan.md](../../repo-harness/rh-w-0071-implementation-plan.md).
 
@@ -68,7 +68,7 @@ Los nombres de simbolos de persistencia, resolucion y lectura de runtime quedan 
 
 ## Cortes
 
-Cuatro cortes propuestos, en este orden. Sus limites de commit y entrega siguen siendo una decision humana bajo la Compuerta 2.
+Cuatro cortes propuestos, en este orden. Sus limites de commit y entrega siguen siendo una decision humana bajo la Compuerta 3.
 
 ### Corte 1: resolucion y persistencia, sin interfaz
 
@@ -150,7 +150,7 @@ git diff --check
 El primer comando prueba RED enfocado y debe fallar solo por RH-W-0071; el segundo es GREEN enfocado identico.
 
 ```powershell
-python -c "from pathlib import Path; e=Path('docs/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); s=Path('docs/es/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); ep=e.split('## Executable Verification Contract')[0]; sp=s.split('## Contrato ejecutable de verificacion')[0]; er=['answer or action first','concise initial layer','small chunks','numbered bounded steps where useful','one question at a time','progressive disclosure','visible next action','suppress tangents and filler','offer or provide more detail','restate current state during multi-step work','pre-send removal check']; sr=['respuesta o accion primero','capa inicial concisa','trozos pequenos','pasos numerados y acotados cuando sirvan','una pregunta por vez','divulgacion progresiva','siguiente accion visible','suprimir tangentes y relleno','ofrecer o dar mas detalle','restablecer estado durante trabajo de varios pasos','chequeo de borrado previo al envio']; assert ep.count('### Slice ')==4 and sp.count('### Corte ')==4; assert all(x in ep for x in er) and all(x in sp for x in sr); assert ep.count('**Persistence contract gate:**')==1 and ep.count('**Runtime reader architecture gate:**')==1 and ep.count('**Delivery gate:**')==1; assert sp.count('**Compuerta del contrato de persistencia:**')==1 and sp.count('**Compuerta de arquitectura del lector de runtime:**')==1 and sp.count('**Compuerta de entrega:**')==1; assert 'Status: proposed' in e and 'Estado:' in s and 'proposed' in s; assert not any(chr(c) in e+s for c in (0x2013,0x2014))"
+python -c "from pathlib import Path; e=Path('docs/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); s=Path('docs/es/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); ep=e.split('## Executable Verification Contract')[0]; sp=s.split('## Contrato ejecutable de verificacion')[0]; er=['answer or action first','concise initial layer','small chunks','numbered bounded steps where useful','one question at a time','progressive disclosure','visible next action','suppress tangents and filler','offer or provide more detail','restate current state during multi-step work','pre-send removal check']; sr=['respuesta o accion primero','capa inicial concisa','trozos pequenos','pasos numerados y acotados cuando sirvan','una pregunta por vez','divulgacion progresiva','siguiente accion visible','suprimir tangentes y relleno','ofrecer o dar mas detalle','restablecer estado durante trabajo de varios pasos','chequeo de borrado previo al envio']; assert ep.count('### Slice ')==4 and sp.count('### Corte ')==4; assert all(x in ep for x in er) and all(x in sp for x in sr); assert ep.count('**Persistence contract gate:**')==1 and ep.count('**Runtime reader architecture gate:**')==1 and ep.count('**Delivery gate:**')==1; assert sp.count('**Compuerta del contrato de persistencia:**')==1 and sp.count('**Compuerta de arquitectura del lector de runtime:**')==1 and sp.count('**Compuerta de entrega:**')==1; assert 'Status: approved by the owner' in e and 'Estado: aprobado por el propietario' in s; assert not any(chr(c) in e+s for c in (0x2013,0x2014))"
 ```
 
 Luego ejecutar pruebas RH-W-0071 y las tres regresiones anteriores. No ejecutar la suite amplia no relacionada. Registrar comando, salida, conteo, `current` y `writes: 0`.
@@ -201,7 +201,7 @@ Si la Compuerta 3 exige una entrega, tratar estos como limites internos en el mi
 
 ## Decisiones humanas requeridas antes de implementar
 
-1. Aprobar este plan corregido. La aprobacion no autoriza producto.
+1. Completado el 2026-08-30: el propietario aprobo este plan corregido. La aprobacion no autoriza producto.
 2. Resolver por completo la compuerta de persistencia.
 3. Nombrar y aprobar el lector o transporte de runtime y su API bajo la compuerta de arquitectura.
 4. Resolver la compuerta de entrega por cortes.

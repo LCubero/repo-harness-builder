@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-08-30
+
+- Se registro la aprobacion explicita del propietario para el plan de implementacion bilingue corregido de `RH-W-0071`. `RH-W-0071` sigue `proposed`; el contrato de persistencia, la propiedad y API del lector o transporte de runtime nombrado, y la agrupacion de entrega siguen como compuertas previas sin resolver. La implementacion de producto sigue sin autorizacion separada.
+
 ## 2026-08-29
 
 - Se entrego el corte de paridad reciproca completa de Pi autorizado por el propietario bajo `RH-W-0048`. El render autoalojado con raiz ahora genera el paquete completo `.pi/skills/repo-harness-builder/` desde la fuente canonica del producto, agrega la entrada delgada y sin rutas `.pi/prompts/repo-harness-builder.md`, conserva las tres habilidades operativas generadas y los cuatro prompts operativos existentes, y declara proyecciones exactas del paquete y la entrada del builder para todos los entornos seleccionados mediante `canonicalProjections` autenticado y opcional. El checker detecta proyecciones de producto faltantes u obsoletas, los manifests de consumidores ordinarios no cambian y reglas LF exactas protegen cada destino nuevo comparado byte a byte. `RH-W-0048` sigue `proposed` porque aun no se implementan la politica rastreada frente a local ni la recuperacion aditiva explicita de un clon nuevo.

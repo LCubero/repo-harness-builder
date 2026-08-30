@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-08-30
+
+- Recorded the owner's explicit approval of the corrected bilingual `RH-W-0071` implementation plan. `RH-W-0071` remains `proposed`; the persistence contract, named runtime reader or transport ownership and API, and slice-delivery grouping remain unresolved pre-implementation gates. Product implementation remains separately unauthorized.
+
 ## 2026-08-29
 
 - Delivered the owner-authorized complete reciprocal Pi parity slice under `RH-W-0048`. Root-aware self-host rendering now generates the complete `.pi/skills/repo-harness-builder/` package from canonical product source, adds the thin path-free `.pi/prompts/repo-harness-builder.md` entry, retains the three generated operational skills and four existing operational prompts, and declares exact builder package and entry projections for all selected runtimes through optional authenticated `canonicalProjections`. The checker detects missing or stale product projections, ordinary consumer manifests remain unchanged, and exact LF rules protect every new byte-compared target. `RH-W-0048` remains `proposed` because tracked-versus-local policy and explicit additive fresh-clone recovery are not yet implemented.
