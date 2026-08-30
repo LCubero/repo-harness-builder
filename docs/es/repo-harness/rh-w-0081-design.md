@@ -6,7 +6,7 @@
 
 La cronologia humana del changelog deriva las fechas del timestamp local del host del cambio completado. Se usa el timestamp local exacto cuando haga falta, o la fecha calendario local con su offset. Nunca se sustituye UTC en silencio ni se inventa un minuto redondeado.
 
-La correccion pendiente es fusionar ambas secciones `2026-08-29` de los changelogs en `2026-08-28`. Git local registra `1e5759e0` en `2026-08-28T22:33:40-06:00` y `c892cfb` en `2026-08-28T22:40:57-06:00`. Este diseno registra la correccion sin ejecutarla.
+La correccion autorizada por separado fusiono ambas secciones `2026-08-29` de los changelogs en `2026-08-28`. Git local registra `1e5759e0` en `2026-08-28T22:33:40-06:00` y `c892cfb` en `2026-08-28T22:40:57-06:00`. El commit `fac022c6` completo esa correccion documental sin implementar comportamiento de producto.
 
 ## Limites de propiedad
 
@@ -24,7 +24,7 @@ La correccion pendiente es fusionar ambas secciones `2026-08-29` de los changelo
 
 ## Exclusiones
 
-Este diseno y el plan propuesto no autorizan comportamiento, prueba, proyeccion, correccion, Git, red, proveedor, publicacion ni cambio de identidad RH-W-0069.
+Este diseno y el plan propuesto no autorizan comportamiento de producto, prueba, proyeccion, correccion adicional, Git, red, proveedor, publicacion ni cambio de identidad RH-W-0069.
 
 ## Objetivos de verificacion posteriores
 

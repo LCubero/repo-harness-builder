@@ -1,6 +1,6 @@
 # RH-W-0081 Host-Local Changelog Chronology Implementation Plan
 
-> **Status: proposed.** Owner approval and separate implementation authorization are required. The recorded changelog correction is not performed by this plan.
+> **Status: proposed.** Owner approval and separate product implementation authorization are required. The documentation correction was completed separately and is retained below as historical work.
 
 Derived from the owner-approved [design](rh-w-0081-design.md). Spanish peer: [rh-w-0081-implementation-plan.md](../es/repo-harness/rh-w-0081-implementation-plan.md).
 
@@ -8,7 +8,7 @@ Derived from the owner-approved [design](rh-w-0081-design.md). Spanish peer: [rh
 
 `session_stop_skill()` renders the human-facing changelog guidance through `render_with_skill_mapping()`. `changelog()` seeds new files but does not derive dates. `DATE_HEADING` recognizes date headings. `GeneratedCoreTests.test_changelog_is_simple_completed_history` and `test_session_skills_treat_changelog_as_completed_history_only` cover chronology boundaries. RH-W-0068 alone decides whether an entry is needed. RH-W-0081 derives its host-local date. RH-W-0069 UTC backup identity and ordering are independent in both directions.
 
-Current exact evidence for the separate correction is local Git commit `1e5759e0` at `2026-08-28T22:33:40-06:00` and `c892cfb` at `2026-08-28T22:40:57-06:00`. Both English and Spanish changelogs currently have a `2026-08-29` heading above an existing `2026-08-28` heading.
+Exact evidence for the completed correction is local Git commit `1e5759e0` at `2026-08-28T22:33:40-06:00` and `c892cfb` at `2026-08-28T22:40:57-06:00`. Commit `fac022c6` moved both English and Spanish entries to the existing `2026-08-28` sections. Commit `b39e1ba` updated only the Plan 30 projection.
 
 ## Slice 1: Focused RED And Minimal Generated Contract
 
@@ -21,13 +21,13 @@ Current exact evidence for the separate correction is local Git commit `1e5759e0
 - [ ] Repeat that command, then run `python -B skill/repo-harness-builder/tests/test_harness_tool.py GeneratedCoreTests.test_changelog_is_simple_completed_history GeneratedCoreTests.test_session_skills_treat_changelog_as_completed_history_only -v`. Expected GREEN: all pass.
 - [ ] Rollback removes only RH-W-0081 test and renderer clauses.
 
-## Slice 2: Independent Bilingual Documentation Correction
+## Slice 2: Historical Completed Bilingual Documentation Correction
 
-- [ ] Before editing, verify with local Git only: `git show -s --format=%H%n%cI 1e5759e0` and `git show -s --format=%H%n%cI c892cfb`. Expected timestamps: `2026-08-28T22:33:40-06:00` and `2026-08-28T22:40:57-06:00`.
-- [ ] Move the English entry currently under `CHANGELOG.md` heading `2026-08-29` into the existing `2026-08-28` section and remove the now-empty false heading.
-- [ ] Apply the equivalent move in `CHANGELOG.es.md`, preserving entry order and semantic parity.
-- [ ] Change no entry content beyond the heading merge unless exact local Git evidence proves another chronology defect.
-- [ ] Review this slice independently from generated behavior. Rollback restores only both heading structures and leaves Slice 1 intact.
+- [x] Verified with local Git only: `git show -s --format=%H%n%cI 1e5759e0` and `git show -s --format=%H%n%cI c892cfb` returned `2026-08-28T22:33:40-06:00` and `2026-08-28T22:40:57-06:00`.
+- [x] Moved the English entry from the false `2026-08-29` heading into the existing `2026-08-28` section.
+- [x] Applied the equivalent move in `CHANGELOG.es.md`, preserving order and semantic parity.
+- [x] Changed no entry content beyond the evidence-bound heading merge.
+- [x] Kept this correction independent from generated product behavior in commit `fac022c6`.
 
 ## Slice 3: Projections, Lifecycle, And Delivery Boundary
 

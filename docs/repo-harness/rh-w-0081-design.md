@@ -6,7 +6,7 @@
 
 Human-facing changelog chronology derives dates from the host-local timestamp of the completed change. Use the exact local timestamp when needed, or the local calendar date with its offset. Never silently substitute UTC or invent a rounded minute.
 
-The pending correction is to merge both `2026-08-29` changelog sections into `2026-08-28`. Local Git records `1e5759e0` at `2026-08-28T22:33:40-06:00` and `c892cfb` at `2026-08-28T22:40:57-06:00`. This design records but does not perform that correction.
+The separately authorized correction merged both `2026-08-29` changelog sections into `2026-08-28`. Local Git records `1e5759e0` at `2026-08-28T22:33:40-06:00` and `c892cfb` at `2026-08-28T22:40:57-06:00`. Commit `fac022c6` completed that documentation correction without implementing product behavior.
 
 ## Ownership Boundaries
 
@@ -24,7 +24,7 @@ The pending correction is to merge both `2026-08-29` changelog sections into `20
 
 ## Exclusions
 
-No product behavior, test, generated projection, changelog correction, Git action, network access, provider action, publication, or change to RH-W-0069 backup identity is authorized by this design or the proposed plan.
+No product behavior, test, generated projection, further changelog correction, Git action, network access, provider action, publication, or change to RH-W-0069 backup identity is authorized by this design or the proposed plan.
 
 ## Later Verification Targets
 

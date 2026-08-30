@@ -530,15 +530,15 @@ Five plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Priority | P2: silent UTC or rounded timestamps can place completed work under a false local day. |
 | Dependencies | None. RH-W-0068 retains changelog disposition; RH-W-0069 retains machine-oriented UTC backup identity and ordering. |
 | Status | proposed |
-| Completed work | Recorded the owner-approved bilingual [design](rh-w-0081-design.md), exact local Git timestamps, and bilingual [implementation plan](rh-w-0081-implementation-plan.md). |
-| Remaining work | Owner review of the plan. Implementation and changelog correction require separate authorization. |
+| Completed work | Recorded the owner-approved bilingual [design](rh-w-0081-design.md), exact local Git timestamps, and proposed bilingual [implementation plan](rh-w-0081-implementation-plan.md). The authorized documentation correction moved the entries for commits `1e5759e0` and `c892cfb` to the exact host-local date `2026-08-28`. |
+| Remaining work | Owner approval of the plan. Product implementation requires separate authorization. |
 | Additions | Host-local human-facing date derivation, exact timestamp or local-date-plus-offset evidence, bounded ambiguity question, and one heading per local date. |
-| Exclusions | No implementation, tests, generated projections, changelog correction, Git or GitHub mutation, network, provider action, publication, or change to RH-W-0069 backup identity. |
-| Deferrals | Implementation and the correction wait for owner approval of the written plan and separate implementation authorization. |
+| Exclusions | No product implementation, tests, generated projections, further changelog correction, Git or GitHub mutation, network, provider action, publication, or change to RH-W-0069 backup identity. |
+| Deferrals | Plan approval and product implementation remain pending and separately unauthorized. |
 | Rejections | Rejected silently using UTC, inventing a rounded minute, deriving changelog chronology from RH-W-0069 UTC identity, or letting changelog chronology control backup identity. |
 | Evidence | Verified fact: `1e5759e0` is `2026-08-28T22:33:40-06:00` and `c892cfb` is `2026-08-28T22:40:57-06:00`. Human decision: host-local chronology and the owner split. |
-| Decision history | 2026-08-29: registered `proposed` as the next immutable ID with owner-approved bilingual design. A proposed bilingual implementation plan now exists and awaits owner approval; implementation, correction, delivery, and publication remain unauthorized. |
-| Next advancement condition | Advance only after owner approval of the implementation plan; implementation and correction remain separately authorized. |
+| Decision history | 2026-08-29: registered `proposed` as the next immutable ID with owner-approved bilingual design. A proposed bilingual implementation plan exists and awaits owner approval. Commit `fac022c6` completed the separately authorized changelog correction; commit `b39e1ba` updated only the Plan 30 projection. Product implementation, delivery, and publication remain unauthorized. |
+| Next advancement condition | Advance only after owner approval of the implementation plan; product implementation remains separately unauthorized. |
 
 ### RH-W-0079
 | Field | Value |

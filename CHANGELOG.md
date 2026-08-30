@@ -8,7 +8,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 - Delivered the owner-authorized complete reciprocal Pi parity slice under `RH-W-0048`. Root-aware self-host rendering now generates the complete `.pi/skills/repo-harness-builder/` package from canonical product source, adds the thin path-free `.pi/prompts/repo-harness-builder.md` entry, retains the three generated operational skills and four existing operational prompts, and declares exact builder package and entry projections for all selected runtimes through optional authenticated `canonicalProjections`. The checker detects missing or stale product projections, ordinary consumer manifests remain unchanged, and exact LF rules protect every new byte-compared target. `RH-W-0048` remains `proposed` because tracked-versus-local policy and explicit additive fresh-clone recovery are not yet implemented.
 
-- Commit `ae89ccff35edebe577239ce034bd1886b435ac4b` completed the approved bilingual designs and implementation plans for `RH-W-0069`, `RH-W-0075`, `RH-W-0080`, and `RH-W-0081`, and reconciled their lifecycle registration and documentation projections. No product implementation or product test change is claimed.
+- Commit `ae89ccff35edebe577239ce034bd1886b435ac4b` completed the owner-approved bilingual designs and wrote the bilingual implementation plans for `RH-W-0069`, `RH-W-0075`, `RH-W-0080`, and `RH-W-0081`, then reconciled their lifecycle registration and documentation projections. The plans for `RH-W-0075`, `RH-W-0080`, and `RH-W-0081` remain proposed and await owner approval. No product implementation or product test change is claimed.
 
 ## 2026-08-28
 

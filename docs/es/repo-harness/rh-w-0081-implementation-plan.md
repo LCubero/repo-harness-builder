@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0081 de cronologia local del changelog
 
-> **Estado: propuesto.** Requiere aprobacion del propietario y autorizacion separada para implementar. Este plan no ejecuta la correccion registrada.
+> **Estado: propuesto.** Requiere aprobacion del propietario y autorizacion separada para implementar el producto. La correccion documental se completo por separado y se conserva abajo como trabajo historico.
 
 Derivado del [diseno](rh-w-0081-design.md) aprobado. Par canonico: [rh-w-0081-implementation-plan.md](../../repo-harness/rh-w-0081-implementation-plan.md).
 
@@ -8,7 +8,7 @@ Derivado del [diseno](rh-w-0081-design.md) aprobado. Par canonico: [rh-w-0081-im
 
 `session_stop_skill()` renderiza guia humana del changelog mediante `render_with_skill_mapping()`. `changelog()` crea archivos iniciales, pero no deriva fechas. `DATE_HEADING` reconoce encabezados. `GeneratedCoreTests.test_changelog_is_simple_completed_history` y `test_session_skills_treat_changelog_as_completed_history_only` cubren limites. RH-W-0068 decide si se necesita entrada. RH-W-0081 deriva fecha local. Identidad y orden UTC de RH-W-0069 son independientes en ambos sentidos.
 
-La evidencia exacta para la correccion separada es `1e5759e0` a `2026-08-28T22:33:40-06:00` y `c892cfb` a `2026-08-28T22:40:57-06:00`. Ambos changelogs tienen hoy un encabezado `2026-08-29` sobre otro `2026-08-28`.
+La evidencia exacta para la correccion completada es `1e5759e0` a `2026-08-28T22:33:40-06:00` y `c892cfb` a `2026-08-28T22:40:57-06:00`. El commit `fac022c6` movio ambas entradas a las secciones existentes `2026-08-28`. El commit `b39e1ba` actualizo solo la proyeccion del Plan 30.
 
 ## Corte 1: RED enfocado y contrato minimo
 
@@ -21,13 +21,13 @@ La evidencia exacta para la correccion separada es `1e5759e0` a `2026-08-28T22:3
 - [ ] Repetir ese comando y luego ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py GeneratedCoreTests.test_changelog_is_simple_completed_history GeneratedCoreTests.test_session_skills_treat_changelog_as_completed_history_only -v`. GREEN esperado: todo pasa.
 - [ ] Rollback retira solo pruebas y clausulas RH-W-0081.
 
-## Corte 2: correccion documental bilingue independiente
+## Corte 2: correccion documental bilingue historica y completada
 
-- [ ] Verificar solo con Git local: `git show -s --format=%H%n%cI 1e5759e0` y `git show -s --format=%H%n%cI c892cfb`. Esperado: `2026-08-28T22:33:40-06:00` y `2026-08-28T22:40:57-06:00`.
-- [ ] Mover la entrada inglesa de `CHANGELOG.md` desde `2026-08-29` a la seccion existente `2026-08-28` y retirar el encabezado vacio.
-- [ ] Hacer el movimiento equivalente en `CHANGELOG.es.md`, conservando orden y paridad.
-- [ ] No cambiar contenido de entradas salvo evidencia Git exacta de otro defecto.
-- [ ] Revisar este corte por separado. Rollback restaura solo ambos encabezados y deja Corte 1 intacto.
+- [x] Se verifico solo con Git local: `git show -s --format=%H%n%cI 1e5759e0` y `git show -s --format=%H%n%cI c892cfb` devolvieron `2026-08-28T22:33:40-06:00` y `2026-08-28T22:40:57-06:00`.
+- [x] Se movio la entrada inglesa desde el encabezado falso `2026-08-29` a la seccion existente `2026-08-28`.
+- [x] Se hizo el movimiento equivalente en `CHANGELOG.es.md`, conservando orden y paridad.
+- [x] No se cambio contenido de las entradas fuera de la fusion de encabezados ligada a evidencia.
+- [x] La correccion quedo independiente del comportamiento generado de producto en el commit `fac022c6`.
 
 ## Corte 3: proyecciones, ciclo y entrega
 
