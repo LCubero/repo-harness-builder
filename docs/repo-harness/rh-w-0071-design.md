@@ -54,6 +54,12 @@ The builder interview gains one explicit response-mode decision with two machine
 
 The persisted repository preference belongs under `.repo-harness/state/preferences/`. RH-W-0051 established the containing `.repo-harness/state/` namespace; RH-W-0071 owns the `preferences/` sub-path, response-mode value, and update semantics. RH-W-0051 retains containment, Git-ignore, and local-state mechanics. RH-W-0046 and deferred RH-W-0018 retain consent and preference architecture without absorbing this mode or sharing lifecycle.
 
+The owner-approved persistence contract uses exactly `.repo-harness/state/preferences/response-mode.json`. Its contents are a UTF-8 JSON scalar followed by LF, exactly `"standard"` or `"adhd-friendly"`. A missing file resolves to `standard` and creates nothing. Invalid UTF-8, malformed JSON, a non-string JSON value, or any unsupported string reports a domain error and leaves the existing bytes unchanged.
+
+Authorized writes validate the requested value before touching the filesystem, create the directory only when writing, write a unique temporary file in the same directory, close it, and replace the destination with `os.replace`. After failure, the invocation cleans up only its own temporary file where possible. Persistence exposes narrow read and write operations only; the pure precedence resolver remains separate.
+
+The checker and manifest never read, validate, report, repair, or create this preference. The contract deliberately defers a schema version, JSON object fields, `fsync`, duplicate-key machinery, a generic preference framework, locks, watchers, retries, backups, journaling, and automatic repair. None is proportionate for one bounded scalar whose invalid bytes must be preserved for explicit diagnosis.
+
 The persisted value is local operational state, never canonical documentation, memory evidence, or a manifest-owned current value. Engram may mirror continuity after repository evidence exists, but it never activates the mode or outranks the repository preference.
 
 ## Builder, Help, And Generated Contract
@@ -148,12 +154,12 @@ Design rollback removes this document and its lifecycle references only. Future 
 
 ## Exclusions And Non-Change
 
-- No implementation plan, lifecycle advancement, code, test, generated skill, manifest or checker change, staging, commit, remote, or network action.
-- No implementation API, CLI spelling, schema field, function name, or file format is invented by this design.
+- The original design-only event created no implementation plan and authorized no lifecycle advancement, code, test, generated skill, manifest or checker change, staging, commit, remote, or network action. A later separately owner-approved implementation plan remains documentation only and does not authorize implementation or product delivery.
+- The original design-only event invented no implementation API, CLI spelling, schema field, function name, or file format. A later separately owner-approved documentation decision defines the minimal JSON scalar persistence format without authorizing implementation or product delivery.
 - No diagnosis, user classification, telemetry, monitoring, or behavioral inference.
 - No duplicate response-contract owner, preference store, memory store, or lifecycle store.
 - No additional no-overengineering rule. Existing smallest-change, unrelated-scope, proportionality, and bounded-failure owners already cover that concern; this verified non-change avoids duplicate policy.
 
 ## Remaining Human Decisions
 
-None for this design. The exact persisted file format, implementation API, implementation plan, lifecycle advancement, and implementation require later explicit authorization and repository evidence.
+None for this design or its persistence contract. Runtime reader architecture, slice-delivery grouping, lifecycle advancement, and implementation require later explicit authorization and repository evidence.

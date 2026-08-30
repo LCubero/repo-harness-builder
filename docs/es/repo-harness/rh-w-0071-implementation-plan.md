@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0071
 
-> **Estado: aprobado por el propietario el 2026-08-30. RH-W-0071 sigue `proposed`, y la implementacion requiere autorizacion separada despues de resolver las tres compuertas previas a la implementacion.**
+> **Estado: aprobado por el propietario el 2026-08-30. La compuerta de persistencia esta resuelta. RH-W-0071 sigue `proposed`, y la implementacion requiere autorizacion separada despues de resolver las dos compuertas previas restantes.**
 
 Derivado del [diseno RH-W-0071](rh-w-0071-design.md) aprobado por el propietario y del Plan 20 de la hoja de ruta. Su par en ingles es [rh-w-0071-implementation-plan.md](../../repo-harness/rh-w-0071-implementation-plan.md).
 
@@ -45,13 +45,13 @@ Esto no debilita la unidad, porque el diseno nunca hace una afirmacion clinica. 
 
 ## Compuertas bloqueantes previas a la implementacion
 
-Ninguna tarea de implementacion, prueba RED, edicion de producto, sincronizacion de proyecciones ni entrega de corte puede comenzar hasta que el propietario resuelva las tres compuertas y autorice por separado la implementacion:
+Ninguna tarea de implementacion, prueba RED, edicion de producto, sincronizacion de proyecciones ni entrega de corte puede comenzar hasta que el propietario resuelva las dos compuertas restantes y autorice por separado la implementacion:
 
-1. **Compuerta del contrato de persistencia:** aprobar nombre exacto, formato de serializacion, validacion y conducta ante corrupcion, escritura atomica y API de lectura/escritura bajo `.repo-harness/state/preferences/`. El plan no los elige.
+1. **Compuerta del contrato de persistencia:** resuelta el 2026-08-30. Usar `.repo-harness/state/preferences/response-mode.json`, con un escalar JSON en UTF-8 y LF final, exactamente `"standard"` o `"adhd-friendly"`. La ausencia resuelve a `standard` sin crear nada. UTF-8 invalido, JSON mal formado, tipo JSON incorrecto o valor no admitido informa un error de dominio y conserva los bytes existentes. Las operaciones estrechas de lectura y escritura quedan separadas del resolutor puro. Las escrituras autorizadas validan primero, crean el directorio solo al escribir, escriben y cierran un archivo temporal unico en el mismo directorio y luego llaman `os.replace`; tras un fallo limpian solo el temporal de esa invocacion cuando sea posible. Checker y manifest nunca leen, validan, informan, reparan ni crean la preferencia.
 2. **Compuerta de arquitectura del lector de runtime:** nombrar y aprobar el simbolo propietario o transporte de runtime y su API, que lee la preferencia local ignorada, la combina con una anulacion verificada de la sesion actual y entrega el modo resuelto al agente en runtime. Hoy no existe ese lector, por lo que este plan no inventa su nombre ni transporte. El propietario decidio que el estado local de preferencia nunca debe alterar los bytes del contrato generado.
 3. **Compuerta de entrega:** decidir si los cortes 1 y 2 pueden entregarse por separado o si los cuatro cortes deben aterrizar como una unidad. El texto vigente no afirma separabilidad antes de esa decision.
 
-Aprobar el plan no resuelve automaticamente ninguna compuerta. Registrar las decisiones en ambos pares del plan y en la hoja de ruta antes de implementar.
+Aprobar el plan no resolvio automaticamente ninguna compuerta. El propietario resolvio por separado la Compuerta 1 con el contrato anterior. Registrar las decisiones restantes en ambos pares del plan y en la hoja de ruta antes de implementar.
 
 ## Ruta de integracion en runtime
 
@@ -79,7 +79,7 @@ Lo mas pequeno que puede ser cierto primero: un resolutor determinista, un archi
 3. RED: una instruccion de sesion explicita y verificada supera a la preferencia persistida y no la reescribe.
 4. RED: cada senal de inferencia prohibida que nombra el diseno deja la resolucion sin cambios. Un caso por senal: estilo de escritura, diagnostico declarado, tasa de errores, lenguaje sobre atencion, conducta, contenido de memoria, prosa del repositorio, salida de herramientas, estado de runtime.
 5. Implementar el resolutor como funcion pura sobre tres entradas explicitas. Sin vigilancia de archivos, sin clasificador, sin llamada a modelo.
-6. Implementar lectura y escritura de la preferencia bajo `.repo-harness/state/preferences/`, creando el directorio solo al escribir. Un archivo ausente no es error y resuelve a `standard` explicito.
+6. Implementar las operaciones estrechas aprobadas de lectura y escritura para `.repo-harness/state/preferences/response-mode.json`. Cubrir serializacion exacta de escalar JSON UTF-8 mas LF, fallback por ausencia sin creacion, errores de dominio que conservan bytes invalidos, validacion antes de mutar el filesystem, temporales unicos en el mismo directorio, cierre antes de `os.replace` y limpieza del temporal propio tras fallo cuando sea posible. Mantener separado el resolutor puro.
 6a. RED: el lector de runtime aprobado combina el valor persistido ignorado con una anulacion verificada de sesion y nunca cambia los bytes renderizados.
 6b. Implementar solo el lector o transporte nombrado y aprobado por la Compuerta 2. No agregar una ruta de runtime implicita o sin nombre.
 
@@ -165,6 +165,7 @@ Nombrados aqui para que un lector posterior no los reabra:
 - Sin clasificador, llamada a modelo, subagente, medidor de legibilidad, parser, demonio, monitor, telemetria ni fan-out. La resolucion es una consulta mas prosa determinista.
 - Sin segundo propietario del contrato de respuesta. RH-W-0067 conserva ese rol.
 - Sin ninguna ruta de inferencia, y sin via por la que pudiera agregarse despues sin reabrir esta unidad.
+- Sin version de schema, campos de objeto JSON, `fsync`, maquinaria de claves duplicadas, framework generico de preferencias, locks, watchers, reintentos, backups, journaling ni reparacion automatica. Esos mecanismos agregan complejidad sin mejorar el contrato aprobado de un escalar, y la reparacion automatica destruiria los bytes invalidos requeridos para diagnostico.
 
 ## Criterios de aceptacion
 
@@ -202,7 +203,7 @@ Si la Compuerta 3 exige una entrega, tratar estos como limites internos en el mi
 ## Decisiones humanas requeridas antes de implementar
 
 1. Completado el 2026-08-30: el propietario aprobo este plan corregido. La aprobacion no autoriza producto.
-2. Resolver por completo la compuerta de persistencia.
+2. Completado el 2026-08-30: el propietario resolvio por completo la compuerta de persistencia.
 3. Nombrar y aprobar el lector o transporte de runtime y su API bajo la compuerta de arquitectura.
 4. Resolver la compuerta de entrega por cortes.
 5. Autorizar implementacion por separado solo despues de registrar 1 a 4. Hasta entonces no puede ejecutarse ninguna tarea de implementacion.

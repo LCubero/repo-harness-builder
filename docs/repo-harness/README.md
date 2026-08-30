@@ -43,7 +43,7 @@
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
 | [rh-w-0071-design.md](rh-w-0071-design.md) | Owner-approved native ADHD-friendly response mode design; implementation remains separately unauthorized |
-| [rh-w-0071-implementation-plan.md](rh-w-0071-implementation-plan.md) | Owner-approved RH-W-0071 implementation plan in four slices; implementation remains separately unauthorized behind three unresolved gates |
+| [rh-w-0071-implementation-plan.md](rh-w-0071-implementation-plan.md) | Owner-approved RH-W-0071 implementation plan and minimal persistence contract; implementation remains separately unauthorized behind two unresolved gates |
 | [rh-w-0079-design.md](rh-w-0079-design.md) | Completed optional-capability and self-hosting release-boundary design; all five slices delivered without claiming an actual release |
 | [rh-w-0079-implementation-plan.md](rh-w-0079-implementation-plan.md) | Completed five-slice test-first plan; Slice 4 and Slice 5 delivery evidence is recorded |
 | [rh-w-0080-design.md](rh-w-0080-design.md) | Owner-approved ephemeral batch-interaction design; implementation remains unauthorized |

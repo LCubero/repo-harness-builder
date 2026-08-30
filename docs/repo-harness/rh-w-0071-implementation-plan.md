@@ -1,6 +1,6 @@
 # RH-W-0071 Implementation Plan
 
-> **Status: approved by the owner on 2026-08-30. RH-W-0071 remains `proposed`, and implementation requires separate authorization after all three pre-implementation gates are resolved.**
+> **Status: approved by the owner on 2026-08-30. The persistence gate is resolved. RH-W-0071 remains `proposed`, and implementation requires separate authorization after the two remaining pre-implementation gates are resolved.**
 
 Derived from the owner-approved [RH-W-0071 design](rh-w-0071-design.md) and roadmap Plan 20. Its Spanish peer is [rh-w-0071-implementation-plan.md](../es/repo-harness/rh-w-0071-implementation-plan.md).
 
@@ -45,13 +45,13 @@ This does not weaken the unit, because the design never makes a clinical claim. 
 
 ## Blocking Pre-Implementation Gates
 
-No implementation task, RED test, product edit, projection synchronization, or slice delivery may begin until the owner resolves all three gates and separately authorizes implementation:
+No implementation task, RED test, product edit, projection synchronization, or slice delivery may begin until the owner resolves the two remaining gates and separately authorizes implementation:
 
-1. **Persistence contract gate:** approve the exact filename, serialization format, validation and corruption behavior, atomic write behavior, and read/write API under `.repo-harness/state/preferences/`. The plan does not select them.
+1. **Persistence contract gate:** resolved 2026-08-30. Use `.repo-harness/state/preferences/response-mode.json`, containing a UTF-8 JSON scalar with trailing LF, exactly `"standard"` or `"adhd-friendly"`. Missing resolves to `standard` without creating anything. Invalid UTF-8, malformed JSON, a wrong JSON type, or an unsupported value reports a domain error and preserves existing bytes. Narrow read and write operations remain separate from the pure resolver. Authorized writes validate first, create the directory only on write, write and close a unique same-directory temporary file, then call `os.replace`; after failure they clean only that invocation's temporary file where possible. Checker and manifest never read, validate, report, repair, or create the preference.
 2. **Runtime reader architecture gate:** name and approve the owning runtime reader or transport symbol and API that reads the ignored local preference, combines it with a verified current-session override, and supplies the resolved mode to the agent at runtime. No such reader exists today, so this plan does not invent its name or transport. The owner decided that local preference state must never alter generated contract bytes.
 3. **Delivery gate:** decide whether slices 1 and 2 may ship separately or whether all four slices must land as one unit. The current text makes no separability claim before that decision.
 
-Plan approval does not resolve any gate automatically. Record the decisions in both plan peers and the roadmap before implementation starts.
+Plan approval did not resolve a gate automatically. The owner separately resolved Gate 1 with the contract above. Record the remaining decisions in both plan peers and the roadmap before implementation starts.
 
 ## Runtime Integration Path
 
@@ -79,7 +79,7 @@ The smallest thing that can be true first: a deterministic mode resolver, a pref
 3. RED: a verified explicit session instruction outranks the persisted preference and does not rewrite it.
 4. RED: every prohibited inference signal named by the design leaves resolution unchanged. One case per signal: writing style, stated diagnosis, error rate, attention wording, behaviour, memory content, repository prose, tool output, runtime state.
 5. Implement the resolver as a pure function over three explicit inputs. No file watching, no classifier, no model call.
-6. Implement read and write of the preference under `.repo-harness/state/preferences/`, creating the directory on write only. A missing file is not an error and resolves to explicit standard.
+6. Implement the approved narrow read and write operations for `.repo-harness/state/preferences/response-mode.json`. Cover exact UTF-8 JSON scalar plus LF serialization, missing-file fallback without creation, domain errors that preserve invalid bytes, validation before filesystem mutation, unique same-directory temporary files, close before `os.replace`, and invocation-owned cleanup after failure where possible. Keep the pure resolver separate.
 6a. RED: the gate-approved runtime reader combines the ignored persisted value with a verified current-session override and never changes rendered output bytes.
 6b. Implement only the named reader or transport approved by Gate 2. Do not add an unnamed or implicit runtime path.
 
@@ -170,6 +170,7 @@ Named here so a later reader does not reopen them:
 - No classifier, model call, subagent, readability scorer, parser, daemon, monitor, telemetry, or fan-out. Resolution is a lookup plus deterministic prose.
 - No second response-contract owner. RH-W-0067 keeps that role.
 - No inference path of any kind, and no route by which one could later be added without reopening this unit.
+- No schema version, JSON object fields, `fsync`, duplicate-key machinery, generic preference framework, locks, watchers, retries, backups, journaling, or automatic repair. These mechanisms add complexity without improving the approved one-scalar contract, and automatic repair would destroy the invalid bytes required for diagnosis.
 
 ## Acceptance Criteria
 
@@ -207,7 +208,7 @@ If Gate 3 requires one delivery, treat these as internal rollback boundaries in 
 ## Human Decisions Required Before Implementation
 
 1. Completed on 2026-08-30: the owner approved this corrected plan. Approval does not authorize product implementation.
-2. Resolve the persistence contract gate completely.
+2. Completed on 2026-08-30: the owner resolved the persistence contract gate completely.
 3. Name and approve the runtime reader or transport and its API under the architecture gate.
 4. Resolve the slice-delivery gate.
 5. Separately authorize implementation only after items 1 through 4 are recorded. Until then, no implementation task may run.

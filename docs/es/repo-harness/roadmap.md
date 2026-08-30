@@ -28,7 +28,7 @@ El diseno preventivo precede la arquitectura de estado local:
 
 1. Completar y aprobar el diseno bilingue preventivo `RH-W-0070` sin fusionarlo con otra unidad. Este paso esta completo.
 2. `RH-W-0051` esta completa. Sus cuatro namespaces no autoritativos implementados son `tmp`, `archive`, `state` y `memory-bk`.
-3. Implementar `RH-W-0071` solo despues de resolver las tres compuertas previas y autorizar la implementacion por separado. Su plan completado esta aprobado por el propietario. La completada RH-W-0051 establecio `.repo-harness/state/`; RH-W-0071 posee su subruta `preferences/`, sin absorber consentimiento ni idioma.
+3. Implementar `RH-W-0071` solo despues de resolver las dos compuertas previas restantes y autorizar la implementacion por separado. Su plan completado y su contrato minimo de persistencia estan aprobados por el propietario. La completada RH-W-0051 establecio `.repo-harness/state/`; RH-W-0071 posee su subruta `preferences/`, sin absorber consentimiento ni idioma.
 4. Implementar `RH-W-0069` despues del soporte `.repo-harness/memory-bk/`, sin absorber checkpoints.
 5. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
 6. Implementar `RH-W-0048`.
@@ -321,7 +321,7 @@ Decision humana: cualquier plan de implementacion o implementacion futura exige 
 
 ### Plan 20: implementacion del modo de respuesta ADHD-friendly RH-W-0071
 
-Preparacion `plan aprobado; tres compuertas sin resolver`. La completada RH-W-0051 reservo e ignoro en Git `.repo-harness/state/`, dentro del cual esta unidad posee su propia subruta `preferences/`. RH-W-0051 no reservo `state/preferences/` en si; la cadena `preferences` aparece cero veces en `harness_tool.py`, y la redaccion anterior aqui lo exageraba. Prioridad `P2`. El [diseno bilingue](rh-w-0071-design.md) y el [plan de implementacion](rh-w-0071-implementation-plan.md) estan completos y aprobados por el propietario. Este plan de accion solo registra trabajo futuro y no autoriza avance ni cambio de producto.
+Preparacion `plan aprobado; persistencia resuelta; dos compuertas sin resolver`. La completada RH-W-0051 reservo e ignoro en Git `.repo-harness/state/`, dentro del cual esta unidad posee su propia subruta `preferences/`. RH-W-0051 no reservo `state/preferences/` en si; la cadena `preferences` aparece cero veces en `harness_tool.py`, y la redaccion anterior aqui lo exageraba. Prioridad `P2`. El [diseno bilingue](rh-w-0071-design.md), el [plan de implementacion](rh-w-0071-implementation-plan.md) y el contrato minimo de persistencia estan completos y aprobados por el propietario. Este plan de accion solo registra trabajo futuro y no autoriza avance ni cambio de producto.
 
 1. Derivar RED deterministas y enfocados, sin evaluacion de modelo vivo ni verificacion costosa.
 2. Usar `.repo-harness/state/preferences/`, propiedad de RH-W-0071, dentro del namespace `.repo-harness/state/` propiedad de RH-W-0051, y mantener no persistente el estado solo de sesion.
@@ -330,7 +330,7 @@ Preparacion `plan aprobado; tres compuertas sin resolver`. La completada RH-W-00
 5. Mantener la preferencia activa fuera de bytes generados, manifiesto y checker. Un futuro lector o transporte de runtime nombrado resuelve estado local ignorado con una anulacion verificada de sesion; `check()` verifica solo bytes canonicos deterministas.
 6. Verificar paridad standalone e integrated, rollback acotado, localizacion e impacto despreciable de CPU, GPU y RAM.
 
-Decision humana: el 2026-08-30 el propietario exigio la arquitectura de un futuro lector de runtime nombrado y bytes generados deterministas, y aprobo el plan corregido. Su simbolo propietario, transporte y API son una compuerta bloqueante previa a implementar, junto con las compuertas de persistencia y entrega. La implementacion sigue sin autorizar.
+Decision humana: el 2026-08-30 el propietario aprobo el contrato minimo de persistencia y mantuvo la arquitectura de un futuro lector de runtime nombrado con bytes generados deterministas. El simbolo propietario, transporte y API del lector, y la agrupacion de entrega, siguen como compuertas bloqueantes. La implementacion sigue sin autorizar.
 
 ### Plan 21: deriva de documentacion de producto RH-W-0072
 
@@ -569,7 +569,7 @@ Origen: revision de solo lectura del repositorio el 2026-08-25 que encontro docu
 
 ### RH-W-0071
 
-Estado: `proposed`. El propietario aprobo el [plan de implementacion bilingue corregido](rh-w-0071-implementation-plan.md) el 2026-08-30 sin autorizar implementacion ni resolver compuertas. Un futuro lector de runtime nombrado debe combinar la preferencia local ignorada con una anulacion verificada de sesion, mientras los bytes generados siguen deterministas. Trabajo restante: resolver tres compuertas antes de cualquier tarea, contrato de persistencia; nombre, propiedad y API del lector o transporte de runtime; y entrega separada o conjunta de los cortes. La implementacion sigue sin autorizacion separada.
+Estado: `proposed`. El propietario aprobo el [plan de implementacion bilingue corregido](rh-w-0071-implementation-plan.md) y resolvio solo la compuerta de persistencia el 2026-08-30, sin autorizar implementacion. El contrato usa `.repo-harness/state/preferences/response-mode.json` como escalar JSON UTF-8 con LF y reemplazo atomico acotado; conserva bytes invalidos y excluye maquinaria desproporcionada. Un futuro lector de runtime nombrado debe combinar la preferencia local ignorada con una anulacion verificada de sesion, mientras los bytes generados siguen deterministas. Trabajo restante: resolver nombre, propiedad y API del lector o transporte de runtime, y entrega separada o conjunta de los cortes. La implementacion sigue sin autorizacion separada.
 
 ### RH-W-0070
 

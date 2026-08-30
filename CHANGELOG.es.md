@@ -4,7 +4,9 @@
 
 ## 2026-08-30
 
-- Se registro la aprobacion explicita del propietario para el plan de implementacion bilingue corregido de `RH-W-0071`. `RH-W-0071` sigue `proposed`; el contrato de persistencia, la propiedad y API del lector o transporte de runtime nombrado, y la agrupacion de entrega siguen como compuertas previas sin resolver. La implementacion de producto sigue sin autorizacion separada.
+- Se registro el contrato minimo de persistencia `RH-W-0071` aprobado por el propietario: `.repo-harness/state/preferences/response-mode.json` guarda un escalar JSON UTF-8 validado con LF final y usa reemplazo atomico acotado en el mismo directorio. El estado ausente no crea nada, los bytes invalidos se conservan con error de dominio, y checker y manifest no participan. Se rechazaron por desproporcionados mecanismos mas amplios de schema, durabilidad, framework, reparacion y concurrencia. La arquitectura del lector de runtime y la agrupacion de entrega siguen bloqueando, RH-W-0071 queda `proposed` y la implementacion sigue sin autorizar.
+
+- Se registro la aprobacion explicita del propietario para el plan de implementacion bilingue corregido de `RH-W-0071`. En el momento de aprobarlo, el contrato de persistencia, la propiedad y API del lector o transporte de runtime nombrado, y la agrupacion de entrega eran compuertas previas sin resolver. La compuerta de persistencia se resolvio despues, como registra la entrada anterior. `RH-W-0071` sigue `proposed` y la implementacion de producto sigue sin autorizacion separada.
 
 ## 2026-08-29
 

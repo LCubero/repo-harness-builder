@@ -54,6 +54,12 @@ La entrevista del builder gana una decision explicita de modo con dos valores co
 
 La preferencia persistida pertenece bajo `.repo-harness/state/preferences/`. RH-W-0051 establecio el namespace contenedor `.repo-harness/state/`; RH-W-0071 posee la subruta `preferences/`, el valor del modo y la semantica de actualizacion. RH-W-0051 conserva la contencion, el ignore Git y la mecanica de estado local. RH-W-0046 y la aplazada RH-W-0018 conservan la arquitectura de consentimiento y preferencias sin absorber este modo ni compartir ciclo de vida.
 
+El contrato de persistencia aprobado por el propietario usa exactamente `.repo-harness/state/preferences/response-mode.json`. Su contenido es un escalar JSON en UTF-8 seguido por LF, exactamente `"standard"` o `"adhd-friendly"`. Un archivo ausente resuelve a `standard` y no crea nada. UTF-8 invalido, JSON mal formado, un valor JSON que no sea string o un string no admitido informa un error de dominio y deja intactos los bytes existentes.
+
+Las escrituras autorizadas validan el valor solicitado antes de tocar el filesystem, crean el directorio solo al escribir, escriben un archivo temporal unico en el mismo directorio, lo cierran y reemplazan el destino con `os.replace`. Tras un fallo, la invocacion limpia solo su propio archivo temporal cuando sea posible. La persistencia expone solo operaciones estrechas de lectura y escritura; el resolutor puro de precedencia queda separado.
+
+El checker y el manifest nunca leen, validan, informan, reparan ni crean esta preferencia. El contrato aplaza deliberadamente version de schema, campos de objeto JSON, `fsync`, maquinaria para claves duplicadas, framework generico de preferencias, locks, watchers, reintentos, backups, journaling y reparacion automatica. Ninguno es proporcional para un unico escalar acotado cuyos bytes invalidos deben conservarse para diagnostico explicito.
+
 El valor persistido es estado operativo local, nunca documentacion canonica, evidencia de memoria ni valor actual propiedad del manifiesto. Engram puede reflejar continuidad despues de existir evidencia del repositorio, pero nunca activa el modo ni supera la preferencia del repositorio.
 
 ## Builder, ayuda y contrato generado
@@ -148,12 +154,12 @@ El rollback del diseno elimina solo este documento y sus referencias de ciclo de
 
 ## Exclusiones y no cambio
 
-- Sin plan de implementacion, avance de ciclo, codigo, prueba, skill generada, cambio de manifiesto o checker, staging, commit, remoto ni red.
-- El diseno no inventa API, ortografia CLI, campo de schema, funcion ni formato de archivo.
+- El evento original solo de diseno no creo un plan de implementacion ni autorizo avance de ciclo, codigo, prueba, skill generada, cambio de manifiesto o checker, staging, commit, remoto ni red. Un plan de implementacion posterior y aprobado por separado por el propietario sigue siendo solo documentacion y no autoriza implementacion ni entrega de producto.
+- El evento original solo de diseno no invento API de implementacion, ortografia CLI, campo de schema, nombre de funcion ni formato de archivo. Una decision de documentacion posterior y aprobada por separado por el propietario define el formato minimo de persistencia como escalar JSON sin autorizar implementacion ni entrega de producto.
 - Sin diagnostico, clasificacion de personas, telemetria, monitoreo ni inferencia conductual.
 - Sin propietario duplicado de respuesta, preferencias, memoria o ciclo de vida.
 - Sin otra regla de no sobreingenieria. Los propietarios actuales de cambio minimo, alcance no relacionado, proporcionalidad y fallo acotado ya cubren la inquietud; este no cambio verificado evita duplicar politica.
 
 ## Decisiones humanas restantes
 
-Ninguna para este diseno. El formato exacto del archivo persistido, API de implementacion, plan, avance de ciclo e implementacion requieren autorizacion explicita posterior y evidencia del repositorio.
+Ninguna para este diseno ni para su contrato de persistencia. La arquitectura del lector de runtime, la agrupacion de entrega, el avance de ciclo y la implementacion requieren autorizacion explicita posterior y evidencia del repositorio.

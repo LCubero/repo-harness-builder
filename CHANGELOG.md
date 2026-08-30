@@ -6,7 +6,9 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-08-30
 
-- Recorded the owner's explicit approval of the corrected bilingual `RH-W-0071` implementation plan. `RH-W-0071` remains `proposed`; the persistence contract, named runtime reader or transport ownership and API, and slice-delivery grouping remain unresolved pre-implementation gates. Product implementation remains separately unauthorized.
+- Recorded the owner's approved minimal `RH-W-0071` persistence contract: `.repo-harness/state/preferences/response-mode.json` stores one validated UTF-8 JSON scalar with trailing LF and uses bounded same-directory atomic replacement. Missing state creates nothing, invalid bytes are preserved with a domain error, and checker and manifest remain uninvolved. Broader schema, durability, framework, repair, and concurrency mechanisms were rejected as disproportionate. Runtime reader architecture and slice-delivery grouping remain blocking, RH-W-0071 stays `proposed`, and implementation remains unauthorized.
+
+- Recorded the owner's explicit approval of the corrected bilingual `RH-W-0071` implementation plan. At approval time, the persistence contract, named runtime reader or transport ownership and API, and slice-delivery grouping were unresolved pre-implementation gates. The persistence gate was resolved later as recorded above. `RH-W-0071` remains `proposed`, and product implementation remains separately unauthorized.
 
 ## 2026-08-29
 
