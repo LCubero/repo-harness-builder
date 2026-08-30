@@ -6,15 +6,15 @@ Derived from the owner-approved [RH-W-0071 design](rh-w-0071-design.md) and road
 
 ## Repository Evidence Confirmed Before Planning
 
-Verified at `c4387e4`, not carried from the design:
+Reconfirm these claims at implementation time rather than carrying the historical `c4387e4` snapshot forward:
 
 | Claim | Evidence | State |
 |---|---|---|
 | `state/` is a reserved local-state namespace | `manifest.json` `localState.state` is `{"class": "operational", "path": ".repo-harness/state/"}` | verified |
-| The namespace is Git-ignored | `.gitignore:9` holds `/.repo-harness/state/` | verified |
-| The checker validates the namespace set | `harness_tool.py:2339` compares `manifest["localState"] != LOCAL_STATE` | verified |
-| `state/preferences/` exists as a reserved path | the string `preferences` occurs **zero** times in `harness_tool.py`, and `.repo-harness/state/` does not exist on disk | **not verified** |
-| RH-W-0067 owns the response contract | `.repo-harness/rules/response-contract.md` is render-owned and measures 436 of 700 | verified |
+| The namespace is Git-ignored | the root `.gitignore` contains `/.repo-harness/state/` | verified |
+| The checker validates the namespace set | `check()` compares the manifest local-state declaration with `LOCAL_STATE` | verified |
+| `state/preferences/` exists as a reserved path | no current persistence implementation owns that sub-path | **not verified** |
+| RH-W-0067 owns the response contract | `render_with_skill_mapping()` produces `.repo-harness/rules/response-contract.md`; its budget must be remeasured when implementation begins | verified |
 | A response-contract gate row exists in the rulebook | `REPO-HARNESS.md` routes to `.repo-harness/rules/response-contract.md` | verified |
 
 ### One correction this plan carries
@@ -43,9 +43,31 @@ The one-question rule additionally matches the GOV.UK "one thing per page" patte
 
 This does not weaken the unit, because the design never makes a clinical claim. The mode is an explicitly requested presentation preference that the design forbids inferring from diagnosis, behaviour, or any other signal. The implementation must keep it that way: no product artifact may describe the mode as a therapeutic or clinical benefit.
 
+## Blocking Pre-Implementation Gates
+
+No implementation task, RED test, product edit, projection synchronization, or slice delivery may begin until the owner resolves both gates and separately authorizes implementation:
+
+1. **Persistence contract gate:** approve the exact filename, serialization format, validation and corruption behavior, atomic write behavior, and read/write API under `.repo-harness/state/preferences/`. The plan does not select them.
+2. **Delivery gate:** decide whether slices 1 and 2 may ship separately or whether all four slices must land as one unit. The current text makes no separability claim before that decision.
+
+Plan approval does not resolve either gate automatically. Record the decisions in both plan peers and the roadmap before implementation starts.
+
+## Runtime Integration Path
+
+Use current symbols, not historical line numbers. The implementation must connect this complete path and prove every handoff:
+
+1. `main()` parses the builder selection and passes it through `render_repository()` to `render()` and `render_with_skill_mapping()`.
+2. The gate-approved preference read/write API supplies repository state to the gate-approved pure mode resolver.
+3. A verified explicit current-session instruction enters that resolver as a non-persisted override and outranks the persisted value.
+4. `render_with_skill_mapping()` extends its existing generated `.repo-harness/rules/response-contract.md` output with the resolved-mode contract while RH-W-0067 remains the sole owner.
+5. `help_wrapper()` and the generated help/status wording report the same precedence, active source, change scopes, omitted-scope question, more-detail behavior, and route back to `standard` without mutating preference state.
+6. `render_repository()` projects the combined canonical package through the manifest-declared runtime projections, and `check()` verifies those bytes without reading or reporting the local preference value.
+
+The persistence and resolver symbol names are intentionally absent until Gate 1 resolves the API. Before RED, update this path with those approved symbols. Re-read `main()`, `render_repository()`, `render()`, `render_with_skill_mapping()`, `help_wrapper()`, `check()`, and their focused tests because RH-W-0079 and later commits changed shared files after this plan was drafted.
+
 ## Slicing
 
-Four slices, each independently deliverable, in this order. Each is a separate commit; slices 1 and 2 could ship without the rest and leave the product coherent.
+Four proposed slices in this order. Their commit and shipping boundaries remain a human decision under Gate 2.
 
 ### Slice 1: resolution and persistence, no interface
 
@@ -60,7 +82,7 @@ The smallest thing that can be true first: a deterministic mode resolver and a p
 
 ### Slice 2: the generated contract
 
-7. RED: the generated response contract contains a mode-resolution section and an ADHD-friendly shaping section, and `.repo-harness/rules/response-contract.md` still measures under `RULEBOOK_TOKEN_BUDGET` afterwards. It sits at 436 of 700 today, so the shaping section has 264 proxy tokens of room before it must shed detail rather than raise the budget.
+7. RED: the generated response contract contains a mode-resolution section and an ADHD-friendly shaping section, and the implementation-time measurement keeps `.repo-harness/rules/response-contract.md` under `RULEBOOK_TOKEN_BUDGET`. Never carry a frozen token count or headroom value forward.
 8. RED: the contract states the three-level precedence, both change scopes, the one-question rule for omitted scope, how to request more detail, and how to return to standard.
 9. RED: safety, evidence, authority, contradictions, blocking prompts, and necessary technical context are named as never-omitted, so brevity cannot delete them.
 9a. RED: the shaping section requires a current-state restatement while multi-step work is in progress, naming the step and the total.
@@ -84,6 +106,55 @@ The smallest thing that can be true first: a deterministic mode resolver and a p
 18. RED: an existing installation with no preference resolves to explicit standard, with no migration and no inference.
 19. RED: rollback stops reading the preference and returns resolution to explicit standard without deleting unrelated preference state.
 20. RED: standalone and integrated behave identically for selection, persistence, precedence, and shaping.
+
+### Requirement-to-RED matrix
+
+Each of the 11 approved shaping requirements gets a distinct failing assertion before product implementation, even when one test method groups related assertions:
+
+| Requirement | Distinct RED proof |
+|---|---|
+| answer or action first | rejects an announcing opener before the answer or action |
+| concise initial layer | requires a bounded initial layer before disclosed detail |
+| small chunks | rejects one undivided dense response shape |
+| numbered bounded steps where useful | requires ordered, bounded steps for a multi-step fixture |
+| one question at a time | rejects two simultaneous questions |
+| progressive disclosure | requires detail to remain behind an explicit expansion path |
+| visible next action | requires one visible next action when action remains |
+| suppress tangents and filler | rejects the concrete removal-list forms while retaining uncertainty-bearing hedges |
+| offer or provide more detail | proves expansion changes only the current response |
+| restate current state during multi-step work | requires current step and total without re-narration |
+| pre-send removal check | requires the full removal checklist and low-cognitive-load final check |
+
+Add a separate RED assertion that the contract explicitly rejects **mandatory underivable time estimates**. This is a rejected candidate, not a twelfth shaping requirement, and must not be hidden inside another wording assertion.
+
+## Executable Verification Contract
+
+After the gates and implementation authorization resolve, create the named `ResponseModeContractTests` methods first and use these repository-native commands:
+
+```powershell
+# Focused RED, must fail only for the missing RH-W-0071 behavior.
+python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_resolution_persistence_and_session_override skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_each_prohibited_inference_signal_is_ignored skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_each_approved_shaping_requirement_and_time_estimate_rejection skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_builder_help_scope_migration_rollback_and_runtime_parity -v
+
+# Focused GREEN, run the identical command after the minimum implementation.
+python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_resolution_persistence_and_session_override skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_each_prohibited_inference_signal_is_ignored skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_each_approved_shaping_requirement_and_time_estimate_rejection skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_builder_help_scope_migration_rollback_and_runtime_parity -v
+
+# Synchronize projections when canonical package bytes changed: preview, then separately authorized apply.
+python skill/repo-harness-builder/scripts/harness_tool.py render --root . --project-name repo-harness-builder --runtime claude-code --runtime opencode --runtime pi --standalone --activation maintenance
+# Re-run the printed command with --apply and its printed --approved-plan-sha256 only after that preview is authorized.
+
+# Projection and relevant contract regression checks.
+python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.GeneratedCoreTests.test_runtime_projections_use_the_current_canonical_contract skill.repo-harness-builder.tests.test_harness_tool.GeneratedCoreTests.test_self_hosted_render_projects_the_complete_builder_package_to_every_runtime skill.repo-harness-builder.tests.test_harness_tool.RuleFileTests.test_rulebook_gates_route_to_every_rule_file -v
+
+# Checker zero-write proof and final structural checks.
+python .repo-harness/check.py
+git diff --check
+```
+
+```powershell
+python -c "from pathlib import Path; e=Path('docs/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); s=Path('docs/es/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); ep=e.split('## Executable Verification Contract')[0]; sp=s.split('## Contrato ejecutable de verificacion')[0]; er=['answer or action first','concise initial layer','small chunks','numbered bounded steps where useful','one question at a time','progressive disclosure','visible next action','suppress tangents and filler','offer or provide more detail','restate current state during multi-step work','pre-send removal check']; sr=['respuesta o accion primero','capa inicial concisa','trozos pequenos','pasos numerados y acotados cuando sirvan','una pregunta por vez','divulgacion progresiva','siguiente accion visible','suprimir tangentes y relleno','ofrecer o dar mas detalle','restablecer estado durante trabajo de varios pasos','chequeo de borrado previo al envio']; assert ep.count('### Slice ')==4 and sp.count('### Corte ')==4; assert all(x in ep for x in er) and all(x in sp for x in sr); assert ep.count('**Persistence contract gate:**')==1 and ep.count('**Delivery gate:**')==1; assert sp.count('**Compuerta del contrato de persistencia:**')==1 and sp.count('**Compuerta de entrega:**')==1; assert 'Status: proposed' in e and 'Estado:' in s and 'proposed' in s; assert not any(chr(c) in e+s for c in (0x2013,0x2014))"
+```
+
+Then run the focused RH-W-0071 tests plus the three regression tests above. Do not run the broad unrelated suite. Record command, exit status, test count, checker `current` status, and `writes: 0`.
 
 ## Controls That Must Not Be Added
 
@@ -111,14 +182,26 @@ Named here so a later reader does not reopen them:
 
 No diagnosis, classification, telemetry, or behavioural monitoring. No consent architecture, which stays with RH-W-0046 and deferred RH-W-0018. No memory routing, which stays with RH-W-0066. No general resource-safety work, which stays with RH-W-0070. No change to RH-W-0031 language precedence beyond reusing its provenance rule. No live-model evaluation and no expensive verification suite.
 
+## Per-Slice Rollback
+
+Rollback in reverse dependency order, stopping after each boundary to verify the remaining product is coherent:
+
+1. **Slice 4:** remove scope-change, migration, standalone/integrated orchestration, and their tests. Verify builder selection, help, generated contract, resolver, and persistence still pass their focused tests.
+2. **Slice 3:** remove builder interview and help/status integration and their tests. Verify generated contract plus resolver/persistence remain internally coherent but are not exposed as selectable behavior.
+3. **Slice 2:** remove only RH-W-0071 additions from `render_with_skill_mapping()` and synchronized projections. Verify RH-W-0067 response-contract tests, projection parity, checker `current` with zero writes, and Slice 1 tests.
+4. **Slice 1:** stop calling and then remove the resolver and gate-approved preference API. Return to explicit `standard`; preserve unrelated files under `.repo-harness/state/preferences/`. Verify missing preference behavior, checker zero-write, `git diff --check`, and no remaining RH-W-0071 product symbols.
+
+If Gate 2 requires one delivery, treat these as internal rollback boundaries in the same reverse order. Never roll back by deleting the whole preferences directory.
+
 ## Risks
 
-- **The shaping section competes for a shared budget.** `response-contract.md` has 264 proxy tokens of headroom, and the design review on 2026-08-27 added two requirements to what must fit inside it. If the shaping section needs more, it sheds detail; the budget does not rise. RH-W-0073's assertion now enforces that automatically, which is why four further candidates from that review were declined rather than absorbed.
+- **The shaping section competes for a shared budget.** Remeasure the current generated rule at implementation time. If the shaping section does not fit, it sheds detail; the budget does not rise.
 - **The prohibited-signal tests are the whole no-inference guarantee.** Asserted per signal rather than in aggregate, because an aggregate assertion passes while one signal leaks.
 - **Slice 3 touches the builder interview**, which is the surface an installation depends on. It ships after slices 1 and 2 so the behaviour it exposes already exists and is already asserted.
 
 ## Human Decisions Required Before Implementation
 
-1. Approve this plan.
-2. The persisted file format and its exact filename under `.repo-harness/state/preferences/` are left open by the design on purpose. This plan does not invent them; the implementation proposes one against repository evidence and the owner accepts it.
-3. Whether slices 1 and 2 may ship before slices 3 and 4, or whether the unit lands whole.
+1. Approve this corrected plan. Approval does not authorize product implementation.
+2. Resolve the persistence contract gate completely.
+3. Resolve the slice-delivery gate.
+4. Separately authorize implementation only after items 1 through 3 are recorded. Until then, no implementation task may run.
