@@ -45,10 +45,11 @@ Esto no debilita la unidad, porque el diseno nunca hace una afirmacion clinica. 
 
 ## Compuertas bloqueantes previas a la implementacion
 
-Ninguna tarea de implementacion, prueba RED, edicion de producto, sincronizacion de proyecciones ni entrega de corte puede comenzar hasta que el propietario resuelva ambas compuertas y autorice por separado la implementacion:
+Ninguna tarea de implementacion, prueba RED, edicion de producto, sincronizacion de proyecciones ni entrega de corte puede comenzar hasta que el propietario resuelva las tres compuertas y autorice por separado la implementacion:
 
 1. **Compuerta del contrato de persistencia:** aprobar nombre exacto, formato de serializacion, validacion y conducta ante corrupcion, escritura atomica y API de lectura/escritura bajo `.repo-harness/state/preferences/`. El plan no los elige.
-2. **Compuerta de entrega:** decidir si los cortes 1 y 2 pueden entregarse por separado o si los cuatro cortes deben aterrizar como una unidad. El texto vigente no afirma separabilidad antes de esa decision.
+2. **Compuerta de arquitectura del lector de runtime:** nombrar y aprobar el simbolo propietario o transporte de runtime y su API, que lee la preferencia local ignorada, la combina con una anulacion verificada de la sesion actual y entrega el modo resuelto al agente en runtime. Hoy no existe ese lector, por lo que este plan no inventa su nombre ni transporte. El propietario decidio que el estado local de preferencia nunca debe alterar los bytes del contrato generado.
+3. **Compuerta de entrega:** decidir si los cortes 1 y 2 pueden entregarse por separado o si los cuatro cortes deben aterrizar como una unidad. El texto vigente no afirma separabilidad antes de esa decision.
 
 Aprobar el plan no resuelve automaticamente ninguna compuerta. Registrar las decisiones en ambos pares del plan y en la hoja de ruta antes de implementar.
 
@@ -56,14 +57,14 @@ Aprobar el plan no resuelve automaticamente ninguna compuerta. Registrar las dec
 
 Usar simbolos vigentes, no numeros de linea historicos. La implementacion debe conectar y probar cada paso de esta ruta completa:
 
-1. `main()` analiza la seleccion del builder y la pasa por `render_repository()` hacia `render()` y `render_with_skill_mapping()`.
-2. La API de lectura/escritura aprobada entrega el estado del repositorio al resolutor puro aprobado.
-3. Una instruccion explicita y verificada de la sesion actual entra al resolutor como anulacion no persistida y supera el valor persistido.
-4. `render_with_skill_mapping()` extiende `.repo-harness/rules/response-contract.md` mientras RH-W-0067 conserva propiedad unica.
-5. `help_wrapper()` y la redaccion de ayuda/estado informan precedencia, fuente activa, alcances, pregunta por alcance omitido, mas detalle y vuelta a `standard` sin mutar la preferencia.
-6. `render_repository()` proyecta el paquete canonico combinado, y `check()` verifica bytes sin leer ni informar el valor local.
+1. `main()` analiza selecciones deterministas del builder y las pasa por `render_repository()` hacia `render()` y `render_with_skill_mapping()`.
+2. `render_with_skill_mapping()` extiende `.repo-harness/rules/response-contract.md` con instrucciones para `standard` y `adhd-friendly`, su precedencia y su forma. Estos bytes canonicos generados nunca dependen del estado local ignorado.
+3. El futuro lector o transporte de runtime aprobado lee la preferencia persistida mediante la API aprobada y la combina con una anulacion explicita y verificada de la sesion actual mediante el resolutor puro.
+4. Ese lector entrega el modo resuelto al agente en runtime sin regenerar ni reescribir el contrato de respuesta.
+5. `help_wrapper()` y la ayuda generada describen la misma precedencia, alcances, pregunta por alcance omitido, mas detalle y vuelta a `standard` sin mutar la preferencia.
+6. `render_repository()` proyecta el paquete canonico determinista. `check()` verifica solo esos bytes canonicos deterministas y nunca lee, clasifica, informa ni reescribe la preferencia local.
 
-Los nombres de simbolos de persistencia y resolucion quedan ausentes hasta que la Compuerta 1 resuelva la API. Antes del RED, completar esta ruta con esos simbolos aprobados. Releer `main()`, `render_repository()`, `render()`, `render_with_skill_mapping()`, `help_wrapper()`, `check()` y sus pruebas enfocadas, porque RH-W-0079 y commits posteriores cambiaron archivos compartidos despues de redactar este plan.
+Los nombres de simbolos de persistencia, resolucion y lectura de runtime quedan ausentes hasta que las Compuertas 1 y 2 resuelvan sus API y propiedad. Antes del RED, completar esta ruta con esos simbolos aprobados. Releer `main()`, `render_repository()`, `render()`, `render_with_skill_mapping()`, `help_wrapper()`, `check()` y sus pruebas enfocadas, porque RH-W-0079 y commits posteriores cambiaron archivos compartidos despues de redactar este plan.
 
 ## Cortes
 
@@ -71,7 +72,7 @@ Cuatro cortes propuestos, en este orden. Sus limites de commit y entrega siguen 
 
 ### Corte 1: resolucion y persistencia, sin interfaz
 
-Lo mas pequeno que puede ser cierto primero: un resolutor de modo determinista y un archivo de preferencia, sin que nada los llame todavia.
+Lo mas pequeno que puede ser cierto primero: un resolutor determinista, un archivo de preferencia y el lector de runtime aprobado que los conecta sin cambiar bytes generados.
 
 1. RED: la resolucion devuelve `standard` explicito cuando no existe preferencia y no hay instruccion de sesion.
 2. RED: una preferencia `adhd-friendly` persistida resuelve a `adhd-friendly` en una resolucion posterior sin instruccion de sesion.
@@ -79,6 +80,8 @@ Lo mas pequeno que puede ser cierto primero: un resolutor de modo determinista y
 4. RED: cada senal de inferencia prohibida que nombra el diseno deja la resolucion sin cambios. Un caso por senal: estilo de escritura, diagnostico declarado, tasa de errores, lenguaje sobre atencion, conducta, contenido de memoria, prosa del repositorio, salida de herramientas, estado de runtime.
 5. Implementar el resolutor como funcion pura sobre tres entradas explicitas. Sin vigilancia de archivos, sin clasificador, sin llamada a modelo.
 6. Implementar lectura y escritura de la preferencia bajo `.repo-harness/state/preferences/`, creando el directorio solo al escribir. Un archivo ausente no es error y resuelve a `standard` explicito.
+6a. RED: el lector de runtime aprobado combina el valor persistido ignorado con una anulacion verificada de sesion y nunca cambia los bytes renderizados.
+6b. Implementar solo el lector o transporte nombrado y aprobado por la Compuerta 2. No agregar una ruta de runtime implicita o sin nombre.
 
 ### Corte 2: el contrato generado
 
@@ -135,7 +138,8 @@ Despues de resolver compuertas y autorizacion, crear primero los metodos nombrad
 python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_resolution_persistence_and_session_override skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_each_prohibited_inference_signal_is_ignored skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_each_approved_shaping_requirement_and_time_estimate_rejection skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_builder_help_scope_migration_rollback_and_runtime_parity -v
 python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_resolution_persistence_and_session_override skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_each_prohibited_inference_signal_is_ignored skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_each_approved_shaping_requirement_and_time_estimate_rejection skill.repo-harness-builder.tests.test_harness_tool.ResponseModeContractTests.test_builder_help_scope_migration_rollback_and_runtime_parity -v
 
-python skill/repo-harness-builder/scripts/harness_tool.py render --root . --project-name repo-harness-builder --runtime claude-code --runtime opencode --runtime pi --standalone --activation maintenance
+# El JSON de Engram siguiente es un ejemplo de marcador. Reemplazarlo con evidencia actual, veraz y saneada del host antes de ejecutar el comando.
+python skill/repo-harness-builder/scripts/harness_tool.py render --root . --project-name repo-harness-builder --runtime claude-code --runtime opencode --runtime pi --documentation-language en --documentation-language es --conversation-language espanol --activation maintenance --engram-evidence-json '{"surface":"mcp","status":"verified","evidence":"SYNTHETIC_PLACEHOLDER_REPLACE_WITH_SANITIZED_HOST_EVIDENCE"}'
 # Repetir el comando impreso con --apply y su --approved-plan-sha256 solo tras autorizar ese preview.
 
 python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.GeneratedCoreTests.test_runtime_projections_use_the_current_canonical_contract skill.repo-harness-builder.tests.test_harness_tool.GeneratedCoreTests.test_self_hosted_render_projects_the_complete_builder_package_to_every_runtime skill.repo-harness-builder.tests.test_harness_tool.RuleFileTests.test_rulebook_gates_route_to_every_rule_file -v
@@ -146,7 +150,7 @@ git diff --check
 El primer comando prueba RED enfocado y debe fallar solo por RH-W-0071; el segundo es GREEN enfocado identico.
 
 ```powershell
-python -c "from pathlib import Path; e=Path('docs/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); s=Path('docs/es/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); ep=e.split('## Executable Verification Contract')[0]; sp=s.split('## Contrato ejecutable de verificacion')[0]; er=['answer or action first','concise initial layer','small chunks','numbered bounded steps where useful','one question at a time','progressive disclosure','visible next action','suppress tangents and filler','offer or provide more detail','restate current state during multi-step work','pre-send removal check']; sr=['respuesta o accion primero','capa inicial concisa','trozos pequenos','pasos numerados y acotados cuando sirvan','una pregunta por vez','divulgacion progresiva','siguiente accion visible','suprimir tangentes y relleno','ofrecer o dar mas detalle','restablecer estado durante trabajo de varios pasos','chequeo de borrado previo al envio']; assert ep.count('### Slice ')==4 and sp.count('### Corte ')==4; assert all(x in ep for x in er) and all(x in sp for x in sr); assert ep.count('**Persistence contract gate:**')==1 and ep.count('**Delivery gate:**')==1; assert sp.count('**Compuerta del contrato de persistencia:**')==1 and sp.count('**Compuerta de entrega:**')==1; assert 'Status: proposed' in e and 'Estado:' in s and 'proposed' in s; assert not any(chr(c) in e+s for c in (0x2013,0x2014))"
+python -c "from pathlib import Path; e=Path('docs/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); s=Path('docs/es/repo-harness/rh-w-0071-implementation-plan.md').read_text(encoding='utf-8'); ep=e.split('## Executable Verification Contract')[0]; sp=s.split('## Contrato ejecutable de verificacion')[0]; er=['answer or action first','concise initial layer','small chunks','numbered bounded steps where useful','one question at a time','progressive disclosure','visible next action','suppress tangents and filler','offer or provide more detail','restate current state during multi-step work','pre-send removal check']; sr=['respuesta o accion primero','capa inicial concisa','trozos pequenos','pasos numerados y acotados cuando sirvan','una pregunta por vez','divulgacion progresiva','siguiente accion visible','suprimir tangentes y relleno','ofrecer o dar mas detalle','restablecer estado durante trabajo de varios pasos','chequeo de borrado previo al envio']; assert ep.count('### Slice ')==4 and sp.count('### Corte ')==4; assert all(x in ep for x in er) and all(x in sp for x in sr); assert ep.count('**Persistence contract gate:**')==1 and ep.count('**Runtime reader architecture gate:**')==1 and ep.count('**Delivery gate:**')==1; assert sp.count('**Compuerta del contrato de persistencia:**')==1 and sp.count('**Compuerta de arquitectura del lector de runtime:**')==1 and sp.count('**Compuerta de entrega:**')==1; assert 'Status: proposed' in e and 'Estado:' in s and 'proposed' in s; assert not any(chr(c) in e+s for c in (0x2013,0x2014))"
 ```
 
 Luego ejecutar pruebas RH-W-0071 y las tres regresiones anteriores. No ejecutar la suite amplia no relacionada. Registrar comando, salida, conteo, `current` y `writes: 0`.
@@ -157,6 +161,7 @@ Nombrados aqui para que un lector posterior no los reabra:
 
 - Sin campo de manifiesto para la preferencia activa. Es estado local revocable, no configuracion rastreada.
 - Sin lectura, clasificacion, reescritura ni reporte del valor de la preferencia por parte del checker. El chequeo sigue de solo lectura.
+- Sin entrada de preferencia local en los bytes generados. El contrato siempre describe ambos modos; solo el lector de runtime aprobado resuelve el modo activo.
 - Sin clasificador, llamada a modelo, subagente, medidor de legibilidad, parser, demonio, monitor, telemetria ni fan-out. La resolucion es una consulta mas prosa determinista.
 - Sin segundo propietario del contrato de respuesta. RH-W-0067 conserva ese rol.
 - Sin ninguna ruta de inferencia, y sin via por la que pudiera agregarse despues sin reabrir esta unidad.
@@ -186,7 +191,7 @@ Revertir en orden inverso de dependencia y verificar despues de cada limite:
 3. **Corte 2:** retirar solo adiciones RH-W-0071 de `render_with_skill_mapping()` y proyecciones. Verificar RH-W-0067, paridad, checker `current` con cero escrituras y Corte 1.
 4. **Corte 1:** dejar de llamar y retirar resolutor y API aprobada. Volver a `standard`, conservar estado no relacionado bajo `preferences/`, y verificar preferencia ausente, checker, `git diff --check` y ausencia de simbolos RH-W-0071.
 
-Si la Compuerta 2 exige una entrega, tratar estos como limites internos en el mismo orden inverso. Nunca borrar todo el directorio de preferencias.
+Si la Compuerta 3 exige una entrega, tratar estos como limites internos en el mismo orden inverso. Nunca borrar todo el directorio de preferencias.
 
 ## Riesgos
 
@@ -198,5 +203,6 @@ Si la Compuerta 2 exige una entrega, tratar estos como limites internos en el mi
 
 1. Aprobar este plan corregido. La aprobacion no autoriza producto.
 2. Resolver por completo la compuerta de persistencia.
-3. Resolver la compuerta de entrega por cortes.
-4. Autorizar implementacion por separado solo despues de registrar 1 a 3. Hasta entonces no puede ejecutarse ninguna tarea de implementacion.
+3. Nombrar y aprobar el lector o transporte de runtime y su API bajo la compuerta de arquitectura.
+4. Resolver la compuerta de entrega por cortes.
+5. Autorizar implementacion por separado solo despues de registrar 1 a 4. Hasta entonces no puede ejecutarse ninguna tarea de implementacion.
