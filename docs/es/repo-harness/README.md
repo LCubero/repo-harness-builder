@@ -38,8 +38,8 @@
 | [Diseno RH-W-0073](rh-w-0073-design.md) | Diseno completado de control del presupuesto del rulebook; se conserva el cuerpo historico del diseno |
 | [Plan de implementacion RH-W-0073](rh-w-0073-implementation-plan.md) | Plan de implementacion RH-W-0073 completado; se conserva la evidencia historica de ejecucion |
 | [Alcance RH-W-0076](rh-w-0076-scope.md) | Alcance propuesto de correccion de tres limites declarados sin control; la aprobacion y la implementacion siguen sin autorizacion separada |
-| [Alcance RH-W-0084](rh-w-0084-scope.md) | Alcance de investigacion LLM-first aprobado por el propietario; la reconciliacion de seguridad de RH-W-0012 y toda ejecucion de investigacion siguen sin autorizacion separada |
-| [Limites RH-W-0012](rh-w-0012-boundaries.md) | Especificacion propuesta de los siete limites de seguridad de investigacion externa que RH-W-0012 solo habia nombrado; la aprobacion del propietario y toda lectura externa siguen sin autorizacion separada |
+| [Alcance RH-W-0084](rh-w-0084-scope.md) | Alcance de investigacion LLM-first aprobado por el propietario; la reconciliacion de seguridad de RH-W-0012 esta completa y toda ejecucion de investigacion sigue sin autorizacion separada |
+| [Limites RH-W-0012](rh-w-0012-boundaries.md) | Especificacion aceptada por el propietario de los siete limites de seguridad de investigacion externa que RH-W-0012 solo habia nombrado; completo RH-W-0012, y toda lectura externa sigue sin autorizacion separada |
 | [Diseno RH-W-0067](rh-w-0067-design.md) | Par humano del diseno completado del contrato de respuesta; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0067](rh-w-0067-implementation-plan.md) | Par humano del plan de implementacion completado; instrucciones historicas conservadas |
 | [Diseno RH-W-0071](rh-w-0071-design.md) | Diseno aprobado de estructura ADHD-friendly y arquitectura LLM-first compartida de preferencias; implementacion sin autorizar |

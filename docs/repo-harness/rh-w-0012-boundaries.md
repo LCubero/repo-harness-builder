@@ -1,8 +1,8 @@
-# RH-W-0012 Proposed External Research Safety Boundaries
+# RH-W-0012 External Research Safety Boundaries
 
 ## Status and purpose
 
-**Status: proposed; drafted, not owner-approved.** This document specifies the seven boundary topics `RH-W-0012` has named since the roadmap was created but never defined. Approving it defines the rules only. It leaves `RH-W-0012` `proposed`, authorizes no external network or source read, and changes no product source, test, generated surface, manifest, checker, or lifecycle state.
+**Status: owner-accepted on 2026-08-31; `RH-W-0012` is `completed`.** This document specifies the seven boundary topics `RH-W-0012` had named since the roadmap was created but never defined. Acceptance defines the rules and nothing else: it authorizes no external network or source read, and changes no product source, test, generated surface, manifest, or checker. Any external research still needs separate execution authority and must run inside these seven boundaries.
 
 **Why it exists:** the 2026-08-31 reconciliation found the seven topics named as nouns and specified nowhere, so the record's own advancement condition asked to verify boundaries that did not exist. `temporary clone` and `no-execution` each appear exactly once in this repository, inside that record.
 
@@ -62,8 +62,8 @@ Boundary 3 was first drafted as a human decision because no rule stated it. Meas
 
 `RH-W-0084` retains the evidence ladder and the research questions. `RH-W-0065` retains research evidence, durable references, unread-source reporting, and sensitive URL rejection. `RH-W-0051` retains the local namespace semantics that boundary 2 consumes. None of these units is merged, reopened, or advanced here.
 
-Non-goals: reading any external source; performing the `RH-W-0084` research; repairing the five moving-ref citations, which is separate work under this unit's remaining work; creating a reference file or schema, which `RH-W-0065` excludes; and changing product source, tests, generated projections, manifest, checker behavior, or runtime behavior.
+Non-goals: reading any external source; performing the `RH-W-0084` research; repairing the five moving-ref citations, which was done separately under the legacy clause; creating a reference file or schema, which `RH-W-0065` excludes; and changing product source, tests, generated projections, manifest, checker behavior, or runtime behavior.
 
 ## Lifecycle relationship
 
-`RH-W-0012` remains `proposed`. Owner approval of this draft specifies the boundaries and satisfies the first half of the advancement condition. The five moving-ref citations were repaired on 2026-08-31 under the boundary 4 legacy clause, with no network read: each now carries its bounded read date and its unpinned state openly. Pinning or re-deriving them remains available under separately authorized research, and is the only remaining citation work. External research execution remains separately unauthorized after both.
+`RH-W-0012` is `completed`. Owner acceptance of this document on 2026-08-31 specified the boundaries and satisfied the advancement condition. The five moving-ref citations were repaired the same day under the boundary 4 legacy clause, with no network read: each now carries its bounded read date and its unpinned state openly. Pinning or re-deriving them remains available under separately authorized research and is optional, not remaining work. External research execution remains separately unauthorized, and when it is authorized it runs inside these seven boundaries.

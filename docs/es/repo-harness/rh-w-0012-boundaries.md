@@ -1,8 +1,8 @@
-# Limites de seguridad propuestos para investigacion externa RH-W-0012
+# Limites de seguridad de investigacion externa RH-W-0012
 
 ## Estado y proposito
 
-**Estado: `proposed`; redactado, sin aprobacion del propietario.** Este documento especifica los siete temas de limite que `RH-W-0012` nombra desde que se creo el roadmap y nunca definio. Aprobarlo define solo las reglas. Deja `RH-W-0012` en `proposed`, no autoriza ninguna lectura externa de red o fuente, y no cambia codigo de producto, pruebas, superficies generadas, manifiesto, verificador ni estado de ciclo de vida.
+**Estado: aceptado por el propietario el 2026-08-31; `RH-W-0012` esta `completed`.** Este documento especifica los siete temas de limite que `RH-W-0012` nombraba desde que se creo el roadmap y nunca definio. La aceptacion define las reglas y nada mas: no autoriza ninguna lectura externa de red o fuente, y no cambia codigo de producto, pruebas, superficies generadas, manifiesto ni verificador. Toda investigacion externa sigue necesitando autoridad de ejecucion separada y debe correr dentro de estos siete limites.
 
 **Por que existe:** la reconciliacion del 2026-08-31 hallo los siete temas nombrados como sustantivos y especificados en ninguna parte, asi que la propia condicion de avance del registro pedia verificar limites que no existian. `temporary clone` y `no-execution` aparecen exactamente una vez en este repositorio, dentro de ese registro.
 
@@ -62,8 +62,8 @@ El limite 3 se redacto primero como decision humana porque ninguna regla lo decl
 
 `RH-W-0084` conserva la escala de evidencia y las preguntas de investigacion. `RH-W-0065` conserva la evidencia de investigacion, las referencias durables, el reporte de fuentes no leidas y el rechazo de URLs sensibles. `RH-W-0051` conserva la semantica de espacios locales que consume el limite 2. Ninguna de estas unidades se fusiona, reabre ni avanza aqui.
 
-No objetivos: leer ninguna fuente externa; realizar la investigacion de `RH-W-0084`; reparar las cinco citas moviles, que es trabajo separado dentro del trabajo restante de esta unidad; crear un archivo o esquema de referencias, que `RH-W-0065` excluye; y cambiar codigo de producto, pruebas, proyecciones generadas, manifiesto, comportamiento del verificador o comportamiento de runtime.
+No objetivos: leer ninguna fuente externa; realizar la investigacion de `RH-W-0084`; reparar las cinco citas moviles, que se hizo por separado bajo la clausula heredada; crear un archivo o esquema de referencias, que `RH-W-0065` excluye; y cambiar codigo de producto, pruebas, proyecciones generadas, manifiesto, comportamiento del verificador o comportamiento de runtime.
 
 ## Relacion con el ciclo de vida
 
-`RH-W-0012` permanece en `proposed`. La aprobacion del propietario de este borrador especifica los limites y satisface la primera mitad de la condicion de avance. Las cinco citas moviles se repararon el 2026-08-31 bajo la clausula heredada del limite 4, sin ninguna lectura de red: cada una lleva ahora su fecha de lectura acotada y su estado sin fijar declarado abiertamente. Fijarlas o volver a derivarlas sigue disponible bajo investigacion autorizada por separado, y es el unico trabajo de citas restante. La ejecucion de investigacion externa sigue sin autorizacion separada despues de ambas.
+`RH-W-0012` esta `completed`. La aceptacion del propietario de este documento el 2026-08-31 especifico los limites y satisfizo la condicion de avance. Las cinco citas moviles se repararon el mismo dia bajo la clausula heredada del limite 4, sin ninguna lectura de red: cada una lleva ahora su fecha de lectura acotada y su estado sin fijar declarado abiertamente. Fijarlas o volver a derivarlas sigue disponible bajo investigacion autorizada por separado y es opcional, no trabajo restante. La ejecucion de investigacion externa sigue sin autorizacion separada, y cuando se autorice correra dentro de estos siete limites.
