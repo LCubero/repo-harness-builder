@@ -35,6 +35,8 @@ Anthropic plantea el tamanio como presupuesto y no como techo: "you should be st
 
 Aparecen dos numeros concretos. Los resumenes de subagente se describen como "often 1,000-2,000 tokens". La estructuracion de prompts con documentos largos se dispara en "20k+ tokens".
 
+**Control positivo para la afirmacion negativa.** Que ninguna fuente declare un techo de cuerpo es un resultado negativo, y este repositorio exige que una afirmacion negativa se respalde con la misma busqueda dando positivo sobre algo que se sabe presente. Esos dos numeros son ese control: las fuentes si declaran cifras exactas cuando las tienen, `often 1,000-2,000 tokens` para resumenes de subagente y `20k+ tokens` como umbral de estructuracion. Su silencio sobre un maximo para un documento de instrucciones es entonces significativo y no un artefacto de no haber buscado numeros.
+
 **Limite de aplicabilidad:** ninguno de los dos numeros es un techo de cuerpo de contrato, y ninguna fuente declara un tamanio maximo para un documento de instrucciones dirigido a un agente. Nada de lo leido sostiene ni refuta un tope numerico especifico.
 
 ### 3. Ruta y ubicacion

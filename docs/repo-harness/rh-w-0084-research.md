@@ -35,6 +35,8 @@ Anthropic frames size as a budget rather than a ceiling: "you should be striving
 
 Two concrete numbers appear. Sub-agent summaries are described as "often 1,000-2,000 tokens". Long-document prompt structuring is triggered at "20k+ tokens".
 
+**Positive control for the negative claim.** That no source states a body ceiling is a negative result, and this repository requires a negative claim to be backed by the same search returning a positive on something known to be present. Those two numbers are that control: the sources do state exact figures when they mean them, `often 1,000-2,000 tokens` for sub-agent summaries and `20k+ tokens` as a structuring threshold. Their silence on an instruction-document maximum is therefore meaningful rather than an artifact of not looking for numbers.
+
 **Applicability limit:** neither number is a contract-body ceiling, and no source states a maximum size for an agent-facing instruction document. Nothing read supports or refutes a specific numeric cap.
 
 ### 3. Path and location
