@@ -4,6 +4,12 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-08-31
+
+- Recorded the owner's approval of the bilingual `RH-W-0084` LLM-first research scope. The scope approval leaves `RH-W-0084` `proposed`; its six exact questions satisfy the `RH-W-0012` advancement condition because repository measurements cannot answer them, so `RH-W-0012` advanced from `deferred` to `proposed` for safety-boundary reconciliation. No external source was read: external research remains unperformed and requires separate execution authority after that safety unit is reconciled. No product, test, generated surface, manifest, or checker changed.
+
+- Drafted the proposed bilingual `RH-W-0084` LLM-first research scope, naming exact questions, admissible source classes, evidence-to-control routing, and boundaries with RH-W-0012, RH-W-0065, RH-W-0067, RH-W-0073, RH-W-0076, RH-W-0078, and RH-W-0083. It awaited owner approval at that point; no external source was read and no product, test, generated surface, manifest, or checker changed.
+
 ## 2026-08-30
 
 - Evaluated the `RH-W-0012` deferral condition against `RH-W-0084` on owner instruction. The condition did not fire and `RH-W-0012` stays `deferred`: `RH-W-0084` is concrete, `P1`, and scheduled, but it names no question yet, because its own remaining work defers the exact questions to a bilingual research scope that is not approved. The evaluation also found and corrected a misordering introduced the same day, where `RH-W-0084` listed the `RH-W-0012` evaluation before that scope, which made its first step a no-op; naming a question is internal work needing no external-source safety, and only reading an external source needs `RH-W-0012`. The record now names the exact trigger so a third evaluation is cheap. No status advanced, no external source was read, and no scope, research, or implementation is authorized.

@@ -2,6 +2,12 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-08-31
+
+- Se registro la aprobacion del propietario para el alcance bilingue de investigacion LLM-first `RH-W-0084`. Aprobarlo deja `RH-W-0084` en `proposed`; sus seis preguntas exactas satisfacen la condicion de avance de `RH-W-0012` porque las mediciones del repositorio no pueden responderlas, asi que `RH-W-0012` avanzo de `deferred` a `proposed` para reconciliar limites de seguridad. No se leyo ninguna fuente externa: la investigacion externa sigue sin realizarse y requiere autoridad de ejecucion separada despues de reconciliar esa unidad de seguridad. No cambiaron producto, pruebas, superficie generada, manifiesto ni checker.
+
+- Se redacto el alcance bilingue propuesto de investigacion LLM-first `RH-W-0084`, con preguntas exactas, clases de fuente admisibles, enrutamiento de evidencia a control y limites con RH-W-0012, RH-W-0065, RH-W-0067, RH-W-0073, RH-W-0076, RH-W-0078 y RH-W-0083. En ese momento esperaba aprobacion del propietario; no se leyo ninguna fuente externa ni cambiaron producto, pruebas, superficie generada, manifiesto o checker.
+
 ## 2026-08-30
 
 - Se evaluo la condicion de aplazamiento de `RH-W-0012` contra `RH-W-0084` por instruccion del propietario. La condicion no se disparo y `RH-W-0012` sigue `deferred`: `RH-W-0084` es concreta, `P1` y programada, pero aun no nombra ninguna pregunta, porque su propio trabajo restante difiere las preguntas exactas a un alcance bilingue no aprobado. La evaluacion tambien hallo y corrigio un desorden introducido el mismo dia, donde `RH-W-0084` ponia la evaluacion de `RH-W-0012` antes de ese alcance, lo que volvia su primer paso una operacion vacia; nombrar una pregunta es trabajo interno que no necesita seguridad de fuente externa, y solo leer una fuente externa necesita `RH-W-0012`. El registro nombra ahora el disparador exacto para que una tercera evaluacion sea barata. Ningun estado avanzo, no se leyo ninguna fuente externa y no se autoriza alcance, investigacion ni implementacion.
