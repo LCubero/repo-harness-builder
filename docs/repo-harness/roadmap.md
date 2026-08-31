@@ -22,32 +22,33 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082` and `RH-W-0083` raise the authoritative portfolio to 32. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
+Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raise the authoritative portfolio to 33. `RH-W-0084` is scheduled below on owner direction; the others remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
 The preventive design precedes the local-state architecture:
 
 1. Complete and approve the bilingual `RH-W-0070` preventive resource-safety design without merging it into another unit. This step is complete.
 2. `RH-W-0051` is complete. Its four implemented non-authoritative namespaces are `tmp`, `archive`, `state`, and `memory-bk`.
-3. Implement `RH-W-0071` only after its two remaining pre-implementation gates are resolved and implementation is separately authorized. Its completed implementation plan and shared structured Markdown preference contract are owner-approved. Completed RH-W-0051 established `.repo-harness/state/`; RH-W-0071 owns persistence and response-structure semantics under `preferences/`, RH-W-0082 owns explanation-style semantics, and RH-W-0018 retains interaction behavior without absorbing consent or language provenance.
-4. Implement `RH-W-0069` after RH-W-0051 establishes `.repo-harness/memory-bk/`, without absorbing typed checkpoints.
-5. Implement `RH-W-0053` after RH-W-0051 establishes its storage semantics.
-6. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
-7. Implement `RH-W-0052` after those storage and recovery primitives are proven.
+3. Resolve `RH-W-0084` first on owner direction of 2026-08-30, because LLM-first is the constraint every later generated surface is measured against. Evaluate `RH-W-0012` for external research safety, then approve a bilingual research scope, then write the thematic research document. No generated surface changes on research alone.
+4. Implement `RH-W-0071` only after its two remaining pre-implementation gates are resolved and implementation is separately authorized. Its completed implementation plan and shared structured Markdown preference contract are owner-approved. Completed RH-W-0051 established `.repo-harness/state/`; RH-W-0071 owns persistence and response-structure semantics under `preferences/`, RH-W-0082 owns explanation-style semantics, and RH-W-0018 retains interaction behavior without absorbing consent or language provenance.
+5. Implement `RH-W-0069` after RH-W-0051 establishes `.repo-harness/memory-bk/`, without absorbing typed checkpoints.
+6. Implement `RH-W-0053` after RH-W-0051 establishes its storage semantics.
+7. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
+8. Implement `RH-W-0052` after those storage and recovery primitives are proven.
 
 Consent and comparison follow, unchanged:
 
-8. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
-9. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
-10. Continue with `RH-W-0022`.
+9. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
+10. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
+11. Continue with `RH-W-0022`.
 
 Onboarding and the remaining residue close the path:
 
-11. Continue with `RH-W-0055`.
-12. Then `RH-W-0062`, which resolves against the `RH-W-0055` design.
-13. Continue with `RH-W-0040`.
-14. Then `RH-W-0060`.
-15. Then `RH-W-0065`.
-16. Then `RH-W-0066`.
+12. Continue with `RH-W-0055`.
+13. Then `RH-W-0062`, which resolves against the `RH-W-0055` design.
+14. Continue with `RH-W-0040`.
+15. Then `RH-W-0060`.
+16. Then `RH-W-0065`.
+17. Then `RH-W-0066`.
 
 The 6 deferred records keep their existing conditions. `RH-W-0018` participates only in joint design with RH-W-0046 and retains its own deferred advancement condition. The other unscheduled deferred records are `RH-W-0012`, `RH-W-0014`, `RH-W-0015`, `RH-W-0026`, and `RH-W-0063`.
 
@@ -477,7 +478,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reviewed through 2026-08-30 across 26 non-terminal plans, 5 completed plans retained as historical execution evidence, and the 32 non-terminal records they cover. Historical Plan 28 is completed and authorizes no current implementation or release. No true lifecycle merge is approved.
+Current projection reviewed through 2026-08-30 across 26 non-terminal plans, 5 completed plans retained as historical execution evidence, and the 33 non-terminal records they cover. Historical Plan 28 is completed and authorizes no current implementation or release. No true lifecycle merge is approved.
 
 Coverage is complete at the lifecycle level. The stale next-artifact wording corrected in this reconciliation means the prior claim that no plans contradicted each other was too strong. No true lifecycle merge is approved. RH-W-0051 keeps separate design and implementation plans. The portfolio has one explicit joint-design pair, `RH-W-0046` with `RH-W-0018`, and four coordination pairs with separate lifecycles and implementations: coordinated sequencing for `RH-W-0055` with `RH-W-0062` and `RH-W-0069` with `RH-W-0068`, plus coordinated boundary review for `RH-W-0065` with `RH-W-0022` and `RH-W-0066` with `RH-W-0044`. The five unscheduled deferred records are covered in the not-plannable list; RH-W-0018 is covered by Plan 6.
 
@@ -505,6 +506,23 @@ Five plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0084
+| Field | Value |
+|---|---|
+| Origin | Owner direction on 2026-08-30: the entire harness must be LLM-first always, so the project needs auditable research into what an LLM actually consumes best, covering formats, sizes, paths, reinforcement, and forms, so a loaded contract does not lose the agent. The owner prioritized it the same day. |
+| Priority | P1: LLM-first is the constraint that defines every generated surface, and three registered defects cannot be corrected toward a defensible target until this research establishes one. `RH-W-0076` measured a stated body ceiling of 1000 tokens breached at 2885, `RH-W-0078` owns the generated-contract side of that breach at 2822 and 2707, and `RH-W-0083` found a load obligation whose placement loses the agent. Each currently has a measured breach with no evidence-backed target to correct it to. |
+| Dependencies | `RH-W-0012` external research safety is `deferred` and owns primary-source safety, so it is evaluated before any external source is read. `RH-W-0065` owns research evidence and durable references. `RH-W-0067`, `RH-W-0073`, `RH-W-0076`, `RH-W-0078`, and `RH-W-0083` own the surfaces any finding would inform. Coordinate with all of them without merging. |
+| Status | proposed |
+| Completed work | Registered the immutable unit and recorded the owner's standing LLM-first charter in `decisions.md` and its Spanish peer. Verified `RH-W-0084` as the next free immutable ID by repository-wide Markdown scan. Confirmed the existing thematic research convention: five documents already live under `docs/repo-harness/` with localized peers, so this unit needs no new document class. Scheduled into the approved execution order on owner direction. |
+| Remaining work | Evaluate `RH-W-0012` first, because it is `deferred` and owns external research safety. Then approve a bilingual research scope naming the exact questions, the admissible source classes, and the path by which a finding becomes a repository control rather than more prose. Then write the thematic research document with its localized peer. |
+| Additions | None yet. A scope may add one thematic research document and its localized peer. |
+| Exclusions | No product source, test, generated skill, manifest, checker, or projection change. No rulebook growth beyond its 700 budget. No new reference owner, which `RH-W-0065` holds. No duplicate research, decision, or lifecycle store. No external network read before `RH-W-0012` is evaluated. No implementation before a separately approved bilingual scope. |
+| Deferrals | Whether a finding becomes a development-time control, generated contract wording, or documented guidance waits for that scope. |
+| Rejections | Rejected treating vendor or community prompt-engineering advice as verified fact without measurement against this repository, because a plausible claim has already been contradicted by measurement here more than once. Rejected folding this into `RH-W-0076` or `RH-W-0078`, which own specific measured breaches rather than the question of what the correct target is. Rejected changing any ceiling, format, or path on research alone without an owner decision. |
+| Evidence | Human decision: the owner requires the whole harness to be LLM-first always, directed research into formats, sizes, paths, reinforcement, and forms, and prioritized it. Verified fact: five thematic research documents already exist under `docs/repo-harness/` with localized peers, `RH-W-0012` is `deferred` and owns external research safety, and `references/gentle-ai-style-guide.md` states a 180 to 450 body-token target with a 1000 hard maximum that `RH-W-0076` measured as breached at 2885, 2822, 2707, and 878. Unknown: whether any published guidance is applicable here, because none has been reviewed under this project's evidence rules. |
+| Decision history | 2026-08-30: registered `proposed` under immutable ID RH-W-0084 after the owner directed the research and restated the project charter. Verified beforehand that no RH-W-0084 existed anywhere in the repository. The owner then prioritized it, so it was scheduled into the approved execution order ahead of the local-state chain. No scope, research, or implementation is authorized. |
+| Next advancement condition | Advance only after `RH-W-0012` is evaluated for external research safety and the owner approves a bilingual research scope naming the questions, the admissible sources, and the path from finding to control. |
 
 ### RH-W-0083
 | Field | Value |

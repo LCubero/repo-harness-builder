@@ -22,32 +22,33 @@ Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 
 
 ## Orden de ejecucion aprobado restante
 
-Reconciliado el 2026-08-25 sobre los 26 registros no terminales de entonces y extendido a 28 con `RH-W-0076` y `RH-W-0077`. `RH-W-0078` lo elevo a 29; completar `RH-W-0073` lo redujo a 28; `RH-W-0079` lo devolvio temporalmente a 29 y su finalizacion lo redujo a 28. Las aprobadas RH-W-0080 y RH-W-0081 lo elevan a 30. El siguiente ID inmutable verificado, `RH-W-0082`, eleva el portafolio autoritativo a 31. Estos registros se derivan de evidencia completa de la hoja de ruta, revision de solo lectura o una decision directa del propietario y quedan fuera del orden aprobado hasta ser programados.
+Reconciliado el 2026-08-25 sobre los 26 registros no terminales de entonces y extendido a 28 con `RH-W-0076` y `RH-W-0077`. `RH-W-0078` lo elevo a 29; completar `RH-W-0073` lo redujo a 28; `RH-W-0079` lo devolvio temporalmente a 29 y su finalizacion lo redujo a 28. Las aprobadas RH-W-0080 y RH-W-0081 lo elevan a 30. Los siguientes IDs inmutables verificados, `RH-W-0082`, `RH-W-0083` y `RH-W-0084`, elevan el portafolio autoritativo a 33. `RH-W-0084` queda programado abajo por direccion del propietario; los otros siguen sin programar. Estos registros se derivan de evidencia completa de la hoja de ruta, revision de solo lectura o una decision directa del propietario y quedan fuera del orden aprobado hasta ser programados.
 
 El diseno preventivo precede la arquitectura de estado local:
 
 1. Completar y aprobar el diseno bilingue preventivo `RH-W-0070` sin fusionarlo con otra unidad. Este paso esta completo.
 2. `RH-W-0051` esta completa. Sus cuatro namespaces no autoritativos implementados son `tmp`, `archive`, `state` y `memory-bk`.
-3. Implementar `RH-W-0071` solo despues de resolver las dos compuertas previas restantes y autorizar la implementacion por separado. Su plan completado y su contrato Markdown estructurado compartido de preferencias estan aprobados por el propietario. La completada RH-W-0051 establecio `.repo-harness/state/`; RH-W-0071 posee persistencia y semantica de estructura de respuesta bajo `preferences/`, RH-W-0082 posee semantica de estilo de explicacion y RH-W-0018 conserva comportamiento de interaccion sin absorber consentimiento RH-W-0046 ni procedencia de idioma RH-W-0031.
-4. Implementar `RH-W-0069` despues del soporte `.repo-harness/memory-bk/`, sin absorber checkpoints.
-5. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
-6. Implementar `RH-W-0048`.
-7. Implementar `RH-W-0052`.
+3. Resolver primero `RH-W-0084` por direccion del propietario del 2026-08-30, porque LLM-first es la restriccion contra la que se mide toda superficie generada posterior. Evaluar `RH-W-0012` para seguridad de investigacion externa, despues aprobar un alcance bilingue de investigacion y despues escribir el documento tematico. Ninguna superficie generada cambia solo por investigacion.
+4. Implementar `RH-W-0071` solo despues de resolver las dos compuertas previas restantes y autorizar la implementacion por separado. Su plan completado y su contrato Markdown estructurado compartido de preferencias estan aprobados por el propietario. La completada RH-W-0051 establecio `.repo-harness/state/`; RH-W-0071 posee persistencia y semantica de estructura de respuesta bajo `preferences/`, RH-W-0082 posee semantica de estilo de explicacion y RH-W-0018 conserva comportamiento de interaccion sin absorber consentimiento RH-W-0046 ni procedencia de idioma RH-W-0031.
+5. Implementar `RH-W-0069` despues del soporte `.repo-harness/memory-bk/`, sin absorber checkpoints.
+6. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
+7. Implementar `RH-W-0048`.
+8. Implementar `RH-W-0052`.
 
 Siguen consentimiento y comparacion, sin cambios:
 
-8. Disenar juntas `RH-W-0046` y `RH-W-0018`, con implementaciones separadas.
-9. Continuar con `RH-W-0044`.
-10. Continuar con `RH-W-0022`.
+9. Disenar juntas `RH-W-0046` y `RH-W-0018`, con implementaciones separadas.
+10. Continuar con `RH-W-0044`.
+11. Continuar con `RH-W-0022`.
 
 Onboarding y el residuo restante cierran la ruta:
 
-11. Continuar con `RH-W-0055`.
-12. Luego `RH-W-0062`.
-13. Continuar con `RH-W-0040`.
-14. Luego `RH-W-0060`.
-15. Luego `RH-W-0065`.
-16. Luego `RH-W-0066`.
+12. Continuar con `RH-W-0055`.
+13. Luego `RH-W-0062`.
+14. Continuar con `RH-W-0040`.
+15. Luego `RH-W-0060`.
+16. Luego `RH-W-0065`.
+17. Luego `RH-W-0066`.
 
 Los 6 registros aplazados conservan sus condiciones. `RH-W-0018` participa solo en el diseno conjunto con RH-W-0046 y conserva su condicion de avance. Los otros registros aplazados sin agendar son `RH-W-0012`, `RH-W-0014`, `RH-W-0015`, `RH-W-0026` y `RH-W-0063`.
 
@@ -505,6 +506,10 @@ Cinco planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 2
 ## Registros activos
 
 <!-- doc-role:active-records -->
+
+### RH-W-0084
+
+Origen: direccion del propietario el 2026-08-30, todo el harness debe ser LLM-first siempre, asi que el proyecto necesita investigacion auditable sobre que consume mejor un LLM en formatos, tamanos, rutas, refuerzos y formas, para que un contrato cargado no pierda al agente; el propietario la priorizo el mismo dia. Prioridad: `P1`, LLM-first es la restriccion que define toda superficie generada y tres defectos registrados no pueden corregirse hacia un objetivo defendible hasta que esta investigacion establezca uno; `RH-W-0076` midio un techo declarado de 1000 tokens incumplido en 2885, `RH-W-0078` posee el lado generado de esa brecha en 2822 y 2707, y `RH-W-0083` encontro una obligacion de carga cuya ubicacion pierde al agente. Dependencias: `RH-W-0012` de investigacion externa esta `deferred` y posee la seguridad de fuentes primarias, asi que se evalua antes de leer cualquier fuente externa; `RH-W-0065` posee evidencia de investigacion y referencias durables; `RH-W-0067`, `RH-W-0073`, `RH-W-0076`, `RH-W-0078` y `RH-W-0083` poseen las superficies que un hallazgo informaria; coordinar con todas sin fusionar. Estado: `proposed`. Trabajo completado: se registro la unidad inmutable, se dejo la carta LLM-first permanente del propietario en `decisions.md` y su par espanol, se verifico `RH-W-0084` como siguiente ID libre mediante barrido Markdown del repositorio, se confirmo la convencion existente de investigacion tematica con cinco documentos ya bajo `docs/repo-harness/` y pares localizados, y se programo en el orden de ejecucion aprobado por direccion del propietario. Trabajo restante: evaluar primero `RH-W-0012`, porque esta `deferred` y posee la seguridad de investigacion externa; despues aprobar un alcance bilingue que nombre las preguntas exactas, las clases de fuente admisibles y el camino por el cual un hallazgo se vuelve un control del repositorio en vez de mas prosa; despues escribir el documento tematico con su par localizado. Adiciones: ninguna aun. Exclusiones: sin cambios de fuente de producto, pruebas, skills generadas, manifest, checker ni proyecciones; sin crecer el reglamento por encima de 700; sin nuevo propietario de referencias, que tiene `RH-W-0065`; sin duplicar almacenes de investigacion, decisiones ni ciclo de vida; sin lectura externa de red antes de evaluar `RH-W-0012`; y sin implementacion antes de un alcance bilingue aprobado. Aplazamientos: si un hallazgo se vuelve control de tiempo de desarrollo, redaccion de contrato generado o guia documentada queda para ese alcance. Rechazos: se rechazo tratar consejo de vendor o comunidad sobre ingenieria de prompts como hecho verificado sin medirlo contra este repositorio, porque aca ya se contradijo mas de una vez una afirmacion plausible con medicion; se rechazo fusionarlo en `RH-W-0076` o `RH-W-0078`, que poseen brechas medidas concretas y no la pregunta de cual es el objetivo correcto; y se rechazo cambiar cualquier techo, formato o ruta solo por investigacion sin decision del propietario. Evidencia: decision humana, el propietario exige que todo el harness sea LLM-first siempre, dirigio la investigacion y la priorizo; hecho verificado, existen cinco documentos tematicos con pares localizados, `RH-W-0012` esta `deferred` y `references/gentle-ai-style-guide.md` declara un objetivo de cuerpo de 180 a 450 tokens con maximo duro de 1000 que `RH-W-0076` midio incumplido en 2885, 2822, 2707 y 878; desconocido, si alguna guia publicada aplica aca, porque ninguna se reviso bajo las reglas de evidencia de este proyecto. Historial de decision: 2026-08-30, registrado `proposed` tras verificar que RH-W-0084 no existia en el repositorio, y programado en el orden aprobado tras la priorizacion del propietario; no se autoriza alcance, investigacion ni implementacion. Siguiente condicion: evaluar `RH-W-0012` y aprobar un alcance bilingue que nombre preguntas, fuentes admisibles y el camino de hallazgo a control.
 
 ### RH-W-0083
 
