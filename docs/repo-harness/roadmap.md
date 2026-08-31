@@ -22,7 +22,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raise the authoritative portfolio to 33. `RH-W-0084` is scheduled below on owner direction; the others remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
+Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returns it to 33. `RH-W-0084` is scheduled below on owner direction and is now `active`; the others remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
 The preventive design precedes the local-state architecture:
 
@@ -505,6 +505,23 @@ Five plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0085
+| Field | Value |
+|---|---|
+| Origin | A manual review sweep on 2026-08-31, requested by the owner before session close, found `rh-w-0084-scope.md` and its Spanish peer still claiming in the present tense that `RH-W-0084` was `proposed` and that the `RH-W-0012` safety unit had yet to be reconciled, hours after both became false. No assertion could have caught it. |
+| Priority | P2: a stale lifecycle claim in a thematic document is false evidence an agent may load and act on, but the roadmap remains the authoritative owner and no consumer, product surface, or delivered byte is affected. |
+| Dependencies | none. `RH-W-0039` established the precedent that a documented obligation becomes a check only when a real defect proves it; reuse that discipline rather than inventing a second verification surface. `RH-W-0022` retains future documentation-relationship checking and must not absorb this. |
+| Status | proposed |
+| Completed work | Measured the gap without changing any control. Of the 39 thematic `rh-w-*` documents under `docs/repo-harness/`, zero are named by any assertion in the canonical suite. `test_current_state_projection_agrees_with_the_roadmap_owner` compares only `current-state.md` against the roadmap, so every design, plan, scope, findings, and research document is unverified against the lifecycle owner. Current exposure is small and was measured rather than assumed: exactly two documents carry a present-tense status claim, `rh-w-0012-boundaries.md` stating RH-W-0012 is completed, which is true, and `rh-w-0084-scope.md` stating RH-W-0084 remains proposed, which is historical prose now carrying an adjacent closure correction. |
+| Remaining work | Decide whether a thematic document may state a lifecycle status at all, and if so, extend the existing projection assertion to cover those documents or require the closure-update pattern instead of a bare status sentence. Then implement test-first under separate authorization. |
+| Additions | none yet. A scope may add one assertion over thematic documents, reusing the existing roadmap parser rather than a second one. |
+| Exclusions | No new verification surface beyond the existing projection assertion. No rewrite of historical design or plan bodies, which this repository deliberately retains. No absorption of `RH-W-0022` documentation-relationship checking. No product source, generated skill, manifest, or checker change. |
+| Deferrals | none |
+| Rejections | Rejected forbidding lifecycle statements in thematic documents outright, because the closure-update pattern already used for `rh-w-0084-scope.md` preserves history and states current truth in the same place, and outright prohibition would erase useful context. |
+| Evidence | Verified fact: 39 thematic `rh-w-*` documents exist under `docs/repo-harness/` and none appears by name in `skill/repo-harness-builder/tests/test_harness_tool.py`; exactly two carry a present-tense status claim, measured by scanning for a record ID followed by `is` or `remains` and a status token. Verified fact: the stale claim survived a green 480-test run and a `current` checker, and only a manual sweep found it. Human decision required: whether a thematic document may state a status at all. |
+| Decision history | 2026-08-31: registered `proposed` under immutable ID RH-W-0085 after a repository-wide scan verified no RH-W-0085 existed and that the highest existing ID was RH-W-0084. The defect that produced it was corrected in the same session; this record owns the general gap, not that instance. No scope, design, or implementation is authorized. |
+| Next advancement condition | Advance only after the owner approves a bilingual scope naming whether thematic documents may state a lifecycle status, and which of the two remedies applies. |
 
 ### RH-W-0084
 | Field | Value |
