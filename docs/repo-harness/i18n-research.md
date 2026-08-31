@@ -13,7 +13,7 @@ Use `README.md` as the English GitHub default, `README.es.md` as its Spanish pee
 
 ## Non-Normative Evidence
 
-- [freeCodeCamp repository README](https://github.com/freeCodeCamp/freeCodeCamp/blob/main/README.md): mature repository precedent for a concise root product entry point linking to deeper documentation. It is an example, not an authority or universal convention.
+- [freeCodeCamp repository README](https://github.com/freeCodeCamp/freeCodeCamp/blob/main/README.md) (unpinned legacy citation, read on or before 2026-08-13; exact revision not recorded): mature repository precedent for a concise root product entry point linking to deeper documentation. It is an example, not an authority or universal convention.
 
 ## Tradeoffs
 

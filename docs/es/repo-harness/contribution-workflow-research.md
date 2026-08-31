@@ -10,8 +10,8 @@ Adoptar una guia breve con issue primero, ramas enfocadas, PR enlazado, Conventi
 
 - El CONTRIBUTING de un repositorio privado, `repositorio 1`: ruta breve, issue primero flexible, ramas cortas, commits convencionales, verificacion, revision de secretos y objetivo de 400 lineas.
 - El CONTRIBUTING de un repositorio consumidor privado, `consumidor 2`: integracion operativa con REPO-HARNESS y Engram, ademas de limites claros de rama, PR y aprobacion.
-- [Gentle AI CONTRIBUTING](https://github.com/Gentleman-Programming/gentle-ai/blob/main/CONTRIBUTING.md): entrega estricta basada en issues, convenciones, unidades de trabajo, presupuesto de revision y politica automatizada.
-- [Gentle AI cognitive-doc-design](https://github.com/Gentleman-Programming/gentle-ai/tree/main/skills/cognitive-doc-design): respuesta primero, revelado progresivo, bloques pequenos, reconocimiento y empatia de revision.
+- [Gentle AI CONTRIBUTING](https://github.com/Gentleman-Programming/gentle-ai/blob/main/CONTRIBUTING.md) (cita heredada sin fijar, leida el 2026-08-13 o antes; revision exacta no registrada): entrega estricta basada en issues, convenciones, unidades de trabajo, presupuesto de revision y politica automatizada.
+- [Gentle AI cognitive-doc-design](https://github.com/Gentleman-Programming/gentle-ai/tree/main/skills/cognitive-doc-design) (cita heredada sin fijar, leida el 2026-08-13 o antes; revision exacta no registrada): respuesta primero, revelado progresivo, bloques pequenos, reconocimiento y empatia de revision.
 
 ## Hallazgos y adaptacion
 

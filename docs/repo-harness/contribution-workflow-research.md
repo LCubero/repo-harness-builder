@@ -12,8 +12,8 @@ Which contribution practices improve safety and reviewability for this stdlib Py
 
 - The CONTRIBUTING of a private repository, `repository 1`: concise quick path, flexible issue-first workflow, short branches, Conventional Commits, verification commands, secret review, nearby docs, and a 400-line review target.
 - The CONTRIBUTING of a private consumer repository, `consumer 2`: operational integration with REPO-HARNESS and Engram plus clear branch, PR, and approval boundaries.
-- [Gentle AI CONTRIBUTING](https://github.com/Gentleman-Programming/gentle-ai/blob/main/CONTRIBUTING.md): strict issue-first delivery, branch and commit conventions, work-unit commits, review budget, and automated PR policy.
-- [Gentle AI cognitive-doc-design](https://github.com/Gentleman-Programming/gentle-ai/tree/main/skills/cognitive-doc-design): answer-first structure, progressive disclosure, chunking, recognition over recall, and reviewer empathy.
+- [Gentle AI CONTRIBUTING](https://github.com/Gentleman-Programming/gentle-ai/blob/main/CONTRIBUTING.md) (unpinned legacy citation, read on or before 2026-08-13; exact revision not recorded): strict issue-first delivery, branch and commit conventions, work-unit commits, review budget, and automated PR policy.
+- [Gentle AI cognitive-doc-design](https://github.com/Gentleman-Programming/gentle-ai/tree/main/skills/cognitive-doc-design) (unpinned legacy citation, read on or before 2026-08-13; exact revision not recorded): answer-first structure, progressive disclosure, chunking, recognition over recall, and reviewer empathy.
 
 ## Findings
 
