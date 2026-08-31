@@ -66,4 +66,4 @@ Non-goals: reading any external source; performing the `RH-W-0084` research; rep
 
 ## Lifecycle relationship
 
-`RH-W-0012` remains `proposed`. Owner approval of this draft specifies the boundaries and satisfies the first half of the advancement condition. Repairing the five moving-ref citations and validating the resulting links completes the second half. That repair is itself gated: pinning them needs a network read this unit does not authorize, and boundary 4 forbids repinning them silently. External research execution remains separately unauthorized after both.
+`RH-W-0012` remains `proposed`. Owner approval of this draft specifies the boundaries and satisfies the first half of the advancement condition. The five moving-ref citations were repaired on 2026-08-31 under the boundary 4 legacy clause, with no network read: each now carries its bounded read date and its unpinned state openly. Pinning or re-deriving them remains available under separately authorized research, and is the only remaining citation work. External research execution remains separately unauthorized after both.
