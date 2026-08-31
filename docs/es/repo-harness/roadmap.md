@@ -22,13 +22,13 @@ Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 
 
 ## Orden de ejecucion aprobado restante
 
-Reconciliado el 2026-08-25 sobre los 26 registros no terminales de entonces y extendido a 28 con `RH-W-0076` y `RH-W-0077`. `RH-W-0078` lo elevo a 29; completar `RH-W-0073` lo redujo a 28; `RH-W-0079` lo devolvio temporalmente a 29 y su finalizacion lo redujo a 28. Las aprobadas RH-W-0080 y RH-W-0081 lo elevan a 30. Estos registros se derivan de evidencia completa de la hoja de ruta, revision de solo lectura o una decision directa del propietario y quedan fuera del orden aprobado hasta ser programados.
+Reconciliado el 2026-08-25 sobre los 26 registros no terminales de entonces y extendido a 28 con `RH-W-0076` y `RH-W-0077`. `RH-W-0078` lo elevo a 29; completar `RH-W-0073` lo redujo a 28; `RH-W-0079` lo devolvio temporalmente a 29 y su finalizacion lo redujo a 28. Las aprobadas RH-W-0080 y RH-W-0081 lo elevan a 30. El siguiente ID inmutable verificado, `RH-W-0082`, eleva el portafolio autoritativo a 31. Estos registros se derivan de evidencia completa de la hoja de ruta, revision de solo lectura o una decision directa del propietario y quedan fuera del orden aprobado hasta ser programados.
 
 El diseno preventivo precede la arquitectura de estado local:
 
 1. Completar y aprobar el diseno bilingue preventivo `RH-W-0070` sin fusionarlo con otra unidad. Este paso esta completo.
 2. `RH-W-0051` esta completa. Sus cuatro namespaces no autoritativos implementados son `tmp`, `archive`, `state` y `memory-bk`.
-3. Implementar `RH-W-0071` solo despues de resolver las dos compuertas previas restantes y autorizar la implementacion por separado. Su plan completado y su contrato minimo de persistencia estan aprobados por el propietario. La completada RH-W-0051 establecio `.repo-harness/state/`; RH-W-0071 posee su subruta `preferences/`, sin absorber consentimiento ni idioma.
+3. Implementar `RH-W-0071` solo despues de resolver las dos compuertas previas restantes y autorizar la implementacion por separado. Su plan completado y su contrato Markdown estructurado compartido de preferencias estan aprobados por el propietario. La completada RH-W-0051 establecio `.repo-harness/state/`; RH-W-0071 posee persistencia y semantica de estructura de respuesta bajo `preferences/`, RH-W-0082 posee semantica de estilo de explicacion y RH-W-0018 conserva comportamiento de interaccion sin absorber consentimiento RH-W-0046 ni procedencia de idioma RH-W-0031.
 4. Implementar `RH-W-0069` despues del soporte `.repo-harness/memory-bk/`, sin absorber checkpoints.
 5. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
 6. Implementar `RH-W-0048`.
@@ -506,6 +506,10 @@ Cinco planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 2
 
 <!-- doc-role:active-records -->
 
+### RH-W-0082
+
+Origen: la arquitectura LLM-first de preferencias aprobada por el propietario agrego un eje independiente de estilo plain-language despues de verificar que los encabezados terminaban en RH-W-0081 y RH-W-0082 estaba ausente. Prioridad: `P2`, el estilo de explicacion afecta toda respuesta pero no cambia evidencia ni autoridad. Dependencias: coordinar RH-W-0071 para estructura y persistencia compartida, RH-W-0018 para interaccion, RH-W-0046 para consentimiento, RH-W-0051 para contencion, RH-W-0067 para propiedad de respuesta y RH-W-0031 para procedencia de idioma, sin fusionarlos. Estado: `proposed`. Trabajo completado: se verifico RH-W-0082 como siguiente ID inmutable y se registro el [diseno bilingue aprobado](rh-w-0082-design.md). Trabajo restante: reconciliar transporte de runtime y agrupacion de entrega con RH-W-0071, y despues obtener autorizacion separada de implementacion. Adiciones: `explanation-style: standard | plain-language` independiente, neutral, simple, exacto y no regional salvo peticion explicita para la conversacion. Exclusiones: sin implementacion, pruebas de producto, proyecciones, creacion de estado, migracion, cambio de consentimiento o procedencia, Git, red ni publicacion. Siguiente condicion: resolver transporte y entrega desde evidencia del repositorio y autorizar implementacion por separado.
+
 ### RH-W-0080
 
 Origen: direccion aprobada para un modo efimero de interaccion por lotes activado explicitamente. Prioridad: `P2`. Dependencias: ninguna; coordina sin fusionar RH-W-0075, RH-W-0074, RH-W-0069, RH-W-0068 y RH-W-0081. Estado: `proposed`. Trabajo completado: se registraron el [diseno](rh-w-0080-design.md) aprobado y el [plan bilingue](rh-w-0080-implementation-plan.md) propuesto. Trabajo restante: aprobacion del plan; implementacion requiere autoridad separada. Adiciones: activacion por un objetivo, inspeccion previa, aclaraciones no autorizantes, ejecucion acotada y autoridad no persistente. Exclusiones: sin implementacion, pruebas, proyecciones, Git, red, proveedor, publicacion, destruccion, secretos ni persistencia. Rechazos: nunca persistir, ampliar, agrupar, normalizar, suministrar, inferir ni reemplazar autoridad o aprobacion exacta del builder. Historial de decision: el plan bilingue propuesto existe y espera aprobacion del propietario; la implementacion sigue sin autorizar. Siguiente condicion: aprobacion del plan; implementar sigue separado.
@@ -569,7 +573,7 @@ Origen: revision de solo lectura del repositorio el 2026-08-25 que encontro docu
 
 ### RH-W-0071
 
-Estado: `proposed`. El propietario aprobo el [plan de implementacion bilingue corregido](rh-w-0071-implementation-plan.md) y resolvio solo la compuerta de persistencia el 2026-08-30, sin autorizar implementacion. El contrato usa `.repo-harness/state/preferences/response-mode.json` como escalar JSON UTF-8 con LF y reemplazo atomico acotado; conserva bytes invalidos y excluye maquinaria desproporcionada. Un futuro lector de runtime nombrado debe combinar la preferencia local ignorada con una anulacion verificada de sesion, mientras los bytes generados siguen deterministas. Trabajo restante: resolver nombre, propiedad y API del lector o transporte de runtime, y entrega separada o conjunta de los cortes. La implementacion sigue sin autorizacion separada.
+Estado: `proposed`. El propietario aprobo el [plan de implementacion bilingue corregido](rh-w-0071-implementation-plan.md) y reemplazo antes de implementar el contrato JSON por `.repo-harness/state/preferences/user-preferences.md`, un contrato Markdown LLM-first con tres ejes independientes. Session-start lee una vez, valida claves y tokens exactos, resuelve anulacion de sesion sobre valor persistido sobre default y transporta solo tokens tipados. Session-stop solo informa un intento solicitado de escritura permanente. Los bytes generados siguen deterministas y no se afirma migracion. Trabajo restante: resolver nombre, propiedad y API del transporte de runtime, y entrega separada o conjunta de los cortes. La implementacion sigue sin autorizacion separada.
 
 ### RH-W-0070
 

@@ -1,4 +1,4 @@
-# Diseno RH-W-0071 del modo de respuesta ADHD-friendly
+# Diseno RH-W-0071 de estructura de respuesta ADHD-friendly
 
 > **Estado: DISENO APROBADO POR EL PROPIETARIO. La implementacion no esta autorizada por separado.**
 
@@ -8,7 +8,15 @@ Revise este diseno contra el [registro canonico RH-W-0071](roadmap.md#rh-w-0071)
 
 ## Decision
 
-La opcion nativa visible es `modo de respuesta ADHD-friendly`; su etiqueta en ingles es `ADHD-friendly response mode`. La entrevista del builder ofrece explicitamente `standard` y `ADHD-friendly`. Registra una eleccion standard explicita por defecto y nunca infiere ningun modo.
+RH-W-0071 posee el eje `response-structure` y su opcion visible nativa `modo de respuesta ADHD-friendly`; su etiqueta en ingles es `ADHD-friendly response mode`. La entrevista del builder ofrece explicitamente `standard` y `ADHD-friendly`. Registra una eleccion standard explicita por defecto y nunca infiere ningun valor.
+
+La arquitectura de preferencias aprobada por el propietario es LLM-first y mantiene tres ejes independientes y combinables bajo propietarios separados:
+
+- RH-W-0071 posee `response-structure: standard | adhd-friendly`.
+- RH-W-0082 posee `explanation-style: standard | plain-language`.
+- RH-W-0018 posee `interaction-behavior: interactive | low-question`, coordinado con los limites de consentimiento RH-W-0046.
+
+El idioma del artefacto sigue independiente. `plain-language` significa lenguaje simple y neutral. Solo se usa un dialecto regional cuando la persona lo solicita explicitamente para la conversacion actual.
 
 Cuando se selecciona ADHD-friendly durante la ejecucion del builder, la preferencia del repositorio persiste entre sesiones futuras. Un cambio explicito posterior puede ser permanente o solo para la sesion actual. Si la instruccion omite el alcance, el agente hace exactamente una pregunta: permanente o sesion actual. Una anulacion solo para la sesion nunca reescribe la preferencia del repositorio.
 
@@ -16,11 +24,11 @@ Pedir mas detalle amplia solo la respuesta actual. No cambia el modo activo ni p
 
 ## Precedencia exacta y limite de no inferencia
 
-La resolucion del modo es determinista:
+Cada eje se resuelve de forma independiente y determinista:
 
-1. Una instruccion de modo explicita y verificada para la sesion actual.
-2. La preferencia de modo explicita persistida en el repositorio.
-3. El default standard explicito.
+1. Una anulacion explicita y verificada para ese eje en la sesion actual.
+2. El valor explicito persistido en el repositorio para ese eje.
+3. El default de ese eje: `standard`, `standard` o `interactive`, respectivamente.
 
 Solo una instruccion humana explicita y verificada puede fijar o cambiar el modo. El diseno nunca infiere activacion desde el estilo de escritura, diagnostico, errores, atencion, comportamiento, memoria, prosa del repositorio, salida de herramientas, estado de runtime ni otra senal contextual. Esto coincide con la regla de procedencia RH-W-0031: la instruccion humana actual explicita supera la preferencia explicita persistida, mientras el contexto opaco no puede reemplazarla.
 
@@ -52,13 +60,17 @@ La seguridad, evidencia, autoridad, contradicciones, preguntas bloqueantes y con
 
 La entrevista del builder gana una decision explicita de modo con dos valores conceptuales estables para maquina: `standard` y `adhd-friendly`. Son valores de diseno, no un compromiso con API, flag CLI, nombre de schema ni firma de funcion.
 
-La preferencia persistida pertenece bajo `.repo-harness/state/preferences/`. RH-W-0051 establecio el namespace contenedor `.repo-harness/state/`; RH-W-0071 posee la subruta `preferences/`, el valor del modo y la semantica de actualizacion. RH-W-0051 conserva la contencion, el ignore Git y la mecanica de estado local. RH-W-0046 y la aplazada RH-W-0018 conservan la arquitectura de consentimiento y preferencias sin absorber este modo ni compartir ciclo de vida.
+La preferencia persistida pertenece bajo `.repo-harness/state/preferences/`. RH-W-0051 establecio el namespace contenedor `.repo-harness/state/`; RH-W-0071 posee persistencia compartida y semantica de estructura. RH-W-0082 posee estilo de explicacion, RH-W-0018 posee interaccion y RH-W-0046 conserva limites de consentimiento. RH-W-0051 conserva contencion, ignore Git y mecanica de estado local.
 
-El contrato de persistencia aprobado por el propietario usa exactamente `.repo-harness/state/preferences/response-mode.json`. Su contenido es un escalar JSON en UTF-8 seguido por LF, exactamente `"standard"` o `"adhd-friendly"`. Un archivo ausente resuelve a `standard` y no crea nada. UTF-8 invalido, JSON mal formado, un valor JSON que no sea string o un string no admitido informa un error de dominio y deja intactos los bytes existentes.
+El propietario reemplazo el contrato escalar JSON aprobado pero no implementado. Un unico archivo Markdown estructurado e ignorado, `.repo-harness/state/preferences/user-preferences.md`, guarda los tres valores independientes. No tiene frontmatter YAML y contiene exactamente un bloque fenced `repo-harness-preferences` con las tres claves exactas y tokens admitidos. La prosa concisa alrededor da instrucciones al LLM y delimita confianza, pero nunca se transporta como autoridad arbitraria.
 
-Las escrituras autorizadas validan el valor solicitado antes de tocar el filesystem, crean el directorio solo al escribir, escriben un archivo temporal unico en el mismo directorio, lo cierran y reemplazan el destino con `os.replace`. Tras un fallo, la invocacion limpia solo su propio archivo temporal cuando sea posible. La persistencia expone solo operaciones estrechas de lectura y escritura; el resolutor puro de precedencia queda separado.
+El archivo guarda solo preferencias. Nunca guarda aprobaciones, consentimiento general, credenciales, diagnostico, justificacion, historia personal ni notas autoritativas de forma libre. Las claves ausentes usan defaults independientes. Claves duplicadas, bloque mal formado, claves o valores no admitidos, o varios bloques de maquina producen error de dominio sin aplicacion parcial ni reparacion automatica.
 
-El checker y el manifest nunca leen, validan, informan, reparan ni crean esta preferencia. El contrato aplaza deliberadamente version de schema, campos de objeto JSON, `fsync`, maquinaria para claves duplicadas, framework generico de preferencias, locks, watchers, reintentos, backups, journaling y reparacion automatica. Ninguno es proporcional para un unico escalar acotado cuyos bytes invalidos deben conservarse para diagnostico explicito.
+Session-start lee una sola vez, valida claves y tokens exactos, resuelve para cada eje anulacion de sesion actual sobre valor persistido sobre default, y transporta solo tokens tipados al contexto actual. Nunca inyecta prosa arbitraria del archivo como autoridad. Las anulaciones de sesion nunca escriben. Un cambio permanente exige alcance explicito de repositorio. Session-stop no lee ni escribe de rutina; solo informa un intento solicitado de escritura permanente.
+
+Una actualizacion permanente autorizada canoniza el contrato Markdown pequeno completo. Valida antes de tocar el filesystem, crea el directorio solo al escribir, escribe un temporal unico en el mismo directorio, lo cierra y reemplaza el destino con `os.replace`. No agrega `fsync`, framework de schema, registro generico de preferencias, watcher, lock, retry, backup, journaling ni maquina de estados.
+
+Checker y manifest nunca inspeccionan valores activos y los bytes generados siguen deterministas. El contrato JSON anterior nunca se implemento, por lo que este diseno no afirma migracion de datos.
 
 El valor persistido es estado operativo local, nunca documentacion canonica, evidencia de memoria ni valor actual propiedad del manifiesto. Engram puede reflejar continuidad despues de existir evidencia del repositorio, pero nunca activa el modo ni supera la preferencia del repositorio.
 
@@ -66,7 +78,8 @@ El valor persistido es estado operativo local, nunca documentacion canonica, evi
 
 - Entrevista del builder: presentar siempre las dos opciones y hacer standard explicito; nunca preseleccionar ADHD-friendly desde contexto.
 - Ayuda: explicar el orden activo, ambos alcances de cambio, la regla de una pregunta cuando falta el alcance, como pedir mas detalle y como volver a standard.
-- Contrato generado: ampliar el contrato RH-W-0067 existente con resolucion concisa y estructura ADHD-friendly. No crear ruta a skill externa ni segundo contrato completo.
+- Contrato generado: ampliar el contrato RH-W-0067 existente con resolucion concisa de preferencias tipadas y estructura ADHD-friendly. No crear ruta a skill externa ni segundo contrato completo.
+- Limite low-question: reducir preguntas innecesarias sin otorgar autoridad ni suprimir compuertas obligatorias para acceso fuera del repositorio, ejecucion, red, mutacion Git o de proveedor, publicacion, trabajo destructivo, secretos, riesgo material, contradicciones o politica del repositorio.
 - Modos standalone e integrated: comportamiento identico para seleccion, persistencia, precedencia y forma. La continuidad integrada puede informar estado verificado, pero no elegirlo ni cambiarlo.
 
 Los artefactos del producto no contienen referencias a skills ADHD externas, repositorios, procedencia, dependencias ni eliminacion futura. Este es un contrato nativo de repo-harness.
@@ -101,14 +114,14 @@ Precedencia, el limite de no inferencia, persistencia, la entrevista del constru
 
 ## Diseno de manifiesto y checker
 
-Ningun campo del manifiesto guarda la preferencia activa. Ese valor es estado operativo local y revocable, y no debe convertirse en configuracion rastreada ni verdad generada.
+Ningun campo del manifiesto guarda valores activos. Son estado operativo local y revocable, y no deben convertirse en configuracion rastreada ni verdad generada.
 
 Una implementacion futura puede cambiar los bytes del contrato generado existente y su inventario normal, pero no necesita un subsistema nuevo de checker. Las comprobaciones existentes de salida generada y estructura deben verificar presencia y propiedad. El checker no debe leer, clasificar, reescribir ni informar el valor local, y la comprobacion ordinaria sigue siendo de solo lectura.
 
 ## Compatibilidad y migracion
 
 - Los repositorios nuevos reciben default standard explicito salvo que la entrevista registre ADHD-friendly.
-- Instalaciones existentes sin preferencia resuelven a standard explicito. No existe inferencia ni migracion automatica.
+- Instalaciones existentes sin archivo usan defaults independientes. No existe inferencia ni migracion automatica.
 - Un render futuro autorizado puede actualizar el contrato generado mediante el comportamiento normal de migracion.
 - Los contratos evolucionados por personas conservan el limite de preservacion RH-W-0067.
 - No se importa preferencia personal, memoria, patron de escritura ni estado de skill externa.
@@ -137,7 +150,7 @@ La resolucion es una consulta directa de preferencia mas instrucciones determini
 
 ## Rollback
 
-El rollback del diseno elimina solo este documento y sus referencias de ciclo de vida. Un rollback futuro de implementacion elimina el contrato especifico del modo y la integracion de builder y ayuda por reemplazo normal, deja de leer la preferencia y vuelve a standard explicito. Nunca elimina automaticamente otro estado de preferencias ni reescribe documentacion como efecto secundario.
+El rollback del diseno elimina solo este documento y sus referencias de ciclo de vida. Un rollback futuro elimina el contrato especifico de preferencias y la integracion de builder y ayuda por reemplazo normal, deja de leer el archivo y devuelve cada eje a su default independiente. Nunca elimina automaticamente otro estado ni reescribe documentacion como efecto secundario.
 
 ## Condiciones de finalizacion
 
@@ -155,11 +168,11 @@ El rollback del diseno elimina solo este documento y sus referencias de ciclo de
 ## Exclusiones y no cambio
 
 - El evento original solo de diseno no creo un plan de implementacion ni autorizo avance de ciclo, codigo, prueba, skill generada, cambio de manifiesto o checker, staging, commit, remoto ni red. Un plan de implementacion posterior y aprobado por separado por el propietario sigue siendo solo documentacion y no autoriza implementacion ni entrega de producto.
-- El evento original solo de diseno no invento API de implementacion, ortografia CLI, campo de schema, nombre de funcion ni formato de archivo. Una decision de documentacion posterior y aprobada por separado por el propietario define el formato minimo de persistencia como escalar JSON sin autorizar implementacion ni entrega de producto.
+- El evento original solo de diseno no invento API de implementacion, ortografia CLI, campo de schema, nombre de funcion ni formato de archivo. El contrato Markdown estructurado aprobado despues reemplaza la propuesta JSON no implementada sin autorizar implementacion ni entrega de producto.
 - Sin diagnostico, clasificacion de personas, telemetria, monitoreo ni inferencia conductual.
 - Sin propietario duplicado de respuesta, preferencias, memoria o ciclo de vida.
 - Sin otra regla de no sobreingenieria. Los propietarios actuales de cambio minimo, alcance no relacionado, proporcionalidad y fallo acotado ya cubren la inquietud; este no cambio verificado evita duplicar politica.
 
 ## Decisiones humanas restantes
 
-Ninguna para este diseno ni para su contrato de persistencia. La arquitectura del lector de runtime, la agrupacion de entrega, el avance de ciclo y la implementacion requieren autorizacion explicita posterior y evidencia del repositorio.
+Ninguna para este diseno ni para su contrato de persistencia. El transporte de runtime que lee una vez en session-start y lleva valores tipados al contexto actual, junto con la agrupacion de entrega, siguen sin resolver y deben actualizarse desde evidencia del repositorio, no adivinarse. El avance de ciclo y la implementacion requieren autorizacion explicita posterior.

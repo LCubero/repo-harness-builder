@@ -22,13 +22,13 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raise the authoritative portfolio to 30. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
+Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable ID `RH-W-0082` raises the authoritative portfolio to 31. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
 The preventive design precedes the local-state architecture:
 
 1. Complete and approve the bilingual `RH-W-0070` preventive resource-safety design without merging it into another unit. This step is complete.
 2. `RH-W-0051` is complete. Its four implemented non-authoritative namespaces are `tmp`, `archive`, `state`, and `memory-bk`.
-3. Implement `RH-W-0071` only after its two remaining pre-implementation gates are resolved and implementation is separately authorized. Its completed implementation plan and minimal persistence contract are owner-approved. Completed RH-W-0051 established `.repo-harness/state/`; RH-W-0071 owns its `preferences/` sub-path, without absorbing consent or language-preference semantics.
+3. Implement `RH-W-0071` only after its two remaining pre-implementation gates are resolved and implementation is separately authorized. Its completed implementation plan and shared structured Markdown preference contract are owner-approved. Completed RH-W-0051 established `.repo-harness/state/`; RH-W-0071 owns persistence and response-structure semantics under `preferences/`, RH-W-0082 owns explanation-style semantics, and RH-W-0018 retains interaction behavior without absorbing consent or language provenance.
 4. Implement `RH-W-0069` after RH-W-0051 establishes `.repo-harness/memory-bk/`, without absorbing typed checkpoints.
 5. Implement `RH-W-0053` after RH-W-0051 establishes its storage semantics.
 6. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
@@ -477,7 +477,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reviewed through 2026-08-29 across 25 non-terminal plans, 5 completed plans retained as historical execution evidence, and the 30 non-terminal records they cover. Historical Plan 28 is completed and authorizes no current implementation or release. No true lifecycle merge is approved.
+Current projection reviewed through 2026-08-30 across 26 non-terminal plans, 5 completed plans retained as historical execution evidence, and the 31 non-terminal records they cover. Historical Plan 28 is completed and authorizes no current implementation or release. No true lifecycle merge is approved.
 
 Coverage is complete at the lifecycle level. The stale next-artifact wording corrected in this reconciliation means the prior claim that no plans contradicted each other was too strong. No true lifecycle merge is approved. RH-W-0051 keeps separate design and implementation plans. The portfolio has one explicit joint-design pair, `RH-W-0046` with `RH-W-0018`, and four coordination pairs with separate lifecycles and implementations: coordinated sequencing for `RH-W-0055` with `RH-W-0062` and `RH-W-0069` with `RH-W-0068`, plus coordinated boundary review for `RH-W-0065` with `RH-W-0022` and `RH-W-0066` with `RH-W-0044`. The five unscheduled deferred records are covered in the not-plannable list; RH-W-0018 is covered by Plan 6.
 
@@ -489,7 +489,7 @@ Thirteen cross-plan relationships are declared here so no plan silently assumes 
 4. Plan 17 does not depend on Plan 1, although both name paths under `.repo-harness/`. `.repo-harness/rules/` is generated authoritative content carrying builder provenance, while `RH-W-0051` owns only non-authoritative Git-ignored local-state namespaces. Plan 17 is not blocked by the local-state chain.
 5. Plan 15 keeps the boundary its record already declares. `RH-W-0066` relates to `RH-W-0044` for future human-owned document suggestions without absorbing its compare-and-suggest scope, so Plan 15 routes a remember request to an existing owner and never proposes an edit to a human-owned document, which remains Plan 7's scope. Plan 14 holds the same kind of boundary with Plan 8 and states it in its own step 4.
 6. Plan 2A consumes the RH-W-0051 `memory-bk` reservation after that taxonomy is implemented. It owns ordinary pause and close backups, while Plan 3 keeps executable interrupted checkpoints, Plan 15 keeps explicit remember or note routing, and Plan 18 keeps changelog and Git-policy close defects.
-7. Plan 20 consumes the RH-W-0051-owned `.repo-harness/state/` namespace after that taxonomy is implemented. RH-W-0071 owns its `preferences/` sub-path and semantics, including response-mode selection and shaping; RH-W-0067 remains the complete response-contract owner, RH-W-0031 retains language precedence, RH-W-0046 and RH-W-0018 retain consent semantics, RH-W-0066 retains explicit remember routing, and RH-W-0070 retains general resource safety.
+7. Plan 20 consumes the RH-W-0051-owned `.repo-harness/state/` namespace after that taxonomy is implemented. RH-W-0071 owns shared preference-file persistence and `response-structure`; RH-W-0082 owns `explanation-style`; RH-W-0018 owns `interaction-behavior`; RH-W-0046 retains consent semantics; RH-W-0067 remains the complete response-contract owner; RH-W-0031 retains language precedence; RH-W-0066 retains explicit remember routing; and RH-W-0070 retains general resource safety.
 
 8. Plan 21 and Plan 22 both have a claim on `references/validation.md`: Plan 21 corrects product documentation that describes removed or missing behavior, and that file's `over-budget` criterion is exactly such a description, while Plan 22 owns the budget control the criterion refers to. They must not both edit it. Plan 22 has the stronger claim, because it decides whether a replacement control exists at all, and Plan 21 edits that file only if Plan 22 has not already claimed it. Nothing else in their scopes overlaps: Plan 21 touches product-facing documentation and one pinning test, Plan 22 touches the rulebook and any development-time control.
 
@@ -500,11 +500,28 @@ Thirteen cross-plan relationships are declared here so no plan silently assumes 
 12. Historical Plan 28 and Plan 12 coordinated semantically around generated daily-contract files. RH-W-0060 retains branch-listing and committed-blob comparison ownership; completed RH-W-0079 absorbed neither behavior.
 13. Plan 29 and Plan 30 remain separate. Plan 29 owns only ephemeral interaction and cannot group or replace authority. Plan 30 owns host-local human-facing changelog date derivation. Plan 18 retains changelog disposition, while Plan 2A retains machine-oriented UTC backup identity and ordering; neither chronology controls the other.
 
-Five plans consume local state under namespaces Plan 1 reserves: Plan 2A for local memory backups, Plan 3 for checkpoint bytes, Plan 6 for consent preferences, Plan 10 for the violation record, and Plan 20 for response-mode preference. Plan 1 reserves the parent namespaces without implementing any consumer behavior; RH-W-0071 owns the `preferences/` sub-path and semantics under `.repo-harness/state/`.
+Five plans consume local state under namespaces Plan 1 reserves: Plan 2A for local memory backups, Plan 3 for checkpoint bytes, Plan 6 for consent preferences, Plan 10 for the violation record, and Plan 20 for shared presentation preferences. Plan 1 reserves the parent namespaces without implementing consumer behavior; RH-W-0071 owns shared persistence, while RH-W-0082 and RH-W-0018 retain their separate semantic axes.
 
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0082
+| Field | Value |
+|---|---|
+| Origin | Owner-approved LLM-first preference architecture added an independent plain-language explanation-style axis after verifying roadmap headings ended at RH-W-0081 and RH-W-0082 was absent. |
+| Priority | P2: explanation style affects every response but changes neither evidence nor authority. |
+| Dependencies | Coordinate RH-W-0071 response structure and shared persistence, RH-W-0018 interaction behavior, RH-W-0046 consent, RH-W-0051 containment, RH-W-0067 response ownership, and RH-W-0031 language provenance without merging them. |
+| Status | proposed |
+| Completed work | Verified RH-W-0082 as the next immutable ID and recorded the owner-approved bilingual [design](rh-w-0082-design.md). |
+| Remaining work | Reconcile the named runtime transport and slice delivery with RH-W-0071, then obtain separate implementation authorization. |
+| Additions | Independent `explanation-style: standard \| plain-language`, where plain language is neutral, simple, accurate, and non-regional unless explicitly requested for the conversation. |
+| Exclusions | No implementation, product tests, generated projections, state-file creation, migration, consent change, language-provenance change, Git mutation, network, or publication. |
+| Deferrals | Implementation waits for the unresolved shared runtime transport and delivery grouping plus separate authorization. |
+| Rejections | Rejected folding explanation style into ADHD-friendly structure, low-question interaction, conversation language, consent, or artifact language. |
+| Evidence | Verified fact: roadmap headings ended at RH-W-0081 and a repository-wide Markdown scan found no RH-W-0082 before registration. Human decision: the complete three-axis LLM-first preference architecture. |
+| Decision history | 2026-08-30: registered `proposed` with owner-approved bilingual design. Implementation remains unauthorized. |
+| Next advancement condition | Advance only after the shared runtime transport and delivery grouping are resolved from repository evidence and implementation is separately authorized. |
 
 ### RH-W-0080
 | Field | Value |

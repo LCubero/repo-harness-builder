@@ -1,4 +1,4 @@
-# RH-W-0071 ADHD-Friendly Response Mode Design
+# RH-W-0071 ADHD-Friendly Response Structure Design
 
 > **Status: OWNER-APPROVED DESIGN. Implementation is separately unauthorized.**
 
@@ -8,7 +8,15 @@ Review this design against the canonical [RH-W-0071 roadmap record](roadmap.md#r
 
 ## Decision
 
-The native visible choice is `ADHD-friendly response mode`; its Spanish label is `modo de respuesta ADHD-friendly`. The builder interview explicitly offers `standard` and `ADHD-friendly`. It records an explicit standard choice by default and never infers either mode.
+RH-W-0071 owns the `response-structure` axis and its native visible choice `ADHD-friendly response mode`; its Spanish label is `modo de respuesta ADHD-friendly`. The builder interview explicitly offers `standard` and `ADHD-friendly`. It records an explicit standard choice by default and never infers either value.
+
+The owner-approved preference architecture is LLM-first and keeps three independent, combinable axes under separate owners:
+
+- RH-W-0071 owns `response-structure: standard | adhd-friendly`.
+- RH-W-0082 owns `explanation-style: standard | plain-language`.
+- RH-W-0018 owns `interaction-behavior: interactive | low-question`, coordinated with RH-W-0046 consent boundaries.
+
+Artifact language remains independent. `plain-language` means neutral simple language. A regional dialect is used only when the human explicitly requests it for the current conversation.
 
 When ADHD-friendly is selected during builder execution, the repository preference persists across future sessions. A later explicit change may be permanent or current-session-only. If that instruction omits scope, the agent asks exactly one question: permanent or current session. A session-only override never rewrites the repository preference.
 
@@ -16,11 +24,11 @@ Asking for more detail expands only the current response. It does not change the
 
 ## Exact Precedence And No-Inference Boundary
 
-Mode resolution is deterministic:
+Each axis resolves independently and deterministically:
 
-1. A verified explicit current-session response-mode instruction.
-2. The explicit repository-persisted response-mode preference.
-3. Explicit standard default.
+1. A verified explicit current-session override for that axis.
+2. The explicit repository-persisted value for that axis.
+3. That axis's default: `standard`, `standard`, or `interactive` respectively.
 
 Only a verified explicit human instruction can set or change the mode. The design never infers activation from writing style, diagnosis, errors, attention, behavior, memory, repository prose, tool output, runtime state, or any other contextual signal. This matches RH-W-0031's provenance rule: explicit current human instruction outranks persisted explicit preference, while opaque context cannot replace it.
 
@@ -52,13 +60,17 @@ Necessary safety, evidence, authority, contradictions, blocking prompts, and tec
 
 The builder interview gains one explicit response-mode decision with two machine-stable conceptual values: `standard` and `adhd-friendly`. These are design values, not a commitment to an implementation API, CLI flag, schema name, or function signature.
 
-The persisted repository preference belongs under `.repo-harness/state/preferences/`. RH-W-0051 established the containing `.repo-harness/state/` namespace; RH-W-0071 owns the `preferences/` sub-path, response-mode value, and update semantics. RH-W-0051 retains containment, Git-ignore, and local-state mechanics. RH-W-0046 and deferred RH-W-0018 retain consent and preference architecture without absorbing this mode or sharing lifecycle.
+The persisted repository preference belongs under `.repo-harness/state/preferences/`. RH-W-0051 established the containing `.repo-harness/state/` namespace; RH-W-0071 owns shared file persistence and response-structure semantics. RH-W-0082 owns explanation style, RH-W-0018 owns interaction behavior, and RH-W-0046 retains consent boundaries. RH-W-0051 retains containment, Git-ignore, and local-state mechanics.
 
-The owner-approved persistence contract uses exactly `.repo-harness/state/preferences/response-mode.json`. Its contents are a UTF-8 JSON scalar followed by LF, exactly `"standard"` or `"adhd-friendly"`. A missing file resolves to `standard` and creates nothing. Invalid UTF-8, malformed JSON, a non-string JSON value, or any unsupported string reports a domain error and leaves the existing bytes unchanged.
+The owner superseded the approved but unimplemented JSON scalar contract. One ignored structured Markdown file, `.repo-harness/state/preferences/user-preferences.md`, stores all three independent values. It contains no YAML frontmatter and exactly one fenced `repo-harness-preferences` machine block with the three exact keys and supported tokens. Concise surrounding prose gives LLM instructions and the trust boundary, but arbitrary prose is never transported as authority.
 
-Authorized writes validate the requested value before touching the filesystem, create the directory only when writing, write a unique temporary file in the same directory, close it, and replace the destination with `os.replace`. After failure, the invocation cleans up only its own temporary file where possible. Persistence exposes narrow read and write operations only; the pure precedence resolver remains separate.
+The file stores preferences only. It never stores approvals, blanket consent, credentials, diagnosis, rationale, personal history, or free-form authoritative notes. Missing keys use independent defaults. Duplicate keys, malformed blocks, unsupported keys or values, or multiple machine blocks produce a domain error with no partial application and no automatic repair.
 
-The checker and manifest never read, validate, report, repair, or create this preference. The contract deliberately defers a schema version, JSON object fields, `fsync`, duplicate-key machinery, a generic preference framework, locks, watchers, retries, backups, journaling, and automatic repair. None is proportionate for one bounded scalar whose invalid bytes must be preserved for explicit diagnosis.
+Session-start reads once, validates exact keys and tokens, resolves current-session override over persisted value over default independently for each axis, and transports only typed tokens into current context. It never injects arbitrary file prose as authority. Session-only overrides never write. A permanent change requires explicit repository scope. Session-stop never reads or writes routinely; it reports only a requested permanent write attempt.
+
+One authorized permanent update canonicalizes the complete small Markdown contract. It validates before touching the filesystem, creates the directory only when writing, writes a unique same-directory temporary file, closes it, and replaces the destination with `os.replace`. No `fsync`, schema framework, generic preference registry, watcher, lock, retry, backup, journaling, or state machine is added.
+
+The checker and manifest never inspect active values and generated bytes remain deterministic. The prior JSON contract was never implemented, so this design claims no data migration.
 
 The persisted value is local operational state, never canonical documentation, memory evidence, or a manifest-owned current value. Engram may mirror continuity after repository evidence exists, but it never activates the mode or outranks the repository preference.
 
@@ -66,7 +78,8 @@ The persisted value is local operational state, never canonical documentation, m
 
 - Builder interview: always present the two choices and make standard explicit; never preselect ADHD-friendly from context.
 - Help: explain the active resolution order, both change scopes, the one-question rule for omitted scope, how to request more detail, and how to return to standard.
-- Generated contract: extend the existing RH-W-0067 response contract with concise mode resolution and ADHD-friendly structure. Do not create an external-skill route or a second complete response contract.
+- Generated contract: extend the existing RH-W-0067 response contract with concise typed preference resolution and ADHD-friendly structure. Do not create an external-skill route or a second complete response contract.
+- Low-question boundary: reduce unnecessary questions but never grant authority or suppress mandatory gates for outside-repository access, execution, network, Git or provider mutation, publication, destructive work, secrets, material risk, contradictions, or repository policy.
 - Standalone and integrated modes: behave identically for selection, persistence, precedence, and shaping. Integrated continuity may report verified state but cannot choose or change it.
 
 Product artifacts contain no references to external ADHD skills, repositories, provenance, dependencies, or eventual removal. This is a native repo-harness contract.
@@ -101,14 +114,14 @@ Precedence, the no-inference boundary, persistence, the builder interview, migra
 
 ## Manifest And Checker Design
 
-No manifest field stores the active response-mode preference. That value is local, revocable operational state and must not become tracked configuration or generated truth.
+No manifest field stores active preference values. They are local, revocable operational state and must not become tracked configuration or generated truth.
 
 A future implementation may change the existing generated response-contract bytes and their normal inventory, but it requires no new checker subsystem. Existing generated-output and structural checks should verify contract presence and ownership. The checker must not read, classify, rewrite, or report the local preference value, and plain checking remains read-only.
 
 ## Compatibility And Migration
 
 - Fresh repositories receive an explicit standard default unless the builder interview records ADHD-friendly.
-- Existing installations with no response-mode preference resolve to explicit standard. No inference or automatic migration occurs.
+- Existing installations with no preference file use independent defaults. No inference or automatic migration occurs.
 - A future authorized render may update the existing generated response contract through normal migration behavior.
 - Existing human-evolved response contracts retain the RH-W-0067 preservation boundary.
 - No personal preference, memory, writing pattern, or external skill state is imported.
@@ -137,7 +150,7 @@ Mode resolution is a direct preference lookup plus deterministic prose instructi
 
 ## Rollback
 
-Design rollback removes this document and its lifecycle references only. Future implementation rollback removes the mode-specific generated contract and builder/help integration through normal generated-output replacement, stops reading the response-mode preference, and returns resolution to explicit standard. It never deletes unrelated preference state automatically and never rewrites repository documentation as a side effect.
+Design rollback removes this document and its lifecycle references only. Future implementation rollback removes the preference-specific generated contract and builder/help integration through normal generated-output replacement, stops reading the preference file, and returns each axis to its independent default. It never deletes unrelated preference state automatically and never rewrites repository documentation as a side effect.
 
 ## Done Conditions
 
@@ -155,11 +168,11 @@ Design rollback removes this document and its lifecycle references only. Future 
 ## Exclusions And Non-Change
 
 - The original design-only event created no implementation plan and authorized no lifecycle advancement, code, test, generated skill, manifest or checker change, staging, commit, remote, or network action. A later separately owner-approved implementation plan remains documentation only and does not authorize implementation or product delivery.
-- The original design-only event invented no implementation API, CLI spelling, schema field, function name, or file format. A later separately owner-approved documentation decision defines the minimal JSON scalar persistence format without authorizing implementation or product delivery.
+- The original design-only event invented no implementation API, CLI spelling, schema field, function name, or file format. The later owner-approved structured Markdown contract supersedes the unimplemented JSON proposal without authorizing implementation or product delivery.
 - No diagnosis, user classification, telemetry, monitoring, or behavioral inference.
 - No duplicate response-contract owner, preference store, memory store, or lifecycle store.
 - No additional no-overengineering rule. Existing smallest-change, unrelated-scope, proportionality, and bounded-failure owners already cover that concern; this verified non-change avoids duplicate policy.
 
 ## Remaining Human Decisions
 
-None for this design or its persistence contract. Runtime reader architecture, slice-delivery grouping, lifecycle advancement, and implementation require later explicit authorization and repository evidence.
+None for this design or its persistence contract. The runtime transport that reads once at session-start and carries typed values into current context, plus slice-delivery grouping, remain unresolved and must be updated from repository evidence rather than guessed. Lifecycle advancement and implementation require later explicit authorization.

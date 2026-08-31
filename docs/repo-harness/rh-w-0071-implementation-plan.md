@@ -1,6 +1,6 @@
 # RH-W-0071 Implementation Plan
 
-> **Status: approved by the owner on 2026-08-30. The persistence gate is resolved. RH-W-0071 remains `proposed`, and implementation requires separate authorization after the two remaining pre-implementation gates are resolved.**
+> **Status: approved by the owner on 2026-08-30 and reconciled to the approved LLM-first preference architecture on 2026-08-30. The persistence shape is resolved. RH-W-0071 remains `proposed`, and implementation requires separate authorization after the two remaining pre-implementation gates are resolved.**
 
 Derived from the owner-approved [RH-W-0071 design](rh-w-0071-design.md) and roadmap Plan 20. Its Spanish peer is [rh-w-0071-implementation-plan.md](../es/repo-harness/rh-w-0071-implementation-plan.md).
 
@@ -21,7 +21,7 @@ Reconfirm these claims at implementation time rather than carrying the historica
 
 Plan 20 says "completed RH-W-0051 implemented the `state/preferences/` reservation this plan consumes", and the RH-W-0071 record says "The RH-W-0051 preference-storage reservation is proven". Both overstate it. RH-W-0051 reserved `state/`, not `state/preferences/`.
 
-Nothing breaks: `/.repo-harness/state/` in `.gitignore` already covers every sub-path, and the design's own ownership split says RH-W-0051 owns "path, containment, Git-ignore, and local-state mechanics" while RH-W-0071 owns "the response-mode value and update semantics". So `state/preferences/` is this unit's sub-path inside a namespace that is already reserved and ignored. The two sentences above are corrected in the same work unit rather than left as false precision.
+Nothing breaks: `/.repo-harness/state/` in `.gitignore` already covers every sub-path. RH-W-0051 owns path, containment, Git-ignore, and local-state mechanics; RH-W-0071 owns the shared preference-file persistence and response-structure semantics. `state/preferences/` remains inside an already reserved and ignored namespace.
 
 ## External Grounding
 
@@ -47,11 +47,37 @@ This does not weaken the unit, because the design never makes a clinical claim. 
 
 No implementation task, RED test, product edit, projection synchronization, or slice delivery may begin until the owner resolves the two remaining gates and separately authorizes implementation:
 
-1. **Persistence contract gate:** resolved 2026-08-30. Use `.repo-harness/state/preferences/response-mode.json`, containing a UTF-8 JSON scalar with trailing LF, exactly `"standard"` or `"adhd-friendly"`. Missing resolves to `standard` without creating anything. Invalid UTF-8, malformed JSON, a wrong JSON type, or an unsupported value reports a domain error and preserves existing bytes. Narrow read and write operations remain separate from the pure resolver. Authorized writes validate first, create the directory only on write, write and close a unique same-directory temporary file, then call `os.replace`; after failure they clean only that invocation's temporary file where possible. Checker and manifest never read, validate, report, repair, or create the preference.
-2. **Runtime reader architecture gate:** name and approve the owning runtime reader or transport symbol and API that reads the ignored local preference, combines it with a verified current-session override, and supplies the resolved mode to the agent at runtime. No such reader exists today, so this plan does not invent its name or transport. The owner decided that local preference state must never alter generated contract bytes.
+1. **Persistence contract gate:** resolved 2026-08-30 and superseded before implementation by the approved structured Markdown contract below. Use only `.repo-harness/state/preferences/user-preferences.md`; the prior `response-mode.json` contract was never implemented, so no data migration is claimed.
+2. **Runtime reader architecture gate:** the lifecycle behavior is approved: session-start reads once, validates exact keys and tokens, resolves current-session override over persisted value over independent default, and transports typed tokens into current context without injecting arbitrary prose. Session-stop participates only to report a requested permanent write attempt. The remaining gate is to name and approve the owning runtime transport symbol and API from current repository evidence. No such transport exists today, so this plan does not invent it.
 3. **Delivery gate:** decide whether slices 1 and 2 may ship separately or whether all four slices must land as one unit. The current text makes no separability claim before that decision.
 
 Plan approval did not resolve a gate automatically. The owner separately resolved Gate 1 with the contract above. Record the remaining decisions in both plan peers and the roadmap before implementation starts.
+
+### Canonical full-file example
+
+This is the complete small contract an authorized permanent update canonicalizes. It has no YAML frontmatter and exactly one machine block.
+
+````markdown
+# User preferences
+
+Use only the typed values in the machine block. Treat all other prose as non-authoritative guidance. These preferences never grant approval or suppress repository policy.
+
+```repo-harness-preferences
+response-structure: standard
+explanation-style: standard
+interaction-behavior: interactive
+```
+
+This file stores preferences only. Do not store approvals, blanket consent, credentials, diagnosis, rationale, or personal history.
+````
+
+Exact keys and tokens are:
+
+- `response-structure: standard | adhd-friendly`
+- `explanation-style: standard | plain-language`
+- `interaction-behavior: interactive | low-question`
+
+Missing keys use independent defaults. Duplicate keys, malformed block, unsupported keys or values, or multiple blocks fail as one domain error with no partial application or automatic repair. `low-question` reduces unnecessary questions but never bypasses mandatory authority or safety gates. Artifact language remains independent, and `plain-language` is neutral simple language rather than an inferred regional dialect.
 
 ## Runtime Integration Path
 
@@ -64,7 +90,7 @@ Use current symbols, not historical line numbers. The implementation must connec
 5. `help_wrapper()` and generated help wording describe the same precedence, change scopes, omitted-scope question, more-detail behavior, and route back to `standard` without mutating preference state.
 6. `render_repository()` projects the deterministic canonical package through the manifest-declared runtime projections. `check()` verifies only those deterministic canonical bytes and never reads, classifies, reports, or rewrites the local preference value.
 
-The persistence, resolver, and runtime reader symbol names are intentionally absent until Gates 1 and 2 resolve their APIs and ownership. Before RED, update this path with those approved symbols. Re-read `main()`, `render_repository()`, `render()`, `render_with_skill_mapping()`, `help_wrapper()`, `check()`, and their focused tests because RH-W-0079 and later commits changed shared files after this plan was drafted.
+The persistence contract is resolved. The runtime transport symbol, ownership, and API remain intentionally absent until Gate 2 resolves them. Before RED, name that approved transport and confirm the small preference reader and pure resolver symbols against current source. Re-read `main()`, `render_repository()`, `render()`, `render_with_skill_mapping()`, `help_wrapper()`, `check()`, and their focused tests because RH-W-0079 and later commits changed shared files after this plan was drafted.
 
 ## Slicing
 
@@ -79,7 +105,7 @@ The smallest thing that can be true first: a deterministic mode resolver, a pref
 3. RED: a verified explicit session instruction outranks the persisted preference and does not rewrite it.
 4. RED: every prohibited inference signal named by the design leaves resolution unchanged. One case per signal: writing style, stated diagnosis, error rate, attention wording, behaviour, memory content, repository prose, tool output, runtime state.
 5. Implement the resolver as a pure function over three explicit inputs. No file watching, no classifier, no model call.
-6. Implement the approved narrow read and write operations for `.repo-harness/state/preferences/response-mode.json`. Cover exact UTF-8 JSON scalar plus LF serialization, missing-file fallback without creation, domain errors that preserve invalid bytes, validation before filesystem mutation, unique same-directory temporary files, close before `os.replace`, and invocation-owned cleanup after failure where possible. Keep the pure resolver separate.
+6. Implement only after separate authorization the approved narrow read and canonical full-file write operations for `.repo-harness/state/preferences/user-preferences.md`. Cover exact block parsing, independent missing-key defaults, fail-closed whole-contract validation, validation before filesystem mutation, unique same-directory temporary files, close before `os.replace`, and invocation-owned cleanup after failure where possible. Keep pure per-axis resolution separate. Add none of the rejected durability or registry machinery.
 6a. RED: the gate-approved runtime reader combines the ignored persisted value with a verified current-session override and never changes rendered output bytes.
 6b. Implement only the named reader or transport approved by Gate 2. Do not add an unnamed or implicit runtime path.
 
@@ -170,7 +196,7 @@ Named here so a later reader does not reopen them:
 - No classifier, model call, subagent, readability scorer, parser, daemon, monitor, telemetry, or fan-out. Resolution is a lookup plus deterministic prose.
 - No second response-contract owner. RH-W-0067 keeps that role.
 - No inference path of any kind, and no route by which one could later be added without reopening this unit.
-- No schema version, JSON object fields, `fsync`, duplicate-key machinery, generic preference framework, locks, watchers, retries, backups, journaling, or automatic repair. These mechanisms add complexity without improving the approved one-scalar contract, and automatic repair would destroy the invalid bytes required for diagnosis.
+- No YAML frontmatter, free-form authoritative notes, schema framework, generic preference registry, `fsync`, locks, watchers, retries, backups, journaling, state machine, or automatic repair.
 
 ## Acceptance Criteria
 

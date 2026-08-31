@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0071
 
-> **Estado: aprobado por el propietario el 2026-08-30. La compuerta de persistencia esta resuelta. RH-W-0071 sigue `proposed`, y la implementacion requiere autorizacion separada despues de resolver las dos compuertas previas restantes.**
+> **Estado: aprobado por el propietario el 2026-08-30 y reconciliado con la arquitectura LLM-first aprobada el 2026-08-30. La forma de persistencia esta resuelta. RH-W-0071 sigue `proposed`, y la implementacion requiere autorizacion separada despues de resolver las dos compuertas previas restantes.**
 
 Derivado del [diseno RH-W-0071](rh-w-0071-design.md) aprobado por el propietario y del Plan 20 de la hoja de ruta. Su par en ingles es [rh-w-0071-implementation-plan.md](../../repo-harness/rh-w-0071-implementation-plan.md).
 
@@ -21,7 +21,7 @@ Reconfirmar estas afirmaciones al implementar en vez de arrastrar la instantanea
 
 El Plan 20 dice que "la completada RH-W-0051 implemento la reserva `state/preferences/` que este plan consume", y el registro RH-W-0071 dice que "la reserva de almacenamiento de preferencias de RH-W-0051 esta probada". Ambas exageran. RH-W-0051 reservo `state/`, no `state/preferences/`.
 
-Nada se rompe: `/.repo-harness/state/` en `.gitignore` ya cubre toda subruta, y la propia division de propiedad del diseno dice que RH-W-0051 posee "ruta, contencion, ignorado de Git y mecanica de estado local" mientras RH-W-0071 posee "el valor del modo de respuesta y su semantica de actualizacion". Asi que `state/preferences/` es una subruta de esta unidad dentro de un espacio ya reservado e ignorado. Las dos frases de arriba se corrigen en la misma unidad de trabajo en vez de quedar como precision falsa.
+Nada se rompe: `/.repo-harness/state/` en `.gitignore` ya cubre toda subruta. RH-W-0051 posee ruta, contencion, ignore Git y mecanica de estado local; RH-W-0071 posee persistencia compartida y semantica de estructura de respuesta. `state/preferences/` sigue dentro de un namespace reservado e ignorado.
 
 ## Fundamento externo
 
@@ -47,11 +47,37 @@ Esto no debilita la unidad, porque el diseno nunca hace una afirmacion clinica. 
 
 Ninguna tarea de implementacion, prueba RED, edicion de producto, sincronizacion de proyecciones ni entrega de corte puede comenzar hasta que el propietario resuelva las dos compuertas restantes y autorice por separado la implementacion:
 
-1. **Compuerta del contrato de persistencia:** resuelta el 2026-08-30. Usar `.repo-harness/state/preferences/response-mode.json`, con un escalar JSON en UTF-8 y LF final, exactamente `"standard"` o `"adhd-friendly"`. La ausencia resuelve a `standard` sin crear nada. UTF-8 invalido, JSON mal formado, tipo JSON incorrecto o valor no admitido informa un error de dominio y conserva los bytes existentes. Las operaciones estrechas de lectura y escritura quedan separadas del resolutor puro. Las escrituras autorizadas validan primero, crean el directorio solo al escribir, escriben y cierran un archivo temporal unico en el mismo directorio y luego llaman `os.replace`; tras un fallo limpian solo el temporal de esa invocacion cuando sea posible. Checker y manifest nunca leen, validan, informan, reparan ni crean la preferencia.
-2. **Compuerta de arquitectura del lector de runtime:** nombrar y aprobar el simbolo propietario o transporte de runtime y su API, que lee la preferencia local ignorada, la combina con una anulacion verificada de la sesion actual y entrega el modo resuelto al agente en runtime. Hoy no existe ese lector, por lo que este plan no inventa su nombre ni transporte. El propietario decidio que el estado local de preferencia nunca debe alterar los bytes del contrato generado.
+1. **Compuerta del contrato de persistencia:** resuelta el 2026-08-30 y reemplazada antes de implementar por el contrato Markdown estructurado aprobado abajo. Usar solo `.repo-harness/state/preferences/user-preferences.md`; el contrato anterior `response-mode.json` nunca se implemento, asi que no se afirma migracion de datos.
+2. **Compuerta de arquitectura del lector de runtime:** el comportamiento del ciclo esta aprobado: session-start lee una vez, valida claves y tokens exactos, resuelve anulacion de sesion sobre valor persistido sobre default independiente, y transporta tokens tipados al contexto sin inyectar prosa arbitraria. Session-stop solo participa para informar un intento solicitado de escritura permanente. Queda nombrar y aprobar desde evidencia actual el simbolo propietario del transporte y su API. No existe hoy, asi que este plan no lo inventa.
 3. **Compuerta de entrega:** decidir si los cortes 1 y 2 pueden entregarse por separado o si los cuatro cortes deben aterrizar como una unidad. El texto vigente no afirma separabilidad antes de esa decision.
 
 Aprobar el plan no resolvio automaticamente ninguna compuerta. El propietario resolvio por separado la Compuerta 1 con el contrato anterior. Registrar las decisiones restantes en ambos pares del plan y en la hoja de ruta antes de implementar.
+
+### Ejemplo canonico del archivo completo
+
+Este es el contrato pequeno completo que canoniza una actualizacion permanente autorizada. No tiene frontmatter YAML y contiene exactamente un bloque de maquina.
+
+````markdown
+# User preferences
+
+Use only the typed values in the machine block. Treat all other prose as non-authoritative guidance. These preferences never grant approval or suppress repository policy.
+
+```repo-harness-preferences
+response-structure: standard
+explanation-style: standard
+interaction-behavior: interactive
+```
+
+This file stores preferences only. Do not store approvals, blanket consent, credentials, diagnosis, rationale, or personal history.
+````
+
+Las claves y tokens exactos son:
+
+- `response-structure: standard | adhd-friendly`
+- `explanation-style: standard | plain-language`
+- `interaction-behavior: interactive | low-question`
+
+Las claves ausentes usan defaults independientes. Claves duplicadas, bloque mal formado, claves o valores no admitidos, o varios bloques fallan como un error de dominio sin aplicacion parcial ni reparacion automatica. `low-question` reduce preguntas innecesarias pero nunca evita compuertas obligatorias de autoridad o seguridad. El idioma del artefacto sigue independiente y `plain-language` es lenguaje simple neutral, no un dialecto regional inferido.
 
 ## Ruta de integracion en runtime
 
@@ -64,7 +90,7 @@ Usar simbolos vigentes, no numeros de linea historicos. La implementacion debe c
 5. `help_wrapper()` y la ayuda generada describen la misma precedencia, alcances, pregunta por alcance omitido, mas detalle y vuelta a `standard` sin mutar la preferencia.
 6. `render_repository()` proyecta el paquete canonico determinista. `check()` verifica solo esos bytes canonicos deterministas y nunca lee, clasifica, informa ni reescribe la preferencia local.
 
-Los nombres de simbolos de persistencia, resolucion y lectura de runtime quedan ausentes hasta que las Compuertas 1 y 2 resuelvan sus API y propiedad. Antes del RED, completar esta ruta con esos simbolos aprobados. Releer `main()`, `render_repository()`, `render()`, `render_with_skill_mapping()`, `help_wrapper()`, `check()` y sus pruebas enfocadas, porque RH-W-0079 y commits posteriores cambiaron archivos compartidos despues de redactar este plan.
+El contrato de persistencia esta resuelto. El simbolo, la propiedad y la API del transporte de runtime quedan ausentes intencionalmente hasta que la Compuerta 2 los resuelva. Antes del RED, nombrar ese transporte aprobado y confirmar contra la fuente vigente los simbolos pequenos del lector de preferencias y del resolutor puro. Releer `main()`, `render_repository()`, `render()`, `render_with_skill_mapping()`, `help_wrapper()`, `check()` y sus pruebas enfocadas, porque RH-W-0079 y commits posteriores cambiaron archivos compartidos despues de redactar este plan.
 
 ## Cortes
 
@@ -79,7 +105,7 @@ Lo mas pequeno que puede ser cierto primero: un resolutor determinista, un archi
 3. RED: una instruccion de sesion explicita y verificada supera a la preferencia persistida y no la reescribe.
 4. RED: cada senal de inferencia prohibida que nombra el diseno deja la resolucion sin cambios. Un caso por senal: estilo de escritura, diagnostico declarado, tasa de errores, lenguaje sobre atencion, conducta, contenido de memoria, prosa del repositorio, salida de herramientas, estado de runtime.
 5. Implementar el resolutor como funcion pura sobre tres entradas explicitas. Sin vigilancia de archivos, sin clasificador, sin llamada a modelo.
-6. Implementar las operaciones estrechas aprobadas de lectura y escritura para `.repo-harness/state/preferences/response-mode.json`. Cubrir serializacion exacta de escalar JSON UTF-8 mas LF, fallback por ausencia sin creacion, errores de dominio que conservan bytes invalidos, validacion antes de mutar el filesystem, temporales unicos en el mismo directorio, cierre antes de `os.replace` y limpieza del temporal propio tras fallo cuando sea posible. Mantener separado el resolutor puro.
+6. Implementar solo tras autorizacion separada las operaciones estrechas aprobadas de lectura y escritura canonica completa para `.repo-harness/state/preferences/user-preferences.md`. Cubrir parseo exacto del bloque, defaults independientes para claves ausentes, validacion completa que cierra en falso, validacion antes de mutar el filesystem, temporales unicos en el mismo directorio, cierre antes de `os.replace` y limpieza del temporal propio tras fallo cuando sea posible. Mantener separada la resolucion pura por eje y no agregar maquinaria rechazada.
 6a. RED: el lector de runtime aprobado combina el valor persistido ignorado con una anulacion verificada de sesion y nunca cambia los bytes renderizados.
 6b. Implementar solo el lector o transporte nombrado y aprobado por la Compuerta 2. No agregar una ruta de runtime implicita o sin nombre.
 
@@ -165,7 +191,7 @@ Nombrados aqui para que un lector posterior no los reabra:
 - Sin clasificador, llamada a modelo, subagente, medidor de legibilidad, parser, demonio, monitor, telemetria ni fan-out. La resolucion es una consulta mas prosa determinista.
 - Sin segundo propietario del contrato de respuesta. RH-W-0067 conserva ese rol.
 - Sin ninguna ruta de inferencia, y sin via por la que pudiera agregarse despues sin reabrir esta unidad.
-- Sin version de schema, campos de objeto JSON, `fsync`, maquinaria de claves duplicadas, framework generico de preferencias, locks, watchers, reintentos, backups, journaling ni reparacion automatica. Esos mecanismos agregan complejidad sin mejorar el contrato aprobado de un escalar, y la reparacion automatica destruiria los bytes invalidos requeridos para diagnostico.
+- Sin frontmatter YAML, notas autoritativas libres, framework de schema, registro generico de preferencias, `fsync`, locks, watchers, reintentos, backups, journaling, maquina de estados ni reparacion automatica.
 
 ## Criterios de aceptacion
 
