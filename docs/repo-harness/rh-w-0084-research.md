@@ -8,14 +8,14 @@
 
 **Sources read, with date read.** Six sources were located and five were read in full. All reads were HTTP GET of a public page; nothing was cloned, downloaded, or executed, per boundaries 2 and 5.
 
-| Source | Class | Version evidence | Read |
-| --- | --- | --- | --- |
-| [Anthropic, Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) | 2 | undated page | 2026-08-31 |
-| [Anthropic, Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) | 2 | undated page | 2026-08-31 |
-| [OpenAI, Model Spec 2026-08-18](https://model-spec.openai.com/2026-08-18.html) | 2 | version-dated in the URL | 2026-08-31 |
-| [OpenAI, Prompt engineering guide](https://developers.openai.com/api/docs/guides/prompt-engineering) | 2 | undated page | 2026-08-31 |
-| [Liu et al., Lost in the Middle, TACL vol. 12 (2024), pp. 157-173](https://aclanthology.org/2024.tacl-1.9/) | 3 | published volume and pages | 2026-08-31 |
-| `docs.anthropic.com/.../long-context-tips` | 2 | none; 301 to a path that did not resolve | located, not read |
+| Source | Class | Version evidence | Read | Refresh trigger |
+| --- | --- | --- | --- | --- |
+| [Anthropic, Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) | 2 | undated page | 2026-08-31 | The context-rot or attention-budget claims change, or the page starts carrying a version |
+| [Anthropic, Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) | 2 | undated page | 2026-08-31 | The longform-data-at-top ordering rule or the 30 percent figure changes, or model-specific guidance supersedes it |
+| [OpenAI, Model Spec 2026-08-18](https://model-spec.openai.com/2026-08-18.html) | 2 | version-dated in the URL | 2026-08-31 | A later dated Model Spec changes the authority levels or the untrusted-content rule |
+| [OpenAI, Prompt engineering guide](https://developers.openai.com/api/docs/guides/prompt-engineering) | 2 | undated page | 2026-08-31 | The recommended developer-message order changes, or restating instructions becomes recommended |
+| [Liu et al., Lost in the Middle, TACL vol. 12 (2024), pp. 157-173](https://aclanthology.org/2024.tacl-1.9/) | 3 | published volume and pages | 2026-08-31 | A later peer-reviewed result overturns positional degradation in current models |
+| `docs.anthropic.com/.../long-context-tips` | 2 | none; 301 to a path that did not resolve | located, not read | The redirect resolves, if its content ever diverges from the Prompting best practices page |
 
 The sixth source is reported rather than dropped, as `RH-W-0065` requires. Its content is superseded by the Prompting best practices page, which was read.
 
@@ -80,7 +80,7 @@ Four of the five sources read here are undated vendor documentation pages that o
 
 The conservative behavior was applied rather than the literal rule: every citation above records its read date, which is what boundaries 6 and 7 already require, and the version-evidence column states plainly which pages carry no version. This is the same shape as the boundary 4 legacy clause, applied forward instead of backward.
 
-**Human decision required.** `RH-W-0012` is `completed` and owner-accepted, and its own reopen condition is a boundary contradicted by later evidence. This is that case. The proposed correction is one clause: when a source offers neither a revision nor a version, cite it with the read date recorded and its undated state stated. No boundary is otherwise affected.
+**Resolved the same day.** `RH-W-0012` reopened on the condition it had named, and the correction landed after measuring precedent rather than inventing a rule. `rh-w-0031-research.md`, this repository's canonical primary-source evidence owner, already cites undated vendor pages with an exact URL plus a **refresh trigger** naming what change would invalidate the claim, and carries a version inside the link text where the source exposes one. The boundary 4 undated-source clause codifies that, which is stronger than a bare read date: a read date says when someone looked, a refresh trigger says when to look again. The source table above was rewritten to comply, since it did not. `RH-W-0012` returned to `completed`.
 
 ## Non-goals honored
 

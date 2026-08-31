@@ -8,14 +8,14 @@
 
 **Fuentes leidas, con fecha de lectura.** Se localizaron seis fuentes y se leyeron cinco completas. Toda lectura fue un GET HTTP de una pagina publica; nada se clono, descargo ni ejecuto, conforme a los limites 2 y 5.
 
-| Fuente | Clase | Evidencia de version | Leida |
-| --- | --- | --- | --- |
-| [Anthropic, Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) | 2 | pagina sin fecha | 2026-08-31 |
-| [Anthropic, Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) | 2 | pagina sin fecha | 2026-08-31 |
-| [OpenAI, Model Spec 2026-08-18](https://model-spec.openai.com/2026-08-18.html) | 2 | version fechada en la URL | 2026-08-31 |
-| [OpenAI, Prompt engineering guide](https://developers.openai.com/api/docs/guides/prompt-engineering) | 2 | pagina sin fecha | 2026-08-31 |
-| [Liu et al., Lost in the Middle, TACL vol. 12 (2024), pp. 157-173](https://aclanthology.org/2024.tacl-1.9/) | 3 | volumen y paginas publicados | 2026-08-31 |
-| `docs.anthropic.com/.../long-context-tips` | 2 | ninguna; 301 a una ruta que no resolvio | localizada, no leida |
+| Fuente | Clase | Evidencia de version | Leida | Disparador de refresco |
+| --- | --- | --- | --- | --- |
+| [Anthropic, Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) | 2 | pagina sin fecha | 2026-08-31 | Cambian las afirmaciones de desgaste de contexto o presupuesto de atencion, o la pagina empieza a llevar version |
+| [Anthropic, Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) | 2 | pagina sin fecha | 2026-08-31 | Cambia la regla de datos largos arriba o la cifra del 30 por ciento, o una guia por modelo la supera |
+| [OpenAI, Model Spec 2026-08-18](https://model-spec.openai.com/2026-08-18.html) | 2 | version fechada en la URL | 2026-08-31 | Un Model Spec fechado posterior cambia los niveles de autoridad o la regla de contenido no confiable |
+| [OpenAI, Prompt engineering guide](https://developers.openai.com/api/docs/guides/prompt-engineering) | 2 | pagina sin fecha | 2026-08-31 | Cambia el orden recomendado del mensaje de desarrollador, o repetir instrucciones pasa a recomendarse |
+| [Liu et al., Lost in the Middle, TACL vol. 12 (2024), pp. 157-173](https://aclanthology.org/2024.tacl-1.9/) | 3 | volumen y paginas publicados | 2026-08-31 | Un resultado revisado por pares posterior refuta la degradacion posicional en modelos actuales |
+| `docs.anthropic.com/.../long-context-tips` | 2 | ninguna; 301 a una ruta que no resolvio | localizada, no leida | El redirect resuelve, si su contenido llega a divergir de Prompting best practices |
 
 La sexta fuente se reporta en lugar de omitirse, como exige `RH-W-0065`. Su contenido queda superado por la pagina Prompting best practices, que si se leyo.
 
@@ -80,7 +80,7 @@ Cuatro de las cinco fuentes leidas aqui son paginas de documentacion de proveedo
 
 Se aplico el comportamiento conservador en vez de la regla literal: cada cita de arriba registra su fecha de lectura, que es lo que los limites 6 y 7 ya exigen, y la columna de evidencia de version declara claramente que paginas no llevan version. Es la misma forma que la clausula heredada del limite 4, aplicada hacia adelante en vez de hacia atras.
 
-**Decision humana requerida.** `RH-W-0012` esta `completed` y aceptado por el propietario, y su propia condicion de reapertura es un limite contradicho por evidencia posterior. Este es ese caso. La correccion propuesta es una clausula: cuando una fuente no ofrece revision ni version, citarla con la fecha de lectura registrada y su estado sin fecha declarado. Ningun otro limite queda afectado.
+**Resuelto el mismo dia.** `RH-W-0012` se reabrio por la condicion que el mismo nombraba, y la correccion aterrizo tras medir el precedente en vez de inventar una regla. `rh-w-0031-research.md`, el propietario canonico de evidencia primaria de este repositorio, ya cita paginas de proveedor sin fecha con una URL exacta mas un **disparador de refresco** que nombra que cambio invalidaria la afirmacion, y lleva la version dentro del texto del enlace cuando la fuente expone una. La clausula de fuente sin fecha del limite 4 codifica eso, que es mas fuerte que una simple fecha de lectura: la fecha dice cuando alguien miro, el disparador dice cuando hay que volver a mirar. La tabla de fuentes de arriba se reescribio para cumplir, porque no cumplia. `RH-W-0012` volvio a `completed`.
 
 ## No objetivos respetados
 
