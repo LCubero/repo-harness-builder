@@ -2,6 +2,8 @@
 
 ## Status and purpose
 
+**Closure update, 2026-08-31: the research this scope framed has been executed and is recorded in [rh-w-0084-research.md](rh-w-0084-research.md); `RH-W-0084` is now `active`, and `RH-W-0012` is reconciled and `completed`. The historical scope wording below is preserved as written.**
+
 **Status: proposed; bilingual scope owner-approved.** This scope frames auditable, LLM-first research only. Scope approval leaves `RH-W-0084` `proposed` and authorizes no external network or source read, product implementation, product test, generated surface, manifest, checker, or lifecycle advancement.
 
 **Evidence labels:** the LLM-first objective and this scope are human-direction artifacts. Any external guidance remains unknown until read under the approved research boundary; it is not stated here as fact.
@@ -49,3 +51,5 @@ Non-goals: selecting a target now; reading an external source; changing product 
 ## Lifecycle relationship
 
 `RH-W-0084` remains `proposed`. The owner-approved bilingual scope does not make the record `ready` or authorize implementation. `RH-W-0012` has been re-evaluated for the named questions; its safety unit must be reconciled before separately authorized external research. The thematic research document and every resulting control remain separately authorized work.
+
+Both conditions were later satisfied on 2026-08-31: `RH-W-0012` was reconciled, its seven boundaries specified and accepted, and the owner then authorized research execution. Every resulting control still requires its own owner's separate authorization, and none has been applied.

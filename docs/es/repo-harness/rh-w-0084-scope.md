@@ -2,6 +2,8 @@
 
 ## Estado y proposito
 
+**Actualizacion de cierre, 2026-08-31: la investigacion que encuadra este alcance ya se ejecuto y esta registrada en [rh-w-0084-research.md](rh-w-0084-research.md); `RH-W-0084` esta ahora `active`, y `RH-W-0012` esta reconciliado y `completed`. La redaccion historica de abajo se conserva tal cual.**
+
 **Estado: propuesto; alcance bilingue aprobado por el propietario.** Este alcance solo encuadra investigacion auditable y LLM-first. Aprobarlo deja `RH-W-0084` en `proposed` y no autoriza lectura externa de red o fuentes, implementacion de producto, pruebas de producto, superficie generada, manifiesto, checker ni avance de ciclo de vida.
 
 **Etiquetas de evidencia:** el objetivo LLM-first y este alcance son artefactos de direccion humana. Toda guia externa sigue siendo desconocida hasta leerse bajo el limite de investigacion aprobado; aqui no se presenta como hecho.
@@ -49,3 +51,5 @@ No objetivos: elegir ahora un objetivo; leer una fuente externa; cambiar fuente 
 ## Relacion con el ciclo de vida
 
 `RH-W-0084` permanece `proposed`. El alcance bilingue aprobado por el propietario no vuelve el registro `ready` ni autoriza implementar. `RH-W-0012` ya se reevaluo para las preguntas nombradas; su unidad de seguridad debe reconciliarse antes de toda investigacion externa autorizada por separado. El documento tematico de investigacion y cada control resultante siguen siendo trabajo con autorizacion separada.
+
+Ambas condiciones quedaron satisfechas el 2026-08-31: `RH-W-0012` se reconcilio, sus siete limites quedaron especificados y aceptados, y despues el propietario autorizo la ejecucion de investigacion. Todo control resultante sigue requiriendo la autorizacion separada de su propio duenio, y ninguno se ha aplicado.
