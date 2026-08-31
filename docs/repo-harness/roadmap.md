@@ -28,7 +28,7 @@ The preventive design precedes the local-state architecture:
 
 1. Complete and approve the bilingual `RH-W-0070` preventive resource-safety design without merging it into another unit. This step is complete.
 2. `RH-W-0051` is complete. Its four implemented non-authoritative namespaces are `tmp`, `archive`, `state`, and `memory-bk`.
-3. Resolve `RH-W-0084` first on owner direction of 2026-08-30, because LLM-first is the constraint every later generated surface is measured against. Evaluate `RH-W-0012` for external research safety, then approve a bilingual research scope, then write the thematic research document. No generated surface changes on research alone.
+3. Resolve `RH-W-0084` first on owner direction of 2026-08-30, because LLM-first is the constraint every later generated surface is measured against. Approve a bilingual research scope naming the exact questions, then re-evaluate `RH-W-0012` against that scope, then write the thematic research document. `RH-W-0012` was evaluated on 2026-08-30 and did not fire, because no question is named yet. No generated surface changes on research alone.
 4. Implement `RH-W-0071` only after its two remaining pre-implementation gates are resolved and implementation is separately authorized. Its completed implementation plan and shared structured Markdown preference contract are owner-approved. Completed RH-W-0051 established `.repo-harness/state/`; RH-W-0071 owns persistence and response-structure semantics under `preferences/`, RH-W-0082 owns explanation-style semantics, and RH-W-0018 retains interaction behavior without absorbing consent or language provenance.
 5. Implement `RH-W-0069` after RH-W-0051 establishes `.repo-harness/memory-bk/`, without absorbing typed checkpoints.
 6. Implement `RH-W-0053` after RH-W-0051 establishes its storage semantics.
@@ -470,7 +470,7 @@ Human decision: approve or correct the implementation plan. Implementation requi
 
 These records have an unmet advancement condition, so no artifact can be produced without inventing the evidence the condition requires.
 
-- `RH-W-0012` external research safety, `P2`, `deferred`. Its condition named RH-W-0011, which completed on 2026-08-24 with five `close` dispositions and `next_decision: none`, identifying no question that requires external primary-source research. The condition was evaluated and did not fire, so the corrected record now waits on a future concrete research need.
+- `RH-W-0012` external research safety, `P2`, `deferred`. Its condition named RH-W-0011, which completed on 2026-08-24 with five `close` dispositions and `next_decision: none`, identifying no question that requires external primary-source research. The condition was evaluated and did not fire. It was evaluated a second time on 2026-08-30 against scheduled `P1` `RH-W-0084` and did not fire again, because that unit defers its exact questions to an unapproved scope. The record now names the exact trigger: an approved `RH-W-0084` scope stating at least one question this repository's own measurements cannot answer.
 - `RH-W-0014` consumer contribution capability, `P3`, `deferred`. It requires a real consumer case and verified provider capabilities, neither of which is recorded.
 - `RH-W-0015` integration forms, `P3`, `deferred`. It requires measured evidence from RH-W-0010, RH-W-0012, RH-W-0013, and RH-W-0014. Only RH-W-0010 is completed.
 - `RH-W-0026` optional CodeGraph integration, `P3`, `deferred`. It requires explicit owner approval for research plus a primary-source review that this repository has not performed.
@@ -515,7 +515,7 @@ Five plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Dependencies | `RH-W-0012` external research safety is `deferred` and owns primary-source safety, so it is evaluated before any external source is read. `RH-W-0065` owns research evidence and durable references. `RH-W-0067`, `RH-W-0073`, `RH-W-0076`, `RH-W-0078`, and `RH-W-0083` own the surfaces any finding would inform. Coordinate with all of them without merging. |
 | Status | proposed |
 | Completed work | Registered the immutable unit and recorded the owner's standing LLM-first charter in `decisions.md` and its Spanish peer. Verified `RH-W-0084` as the next free immutable ID by repository-wide Markdown scan. Confirmed the existing thematic research convention: five documents already live under `docs/repo-harness/` with localized peers, so this unit needs no new document class. Scheduled into the approved execution order on owner direction. |
-| Remaining work | Evaluate `RH-W-0012` first, because it is `deferred` and owns external research safety. Then approve a bilingual research scope naming the exact questions, the admissible source classes, and the path by which a finding becomes a repository control rather than more prose. Then write the thematic research document with its localized peer. |
+| Remaining work | Approve a bilingual research scope first, naming the exact questions, the admissible source classes, and the path by which a finding becomes a repository control rather than more prose. Naming questions is internal work and needs no external-source safety. Re-evaluate `RH-W-0012` against that approved scope, because reading any external source does need it. Then write the thematic research document with its localized peer. Corrected on 2026-08-30: the original order put the `RH-W-0012` evaluation first, which made it a no-op because this unit had named no question for it to evaluate. |
 | Additions | None yet. A scope may add one thematic research document and its localized peer. |
 | Exclusions | No product source, test, generated skill, manifest, checker, or projection change. No rulebook growth beyond its 700 budget. No new reference owner, which `RH-W-0065` holds. No duplicate research, decision, or lifecycle store. No external network read before `RH-W-0012` is evaluated. No implementation before a separately approved bilingual scope. |
 | Deferrals | Whether a finding becomes a development-time control, generated contract wording, or documented guidance waits for that scope. |
@@ -1821,7 +1821,7 @@ Five plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 |---|---|
 | Origin | Roadmap unit 12; external research safety wish |
 | Priority | P2: research needs reproducibility without importing unsafe execution |
-| Dependencies | none. Completed `RH-W-0011` was the named antecedent; it closed on 2026-08-24 with five `close` dispositions and `next_decision: none`, identifying no question that requires external primary-source research, so the condition was evaluated and did not fire. |
+| Dependencies | none. Completed `RH-W-0011` was the named antecedent; it closed on 2026-08-24 with five `close` dispositions and `next_decision: none`, identifying no question that requires external primary-source research, so the condition was evaluated and did not fire. `RH-W-0084` is the second candidate and was evaluated on 2026-08-30 with the same outcome, recorded below. |
 | Status | deferred |
 | Completed work | Primary-source-first, ignored temporary clone, license, revision, no-execution, citation, and retention boundaries are specified. |
 | Remaining work | Document and test enforceable boundaries and validate links and citations. |
@@ -1830,8 +1830,8 @@ Five plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | Deferred until a concrete research need emerges from reconciled findings. |
 | Rejections | none |
 | Evidence | Existing roadmap design and preservation rules. |
-| Decision history | 2026-08-13: retained as conditional capability, not immediate tooling. |
-| Next advancement condition | Advance when any concrete work unit identifies a question that requires external primary-source research. The `RH-W-0011` antecedent already completed without raising one, so this record now waits on a future need rather than on that unit. |
+| Decision history | 2026-08-13: retained as conditional capability, not immediate tooling. 2026-08-30: evaluated against `RH-W-0084` on owner instruction. The condition did not fire. `RH-W-0084` is concrete, `P1`, and scheduled, but it names no question yet: its own remaining work defers the exact questions to a bilingual research scope that is not approved. The evaluation also found a misordering introduced the same day, where `RH-W-0084` listed this evaluation before that scope, which made its first step a no-op because naming a question is internal work needing no external-source safety. `RH-W-0084` was corrected to put the scope first. Status stays `deferred`; nothing was advanced on a condition that did not fire. |
+| Next advancement condition | Advance when any concrete work unit identifies a question that requires external primary-source research. Two candidates have been evaluated and neither fired: `RH-W-0011` closed without raising a question, and `RH-W-0084` is scheduled but has not named one. The exact trigger is now named so a third evaluation is cheap: an approved `RH-W-0084` research scope that states at least one question this repository's own measurements cannot answer. Naming a question does not require this record; only reading an external source does. |
 
 ### RH-W-0013
 | Field | Value |
