@@ -41,6 +41,7 @@
 | [rh-w-0073-implementation-plan.md](rh-w-0073-implementation-plan.md) | Completed RH-W-0073 implementation plan; historical execution evidence retained |
 | [rh-w-0076-scope.md](rh-w-0076-scope.md) | Proposed correction scope for three unenforced declared limits; owner approval and implementation remain separately unauthorized |
 | [rh-w-0084-scope.md](rh-w-0084-scope.md) | Owner-approved LLM-first research scope; RH-W-0012 safety reconciliation and any research execution remain separately unauthorized |
+| [rh-w-0012-boundaries.md](rh-w-0012-boundaries.md) | Proposed specification of the seven external-research safety boundaries RH-W-0012 had only named; owner approval and any external read remain separately unauthorized |
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
 | [rh-w-0071-design.md](rh-w-0071-design.md) | Owner-approved ADHD-friendly response structure and shared LLM-first preference architecture; implementation remains unauthorized |
