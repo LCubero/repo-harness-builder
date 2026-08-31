@@ -22,7 +22,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable ID `RH-W-0082` raises the authoritative portfolio to 31. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
+Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082` and `RH-W-0083` raise the authoritative portfolio to 32. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
 The preventive design precedes the local-state architecture:
 
@@ -477,7 +477,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reviewed through 2026-08-30 across 26 non-terminal plans, 5 completed plans retained as historical execution evidence, and the 31 non-terminal records they cover. Historical Plan 28 is completed and authorizes no current implementation or release. No true lifecycle merge is approved.
+Current projection reviewed through 2026-08-30 across 26 non-terminal plans, 5 completed plans retained as historical execution evidence, and the 32 non-terminal records they cover. Historical Plan 28 is completed and authorizes no current implementation or release. No true lifecycle merge is approved.
 
 Coverage is complete at the lifecycle level. The stale next-artifact wording corrected in this reconciliation means the prior claim that no plans contradicted each other was too strong. No true lifecycle merge is approved. RH-W-0051 keeps separate design and implementation plans. The portfolio has one explicit joint-design pair, `RH-W-0046` with `RH-W-0018`, and four coordination pairs with separate lifecycles and implementations: coordinated sequencing for `RH-W-0055` with `RH-W-0062` and `RH-W-0069` with `RH-W-0068`, plus coordinated boundary review for `RH-W-0065` with `RH-W-0022` and `RH-W-0066` with `RH-W-0044`. The five unscheduled deferred records are covered in the not-plannable list; RH-W-0018 is covered by Plan 6.
 
@@ -505,6 +505,23 @@ Five plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0083
+| Field | Value |
+|---|---|
+| Origin | Verified session observation on 2026-08-30: the agent asked a question in four consecutive replies without loading `.repo-harness/rules/response-contract.md` and used none of its required forms until the owner named the omission. |
+| Priority | P2: the omission degrades reply legibility and cost the owner a manual correction, but it changes no evidence, authority, repository state, or delivered bytes. |
+| Dependencies | RH-W-0067 remains the complete response-contract owner and RH-W-0076 keeps its frozen three-defect scope. Coordinate with both without merging into either. |
+| Status | proposed |
+| Completed work | Measured the exact surfaces. `REPO-HARNESS.md` carries the six-trigger gate row once and all three daily skills carry the exact `Response shaping:` sentence once inside their Output Contract, asserted by `test_response_contract_has_one_exact_six_trigger_gate` and `test_every_daily_contract_contains_the_exact_reference_once`. `test_daily_contracts_do_not_duplicate_response_syntax` forbids the two 32-byte forms and the `setext heading` phrase from every daily skill body, so a loaded skill names the rule file without showing what it requires. `test_response_syntax_has_one_generated_owner` confirms the rule file is the only generated file carrying `Decision required`. Every existing assertion measures generated text; none observes an agent reply. |
+| Remaining work | Decide whether the correction is a wording change making the load obligation fire at reply time rather than inside a step list that completes before it, a development-time control, or an accepted limitation with no product change. Then approve a bilingual scope and implement test-first. |
+| Additions | None yet. A scope may add reply-time wording to the daily Output Contracts without relocating the forms. |
+| Exclusions | No duplication of the 32-byte forms into the daily skills, which `test_daily_contracts_do_not_duplicate_response_syntax` forbids and RH-W-0067 deliberately compressed. No second response-contract owner, no rulebook growth beyond its 700 budget, no runtime refusal, no reply classifier, scorer, or formatter, and no implementation before a separately approved bilingual scope. |
+| Deferrals | Whether any automated control can observe an agent reply at all waits for that scope decision. |
+| Rejections | Rejected folding this into RH-W-0076, whose measured three-defect inventory is frozen as its scope baseline and covers an unrunnable command, a size ceiling, and plan retirement rather than a load obligation. Rejected treating it as a pure agent lapse with no product surface, because the skill deliberately withholds the forms it requires. Rejected raising the rulebook budget to inline the forms. |
+| Evidence | Verified fact: four consecutive replies in the 2026-08-30 session carried a question with no 32-byte `=` or `+` block, the owner named the omission, and the four named assertions measure generated text only. Supported inference: naming the rule file inside Execution Steps that complete before reply time is insufficient, because the trigger fires while composing the reply; raising this to verified needs a reply-time observation the current controls cannot make. Human decision required: whether a prose-only obligation of this class is accepted or receives a control. |
+| Decision history | 2026-08-30: registered `proposed` under immutable ID RH-W-0083 after the owner named the omission and asked for it to be recorded. Verified beforehand that no RH-W-0083 existed anywhere in the repository. No scope, design, implementation, or lifecycle advancement is authorized. |
+| Next advancement condition | Advance only after the owner approves a bilingual scope naming whether the correction is wording, a development-time control, or an accepted limitation. |
 
 ### RH-W-0082
 | Field | Value |
