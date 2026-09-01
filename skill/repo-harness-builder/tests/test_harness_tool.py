@@ -3256,6 +3256,30 @@ class GeneratedCoreTests(unittest.TestCase):
 
     TERMINAL_STATUSES = frozenset({"completed", "excluded", "rejected"})
 
+    PORTFOLIO_CLAIMS = {
+        "en": (
+            "docs/repo-harness/current-state.md",
+            r"Portfolio size: (\d+) non-terminal records, (\d+) `proposed`, (\d+) `ready`, "
+            r"(\d+) `deferred`, and (\d+) `active`",
+        ),
+        "es": (
+            "docs/es/repo-harness/current-state.md",
+            r"Tamano del portafolio: (\d+) registros no terminales, (\d+) `proposed`, (\d+) `ready`, "
+            r"(\d+) `deferred` y (\d+) `active`",
+        ),
+    }
+
+    COVERAGE_CLAIMS = {
+        "en": (
+            "docs/repo-harness/current-state.md",
+            r"action plans\]\([^)]*\) section covering (\d+) of the (\d+) non-terminal records\.(.*?)have no action plan yet",
+        ),
+        "es": (
+            "docs/es/repo-harness/current-state.md",
+            r"planes de accion\]\([^)]*\) para (\d+) de los (\d+) registros no terminales\.(.*?)aun no tienen plan de accion",
+        ),
+    }
+
     def _roadmap_records(self):
         """Return the roadmap text and {record_id: status} from the lifecycle owner.
 
@@ -3282,40 +3306,53 @@ class GeneratedCoreTests(unittest.TestCase):
         """A global count typed by hand is only true on the day it was typed."""
         repository = ROOT.parents[1]
         _, records = self._roadmap_records()
-        state = (repository / "docs/repo-harness/current-state.md").read_text(encoding="utf-8")
         non_terminal = self._non_terminal(records)
-        claim = re.search(
-            r"Portfolio size: (\d+) non-terminal records, (\d+) `proposed`, (\d+) `ready`, "
-            r"(\d+) `deferred`, and (\d+) `active`",
-            state,
-        )
-        self.assertIsNotNone(claim, "current-state must project the portfolio size it claims to own")
-        counts = [int(value) for value in claim.groups()]
         measured = [len(non_terminal)]
         for name in ("proposed", "ready", "deferred", "active"):
             measured.append(sum(1 for key in non_terminal if records[key] == name))
-        self.assertEqual(counts, measured, "current-state portfolio counts disagree with the roadmap they project")
+        for locale, (relative, pattern) in self.PORTFOLIO_CLAIMS.items():
+            path = repository / relative
+            if not path.is_file():
+                continue
+            with self.subTest(locale=locale):
+                claim = re.search(pattern, path.read_text(encoding="utf-8"))
+                self.assertIsNotNone(claim, f"{locale} current-state must project the portfolio size it claims to own")
+                self.assertEqual(
+                    [int(value) for value in claim.groups()],
+                    measured,
+                    f"{locale} current-state portfolio counts disagree with the roadmap they project",
+                )
 
     def test_current_state_action_plan_coverage_is_derived_from_the_roadmap(self):
         """The uncovered set is the fact; a stale count hides records nobody planned."""
         repository = ROOT.parents[1]
         roadmap, records = self._roadmap_records()
-        state = (repository / "docs/repo-harness/current-state.md").read_text(encoding="utf-8")
         non_terminal = self._non_terminal(records)
         headings = re.findall(r"^### Plan [^\n]*", roadmap, re.M)
         planned = set(re.findall(r"RH-W-\d{4}", "\n".join(headings)))
         covered = sorted(non_terminal & planned)
         uncovered = sorted(non_terminal - planned)
-        claim = re.search(r"action plans\]\([^)]*\) section covering (\d+) of the (\d+) non-terminal records", state)
-        self.assertIsNotNone(claim, "current-state must project the action-plan coverage it claims to own")
-        self.assertEqual(
-            [int(claim.group(1)), int(claim.group(2))],
-            [len(covered), len(non_terminal)],
-            "current-state action-plan coverage disagrees with the roadmap it projects",
-        )
-        for record_id in uncovered:
-            with self.subTest(record_id=record_id):
-                self.assertIn(record_id, state, f"{record_id} has no action plan and current-state does not say so")
+        for locale, (relative, pattern) in self.COVERAGE_CLAIMS.items():
+            path = repository / relative
+            if not path.is_file():
+                continue
+            with self.subTest(locale=locale):
+                claim = re.search(pattern, path.read_text(encoding="utf-8"), re.S)
+                self.assertIsNotNone(claim, f"{locale} current-state must project the action-plan coverage it owns")
+                self.assertEqual(
+                    [int(claim.group(1)), int(claim.group(2))],
+                    [len(covered), len(non_terminal)],
+                    f"{locale} current-state action-plan coverage disagrees with the roadmap it projects",
+                )
+                # The named list is the fact. Scope it to the sentence that makes the
+                # claim, because an identifier mentioned elsewhere in the document is
+                # not this sentence naming it.
+                named = set(re.findall(r"RH-W-\d{4}", claim.group(3)))
+                self.assertEqual(
+                    sorted(named),
+                    uncovered,
+                    f"{locale} current-state names the wrong records as having no action plan",
+                )
 
     def test_roadmap_record_identifiers_are_unique_in_every_locale(self):
         """Two branches allocating one immutable ID must fail on merge, not silently."""
