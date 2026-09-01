@@ -3254,6 +3254,89 @@ class GeneratedCoreTests(unittest.TestCase):
             "omitting --engram-evidence-json discards the evidence Execution Step 3 obtains",
         )
 
+    TERMINAL_STATUSES = frozenset({"completed", "excluded", "rejected"})
+
+    def _roadmap_records(self):
+        """Return the roadmap text and {record_id: status} from the lifecycle owner.
+
+        Reads files only. No Git and no subprocess, so the assertion behaves
+        identically on Windows, Linux, and macOS, under any agent runtime, and
+        from an exported tree carrying no repository history.
+        """
+        repository = ROOT.parents[1]
+        roadmap_path = repository / "docs/repo-harness/roadmap.md"
+        if not roadmap_path.is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        roadmap = roadmap_path.read_text(encoding="utf-8")
+        records = {}
+        for record_id, body in re.findall(r"^### (RH-W-\d{4})\n(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S):
+            status = re.search(r"^\| Status \| (.*?) \|$", body, re.M)
+            if status:
+                records[record_id] = status.group(1).strip()
+        return roadmap, records
+
+    def _non_terminal(self, records):
+        return {key for key, value in records.items() if value not in self.TERMINAL_STATUSES}
+
+    def test_current_state_portfolio_counts_are_derived_from_the_roadmap(self):
+        """A global count typed by hand is only true on the day it was typed."""
+        repository = ROOT.parents[1]
+        _, records = self._roadmap_records()
+        state = (repository / "docs/repo-harness/current-state.md").read_text(encoding="utf-8")
+        non_terminal = self._non_terminal(records)
+        claim = re.search(
+            r"Portfolio size: (\d+) non-terminal records, (\d+) `proposed`, (\d+) `ready`, "
+            r"(\d+) `deferred`, and (\d+) `active`",
+            state,
+        )
+        self.assertIsNotNone(claim, "current-state must project the portfolio size it claims to own")
+        counts = [int(value) for value in claim.groups()]
+        measured = [len(non_terminal)]
+        for name in ("proposed", "ready", "deferred", "active"):
+            measured.append(sum(1 for key in non_terminal if records[key] == name))
+        self.assertEqual(counts, measured, "current-state portfolio counts disagree with the roadmap they project")
+
+    def test_current_state_action_plan_coverage_is_derived_from_the_roadmap(self):
+        """The uncovered set is the fact; a stale count hides records nobody planned."""
+        repository = ROOT.parents[1]
+        roadmap, records = self._roadmap_records()
+        state = (repository / "docs/repo-harness/current-state.md").read_text(encoding="utf-8")
+        non_terminal = self._non_terminal(records)
+        headings = re.findall(r"^### Plan [^\n]*", roadmap, re.M)
+        planned = set(re.findall(r"RH-W-\d{4}", "\n".join(headings)))
+        covered = sorted(non_terminal & planned)
+        uncovered = sorted(non_terminal - planned)
+        claim = re.search(r"action plans\]\([^)]*\) section covering (\d+) of the (\d+) non-terminal records", state)
+        self.assertIsNotNone(claim, "current-state must project the action-plan coverage it claims to own")
+        self.assertEqual(
+            [int(claim.group(1)), int(claim.group(2))],
+            [len(covered), len(non_terminal)],
+            "current-state action-plan coverage disagrees with the roadmap it projects",
+        )
+        for record_id in uncovered:
+            with self.subTest(record_id=record_id):
+                self.assertIn(record_id, state, f"{record_id} has no action plan and current-state does not say so")
+
+    def test_roadmap_record_identifiers_are_unique_in_every_locale(self):
+        """Two branches allocating one immutable ID must fail on merge, not silently."""
+        repository = ROOT.parents[1]
+        roadmap_path = repository / "docs/repo-harness/roadmap.md"
+        if not roadmap_path.is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        locales = {"en": roadmap_path, "es": repository / "docs/es/repo-harness/roadmap.md"}
+        seen = {}
+        for locale, path in locales.items():
+            if not path.is_file():
+                continue
+            identifiers = re.findall(r"^### (RH-W-\d{4})$", path.read_text(encoding="utf-8"), re.M)
+            duplicates = sorted({item for item in identifiers if identifiers.count(item) > 1})
+            with self.subTest(locale=locale):
+                self.assertEqual(duplicates, [], f"{locale} roadmap declares an immutable ID more than once")
+            seen[locale] = set(identifiers)
+        if len(seen) == 2:
+            self.assertEqual(sorted(seen["en"] - seen["es"]), [], "a record exists in English and not in its Spanish peer")
+            self.assertEqual(sorted(seen["es"] - seen["en"]), [], "a record exists in Spanish and not in its English owner")
+
     def test_current_state_projection_agrees_with_the_roadmap_owner(self):
         """The roadmap owns lifecycle; a projection that contradicts it is false evidence."""
         repository = ROOT.parents[1]
