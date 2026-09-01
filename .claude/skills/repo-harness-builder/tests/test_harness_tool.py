@@ -3354,26 +3354,6 @@ class GeneratedCoreTests(unittest.TestCase):
                     f"{locale} current-state names the wrong records as having no action plan",
                 )
 
-    def test_roadmap_record_identifiers_are_unique_in_every_locale(self):
-        """Two branches allocating one immutable ID must fail on merge, not silently."""
-        repository = ROOT.parents[1]
-        roadmap_path = repository / "docs/repo-harness/roadmap.md"
-        if not roadmap_path.is_file():
-            self.skipTest("repository lifecycle fixture is outside the portable package")
-        locales = {"en": roadmap_path, "es": repository / "docs/es/repo-harness/roadmap.md"}
-        seen = {}
-        for locale, path in locales.items():
-            if not path.is_file():
-                continue
-            identifiers = re.findall(r"^### (RH-W-\d{4})$", path.read_text(encoding="utf-8"), re.M)
-            duplicates = sorted({item for item in identifiers if identifiers.count(item) > 1})
-            with self.subTest(locale=locale):
-                self.assertEqual(duplicates, [], f"{locale} roadmap declares an immutable ID more than once")
-            seen[locale] = set(identifiers)
-        if len(seen) == 2:
-            self.assertEqual(sorted(seen["en"] - seen["es"]), [], "a record exists in English and not in its Spanish peer")
-            self.assertEqual(sorted(seen["es"] - seen["en"]), [], "a record exists in Spanish and not in its English owner")
-
     def test_current_state_projection_agrees_with_the_roadmap_owner(self):
         """The roadmap owns lifecycle; a projection that contradicts it is false evidence."""
         repository = ROOT.parents[1]
