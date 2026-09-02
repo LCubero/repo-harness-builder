@@ -3312,9 +3312,11 @@ class GeneratedCoreTests(unittest.TestCase):
             measured.append(sum(1 for key in non_terminal if records[key] == name))
         for locale, (relative, pattern) in self.PORTFOLIO_CLAIMS.items():
             path = repository / relative
-            if not path.is_file():
-                continue
             with self.subTest(locale=locale):
+                self.assertTrue(
+                    path.is_file(),
+                    f"{locale} declared current-state locale file is missing: {relative}",
+                )
                 claim = re.search(pattern, path.read_text(encoding="utf-8"))
                 self.assertIsNotNone(claim, f"{locale} current-state must project the portfolio size it claims to own")
                 self.assertEqual(
@@ -3334,9 +3336,11 @@ class GeneratedCoreTests(unittest.TestCase):
         uncovered = sorted(non_terminal - planned)
         for locale, (relative, pattern) in self.COVERAGE_CLAIMS.items():
             path = repository / relative
-            if not path.is_file():
-                continue
             with self.subTest(locale=locale):
+                self.assertTrue(
+                    path.is_file(),
+                    f"{locale} declared current-state locale file is missing: {relative}",
+                )
                 claim = re.search(pattern, path.read_text(encoding="utf-8"), re.S)
                 self.assertIsNotNone(claim, f"{locale} current-state must project the action-plan coverage it owns")
                 self.assertEqual(
