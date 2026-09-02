@@ -4,7 +4,7 @@
 
 ## 2026-09-02
 
-- Se corrigieron dos afirmaciones obsoletas en presente en `docs/repo-harness/current-state.md` y su par espanol dentro del alcance entregado de `RH-W-0086`. El conteo de registros aplazados coincide ahora con el propietario de la hoja de ruta en 5, y la revision sincronizada de `main` y `origin/main` coincide ahora con la evidencia local de Git y seguimiento remoto en `3b7054082cfe4a5097a2fe7a3f177454cabd8b69`, verificada con 0 por delante y 0 por detras. No cambiaron el ciclo de vida de la hoja de ruta, la fuente de producto, las pruebas, las proyecciones generadas, el manifiesto, el verificador, el orden de ejecucion aprobado ni el estado de `RH-W-0086`.
+- El commit `d500f8c` registro la correccion anterior de estado actual: el conteo de registros aplazados se alineo con el propietario de la hoja de ruta y la revision sincronizada anterior se reemplazo por `3b7054082cfe4a5097a2fe7a3f177454cabd8b69`, que coincidia con la evidencia Git previa al commit pero quedo obsoleta al crearse ese commit de correccion. Esta correccion retira la afirmacion dinamica sobre la revision sincronizada sin reemplazarla por otro SHA, conserva las anclas historicas de commits y registra como obsoleto el inventario anterior de hashes bajo `RH-W-0086`. No cambiaron el ciclo de vida de la hoja de ruta, la fuente de producto, las pruebas, las proyecciones generadas, el manifiesto, el verificador, el orden de ejecucion aprobado ni el estado de `RH-W-0086`.
 
 ## 2026-09-01
 

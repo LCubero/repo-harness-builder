@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-02
 
-- Corrected two stale present-tense claims in `docs/repo-harness/current-state.md` and its Spanish peer under the delivered `RH-W-0086` scope. The deferred-record count now matches the roadmap owner at 5, and the synchronized `main` and `origin/main` revision now matches local Git and remote-tracking evidence at `3b7054082cfe4a5097a2fe7a3f177454cabd8b69`, verified at 0 ahead and 0 behind. No roadmap lifecycle, product source, tests, generated projections, manifest, checker, approved execution order, or `RH-W-0086` status changed.
+- Commit `d500f8c` recorded the earlier current-state correction: the deferred-record count was aligned with the roadmap owner, and the prior synchronized revision was replaced by `3b7054082cfe4a5097a2fe7a3f177454cabd8b69`, which matched the pre-commit Git evidence but became stale when that correction commit was created. This correction removes the dynamic synchronized-revision claim without replacing it with another SHA, preserves historical commit anchors, and records the prior hash inventory as obsolete under `RH-W-0086`. No roadmap lifecycle, product source, tests, generated projections, manifest, checker, approved execution order, or `RH-W-0086` status changed.
 
 ## 2026-09-01
 
