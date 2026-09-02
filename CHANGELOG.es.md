@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-02
+
+- Se corrigieron dos afirmaciones obsoletas en presente en `docs/repo-harness/current-state.md` y su par espanol dentro del alcance entregado de `RH-W-0086`. El conteo de registros aplazados coincide ahora con el propietario de la hoja de ruta en 5, y la revision sincronizada de `main` y `origin/main` coincide ahora con la evidencia local de Git y seguimiento remoto en `3b7054082cfe4a5097a2fe7a3f177454cabd8b69`, verificada con 0 por delante y 0 por detras. No cambiaron el ciclo de vida de la hoja de ruta, la fuente de producto, las pruebas, las proyecciones generadas, el manifiesto, el verificador, el orden de ejecucion aprobado ni el estado de `RH-W-0086`.
+
 ## 2026-09-01
 
 - Se publico el commit `1df5f6e` para corregir la evidencia causal de `RH-W-0083`. La referencia al contrato de respuesta aparece despues de los Pasos de ejecucion, dentro del Contrato de salida, y la sintaxis accionable sigue a una carga condicional de distancia; las aserciones actuales miden texto generado y propiedad, no respuestas. No cambiaron ciclo de vida, alcance, producto, pruebas, proyeccion generada ni autoridad de implementacion.

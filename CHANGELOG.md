@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-02
+
+- Corrected two stale present-tense claims in `docs/repo-harness/current-state.md` and its Spanish peer under the delivered `RH-W-0086` scope. The deferred-record count now matches the roadmap owner at 5, and the synchronized `main` and `origin/main` revision now matches local Git and remote-tracking evidence at `3b7054082cfe4a5097a2fe7a3f177454cabd8b69`, verified at 0 ahead and 0 behind. No roadmap lifecycle, product source, tests, generated projections, manifest, checker, approved execution order, or `RH-W-0086` status changed.
+
 ## 2026-09-01
 
 - Published commit `1df5f6e` to correct the `RH-W-0083` causal evidence. The response-contract reference appears after Execution Steps, inside Output Contract, and actionable syntax remains one conditional load away; current assertions measure generated text and ownership rather than replies. No lifecycle, scope, product, test, generated projection, or implementation authority changed.
