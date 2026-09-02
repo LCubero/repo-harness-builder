@@ -3254,6 +3254,110 @@ class GeneratedCoreTests(unittest.TestCase):
             "omitting --engram-evidence-json discards the evidence Execution Step 3 obtains",
         )
 
+    TERMINAL_STATUSES = frozenset({"completed", "excluded", "rejected"})
+
+    PORTFOLIO_CLAIMS = {
+        "en": (
+            "docs/repo-harness/current-state.md",
+            r"Portfolio size: (\d+) non-terminal records, (\d+) `proposed`, (\d+) `ready`, "
+            r"(\d+) `deferred`, and (\d+) `active`",
+        ),
+        "es": (
+            "docs/es/repo-harness/current-state.md",
+            r"Tamano del portafolio: (\d+) registros no terminales, (\d+) `proposed`, (\d+) `ready`, "
+            r"(\d+) `deferred` y (\d+) `active`",
+        ),
+    }
+
+    COVERAGE_CLAIMS = {
+        "en": (
+            "docs/repo-harness/current-state.md",
+            r"action plans\]\([^)]*\) section covering (\d+) of the (\d+) non-terminal records\.(.*?)have no action plan yet",
+        ),
+        "es": (
+            "docs/es/repo-harness/current-state.md",
+            r"planes de accion\]\([^)]*\) para (\d+) de los (\d+) registros no terminales\.(.*?)aun no tienen plan de accion",
+        ),
+    }
+
+    def _roadmap_records(self):
+        """Return the roadmap text and {record_id: status} from the lifecycle owner.
+
+        Reads files only. No Git and no subprocess, so the assertion behaves
+        identically on Windows, Linux, and macOS, under any agent runtime, and
+        from an exported tree carrying no repository history.
+        """
+        repository = ROOT.parents[1]
+        roadmap_path = repository / "docs/repo-harness/roadmap.md"
+        if not roadmap_path.is_file():
+            self.skipTest("repository lifecycle fixture is outside the portable package")
+        roadmap = roadmap_path.read_text(encoding="utf-8")
+        records = {}
+        for record_id, body in re.findall(r"^### (RH-W-\d{4})\n(.*?)(?=^### RH-W-|^## |\Z)", roadmap, re.M | re.S):
+            status = re.search(r"^\| Status \| (.*?) \|$", body, re.M)
+            if status:
+                records[record_id] = status.group(1).strip()
+        return roadmap, records
+
+    def _non_terminal(self, records):
+        return {key for key, value in records.items() if value not in self.TERMINAL_STATUSES}
+
+    def test_current_state_portfolio_counts_are_derived_from_the_roadmap(self):
+        """A global count typed by hand is only true on the day it was typed."""
+        repository = ROOT.parents[1]
+        _, records = self._roadmap_records()
+        non_terminal = self._non_terminal(records)
+        measured = [len(non_terminal)]
+        for name in ("proposed", "ready", "deferred", "active"):
+            measured.append(sum(1 for key in non_terminal if records[key] == name))
+        for locale, (relative, pattern) in self.PORTFOLIO_CLAIMS.items():
+            path = repository / relative
+            with self.subTest(locale=locale):
+                self.assertTrue(
+                    path.is_file(),
+                    f"{locale} declared current-state locale file is missing: {relative}",
+                )
+                claim = re.search(pattern, path.read_text(encoding="utf-8"))
+                self.assertIsNotNone(claim, f"{locale} current-state must project the portfolio size it claims to own")
+                self.assertEqual(
+                    [int(value) for value in claim.groups()],
+                    measured,
+                    f"{locale} current-state portfolio counts disagree with the roadmap they project",
+                )
+
+    def test_current_state_action_plan_coverage_is_derived_from_the_roadmap(self):
+        """The uncovered set is the fact; a stale count hides records nobody planned."""
+        repository = ROOT.parents[1]
+        roadmap, records = self._roadmap_records()
+        non_terminal = self._non_terminal(records)
+        headings = re.findall(r"^### Plan [^\n]*", roadmap, re.M)
+        planned = set(re.findall(r"RH-W-\d{4}", "\n".join(headings)))
+        covered = sorted(non_terminal & planned)
+        uncovered = sorted(non_terminal - planned)
+        for locale, (relative, pattern) in self.COVERAGE_CLAIMS.items():
+            path = repository / relative
+            with self.subTest(locale=locale):
+                self.assertTrue(
+                    path.is_file(),
+                    f"{locale} declared current-state locale file is missing: {relative}",
+                )
+                claim = re.search(pattern, path.read_text(encoding="utf-8"), re.S)
+                self.assertIsNotNone(claim, f"{locale} current-state must project the action-plan coverage it owns")
+                self.assertEqual(
+                    [int(claim.group(1)), int(claim.group(2))],
+                    [len(covered), len(non_terminal)],
+                    f"{locale} current-state action-plan coverage disagrees with the roadmap it projects",
+                )
+                # The named list is the fact. Scope it to the sentence that makes the
+                # claim, because an identifier mentioned elsewhere in the document is
+                # not this sentence naming it.
+                named = set(re.findall(r"RH-W-\d{4}", claim.group(3)))
+                self.assertEqual(
+                    sorted(named),
+                    uncovered,
+                    f"{locale} current-state names the wrong records as having no action plan",
+                )
+
     def test_current_state_projection_agrees_with_the_roadmap_owner(self):
         """The roadmap owns lifecycle; a projection that contradicts it is false evidence."""
         repository = ROOT.parents[1]
