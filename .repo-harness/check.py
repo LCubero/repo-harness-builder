@@ -13,14 +13,15 @@ import re
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
-MANIFEST_SHA256 = "9b0ecfb0fe1a729ebabd11f9d5ef25b72eb34933a180574291fc44289a01e3b2"
-MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState"}
+MANIFEST_SHA256 = "dedcc2aae37d7a0ddc941d5dab3eecab635488fd24430f652d9d2321e7b2e3ec"
+MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState", "skillLicense"}
 OPTIONAL_MANIFEST_FIELDS = {"canonicalProjections"}
 LOCAL_STATE = {'tmp': {'path': '.repo-harness/tmp/', 'class': 'disposable'}, 'archive': {'path': '.repo-harness/archive/', 'class': 'recoverable'}, 'state': {'path': '.repo-harness/state/', 'class': 'operational'}, 'memory-bk': {'path': '.repo-harness/memory-bk/', 'class': 'continuity-backup'}}
 LOCAL_STATE_IGNORE_DIRECTIVES = ('/.repo-harness/tmp/', '/.repo-harness/archive/', '/.repo-harness/state/', '/.repo-harness/memory-bk/')
 REPORT_LANGUAGES = {"english", "espanol"}
 DOCUMENTATION_LANGUAGES = {"en", "es"}
 RUNTIMES = {"claude-code", "opencode", "pi"}
+SPDX_EXPRESSION = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+:() -]*")
 SKILL_SURFACES = {
     "claude-code": ".claude/skills/{name}/SKILL.md",
     "opencode": ".opencode/skills/{name}/SKILL.md",
@@ -99,6 +100,8 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         raise ValueError("unexpected integration mode")
     if manifest["writeSemantics"] != "additive-create-with-bounded-root-append":
         raise ValueError("unexpected write semantics")
+    if not isinstance(manifest["skillLicense"], str) or SPDX_EXPRESSION.fullmatch(manifest["skillLicense"]) is None:
+        raise ValueError("unexpected generated skill license")
     if manifest["localState"] != LOCAL_STATE:
         raise ValueError("unexpected local-state taxonomy")
     for item in manifest["localState"].values():

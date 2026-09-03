@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-03
+
+- Implemented and locally verified the authorized first `RH-W-0061` work unit without claiming delivery. Non-MIT generated-skill licenses now round-trip through authenticated `skillLicense` manifest state, generated strict schema validation, and canonical builder checking; unauthenticated manifest changes cannot select expected bytes, and authenticated historical manifests without the field use the MIT historical default while planning the manifest/checker pair as one atomic upgrade. RED produced 4 expected failures across 8 focused tests. GREEN and REFACTOR pass 10 focused tests, 53 relevant tests with 1 skip, 20 integration tests, integrated and standalone self-tests, generated checker `current` with 0 writes, a validated 17-path self-hosted projection apply followed by a 0-action preview, and 487 canonical tests with 9 skips. The wrapper-enabled suite separately retains one pre-existing unrelated command-wording failure. `RH-W-0061` remains `active` pending issue-first delivery; no network, provider, commit, push, publication, or issue mutation occurred.
+
 ## 2026-09-02
 
 - Commit `d500f8c` recorded the earlier current-state correction: the deferred-record count was aligned with the roadmap owner, and the prior synchronized revision was replaced by `3b7054082cfe4a5097a2fe7a3f177454cabd8b69`, which matched the pre-commit Git evidence but became stale when that correction commit was created. This correction removes the dynamic synchronized-revision claim without replacing it with another SHA, preserves historical commit anchors, and records the prior hash inventory as obsolete under `RH-W-0086`. No roadmap lifecycle, product source, tests, generated projections, manifest, checker, approved execution order, or `RH-W-0086` status changed.

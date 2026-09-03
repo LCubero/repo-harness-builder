@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-03
+
+- Se implemento y verifico localmente la primera unidad autorizada de `RH-W-0061` sin afirmar entrega. Las licencias no MIT de skills generadas ahora completan la ida y vuelta mediante el estado autenticado `skillLicense` del manifest, la validacion estricta del schema en el checker generado y el check canonico del builder; cambios no autenticados del manifest no pueden seleccionar bytes esperados, y los manifests historicos autenticados sin el campo usan el valor historico MIT mientras planifican el par manifest/checker como una actualizacion atomica. RED produjo 4 fallos esperados en 8 pruebas enfocadas. GREEN y REFACTOR pasan 10 pruebas enfocadas, 53 relevantes con 1 omision, 20 de integracion, self-tests integrado y standalone, checker generado `current` con 0 escrituras, apply autoalojado validado de 17 rutas seguido de preview con 0 acciones, y 487 pruebas canonicas con 9 omisiones. La suite con wrapper conserva aparte un fallo preexistente no relacionado de redaccion del comando. `RH-W-0061` sigue `active` hasta su entrega por el flujo de issue primero; no hubo red, proveedor, commit, push, publicacion ni mutacion de issue.
+
 ## 2026-09-02
 
 - El commit `d500f8c` registro la correccion anterior de estado actual: el conteo de registros aplazados se alineo con el propietario de la hoja de ruta y la revision sincronizada anterior se reemplazo por `3b7054082cfe4a5097a2fe7a3f177454cabd8b69`, que coincidia con la evidencia Git previa al commit pero quedo obsoleta al crearse ese commit de correccion. Esta correccion retira la afirmacion dinamica sobre la revision sincronizada sin reemplazarla por otro SHA, conserva las anclas historicas de commits y registra como obsoleto el inventario anterior de hashes bajo `RH-W-0086`. No cambiaron el ciclo de vida de la hoja de ruta, la fuente de producto, las pruebas, las proyecciones generadas, el manifiesto, el verificador, el orden de ejecucion aprobado ni el estado de `RH-W-0086`.

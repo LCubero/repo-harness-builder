@@ -2747,6 +2747,32 @@ class CheckTests(unittest.TestCase):
 
 
 class GeneratedSkillLicenseTests(unittest.TestCase):
+    def apply_standalone(self, root: Path, license_id: str) -> None:
+        args = [
+            sys.executable,
+            str(SCRIPT),
+            "render",
+            "--root",
+            str(root),
+            "--project-name",
+            "Example",
+            "--runtime",
+            "opencode",
+            "--license",
+            license_id,
+            "--standalone",
+        ]
+        preview = subprocess.run(args, capture_output=True, text=True)
+        self.assertEqual(preview.returncode, 0, preview.stderr)
+        plan_sha256 = json.loads(preview.stdout)["planSha256"]
+        applied = subprocess.run(
+            [*args, "--apply", "--approved-plan-sha256", plan_sha256],
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(applied.returncode, 0, applied.stderr)
+        self.assertEqual(json.loads(applied.stdout)["status"], "VALIDATED")
+
     def test_generated_skills_use_the_product_license_by_default(self):
         outputs = TOOL.render("Example", [])
         generated = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
@@ -2756,6 +2782,83 @@ class GeneratedSkillLicenseTests(unittest.TestCase):
         outputs = TOOL.render("Example", [], "Apache-2.0")
         generated = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         self.assertIn('license: "Apache-2.0"\n', generated)
+
+    def test_manifest_authentically_records_the_selected_skill_license(self):
+        outputs = TOOL.render("Example", ["opencode"], "Apache-2.0", standalone=True)
+        manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+
+        self.assertTrue(
+            TOOL.authentic_installed_checker(
+                outputs[".repo-harness/check.py"].encode("utf-8"),
+                outputs[TOOL.MANIFEST_PATH].encode("utf-8"),
+            )
+        )
+        self.assertEqual(manifest.get("skillLicense"), "Apache-2.0")
+
+    def test_selected_skill_licenses_round_trip_through_apply_and_both_checks(self):
+        for license_id in ("Apache-2.0", "GPL-3.0-only", "MIT OR Apache-2.0"):
+            with self.subTest(license_id=license_id), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                self.apply_standalone(root, license_id)
+
+                installed = subprocess.run(
+                    [sys.executable, str(root / ".repo-harness/check.py")],
+                    cwd=root,
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertEqual(installed.returncode, 0, installed.stderr)
+                self.assertEqual(json.loads(installed.stdout)["status"], "current")
+                self.assertEqual(TOOL.check(root, "Example", ["opencode"], standalone=True)["status"], "current")
+
+    def test_authenticated_historical_manifest_without_selected_license_plans_atomic_upgrade(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = TOOL.render("Example", ["opencode"], standalone=True)
+            manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+            manifest.pop("skillLicense", None)
+            historical_manifest = TOOL.dump_json(manifest)
+            outputs[TOOL.MANIFEST_PATH] = historical_manifest
+            outputs[".repo-harness/check.py"] = TOOL.check_script(TOOL.digest_text(historical_manifest))
+            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+
+            report = TOOL.check(root, "Example", ["opencode"], standalone=True)
+            self.assertEqual(report["status"], "drift")
+            desired = TOOL.render("Example", ["opencode"], standalone=True)
+            plan = TOOL.plan_changes(root, desired)
+            replaced = {item["path"] for item in plan["replace"]}
+            self.assertEqual(replaced, {TOOL.MANIFEST_PATH, ".repo-harness/check.py"})
+
+    def test_unauthenticated_manifest_license_does_not_select_expected_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("opencode",), standalone=True)
+            manifest_path = root / TOOL.MANIFEST_PATH
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["skillLicense"] = "Apache-2.0"
+            manifest_path.write_text(TOOL.dump_json(manifest), encoding="utf-8")
+
+            self.assertEqual(TOOL.declared_skill_license(root), TOOL.GENERATED_SKILL_LICENSE)
+
+    def test_generated_checker_rejects_an_invalid_authenticated_skill_license(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = TOOL.render("Example", ["opencode"], standalone=True)
+            manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+            manifest["skillLicense"] = "Apache-2.0\nmalformed"
+            invalid_manifest = TOOL.dump_json(manifest)
+            outputs[TOOL.MANIFEST_PATH] = invalid_manifest
+            outputs[".repo-harness/check.py"] = TOOL.check_script(TOOL.digest_text(invalid_manifest))
+            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+
+            checked = subprocess.run(
+                [sys.executable, str(root / ".repo-harness/check.py")],
+                cwd=root,
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(checked.returncode, 0)
+            self.assertIn("unexpected generated skill license", checked.stderr)
 
     def test_check_uses_the_product_license_without_a_license_parameter(self):
         self.assertNotIn("license_id", inspect.signature(TOOL.check).parameters)

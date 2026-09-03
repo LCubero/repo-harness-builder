@@ -2383,13 +2383,14 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
 MANIFEST_SHA256 = "{manifest_sha256}"
-MANIFEST_FIELDS = {{"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState"}}
+MANIFEST_FIELDS = {{"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState", "skillLicense"}}
 OPTIONAL_MANIFEST_FIELDS = {{"canonicalProjections"}}
 LOCAL_STATE = {LOCAL_STATE!r}
 LOCAL_STATE_IGNORE_DIRECTIVES = {LOCAL_STATE_IGNORE_DIRECTIVES!r}
 REPORT_LANGUAGES = {{"english", "espanol"}}
 DOCUMENTATION_LANGUAGES = {{"en", "es"}}
 RUNTIMES = {{"claude-code", "opencode", "pi"}}
+SPDX_EXPRESSION = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+:() -]*")
 SKILL_SURFACES = {{
     "claude-code": ".claude/skills/{{name}}/SKILL.md",
     "opencode": ".opencode/skills/{{name}}/SKILL.md",
@@ -2468,6 +2469,8 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         raise ValueError("unexpected integration mode")
     if manifest["writeSemantics"] != "additive-create-with-bounded-root-append":
         raise ValueError("unexpected write semantics")
+    if not isinstance(manifest["skillLicense"], str) or SPDX_EXPRESSION.fullmatch(manifest["skillLicense"]) is None:
+        raise ValueError("unexpected generated skill license")
     if manifest["localState"] != LOCAL_STATE:
         raise ValueError("unexpected local-state taxonomy")
     for item in manifest["localState"].values():
@@ -2833,6 +2836,7 @@ def render_with_skill_mapping(
         "integrationMode": "standalone" if standalone else "integrated",
         "language": {"conversation": conversation, "documentation": list(languages)},
         "localState": LOCAL_STATE,
+        "skillLicense": license_id,
     })
     outputs[MANIFEST_PATH] = manifest
     outputs[".repo-harness/check.py"] = check_script(digest_text(manifest))
@@ -2871,6 +2875,33 @@ def authentic_installed_checker(checker_bytes: bytes, manifest_bytes: bytes) -> 
         return False
     match = re.search(r'MANIFEST_SHA256\s*=\s*"([0-9a-f]{64})"', checker_bytes.decode("utf-8", errors="replace"))
     return bool(match) and match.group(1) == digest_bytes(manifest_bytes)
+
+
+def declared_skill_license(root: Path) -> str:
+    """Read a selected license only from an authenticated installed manifest.
+
+    Historical manifests predate this field and could only have been checked
+    deterministically with the product default, so they retain that fallback.
+    Unauthenticated manifest bytes never select generated output.
+    """
+    manifest_target = guarded_target(root, MANIFEST_PATH)
+    checker_target = guarded_target(root, ".repo-harness/check.py")
+    if not manifest_target.is_file() or is_indirect(manifest_target):
+        return GENERATED_SKILL_LICENSE
+    if not checker_target.is_file() or is_indirect(checker_target):
+        return GENERATED_SKILL_LICENSE
+    manifest_bytes = manifest_target.read_bytes()
+    if not authentic_installed_checker(checker_target.read_bytes(), manifest_bytes):
+        return GENERATED_SKILL_LICENSE
+    manifest = json.loads(manifest_bytes)
+    if not isinstance(manifest, dict) or "skillLicense" not in manifest:
+        return GENERATED_SKILL_LICENSE
+    license_id = manifest["skillLicense"]
+    require(
+        isinstance(license_id, str) and SPDX_EXPRESSION.fullmatch(license_id) is not None,
+        "manifest skillLicense must be a single-line SPDX expression",
+    )
+    return license_id
 
 
 def manifest_owned_generated_paths(root: Path) -> set[str]:
@@ -3789,7 +3820,7 @@ def check(
         root,
         project_name,
         runtimes,
-        GENERATED_SKILL_LICENSE,
+        declared_skill_license(root),
         standalone,
         DEFAULT_REPORT_LANGUAGE,
         documentation_languages,
