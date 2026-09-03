@@ -39,6 +39,7 @@
 | [Plan de implementacion RH-W-0073](rh-w-0073-implementation-plan.md) | Plan de implementacion RH-W-0073 completado; se conserva la evidencia historica de ejecucion |
 | [Alcance RH-W-0076](rh-w-0076-scope.md) | Alcance propuesto de correccion de tres limites declarados sin control; la aprobacion y la implementacion siguen sin autorizacion separada |
 | [Alcance RH-W-0084](rh-w-0084-scope.md) | Alcance de investigacion LLM-first aprobado por el propietario; la ejecucion de investigacion esta completa y se conserva el cuerpo historico del alcance |
+| [Alcance RH-W-0083](rh-w-0083-scope.md) | Alcance aprobado por el propietario de la obligacion inmediatamente anterior a responder y sus pruebas enfocadas; la implementacion queda aplazada para otra sesion y sigue sin autorizacion separada |
 | [Limites RH-W-0012](rh-w-0012-boundaries.md) | Especificacion aceptada por el propietario de los siete limites de seguridad de investigacion externa que RH-W-0012 solo habia nombrado; completada, incluida la clausula de fuente sin fecha del limite 4 que destapo su primer uso |
 | [Investigacion RH-W-0084](rh-w-0084-research.md) | Propietario canonico de evidencia primaria sobre formatos, tamanios, rutas, refuerzo y formas LLM-first; enruta hallazgos a duenios existentes y no aplica ninguno |
 | [Diseno RH-W-0067](rh-w-0067-design.md) | Par humano del diseno completado del contrato de respuesta; cuerpo historico conservado |

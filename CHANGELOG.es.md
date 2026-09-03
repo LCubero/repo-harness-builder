@@ -4,6 +4,8 @@
 
 ## 2026-09-02
 
+- Se registro la nueva ocurrencia observada de mezcla del contrato de aprobacion durante el cierre de sesion como evidencia adicional bajo la clase raiz existente de respuesta inmediata de `RH-W-0083`, sin duplicar el incidente ni crear una unidad de trabajo. Despues de ese registro, el propietario aprobo el alcance bilingue verificado tal como esta escrito y aplazo la implementacion y los cambios enfocados de pruebas para otra sesion bajo autorizacion separada. `RH-W-0083` permanece `proposed`; no cambiaron la fuente de producto, las pruebas de producto, las superficies generadas, las proyecciones de runtime, el avance de ciclo de vida, la entrega ni la publicacion.
+
 - El commit `d500f8c` registro la correccion anterior de estado actual: el conteo de registros aplazados se alineo con el propietario de la hoja de ruta y la revision sincronizada anterior se reemplazo por `3b7054082cfe4a5097a2fe7a3f177454cabd8b69`, que coincidia con la evidencia Git previa al commit pero quedo obsoleta al crearse ese commit de correccion. Esta correccion retira la afirmacion dinamica sobre la revision sincronizada sin reemplazarla por otro SHA, conserva las anclas historicas de commits y registra como obsoleto el inventario anterior de hashes bajo `RH-W-0086`. No cambiaron el ciclo de vida de la hoja de ruta, la fuente de producto, las pruebas, las proyecciones generadas, el manifiesto, el verificador, el orden de ejecucion aprobado ni el estado de `RH-W-0086`.
 
 ## 2026-09-01

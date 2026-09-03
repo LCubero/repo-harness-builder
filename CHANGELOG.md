@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-02
 
+- Registered the newly observed session-stop approval-contract mixing occurrence as additional evidence under the existing `RH-W-0083` immediate-before-response root class, without duplicating the incident or creating a work item. After that registration, the owner approved the verified bilingual scope as written and deferred implementation and focused test changes to another session under separate authorization. `RH-W-0083` remains `proposed`; no product source, product test, generated surface, runtime projection, lifecycle advancement, delivery, or publication changed.
+
 - Commit `d500f8c` recorded the earlier current-state correction: the deferred-record count was aligned with the roadmap owner, and the prior synchronized revision was replaced by `3b7054082cfe4a5097a2fe7a3f177454cabd8b69`, which matched the pre-commit Git evidence but became stale when that correction commit was created. This correction removes the dynamic synchronized-revision claim without replacing it with another SHA, preserves historical commit anchors, and records the prior hash inventory as obsolete under `RH-W-0086`. No roadmap lifecycle, product source, tests, generated projections, manifest, checker, approved execution order, or `RH-W-0086` status changed.
 
 ## 2026-09-01
