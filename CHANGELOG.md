@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-03
+
+- Implemented, verified, and delivered `RH-W-0061`. Non-MIT generated-skill licenses now round-trip through authenticated `skillLicense` manifest state, generated strict schema validation, and canonical builder checking; unauthenticated manifest changes cannot select expected bytes. The final review correction also rejects reserved `AND`, `OR`, and `WITH` tokens wherever the supported SPDX grammar requires an identifier or exception identifier. Its focused RED produced 6 expected subtest failures; the corrected test and all 15 generated-skill license tests pass. Integrated and standalone self-tests pass, generated checker and canonical check report `current` with 0 writes, projections are maintained by validated self-hosted apply, and the canonical suite passed 492 tests with 9 skipped on the exact candidate bytes. [PR #158](https://github.com/LCubero/repo-harness-builder/pull/158), with final head `a3559b67483baf83ea71e7de8290113feb1f35da`, merged into `main` at 2026-09-04T01:59:42Z as `077a8cd2859cb0df8931c6ee8ebb242827dc2a24`; linked issue #94 closed automatically as `COMPLETED` at 2026-09-04T01:59:43Z. `RH-W-0061` is `completed` with no remaining work.
+
 ## 2026-09-02
 
 - Registered the newly observed session-stop approval-contract mixing occurrence as additional evidence under the existing `RH-W-0083` immediate-before-response root class, without duplicating the incident or creating a work item. After that registration, the owner approved the verified bilingual scope as written and deferred implementation and focused test changes to another session under separate authorization. `RH-W-0083` remains `proposed`; no product source, product test, generated surface, runtime projection, lifecycle advancement, delivery, or publication changed.
