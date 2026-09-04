@@ -60,7 +60,19 @@ GENERATED_SKILL_LICENSE = "MIT"
 RULEBOOK_TOKEN_BUDGET = 700
 FORBIDDEN_METHODS = ("SDD", "TDD", "RDD", "Fabric", "Azure", "Brain_AI", "Panda")
 DATE_HEADING = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-SPDX_EXPRESSION = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+:() -]*")
+SPDX_IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+-]*\Z")
+SPDX_EXTERNAL_IDENTIFIER = re.compile(
+    r"DocumentRef-[A-Za-z0-9][A-Za-z0-9.-]*:LicenseRef-[A-Za-z0-9][A-Za-z0-9.-]*\Z"
+)
+MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState", "skillLicense"}
+OPTIONAL_MANIFEST_FIELDS = {"canonicalProjections"}
+HISTORICAL_MANIFEST_FIELD_SETS = (
+    {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "writeSemantics", "integrationMode"},
+    {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "writeSemantics", "integrationMode", "language"},
+    {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language"},
+    {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState"},
+    {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState", "canonicalProjections"},
+)
 DEFAULT_REPORT_LANGUAGE = "english"
 PRIMARY_DOCUMENTATION_LANGUAGE = "en"
 DOCUMENTATION_LANGUAGES = {"en", "es"}
@@ -370,6 +382,152 @@ def require(condition: bool, message: str) -> None:
         raise ContractError(message)
 
 
+def valid_spdx_expression(value: str) -> bool:
+    """Validate the supported SPDX identifier, WITH, AND, OR, and parentheses grammar."""
+    if not isinstance(value, str) or not value or value != value.strip() or any(character.isspace() and character != " " for character in value):
+        return False
+    tokens = re.findall(r"\(|\)|[^ ()]+", value)
+    if " ".join(tokens).replace("( ", "(").replace(" )", ")") != value:
+        return False
+
+    def is_identifier(token: str) -> bool:
+        return token not in {"AND", "OR", "WITH"} and (
+            SPDX_IDENTIFIER.fullmatch(token) is not None or SPDX_EXTERNAL_IDENTIFIER.fullmatch(token) is not None
+        )
+
+    depth = 0
+    expect_primary = True
+    can_have_exception = False
+    position = 0
+    while position < len(tokens):
+        token = tokens[position]
+        if expect_primary:
+            if token == "(":
+                depth += 1
+                if depth > 128:
+                    return False
+                can_have_exception = False
+            elif is_identifier(token):
+                expect_primary = False
+                can_have_exception = True
+            else:
+                return False
+        elif token == "WITH":
+            position += 1
+            if not can_have_exception or position >= len(tokens) or not is_identifier(tokens[position]):
+                return False
+            can_have_exception = False
+        elif token in {"AND", "OR"}:
+            expect_primary = True
+            can_have_exception = False
+        elif token == ")":
+            if depth == 0:
+                return False
+            depth -= 1
+            can_have_exception = False
+        else:
+            return False
+        position += 1
+    return not expect_primary and depth == 0
+
+
+def validated_manifest_skill_license(manifest: Any, allow_historical: bool = False) -> Optional[str]:
+    """Validate the complete manifest schema and return trusted license authority."""
+    require(isinstance(manifest, dict), "unexpected manifest schema")
+    fields = set(manifest)
+    current = fields in (MANIFEST_FIELDS, MANIFEST_FIELDS | OPTIONAL_MANIFEST_FIELDS)
+    historical = allow_historical and fields in HISTORICAL_MANIFEST_FIELD_SETS
+    require(current or historical, "unexpected manifest schema")
+    require(manifest["schemaVersion"] == "3.0", "unsupported manifest schema")
+    generator = manifest["generator"]
+    require(
+        isinstance(generator, dict)
+        and set(generator) == {"name", "version"}
+        and generator["name"] == "repo-harness-builder"
+        and isinstance(generator["version"], str)
+        and re.fullmatch(r"\d+\.\d+", generator["version"]) is not None,
+        "unexpected manifest generator",
+    )
+    project = manifest["project"]
+    project_fields = {"id", "ignoreCodegraph", "rulebook"}
+    historical_project_fields = {"id", "rulebook"}
+    require(
+        isinstance(project, dict)
+        and (
+            set(project) == project_fields
+            or historical and "canonicalCommands" not in manifest and set(project) == historical_project_fields
+        ),
+        "unexpected project schema",
+    )
+    require(isinstance(project["id"], str), "unexpected project identifier")
+    if "ignoreCodegraph" in project:
+        require(isinstance(project["ignoreCodegraph"], bool), "unexpected CodeGraph ignore choice")
+    safe_relative(project["rulebook"])
+    runtimes = manifest["runtimes"]
+    require(
+        isinstance(runtimes, list)
+        and len(runtimes) == len(set(runtimes))
+        and set(runtimes) <= RUNTIMES,
+        "unexpected runtimes",
+    )
+    require(manifest["integrationMode"] in {"integrated", "standalone"}, "unexpected integration mode")
+    require(
+        manifest["writeSemantics"] == "additive-create-with-bounded-root-append"
+        or historical and "canonicalCommands" not in manifest and manifest["writeSemantics"] == "additive-create-with-runtime-pointer-append",
+        "unexpected write semantics",
+    )
+    if "skillLicense" not in manifest:
+        license_id = None
+    else:
+        license_id = manifest["skillLicense"]
+        require(valid_spdx_expression(license_id), "manifest skillLicense must be a valid SPDX expression")
+    if "localState" in manifest:
+        require(manifest["localState"] == LOCAL_STATE, "unexpected local-state taxonomy")
+        for item in manifest["localState"].values():
+            safe_relative(item["path"])
+    if "language" in manifest:
+        language = manifest["language"]
+        require(isinstance(language, dict) and set(language) == {"conversation", "documentation"}, "unexpected language schema")
+        require(isinstance(language["conversation"], str) and language["conversation"] in APPROVAL_DOMAINS, "unexpected conversation language")
+        documentation = language["documentation"]
+        require(
+            isinstance(documentation, list)
+            and documentation
+            and all(isinstance(locale, str) for locale in documentation)
+            and len(documentation) == len(set(documentation))
+            and set(documentation) <= DOCUMENTATION_LANGUAGES
+            and tuple(documentation) in (("en",), ("es",), ("en", "es")),
+            "unexpected documentation languages",
+        )
+    skills = manifest["canonicalSkills"]
+    require(isinstance(skills, dict) and skills, "unexpected canonical skills")
+    for name, relative in skills.items():
+        require(isinstance(name, str) and re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name) is not None, "invalid canonical skill name")
+        safe_relative(relative)
+    if "canonicalCommands" in manifest:
+        commands = manifest["canonicalCommands"]
+        require(isinstance(commands, dict) and commands, "unexpected canonical commands")
+        for name, families in commands.items():
+            require(isinstance(name, str) and re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name) is not None, "invalid canonical command name")
+            require(
+                isinstance(families, dict)
+                and (families or not runtimes)
+                and set(families) <= {"commands", "prompts"},
+                "unexpected canonical command families",
+            )
+            for relative in families.values():
+                safe_relative(relative)
+    projections = manifest.get("canonicalProjections", {})
+    require(isinstance(projections, dict), "unexpected canonical projections")
+    for canonical, targets in projections.items():
+        safe_relative(canonical)
+        require(isinstance(targets, dict) and set(targets) == set(runtimes), "unexpected canonical projection runtimes")
+        for runtime, relative in targets.items():
+            require(runtime in RUNTIMES, "unexpected canonical projection runtime")
+            safe_relative(relative)
+    return license_id
+
+
 def canonical_json(value: Any) -> str:
     """Return exact compact ASCII-safe JSON without a trailing newline."""
     try:
@@ -597,7 +755,7 @@ def expected_authority_builder_config(args: argparse.Namespace) -> AuthorityBuil
         )
     return {
         "runtimes": sorted(set(args.runtime or [])),
-        "license": args.license_id,
+        "license": args.license_id or GENERATED_SKILL_LICENSE,
         "integrationMode": "standalone" if args.standalone else "integrated",
         "reportLanguage": args.report_language,
         "documentationLanguages": list(normalize_documentation_languages(args.documentation_languages)),
@@ -1249,7 +1407,7 @@ def locale_contract_path(relative: str, documentation_languages: Sequence[str]) 
 
 def frontmatter(name: str, description: str, source: str, license_id: str) -> str:
     """Build generated skill frontmatter with provenance and complete metadata."""
-    require(bool(SPDX_EXPRESSION.fullmatch(license_id)), "license must be a single-line SPDX expression")
+    require(valid_spdx_expression(license_id), "license must be a valid SPDX expression")
     return (
         "---\n"
         f"name: {name}\n"
@@ -2390,7 +2548,10 @@ LOCAL_STATE_IGNORE_DIRECTIVES = {LOCAL_STATE_IGNORE_DIRECTIVES!r}
 REPORT_LANGUAGES = {{"english", "espanol"}}
 DOCUMENTATION_LANGUAGES = {{"en", "es"}}
 RUNTIMES = {{"claude-code", "opencode", "pi"}}
-SPDX_EXPRESSION = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+:() -]*")
+SPDX_IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+-]*\\Z")
+SPDX_EXTERNAL_IDENTIFIER = re.compile(
+    r"DocumentRef-[A-Za-z0-9][A-Za-z0-9.-]*:LicenseRef-[A-Za-z0-9][A-Za-z0-9.-]*\\Z"
+)
 SKILL_SURFACES = {{
     "claude-code": ".claude/skills/{{name}}/SKILL.md",
     "opencode": ".opencode/skills/{{name}}/SKILL.md",
@@ -2401,6 +2562,55 @@ COMMAND_SURFACES = {{
     "opencode": ("commands", ".opencode/commands/{{name}}.md"),
     "pi": ("prompts", ".pi/prompts/{{name}}.md"),
 }}
+
+
+def valid_spdx_expression(value: str) -> bool:
+    """Validate the supported SPDX identifier, WITH, AND, OR, and parentheses grammar."""
+    if not isinstance(value, str) or not value or value != value.strip() or any(character.isspace() and character != " " for character in value):
+        return False
+    tokens = re.findall(r"\\(|\\)|[^ ()]+", value)
+    if " ".join(tokens).replace("( ", "(").replace(" )", ")") != value:
+        return False
+
+    def is_identifier(token: str) -> bool:
+        return token not in {"AND", "OR", "WITH"} and (
+            SPDX_IDENTIFIER.fullmatch(token) is not None or SPDX_EXTERNAL_IDENTIFIER.fullmatch(token) is not None
+        )
+
+    depth = 0
+    expect_primary = True
+    can_have_exception = False
+    position = 0
+    while position < len(tokens):
+        token = tokens[position]
+        if expect_primary:
+            if token == "(":
+                depth += 1
+                if depth > 128:
+                    return False
+                can_have_exception = False
+            elif is_identifier(token):
+                expect_primary = False
+                can_have_exception = True
+            else:
+                return False
+        elif token == "WITH":
+            position += 1
+            if not can_have_exception or position >= len(tokens) or not is_identifier(tokens[position]):
+                return False
+            can_have_exception = False
+        elif token in {{"AND", "OR"}}:
+            expect_primary = True
+            can_have_exception = False
+        elif token == ")":
+            if depth == 0:
+                return False
+            depth -= 1
+            can_have_exception = False
+        else:
+            return False
+        position += 1
+    return not expect_primary and depth == 0
 
 
 def comparable(text: str) -> str:
@@ -2469,7 +2679,7 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         raise ValueError("unexpected integration mode")
     if manifest["writeSemantics"] != "additive-create-with-bounded-root-append":
         raise ValueError("unexpected write semantics")
-    if not isinstance(manifest["skillLicense"], str) or SPDX_EXPRESSION.fullmatch(manifest["skillLicense"]) is None:
+    if not valid_spdx_expression(manifest["skillLicense"]):
         raise ValueError("unexpected generated skill license")
     if manifest["localState"] != LOCAL_STATE:
         raise ValueError("unexpected local-state taxonomy")
@@ -2502,7 +2712,7 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
     for name, families in commands.items():
         if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
             raise ValueError("invalid canonical command name")
-        if not isinstance(families, dict) or not families or not set(families) <= {{"commands", "prompts"}}:
+        if not isinstance(families, dict) or (not families and runtimes) or not set(families) <= {{"commands", "prompts"}}:
             raise ValueError("unexpected canonical command families")
         for relative in families.values():
             safe_relative(relative)
@@ -2857,7 +3067,7 @@ def desired_skill_license(outputs: dict[str, str]) -> str:
         license_id = json.loads(match.group(1))
     except json.JSONDecodeError as error:
         raise ContractError("desired generated skill license is invalid") from error
-    require(isinstance(license_id, str) and SPDX_EXPRESSION.fullmatch(license_id) is not None, "desired generated skill license is invalid")
+    require(valid_spdx_expression(license_id), "desired generated skill license is invalid")
     return license_id
 
 
@@ -2877,12 +3087,11 @@ def authentic_installed_checker(checker_bytes: bytes, manifest_bytes: bytes) -> 
     return bool(match) and match.group(1) == digest_bytes(manifest_bytes)
 
 
-def declared_skill_license(root: Path) -> str:
+def declared_skill_license(root: Path) -> Optional[str]:
     """Read a selected license only from an authenticated installed manifest.
 
-    Historical manifests predate this field and could only have been checked
-    deterministically with the product default, so they retain that fallback.
-    Unauthenticated manifest bytes never select generated output.
+    Historical manifests predate this field, so their selected license remains
+    unknown. Unauthenticated manifest bytes never select generated output.
     """
     manifest_target = guarded_target(root, MANIFEST_PATH)
     checker_target = guarded_target(root, ".repo-harness/check.py")
@@ -2894,14 +3103,7 @@ def declared_skill_license(root: Path) -> str:
     if not authentic_installed_checker(checker_target.read_bytes(), manifest_bytes):
         return GENERATED_SKILL_LICENSE
     manifest = json.loads(manifest_bytes)
-    if not isinstance(manifest, dict) or "skillLicense" not in manifest:
-        return GENERATED_SKILL_LICENSE
-    license_id = manifest["skillLicense"]
-    require(
-        isinstance(license_id, str) and SPDX_EXPRESSION.fullmatch(license_id) is not None,
-        "manifest skillLicense must be a single-line SPDX expression",
-    )
-    return license_id
+    return validated_manifest_skill_license(manifest, allow_historical=True)
 
 
 def manifest_owned_generated_paths(root: Path) -> set[str]:
@@ -2929,6 +3131,7 @@ def manifest_owned_generated_paths(root: Path) -> set[str]:
             return set()
     try:
         manifest = json.loads(manifest_bytes)
+        validated_manifest_skill_license(manifest, allow_historical=True)
         paths = generated_skill_paths(manifest)
     except (ContractError, json.JSONDecodeError):
         return set()
@@ -2956,6 +3159,7 @@ def authenticated_wrapper_versions(root: Path) -> dict[str, str]:
         return {}
     try:
         manifest = json.loads(manifest_bytes)
+        validated_manifest_skill_license(manifest, allow_historical=True)
         generated_skill_paths(manifest)
         version = manifest["generator"]["version"]
         project_id = manifest["project"]["id"]
@@ -2996,7 +3200,7 @@ def authenticated_wrapper_version(root: Path, relative: str) -> Optional[str]:
     return authenticated_wrapper_versions(root).get(relative)
 
 
-def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
+def plan_changes(root: Path, outputs: dict[str, str], trusted_skill_license: bool = False) -> dict[str, Any]:
     """Classify outputs, including the two bounded root pointer append cases."""
     require(MANIFEST_PATH in outputs and ".repo-harness/check.py" in outputs, "desired manifest and checker are required")
     require(
@@ -3010,6 +3214,8 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
     existing: list[dict[str, str]] = []
     blocked: list[dict[str, str]] = []
     generated_paths = manifest_owned_generated_paths(root)
+    historical_license_unknown = bool(generated_paths) and declared_skill_license(root) is None
+    license_dependent_paths = {path for path in generated_paths if path.endswith("/SKILL.md")}
     wrapper_versions = authenticated_wrapper_versions(root)
     desired_manifest = json.loads(outputs[MANIFEST_PATH])
     projection_targets = {
@@ -3079,6 +3285,11 @@ def plan_changes(root: Path, outputs: dict[str, str]) -> dict[str, Any]:
             # older version by definition during an upgrade, so demanding the current
             # one let the builder repair its own generation and never update across
             # versions. A file without provenance is human-owned and still refused.
+            and not (
+                historical_license_unknown
+                and not trusted_skill_license
+                and relative in (license_dependent_paths | {MANIFEST_PATH, ".repo-harness/check.py"})
+            )
             and (
                 relative == MANIFEST_PATH
                 or relative in projection_targets
@@ -3524,14 +3735,19 @@ def apply_generated_output_migration(
         raise
 
 
-def validate_write_preconditions(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> None:
+def validate_write_preconditions(
+    root: Path,
+    outputs: dict[str, str],
+    plan: dict[str, Any],
+    trusted_skill_license: bool = False,
+) -> None:
     """Prove the approved plan still describes the repository, before anything is written.
 
     This lived inside `write_outputs()` and still runs there. It is named and callable on its
     own so an authority-carrying apply can run it as an explicit preflight and translate its
     refusal into one content-free outcome, without teaching the writer about authority.
     """
-    require(plan == plan_changes(root, outputs), "approved plan is stale; preview again")
+    require(plan == plan_changes(root, outputs, trusted_skill_license), "approved plan is stale; preview again")
     require(not plan["blocked"], "blocked plan actions require approved executable integration")
     for item in plan["existing"]:
         relative = item["path"]
@@ -3557,13 +3773,18 @@ def validate_write_preconditions(root: Path, outputs: dict[str, str], plan: dict
         require(digest_text(outputs[relative]) == item["destinationSha256"], f"generated destination bytes changed: {relative}")
 
 
-def write_outputs(root: Path, outputs: dict[str, str], plan: dict[str, Any]) -> list[str]:
+def write_outputs(
+    root: Path,
+    outputs: dict[str, str],
+    plan: dict[str, Any],
+    trusted_skill_license: bool = False,
+) -> list[str]:
     """Execute only the unchanged approved plan, including bounded root appends.
 
     The preflight repeats deliberately when a caller already ran it: it is the last check
     before mutation, and a race between validation and the write must not pass through.
     """
-    validate_write_preconditions(root, outputs, plan)
+    validate_write_preconditions(root, outputs, plan, trusted_skill_license)
 
     def apply_additive() -> list[str]:
         written: list[Path] = []
@@ -3816,20 +4037,28 @@ def check(
             commands_declared = "canonicalCommands" in json.loads(installed_manifest.read_bytes())
         except (json.JSONDecodeError, TypeError):
             commands_declared = False
+    selected_license = declared_skill_license(root)
     expected = render_repository(
         root,
         project_name,
         runtimes,
-        declared_skill_license(root),
+        selected_license or GENERATED_SKILL_LICENSE,
         standalone,
         DEFAULT_REPORT_LANGUAGE,
         documentation_languages,
         conversation_language,
         declared_codegraph_ignore(root),
     )
+    unknown_license_paths = (
+        generated_skill_paths(json.loads(expected[MANIFEST_PATH]))
+        if selected_license is None
+        else set()
+    )
     rulebook_path = RULEBOOK_PATH
     entries: list[dict[str, Any]] = []
     for relative, content in sorted(expected.items()):
+        if relative in unknown_license_paths:
+            continue
         target = guarded_target(root, relative)
         entry: dict[str, Any] = {"path": relative}
         if not target.exists() and not target.is_symlink():
@@ -3894,6 +4123,7 @@ def check(
     return {
         "status": "drift" if drifted else "current",
         "files": entries,
+        "skillLicense": selected_license or "unknown",
         "runtimeSet": runtime_set_report(root, runtimes),
         "packageFreshness": package_freshness(root),
         "writes": 0,
@@ -3966,7 +4196,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         child.add_argument("--runtime", action="append", choices=sorted(RUNTIMES), default=[], help="runtime profile; repeat the flag to select several, omit it for the core only")
         child.add_argument("--standalone", action="store_true", help="generate repository-only continuity without Gentle AI or Engram")
         if name == "render":
-            child.add_argument("--license", dest="license_id", default=GENERATED_SKILL_LICENSE, help="SPDX identifier for generated skills")
+            child.add_argument("--license", dest="license_id", help="SPDX identifier for generated skills; defaults to MIT for a new installation")
             child.add_argument("--report-language", choices=sorted(APPROVAL_DOMAINS), default=DEFAULT_REPORT_LANGUAGE, help="language for builder approval output; defaults to english")
             child.add_argument("--documentation-language", action="append", dest="documentation_languages", choices=sorted(DOCUMENTATION_LANGUAGES), help="human documentation locale; use es alone for Spanish-only, repeat en then es for bilingual, omit for English-only")
             child.add_argument("--conversation-language", choices=sorted(APPROVAL_DOMAINS), help="language the generated sessions converse in; ask the human, defaults to english")
@@ -4008,18 +4238,19 @@ def main(argv: Optional[list[str]] = None) -> int:
                 "gentleAi": preflight["gentleAiState"],
                 "engram": preflight["engramState"],
             }
+        trusted_skill_license = args.license_id is not None
         outputs = render_repository(
             root,
             args.project_name,
             selected,
-            args.license_id,
+            args.license_id or GENERATED_SKILL_LICENSE,
             args.standalone,
             args.report_language,
             args.documentation_languages,
             args.conversation_language,
             args.ignore_codegraph,
         )
-        plan = plan_changes(root, outputs)
+        plan = plan_changes(root, outputs, trusted_skill_license)
         digest = plan_digest(plan)
         authority_projection: dict[str, Any] = {}
         if args.activation == "builder":
@@ -4088,10 +4319,10 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if args.approved_generation_sha256 != authority_projection["generationSha256"]:
                     raise ContractError(FRESH_PREVIEW_REQUIRED)
                 try:
-                    validate_write_preconditions(root, outputs, plan)
+                    validate_write_preconditions(root, outputs, plan, trusted_skill_license)
                 except ContractError as error:
                     raise ContractError(FRESH_PREVIEW_REQUIRED) from error
-            changed = write_outputs(root, outputs, plan)
+            changed = write_outputs(root, outputs, plan, trusted_skill_license)
             print(dump_json({"status": "VALIDATED", "changed": changed, "planSha256": digest, "reportLanguage": args.report_language, "plan": plan, "gitState": git_state}), end="")
         return 0
     except (ContractError, OSError, json.JSONDecodeError) as error:

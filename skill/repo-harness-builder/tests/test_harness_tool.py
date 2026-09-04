@@ -1903,6 +1903,11 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
         manifest_path = root / TOOL.MANIFEST_PATH
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         manifest.pop("language", None)
+        manifest.pop("canonicalCommands", None)
+        manifest.pop("localState", None)
+        manifest.pop("skillLicense", None)
+        manifest.pop("canonicalProjections", None)
+        manifest["project"].pop("ignoreCodegraph", None)
         manifest["writeSemantics"] = "additive-create-with-runtime-pointer-append"
         manifest_text = TOOL.dump_json(manifest)
         manifest_path.write_text(manifest_text, encoding="utf-8", newline="")
@@ -2627,6 +2632,9 @@ class CheckTests(unittest.TestCase):
             manifest_path = root / TOOL.MANIFEST_PATH
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
             manifest.pop("canonicalCommands")
+            manifest.pop("localState")
+            manifest.pop("skillLicense")
+            manifest.pop("canonicalProjections", None)
             manifest_path.write_text(TOOL.dump_json(manifest), encoding="utf-8", newline="\n")
             checker = root / ".repo-harness/check.py"
             checker.write_text(
@@ -2783,6 +2791,60 @@ class GeneratedSkillLicenseTests(unittest.TestCase):
         generated = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         self.assertIn('license: "Apache-2.0"\n', generated)
 
+    def test_supported_spdx_expression_grammar_is_strict(self):
+        checker_namespace = {
+            "__file__": str(ROOT / ".repo-harness/check.py"),
+            "__name__": "generated_checker_test",
+        }
+        exec(TOOL.render("Example", [])[".repo-harness/check.py"], checker_namespace)
+        checker_valid_spdx_expression = checker_namespace["valid_spdx_expression"]
+        valid = (
+            "MIT",
+            "Apache-2.0",
+            "GPL-3.0-only",
+            "DocumentRef-example:LicenseRef-custom",
+            "MIT OR Apache-2.0",
+            "GPL-2.0-only WITH Classpath-exception-2.0",
+            "(MIT OR Apache-2.0) AND GPL-3.0-only",
+        )
+        invalid = (
+            "WITH",
+            "AND",
+            "OR",
+            "(AND)",
+            "MIT AND",
+            "MIT OR OR",
+            "MIT WITH WITH",
+            "MIT AND OR Apache-2.0",
+            "not a license",
+            "MIT_2.0",
+            "(MIT OR Apache-2.0",
+            "MIT:",
+            ":MIT",
+            "LicenseRef:injected",
+            "DocumentRef-example:",
+            "DocumentRef-example:LicenseRef-one:LicenseRef-two",
+        )
+
+        for license_id in valid:
+            with self.subTest(valid=license_id):
+                self.assertTrue(TOOL.valid_spdx_expression(license_id))
+                self.assertTrue(checker_valid_spdx_expression(license_id))
+                TOOL.render("Example", [], license_id)
+        for license_id in invalid:
+            with self.subTest(invalid=license_id):
+                self.assertFalse(TOOL.valid_spdx_expression(license_id))
+                self.assertFalse(checker_valid_spdx_expression(license_id))
+                with self.assertRaisesRegex(TOOL.ContractError, "SPDX expression"):
+                    TOOL.render("Example", [], license_id)
+
+    def test_deeply_nested_spdx_expression_is_rejected_without_recursion_error(self):
+        license_id = "(" * 450 + "MIT" + ")" * 450
+
+        self.assertFalse(TOOL.valid_spdx_expression(license_id))
+        with self.assertRaisesRegex(TOOL.ContractError, "SPDX expression"):
+            TOOL.render("Example", [], license_id)
+
     def test_manifest_authentically_records_the_selected_skill_license(self):
         outputs = TOOL.render("Example", ["opencode"], "Apache-2.0", standalone=True)
         manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
@@ -2796,7 +2858,11 @@ class GeneratedSkillLicenseTests(unittest.TestCase):
         self.assertEqual(manifest.get("skillLicense"), "Apache-2.0")
 
     def test_selected_skill_licenses_round_trip_through_apply_and_both_checks(self):
-        for license_id in ("Apache-2.0", "GPL-3.0-only", "MIT OR Apache-2.0"):
+        for license_id in (
+            "Apache-2.0",
+            "GPL-3.0-only",
+            "MIT OR Apache-2.0",
+        ):
             with self.subTest(license_id=license_id), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 self.apply_standalone(root, license_id)
@@ -2825,9 +2891,80 @@ class GeneratedSkillLicenseTests(unittest.TestCase):
             report = TOOL.check(root, "Example", ["opencode"], standalone=True)
             self.assertEqual(report["status"], "drift")
             desired = TOOL.render("Example", ["opencode"], standalone=True)
-            plan = TOOL.plan_changes(root, desired)
+            plan = TOOL.plan_changes(root, desired, trusted_skill_license=True)
             replaced = {item["path"] for item in plan["replace"]}
             self.assertEqual(replaced, {TOOL.MANIFEST_PATH, ".repo-harness/check.py"})
+
+    def test_historical_non_mit_license_remains_unknown_without_replacing_skill_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = TOOL.render("Example", ["opencode"], "Apache-2.0", standalone=True)
+            manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+            manifest.pop("skillLicense")
+            historical_manifest = TOOL.dump_json(manifest)
+            outputs[TOOL.MANIFEST_PATH] = historical_manifest
+            outputs[".repo-harness/check.py"] = TOOL.check_script(TOOL.digest_text(historical_manifest))
+            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+
+            self.assertIsNone(TOOL.declared_skill_license(root))
+            report = TOOL.check(root, "Example", ["opencode"], standalone=True)
+            self.assertEqual(report["skillLicense"], "unknown")
+            generated_skills = TOOL.generated_skill_paths(manifest)
+            self.assertFalse(
+                [item for item in report["files"] if item["path"] in generated_skills and item["state"] in {"stale", "legacy"}]
+            )
+
+            desired = TOOL.render("Example", ["opencode"], standalone=True)
+            plan = TOOL.plan_changes(root, desired)
+            replaced = {item["path"] for item in plan["replace"]}
+            self.assertFalse(replaced & (generated_skills | {TOOL.MANIFEST_PATH, ".repo-harness/check.py"}))
+
+    def test_authenticated_unexpected_manifest_field_is_rejected_by_both_checks(self):
+        for location in ("manifest", "project"):
+            with self.subTest(location=location), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                outputs = TOOL.render("Example", ["opencode"], standalone=True)
+                manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+                target = manifest if location == "manifest" else manifest["project"]
+                target["unexpected"] = True
+                invalid_manifest = TOOL.dump_json(manifest)
+                outputs[TOOL.MANIFEST_PATH] = invalid_manifest
+                outputs[".repo-harness/check.py"] = TOOL.check_script(TOOL.digest_text(invalid_manifest))
+                TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+
+                with self.assertRaisesRegex(TOOL.ContractError, "unexpected (manifest|project) schema"):
+                    TOOL.declared_skill_license(root)
+                installed = subprocess.run(
+                    [sys.executable, str(root / ".repo-harness/check.py")],
+                    cwd=root,
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertNotEqual(installed.returncode, 0)
+                self.assertRegex(installed.stderr, "unexpected (manifest|project) schema")
+
+    def test_authenticated_impossible_manifest_hybrid_is_rejected_by_both_checks(self):
+        for missing in ("canonicalCommands", "language"):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                outputs = TOOL.render("Example", ["opencode"], "Apache-2.0", standalone=True)
+                manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+                manifest.pop(missing)
+                invalid_manifest = TOOL.dump_json(manifest)
+                outputs[TOOL.MANIFEST_PATH] = invalid_manifest
+                outputs[".repo-harness/check.py"] = TOOL.check_script(TOOL.digest_text(invalid_manifest))
+                TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+
+                with self.assertRaisesRegex(TOOL.ContractError, "unexpected manifest schema"):
+                    TOOL.declared_skill_license(root)
+                installed = subprocess.run(
+                    [sys.executable, str(root / ".repo-harness/check.py")],
+                    cwd=root,
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertNotEqual(installed.returncode, 0)
+                self.assertIn("unexpected manifest schema", installed.stderr)
 
     def test_unauthenticated_manifest_license_does_not_select_expected_bytes(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -2841,24 +2978,32 @@ class GeneratedSkillLicenseTests(unittest.TestCase):
             self.assertEqual(TOOL.declared_skill_license(root), TOOL.GENERATED_SKILL_LICENSE)
 
     def test_generated_checker_rejects_an_invalid_authenticated_skill_license(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            outputs = TOOL.render("Example", ["opencode"], standalone=True)
-            manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
-            manifest["skillLicense"] = "Apache-2.0\nmalformed"
-            invalid_manifest = TOOL.dump_json(manifest)
-            outputs[TOOL.MANIFEST_PATH] = invalid_manifest
-            outputs[".repo-harness/check.py"] = TOOL.check_script(TOOL.digest_text(invalid_manifest))
-            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+        invalid_licenses = (
+            "Apache-2.0\nmalformed",
+            "MIT:",
+            "LicenseRef:injected",
+            "DocumentRef-example:LicenseRef-one:LicenseRef-two",
+            "(" * 450 + "MIT" + ")" * 450,
+        )
+        for license_id in invalid_licenses:
+            with self.subTest(license_id=license_id), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                outputs = TOOL.render("Example", ["opencode"], standalone=True)
+                manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+                manifest["skillLicense"] = license_id
+                invalid_manifest = TOOL.dump_json(manifest)
+                outputs[TOOL.MANIFEST_PATH] = invalid_manifest
+                outputs[".repo-harness/check.py"] = TOOL.check_script(TOOL.digest_text(invalid_manifest))
+                TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
 
-            checked = subprocess.run(
-                [sys.executable, str(root / ".repo-harness/check.py")],
-                cwd=root,
-                capture_output=True,
-                text=True,
-            )
-            self.assertNotEqual(checked.returncode, 0)
-            self.assertIn("unexpected generated skill license", checked.stderr)
+                checked = subprocess.run(
+                    [sys.executable, str(root / ".repo-harness/check.py")],
+                    cwd=root,
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertNotEqual(checked.returncode, 0)
+                self.assertIn("unexpected generated skill license", checked.stderr)
 
     def test_check_uses_the_product_license_without_a_license_parameter(self):
         self.assertNotIn("license_id", inspect.signature(TOOL.check).parameters)
@@ -4914,9 +5059,9 @@ class GeneratedCoreTests(unittest.TestCase):
                 self.assertIn(f'license: "{license_id}"\n', generated)
 
     def test_colon_bearing_license_is_structurally_quoted(self):
-        outputs = TOOL.render("Example", [], "MIT: injected")
+        outputs = TOOL.render("Example", [], "DocumentRef-example:LicenseRef-injected")
         generated = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
-        self.assertIn('license: "MIT: injected"\n', generated)
+        self.assertIn('license: "DocumentRef-example:LicenseRef-injected"\n', generated)
 
     def test_safe_project_filename(self):
         self.assertEqual(TOOL.normalize_project_name("  ACME / Portal  "), "acme-portal")

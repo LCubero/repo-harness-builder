@@ -21,7 +21,10 @@ LOCAL_STATE_IGNORE_DIRECTIVES = ('/.repo-harness/tmp/', '/.repo-harness/archive/
 REPORT_LANGUAGES = {"english", "espanol"}
 DOCUMENTATION_LANGUAGES = {"en", "es"}
 RUNTIMES = {"claude-code", "opencode", "pi"}
-SPDX_EXPRESSION = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+:() -]*")
+SPDX_IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+-]*\Z")
+SPDX_EXTERNAL_IDENTIFIER = re.compile(
+    r"DocumentRef-[A-Za-z0-9][A-Za-z0-9.-]*:LicenseRef-[A-Za-z0-9][A-Za-z0-9.-]*\Z"
+)
 SKILL_SURFACES = {
     "claude-code": ".claude/skills/{name}/SKILL.md",
     "opencode": ".opencode/skills/{name}/SKILL.md",
@@ -32,6 +35,55 @@ COMMAND_SURFACES = {
     "opencode": ("commands", ".opencode/commands/{name}.md"),
     "pi": ("prompts", ".pi/prompts/{name}.md"),
 }
+
+
+def valid_spdx_expression(value: str) -> bool:
+    """Validate the supported SPDX identifier, WITH, AND, OR, and parentheses grammar."""
+    if not isinstance(value, str) or not value or value != value.strip() or any(character.isspace() and character != " " for character in value):
+        return False
+    tokens = re.findall(r"\(|\)|[^ ()]+", value)
+    if " ".join(tokens).replace("( ", "(").replace(" )", ")") != value:
+        return False
+
+    def is_identifier(token: str) -> bool:
+        return token not in ('AND', 'OR', 'WITH') and (
+            SPDX_IDENTIFIER.fullmatch(token) is not None or SPDX_EXTERNAL_IDENTIFIER.fullmatch(token) is not None
+        )
+
+    depth = 0
+    expect_primary = True
+    can_have_exception = False
+    position = 0
+    while position < len(tokens):
+        token = tokens[position]
+        if expect_primary:
+            if token == "(":
+                depth += 1
+                if depth > 128:
+                    return False
+                can_have_exception = False
+            elif is_identifier(token):
+                expect_primary = False
+                can_have_exception = True
+            else:
+                return False
+        elif token == "WITH":
+            position += 1
+            if not can_have_exception or position >= len(tokens) or not is_identifier(tokens[position]):
+                return False
+            can_have_exception = False
+        elif token in {"AND", "OR"}:
+            expect_primary = True
+            can_have_exception = False
+        elif token == ")":
+            if depth == 0:
+                return False
+            depth -= 1
+            can_have_exception = False
+        else:
+            return False
+        position += 1
+    return not expect_primary and depth == 0
 
 
 def comparable(text: str) -> str:
@@ -100,7 +152,7 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         raise ValueError("unexpected integration mode")
     if manifest["writeSemantics"] != "additive-create-with-bounded-root-append":
         raise ValueError("unexpected write semantics")
-    if not isinstance(manifest["skillLicense"], str) or SPDX_EXPRESSION.fullmatch(manifest["skillLicense"]) is None:
+    if not valid_spdx_expression(manifest["skillLicense"]):
         raise ValueError("unexpected generated skill license")
     if manifest["localState"] != LOCAL_STATE:
         raise ValueError("unexpected local-state taxonomy")
@@ -133,7 +185,7 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
     for name, families in commands.items():
         if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
             raise ValueError("invalid canonical command name")
-        if not isinstance(families, dict) or not families or not set(families) <= {"commands", "prompts"}:
+        if not isinstance(families, dict) or (not families and runtimes) or not set(families) <= {"commands", "prompts"}:
             raise ValueError("unexpected canonical command families")
         for relative in families.values():
             safe_relative(relative)
