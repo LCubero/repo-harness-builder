@@ -135,5 +135,6 @@
     "pi"
   ],
   "schemaVersion": "3.0",
+  "skillLicense": "MIT",
   "writeSemantics": "additive-create-with-bounded-root-append"
 }

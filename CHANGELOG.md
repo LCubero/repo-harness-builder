@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-03
+
+- Implemented and verified the authorized `RH-W-0061` work. Non-MIT generated-skill licenses now round-trip through authenticated `skillLicense` manifest state, generated strict schema validation, and canonical builder checking; unauthenticated manifest changes cannot select expected bytes. The final review correction also rejects reserved `AND`, `OR`, and `WITH` tokens wherever the supported SPDX grammar requires an identifier or exception identifier. Its focused RED produced 6 expected subtest failures; the corrected test and all 15 generated-skill license tests pass. Integrated and standalone self-tests pass, generated checker and canonical check report `current` with 0 writes, projections are maintained by validated self-hosted apply, and the latest canonical suite result is 492 passed with 9 skipped. The wrapper-enabled suite was not rerun because its known unrelated wording failure belongs to `command/repo-harness-builder.md`. Commit `d340b0d0f2b954072a987c41b86ed8528cce9222` and [PR #158](https://github.com/LCubero/repo-harness-builder/pull/158) provide stable review-delivery identity; the PR links issue #94 through `Closes #94`. `RH-W-0061` remains `active` pending verified merge and issue closure.
+
 ## 2026-09-02
 
 - Commit `d500f8c` recorded the earlier current-state correction: the deferred-record count was aligned with the roadmap owner, and the prior synchronized revision was replaced by `3b7054082cfe4a5097a2fe7a3f177454cabd8b69`, which matched the pre-commit Git evidence but became stale when that correction commit was created. This correction removes the dynamic synchronized-revision claim without replacing it with another SHA, preserves historical commit anchors, and records the prior hash inventory as obsolete under `RH-W-0086`. No roadmap lifecycle, product source, tests, generated projections, manifest, checker, approved execution order, or `RH-W-0086` status changed.
