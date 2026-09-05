@@ -1,8 +1,32 @@
 # Plan de implementacion RH-W-0071
 
-> **Estado: aprobado por el propietario el 2026-08-30 y reconciliado con la arquitectura LLM-first aprobada el 2026-08-30. La forma de persistencia esta resuelta. RH-W-0071 sigue `proposed`, y la implementacion requiere autorizacion separada despues de resolver las dos compuertas previas restantes.**
+> **Estado: implementacion solo de sesion autorizada por separado el 2026-09-05 bajo el issue #160. El contrato local esta implementado; verificacion y revision nativa siguen separadas de la entrega. RH-W-0071 sigue `proposed` porque la persistencia compartida esta aplazada y el requisito original integro no esta satisfecho.**
 
 Derivado del [diseno RH-W-0071](rh-w-0071-design.md) aprobado por el propietario y del Plan 20 de la hoja de ruta. Su par en ingles es [rh-w-0071-implementation-plan.md](../../repo-harness/rh-w-0071-implementation-plan.md).
+
+## Alcance inmediato vigente: presentacion solo de sesion
+
+El alcance inmediato es presentacion explicita `adhd-friendly` o `standard` dentro del propietario existente del contrato de respuesta RH-W-0067. `standard` es el valor predeterminado; solo una instruccion explicita verificada de la sesion actual activa la presentacion ADHD-friendly o la restablece a standard. No se puede inferir activacion de diagnostico, estilo de escritura, conducta, memoria, prosa del repositorio, salida de herramientas ni estado de runtime. Una sesion nueva comienza en standard, sin leer ni escribir preferencias.
+
+La presentacion ADHD-friendly usa una respuesta o accion inicial concisa, bloques pequenos, pasos acotados utiles, una pregunta necesaria por vez y detalle progresivo. Pedir mas detalle amplia la respuesta sin cambiar el modo. Se conservan integramente seguridad, autoridad, evidencia, incertidumbre, contradicciones, preguntas bloqueantes y contexto tecnico necesarios; la brevedad nunca los anula. Se mantienen los requisitos de forma aprobados mas abajo dentro de este limite de sesion, sin afirmaciones clinicas ni estimaciones de tiempo no derivables.
+
+El propietario delego la decision de alcance despues de una verificacion de solo lectura respaldada por fuente: `resolve_conversation_language()` es resolucion pura de idioma, no almacenamiento ni transporte de preferencias; `localState` de RH-W-0051 es una base de namespaces, no una API consumidora. La persistencia compartida excederia la necesidad inmediata demostrada. Se reutiliza el propietario de respuesta existente, sin otro propietario, API de runtime, archivo de estado, entrevista de preferencias del builder ni coordinacion Gentle duplicada.
+
+**Limite de autorizacion y verificacion:** el propietario autorizo por separado la implementacion solo de sesion despues de la revision documental, con issue #160 y rama `feat/rh-w-0071-session-response-mode`. `rule_outputs()` amplía el propietario existente de respuesta; la regla autoalojada de propiedad humana se integra explicitamente. No se implementan parser, almacenamiento, API de transporte, entrevista de preferencias ni ejes dependientes. Las pruebas de texto contractual no demuestran cumplimiento del modelo en vivo. No ejecutar comandos historicos de persistencia ni elegir sus cortes de entrega.
+
+### Evidencia de implementacion local
+
+`SessionResponseModeContractTests` verifica instrucciones de seleccion, forma, limites, propietario unico, presupuesto, ausencia de preferencias generadas e instrucciones identicas en renders standalone/integrado y en ingles/espanol/bilingue. El comando enfocado `python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.SessionResponseModeContractTests -v` ejecuto 3 pruebas: RED produjo 27 fallos de asercion esperados en 0.007s; GREEN paso en 0.004s. Son recibos del contrato de instrucciones, no observaciones de transiciones de modo en runtime. Las comprobaciones finales de proyecciones y la suite completa requerida por `CONTRIBUTING.md` siguen a toda normalizacion de fuente; sus recibos finales corresponden al informe de implementacion. La revision nativa queda delegada al agente padre y no se afirma aqui.
+
+## Persistencia compartida aplazada: acuerdo conservado
+
+La persistencia compartida de tres ejes queda aplazada, no cancelada ni satisfecha por la revision solo de sesion. Se conserva el contrato Markdown estructurado aprobado en `.repo-harness/state/preferences/user-preferences.md` que aparece abajo; el escalar JSON anterior nunca se implemento. RH-W-0071 conserva persistencia compartida y `response-structure`, RH-W-0082 conserva `explanation-style` y RH-W-0018 conserva `interaction-behavior`, con sus dependencias intactas. Esta revision no implementa los ejes dependientes ni absorbe consentimiento o procedencia de idioma.
+
+La propiedad y API del lector o transporte de runtime nombrado y la agrupacion original de entrega siguen sin resolver solo para la persistencia aplazada. No bloquean la implementacion solo de sesion autorizada por separado. Reabrir persistencia exige autorizacion explicita del propietario, evidencia actual de fuente y reconciliar esas compuertas y propietarios dependientes antes de implementar. Aqui no se selecciona arquitectura de transporte ni agrupacion de entrega nueva.
+
+## Plan historico aprobado de persistencia (no son instrucciones vigentes de ejecucion)
+
+Todo lo que sigue conserva el plan mas amplio aprobado el 2026-08-30, incluidas compuertas, cortes, comandos de pruebas, criterios de aceptacion y rollback. Es guia historica y aplazada, no un plan ejecutable para el alcance inmediato. Las secciones vigentes anteriores reemplazan, para el trabajo solo de sesion, sus afirmaciones de que toda implementacion espera las compuertas de persistencia. No se afirma completar el requisito original integro.
 
 ## Evidencia del repositorio confirmada antes de planear
 
@@ -19,7 +43,7 @@ Reconfirmar estas afirmaciones al implementar en vez de arrastrar la instantanea
 
 ### Una correccion que lleva este plan
 
-El Plan 20 dice que "la completada RH-W-0051 implemento la reserva `state/preferences/` que este plan consume", y el registro RH-W-0071 dice que "la reserva de almacenamiento de preferencias de RH-W-0051 esta probada". Ambas exageran. RH-W-0051 reservo `state/`, no `state/preferences/`.
+La redaccion anterior del Plan 20 y del registro RH-W-0071 exageraba la reserva como `state/preferences/`. Se conserva aqui la distincion corregida: RH-W-0051 reservo `state/`, no `state/preferences/`.
 
 Nada se rompe: `/.repo-harness/state/` en `.gitignore` ya cubre toda subruta. RH-W-0051 posee ruta, contencion, ignore Git y mecanica de estado local; RH-W-0071 posee persistencia compartida y semantica de estructura de respuesta. `state/preferences/` sigue dentro de un namespace reservado e ignorado.
 

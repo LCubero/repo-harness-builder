@@ -1,6 +1,10 @@
 # Diseno RH-W-0071 de estructura de respuesta ADHD-friendly
 
-> **Estado: DISENO APROBADO POR EL PROPIETARIO. La implementacion no esta autorizada por separado.**
+> **Estado: DISENO HISTORICO APROBADO POR EL PROPIETARIO. El subconjunto solo de sesion fue autorizado por separado e implementado localmente el 2026-09-05 bajo el issue #160; el plan revisado contiene evidencia contractual. La persistencia compartida sigue aplazada, sin afirmar cumplimiento del requisito original integro ni entrega.**
+
+El estado de implementacion vigente anterior reemplaza las afirmaciones de autorizacion pendiente en la revision de alcance y diseno historico conservados a continuacion.
+
+**Revision de alcance vigente, 2026-09-05:** la revision delegada por el propietario termino, reemplaza la pausa y reduce el trabajo inmediato a presentacion explicita solo de sesion. El [plan de implementacion revisado](rh-w-0071-implementation-plan.md) posee ese limite vigente. El diseno mas amplio aprobado que sigue se conserva como contexto historico y acuerdo de persistencia compartida aplazada, no como instrucciones vigentes de ejecucion ni comportamiento implementado. Sus requisitos de entrevista del builder, persistencia, pregunta de alcance, transporte y entrega no condicionan el trabajo inmediato solo de sesion. La persistencia compartida queda aplazada, no cancelada; las dependencias RH-W-0082/RH-W-0018 permanecen. Se requiere autorizacion separada de implementacion y el requisito original integro no esta satisfecho.
 
 ## Contrato de revision
 

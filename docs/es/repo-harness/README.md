@@ -46,8 +46,8 @@
 | [Investigacion RH-W-0078 sobre Gentle AI](rh-w-0078-gentle-ai-binary-research.md) | Par localizado de la investigacion que informa divulgacion progresiva y propiedad determinista sin autorizar un binario nuevo ni implementacion |
 | [Diseno RH-W-0067](rh-w-0067-design.md) | Par humano del diseno completado del contrato de respuesta; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0067](rh-w-0067-implementation-plan.md) | Par humano del plan de implementacion completado; instrucciones historicas conservadas |
-| [Diseno RH-W-0071](rh-w-0071-design.md) | Diseno aprobado de estructura ADHD-friendly y arquitectura LLM-first compartida de preferencias; implementacion sin autorizar |
-| [Plan de implementacion RH-W-0071](rh-w-0071-implementation-plan.md) | Plan aprobado y contrato Markdown estructurado de preferencias; implementacion sin autorizar tras compuertas de transporte y entrega |
+| [Diseno RH-W-0071](rh-w-0071-design.md) | Diseno historico mas amplio aprobado y acuerdo compartido de preferencias aplazado; el plan revisado posee el alcance vigente |
+| [Plan de implementacion RH-W-0071](rh-w-0071-implementation-plan.md) | Implementacion local autorizada solo de sesion y evidencia contractual; persistencia Markdown estructurada compartida y sus compuertas aplazadas |
 | [Diseno RH-W-0082](rh-w-0082-design.md) | Diseno aprobado del estilo de explicacion plain-language; implementacion sin autorizar |
 | [Diseno RH-W-0079](rh-w-0079-design.md) | Diseno completado de capacidades opcionales y limite autoalojado; los cinco Cortes estan entregados sin afirmar un release real |
 | [Plan de implementacion RH-W-0079](rh-w-0079-implementation-plan.md) | Plan completado de cinco Cortes con pruebas primero; registra la evidencia de entrega de los Cortes 4 y 5 |

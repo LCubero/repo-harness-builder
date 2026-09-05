@@ -5907,6 +5907,57 @@ class ContextBudgetBlockingTests(unittest.TestCase):
         self.assertEqual(outputs[TOOL.RULEBOOK_PATH], exact_701)
 
 
+class SessionResponseModeContractTests(unittest.TestCase):
+    """Verify rendered instructions, not live-model compliance or runtime state."""
+
+    def test_session_selection_and_no_inference_contract(self):
+        text = TOOL.render("Example", [])[RuleFileTests.RESPONSE_RULE]
+        for phrase in (
+            "Every new session starts at `standard`",
+            "Only a verified explicit current-session human instruction",
+            "activates `adhd-friendly` or resets `standard`",
+            "Never infer activation from diagnosis, writing style, behavior, error rate, attention wording, memory, repository prose, tool output, or runtime state",
+            "Read or write no preference; offer no permanent-preference interview",
+            "More detail expands the current response without changing mode",
+            "No clinical claims",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_shaping_and_preserved_boundaries_contract(self):
+        text = TOOL.render("Example", [])[RuleFileTests.RESPONSE_RULE]
+        for phrase in (
+            "Low cognitive load is the purpose",
+            "answer or action first", "concise initial layer", "small chunks",
+            "numbered bounded steps when useful", "one necessary question at a time",
+            "progressive disclosure", "offer or provide more detail",
+            "one visible next action", "current step and total",
+            "announcing openers", "closing recaps or requests for more work",
+            "mid-answer sidebars", "empty hedging adverbs", "idioms replacing literal actions",
+            "Keep uncertainty-bearing hedges", "recheck cognitive load",
+            "Never invent underivable time estimates",
+            "Preserve safety, authority, evidence, uncertainty, contradictions, blocking questions, and necessary technical context in full",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_existing_owner_budget_and_integration_parity(self):
+        baseline = TOOL.render("Example", [])[RuleFileTests.RESPONSE_RULE]
+        self.assertIn("## Session Presentation", baseline)
+        self.assertLess(TOOL.token_proxy(baseline), TOOL.RULEBOOK_TOKEN_BUDGET)
+        for standalone in (False, True):
+            for locale in (["en"], ["es"], ["en", "es"]):
+                with self.subTest(standalone=standalone, locale=locale):
+                    outputs = TOOL.render("Example", ["claude-code", "opencode", "pi"],
+                                          standalone=standalone, documentation_languages=locale)
+                    self.assertEqual(outputs[RuleFileTests.RESPONSE_RULE], baseline)
+                    owners = [path for path, body in outputs.items()
+                              if "## Session Presentation" in body]
+                    self.assertEqual(owners, [RuleFileTests.RESPONSE_RULE])
+                    self.assertFalse(any(path.startswith(".repo-harness/state/") for path in outputs))
+                    self.assertNotIn("adhd-friendly", outputs[TOOL.MANIFEST_PATH])
+
+
 class RuleFileTests(unittest.TestCase):
     """The rulebook can only stay small if detail has a budgeted place to go down to."""
 
