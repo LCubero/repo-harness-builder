@@ -1,6 +1,6 @@
 # Alcance propuesto RH-W-0083
 
-**Estado: `proposed`; alcance bilingue aprobado por el propietario tal como esta escrito.** Este documento define el limite aprobado de la correccion. Aprobar el alcance no autoriza implementacion de producto, cambio de pruebas, cambio de proyecciones generadas, avance de ciclo de vida ni entrega; la implementacion y los cambios enfocados de pruebas quedan aplazados para otra sesion y exigen autorizacion explicita separada.
+**Estado: `completed`; alcance bilingue implementado bajo autorizacion separada del propietario el 2026-09-04.** Este documento conserva el limite aprobado de la correccion y su historia previa a la implementacion. No se afirma issue, commit, push, PR, publicacion ni entrega Git.
 
 ## Obligacion inmediata
 
@@ -10,7 +10,7 @@ La redaccion debe reforzar al propietario existente en el punto de accion. No de
 
 ## Pruebas de aceptacion
 
-La implementacion futura queda limitada a aserciones enfocadas de tiempo de desarrollo que:
+La implementacion quedo limitada a aserciones enfocadas de tiempo de desarrollo que:
 
 1. fallen antes de la correccion porque cada Output Contract diario generado carece de la obligacion inmediatamente anterior a la redaccion;
 2. pasen solo cuando cada Output Contract diario generado lleve esa obligacion exactamente una vez y siga nombrando la ruta canonica de la regla;
@@ -28,6 +28,6 @@ No se exige evaluacion de modelo vivo ni observador de respuestas en runtime. La
 
 ## Evidencia y ciclo de vida
 
-Hecho verificado del repositorio: la hoja de ruta canonica registra la referencia al contrato de respuesta despues de Execution Steps, dentro de cada Output Contract diario, y registra que las aserciones existentes inspeccionan texto generado y propiedad en vez de respuestas. Tambien conserva la ocurrencia posterior de mezcla del contrato de aprobacion como evidencia dentro del mismo grupo raiz sin crear una unidad nueva. Decision verificada del propietario: el hallazgo de `RH-W-0084` de que la distancia entre la instruccion y el punto de accion predice su aplicacion queda aceptado aqui como control, por lo que el propietario existente del contrato de respuesta debe reforzarse inmediatamente antes de redactar respuestas activadas. Este alcance bilingue permanece aprobado tal como esta escrito, mientras la implementacion y los cambios enfocados de pruebas siguen sin autorizacion separada.
+Hecho verificado del repositorio antes de implementar: la hoja de ruta canonica registraba la referencia al contrato de respuesta despues de Execution Steps, dentro de cada Output Contract diario, y registraba que las aserciones existentes inspeccionaban texto generado y propiedad en vez de respuestas. Tambien conserva la ocurrencia posterior de mezcla del contrato de aprobacion como evidencia dentro del mismo grupo raiz sin crear una unidad nueva. Decision verificada del propietario: el hallazgo de `RH-W-0084` de que la distancia entre la instruccion y el punto de accion predice su aplicacion fue aceptado aqui como control. Bajo autorizacion separada, la referencia compartida se reforzo y se proyecto mediante el renderer ordinario de mantenimiento sin cambiar el propietario ni la sintaxis del contrato de respuesta.
 
-`RH-W-0083` permanece `proposed`. Aprobar el alcance no lo vuelve `ready`, no inicia implementacion ni afirma finalizacion o entrega.
+`RH-W-0083` esta `completed`. La implementacion y la verificacion proporcional estan completas; la entrega queda fuera de esta unidad de trabajo.

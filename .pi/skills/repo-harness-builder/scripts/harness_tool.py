@@ -1422,9 +1422,9 @@ def frontmatter(name: str, description: str, source: str, license_id: str) -> st
 
 
 RESPONSE_CONTRACT_REFERENCE = (
-    "Response shaping: for any notice, pending action, question, approval, visible next action, or "
-    "contextual explanation, apply `.repo-harness/rules/response-contract.md` to the agent's own "
-    "reply and reported output."
+    "Response shaping: immediately before composing any reply or reported output that carries a notice, "
+    "pending action, question, approval, visible next action, or contextual explanation, load and apply "
+    "`.repo-harness/rules/response-contract.md`."
 )
 
 

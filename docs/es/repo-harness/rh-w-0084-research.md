@@ -2,7 +2,7 @@
 
 ## Estado y proposito
 
-**Estado: investigacion ejecutada el 2026-08-31 bajo autoridad de ejecucion otorgada por el propietario, dentro de los siete limites de `RH-W-0012`.** Este documento registra hallazgos y los enruta a duenios existentes. No cambia ninguna superficie generada, codigo de producto, prueba, manifiesto ni verificador, y no avanza el ciclo de vida de ninguna otra unidad. La conclusion de refuerzo esta aceptada como control bajo `RH-W-0083`, pero implementarla aun exige autorizacion explicita separada; toda otra conclusion sigue necesitando autorizacion separada antes de convertirse en control.
+**Estado: investigacion ejecutada el 2026-08-31 bajo autoridad de ejecucion otorgada por el propietario, dentro de los siete limites de `RH-W-0012`.** Este documento registra hallazgos y los enruta a duenios existentes. La conclusion de refuerzo fue aceptada y ahora esta implementada bajo `RH-W-0083`; toda otra conclusion sigue necesitando autorizacion separada antes de convertirse en control.
 
 **Clases de evidencia** segun la escala del [alcance](rh-w-0084-scope.md) de `RH-W-0084`: la clase 1 son las mediciones propias de este repositorio, la clase 2 es documentacion primaria del duenio del modelo, runtime o estandar, la clase 3 es investigacion revisada por pares o de organismo de estandares, y la clase 4 es material secundario, que nunca es un hecho del repositorio por si solo. Ninguna fuente de clase 4 se cita abajo.
 
@@ -69,7 +69,7 @@ Segun el alcance, una conclusion aceptada va a exactamente un duenio existente. 
 
 | Hallazgo | Duenio que informa | Que aporta y que no |
 | --- | --- | --- |
-| La distancia entre instruccion y punto de accion, no el enfasis, predice si una obligacion se aplica | `RH-W-0083` | El propietario acepto este hallazgo como control: reforzar el propietario existente del contrato de respuesta inmediatamente antes de redactar respuestas activadas. `RH-W-0083` permanece `proposed`, y la implementacion y los cambios enfocados de pruebas siguen sin autorizacion separada. |
+| La distancia entre instruccion y punto de accion, no el enfasis, predice si una obligacion se aplica | `RH-W-0083` | El propietario acepto este hallazgo como control y autorizo por separado su implementacion con pruebas primero. El propietario existente del contrato de respuesta se carga y aplica ahora inmediatamente antes de redactar respuestas o salida informada activadas; `RH-W-0083` esta `completed`. |
 | "Minimal does not necessarily mean short", mas el desgaste de contexto como mecanismo | `RH-W-0076`, `RH-W-0078` | Da a sus incumplimientos medidos un mecanismo en vez de una afirmacion: el costo es recuperacion degradada, que escala con el contexto total cargado y no con un archivo cruzando un numero. **No** aporta un numero de reemplazo defendible, y nada de lo leido sostiene 1000, 1200 ni ningun otro tope. |
 | El principio y el final son posiciones privilegiadas; el medio no | `RH-W-0067`, `RH-W-0073` | Argumenta que donde se ubica una regla dentro de un contrato cargado es una variable real. No resuelve la discrepancia entre proveedores sobre que extremo debe ocupar una instruccion. |
 | La precedencia ordenada explicita y los limites de contenido no confiable son mecanismos establecidos de proveedor | `RH-W-0079`, `RH-W-0051` | Respalda la practica existente de nombrar precedencia y tratar la salida de herramientas como no confiable. No agrega ningun requisito nuevo. |

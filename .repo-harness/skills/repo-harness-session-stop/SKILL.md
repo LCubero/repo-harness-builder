@@ -102,7 +102,7 @@ Always report required continuity outcome separately from optional Git branch ou
 
 Deliver the complete Output Contract only after continuity is saved successfully. Return close outcome, required continuity outcome, optional Git branch outcome, completed work, decisions, unresolved issues, next steps, verified paths, documentation update result, memory result, classified Git state, proposed or completed work units, commit result, push result, transport receipts, safely-local state, and separately pending optional gates. When safe and relevant, ask exactly one blocking question and make it the final user-facing line.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
-Response shaping: for any notice, pending action, question, approval, visible next action, or contextual explanation, apply `.repo-harness/rules/response-contract.md` to the agent's own reply and reported output.
+Response shaping: immediately before composing any reply or reported output that carries a notice, pending action, question, approval, visible next action, or contextual explanation, load and apply `.repo-harness/rules/response-contract.md`.
 If continuity saving fails, surface the failure and do not claim successful continuity or a final handoff.
 
 ## References

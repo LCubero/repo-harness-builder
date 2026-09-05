@@ -6,7 +6,9 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-04
 
-- Completed the `RH-W-0084` research lifecycle after the owner accepted its reinforcement finding as a control under `RH-W-0083`: instruction distance from the action point predicts whether an obligation is applied, so the existing response-contract owner must be reinforced immediately before composing triggered replies. `RH-W-0083` remains `proposed`; implementation, product tests, generated projections, and runtime behavior remain unauthorized and unchanged. Every other finding remains separate under its named owner.
+- Implemented and verified `RH-W-0083` as one minimal test-first work unit. The single shared `RESPONSE_CONTRACT_REFERENCE` now requires every generated daily Output Contract to load and apply `.repo-harness/rules/response-contract.md` immediately before composing a triggered reply or reported output. The focused RED failed with three expected missing-reference subtests; focused GREEN passed the exact-reference assertion and preserved the response-syntax no-duplication and sole-owner checks. Maintenance apply returned `VALIDATED` for canonical, Claude, and OpenCode daily skills and all builder-package projections. The checker exposed three stale Pi daily skills omitted from that replacement owner set; exact canonical renderer outputs synchronized the established Pi projection family and restored `current`. No response syntax, second owner, observer, classifier, runtime refusal, telemetry, state, or dependency was added. `RH-W-0083` is `completed`; no issue, commit, push, PR, publication, or Git delivery is claimed.
+
+- Completed the `RH-W-0084` research lifecycle after the owner accepted its reinforcement finding as a control under `RH-W-0083`: instruction distance from the action point predicts whether an obligation is applied, so the existing response-contract owner must be reinforced immediately before composing triggered replies. That control is now implemented by the completed `RH-W-0083` work recorded above. Every other finding remains separate under its named owner.
 
 ## 2026-09-03
 

@@ -1,6 +1,6 @@
 # RH-W-0083 Proposed Scope
 
-**Status: proposed; bilingual scope owner-approved as written.** This document defines the approved correction boundary. Scope approval authorizes no product implementation, test change, generated projection change, lifecycle advancement, or delivery; implementation and focused test changes are deferred to another session and require separate explicit authorization.
+**Status: completed; bilingual scope implemented under separate owner authorization on 2026-09-04.** This document retains the approved correction boundary and its pre-implementation history. No issue, commit, push, PR, publication, or Git delivery is claimed.
 
 ## Immediate Obligation
 
@@ -10,7 +10,7 @@ The wording must reinforce the existing owner at the action point. It must not c
 
 ## Acceptance Tests
 
-Future implementation is limited to focused development-time assertions that:
+Implementation was limited to focused development-time assertions that:
 
 1. fail before the correction because every generated daily Output Contract lacks the immediate-before-composing obligation;
 2. pass only when each generated daily Output Contract carries that obligation exactly once and still names the canonical rule path;
@@ -28,6 +28,6 @@ No live-model evaluation or runtime reply observer is required. The tests prove 
 
 ## Evidence And Lifecycle
 
-Verified repository fact: the canonical roadmap records the response-contract reference after Execution Steps, inside each daily Output Contract, and records that existing assertions inspect generated text and ownership rather than replies. It also retains the later approval-contract mixing occurrence as evidence in the same root cluster without creating a new work item. Verified owner decision: the `RH-W-0084` finding that instruction distance from the action point predicts application is accepted as a control here, so the existing response-contract owner must be reinforced immediately before composing triggered replies. This bilingual scope remains approved as written, while implementation and focused test changes remain separately unauthorized.
+Verified repository fact before implementation: the canonical roadmap recorded the response-contract reference after Execution Steps, inside each daily Output Contract, and recorded that existing assertions inspected generated text and ownership rather than replies. It also retains the later approval-contract mixing occurrence as evidence in the same root cluster without creating a new work item. Verified owner decision: the `RH-W-0084` finding that instruction distance from the action point predicts application was accepted as a control here. Under separate authorization, the shared reference was strengthened and projected through the ordinary maintenance renderer without changing the response-contract owner or syntax.
 
-`RH-W-0083` remains `proposed`. Scope approval does not make it `ready`, start implementation, or claim completion or delivery.
+`RH-W-0083` is `completed`. Implementation and proportional verification are complete; delivery remains outside this work unit.

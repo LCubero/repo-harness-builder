@@ -2,7 +2,7 @@
 
 ## Status and purpose
 
-**Lifecycle closure update, 2026-09-04: the owner accepted the reinforcement finding as a control under `RH-W-0083`, satisfying the roadmap advancement condition and completing `RH-W-0084`. `RH-W-0083` remains `proposed`, and implementation remains unauthorized. The research was executed on 2026-08-31 after `RH-W-0012` was reconciled and completed. The historical scope wording below is preserved as written.**
+**Lifecycle closure update, 2026-09-04: the owner accepted the reinforcement finding as a control under `RH-W-0083`, satisfying the roadmap advancement condition and completing `RH-W-0084`. The separately authorized `RH-W-0083` implementation is now completed. The research was executed on 2026-08-31 after `RH-W-0012` was reconciled and completed. The historical scope wording below is preserved as written.**
 
 **Status: proposed; bilingual scope owner-approved.** This scope frames auditable, LLM-first research only. Scope approval leaves `RH-W-0084` `proposed` and authorizes no external network or source read, product implementation, product test, generated surface, manifest, checker, or lifecycle advancement.
 
