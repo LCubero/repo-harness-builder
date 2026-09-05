@@ -1,6 +1,6 @@
 # Alcance propuesto RH-W-0083
 
-**Estado: `completed`; alcance bilingue implementado bajo autorizacion separada del propietario el 2026-09-04.** Este documento conserva el limite aprobado de la correccion y su historia previa a la implementacion. No se afirma issue, commit, push, PR, publicacion ni entrega Git.
+**Estado: `completed`; alcance bilingue implementado bajo autorizacion separada del propietario el 2026-09-04.** Este documento conserva el limite aprobado de la correccion y su historia previa a la implementacion. La implementacion se entrego despues bajo una excepcion de emergencia autorizada por separado; el [registro de la hoja de ruta](roadmap.md#rh-w-0083) posee esa evidencia. No existe issue ni PR.
 
 ## Obligacion inmediata
 
@@ -30,4 +30,4 @@ No se exige evaluacion de modelo vivo ni observador de respuestas en runtime. La
 
 Hecho verificado del repositorio antes de implementar: la hoja de ruta canonica registraba la referencia al contrato de respuesta despues de Execution Steps, dentro de cada Output Contract diario, y registraba que las aserciones existentes inspeccionaban texto generado y propiedad en vez de respuestas. Tambien conserva la ocurrencia posterior de mezcla del contrato de aprobacion como evidencia dentro del mismo grupo raiz sin crear una unidad nueva. Decision verificada del propietario: el hallazgo de `RH-W-0084` de que la distancia entre la instruccion y el punto de accion predice su aplicacion fue aceptado aqui como control. Bajo autorizacion separada, la referencia compartida se reforzo y se proyecto mediante el renderer ordinario de mantenimiento sin cambiar el propietario ni la sintaxis del contrato de respuesta.
 
-`RH-W-0083` esta `completed`. La implementacion y la verificacion proporcional estan completas; la entrega queda fuera de esta unidad de trabajo.
+`RH-W-0083` esta `completed`. La implementacion y la verificacion proporcional terminaron dentro de este alcance; la entrega Git posterior conservo una autorizacion y una accion separadas.
