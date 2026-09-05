@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-04
+
+- Se completo el ciclo de vida de investigacion de `RH-W-0084` despues de que el propietario aceptara su hallazgo de refuerzo como control bajo `RH-W-0083`: la distancia entre la instruccion y el punto de accion predice si se aplica una obligacion, por lo que el propietario existente del contrato de respuesta debe reforzarse inmediatamente antes de redactar respuestas activadas. `RH-W-0083` permanece `proposed`; su implementacion, pruebas de producto, proyecciones generadas y comportamiento de runtime siguen sin autorizacion y sin cambios. Todos los otros hallazgos permanecen separados bajo sus duenios nombrados.
+
 ## 2026-09-03
 
 - Se implemento, verifico y entrego `RH-W-0061`. Las licencias no MIT de skills generadas ahora completan la ida y vuelta mediante el estado autenticado `skillLicense` del manifest, la validacion estricta del schema en el checker generado y el check canonico del builder; los cambios no autenticados del manifest no pueden seleccionar bytes esperados. La correccion final de revision tambien rechaza los tokens reservados `AND`, `OR` y `WITH` donde la gramatica SPDX admitida requiere un identificador o identificador de excepcion. Su RED enfocado produjo 6 fallos esperados de subprueba; despues pasan la prueba corregida y las 15 pruebas de licencia de skills generadas. Los self-tests integrado y standalone pasan, checker generado y check canonico informan `current` con 0 escrituras, las proyecciones se mantienen mediante apply autoalojado validado y la suite canonica paso 492 pruebas con 9 omisiones sobre los bytes candidatos exactos. El [PR #158](https://github.com/LCubero/repo-harness-builder/pull/158), con punta final `a3559b67483baf83ea71e7de8290113feb1f35da`, se fusiono en `main` a las 2026-09-04T01:59:42Z como `077a8cd2859cb0df8931c6ee8ebb242827dc2a24`; el issue #94 enlazado se cerro automaticamente como `COMPLETED` a las 2026-09-04T01:59:43Z. `RH-W-0061` esta `completed` sin trabajo restante.

@@ -2,7 +2,7 @@
 
 ## Status and purpose
 
-**Status: research executed on 2026-08-31 under owner-granted execution authority, inside the seven `RH-W-0012` boundaries.** This document records findings and routes them to existing owners. It changes no generated surface, no product source, no test, no manifest, and no checker, and it advances no other unit's lifecycle. Every conclusion it reaches about this repository still needs separate authorization before it becomes a control.
+**Status: research executed on 2026-08-31 under owner-granted execution authority, inside the seven `RH-W-0012` boundaries.** This document records findings and routes them to existing owners. It changes no generated surface, no product source, no test, no manifest, and no checker, and it advances no other unit's lifecycle. The reinforcement conclusion is accepted as a control under `RH-W-0083`, but implementation still requires separate explicit authorization; every other conclusion still needs separate authorization before becoming a control.
 
 **Evidence classes** follow the `RH-W-0084` [scope](rh-w-0084-scope.md) ladder: class 1 is this repository's own measurements, class 2 is primary documentation from the model, runtime, or standards owner, class 3 is peer-reviewed or standards-body research, and class 4 is secondary material, which is never a repository fact on its own. No class 4 source is cited below.
 
@@ -65,11 +65,11 @@ Internal, and answered by the scope rather than by any source. No external evide
 
 ## Routing to existing owners
 
-Per the scope, an accepted conclusion goes to exactly one existing owner, and this document changes none of them.
+Per the scope, an accepted conclusion goes to exactly one existing owner. On 2026-09-04 the owner accepted the reinforcement finding as a control under `RH-W-0083`; all other findings remain separate under their named owners.
 
 | Finding | Owner it informs | What it offers, and what it does not |
 | --- | --- | --- |
-| Instruction distance from the action point, not emphasis, predicts whether an obligation is applied | `RH-W-0083` | Its measured defect, an obligation named in steps that complete before a reply is composed, matches finding 4 exactly. The evidence supports reinforcement at the action point for this specific case. It does not choose between wording, a development-time control, and an accepted limitation, which stays the owner's open question. |
+| Instruction distance from the action point, not emphasis, predicts whether an obligation is applied | `RH-W-0083` | The owner accepted this finding as a control: reinforce the existing response-contract owner immediately before composing triggered replies. `RH-W-0083` remains `proposed`, and implementation and focused test changes remain separately unauthorized. |
 | "Minimal does not necessarily mean short", plus context rot as the mechanism | `RH-W-0076`, `RH-W-0078` | Gives their measured breaches a mechanism instead of an assertion: cost is degraded recall, which scales with total loaded context, not with one file crossing a number. It does **not** supply a defensible replacement number, and nothing read supports 1000, 1200, or any other cap. |
 | Beginning and end are privileged positions; the middle is not | `RH-W-0067`, `RH-W-0073` | Argues that where a rule sits in a loaded contract is a real variable. It does not resolve the vendor disagreement about which end an instruction should occupy. |
 | Explicit ordered precedence and untrusted-content boundaries are established vendor mechanisms | `RH-W-0079`, `RH-W-0051` | Supports the existing practice of naming precedence and treating tool output as untrusted. It adds no new requirement. |

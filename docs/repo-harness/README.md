@@ -40,10 +40,10 @@
 | [rh-w-0073-design.md](rh-w-0073-design.md) | Completed rulebook budget enforcement design; historical design body retained |
 | [rh-w-0073-implementation-plan.md](rh-w-0073-implementation-plan.md) | Completed RH-W-0073 implementation plan; historical execution evidence retained |
 | [rh-w-0076-scope.md](rh-w-0076-scope.md) | Proposed correction scope for three unenforced declared limits; owner approval and implementation remain separately unauthorized |
-| [rh-w-0084-scope.md](rh-w-0084-scope.md) | Owner-approved LLM-first research scope; research execution is complete and the historical scope body is retained |
+| [rh-w-0084-scope.md](rh-w-0084-scope.md) | Completed owner-approved LLM-first research scope; historical scope body and lifecycle updates are retained |
 | [rh-w-0083-scope.md](rh-w-0083-scope.md) | Owner-approved immediate-before-response obligation and focused acceptance-test scope; implementation is deferred to another session and remains separately unauthorized |
 | [rh-w-0012-boundaries.md](rh-w-0012-boundaries.md) | Owner-accepted specification of the seven external-research safety boundaries RH-W-0012 had only named; completed, including the boundary 4 undated-source clause that first use surfaced |
-| [rh-w-0084-research.md](rh-w-0084-research.md) | Canonical primary-source evidence owner for LLM-first formats, sizes, paths, reinforcement, and forms; routes findings to existing owners and applies none |
+| [rh-w-0084-research.md](rh-w-0084-research.md) | Canonical primary-source evidence owner for LLM-first formats, sizes, paths, reinforcement, and forms; the reinforcement finding is accepted under RH-W-0083 while other findings remain with their owners |
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
 | [rh-w-0071-design.md](rh-w-0071-design.md) | Owner-approved ADHD-friendly response structure and shared LLM-first preference architecture; implementation remains unauthorized |

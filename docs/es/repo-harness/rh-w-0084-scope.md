@@ -2,7 +2,7 @@
 
 ## Estado y proposito
 
-**Actualizacion de cierre, 2026-08-31: la investigacion que encuadra este alcance ya se ejecuto y esta registrada en [rh-w-0084-research.md](rh-w-0084-research.md); `RH-W-0084` esta ahora `active`, y `RH-W-0012` esta reconciliado y `completed`. La redaccion historica de abajo se conserva tal cual.**
+**Actualizacion de cierre del ciclo de vida, 2026-09-04: el propietario acepto el hallazgo de refuerzo como control bajo `RH-W-0083`, satisfizo la condicion de avance de la hoja de ruta y completo `RH-W-0084`. `RH-W-0083` permanece `proposed` y la implementacion sigue sin autorizacion. La investigacion se ejecuto el 2026-08-31 despues de reconciliar y completar `RH-W-0012`. La redaccion historica de abajo se conserva tal cual.**
 
 **Estado: propuesto; alcance bilingue aprobado por el propietario.** Este alcance solo encuadra investigacion auditable y LLM-first. Aprobarlo deja `RH-W-0084` en `proposed` y no autoriza lectura externa de red o fuentes, implementacion de producto, pruebas de producto, superficie generada, manifiesto, checker ni avance de ciclo de vida.
 
