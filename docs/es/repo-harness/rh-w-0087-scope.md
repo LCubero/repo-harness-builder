@@ -1,6 +1,6 @@
 # Alcance propuesto RH-W-0087
 
-**Estado: completado.** Este documento aprobado por el propietario conserva el limite historico de la correccion minima de session-stop generado, implementada y verificada el 2026-09-04 sin entrega Git.
+**Estado: completado.** Este documento aprobado por el propietario conserva el limite historico de la correccion minima de session-stop generado, implementada y verificada el 2026-09-04. Las fases de redaccion del alcance e implementacion no autorizaron ni entregaron por si mismas cambios Git; el [registro de la hoja de ruta](roadmap.md#rh-w-0087) posee la evidencia exacta de la entrega posterior.
 
 ## Contrato generado exacto
 
@@ -35,4 +35,4 @@ El RED y el GREEN posterior demuestran el contrato de instrucciones generado y l
 
 Hecho verificado del repositorio: el parrafo de creacion de commit en session-stop generado ejecuta la comprobacion final del alcance preparado y luego dice `Then create the commit exactly once`; no contiene una prohibicion de atribucion de IA. Evidencia completada y verificada de `RH-W-0084`: la distancia entre la instruccion y el punto de accion, no el enfasis, predice si se aplica una obligacion. Decision humana: los commits creados por el harness generado deben obedecer la prohibicion exacta y el limite de pausa definidos aqui.
 
-El propietario aprobo este alcance bilingue y autorizo por separado su unica implementacion acotada con pruebas primero el 2026-09-04. El RED enfocado fallo solo porque faltaba la obligacion generada; el GREEN enfocado y la regresion relacionada de nueve pruebas pasaron, todas las proyecciones de runtime estan vigentes con cero escrituras del checker y `RH-W-0087` esta `completed`. No se afirma entrega Git.
+El propietario aprobo este alcance bilingue y autorizo por separado su unica implementacion acotada con pruebas primero el 2026-09-04. El RED enfocado fallo solo porque faltaba la obligacion generada; el GREEN enfocado y la regresion relacionada de nueve pruebas pasaron, todas las proyecciones de runtime estan vigentes con cero escrituras del checker y `RH-W-0087` esta `completed`. Esas fases historicas no autorizaron ni entregaron por si mismas cambios Git; la evidencia exacta de la entrega posterior se mantiene en el [registro de la hoja de ruta](roadmap.md#rh-w-0087).

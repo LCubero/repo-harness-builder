@@ -468,7 +468,7 @@ Human decision: approve or correct the implementation plan. Implementation requi
 
 ### Plan 31: RH-W-0087 generated commits exclude AI attribution trailers
 
-Readiness `completed`. Priority `P2`, dependencies none. The owner-approved bilingual [scope](rh-w-0087-scope.md) was implemented as one bounded test-first work unit on 2026-09-04; no Git delivery is claimed.
+Readiness `completed`. Priority `P2`, dependencies none. The owner-approved bilingual [scope](rh-w-0087-scope.md) was implemented as one bounded test-first work unit on 2026-09-04. The scope-writing and implementation phases did not themselves authorize or deliver Git changes; the record below owns the later exact delivery evidence.
 
 1. Preserve the exact requirement: generated harness behavior never proposes, appends, or creates any `Co-Authored-By` trailer, regardless of named identity, and never adds equivalent AI-authorship or AI-assistance attribution in a commit subject, body, or trailers. Named providers are examples, not a provider list.
 2. Keep human-authored commit metadata outside this unit. If an approved message for the commit being created contains prohibited attribution, pause rather than commit and never silently rewrite that message. Do not rewrite history or inspect unrelated commits.
@@ -477,7 +477,7 @@ Readiness `completed`. Priority `P2`, dependencies none. The owner-approved bili
 5. Synchronize canonical generated output and all supported Claude Code, OpenCode, and Pi runtime projections through the existing renderer and checker ownership model.
 6. Add no history tooling, general trailer parser, binary, schema, manifest or checker state, provider list, AI detector or classifier, commit hook, or duplicate rule. Do not implement concurrently with Plan 18.
 
-Completed under separate explicit owner implementation authorization; the steps above remain historical execution evidence.
+Completed under separate explicit owner implementation authorization; the steps above remain historical execution evidence and do not themselves authorize or claim the later Git delivery.
 
 ### Not plannable yet
 
@@ -527,14 +527,14 @@ Five plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Priority | P2: unwanted authorship metadata can misrepresent a commit and must be prevented, but no observed bad commit or consumer failure is recorded and product behavior remains otherwise intact. |
 | Dependencies | none. Coordinate with `RH-W-0068`, which retains the rest of generated session-stop closure and Git-route behavior, without merging. Reuse the completed `RH-W-0084` finding that an obligation belongs near its action point. |
 | Status | completed |
-| Completed work | Registered and approved the bilingual [scope](rh-w-0087-scope.md), then implemented it under separate owner authorization as one test-first work unit. The generated session-stop imperative appears exactly once immediately before commit creation; focused RED failed only on its absence, focused GREEN and 9 related regressions passed, maintenance apply returned `VALIDATED`, and all projections are checker-`current` with 0 writes. |
+| Completed work | Registered and approved the bilingual [scope](rh-w-0087-scope.md), then implemented it under separate owner authorization as one test-first work unit. The generated session-stop imperative appears exactly once immediately before commit creation; focused RED failed only on its absence, focused GREEN and 9 related regressions passed, maintenance apply returned `VALIDATED`, and all projections are checker-`current` with 0 writes. The exact reviewed 22-path work unit was later delivered as commit `4742da95aae0807231e115f0dd9acce877a04d66` by an explicitly owner-authorized emergency push directly to `main` after the normal issue-first route was blocked by the absence of authoritative YAML Issue Forms. Local `main` and `origin/main` were synchronized at 0 ahead and 0 behind after push. No issue, focused branch, PR, merge, tag, or release exists for this delivery. |
 | Remaining work | none |
 | Additions | One concise generated-session-stop obligation preventing the workflow from proposing, appending, or creating prohibited attribution and requiring a pause for a changed approved message instead of silent rewriting or committing. |
-| Exclusions | No parser, classifier, provider list, hook, history scan or rewrite, manifest or checker state, unrelated refactor, Git index mutation, commit, delivery, issue, pull request, release, or publication. No claim that existing commits contain prohibited trailers. Human-authored metadata remains outside generated workflow behavior. |
+| Exclusions | The scope-writing and implementation phases authorized no parser, classifier, provider list, hook, history scan or rewrite, manifest or checker state, unrelated refactor, Git index mutation, commit, delivery, issue, pull request, release, or publication. The later owner-authorized emergency delivery did not broaden product scope. No claim that existing commits contain prohibited trailers. Human-authored metadata remains outside generated workflow behavior. |
 | Deferrals | none. |
 | Rejections | Rejected treating host-level agent policy as delivered product behavior. Rejected inventing an observed bad commit, rewriting history, or broadening this into general commit-message policy. |
 | Evidence | Verified fact: repository policy prohibits AI attribution for this host, but the generated product contract has no equivalent rule. Verified fact: generated session-stop performs its final staged-scope check immediately before creating exactly one commit, making that the narrow future enforcement point. Supported inference from completed `RH-W-0084`: placing the obligation immediately before commit creation is more reliable than a distant general rule. Human decision: generated commits must never add the named or equivalent AI-attribution trailers. |
-| Decision history | 2026-09-04: registered as `proposed`; the bilingual scope was written and approved separately; the owner then explicitly authorized the bounded implementation, whose verified completion advanced the record to `completed`. |
+| Decision history | 2026-09-04: registered as `proposed`; the bilingual scope was written and approved separately; the owner then explicitly authorized the bounded implementation, whose verified completion advanced the record to `completed`. After the issue-first route was blocked by absent authoritative YAML Issue Forms, the owner explicitly authorized the emergency direct-`main` commit-and-push outcome recorded above. |
 | Next advancement condition | none. |
 
 ### RH-W-0086

@@ -1,6 +1,6 @@
 # RH-W-0087 Proposed Scope
 
-**Status: completed.** This owner-approved document retains the historical boundary for the smallest generated-session-stop correction, implemented and verified on 2026-09-04 without Git delivery.
+**Status: completed.** This owner-approved document retains the historical boundary for the smallest generated-session-stop correction, implemented and verified on 2026-09-04. The scope-writing and implementation phases did not themselves authorize or deliver Git changes; the [roadmap record](roadmap.md#rh-w-0087) owns the exact later delivery evidence.
 
 ## Exact Generated Contract
 
@@ -35,4 +35,4 @@ The RED and later GREEN prove the generated instruction contract and projection 
 
 Verified repository fact: the generated session-stop commit-creation paragraph performs the final staged-scope check and then says `Then create the commit exactly once`; it contains no AI-attribution prohibition. Verified completed evidence from `RH-W-0084`: instruction distance from the action point, rather than emphasis, predicts whether an obligation is applied. Human decision: generated harness commits must obey the exact prohibition and pause boundary defined here.
 
-The owner approved this bilingual scope and separately authorized its one bounded test-first implementation on 2026-09-04. The focused RED failed only because the generated obligation was absent; focused GREEN and the related nine-test regression passed, all runtime projections are current with zero checker writes, and `RH-W-0087` is `completed`. No Git delivery is claimed.
+The owner approved this bilingual scope and separately authorized its one bounded test-first implementation on 2026-09-04. The focused RED failed only because the generated obligation was absent; focused GREEN and the related nine-test regression passed, all runtime projections are current with zero checker writes, and `RH-W-0087` is `completed`. Those historical phases did not themselves authorize or deliver Git changes; exact subsequent delivery evidence is maintained in the [roadmap record](roadmap.md#rh-w-0087).
