@@ -50,7 +50,7 @@ Integrated mode is the default and composes Gentle AI and Engram independently. 
 
 Integrated memory operations always resolve explicit repository project scope and report project resolution, reads, writes, prompt association, conflict discovery, lifecycle review, capture, and sync independently. Empty search results require same-surface validation or a positive control. Conflict and review-age metadata remain advisory. Standalone reconciliation marks the memory dimension `not_applicable` and never emulates Engram or creates fallback storage.
 
-After an integrated installation, capability status is runtime evidence rather than a persisted mode. Gentle AI loss degrades only routing, review, receipts, and delivery; Engram loss degrades only continuity. Repository policy may make either component mandatory and block only its owning workflow. Repository outcome and component outcomes remain separate, with exact failure evidence and one next action rather than an aggregate authority verdict.
+After installation, capability status is runtime evidence, not a persisted mode. Defer routing, review, receipts, and correction only to an applicable enabled Gentle workflow. Its absence degrades only that coordination; Engram loss degrades only continuity. Repository policy may require either capability for an operation. Commit, push, and PR remain repository-owned; informational delivery guidance creates no gate. Never auto-enable a methodology or invent a native verdict. Preserve separate component outcomes and human authorization; builder digest-bound write safety is not managed review.
 
 ## Repository-Sensitive Operation
 

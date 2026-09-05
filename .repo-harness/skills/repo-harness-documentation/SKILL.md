@@ -24,7 +24,8 @@ Use when creating, reviewing, or updating project documentation and visible proj
 - Use `CHANGELOG.md` for completed changes, not future plans. Keep current state and next steps in `docs/repo-harness/current-state.md`.
 - Verify a pending or completed claim against applicable owning evidence before adding, retaining, moving, or removing it.
 - Treat `docs/repo-harness/roadmap.md` as the canonical lifecycle owner. When reality changes, reconcile its `RH-W-####` record, the concise current-state projection, localized peers, and the small Engram topic `work/RH-W-####` in the same work unit.
-- Gentle AI and Engram are required continuity tools. Reconcile Engram with the changelog without blindly overwriting either.
+- Gentle AI and Engram are independent optional capabilities. Use Engram when available, reconcile it with repository evidence, and never claim successful continuity after failure. Block only behavior required by the operation or repository policy.
+- Defer routing, review, receipts, and correction to an applicable enabled Gentle workflow, not parallel reviewers, counters, receipts, or plans. Do not auto-enable methodologies or require disabled review. Repository policy owns commit, push, and PR; informational delivery guidance creates no gate. Neither coordination nor builder digest-bound write safety replaces human authorization.
 - Preserve human-owned content and unknown bytes. Never replace them merely to normalize structure.
 
 ## Finding Reconciliation

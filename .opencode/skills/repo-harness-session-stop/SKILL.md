@@ -19,14 +19,12 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 - Summarize only work supported by current repository evidence and verified command results.
 - Conversation language: Follow a current verified human language instruction; otherwise preserve an explicit persisted preference. Without one, use verified session language, validated manifest fallback, then deterministic English. Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes. This flattened host cannot reliably detect language switches; preserve persisted preference.
 - Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
-- Validate every referenced repository path and avoid stale claims.
-- Propose updates to `REPO-HARNESS.md` and canonical documentation, but write them only after explicit approval.
 - Keep the rulebook inside its budget. Move durable detail down into its owned deeper document.
 - Propose one concise `CHANGELOG.md` entry for meaningful completed work under the existing documentation approval. Avoid an entry for a trivial or no-op session.
 - Reconcile every changed `RH-W-####` record in `docs/repo-harness/roadmap.md`, the concise current-state projection, localized peers, and Engram topic `work/RH-W-####` in the same work unit.
-- Gentle AI and Engram are required for integrated session continuity.
-- Save significant decisions, discoveries, fixes, and a session summary to Engram.
-- If any Engram save fails, surface the failure and must not claim successful continuity.
+- Gentle AI and Engram are independent optional capabilities. Block only behavior required by the operation or repository policy.
+- Save significant decisions, discoveries, fixes, and a session summary to Engram when available. If unavailable or saving fails, surface the failure and never claim successful continuity; continue the repository handoff without inventing fallback storage.
+- Defer routing, review, receipts, and correction to an applicable enabled Gentle workflow; supply repository context and checks, not parallel reviewers, counters, receipts, or plans. Do not auto-enable methodologies or require disabled review. Repository policy owns commit, push, and PR; informational delivery guidance creates no gate. Never fabricate a native verdict or replace human authorization.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - Promote reusable knowledge only after verifying relevance, selecting its canonical repository owner, and obtaining human approval.
 - Date and revalidate changing external facts before reuse. Leave incidental noise unpromoted.
@@ -67,21 +65,19 @@ Use this exact order:
 
 ## Self-Update And Runtime Cache
 
-- Distinguish on-disk canonical and projection parity, active-process registered skill freshness, and runtime reload or restart capability.
-- A session-stop running under previously loaded instructions must still complete the best valid close permitted by that contract. It must not simulate unseen new instructions, but may report deferred registered-name validation as an informational limitation.
-- If current on-disk projections are verified but registered-name loading in this same process returns older content, report an expected active-process cache limitation and defer registered-name validation. Do not classify repository state, documentation close, continuity, or verified projections as blocked or failed.
-- Optional live registered-name validation is `degraded` while required close and continuity may succeed, so the close may remain `completed`. A fresh runtime process will load the updated projection; a supported explicit registry reload may be used if the runtime provides one. Never claim or invent a reload command, and do not require immediate restart unless the user wants live validation now.
+- Follow the loaded contract, not simulated unseen instructions. Verified on-disk projections and older registered content in the editing process indicate an expected active-process cache limitation, not repository, documentation close, or continuity failure.
+- Defer registered-name validation to a fresh runtime process or supported registry reload. Optional live validation may be `degraded` while the close remains `completed`. Never invent a reload command or require immediate restart unless requested.
 
 ## Execution Steps
 
 1. Inspect the selected repository state read-only and collect fresh verification evidence.
 2. Summarize completed work, decisions, unresolved issues, and next steps.
 3. Validate referenced paths and reconcile the summary with `REPO-HARNESS.md` and deeper documentation, including lifecycle records and their current-state projection.
-4. Present the exact documentation changes and any meaningful completed-work changelog entry for conversational approval, one blocking question per turn, then pause.
-5. After the user answers, resume the same session-stop invocation from the next unfinished step. If approved, execute that exact approved action once, update only the canonical owners, refresh repository evidence, and verify paths, links, and claims. If documentation is declined, preserve verified work, record the required reconciliation as declined, and suppress completed closure.
+4. Request approval only for changes not already authorized: present exact documentation changes, one blocking question per turn, then pause. Unchanged approved scope needs no repeated authorization.
+5. Resume the same session-stop invocation at the next unfinished step; execute approved owner updates once, refresh evidence, and verify paths, links, and claims. If documentation is declined, preserve verified work and suppress completed closure when required reconciliation was declined.
 6. A session summary saved before an approved mutation is provisional. Save or update a final session summary that includes the approved mutation only after refreshed evidence and verification.
-7. Save significant decisions, discoveries, fixes, and the session summary to Engram; report every save result.
-8. Only after documentation and continuity are complete, classify staged paths, unstaged tracked paths, untracked paths, renamed paths, deleted paths, unrelated pre-existing paths, excluded private, tool, and cache paths, and sensitive-looking paths. Perform mandatory per-path sensitive screening before any proposed staging. Filename screening is a warning baseline, not proof of safety. A sensitive candidate must pause before any staging.
+7. Save the final summary and significant observations to Engram when available; report every save result independently.
+8. Only for a requested Git outcome, after required documentation and continuity are complete, apply steps 8-12 under repository contribution policy. Classify staged paths, unstaged tracked paths, untracked paths, renamed paths, deleted paths, unrelated pre-existing paths, excluded private, tool, and cache paths, and sensitive-looking paths. Perform mandatory per-path sensitive screening before any proposed staging. Filename screening is a warning baseline, not proof of safety. A sensitive candidate must pause before any staging.
 9. For each proposed reviewable work-unit grouping show exact paths, why they belong together, a proposed Conventional Commit message, explicit exclusions, and already-staged paths. Record pre-existing staged paths before staging and keep them outside the proposed work unit. Ask conversationally for the intended outcome. For commit-only, ask one localized question using semantic fields `path`, `commit message`, and `permission scope`, with every exact value rendered as non-translatable code. For commit and push, also include semantic fields `upstream`, `remote`, and `branch`, then ask once for that complete bounded outcome. Resume the same session-stop invocation after approval and stage only those paths. Immediately before commit, perform one read-only staged-scope check comparing workflow-staged path names and status/modes with the approved scope and confirming that no excluded, sensitive, unrelated, extra, or missing path entered the workflow scope. If it matches, continue silently under existing consent. If it differs or a hook changed content or mode unexpectedly, invalidate consent, report the concise difference, and ask one new approval. Unstage only paths staged by this workflow when selective unstage is proven safe and supported without disturbing pre-existing staged work; otherwise stop, leave the index unchanged, and provide remediation evidence. Never propose, append, or create any `Co-Authored-By` trailer regardless of identity, or equivalent AI-authorship or AI-assistance attribution in the commit subject, body, or trailers; if the exact approved message contains prohibited attribution, pause and ask for a changed approved message rather than silently rewriting or committing it. Then create the commit exactly once, refresh status after the commit, and only then evaluate push under the same consent scope.
 10. Existing unpushed commits trigger a push offer without an empty commit. Commit approval never implies push. If the local branch is ahead and push preflight is safe, show semantic fields `upstream`, `ahead count`, and `permission scope`, render exact values as non-translatable code, and ask one localized push question.
 11. A detached HEAD, unborn branch, no upstream, missing remote, missing remote branch, or ahead-behind divergence blocks only the optional push branch and must include actionable safely-local evidence. Pause and invalidate consent for changed path scope or commit message; a newly detected sensitive or unrelated file; remote advanced or integration needed; missing or changed upstream or destination; authentication or provider ambiguity requiring a different credential path; destructive action, force, merge, rebase, reset, conflict resolution; verification failure; or commit hooks mutate content.
@@ -89,7 +85,7 @@ Use this exact order:
 
 ## Outcome Model
 
-- `completed`: successful verification, every applicable required documentation reconciliation, and continuity succeeded.
+- `completed`: successful verification, every applicable required documentation reconciliation, and required continuity succeeded. Optional memory absence or failure does not block the repository handoff.
 - `paused`: human input is actually needed for approval or a material change. Do not classify an authorized happy-path substep as `paused`.
 - `blocked`: evidence or a human decision is required before that scoped branch can proceed.
 - `failed`: a required continuity step failed, or an attempted scoped operation failed.
@@ -100,10 +96,10 @@ Always report required continuity outcome separately from optional Git branch ou
 
 ## Output Contract
 
-Deliver the complete Output Contract only after continuity is saved successfully. Return close outcome, required continuity outcome, optional Git branch outcome, completed work, decisions, unresolved issues, next steps, verified paths, documentation update result, memory result, classified Git state, proposed or completed work units, commit result, push result, transport receipts, safely-local state, and separately pending optional gates. When safe and relevant, ask exactly one blocking question and make it the final user-facing line.
+Return close outcome, required continuity outcome, memory result, completed work, unresolved issues, next step, and documentation result with relevant evidence. Include classified Git state and work units only for applicable Git work, transport receipts only for attempted transport, and pending gates only when actionable. Preserve independent failures; memory failure never withholds the user-facing report. Ask at most one blocking question, on the final line.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 Response shaping: immediately before composing any reply or reported output that carries a notice, pending action, question, approval, visible next action, or contextual explanation, load and apply `.repo-harness/rules/response-contract.md`.
-If continuity saving fails, surface the failure and do not claim successful continuity or a final handoff.
+If continuity saving fails, surface it without claiming a successful memory handoff.
 
 ## References
 

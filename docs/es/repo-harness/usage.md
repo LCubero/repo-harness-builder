@@ -6,14 +6,14 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 ## Flujo diario
 <!-- doc-role:daily-workflow -->
 
-1. Inicie o reanude con `repo-harness-session-start` y declare el objetivo. Informa un resultado acotado, reconcilia el contexto con la evidencia del repositorio, inspecciona Git en solo lectura y termina con una pregunta concreta de verificacion remota cuando es seguro. Cada afirmacion que informa lleva su clase de evidencia, de modo que una inferencia sustentada nunca se presenta como hecho verificado.
+1. Inicie o reanude con `repo-harness-session-start` y declare el objetivo. Reconcilia contexto con evidencia del repositorio e inspecciona Git local en solo lectura. La comprobacion remota aplica solo cuando sincronizar es pertinente y seguro. Las afirmaciones conservan su clase de evidencia.
 2. Use `repo-harness-documentation` cuando cambien hechos durables o el estado visible.
-3. Cierre con `repo-harness-session-stop`, que verifica evidencia y guarda continuidad antes de evaluar Git.
+3. Cierre con `repo-harness-session-stop`, que verifica evidencia, documentacion y continuidad requeridas, usando Engram cuando esta disponible. Solo el trabajo Git solicitado activa revision de rutas y propuestas exactas bajo la politica del repositorio; no se repite una autorizacion sin cambios.
 
 ## Disponibilidad integrada
 <!-- doc-role:availability -->
 
-Confirme que las habilidades esten disponibles y clasifique Gentle AI y Engram de forma independiente. Si una capacidad no esta disponible, informe su degradacion acotada y no declare garantias que le pertenecen; bloquee solo una operacion que la requiera.
+El modo integrado compone Gentle AI y Engram de forma independiente; cualquiera puede seguir siendo util sin el otro. El inicio reutiliza la recuperacion de Engram como evidencia de disponibilidad y comprueba Gentle AI solo en limites de coordinacion habilitados. Informe fallos sin prometer garantias ausentes; bloquee solo capacidades requeridas por la operacion. Un fallo de memoria opcional no impide el informe del repositorio. Standalone no usa ninguno de los dos componentes. La coordinacion administrada habilitada recibe contexto y comprobaciones del repositorio, no flujos paralelos; commit, push y PR siguen bajo politica del repositorio, sin nueva compuerta de entrega.
 
 ## Congruencia y propiedad
 <!-- doc-role:ownership -->

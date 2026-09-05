@@ -3042,6 +3042,65 @@ class GeneratedSkillLicenseTests(unittest.TestCase):
 class GeneratedCoreTests(unittest.TestCase):
     """The generated harness keeps its operational contract."""
 
+    def test_integrated_contracts_do_not_require_paired_capabilities(self):
+        outputs = TOOL.render("Consumer", [], documentation_languages=["en", "es"])
+        paths = ["REPO-HARNESS.md", ".repo-harness/rules/memory.md",
+                 "docs/repo-harness/decisions.md"] + [
+            f".repo-harness/skills/repo-harness-{name}/SKILL.md"
+            for name in ("session-start", "session-stop", "documentation")
+        ]
+        for path in paths:
+            with self.subTest(path=path):
+                self.assertNotRegex(outputs[path], r"(?:Gentle AI and Engram are required|Engram is required in integrated mode)")
+        for name in ("session-stop", "documentation"):
+            text = outputs[f".repo-harness/skills/repo-harness-{name}/SKILL.md"]
+            self.assertIn("independent optional capabilities", text)
+            self.assertIn("required by the operation or repository policy", text)
+            self.assertIn("never claim successful continuity", text)
+        memory = outputs[".repo-harness/rules/memory.md"]
+        self.assertIn("independent of Gentle AI", memory)
+        self.assertIn("Surface Engram failures", memory)
+        for path, stale in (
+            ("docs/es/repo-harness/decisions.md", "Gentle AI y Engram son obligatorios"),
+            ("docs/repo-harness/usage.md", "either continuity dependency"),
+            ("docs/es/repo-harness/usage.md", "alguna dependencia de continuidad"),
+        ):
+            with self.subTest(path=path):
+                self.assertNotIn(stale, outputs[path])
+
+    def test_operational_contracts_defer_only_to_enabled_managed_owners(self):
+        for standalone in (False, True):
+            outputs = TOOL.render("Consumer", [], standalone=standalone)
+            for name in ("session-start", "session-stop", "documentation"):
+                text = outputs[f".repo-harness/skills/repo-harness-{name}/SKILL.md"]
+                with self.subTest(standalone=standalone, skill=name):
+                    self.assertNotIn("delivery gates when enabled", text)
+                    if standalone:
+                        self.assertNotIn("Gentle AI", text)
+                        self.assertNotIn("Engram", text)
+                    else:
+                        self.assertIn("applicable enabled Gentle workflow", text)
+                        self.assertIn("Do not auto-enable", text)
+                        self.assertIn("repository policy", text)
+            stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+            self.assertIn("Only for a requested Git outcome", stop)
+            self.assertIn("Request approval only for changes not already authorized", stop)
+            self.assertNotIn("Deliver the complete Output Contract only after continuity is saved successfully", stop)
+            self.assertIn("transport receipts only for attempted transport", stop)
+
+    def test_capability_combinations_preserve_optional_rendered_continuity(self):
+        for gentle, engram in (("verified", "not_found"), ("not_found", "verified"),
+                               ("not_found", "not_found"), ("verified", "verified")):
+            selected = TOOL.select_integration_mode(
+                "integrated", {"classification": gentle, "evidence": "test"},
+                {"classification": engram, "evidence": "test"})
+            with self.subTest(gentle=gentle, engram=engram):
+                self.assertEqual(selected["gentleAiState"], "available" if gentle == "verified" else "unavailable")
+                self.assertEqual(selected["engramState"], "available" if engram == "verified" else "unavailable")
+                stop = TOOL.render("Consumer", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+                self.assertIn("Engram when available", stop)
+                self.assertNotIn("Gentle AI and Engram are required", stop)
+
     def test_render_uses_repo_harness_path_contract(self):
         outputs = TOOL.render("Example", [])
         expected = {
@@ -3839,7 +3898,7 @@ class GeneratedCoreTests(unittest.TestCase):
         start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         docs = outputs[".repo-harness/skills/repo-harness-documentation/SKILL.md"]
-        self.assertIn("latest relevant entries", start)
+        self.assertIn("latest relevant changelog entries", start)
         self.assertIn("meaningful completed work", stop)
         self.assertIn("Avoid an entry for a trivial or no-op session", stop)
         self.assertIn("completed changes, not future plans", docs)
@@ -3867,7 +3926,7 @@ class GeneratedCoreTests(unittest.TestCase):
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
 
         self.assertIn(
-            "Check Gentle AI only when requested work reaches a Gentle-owned routing, review, receipt, or delivery boundary",
+            "Check Gentle AI only when requested work reaches its enabled routing, review, receipt, or correction boundary",
             start,
         )
         self.assertIn("do not probe or report it separately during ordinary startup", start)
@@ -4583,9 +4642,8 @@ class GeneratedCoreTests(unittest.TestCase):
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
 
         for behavior in (
-            "After status and any synchronization outcome, continue naturally",
-            "one or two tensions that matter",
-            "review relevant pending work, current state, and priorities",
+            "After status, explain the relevant tension",
+            "Identify completed work, remaining work, constraints, and the next recommended step",
             "recommend one direction with reasoning",
             "Mention a second path only when it is materially relevant",
             "Ordinary conversational continuation is discussion and steering only",
@@ -4625,8 +4683,8 @@ class GeneratedCoreTests(unittest.TestCase):
         stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         self.assertIn("If Engram is unavailable or recovery fails", start)
         self.assertIn("must not claim successful continuity", start)
-        self.assertIn("If any Engram save fails", stop)
-        self.assertIn("must not claim successful continuity", stop)
+        self.assertIn("If unavailable or saving fails, surface the failure", stop)
+        self.assertIn("never claim successful continuity", stop)
         self.assertNotIn("Continue without failure when it is absent", start + stop)
 
     def test_session_stop_approval_is_a_resumable_checkpoint(self):
@@ -4634,8 +4692,8 @@ class GeneratedCoreTests(unittest.TestCase):
 
         for phrase in (
             "resumable intermediate checkpoint",
-            "resume the same session-stop invocation from the next unfinished step",
-            "execute that exact approved action once",
+            "Resume the same session-stop invocation at the next unfinished step",
+            "execute approved owner updates once",
             "If documentation is declined, preserve verified work",
             "one blocking question per turn",
         ):
@@ -4677,11 +4735,11 @@ class GeneratedCoreTests(unittest.TestCase):
         stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
 
         for phrase in (
-            "refresh repository evidence",
+            "refresh evidence",
             "A session summary saved before an approved mutation is provisional",
             "Save or update a final session summary that includes the approved mutation",
-            "Deliver the complete Output Contract only after continuity is saved successfully",
-            "If continuity saving fails, surface the failure",
+            "memory failure never withholds the user-facing report",
+            "If continuity saving fails, surface it without claiming a successful memory handoff",
         ):
             self.assertIn(phrase, stop)
 
@@ -4891,11 +4949,11 @@ class GeneratedCoreTests(unittest.TestCase):
             "supported explicit registry reload",
             "Never claim or invent a reload command",
         ):
-            self.assertIn(phrase, combined)
+            self.assertIn(phrase.lower(), combined.lower())
         self.assertIn("cannot prove what a prior process cached", start)
-        self.assertIn("must still complete the best valid close", stop)
-        self.assertIn("close may remain `completed`", stop)
-        self.assertIn("live registered-name validation is `degraded`", stop)
+        self.assertIn("Follow the loaded contract, not simulated unseen instructions", stop)
+        self.assertIn("close remains `completed`", stop)
+        self.assertIn("Optional live validation may be `degraded`", stop)
         self.assertNotIn("restart is required", combined.lower())
         self.assertNotRegex(combined, r"(?i)(reload|refresh)[-_ ](skills|registry)\s+command")
 
@@ -5254,7 +5312,7 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
         for phrase in (
             "The repository owns durable truth, source, tests, policy, backlog, and approvals.",
             "Engram owns semantic continuity, relations, conflict state, review-age metadata, and session memory.",
-            "Gentle AI owns routing, exact-candidate review and receipts, and delivery gates when enabled.",
+            "Defer routing, review, receipts, and correction to an applicable enabled Gentle workflow",
             "Promote reusable knowledge only after verifying relevance, selecting its canonical repository owner, and obtaining human approval.",
             "Date and revalidate changing external facts before reuse.",
         ):
@@ -5734,7 +5792,7 @@ class UsageGuideTests(unittest.TestCase):
             "`repo-harness-documentation`",
             "`repo-harness-session-stop`",
             "## Integrated Availability",
-            "Gentle AI and Engram are available",
+            "Gentle AI and Engram are independent optional capabilities",
             "## Congruence And Ownership",
             "python3 .repo-harness/check.py` (`python` on Windows)",
             "repository files remain authoritative",
@@ -5996,7 +6054,7 @@ class RuleFileTests(unittest.TestCase):
     def test_memory_rule_keeps_memory_subordinate_to_the_repository(self):
         text = TOOL.render("Example", [])[".repo-harness/rules/memory.md"]
         for phrase in ("repository evidence remains authoritative", "never claim successful continuity"):
-            self.assertIn(phrase, text)
+            self.assertIn(phrase, text.lower())
 
 
 class RepositoryLineEndingContractTests(unittest.TestCase):

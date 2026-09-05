@@ -17,8 +17,6 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 
 - Load and follow the canonical rulebook at `REPO-HARNESS.md`, including its execution discipline.
 - Resolve and inspect only the selected repository. Do not follow links, aliases, sibling repositories, or external references.
-- Read `REPO-HARNESS.md` first, then only documentation relevant to the requested work.
-- Read only the latest relevant entries in `CHANGELOG.md` after the rulebook and current-state documentation.
 - Read `docs/repo-harness/roadmap.md` when the objective involves pending, blocked, deferred, excluded, rejected, or completed tracked work; do not infer the lifecycle from current state alone.
 - Consult only applicable owning evidence, such as current documentation, source, tests, Git state or history, and Engram when available.
 - Report discrepancies instead of silently resolving them; current repository evidence wins over memory.
@@ -27,19 +25,18 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Integrated startup composes Gentle AI and Engram independently at their owned boundaries.
 - The repository owns durable truth, source, tests, policy, backlog, and approvals.
 - Engram owns semantic continuity, relations, conflict state, review-age metadata, and session memory.
-- Gentle AI owns routing, exact-candidate review and receipts, and delivery gates when enabled.
+- Defer routing, review, receipts, and correction to an applicable enabled Gentle workflow; supply repository context and checks, not parallel reviewers, counters, receipts, or plans. Do not auto-enable methodologies or require disabled review. Repository policy owns commit, push, and PR; informational delivery guidance creates no gate. Never fabricate a native verdict or replace human authorization.
 - Recover relevant recent context from Engram and reconcile every recalled claim with current repository evidence; the recovery attempt is also the current Engram availability evidence. Do not run a separate Engram preflight.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - If Engram is unavailable or recovery fails, surface the failure and must not claim successful continuity.
-- Check Gentle AI only when requested work reaches a Gentle-owned routing, review, receipt, or delivery boundary; do not probe or report it separately during ordinary startup.
-- After installation, Gentle AI loss degrades review and delivery only, while Engram loss degrades continuity only. Block an affected workflow only when repository policy requires its missing component.
+- Check Gentle AI only when requested work reaches its enabled routing, review, receipt, or correction boundary; do not probe or report it separately during ordinary startup.
+- Gentle AI loss degrades only its enabled coordination; Engram loss degrades continuity only. Block only when the operation or repository policy requires the missing component.
 - Omit successful unchanged capability and continuity detail from routine startup display, not from per-operation outcome accounting. Report only capability discrepancies that affect requested work; always surface continuity failures and task-relevant results, with repository and affected component outcomes separated, exact failure evidence, and one next action. Never reconstruct malformed owner output as success.
-- Report discrepancies and uncertainty instead of inventing certainty.
 - Conversation language: Follow a current verified human language instruction; otherwise preserve an explicit persisted preference. Without one, use verified session language, validated manifest fallback, then deterministic English. Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes. This flattened host cannot reliably detect language switches; preserve persisted preference.
 - Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
 - Keep ordinary continuation questions conversational and low-friction. Do not use the builder's exact digest-bound approval vocabulary.
 - Resolve verifiable facts from applicable evidence without asking; ask only when a material choice, authority boundary, unresolved contradiction, or meaningful risk genuinely requires the human; otherwise suggest the next useful action and continue within the user's requested scope.
-- After status and any synchronization outcome, continue naturally: explain the one or two tensions that matter, review relevant pending work, current state, and priorities, and recommend one direction with reasoning. Mention a second path only when it is materially relevant; do not turn the continuation into a backlog dump, fixed menu, multi-question round, or exhaustive interview.
+- After status, explain the relevant tension and recommend one direction with reasoning, not a backlog dump or fixed menu. Mention a second path only when it is materially relevant.
 - Ordinary conversational continuation is discussion and steering only. It does not authorize preparation, design, delegation, implementation, mutation, or delivery.
 - Begin work only when explicit human intent identifies both the action and its target. Judge intent semantically from the conversation; never require or infer authority from a fixed phrase list.
 - Ask for explicit conversational approval before any external mutation.
@@ -68,13 +65,15 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 
 1. Resolve the selected repository root and confirm `REPO-HARNESS.md` belongs to it.
 2. Read the rulebook, follow only the decision gates the current work triggers, then the latest relevant changelog entries.
-3. Detect whether the root is a Git repository. If it is, inspect branch, worktree, index, upstream, remotes, and each upstream remote URL, host, and scheme read-only before suggesting network access. Provider recognition is optional and must not require provider tooling.
+3. Inspect branch, worktree, and index when Git exists. Inspect upstream, remote URL, host, and scheme only for applicable synchronization or delivery work; provider recognition never requires provider tooling.
 4. Run `python3 .repo-harness/check.py` (`python` on Windows) only when the rulebook applicability gate is triggered by a changed canonical skill or a possibly stale runtime projection; then retain its status and any drifted runtime projection paths.
 5. Recover relevant recent context from Engram, label it as memory evidence, and reconcile it with repository evidence.
 6. Identify completed work, remaining work, constraints, and the next recommended step. Reconcile any changed `RH-W-####` lifecycle with the roadmap, current-state projection, localized peers, and Engram topic `work/RH-W-####` in the same work unit.
 7. Report stale links, contradictions, or missing evidence before proceeding.
 
 ## Optional Git Synchronization Gate
+
+Apply synchronization states and transport guidance only when synchronization is relevant to the requested work. Do not inspect transport merely to fill report fields.
 
 Outcomes are scoped. Startup uses `ready`, `paused`, `blocked`, `failed`, or `degraded`; a successful close uses `completed`. A required continuity failure is `failed`. An optional Git branch may be `paused`, `blocked`, `failed`, or `degraded` while local startup remains `ready`; optional synchronization failure must not make the whole session `failed`.
 

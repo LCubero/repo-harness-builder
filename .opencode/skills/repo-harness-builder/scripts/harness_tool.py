@@ -1457,12 +1457,12 @@ def session_start_skill(
         else """- Integrated startup composes Gentle AI and Engram independently at their owned boundaries.
 - The repository owns durable truth, source, tests, policy, backlog, and approvals.
 - Engram owns semantic continuity, relations, conflict state, review-age metadata, and session memory.
-- Gentle AI owns routing, exact-candidate review and receipts, and delivery gates when enabled.
+- Defer routing, review, receipts, and correction to an applicable enabled Gentle workflow; supply repository context and checks, not parallel reviewers, counters, receipts, or plans. Do not auto-enable methodologies or require disabled review. Repository policy owns commit, push, and PR; informational delivery guidance creates no gate. Never fabricate a native verdict or replace human authorization.
 - Recover relevant recent context from Engram and reconcile every recalled claim with current repository evidence; the recovery attempt is also the current Engram availability evidence. Do not run a separate Engram preflight.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - If Engram is unavailable or recovery fails, surface the failure and must not claim successful continuity.
-- Check Gentle AI only when requested work reaches a Gentle-owned routing, review, receipt, or delivery boundary; do not probe or report it separately during ordinary startup.
-- After installation, Gentle AI loss degrades review and delivery only, while Engram loss degrades continuity only. Block an affected workflow only when repository policy requires its missing component.
+- Check Gentle AI only when requested work reaches its enabled routing, review, receipt, or correction boundary; do not probe or report it separately during ordinary startup.
+- Gentle AI loss degrades only its enabled coordination; Engram loss degrades continuity only. Block only when the operation or repository policy requires the missing component.
 - Omit successful unchanged capability and continuity detail from routine startup display, not from per-operation outcome accounting. Report only capability discrepancies that affect requested work; always surface continuity failures and task-relevant results, with repository and affected component outcomes separated, exact failure evidence, and one next action. Never reconstruct malformed owner output as success.
 """
     )
@@ -1492,20 +1492,17 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 
 - Load and follow the canonical rulebook at `{rulebook_path}`, including its execution discipline.
 - Resolve and inspect only the selected repository. Do not follow links, aliases, sibling repositories, or external references.
-- Read `{rulebook_path}` first, then only documentation relevant to the requested work.
-- Read only the latest relevant entries in `CHANGELOG.md` after the rulebook and current-state documentation.
 - Read `docs/repo-harness/roadmap.md` when the objective involves pending, blocked, deferred, excluded, rejected, or completed tracked work; do not infer the lifecycle from current state alone.
 - Consult only applicable owning evidence, such as {evidence_sources}.
 - Report discrepancies instead of silently resolving them; current repository evidence wins over memory.
 - Do not read every file or run every test indiscriminately.
 - Inspect repository state read-only. Do not pull, commit, push, publish, or mutate by default.
 {continuity.rstrip()}
-- Report discrepancies and uncertainty instead of inventing certainty.
 - Conversation language: {language_contract}
 - Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
 - Keep ordinary continuation questions conversational and low-friction. Do not use the builder's exact digest-bound approval vocabulary.
 - Resolve verifiable facts from applicable evidence without asking; ask only when a material choice, authority boundary, unresolved contradiction, or meaningful risk genuinely requires the human; otherwise suggest the next useful action and continue within the user's requested scope.
-- After status and any synchronization outcome, continue naturally: explain the one or two tensions that matter, review relevant pending work, current state, and priorities, and recommend one direction with reasoning. Mention a second path only when it is materially relevant; do not turn the continuation into a backlog dump, fixed menu, multi-question round, or exhaustive interview.
+- After status, explain the relevant tension and recommend one direction with reasoning, not a backlog dump or fixed menu. Mention a second path only when it is materially relevant.
 - Ordinary conversational continuation is discussion and steering only. It does not authorize preparation, design, delegation, implementation, mutation, or delivery.
 - Begin work only when explicit human intent identifies both the action and its target. Judge intent semantically from the conversation; never require or infer authority from a fixed phrase list.
 - Ask for explicit conversational approval before any external mutation.
@@ -1534,13 +1531,15 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 
 1. Resolve the selected repository root and confirm `{rulebook_path}` belongs to it.
 2. Read the rulebook, follow only the decision gates the current work triggers, then the latest relevant changelog entries.
-3. Detect whether the root is a Git repository. If it is, inspect branch, worktree, index, upstream, remotes, and each upstream remote URL, host, and scheme read-only before suggesting network access. Provider recognition is optional and must not require provider tooling.
+3. Inspect branch, worktree, and index when Git exists. Inspect upstream, remote URL, host, and scheme only for applicable synchronization or delivery work; provider recognition never requires provider tooling.
 4. Run `python3 .repo-harness/check.py` (`python` on Windows) only when the rulebook applicability gate is triggered by a changed canonical skill or a possibly stale runtime projection; then retain its status and any drifted runtime projection paths.
 {recovery_step}
 6. Identify completed work, remaining work, constraints, and the next recommended step. Reconcile any changed `RH-W-####` lifecycle with the roadmap, current-state projection, localized peers, and {lifecycle_mirror} in the same work unit.
 7. Report stale links, contradictions, or missing evidence before proceeding.
 
 ## Optional Git Synchronization Gate
+
+Apply synchronization states and transport guidance only when synchronization is relevant to the requested work. Do not inspect transport merely to fill report fields.
 
 Outcomes are scoped. Startup uses `ready`, `paused`, `blocked`, `failed`, or `degraded`; a successful close uses `completed`. A required continuity failure is `failed`. An optional Git branch may be `paused`, `blocked`, `failed`, or `degraded` while local startup remains `ready`; optional synchronization failure must not make the whole session `failed`.
 
@@ -1592,9 +1591,9 @@ def session_stop_skill(
 - Repository evidence remains authoritative.
 """
         if standalone
-        else """- Gentle AI and Engram are required for integrated session continuity.
-- Save significant decisions, discoveries, fixes, and a session summary to Engram.
-- If any Engram save fails, surface the failure and must not claim successful continuity.
+        else """- Gentle AI and Engram are independent optional capabilities. Block only behavior required by the operation or repository policy.
+- Save significant decisions, discoveries, fixes, and a session summary to Engram when available. If unavailable or saving fails, surface the failure and never claim successful continuity; continue the repository handoff without inventing fallback storage.
+- Defer routing, review, receipts, and correction to an applicable enabled Gentle workflow; supply repository context and checks, not parallel reviewers, counters, receipts, or plans. Do not auto-enable methodologies or require disabled review. Repository policy owns commit, push, and PR; informational delivery guidance creates no gate. Never fabricate a native verdict or replace human authorization.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - Promote reusable knowledge only after verifying relevance, selecting its canonical repository owner, and obtaining human approval.
 - Date and revalidate changing external facts before reuse. Leave incidental noise unpromoted.
@@ -1603,7 +1602,7 @@ def session_stop_skill(
     save_step = (
         "6. Record approved continuity updates only in repository files."
         if standalone
-        else "6. Save significant decisions, discoveries, fixes, and the session summary to Engram; report every save result."
+        else "6. Save the final summary and significant observations to Engram when available; report every save result independently."
     )
     output_continuity = "continuity result" if standalone else "memory result"
     lifecycle_mirror = "repository continuity record keyed by `RH-W-####`" if standalone else "Engram topic `work/RH-W-####`"
@@ -1620,8 +1619,6 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 - Summarize only work supported by current repository evidence and verified command results.
 - Conversation language: {language_contract}
 - Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
-- Validate every referenced repository path and avoid stale claims.
-- Propose updates to `{rulebook_path}` and canonical documentation, but write them only after explicit approval.
 - Keep the rulebook inside its budget. Move durable detail down into its owned deeper document.
 - Propose one concise `CHANGELOG.md` entry for meaningful completed work under the existing documentation approval. Avoid an entry for a trivial or no-op session.
 - Reconcile every changed `RH-W-####` record in `docs/repo-harness/roadmap.md`, the concise current-state projection, localized peers, and {lifecycle_mirror} in the same work unit.
@@ -1663,21 +1660,19 @@ Use this exact order:
 
 ## Self-Update And Runtime Cache
 
-- Distinguish on-disk canonical and projection parity, active-process registered skill freshness, and runtime reload or restart capability.
-- A session-stop running under previously loaded instructions must still complete the best valid close permitted by that contract. It must not simulate unseen new instructions, but may report deferred registered-name validation as an informational limitation.
-- If current on-disk projections are verified but registered-name loading in this same process returns older content, report an expected active-process cache limitation and defer registered-name validation. Do not classify repository state, documentation close, continuity, or verified projections as blocked or failed.
-- Optional live registered-name validation is `degraded` while required close and continuity may succeed, so the close may remain `completed`. A fresh runtime process will load the updated projection; a supported explicit registry reload may be used if the runtime provides one. Never claim or invent a reload command, and do not require immediate restart unless the user wants live validation now.
+- Follow the loaded contract, not simulated unseen instructions. Verified on-disk projections and older registered content in the editing process indicate an expected active-process cache limitation, not repository, documentation close, or continuity failure.
+- Defer registered-name validation to a fresh runtime process or supported registry reload. Optional live validation may be `degraded` while the close remains `completed`. Never invent a reload command or require immediate restart unless requested.
 
 ## Execution Steps
 
 1. Inspect the selected repository state read-only and collect fresh verification evidence.
 2. Summarize completed work, decisions, unresolved issues, and next steps.
 3. Validate referenced paths and reconcile the summary with `{rulebook_path}` and deeper documentation, including lifecycle records and their current-state projection.
-4. Present the exact documentation changes and any meaningful completed-work changelog entry for conversational approval, one blocking question per turn, then pause.
-5. After the user answers, resume the same session-stop invocation from the next unfinished step. If approved, execute that exact approved action once, update only the canonical owners, refresh repository evidence, and verify paths, links, and claims. If documentation is declined, preserve verified work, record the required reconciliation as declined, and suppress completed closure.
+4. Request approval only for changes not already authorized: present exact documentation changes, one blocking question per turn, then pause. Unchanged approved scope needs no repeated authorization.
+5. Resume the same session-stop invocation at the next unfinished step; execute approved owner updates once, refresh evidence, and verify paths, links, and claims. If documentation is declined, preserve verified work and suppress completed closure when required reconciliation was declined.
 6. A session summary saved before an approved mutation is provisional. Save or update a final session summary that includes the approved mutation only after refreshed evidence and verification.
 7. {save_step.split('. ', 1)[1]}
-8. Only after documentation and continuity are complete, classify staged paths, unstaged tracked paths, untracked paths, renamed paths, deleted paths, unrelated pre-existing paths, excluded private, tool, and cache paths, and sensitive-looking paths. Perform mandatory per-path sensitive screening before any proposed staging. Filename screening is a warning baseline, not proof of safety. A sensitive candidate must pause before any staging.
+8. Only for a requested Git outcome, after required documentation and continuity are complete, apply steps 8-12 under repository contribution policy. Classify staged paths, unstaged tracked paths, untracked paths, renamed paths, deleted paths, unrelated pre-existing paths, excluded private, tool, and cache paths, and sensitive-looking paths. Perform mandatory per-path sensitive screening before any proposed staging. Filename screening is a warning baseline, not proof of safety. A sensitive candidate must pause before any staging.
 9. For each proposed reviewable work-unit grouping show exact paths, why they belong together, a proposed Conventional Commit message, explicit exclusions, and already-staged paths. Record pre-existing staged paths before staging and keep them outside the proposed work unit. Ask conversationally for the intended outcome. For commit-only, ask one localized question using semantic fields `path`, `commit message`, and `permission scope`, with every exact value rendered as non-translatable code. For commit and push, also include semantic fields `upstream`, `remote`, and `branch`, then ask once for that complete bounded outcome. Resume the same session-stop invocation after approval and stage only those paths. Immediately before commit, perform one read-only staged-scope check comparing workflow-staged path names and status/modes with the approved scope and confirming that no excluded, sensitive, unrelated, extra, or missing path entered the workflow scope. If it matches, continue silently under existing consent. If it differs or a hook changed content or mode unexpectedly, invalidate consent, report the concise difference, and ask one new approval. Unstage only paths staged by this workflow when selective unstage is proven safe and supported without disturbing pre-existing staged work; otherwise stop, leave the index unchanged, and provide remediation evidence. Never propose, append, or create any `Co-Authored-By` trailer regardless of identity, or equivalent AI-authorship or AI-assistance attribution in the commit subject, body, or trailers; if the exact approved message contains prohibited attribution, pause and ask for a changed approved message rather than silently rewriting or committing it. Then create the commit exactly once, refresh status after the commit, and only then evaluate push under the same consent scope.
 10. Existing unpushed commits trigger a push offer without an empty commit. Commit approval never implies push. If the local branch is ahead and push preflight is safe, show semantic fields `upstream`, `ahead count`, and `permission scope`, render exact values as non-translatable code, and ask one localized push question.
 11. A detached HEAD, unborn branch, no upstream, missing remote, missing remote branch, or ahead-behind divergence blocks only the optional push branch and must include actionable safely-local evidence. Pause and invalidate consent for changed path scope or commit message; a newly detected sensitive or unrelated file; remote advanced or integration needed; missing or changed upstream or destination; authentication or provider ambiguity requiring a different credential path; destructive action, force, merge, rebase, reset, conflict resolution; verification failure; or commit hooks mutate content.
@@ -1685,7 +1680,7 @@ Use this exact order:
 
 ## Outcome Model
 
-- `completed`: successful verification, every applicable required documentation reconciliation, and continuity succeeded.
+- `completed`: successful verification, every applicable required documentation reconciliation, and required continuity succeeded. Optional memory absence or failure does not block the repository handoff.
 - `paused`: human input is actually needed for approval or a material change. Do not classify an authorized happy-path substep as `paused`.
 - `blocked`: evidence or a human decision is required before that scoped branch can proceed.
 - `failed`: a required continuity step failed, or an attempted scoped operation failed.
@@ -1696,10 +1691,10 @@ Always report required continuity outcome separately from optional Git branch ou
 
 ## Output Contract
 
-Deliver the complete Output Contract only after continuity is saved successfully. Return close outcome, required continuity outcome, optional Git branch outcome, completed work, decisions, unresolved issues, next steps, verified paths, documentation update result, {output_continuity}, classified Git state, proposed or completed work units, commit result, push result, transport receipts, safely-local state, and separately pending optional gates. When safe and relevant, ask exactly one blocking question and make it the final user-facing line.
+Return close outcome, required continuity outcome, {output_continuity}, completed work, unresolved issues, next step, and documentation result with relevant evidence. Include classified Git state and work units only for applicable Git work, transport receipts only for attempted transport, and pending gates only when actionable. Preserve independent failures; memory failure never withholds the user-facing report. Ask at most one blocking question, on the final line.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 {RESPONSE_CONTRACT_REFERENCE}
-If continuity saving fails, surface the failure and do not claim successful continuity or a final handoff.
+If continuity saving fails, surface it without claiming a successful memory handoff.
 {references_section(rulebook_path)}"""
 
 
@@ -1716,7 +1711,8 @@ def documentation_skill(
     continuity = (
         "- Use repository files only for continuity and durable project state."
         if standalone
-        else "- Gentle AI and Engram are required continuity tools. Reconcile Engram with the changelog without blindly overwriting either."
+        else """- Gentle AI and Engram are independent optional capabilities. Use Engram when available, reconcile it with repository evidence, and never claim successful continuity after failure. Block only behavior required by the operation or repository policy.
+- Defer routing, review, receipts, and correction to an applicable enabled Gentle workflow, not parallel reviewers, counters, receipts, or plans. Do not auto-enable methodologies or require disabled review. Repository policy owns commit, push, and PR; informational delivery guidance creates no gate. Neither coordination nor builder digest-bound write safety replaces human authorization."""
     )
     temporary_owner = "Session output, not durable docs by default" if standalone else (
         "Session output or memory, not durable docs by default"
@@ -1788,7 +1784,7 @@ def rulebook(project_id: str, standalone: bool) -> str:
         "- Reconcile applicable owning repository evidence before classifying status, pending work, defects, or completion; never rely on one source in isolation."
     )
     integration_rule = "- Use repository files only for continuity." if standalone else (
-        "- Gentle AI and Engram are required for integrated continuity; repository evidence remains authoritative."
+        "- Gentle AI and Engram are independent optional capabilities; repository evidence remains authoritative. Block only operation-required failures."
     )
     verification_rule = (
         "- Classify each claim as verified fact, supported inference, unknown or unverifiable, or human decision "
@@ -1885,18 +1881,18 @@ Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. A fil
 
 {marker}
 
-Load when: saving or recalling across sessions with Gentle AI and Engram.
+Load when: saving or recalling across sessions with Engram.
 
 ## Rules
 
-- Engram is required in integrated mode, but repository evidence remains authoritative whenever they disagree.
+- Engram is optional and independent of Gentle AI. Repository evidence remains authoritative; block only continuity required by the operation or repository policy.
 - Resolve explicit repository project scope before every operation. Under project ambiguity, perform zero Engram reads or writes.
-- Each operation reports its own outcome. This is per-operation accounting, not mandatory startup display: routine session-start omits unchanged successful continuity details, but always surfaces failures and task-relevant results. Session-stop reporting is unchanged. Never fabricate an aggregate Engram status or collapse successful reads, writes, prompt association, conflict discovery, lifecycle review, capture, or sync because another operation failed.
+- Each operation reports its own outcome. This is per-operation accounting, not mandatory startup display: routine session-start omits unchanged successful continuity details, but always surfaces failures and task-relevant results. Session-stop preserves independent save results. Never fabricate an aggregate Engram status or collapse successful reads, writes, prompt association, conflict discovery, lifecycle review, capture, or sync because another operation failed.
 - Surface Engram failures and never claim successful continuity when recovery or saving failed.
 - Reconcile before trusting: check every recalled claim against the file it describes before acting on it.
 - Accept an empty exact-topic or exact-subject result only when it is a validated empty from successful same-surface evidence or a same-surface positive control.
 - Treat `judgment_required`, `needs_review`, and other review-age or conflict hints as advisory metadata until current repository owners verify the underlying claim.
-- Save significant decisions, discoveries, fixes, and session summaries to Engram.
+- Save significant decisions, discoveries, fixes, and session summaries to Engram when available.
 - Do not save what the repository already records. A restatement of current code or history is noise.
 - Never let memory replace documentation. If a fact belongs in `{rulebook_path}` or `docs/repo-harness/`, write it there.
 
@@ -2056,7 +2052,7 @@ def docs_outputs(
         else "recovers relevant context and reconciles it with current repository evidence"
     )
     availability = (
-        "Confirm the generated skills are available in the selected runtime and that Gentle AI and Engram are available. If either continuity dependency is unavailable, report it and do not claim integrated continuity."
+        "Gentle AI and Engram are independent optional capabilities. Use each at its owned operation boundary; block only when the operation or repository policy requires it. Surface failures without claiming missing guarantees or withholding the repository handoff."
         if not standalone
         else "Confirm the generated skills are available in the selected runtime. Continuity stays in repository files and does not depend on an external memory service."
     )
@@ -2076,9 +2072,9 @@ Use the three generated skills as a loop: recover context, keep durable document
 
 <!-- doc-role:daily-workflow -->
 
-1. Start or resume with `repo-harness-session-start` and state the objective. It {recovery}, reports a scoped outcome, inspects local Git state read-only, and, when safe, ends with one concrete remote-check question.
+1. Start or resume with `repo-harness-session-start` and state the objective. It {recovery}, reports a scoped outcome, and inspects local Git state read-only. A remote-check question applies only when synchronization is relevant and safe.
 2. Use `repo-harness-documentation` when durable documentation or visible project state needs updating.
-3. Pause or close with `repo-harness-session-stop`. It verifies final evidence and saves continuity before inspecting Git. It screens every candidate path, proposes exact reviewable commit work units, and ends safe commit or push gates with one concrete question.
+3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation and continuity. Only requested Git work triggers path screening and exact work-unit proposals under repository policy; unchanged authorization is not requested again.
 
 ## Integrated Availability
 
@@ -2155,7 +2151,7 @@ No project-specific records have been resolved.
     continuity_decision = (
         "- Continuity uses repository files only."
         if standalone
-        else "- Gentle AI and Engram are required for integrated continuity, but never override current repository evidence."
+        else "- Gentle AI and Engram are independent optional capabilities; block only operation-required failures and never override current repository evidence."
     )
     decisions = f"""# Decisions And Constraints
 
@@ -2280,7 +2276,7 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
 {spanish_index_owner_rows}
 """
     availability_es = (
-        "Confirme que las habilidades generadas esten disponibles en el entorno seleccionado y que Gentle AI y Engram esten disponibles. Si falta alguna dependencia de continuidad, informelo y no afirme que la continuidad integrada funciona."
+        "Gentle AI y Engram son capacidades opcionales independientes. Use cada una en su limite de operacion; bloquee solo cuando la operacion o la politica del repositorio la exija. Informe fallos sin prometer garantias ausentes ni omitir el informe del repositorio."
         if not standalone
         else "Confirme que las habilidades generadas esten disponibles en el entorno seleccionado. La continuidad permanece en archivos del repositorio y no depende de un servicio externo de memoria."
     )
@@ -2300,9 +2296,9 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 
 <!-- doc-role:daily-workflow -->
 
-1. Inicie o reanude con `repo-harness-session-start` e indique el objetivo. La habilidad recupera contexto pertinente, lo reconcilia con evidencia actual del repositorio, informa un resultado acotado, inspecciona Git en modo de solo lectura y, cuando sea seguro, termina con una sola pregunta concreta sobre la comprobacion remota.
+1. Inicie o reanude con `repo-harness-session-start` e indique el objetivo. Recupera contexto pertinente, lo reconcilia con evidencia actual e inspecciona Git en solo lectura. Una pregunta de comprobacion remota aplica solo cuando sincronizar es pertinente y seguro.
 2. Use `repo-harness-documentation` cuando sea necesario actualizar documentacion durable o el estado visible del proyecto.
-3. Pause o cierre con `repo-harness-session-stop`. La habilidad verifica la evidencia final y guarda continuidad antes de inspeccionar Git. Examina cada ruta candidata, propone unidades de commit exactas y revisables, y termina las compuertas seguras de commit o push con una sola pregunta concreta.
+3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia, documentacion y continuidad requeridas. Solo el trabajo Git solicitado activa revision de rutas y propuestas exactas bajo la politica del repositorio; no se repite una autorizacion sin cambios.
 
 ## Disponibilidad integrada
 
@@ -2376,7 +2372,7 @@ No se han agregado registros especificos del proyecto.
 
 No se han resuelto registros especificos del proyecto.
 """
-    continuity_decision_es = "- La continuidad usa solo archivos del repositorio." if standalone else "- Gentle AI y Engram son obligatorios para la continuidad integrada, pero nunca reemplazan la evidencia actual del repositorio."
+    continuity_decision_es = "- La continuidad usa solo archivos del repositorio." if standalone else "- Gentle AI y Engram son capacidades opcionales independientes; solo bloquean fallos requeridos por la operacion y nunca reemplazan la evidencia actual del repositorio."
     decisions_es = f"""# Decisiones y restricciones
 
 {marker}

@@ -8,14 +8,14 @@ Use the three generated skills as a loop: recover context, keep durable document
 ## Daily Workflow
 <!-- doc-role:daily-workflow -->
 
-1. Start or resume with `repo-harness-session-start` and state the objective. It reports a scoped outcome, reconciles context with repository evidence, inspects Git read-only, and ends with one concrete remote-check question when safe. Every claim it reports carries its evidence class, so a supported inference is never presented as a verified fact.
+1. Start or resume with `repo-harness-session-start` and state the objective. It reconciles context with repository evidence and inspects local Git read-only. Remote checking applies only when synchronization is relevant and safe. Claims retain their evidence class.
 2. Use `repo-harness-documentation` when durable documentation or visible project state needs updating.
-3. Pause or close with `repo-harness-session-stop`. It completes documentation and Engram continuity first, screens each changed path, then may request one outcome-scoped approval for an exact commit, push, or combined commit and push.
+3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation and continuity, using Engram when available. Only requested Git work triggers path screening and exact work-unit proposals under repository policy; unchanged authorization is not requested again.
 
 ## Integrated Availability
 <!-- doc-role:availability -->
 
-Confirm the generated skills are available in the selected runtime and classify Gentle AI and Engram independently. If either capability is unavailable, report its scoped degradation and do not claim guarantees owned by it; block only an operation that requires it.
+Integrated mode composes Gentle AI and Engram independently; either can remain useful without the other. Startup reuses Engram recovery as availability evidence and checks Gentle AI only at enabled coordination boundaries. Surface failures without claiming missing guarantees; block only operation-required capabilities. Optional memory failure does not withhold the repository handoff. Standalone explicitly uses neither component. Enabled managed coordination receives repository context and checks, not parallel workflows; commit, push, and PR remain repository-owned, with no new delivery gate.
 
 ## Congruence And Ownership
 <!-- doc-role:ownership -->
