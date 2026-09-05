@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-05
 
+- Completed `RH-W-0088` locally with tests first and no delivery. Generated session-start reuses Engram recovery as availability evidence, checks Gentle AI only at its owned boundary, and gates projection checking under the existing rulebook. Review corrections preserve independent operation outcomes without displaying unchanged successful capability and continuity details during routine startup; failures and task-relevant results remain visible. Suite accounting now distinguishes collection from execution: 497 tests collected after correction; the prior full run reported 496 tests run, 9 skipped, OK. See the [roadmap evidence](docs/repo-harness/roadmap.md#rh-w-0088) for focused verification and exact-render synchronization, including the established single-Pi fallback. No persistent state, manifest or checker field, general Pi ownership or migration authority, dependency, delivery, provider action, RH-W-0078 scope, or unrelated RH-W-0071 state changed.
+
 - Registered `RH-W-0088` as `P1` from verified recurring session-start cost and approved its bounded correction direction without a separate scope, design, or implementation-plan artifact. `RH-W-0071` received only a review-pause note. No product implementation occurred.
 
 ## 2026-09-04

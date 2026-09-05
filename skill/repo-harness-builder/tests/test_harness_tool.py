@@ -3262,8 +3262,8 @@ class GeneratedCoreTests(unittest.TestCase):
         if not state.is_file():
             self.skipTest("repository documentation fixture is outside the portable package")
         actual = unittest.defaultTestLoader.discover(str(Path(__file__).resolve().parent), pattern="test_*.py").countTestCases()
-        documented = re.search(r"Canonical suite green: (\d+) tests passed", state.read_text(encoding="utf-8"))
-        self.assertIsNotNone(documented, "current-state must state the canonical suite count")
+        documented = re.search(r"Canonical suite collection: (\d+) tests", state.read_text(encoding="utf-8"))
+        self.assertIsNotNone(documented, "current-state must state the collected total, not claim all collected tests passed")
         self.assertEqual(
             int(documented.group(1)),
             actual,
@@ -3844,13 +3844,61 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertIn("Avoid an entry for a trivial or no-op session", stop)
         self.assertIn("completed changes, not future plans", docs)
 
-    def test_session_start_reports_runtime_skill_freshness(self):
+    def test_session_start_runs_projection_checker_only_when_its_rulebook_gate_applies(self):
         start = TOOL.render("Example", ["opencode", "claude-code"])[
             ".repo-harness/skills/repo-harness-session-start/SKILL.md"
         ]
-        self.assertIn("Run `python3 .repo-harness/check.py` (`python` on Windows)", start)
-        self.assertIn("Report the checker result in the reply language", start)
-        self.assertIn("naming each drifted runtime projection", start)
+        self.assertIn(
+            "Run `python3 .repo-harness/check.py` (`python` on Windows) only when the rulebook applicability gate is triggered",
+            start,
+        )
+        self.assertNotIn(
+            "4. Run `python3 .repo-harness/check.py` (`python` on Windows) and retain its status",
+            start,
+        )
+
+    def test_session_start_uses_engram_recovery_as_availability_evidence(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+
+        self.assertIn("the recovery attempt is also the current Engram availability evidence", start)
+        self.assertIn("Do not run a separate Engram preflight", start)
+
+    def test_session_start_checks_gentle_ai_only_at_its_owned_boundary(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+
+        self.assertIn(
+            "Check Gentle AI only when requested work reaches a Gentle-owned routing, review, receipt, or delivery boundary",
+            start,
+        )
+        self.assertIn("do not probe or report it separately during ordinary startup", start)
+
+    def test_session_start_reports_only_task_relevant_discrepancies(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+
+        self.assertIn("Omit successful unchanged capability and continuity detail from routine startup display", start)
+        self.assertIn("Report only capability discrepancies that affect requested work", start)
+        self.assertIn("Always report repository resolution", start)
+        self.assertIn("retain only continuity evidence relevant to the requested work", start)
+
+    def test_session_start_separates_outcome_accounting_from_routine_display(self):
+        outputs = TOOL.render("Example", [])
+        start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        memory = outputs[".repo-harness/rules/memory.md"]
+        for owner, body, phrase in (
+            ("startup", start, "Account for repository, baseline"),
+            ("startup", start, "Omit successful unchanged capability and continuity detail from routine startup display"),
+            ("memory", memory, "per-operation accounting, not mandatory startup display"),
+            ("memory", memory, "always surfaces failures and task-relevant results"),
+        ):
+            with self.subTest(owner=owner, phrase=phrase):
+                self.assertIn(phrase, body)
+        self.assertIn("Each operation reports its own outcome", memory)
+        self.assertIn("Never fabricate an aggregate Engram status", memory)
+        self.assertIn("surface the failure", start)
+        self.assertNotIn("- Report repository, baseline", start)
+        standalone = TOOL.render("Example", [], standalone=True)
+        self.assertIn("- Report repository, baseline", standalone[".repo-harness/skills/repo-harness-session-start/SKILL.md"])
+        self.assertNotIn("mandatory startup display", standalone[".repo-harness/rules/memory.md"])
 
     def test_human_owned_locale_check_detects_leakage_without_pinning_seed_prose(self):
         """Editing a Spanish document is ownership, not drift; untranslated English is the defect."""

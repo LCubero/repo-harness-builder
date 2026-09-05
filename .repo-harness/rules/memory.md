@@ -8,7 +8,7 @@ Load when: saving or recalling across sessions with Gentle AI and Engram.
 
 - Engram is required in integrated mode, but repository evidence remains authoritative whenever they disagree.
 - Resolve explicit repository project scope before every operation. Under project ambiguity, perform zero Engram reads or writes.
-- Each operation reports its own outcome. Never fabricate an aggregate Engram status or collapse successful reads, writes, prompt association, conflict discovery, lifecycle review, capture, or sync because another operation failed.
+- Each operation reports its own outcome. This is per-operation accounting, not mandatory startup display: routine session-start omits unchanged successful continuity details, but always surfaces failures and task-relevant results. Session-stop reporting is unchanged. Never fabricate an aggregate Engram status or collapse successful reads, writes, prompt association, conflict discovery, lifecycle review, capture, or sync because another operation failed.
 - Surface Engram failures and never claim successful continuity when recovery or saving failed.
 - Reconcile before trusting: check every recalled claim against the file it describes before acting on it.
 - Accept an empty exact-topic or exact-subject result only when it is a validated empty from successful same-surface evidence or a same-surface positive control.

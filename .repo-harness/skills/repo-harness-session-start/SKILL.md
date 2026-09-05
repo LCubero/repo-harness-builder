@@ -24,15 +24,16 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Report discrepancies instead of silently resolving them; current repository evidence wins over memory.
 - Do not read every file or run every test indiscriminately.
 - Inspect repository state read-only. Do not pull, commit, push, publish, or mutate by default.
-- Gentle AI and Engram are required for integrated session continuity.
+- Integrated startup composes Gentle AI and Engram independently at their owned boundaries.
 - The repository owns durable truth, source, tests, policy, backlog, and approvals.
 - Engram owns semantic continuity, relations, conflict state, review-age metadata, and session memory.
 - Gentle AI owns routing, exact-candidate review and receipts, and delivery gates when enabled.
-- Recover relevant recent context from Engram and reconcile every recalled claim with current repository evidence.
+- Recover relevant recent context from Engram and reconcile every recalled claim with current repository evidence; the recovery attempt is also the current Engram availability evidence. Do not run a separate Engram preflight.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - If Engram is unavailable or recovery fails, surface the failure and must not claim successful continuity.
+- Check Gentle AI only when requested work reaches a Gentle-owned routing, review, receipt, or delivery boundary; do not probe or report it separately during ordinary startup.
 - After installation, Gentle AI loss degrades review and delivery only, while Engram loss degrades continuity only. Block an affected workflow only when repository policy requires its missing component.
-- Report repository, Gentle AI, and Engram outcomes separately with exact failure evidence and one next action. Never reconstruct malformed owner output as success.
+- Omit successful unchanged capability and continuity detail from routine startup display, not from per-operation outcome accounting. Report only capability discrepancies that affect requested work; always surface continuity failures and task-relevant results, with repository and affected component outcomes separated, exact failure evidence, and one next action. Never reconstruct malformed owner output as success.
 - Report discrepancies and uncertainty instead of inventing certainty.
 - Conversation language: Follow a current verified human language instruction; otherwise preserve an explicit persisted preference. Without one, use verified session language, validated manifest fallback, then deterministic English. Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes. This flattened host cannot reliably detect language switches; preserve persisted preference.
 - Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
@@ -55,12 +56,12 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Inspect at most 20 commits touching owner paths, at most 12 distinct local evidence paths, and direct dependents capped at 8 records. Use at most two Engram reads capped at 10 observations each after explicit project resolution. Report `bound_exhausted` at the first exceeded bound and suppress authoritative routing.
 - Explicit bounded inspection stays bounded unless independent evidence verifies a mandatory trigger. An explicit full request, verified product or lifecycle delivery, canonical lifecycle inconsistency, incomplete delivery evidence, repository-memory contradiction, or unclassified retained finding requires full reconciliation within the same bounded scope.
 - Treat unrelated dirtiness, ahead-only Git, advisory memory metadata, age, invocation count, and wording-only parity differences as advisory. They never trigger full reconciliation alone.
-- Report repository, baseline, bounded scan, reconciliation, trigger, findings, canonical updates, localized parity, delivery evidence, next-ready, Git, and applicable continuity operations as separate outcomes. Use `completed`, `paused`, `blocked`, `failed`, or `not_triggered` where applicable.
+- Account for repository, baseline, bounded scan, reconciliation, trigger, findings, canonical updates, localized parity, delivery evidence, next-ready, Git, and applicable continuity operations as separate outcomes. Use `completed`, `paused`, `blocked`, `failed`, or `not_triggered` where applicable.
 
 ## Self-Update And Runtime Cache
 
 - Distinguish on-disk canonical and projection parity, active-process registered skill freshness, and runtime reload or restart capability.
-- In a fresh process, compare the on-disk projection checker result and report `current` or `drift` normally. This process cannot prove what a prior process cached.
+- In a fresh process, compare the on-disk projection checker result only when the rulebook applicability gate is triggered. This process cannot prove what a prior process cached.
 - If current on-disk projections are verified, older content observed by registered name in the process that changed them is an expected active-process cache limitation, not repository or continuity failure. Defer registered-name validation to a fresh runtime process or use a supported explicit registry reload if the runtime provides one. Never claim or invent a reload command.
 
 ## Execution Steps
@@ -68,7 +69,7 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 1. Resolve the selected repository root and confirm `REPO-HARNESS.md` belongs to it.
 2. Read the rulebook, follow only the decision gates the current work triggers, then the latest relevant changelog entries.
 3. Detect whether the root is a Git repository. If it is, inspect branch, worktree, index, upstream, remotes, and each upstream remote URL, host, and scheme read-only before suggesting network access. Provider recognition is optional and must not require provider tooling.
-4. Run `python3 .repo-harness/check.py` (`python` on Windows) and retain its status and any drifted runtime projection paths.
+4. Run `python3 .repo-harness/check.py` (`python` on Windows) only when the rulebook applicability gate is triggered by a changed canonical skill or a possibly stale runtime projection; then retain its status and any drifted runtime projection paths.
 5. Recover relevant recent context from Engram, label it as memory evidence, and reconcile it with repository evidence.
 6. Identify completed work, remaining work, constraints, and the next recommended step. Reconcile any changed `RH-W-####` lifecycle with the roadmap, current-state projection, localized peers, and Engram topic `work/RH-W-####` in the same work unit.
 7. Report stale links, contradictions, or missing evidence before proceeding.
@@ -102,8 +103,8 @@ Never use git pull, git rebase, git reset, force operations, merge on divergence
 
 ## Output Contract
 
-Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
-Report the checker result in the reply language: `current` means every runtime projection is up to date, and `drift` is reported as needing an update, naming each drifted runtime projection.
+Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. Always report repository resolution and retain only continuity evidence relevant to the requested work. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
+When the checker applicability gate is triggered, report its result in the reply language: `current` means every runtime projection is up to date, and `drift` is reported as needing an update, naming each drifted runtime projection.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 Response shaping: immediately before composing any reply or reported output that carries a notice, pending action, question, approval, visible next action, or contextual explanation, load and apply `.repo-harness/rules/response-contract.md`.
 

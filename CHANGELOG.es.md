@@ -4,6 +4,8 @@
 
 ## 2026-09-05
 
+- Se completo `RH-W-0088` localmente con pruebas primero y sin entrega. Session-start generado reutiliza la recuperacion de Engram como evidencia de disponibilidad, comprueba Gentle AI solo en el limite de su propiedad y condiciona el checker al reglamento existente. Las correcciones de revision conservan resultados independientes por operacion sin mostrar detalles exitosos sin cambios de capacidades y continuidad durante el inicio rutinario; los fallos y resultados pertinentes siguen visibles. El conteo distingue recoleccion de ejecucion: 497 pruebas recolectadas tras la correccion; la corrida completa anterior informo 496 pruebas ejecutadas, 9 omitidas, OK. La [evidencia de la hoja de ruta](docs/es/repo-harness/roadmap.md#rh-w-0088) detalla verificacion enfocada y sincronizacion por render exacto, incluido el fallback establecido para una sola proyeccion Pi. No cambiaron estado persistente, campo de manifest o checker, propiedad general de Pi o autoridad de migracion, dependencia, entrega, accion de proveedor, alcance RH-W-0078 ni estado ajeno de RH-W-0071.
+
 - Se registro `RH-W-0088` como `P1` a partir del costo recurrente verificado de session-start y se aprobo su direccion de correccion acotada sin un artefacto separado de alcance, diseno ni plan de implementacion. `RH-W-0071` recibio solo una nota de pausa para revision. No se realizo ninguna implementacion de producto.
 
 ## 2026-09-04
