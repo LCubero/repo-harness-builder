@@ -4775,6 +4775,39 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             self.assertIn(phrase, stop)
 
+    def test_generated_session_stop_forbids_ai_attribution_at_commit_creation(self):
+        outputs = TOOL.render("Example", ["claude-code", "opencode", "pi"])
+        paths = (
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+            ".claude/skills/repo-harness-session-stop/SKILL.md",
+            ".opencode/skills/repo-harness-session-stop/SKILL.md",
+            ".pi/skills/repo-harness-session-stop/SKILL.md",
+        )
+        prohibition = (
+            "Never propose, append, or create any `Co-Authored-By` trailer regardless of identity, or equivalent "
+            "AI-authorship or AI-assistance attribution in the commit subject, body, or trailers; if the exact "
+            "approved message contains prohibited attribution, pause and ask for a changed approved message rather "
+            "than silently rewriting or committing it."
+        )
+        canonical = outputs[paths[0]]
+
+        self.assertEqual(canonical.count(prohibition), 1)
+        canonical_body = canonical.split("## Activation Contract", 1)[1]
+        for path in paths:
+            with self.subTest(path=path):
+                self.assertEqual(outputs[path].count(prohibition), 1)
+                self.assertIn(f"{prohibition} Then create the commit exactly once", outputs[path])
+                self.assertEqual(outputs[path].split("## Activation Contract", 1)[1], canonical_body)
+        ordered_boundaries = (
+            "Ask conversationally for the intended outcome",
+            "Immediately before commit, perform one read-only staged-scope check",
+            prohibition,
+            "Then create the commit exactly once",
+            "Pause and invalidate consent for changed path scope or commit message",
+        )
+        positions = [canonical.index(boundary) for boundary in ordered_boundaries]
+        self.assertEqual(positions, sorted(positions))
+
     def test_session_start_combines_safe_sync_fetch_and_fast_forward_consent(self):
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         for phrase in (

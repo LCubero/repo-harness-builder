@@ -22,7 +22,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
+Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33, and its separately authorized implementation reduced it to 32. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
 The preventive design precedes the local-state architecture:
 
@@ -468,16 +468,16 @@ Human decision: approve or correct the implementation plan. Implementation requi
 
 ### Plan 31: RH-W-0087 generated commits exclude AI attribution trailers
 
-Readiness `plannable now`. Priority `P2`, dependencies none. Registered outside the approved order. Next artifact: a bilingual scope document and its Spanish peer.
+Readiness `completed`. Priority `P2`, dependencies none. The owner-approved bilingual [scope](rh-w-0087-scope.md) was implemented as one bounded test-first work unit on 2026-09-04; no Git delivery is claimed.
 
-1. Preserve the exact requirement: a commit created by a generated harness contract must not add `Co-Authored-By` or an equivalent AI-attribution trailer for Claude, OpenAI, ChatGPT, Gemini, or any AI.
-2. Keep human-authored commit metadata outside this unit. The control governs only metadata the generated workflow proposes or creates; it does not rewrite history or inspect unrelated commits.
-3. Place the concise obligation immediately before commit creation in generated session-stop, following the completed `RH-W-0084` instruction-distance finding, without creating another policy owner.
-4. Write focused RED tests for the generated contract and preserve the existing exact staged-scope and one-commit boundaries.
-5. Synchronize all supported runtime projections through the existing renderer and verify the checker reports `current` with zero writes.
-6. Do not implement concurrently with Plan 18, because both edit generated session-stop.
+1. Preserve the exact requirement: generated harness behavior never proposes, appends, or creates any `Co-Authored-By` trailer, regardless of named identity, and never adds equivalent AI-authorship or AI-assistance attribution in a commit subject, body, or trailers. Named providers are examples, not a provider list.
+2. Keep human-authored commit metadata outside this unit. If an approved message for the commit being created contains prohibited attribution, pause rather than commit and never silently rewrite that message. Do not rewrite history or inspect unrelated commits.
+3. Place the concise imperative immediately before `Then create the commit exactly once` in generated session-stop, following the completed `RH-W-0084` instruction-distance finding, without creating another policy owner.
+4. Begin implementation with focused RED proving the obligation absent, then assert its exact generated meaning and order while preserving the existing staged-scope, conversational approval, one-commit, and message-change invalidation boundaries.
+5. Synchronize canonical generated output and all supported Claude Code, OpenCode, and Pi runtime projections through the existing renderer and checker ownership model.
+6. Add no history tooling, general trailer parser, binary, schema, manifest or checker state, provider list, AI detector or classifier, commit hook, or duplicate rule. Do not implement concurrently with Plan 18.
 
-Human decision: approve or correct a bilingual scope. Implementation requires separate authorization.
+Completed under separate explicit owner implementation authorization; the steps above remain historical execution evidence.
 
 ### Not plannable yet
 
@@ -490,7 +490,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reviewed through 2026-09-04 across 25 non-terminal plan headings covering 26 of the 33 non-terminal records, including the two records covered by Plan 6, plus 6 completed plans retained as historical execution evidence. Historical Plan 28 is completed and authorizes no current implementation or release. No true lifecycle merge is approved.
+Current projection reviewed through 2026-09-04 across 24 non-terminal plan headings covering 25 of the 32 non-terminal records, including the two records covered by Plan 6, plus 7 completed plans retained as historical execution evidence. Historical Plans 28 and 31 are completed and authorize no current implementation or release. No true lifecycle merge is approved.
 
 Coverage is complete at the lifecycle level. The stale next-artifact wording corrected in this reconciliation means the prior claim that no plans contradicted each other was too strong. No true lifecycle merge is approved. RH-W-0051 keeps separate design and implementation plans. The portfolio has one explicit joint-design pair, `RH-W-0046` with `RH-W-0018`, and four coordination pairs with separate lifecycles and implementations: coordinated sequencing for `RH-W-0055` with `RH-W-0062` and `RH-W-0069` with `RH-W-0068`, plus coordinated boundary review for `RH-W-0065` with `RH-W-0022` and `RH-W-0066` with `RH-W-0044`. The five unscheduled deferred records are covered in the not-plannable list; RH-W-0018 is covered by Plan 6.
 
@@ -526,16 +526,16 @@ Five plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Origin | Owner requirement recorded on 2026-09-04: commits created through the generated harness must never add `Co-Authored-By` or equivalent AI-attribution trailers for Claude, OpenAI, ChatGPT, Gemini, or any AI. Repository inspection found no product-generated rule enforcing it. |
 | Priority | P2: unwanted authorship metadata can misrepresent a commit and must be prevented, but no observed bad commit or consumer failure is recorded and product behavior remains otherwise intact. |
 | Dependencies | none. Coordinate with `RH-W-0068`, which retains the rest of generated session-stop closure and Git-route behavior, without merging. Reuse the completed `RH-W-0084` finding that an obligation belongs near its action point. |
-| Status | proposed |
-| Completed work | Registered this immutable record and located the likely future action point immediately before commit creation in generated session-stop. No product behavior changed. |
-| Remaining work | Draft and obtain approval for a bilingual scope defining the exact prohibited trailer forms, focused contract tests, runtime projection synchronization, and preservation of human-authored metadata; then obtain separate implementation authorization. |
-| Additions | A future concise generated-session-stop obligation preventing the generated workflow from proposing or creating AI-attribution trailers. |
-| Exclusions | No implementation, product test, generated projection, manifest, checker, configuration, Git index, commit, history rewrite, delivery, issue, pull request, release, or publication. No scan or claim that existing commits contain prohibited trailers. No restriction on human-authored metadata beyond generated harness behavior. |
-| Deferrals | Exact test cases and wording wait for an approved bilingual scope. |
+| Status | completed |
+| Completed work | Registered and approved the bilingual [scope](rh-w-0087-scope.md), then implemented it under separate owner authorization as one test-first work unit. The generated session-stop imperative appears exactly once immediately before commit creation; focused RED failed only on its absence, focused GREEN and 9 related regressions passed, maintenance apply returned `VALIDATED`, and all projections are checker-`current` with 0 writes. |
+| Remaining work | none |
+| Additions | One concise generated-session-stop obligation preventing the workflow from proposing, appending, or creating prohibited attribution and requiring a pause for a changed approved message instead of silent rewriting or committing. |
+| Exclusions | No parser, classifier, provider list, hook, history scan or rewrite, manifest or checker state, unrelated refactor, Git index mutation, commit, delivery, issue, pull request, release, or publication. No claim that existing commits contain prohibited trailers. Human-authored metadata remains outside generated workflow behavior. |
+| Deferrals | none. |
 | Rejections | Rejected treating host-level agent policy as delivered product behavior. Rejected inventing an observed bad commit, rewriting history, or broadening this into general commit-message policy. |
 | Evidence | Verified fact: repository policy prohibits AI attribution for this host, but the generated product contract has no equivalent rule. Verified fact: generated session-stop performs its final staged-scope check immediately before creating exactly one commit, making that the narrow future enforcement point. Supported inference from completed `RH-W-0084`: placing the obligation immediately before commit creation is more reliable than a distant general rule. Human decision: generated commits must never add the named or equivalent AI-attribution trailers. |
-| Decision history | 2026-09-04: registered as `proposed` under immutable ID RH-W-0087. Documentation registration authorizes no scope, design, implementation, Git mutation, or delivery. |
-| Next advancement condition | Advance only after the owner approves a bilingual scope; implementation remains separately unauthorized. |
+| Decision history | 2026-09-04: registered as `proposed`; the bilingual scope was written and approved separately; the owner then explicitly authorized the bounded implementation, whose verified completion advanced the record to `completed`. |
+| Next advancement condition | none. |
 
 ### RH-W-0086
 | Field | Value |
