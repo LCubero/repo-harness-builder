@@ -1,8 +1,32 @@
 # RH-W-0071 Implementation Plan
 
-> **Status: approved by the owner on 2026-08-30 and reconciled to the approved LLM-first preference architecture on 2026-08-30. The persistence shape is resolved. RH-W-0071 remains `proposed`, and implementation requires separate authorization after the two remaining pre-implementation gates are resolved.**
+> **Status: session-only implementation separately authorized on 2026-09-05 under issue #160. The local contract implementation is present; verification and native review remain separate from delivery. RH-W-0071 remains `proposed` because shared persistence is deferred and the original full requirement is not satisfied.**
 
 Derived from the owner-approved [RH-W-0071 design](rh-w-0071-design.md) and roadmap Plan 20. Its Spanish peer is [rh-w-0071-implementation-plan.md](../es/repo-harness/rh-w-0071-implementation-plan.md).
+
+## Current Immediate Scope: Session-Only Presentation
+
+The immediate scope is explicit `adhd-friendly` or `standard` presentation within the existing RH-W-0067 response-contract owner. `standard` is the default; only a verified explicit current-session instruction activates ADHD-friendly presentation or resets it to standard. No diagnosis, writing style, behavior, memory, repository prose, tool output, or runtime state may infer activation. A new session starts at standard, without reading or writing a preference.
+
+ADHD-friendly presentation uses a concise initial answer or action, small chunks, useful bounded steps, one necessary question at a time, and progressive detail. A request for more detail expands the response without switching mode. Preserve necessary safety, authority, evidence, uncertainty, contradictions, blocking questions, and technical context in full; brevity never overrides them. Retain the approved shaping requirements below within this session-only boundary, without clinical claims or underivable time estimates.
+
+The owner delegated the scope decision after read-only source-backed verification: `resolve_conversation_language()` is pure language resolution, not preference storage or transport; RH-W-0051 `localState` is a namespace foundation, not a consumer API. Shared persistence would exceed the immediate demonstrated need. Reuse the existing response owner, not a second owner, runtime API, state file, builder preference interview, or duplicated Gentle coordination.
+
+**Authorization and verification boundary:** the owner separately authorized session-only implementation after the documentation revision, with issue #160 and branch `feat/rh-w-0071-session-response-mode`. `rule_outputs()` now extends the existing response owner; the self-hosted human-owned rule is integrated explicitly. No parser, storage, transport API, preference interview, or dependent axis is implemented. Contract-text tests do not prove live-model compliance. Do not execute historical persistence commands or choose its shipping slices.
+
+### Local Implementation Evidence
+
+`SessionResponseModeContractTests` verifies selection instructions, shaping, preserved boundaries, one owner, budget, no generated preference state, and identical instructions across standalone/integrated and English/Spanish/bilingual renders. The focused command `python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.SessionResponseModeContractTests -v` ran 3 tests: RED produced 27 expected assertion failures in 0.007s; GREEN passed in 0.004s. These are instruction-contract receipts, not observations of runtime mode transitions. Final projection checks and the full standard-library suite required by `CONTRIBUTING.md` follow all source normalization; their final receipts belong to the implementation handoff. Native review is delegated to the parent, not claimed here.
+
+## Deferred Shared Persistence: Preserved Agreement
+
+Shared three-axis persistence is deferred, not cancelled or satisfied by the session-only revision. The approved structured Markdown contract at `.repo-harness/state/preferences/user-preferences.md` below remains the agreement; the prior JSON scalar was never implemented. RH-W-0071 retains shared persistence and `response-structure`, RH-W-0082 retains `explanation-style`, and RH-W-0018 retains `interaction-behavior`, with their dependencies unchanged. This revision does not implement either dependent axis or absorb consent or language provenance.
+
+The named runtime reader/transport ownership and API and the original slice-delivery grouping remain unresolved only for deferred persistence. They do not block separately authorized session-only implementation. Reopening persistence requires explicit owner authorization, current source evidence, and reconciliation of those gates and dependent owners before implementation. No new transport architecture or delivery grouping is selected here.
+
+## Historical Approved Persistence Plan (Not Current Execution Instructions)
+
+Everything below preserves the 2026-08-30 approved broader plan, including its gates, slices, test commands, acceptance criteria, and rollback. It is historical/deferred guidance, not an executable plan for the immediate scope. Its assertions that all implementation waits for persistence gates are superseded for session-only work by the current sections above. No original full requirement is claimed complete.
 
 ## Repository Evidence Confirmed Before Planning
 
@@ -19,7 +43,7 @@ Reconfirm these claims at implementation time rather than carrying the historica
 
 ### One correction this plan carries
 
-Plan 20 says "completed RH-W-0051 implemented the `state/preferences/` reservation this plan consumes", and the RH-W-0071 record says "The RH-W-0051 preference-storage reservation is proven". Both overstate it. RH-W-0051 reserved `state/`, not `state/preferences/`.
+Earlier Plan 20 and RH-W-0071 record wording overstated the reservation as `state/preferences/`. The corrected distinction is retained here: RH-W-0051 reserved `state/`, not `state/preferences/`.
 
 Nothing breaks: `/.repo-harness/state/` in `.gitignore` already covers every sub-path. RH-W-0051 owns path, containment, Git-ignore, and local-state mechanics; RH-W-0071 owns the shared preference-file persistence and response-structure semantics. `state/preferences/` remains inside an already reserved and ignored namespace.
 

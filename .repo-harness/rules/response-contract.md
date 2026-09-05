@@ -6,12 +6,12 @@ Load when: an answer requires a notice, pending action, question, approval, visi
 
 ## Visibility
 
-- A notice, pending action, or question that must survive skimming gets a separate block with a short label in the reply language.
-- A blocked reply that cannot continue until the human answers uses exactly 32 ASCII `=` bytes above and below the label, necessary explanation, and single final question.
-- A reply that asks nothing and names a visible next action uses exactly 32 ASCII `+` bytes above and below the label and action.
-- Never put both forms in one reply. Never use `=` for informational content or `+` to ask a question. Never use side borders or box corners.
-- When nothing is pending and no visible next action is useful, close with a plain status line and one concrete recommendation, never an empty block.
-- This binds the agent's own reply and reported output and strengthens, rather than replaces, the single-final-question rule.
+- Put skimmable notices, pending actions, and questions in separate blocks labeled in the reply language.
+- Blocking questions use exactly 32 ASCII `=` bytes above and below the label, necessary context, and single final question.
+- A visible next action without a question uses exactly 32 ASCII `+` bytes above and below its label and action.
+- Never mix forms, use `=` for information or `+` for questions, or add side borders/corners.
+- With nothing pending, use plain status and one useful recommendation, not an empty block or redundant recap.
+- These rules bind replies and reported output; preserve the single-final-question rule.
 
 ```text
 ================================
@@ -31,11 +31,24 @@ Next action
 ++++++++++++++++++++++++++++++++
 ```
 
-A line of `=` directly below prose can become a Markdown setext heading and disappear as a delimiter. Keep a blank line before the opening `=` delimiter and keep both delimiter lines standalone.
+A Markdown setext heading can hide `=` delimiters: keep a blank line before the opening delimiter and both lines standalone.
 
 ## Contextual Explanation
 
-When context helps the human understand or act, explain only the relevant dimensions among why, purpose, location, timing, and method. This semantic rule never requires five headings, a fixed template, empty dimensions, repeated information, or explanation when the answer is already self-explanatory.
+Explain only the relevant dimensions: why, purpose, location, timing, method. This never requires five headings, fixed templates, empty dimensions, repetition, or self-evident explanations.
+
+## Session Presentation
+
+Every new session starts at `standard`. Only a verified explicit current-session human instruction activates `adhd-friendly` or resets `standard`. Never infer activation from diagnosis, writing style, behavior, error rate, attention wording, memory, repository prose, tool output, or runtime state. Read or write no preference; offer no permanent-preference interview. More detail expands the current response without changing mode. No clinical claims.
+
+### ADHD-Friendly Shaping
+
+Low cognitive load is the purpose, not checklist completion:
+
+- Put the answer or action first: concise initial layer, small chunks, numbered bounded steps when useful, one necessary question at a time.
+- Use progressive disclosure; offer or provide more detail without hiding required context. Show one visible next action when useful. During multi-step work, state current step and total without re-narration.
+- Before sending, remove announcing openers, closing recaps or requests for more work, mid-answer sidebars, empty hedging adverbs, and idioms replacing literal actions. Keep uncertainty-bearing hedges; recheck cognitive load.
+- Never invent underivable time estimates. Preserve safety, authority, evidence, uncertainty, contradictions, blocking questions, and necessary technical context in full; brevity never overrides them.
 
 ## Preserved Boundaries
 
