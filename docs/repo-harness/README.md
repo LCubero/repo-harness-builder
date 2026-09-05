@@ -44,6 +44,7 @@
 | [rh-w-0083-scope.md](rh-w-0083-scope.md) | Completed owner-approved immediate-before-response obligation and focused acceptance-test scope; historical boundary retained |
 | [rh-w-0012-boundaries.md](rh-w-0012-boundaries.md) | Owner-accepted specification of the seven external-research safety boundaries RH-W-0012 had only named; completed, including the boundary 4 undated-source clause that first use surfaced |
 | [rh-w-0084-research.md](rh-w-0084-research.md) | Canonical primary-source evidence owner for LLM-first formats, sizes, paths, reinforcement, and forms; the reinforcement finding is accepted under RH-W-0083 while other findings remain with their owners |
+| [rh-w-0078-gentle-ai-binary-research.md](rh-w-0078-gentle-ai-binary-research.md) | Canonical Gentle AI source research informing RH-W-0078 progressive disclosure and deterministic machine ownership without authorizing a new binary or implementation |
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
 | [rh-w-0071-design.md](rh-w-0071-design.md) | Owner-approved ADHD-friendly response structure and shared LLM-first preference architecture; implementation remains unauthorized |
