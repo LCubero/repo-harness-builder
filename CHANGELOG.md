@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-05
+
+- Registered `RH-W-0088` as `P1` from verified recurring session-start cost and approved its bounded correction direction without a separate scope, design, or implementation-plan artifact. `RH-W-0071` received only a review-pause note. No product implementation occurred.
+
 ## 2026-09-04
 
 - Completed `RH-W-0087` as one minimal test-first work unit. Generated session-stop now carries one concise imperative immediately before `Then create the commit exactly once`: never propose, append, or create `Co-Authored-By` trailers or equivalent AI-authorship or AI-assistance attribution, and pause for a changed approved message rather than silently rewriting or committing a conflicting one. Focused RED failed only because the obligation was absent; focused GREEN and the nine-test staging, consent, invalidation, and generated-projection regression passed. Maintenance apply returned `VALIDATED`; exact canonical renderer output synchronized the Pi operational-skill projection omitted from that replacement set; the checker reports `current` with 0 writes. Human-authored metadata, staged-scope approval, exact one-commit behavior, message-change invalidation, and all `RH-W-0068` ownership remain unchanged. The exact reviewed 22-path unit was later delivered as commit `4742da95aae0807231e115f0dd9acce877a04d66` by an explicitly owner-authorized emergency push directly to `main` after the issue-first route was blocked by the absence of authoritative YAML Issue Forms; local `main` and `origin/main` were then synchronized at 0 ahead and 0 behind. No issue, focused branch, PR, merge, tag, or release exists for this delivery. No parser, classifier, provider list, hook, history tooling, or manifest or checker state was added.
