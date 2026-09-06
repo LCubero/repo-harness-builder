@@ -28,6 +28,7 @@
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Owner-approved local memory backup and cross-source continuity design; implementation remains separately unauthorized |
 | [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Proposed continuity plan; approval, installed-value examples, and verification workload require reconciliation before execution |
 | [rh-w-0068-documentation-closure-design.md](rh-w-0068-documentation-closure-design.md) | Implemented required post-verification documentation closure gate; other RH-W-0068 defects remain proposed |
+| [rh-w-0074-design.md](rh-w-0074-design.md) | Owner-approved accepted-omission design; implementation pending and unauthorized |
 | [rh-w-0070-design.md](rh-w-0070-design.md) | Owner-approved proportional preventive resource-safety design for agent and harness operations |
 | [rh-w-0011-design.md](rh-w-0011-design.md) | Completed owner-approved reconciliation scope; historical design body retained |
 | [rh-w-0011-results.md](rh-w-0011-results.md) | Canonical completed reconciliation result, five-finding dispositions, and owner-accepted lifecycle closure |

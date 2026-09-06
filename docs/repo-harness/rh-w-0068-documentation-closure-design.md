@@ -2,6 +2,8 @@
 
 > **Status: IMPLEMENTED AND VERIFIED. RH-W-0068 remains proposed for its separate unresolved defects.**
 
+The [owner-approved RH-W-0074 design](rh-w-0074-design.md) explicitly targets the forced `paused`/`blocked` classification for accepted omissions, not completion eligibility. Implementation remains separately unauthorized. This implemented contract is unchanged and remains binding until that implementation is authorized and completed.
+
 ## Decision
 
 After successful implementation or delivery verification, a work unit may be `completed` only after every canonical documentation surface applicable to that work unit is reconciled from proven facts. The exact close order is:

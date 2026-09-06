@@ -362,7 +362,9 @@ Decision humana: autorizacion explicita separada para el plan de implementacion 
 
 ### Plan 23: principio de cumplir con advertencia RH-W-0074
 
-Preparacion `plannable now`. Prioridad `P1`, sin dependencias. Registrado fuera del orden aprobado. Siguiente artefacto: un documento de diseno bilingue y su par en ingles.
+Preparación `diseño aprobado; implementación pendiente y no autorizada`. Prioridad `P1`, sin dependencias. Registrado fuera del orden aprobado. El [diseño bilingüe aprobado por el propietario](rh-w-0074-design.md) registra la modificación aceptada de clasificación/salida; implementar requiere autorización separada.
+
+El esquema siguiente es histórico, no un plan ejecutable ni el alcance vigente. Su pregunta sobre un estado terminal y su preocupación de presupuesto quedan reemplazadas como insumos de planificación por el diseño aprobado y RH-W-0073 completada, no por conducta implementada de RH-W-0074.
 
 1. Resolver primero el vocabulario de resultados, porque decide todo el alcance. El harness puede advertir y puede preguntar, pero la respuesta del consumidor es final, asi que denegar nunca es una jugada disponible. Queda un hueco: el trabajo que termino exactamente como se indico, llevando una consecuencia que el consumidor acepto, hoy no tiene etiqueta terminal veraz.
 2. Inventariar cada superficie generada que se niega, vuelve a preguntar o degrada un resultado tras una instruccion explicita del consumidor, y clasificar cada una como puerta o sobreescritura contra ese limite.
@@ -372,7 +374,7 @@ Preparacion `plannable now`. Prioridad `P1`, sin dependencias. Registrado fuera 
 6. Nombrar las pruebas RED, incluida una que pruebe que una reconciliacion obligatoria declinada explicitamente aun alcanza un resultado terminal veraz, y una por clase de accion excluida que pruebe que mutacion externa, accion destructiva, publicacion y escrituras fuera del repositorio siguen requiriendo aprobacion.
 7. Sincronizar ambas proyecciones de runtime y ambos pares de idioma en la misma unidad de trabajo.
 
-Decisiones humanas: si el modelo de resultados gana un estado terminal para excepciones aceptadas y declaradas, y si el dominio estricto de aprobacion ligado a digest del builder entra en alcance o se aplaza.
+Preguntas humanas históricas: agregar un estado terminal de excepción e incluir autoridad del builder vinculada al digest. El diseño aprobado no agrega estados y conserva esa autoridad; la autorización separada de implementación sigue siendo la siguiente compuerta.
 
 ### Plan 24: el acceso externo necesita un motivo RH-W-0075
 
@@ -492,7 +494,7 @@ Completado bajo autorizacion explicita y separada de implementacion del propieta
 
 Proyeccion vigente revisada hasta el 2026-09-05 sobre 24 encabezados de planes no terminales que cubren 25 de los 32 registros no terminales, incluidos los dos del Plan 6, mas 7 planes completados conservados como evidencia historica. Los 88 registros comprenden 56 completados, 27 propuestos y 5 aplazados. Los Planes historicos 28 y 31 no autorizan implementacion ni release vigente. No se aprueba fusion de ciclos y cobertura de planes no significa preparacion para implementar.
 
-Recomendacion consultiva, no cambio de calendario: aclarar el resultado abierto de RH-W-0074 antes de cambiar cierre, y reconciliar el residuo RH-W-0076 con la investigacion de contexto RH-W-0078 antes de comprimir. La secuencia aprobada sigue RH-W-0069, RH-W-0053, RH-W-0048 y RH-W-0052, sujeta a cada condicion de avance. Las entregas parciales de RH-W-0071, RH-W-0072, RH-W-0076 y RH-W-0086 no completan sus registros. RH-W-0070 es guia operativa aprobada, no motivo para construir un monitor; descubribilidad desconocida de RH-W-0072 no justifica inventar prevencion.
+Recomendación consultiva, no cambio de calendario: mantener pendiente la implementación RH-W-0074 hasta que se autorice por separado y reconciliar el residuo RH-W-0076 con la investigación de contexto RH-W-0078 antes de comprimir. La secuencia aprobada sigue RH-W-0069, RH-W-0053, RH-W-0048 y RH-W-0052, sujeta a cada condición de avance. Las entregas parciales de RH-W-0071, RH-W-0072, RH-W-0076 y RH-W-0086 no completan sus registros. RH-W-0070 es guía operativa aprobada, no motivo para construir un monitor; descubribilidad desconocida de RH-W-0072 no justifica inventar prevención.
 
 La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085 y RH-W-0086 no tienen plan de accion. Cuatro aplazados aparecen en la lista no planificable; RH-W-0018 participa solo en el diseno conjunto del Plan 6. Se conservan el par de diseno RH-W-0046/RH-W-0018 y los cuatro pares de coordinacion RH-W-0055/RH-W-0062, RH-W-0069/RH-W-0068, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. No se aprueba fusion ni implementacion nueva.
 
@@ -630,15 +632,11 @@ Origen: direccion del propietario el 2026-08-25: el espacio de trabajo es el rep
 
 ### RH-W-0074
 
-Estado: `proposed`. Prioridad: `P1`. Trabajo restante: resolver con el propietario el vocabulario de resultados para una omision aceptada y el limite entre compuerta y anulacion; reconciliar explicitamente el diseno RH-W-0068 antes de aprobar un diseno bilingue y autorizar implementacion por separado. No se aprueba aqui un estado nuevo ni reutilizar los existentes. El corte intentado se revirtio y no hay implementacion entregada.
+Estado: `proposed`. Prioridad: `P1`. El 2026-09-05 el propietario aceptó la dirección técnica mínima, sin sobreingeniería, y autorizó registrar el diseño bilingüe y reconciliar documentación. El 2026-09-06 aprobó el [diseño bilingüe](rh-w-0074-design.md) tras recibir la recomendación de aprobar. Trabajo restante y siguiente condición: autorización separada para implementar la modificación de clasificación/salida de RH-W-0068. El corte intentado se revirtió y no hay implementación entregada, autorización de implementación ni avance de ciclo.
 
-**Aclaracion de decision, no contrato aprobado.** El [diseno implementado RH-W-0068](rh-w-0068-documentation-closure-design.md) aun prohibe `completed` si se declina reconciliacion obligatoria. Ni la sugerencia inicial de estado terminal ni la recomendacion posterior de reutilizar resultados lo reemplazan. Las cifras de presupuesto siguientes son evidencia del registro original; RH-W-0073 ya posee su correccion.
+Dirección aceptada: separar terminar la conversación de cumplir obligaciones, conservar resultados por alcance y cumplimiento con una sola advertencia dentro del alcance autorizado, sin estado global de éxito con excepciones. El diseño posee la modificación exacta y los casos de aceptación. Cambiar autoridad del builder vinculada al digest queda fuera de este diseño y esa autoridad permanece intacta.
 
-Ejemplos ilustrativos propuestos para la decision del propietario:
-
-- Todo trabajo aplicable, verificacion, documentacion y continuidad se realizaron correctamente: completar normalmente no necesita excepcion.
-- El usuario omite explicitamente documentacion obligatoria y acepta la consecuencia indicada: conservar el trabajo verificado y declarar la omision. Como describir el cierre global sin fingir documentacion realizada ni una pregunta sin respuesta sigue abierto; no autoriza `completed` bajo RH-W-0068 vigente.
-- La verificacion falla realmente: informar esa prueba fallida. Una omision aceptada nunca convierte verificacion fallida o ausente en exito.
+**Hecho verificado:** el session-stop instalado exige `paused` o `blocked` ante documentación obligatoria declinada, aunque sus definiciones requieren información o requisitos realmente pendientes y su contrato de salida exige un resultado de cierre. El [diseño implementado RH-W-0068](rh-w-0068-documentation-closure-design.md#closure-outcomes) conserva esa regla vinculante. **Decisión del propietario:** está aprobada la modificación explícita, no un estado terminal nuevo. La aprobación del diseño no cambia conducta generada ni autoriza `completed` ante una omisión obligatoria. Las cifras de presupuesto siguientes son históricas; RH-W-0073 ya posee su corrección.
 
 **Registro historico de 2026-08-25:** conserva evidencia y propuestas no aprobadas; sus cifras de presupuesto y sugerencia de estado terminal no son decisiones vigentes.
 

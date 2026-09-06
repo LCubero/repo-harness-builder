@@ -2,6 +2,8 @@
 
 > **Estado: IMPLEMENTADO Y VERIFICADO. RH-W-0068 sigue proposed por sus defectos separados sin resolver.**
 
+El [diseño RH-W-0074 aprobado por el propietario](rh-w-0074-design.md) aborda explícitamente la clasificación forzada `paused`/`blocked` para omisiones aceptadas, no la elegibilidad para completar. La implementación sigue sin autorización separada. Este contrato implementado no cambia y sigue vigente hasta que esa implementación se autorice y complete.
+
 ## Decision
 
 Despues de verificar con exito una implementacion o entrega, una unidad solo puede quedar `completed` cuando se hayan reconciliado desde hechos probados todas las superficies documentales canonicas aplicables a esa unidad. El orden exacto es:
@@ -29,6 +31,7 @@ La aplicabilidad se decide por unidad despues de verificar. Solo son obligatoria
 
 Una superficie aplicable termina `completed`. Una superficie realmente irrelevante termina `not_applicable` con razon concisa. Trabajo trivial, no-op, solo de redaccion o no aplicable no crea churn obligatorio.
 
+<a id="closure-outcomes"></a>
 ## Resultados De Cierre
 
 - Reconciliacion obligatoria declinada, pendiente, fallida o incompleta deja el cierre `paused` cuando aprobacion o informacion humana puede resolverla; en otro caso queda `blocked`. Nunca queda `completed`.

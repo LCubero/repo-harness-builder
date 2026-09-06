@@ -4,9 +4,15 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-06
+
+- Recorded the owner's approval of the bilingual RH-W-0074 design. The approved design preserves scoped outcomes, distinguishes conversation end from obligation completion, and specifies the future RH-W-0068 classification/output amendment without adding a global success state. Implementation remains pending and separately unauthorized; RH-W-0074 remains `proposed`, and no product, runtime, generated contract, or delivery surface changed.
+
 ## 2026-09-05
 
-- Reconciled the reviewed remaining-work portfolio in bilingual canonical owners: corrected the non-terminal summary and RH-W-0015 antecedents, separated delivered subsets from residual work, and preserved approved order and lifecycle statuses. Clarified RH-W-0074 with proposed illustrative cases, without choosing outcome vocabulary or superseding RH-W-0068. Flagged RH-W-0069 plan approval, installed examples, and verification workload for reconciliation rather than declaring it executable. No product, test, generated contract, runtime, or policy change was made.
+- Recorded RH-W-0074's accepted minimal technical direction in a [proposed bilingual design](docs/repo-harness/rh-w-0074-design.md) and reconciled its documentation owners. Distinguished conversation end from obligation completion and explicitly proposed the RH-W-0068 classification/output amendment without a new global success state. Final design approval remains pending; no product implementation, binding contract change, or lifecycle advancement occurred.
+
+- Reconciled the reviewed remaining-work portfolio in bilingual canonical owners: corrected the non-terminal summary and RH-W-0015 antecedents, separated delivered subsets from residual work, and preserved approved order and lifecycle statuses. Clarified RH-W-0074 with proposed illustrative cases, without adding an outcome state or superseding RH-W-0068. Flagged RH-W-0069 plan approval, installed examples, and verification workload for reconciliation rather than declaring it executable. No product, test, generated contract, runtime, or policy change was made.
 
 - Corrected the local `RH-W-0072` checker documentation: distinguished builder `stale`/`legacy` and valid `human-evolved` prose from installed generated-checker projection states, and documented its existing ignore, command/prompt, and optional product-projection coverage. No checker behavior, schema, license, or validation framework changed; verification is recorded separately in the final handoff.
 

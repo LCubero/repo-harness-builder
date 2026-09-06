@@ -2,7 +2,13 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-06
+
+- Se registró la aprobación del propietario del diseño bilingüe RH-W-0074. El diseño aprobado conserva resultados por alcance, distingue terminar la conversación de cumplir obligaciones y especifica la futura modificación de clasificación/salida de RH-W-0068 sin agregar un estado global de éxito. La implementación sigue pendiente y sin autorización separada; RH-W-0074 permanece `proposed` y no cambiaron producto, runtime, contrato generado ni superficie de entrega.
+
 ## 2026-09-05
+
+- Se registró la dirección técnica mínima aceptada de RH-W-0074 en un [diseño bilingüe propuesto](docs/es/repo-harness/rh-w-0074-design.md) y se reconciliaron sus propietarios documentales. Se distinguió terminar la conversación de cumplir obligaciones y se propuso explícitamente modificar clasificación/salida de RH-W-0068 sin un estado global nuevo de éxito. La aprobación final del diseño sigue pendiente; no hubo implementación de producto, cambio de contrato vinculante ni avance de ciclo.
 
 - Se reconcilio la cartera revisada de trabajo pendiente en propietarios canonicos bilingues: resumen no terminal y antecedentes RH-W-0015 corregidos, subconjuntos entregados separados del residuo, y orden aprobado y estados conservados. RH-W-0074 se aclaro con ejemplos ilustrativos propuestos, sin elegir vocabulario ni reemplazar RH-W-0068. Se identificaron aprobacion, ejemplos instalados y carga de verificacion de RH-W-0069 como pendientes de reconciliacion, no como receta ejecutable. No cambiaron producto, pruebas, contratos generados, runtimes ni politica.
 

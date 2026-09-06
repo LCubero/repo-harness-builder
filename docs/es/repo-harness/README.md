@@ -26,6 +26,7 @@
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno aprobado de backup local de memoria y continuidad entre fuentes; la implementacion sigue sin autorizacion separada |
 | [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan propuesto; aprobacion, ejemplos instalados y carga de verificacion requieren reconciliacion antes de ejecutar |
 | [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta implementada de cierre documental; los otros defectos RH-W-0068 siguen propuestos |
+| [Diseño RH-W-0074](rh-w-0074-design.md) | Diseño de omisión aceptada aprobado por el propietario; implementación pendiente y no autorizada |
 | [Diseno RH-W-0070](rh-w-0070-design.md) | Par profesional del diseno aprobado de seguridad preventiva y proporcional de recursos |
 | [Diseno RH-W-0011](rh-w-0011-design.md) | Alcance de reconciliacion completado y aprobado por el propietario; se conserva el cuerpo historico |
 | [Resultados RH-W-0011](rh-w-0011-results.md) | Par completo del resultado canonico completado, las disposiciones de cinco hallazgos y el cierre aceptado por el propietario |
