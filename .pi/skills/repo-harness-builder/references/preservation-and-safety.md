@@ -62,12 +62,12 @@ README language selectors are atomic across peers. When an existing `README.md` 
 
 ## Human-Owned Versus Generated
 
-After creation, two kinds of file behave differently under `check`:
+After creation, two kinds of file behave differently under builder `check`:
 
-- **Generated**: canonical skills, runtime projections, wrappers, and the manifest. Compared byte for byte. A difference is reported as `modified`.
+- **Generated**: canonical skills, runtime projections, wrappers, and the manifest. Compared byte for byte. Exact bytes report `current`; different bytes report `stale`, or `legacy` when a recognized builder marker names a different generator version.
 - **Human-owned**: root `README.md`, `.gitignore`, `.gitattributes`, the rulebook, `CHANGELOG.md`, and everything under `docs/repo-harness/`. `.gitignore` keeps every existing byte and only receives approved missing exact directives described above. `.gitattributes` keeps every existing byte and receives only missing exact LF contract rules when no matching conflict exists. Other human-owned files are compared by the sections they promise. This tolerance supports project-specific evolution; it does not freeze content or remove the builder's duty to analyze and propose improvements.
 
-This is the distinction that keeps the check useful. Comparing a rulebook by content would flag every real project as broken on day one.
+For human-owned prose, builder `check` also validates applicable locale content. Changed bytes retaining the promised sections and locale contract report `human-evolved`, not drift; exact rendered bytes report `current`. Missing sections report `sections-missing`, and incomplete locale content reports `locale-content-incomplete`. The installed generated checker has the narrower boundary below; it does not validate human-owned prose.
 
 ## Approval
 
@@ -102,7 +102,7 @@ Builder-owned remediation preserves consumer state, names the exact reproduction
 
 ## Generated Checker Boundary
 
-The generated checker trusts no mutable manifest field until the exact manifest bytes match its embedded SHA-256. It then requires the exact checker schema, an `integrationMode` of `integrated` or `standalone`, supported runtimes, safe canonical skill names, and repository-relative paths. It rejects absolute, drive-qualified, parent-traversing, symlinked, reparse-point, and outside-resolving paths before content reads. Its scope remains manifest integrity and canonical runtime skill projections only.
+The generated checker trusts no mutable manifest field until the exact manifest bytes match its embedded SHA-256. It then requires the exact checker schema, an `integrationMode` of `integrated` or `standalone`, supported runtimes, safe canonical skill names, and repository-relative paths. It rejects absolute, drive-qualified, parent-traversing, symlinked, reparse-point, and outside-resolving paths before content reads. Its scope includes manifest integrity, the four harness-local-state ignore directives, canonical runtime skill projections, declared command/prompt projections, and optional authenticated `canonicalProjections` for product files. It neither creates nor inspects local-state contents. Projection entries report `current`, `stale`, `missing`, or `canonical-missing`; the local-state ignore entry reports `present` or `directive-missing`. It writes nothing and does not check human-owned document sections, root pointers, or `.gitattributes` coverage; those belong to builder `check`.
 
 ## Authority Privacy Boundary
 
