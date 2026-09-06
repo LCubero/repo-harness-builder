@@ -24,7 +24,7 @@
 | [Diseno RH-W-0051](rh-w-0051-design.md) | Diseno aprobado y completado de taxonomia de estado local; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0051](rh-w-0051-implementation-plan.md) | Plan completado de taxonomia de estado local; instrucciones historicas conservadas |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno aprobado de backup local de memoria y continuidad entre fuentes; la implementacion sigue sin autorizacion separada |
-| [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Par profesional completo del plan canonico ejecutable de continuidad nativa |
+| [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan propuesto; aprobacion, ejemplos instalados y carga de verificacion requieren reconciliacion antes de ejecutar |
 | [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta implementada de cierre documental; los otros defectos RH-W-0068 siguen propuestos |
 | [Diseno RH-W-0070](rh-w-0070-design.md) | Par profesional del diseno aprobado de seguridad preventiva y proporcional de recursos |
 | [Diseno RH-W-0011](rh-w-0011-design.md) | Alcance de reconciliacion completado y aprobado por el propietario; se conserva el cuerpo historico |
@@ -37,7 +37,7 @@
 | [Plan de implementacion RH-W-0013](rh-w-0013-implementation-plan.md) | Par humano completo del plan canonico de dos tareas para RH-W-0013 |
 | [Diseno RH-W-0073](rh-w-0073-design.md) | Diseno completado de control del presupuesto del rulebook; se conserva el cuerpo historico del diseno |
 | [Plan de implementacion RH-W-0073](rh-w-0073-implementation-plan.md) | Plan de implementacion RH-W-0073 completado; se conserva la evidencia historica de ejecucion |
-| [Alcance RH-W-0076](rh-w-0076-scope.md) | Alcance propuesto de correccion de tres limites declarados sin control; la aprobacion y la implementacion siguen sin autorizacion separada |
+| [Alcance RH-W-0076](rh-w-0076-scope.md) | Propuesta historica de tres cortes: corte 1 entregado; retiro de planes y techo/compresion del builder esperan aprobacion del alcance residual |
 | [Alcance RH-W-0084](rh-w-0084-scope.md) | Alcance de investigacion LLM-first completado y aprobado por el propietario; se conservan el cuerpo historico y las actualizaciones de ciclo de vida |
 | [Alcance RH-W-0083](rh-w-0083-scope.md) | Alcance completado y aprobado por el propietario de la obligacion inmediatamente anterior a responder y sus pruebas enfocadas; se conserva el limite historico |
 | [Alcance RH-W-0087](rh-w-0087-scope.md) | Alcance completado y aprobado por el propietario que prohibe atribucion de IA en commits generados; se conserva el limite historico |

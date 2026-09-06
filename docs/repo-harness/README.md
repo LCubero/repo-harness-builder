@@ -26,7 +26,7 @@
 | [rh-w-0051-design.md](rh-w-0051-design.md) | Completed owner-approved local-state taxonomy design; historical design body retained |
 | [rh-w-0051-implementation-plan.md](rh-w-0051-implementation-plan.md) | Completed local-state taxonomy implementation plan; historical execution instructions retained |
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Owner-approved local memory backup and cross-source continuity design; implementation remains separately unauthorized |
-| [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Canonical executable implementation plan for native local backup and cross-source continuity |
+| [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Proposed continuity plan; approval, installed-value examples, and verification workload require reconciliation before execution |
 | [rh-w-0068-documentation-closure-design.md](rh-w-0068-documentation-closure-design.md) | Implemented required post-verification documentation closure gate; other RH-W-0068 defects remain proposed |
 | [rh-w-0070-design.md](rh-w-0070-design.md) | Owner-approved proportional preventive resource-safety design for agent and harness operations |
 | [rh-w-0011-design.md](rh-w-0011-design.md) | Completed owner-approved reconciliation scope; historical design body retained |
@@ -39,7 +39,7 @@
 | [rh-w-0013-implementation-plan.md](rh-w-0013-implementation-plan.md) | Canonical two-task implementation plan for the RH-W-0013 blockers |
 | [rh-w-0073-design.md](rh-w-0073-design.md) | Completed rulebook budget enforcement design; historical design body retained |
 | [rh-w-0073-implementation-plan.md](rh-w-0073-implementation-plan.md) | Completed RH-W-0073 implementation plan; historical execution evidence retained |
-| [rh-w-0076-scope.md](rh-w-0076-scope.md) | Proposed correction scope for three unenforced declared limits; owner approval and implementation remain separately unauthorized |
+| [rh-w-0076-scope.md](rh-w-0076-scope.md) | Historical three-slice proposal: slice 1 delivered; residual plan retirement and builder ceiling/compression await owner scope approval |
 | [rh-w-0084-scope.md](rh-w-0084-scope.md) | Completed owner-approved LLM-first research scope; historical scope body and lifecycle updates are retained |
 | [rh-w-0083-scope.md](rh-w-0083-scope.md) | Completed owner-approved immediate-before-response obligation and focused acceptance-test scope; historical boundary retained |
 | [rh-w-0087-scope.md](rh-w-0087-scope.md) | Completed owner-approved generated-commit AI-attribution prohibition scope; historical boundary retained |

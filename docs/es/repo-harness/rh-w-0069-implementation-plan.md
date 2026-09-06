@@ -2,6 +2,14 @@
 
 > **Estado: propuesto.** Ejecutar solo despues de aprobacion separada del propietario y autorizacion de implementacion. Este plan no autoriza cambio de producto, transicion de ciclo, accion Git, publicacion ni red.
 
+## Reconciliacion de preparacion para ejecutar
+
+El diseno esta aprobado y RH-W-0051 ya entrego soporte de almacenamiento. La aprobacion del plan no esta establecida: la hoja de ruta decia que solo faltaba permiso de implementacion, mientras este plan aun exige aprobacion. Resolver esa ambiguedad antes de ejecutar; esta revision documental no aprueba el plan ni una carga de pruebas revisada.
+
+Las tareas siguientes conservan la propuesta, no una receta vigente para copiar y ejecutar. Antes de aprobar, derivar del manifest instalado los argumentos de runtime, licencia, documentacion y conversacion. Esta instalacion declara Claude Code, OpenCode y Pi, con conversacion `espanol`; los ejemplos fijos de conversacion `english` y las listas de paridad/verificacion de dos runtimes siguientes estan obsoletos. Incluir todas las familias seleccionadas al reconciliar la receta, sin cambiar preferencias instaladas mediante un ejemplo.
+
+Las Tareas 4 y 5 repiten la verificacion canonica completa y ejecutan ademas suites de proyeccion. Esos requisitos propuestos se conservan, no se eliminan implicitamente. Reconciliar con el propietario la carga exacta antes de implementar, separando evidencia necesaria de ejecucion duplicada. Para este mantenimiento exclusivamente documental, `CONTRIBUTING.md` exige el checker de solo lectura; bastan comprobaciones documentales existentes y enfocadas sin afirmar una nueva suite completa.
+
 **Objetivo:** Extender los contratos generados de sesion para que el agente ejecutor escriba y lea backups Markdown nativos con stop local primero, start con repositorio primero, resultados Engram independientes, reconciliacion visible y privacidad acotada.
 
 **Arquitectura:** `render()` llama `render_with_skill_mapping()`, que renderiza `session_start_skill()`, `session_stop_skill()` y la regla compartida de memoria desde `rule_outputs()`. Son contratos de instrucciones, no llamadas runtime a APIs Python. Agregar solo texto conciso que ordene usar operaciones protegidas y relativas al repositorio. La regla de memoria posee schema, autoridad, privacidad y vocabulario compartidos.

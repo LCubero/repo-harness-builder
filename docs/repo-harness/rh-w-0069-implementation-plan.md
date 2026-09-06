@@ -2,6 +2,14 @@
 
 > **Status: proposed.** Execute only after separate owner approval and implementation authorization. This plan authorizes no product change, lifecycle transition, Git action, publication, or network access.
 
+## Execution Readiness Reconciliation
+
+The design is approved and RH-W-0051 storage support is delivered. Plan approval is not established: the roadmap previously said only implementation permission remained, while this plan still requires approval. Resolve that ambiguity before execution; this documentary review approves neither the plan nor a revised test workload.
+
+The task body below is the retained proposal, not a copy-and-run current recipe. Before approval, derive runtime, license, documentation, and conversation arguments from the installed manifest. This installation declares Claude Code, OpenCode, and Pi, with conversation `espanol`; the fixed `english` conversation examples and the two-runtime parity/verification lists below are stale. Include all selected projection families when reconciling the recipe; do not change installed preferences through an example.
+
+Tasks 4 and 5 repeat full canonical verification and additionally run projection suites. Those proposed requirements are retained, not silently waived. Reconcile the exact workload with the owner before implementation, distinguishing required evidence from duplicate execution. For this human-document-only maintenance, `CONTRIBUTING.md` requires the read-only checker; focused existing documentation checks suffice without claiming a fresh full-suite result.
+
 **Goal:** Extend the generated session contracts so an executing agent writes and reads native structured Markdown continuity backups with the approved local-first stop order, repository-first start order, independent Engram outcomes, visible reconciliation, and bounded privacy.
 
 **Architecture:** `render()` calls `render_with_skill_mapping()`, which renders `session_start_skill()`, `session_stop_skill()`, and the shared memory rule from `rule_outputs()`. These are instruction contracts, not runtime callers of Python continuity APIs. Add only concise renderer text directing the executing agent to use guarded repository-relative file operations. The memory rule owns shared schema, authority, privacy, and outcome vocabulary so start and stop reference rather than duplicate it.
