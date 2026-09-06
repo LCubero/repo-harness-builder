@@ -25,6 +25,7 @@
 | [Plan de implementacion RH-W-0051](rh-w-0051-implementation-plan.md) | Plan completado de taxonomia de estado local; instrucciones historicas conservadas |
 | [Diseño RH-W-0053](rh-w-0053-design.md) | Diseño propuesto y aprobado de checkpoint para sesión interrumpida; implementación sin autorizar |
 | [Diseño RH-W-0048](rh-w-0048-design.md) | Diseño aprobado de recuperación aditiva de proyecciones de runtime; plan de implementación e implementación sin autorizar |
+| [Diseño RH-W-0046/RH-W-0018](rh-w-0046-rh-w-0018-design.md) | Diseño conjunto aprobado por delegación del propietario sobre consentimiento de fetch y preferencias de menos preguntas; planificación e implementación siguen sin autorización |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno aprobado de backup local de memoria y continuidad entre fuentes; la implementacion sigue sin autorizacion separada |
 | [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan propuesto; aprobacion, ejemplos instalados y carga de verificacion requieren reconciliacion antes de ejecutar |
 | [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta implementada de cierre documental; los otros defectos RH-W-0068 siguen propuestos |

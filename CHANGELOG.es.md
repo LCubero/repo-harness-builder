@@ -4,6 +4,8 @@
 
 ## 2026-09-06
 
+- Se registró la aprobación delegada del propietario del diseño conjunto bilingüe RH-W-0046/RH-W-0018 después de investigación primaria delegada y readback directo. Conserva la compuerta de red para fetch y especifica una concesión opcional explícita, visible, revocable y ligada a identidad exacta, con invalidación por cambios materiales, fallback interactivo, límites de privacidad, `--no-recurse-submodules` y `--no-auto-maintenance`. Ambos ciclos siguen separados y sin cambios; planificación e implementación no están autorizadas y no cambió producto ni runtime.
+
 - Se registró la aprobación del propietario del diseño bilingüe RH-W-0048 de recuperación de proyecciones de runtime después de la revisión técnica delegada y la revisión directa del padre. Define autoridad explícita de preview/apply, fuentes instaladas autenticadas, detección rastreada frente a local sin modo nuevo de manifiesto, recuperación aditiva de ausentes, preservación de bytes, rollback, separación de update, límites de runtime y post-check honesto. RH-W-0048 permanece `proposed`; no cambiaron producto, checker, manifiesto, proyecciones, plan de implementación, implementación, entrega Git ni publicación.
 
 - Se registró la aprobación del propietario del diseño bilingüe propuesto RH-W-0053 y se reconciliaron sus propietarios documentales. El diseño usa un único checkpoint de operación interrumpida que solo se escribe ante solicitud explícita, descubrimiento de inicio en lectura, expiración semántica sin limpieza y evidencia y autoridad nuevas antes de reanudar, manteniendo distintos los resúmenes RH-W-0069 y Engram. No hubo comportamiento de producto, plan de implementación, implementación, avance de ciclo, entrega Git ni publicación.

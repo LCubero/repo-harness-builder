@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-06
 
+- Recorded owner-delegated approval of the bilingual joint RH-W-0046/RH-W-0018 design after delegated primary-source research and direct readback. It retains the fetch network gate and specifies an optional explicit, visible, revocable repository grant bound to exact fetch identity, with material-change invalidation, interactive fallback, privacy limits, `--no-recurse-submodules`, and `--no-auto-maintenance`. Both lifecycles remain separate and unchanged; implementation planning and implementation are unauthorized, and no product or runtime surface changed.
+
 - Recorded the owner's approval of the bilingual RH-W-0048 runtime-projection recovery design after delegated technical review and the parent's direct review. The design defines explicit preview/apply repair authority, authenticated installed sources, tracked-versus-local detection without a new manifest mode, additive missing-file recovery, byte preservation, rollback, update separation, runtime limitations, and honest post-check outcomes. RH-W-0048 remains `proposed`; no product, checker, manifest, runtime projection, implementation plan, implementation, Git delivery, or publication changed.
 
 - Recorded the owner's approval of the bilingual proposed RH-W-0053 design and reconciled its documentation owners. The design uses one explicit-request-only interrupted-operation checkpoint, read-only startup discovery, semantic expiry without cleanup, and fresh evidence and authority before resumption while keeping RH-W-0069 summaries and Engram distinct. No product behavior, implementation plan, implementation, lifecycle advancement, Git delivery, or publication occurred.
