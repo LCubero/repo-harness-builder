@@ -143,7 +143,7 @@ Older harnesses are audited rather than blindly replaced. Managed paths are clas
 
 The README is human-owned after creation. Its bounded builder section identifies the initial harness entry points, while maintainers may evolve the full product guide. Existing `CLAUDE.md` and `AGENTS.md` files are byte-preserved: the builder appends only an exact missing pointer line, and repeated runs are idempotent.
 
-Root `.gitignore` is also human-owned. By default, the approved plan creates it when absent or appends exactly `.codegraph/` when that exact line is missing, preserving BOM, existing bytes, comments, blank lines, line endings, and unrelated rules. `--no-codegraph-ignore` records the opt-out in the manifest and performs no ignore-file mutation.
+Root `.gitignore` is also human-owned. The approved plan creates it when absent or appends missing exact directives, preserving BOM, existing bytes, comments, blank lines, line endings, and unrelated rules. It includes `.codegraph/` by default and always includes `/.repo-harness/tmp/`, `/.repo-harness/archive/`, `/.repo-harness/state/`, and `/.repo-harness/memory-bk/`. `--no-codegraph-ignore` records the opt-out in the manifest and suppresses only the `.codegraph/` directive; the four local-state directives remain, and existing ignore lines are never removed.
 
 Root `.gitattributes` remains human-owned. The builder creates or appends one exact `<path> text eol=lf` rule for every byte-compared generated path, preserving unrelated rules and existing line endings. A matching rule that assigns incompatible text or EOL behavior blocks the plan instead of creating ambiguous checkout semantics.
 
@@ -157,9 +157,9 @@ Editable product sources are:
 - `skill/repo-harness-builder/`
 - `command/repo-harness-builder.md`
 
-`.opencode/` and `.claude/` contain runtime projections used for execution and testing. Do not edit them as canonical sources. This repository self-hosts recursively: its generated repository harness is used to improve the builder that generates repository harnesses.
+`.opencode/`, `.claude/`, and `.pi/` contain runtime projections used for execution and testing. Do not edit them as canonical sources. This repository self-hosts recursively: its generated repository harness is used to improve the builder that generates repository harnesses.
 
-For self-hosting changes, edit the canonical source, synchronize `.repo-harness`, `.claude`, and `.opencode`, then verify parity on disk. If registered-name validation is needed, run it in a fresh runtime process or use a supported explicit registry reload when the runtime provides one. The process that performed the edit may retain older registered content; that expected cache does not invalidate verified files, and no reload command should be assumed.
+For self-hosting changes, edit the canonical source, synchronize affected managed outputs in `.repo-harness/`, `.claude/`, `.opencode/`, and `.pi/` through maintenance preview and current-digest apply, then verify parity on disk. If registered-name validation is needed, run it in a fresh runtime process or use a supported explicit registry reload when the runtime provides one. The process that performed the edit may retain older registered content; that expected cache does not invalidate verified files, and no reload command should be assumed.
 
 Run the canonical suite:
 

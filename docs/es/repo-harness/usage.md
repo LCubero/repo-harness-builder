@@ -18,7 +18,7 @@ El modo integrado compone Gentle AI y Engram de forma independiente; cualquiera 
 ## Congruencia y propiedad
 <!-- doc-role:ownership -->
 
-Ejecute `python3 .repo-harness/check.py` (`python` en Windows) despues de cambiar fuentes canonicas o proyecciones. El archivo raiz `.gitattributes` preserva bytes LF mediante las reglas exactas `.repo-harness/check.py text eol=lf` y `.repo-harness/manifest.json text eol=lf`. El control demuestra paridad en disco, no la vigencia de contenido registrado en el proceso activo.
+Ejecute `python3 .repo-harness/check.py` (`python` en Windows) despues de cambiar fuentes canonicas o proyecciones. El archivo raiz `.gitattributes` preserva bytes LF mediante una regla exacta `<path> text eol=lf` por cada ruta generada comparada byte a byte, incluidos checker, manifiesto, habilidades y familias de comandos canonicos, proyecciones de runtime, wrappers y proyecciones exactas opcionales del producto. Documentos humanos y archivos comprobados por directivas quedan fuera de ese contrato de rutas generadas. El control demuestra paridad en disco, no la vigencia de contenido registrado en el proceso activo.
 
 ## Limites de aprobacion
 <!-- doc-role:approval-boundaries -->
