@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0071
 
-> **Estado: implementacion solo de sesion autorizada por separado el 2026-09-05 bajo el issue #160. El contrato local esta implementado; verificacion y revision nativa siguen separadas de la entrega. RH-W-0071 sigue `proposed` porque la persistencia compartida esta aplazada y el requisito original integro no esta satisfecho.**
+> **Estado: subconjunto solo de sesion verificado, revisado y entregado mediante PR #161 el 2026-09-05 bajo issue #160. El [registro](roadmap.md#rh-w-0071) posee la evidencia de entrega. RH-W-0071 sigue `proposed`: persistencia compartida aplazada y requisito original integro sin satisfacer.**
 
 Derivado del [diseno RH-W-0071](rh-w-0071-design.md) aprobado por el propietario y del Plan 20 de la hoja de ruta. Su par en ingles es [rh-w-0071-implementation-plan.md](../../repo-harness/rh-w-0071-implementation-plan.md).
 
@@ -14,9 +14,11 @@ El propietario delego la decision de alcance despues de una verificacion de solo
 
 **Limite de autorizacion y verificacion:** el propietario autorizo por separado la implementacion solo de sesion despues de la revision documental, con issue #160 y rama `feat/rh-w-0071-session-response-mode`. `rule_outputs()` amplía el propietario existente de respuesta; la regla autoalojada de propiedad humana se integra explicitamente. No se implementan parser, almacenamiento, API de transporte, entrevista de preferencias ni ejes dependientes. Las pruebas de texto contractual no demuestran cumplimiento del modelo en vivo. No ejecutar comandos historicos de persistencia ni elegir sus cortes de entrega.
 
-### Evidencia de implementacion local
+### Evidencia final de verificacion
 
-`SessionResponseModeContractTests` verifica instrucciones de seleccion, forma, limites, propietario unico, presupuesto, ausencia de preferencias generadas e instrucciones identicas en renders standalone/integrado y en ingles/espanol/bilingue. El comando enfocado `python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.SessionResponseModeContractTests -v` ejecuto 3 pruebas: RED produjo 27 fallos de asercion esperados en 0.007s; GREEN paso en 0.004s. Son recibos del contrato de instrucciones, no observaciones de transiciones de modo en runtime. Las comprobaciones finales de proyecciones y la suite completa requerida por `CONTRIBUTING.md` siguen a toda normalizacion de fuente; sus recibos finales corresponden al informe de implementacion. La revision nativa queda delegada al agente padre y no se afirma aqui.
+`SessionResponseModeContractTests` verifica seleccion, forma, limites, propietario unico, presupuesto, ausencia de preferencias generadas e instrucciones identicas en renders standalone/integrado e ingles/espanol/bilingue. Comando historico `python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.SessionResponseModeContractTests -v`: 3 pruebas, RED con 27 fallos esperados en 0.007s; GREEN en 0.004s. La primera corrida completa ejecuto 503 pruebas en 154.092s con 9 omisiones y un fallo por conteo documental obsoleto (500); ambos idiomas se corrigieron antes de la verificacion final.
+
+Recibos finales del informe de implementacion, despues de normalizar: `python -B -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"` ejecuto 503 pruebas en 154.714s, OK (skipped=9), salida 0; regresion enfocada de 20 pruebas en 0.763s, salida 0; `python .repo-harness/check.py`: `current`, 63 proyecciones, 0 escrituras, salida 0; `git diff --check`: salida 0. Corresponden a la implementacion entregada, no a una repeticion para este seguimiento documental. Las pruebas contractuales no demuestran transiciones ni cumplimiento del modelo en vivo. El roadmap registra revision nativa del arbol exacto y entrega del agente padre; esa aprobacion no cubre ediciones documentales posteriores.
 
 ## Persistencia compartida aplazada: acuerdo conservado
 

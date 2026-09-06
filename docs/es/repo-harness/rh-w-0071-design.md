@@ -1,10 +1,12 @@
 # Diseno RH-W-0071 de estructura de respuesta ADHD-friendly
 
-> **Estado: DISENO HISTORICO APROBADO POR EL PROPIETARIO. El subconjunto solo de sesion fue autorizado por separado e implementado localmente el 2026-09-05 bajo el issue #160; el plan revisado contiene evidencia contractual. La persistencia compartida sigue aplazada, sin afirmar cumplimiento del requisito original integro ni entrega.**
+> **Estado: DISENO HISTORICO APROBADO POR EL PROPIETARIO. El subconjunto solo de sesion fue autorizado por separado, verificado, revisado y entregado mediante PR #161 bajo issue #160 el 2026-09-05; el [roadmap](roadmap.md#rh-w-0071) posee entrega y el plan revisado verificacion. Persistencia compartida aplazada; requisito original integro sin completar.**
 
-El estado de implementacion vigente anterior reemplaza las afirmaciones de autorizacion pendiente en la revision de alcance y diseno historico conservados a continuacion.
+**Limite vigente:** el [plan revisado](rh-w-0071-implementation-plan.md) posee el subconjunto solo de sesion entregado. Persistencia compartida aplazada, no cancelada; dependencias RH-W-0082/RH-W-0018 intactas. Solo reabrir persistencia exige nueva autorizacion del propietario y reconciliar sus compuertas pendientes.
 
-**Revision de alcance vigente, 2026-09-05:** la revision delegada por el propietario termino, reemplaza la pausa y reduce el trabajo inmediato a presentacion explicita solo de sesion. El [plan de implementacion revisado](rh-w-0071-implementation-plan.md) posee ese limite vigente. El diseno mas amplio aprobado que sigue se conserva como contexto historico y acuerdo de persistencia compartida aplazada, no como instrucciones vigentes de ejecucion ni comportamiento implementado. Sus requisitos de entrevista del builder, persistencia, pregunta de alcance, transporte y entrega no condicionan el trabajo inmediato solo de sesion. La persistencia compartida queda aplazada, no cancelada; las dependencias RH-W-0082/RH-W-0018 permanecen. Se requiere autorizacion separada de implementacion y el requisito original integro no esta satisfecho.
+## Diseno historico aprobado (no son instrucciones vigentes de ejecucion)
+
+El diseno amplio siguiente conserva aprobaciones originales y acuerdo de persistencia compartida aplazada. Sus requisitos de entrevista del builder, persistencia, pregunta de alcance, transporte y entrega no son comportamiento implementado ni tareas solo de sesion pendientes.
 
 ## Contrato de revision
 
