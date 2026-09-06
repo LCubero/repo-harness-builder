@@ -181,7 +181,7 @@ Human decisions: whether read-only fetch is reclassified at all, and how a remem
 
 ### Plan 7: RH-W-0044 compare-and-suggest scope design
 
-Readiness `plannable now`. Priority `P2`, prerequisite RH-W-0043 completed. Next artifact: a scope design and its Spanish peer.
+Readiness `design owner-approved; implementation planning unauthorized`. Priority `P2`, prerequisite RH-W-0043 completed. The owner-approved bilingual [design](rh-w-0044-design.md) resolves the compared set, suggestion shape, individual acceptance, and intentional-divergence mechanism. Implementation planning and implementation remain unauthorized.
 
 1. Name the exact set of human-owned documents that are compared; detection already reports `stale`, `missing`, `human-evolved`, `sections-missing`, and `directive-missing` per path, so this unit adds content-level comparison only.
 2. Define what one suggestion contains and how it is presented.
@@ -189,7 +189,7 @@ Readiness `plannable now`. Priority `P2`, prerequisite RH-W-0043 completed. Next
 4. Define how the builder avoids proposing to undo legitimate divergence the repository intended.
 5. Name the RED tests, including one proving a human-owned document stays proposal-only.
 
-Human decisions: the compared document set, and how intended divergence is declared so a suggestion does not attack it.
+Human decision recorded: the owner approved the proposed compared document set and intentional-divergence declaration. Any implementation plan requires separate authorization.
 
 ### Plan 8: RH-W-0022 declared documentation relationships design
 
@@ -1296,15 +1296,15 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Priority | P2: regeneration already repairs everything the builder owns, so the update is useful without this unit, but the human-owned half of a harness is where drift actually accumulates and today it is reported only as a missing section or a missing directive. |
 | Dependencies | Completed `RH-W-0043`; the antecedent is satisfied. Only this unit's scope design and advancement remain pending. |
 | Status | proposed |
-| Completed work | Bounded what already exists so this unit does not rebuild it. Congruence checking already reports `stale`, `missing`, `human-evolved`, `sections-missing`, and `directive-missing` per path, and human-owned documents already stay proposal-only. The gap is content-level comparison and a concrete proposed change, not detecting that a human-owned document diverged. |
-| Remaining work | Design the scope boundary before any implementation: which human-owned documents are compared, what one suggestion contains, how suggestions are presented and accepted individually, and how the builder avoids proposing to undo legitimate divergence the repository intended. |
+| Completed work | Bounded what already exists so this unit does not rebuild it. Congruence checking already reports `stale`, `missing`, `human-evolved`, `sections-missing`, and `directive-missing` per path, and human-owned documents already stay proposal-only. The owner-approved bilingual [design](rh-w-0044-design.md) names the bounded contract-document set, stable comparison units, exact suggestion shape, one-at-a-time acceptance through the existing content-bound plan, and a narrow inline declaration for intentional divergence. |
+| Remaining work | Implementation planning and implementation require later, separate authorization. |
 | Additions | A compare-and-suggest pass over human-owned core documents that presents per-document proposed changes for individual acceptance. |
 | Exclusions | No overwriting of a human-owned document, no bulk accept, no claim of semantic equivalence, and no builder ownership of the roadmap, decisions, or changelog content this repository owns. |
 | Deferrals | none |
 | Rejections | Rejected registering this `ready`. Its scope boundary is the entire risk, which is the same reason `RH-W-0022` stays `proposed`, and an undesigned boundary here would propose edits to the documents holding this project's durable truth. |
 | Evidence | The classification surface already exists: `plan_changes` routes a human-owned path to `existing` with a proposal-only reason at `skill/repo-harness-builder/scripts/harness_tool.py:2085`. The owner-run consumer report listed `REPO-HARNESS.md` and `CHANGELOG.md` as human-evolved plus four documents with missing sections, which is exactly the detection half without the suggestion half. |
-| Decision history | 2026-08-19: registered `proposed` at P2 in the same work unit as `RH-W-0043`, from the owner's description of the update he wants. Recorded as `proposed` rather than `ready` because the compared document set and the acceptance interaction are undesigned. |
-| Next advancement condition | `RH-W-0043` is completed and the prerequisite is satisfied. Retain `proposed` until a written scope design names the compared document set, the suggestion shape, and the one-at-a-time acceptance interaction. |
+| Decision history | 2026-08-19: registered `proposed` at P2 in the same work unit as `RH-W-0043`, from the owner's description of the update he wants. Recorded as `proposed` rather than `ready` because the compared document set and the acceptance interaction were undesigned. 2026-09-06: after completion of the preceding approved-order item at local commit `0f8e309`, the owner authorized designing the next item, then explicitly approved the resulting bilingual design after the technical approval decision. |
+| Next advancement condition | Separate owner authorization for implementation planning. Design approval alone does not authorize planning or implementation. |
 
 ### RH-W-0045
 | Field | Value |
