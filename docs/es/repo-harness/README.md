@@ -23,6 +23,7 @@
 | [Diseno RH-W-0050](rh-w-0050-design.md) | Diseno completado de reconciliacion acotada aprobado por el propietario; entregado con el cuerpo historico conservado |
 | [Diseno RH-W-0051](rh-w-0051-design.md) | Diseno aprobado y completado de taxonomia de estado local; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0051](rh-w-0051-implementation-plan.md) | Plan completado de taxonomia de estado local; instrucciones historicas conservadas |
+| [Diseño RH-W-0053](rh-w-0053-design.md) | Diseño propuesto y aprobado de checkpoint para sesión interrumpida; implementación sin autorizar |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno aprobado de backup local de memoria y continuidad entre fuentes; la implementacion sigue sin autorizacion separada |
 | [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan propuesto; aprobacion, ejemplos instalados y carga de verificacion requieren reconciliacion antes de ejecutar |
 | [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta implementada de cierre documental; los otros defectos RH-W-0068 siguen propuestos |

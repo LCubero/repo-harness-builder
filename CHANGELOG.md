@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-06
 
+- Recorded the owner's approval of the bilingual proposed RH-W-0053 design and reconciled its documentation owners. The design uses one explicit-request-only interrupted-operation checkpoint, read-only startup discovery, semantic expiry without cleanup, and fresh evidence and authority before resumption while keeping RH-W-0069 summaries and Engram distinct. No product behavior, implementation plan, implementation, lifecycle advancement, Git delivery, or publication occurred.
+
 - Recorded the owner's approval of the bilingual RH-W-0074 design. The approved design preserves scoped outcomes, distinguishes conversation end from obligation completion, and specifies the future RH-W-0068 classification/output amendment without adding a global success state. Implementation remains pending and separately unauthorized; RH-W-0074 remains `proposed`, and no product, runtime, generated contract, or delivery surface changed.
 
 ## 2026-09-05

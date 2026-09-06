@@ -129,7 +129,7 @@ Human decision: reconcile plan approval and the verification workload, then sepa
 
 ### Plan 3: RH-W-0053 interrupted-session checkpoint design
 
-Readiness `plannable now`, because completed RH-W-0051 established the storage semantics this plan named. Priority `P1`, shared with `RH-W-0068`, `RH-W-0070`, `RH-W-0072`, `RH-W-0073`, and `RH-W-0074`. Next artifact: a design document and its Spanish peer.
+Readiness `design approved; implementation unauthorized`, because completed RH-W-0051 established the storage semantics and the owner approved the bilingual [proposed design](rh-w-0053-design.md). Priority `P1`, shared with `RH-W-0068`, `RH-W-0070`, `RH-W-0072`, `RH-W-0073`, and `RH-W-0074`.
 
 1. Define the typed checkpoint schema and its evidence classes, separating completed facts, unfinished intent, supported inference, unknown state, and decisions still requiring a human.
 2. Decide the checkpoint owner and storage inside the namespace RH-W-0051 reserves, never in user-owned personal paths.
@@ -139,7 +139,7 @@ Readiness `plannable now`, because completed RH-W-0051 established the storage s
 6. Define explicit resumption authority: resumption re-verifies repository evidence and never reuses a prior approval.
 7. Name the RED tests, including one proving a checkpoint never triggers automatic continuation.
 
-Human decisions: the final checkpoint owner and persistence shape, and whether a checkpoint may ever be written without an explicit request.
+Resolved design decisions: RH-W-0053 owns one `.repo-harness/state/checkpoints/active.md` structured Markdown file; no write occurs without an explicit current human request. Separate implementation authorization remains required.
 
 ### Plan 4: RH-W-0048 runtime projection recovery design
 
@@ -1143,15 +1143,15 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Priority | P1: unfinished work can be mistaken for completed continuity or resumed from stale assumptions if the interruption is not represented explicitly. |
 | Dependencies | RH-W-0050 evidence classification, and the RH-W-0051 storage semantics for any future harness-owned local checkpoint bytes, which completed RH-W-0051 now provides. |
 | Status | proposed |
-| Completed work | Bounded the capability to a typed unfinished checkpoint, no automatic mutation, and session-start resumption that re-verifies repository evidence. |
-| Remaining work | Design checkpoint schema, authority and storage, creation and expiry triggers, sensitive-data limits, interrupted-step representation, session-start discovery, stale or conflicting checkpoint handling, and explicit resumption behavior. |
+| Completed work | Bounded the capability and created the owner-approved bilingual [proposed design](rh-w-0053-design.md). It assigns one ignored non-authoritative structured Markdown file at `.repo-harness/state/checkpoints/active.md`, requires an explicit current request for every write, represents the interrupted step only as `not_started`, `started_unverified`, or `failed`, defines semantic expiry without deletion, and makes session-start discovery read-only and resumption dependent on current evidence and fresh authority. |
+| Remaining work | Approve a separate implementation plan, then separately authorize implementation and focused verification. No implementation is authorized by this design. |
 | Additions | A typed unfinished checkpoint and safe session-start route that distinguishes completed facts, unfinished intent, supported inference, unknown state, and decisions still requiring a human. |
 | Exclusions | No automatic continuation, mutation, approval reuse, claim that an interrupted action completed, duplicate backlog, or storage in user-owned personal paths. |
 | Deferrals | none |
 | Rejections | Rejected treating a generic session summary as proof of an executable checkpoint or resuming an interrupted mutation without fresh evidence and authority. |
-| Evidence | Verified: generated session-start reconciles Engram with repository evidence, but no repository contract defines a typed unfinished checkpoint. Human decision: resumption must be non-mutating until explicit current authority exists. Unknown: final checkpoint owner and persistence shape. |
-| Decision history | 2026-08-21: registered as proposed from the consolidated audit and placed first in the later review order. 2026-08-21: the same-day portfolio re-audit superseded that review order and placed this unit sixth overall, immediately after `RH-W-0051`, because it is `P1` and both declared dependencies are satisfied at that point. The status stays `proposed` and the advancement condition is unchanged. |
-| Next advancement condition | Advance after a written design defines checkpoint owner, typed fields, evidence classes, storage and retention, sensitive-data handling, stale and conflict outcomes, no-mutation startup behavior, and explicit resumption authority. |
+| Evidence | Verified: generated session-start reconciles Engram with repository evidence, but no product contract implements a typed unfinished checkpoint. Owner-approved design: RH-W-0053 owns the exact checkpoint file and schema; writes require an explicit current request; discovery does not mutate; repository evidence and fresh authority precede resumption. |
+| Decision history | 2026-08-21: registered as proposed from the consolidated audit and placed first in the later review order. 2026-08-21: the same-day portfolio re-audit superseded that review order and placed this unit sixth overall, immediately after `RH-W-0051`, because it is `P1` and both declared dependencies are satisfied at that point. 2026-09-06: the owner approved the bilingual proposed design; status remains `proposed` and implementation remains separately unauthorized. |
+| Next advancement condition | Advance only after separate owner approval of an implementation plan and separate authorization to implement the approved checkpoint contract with focused evidence. |
 
 ### RH-W-0052
 | Field | Value |
