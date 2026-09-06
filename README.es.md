@@ -137,7 +137,7 @@ Los selectores reciprocos de README son una sola integracion atomica. Si el repo
 
 Los harness anteriores se auditan, no se reemplazan a ciegas. Las rutas se clasifican como `current`, `stale`, `missing`, `human-evolved` o `legacy`; reemplazo, integracion, archivo y eliminacion requieren propuesta y aprobacion explicitas.
 
-El `.gitignore` raiz sigue siendo propiedad humana. El plan aprobado crea el archivo si falta o agrega exactamente `.codegraph/` si no existe esa linea, preservando BOM, bytes, comentarios, lineas vacias, finales de linea y reglas ajenas. `--no-codegraph-ignore` registra el opt-out en el manifiesto y no modifica el archivo.
+El `.gitignore` raiz sigue siendo propiedad humana. El plan aprobado crea el archivo si falta o agrega directivas exactas faltantes, preservando BOM, bytes, comentarios, lineas vacias, finales de linea y reglas ajenas. Incluye `.codegraph/` por defecto y siempre incluye `/.repo-harness/tmp/`, `/.repo-harness/archive/`, `/.repo-harness/state/` y `/.repo-harness/memory-bk/`. `--no-codegraph-ignore` registra la exclusion en el manifiesto y omite solo la directiva `.codegraph/`; las cuatro directivas de estado local permanecen y nunca se eliminan lineas de ignorado existentes.
 
 El `.gitattributes` raiz tambien sigue siendo propiedad humana. El constructor crea o agrega una regla exacta `<path> text eol=lf` por cada ruta generada comparada byte a byte, preservando reglas ajenas y finales de linea existentes. Una regla coincidente que asigne comportamiento incompatible de texto o EOL bloquea el plan en vez de crear semantica ambigua de checkout.
 
@@ -146,7 +146,7 @@ En modo bilingue, los propietarios canonicos en ingles conservan la verdad opera
 ## Desarrollo
 <!-- doc-role:development -->
 
-Las fuentes editables son `skill/repo-harness-builder/` y `command/repo-harness-builder.md`. `.claude/` y `.opencode/` son proyecciones de ejecucion y prueba.
+Las fuentes editables son `skill/repo-harness-builder/` y `command/repo-harness-builder.md`. `.claude/`, `.opencode/` y `.pi/` son proyecciones de ejecucion y prueba, no fuentes canonicas. Este repositorio usa su propio harness para mejorar el constructor. Tras editar la fuente canonica, sincronice las salidas administradas afectadas en `.repo-harness/`, `.claude/`, `.opencode/` y `.pi/` mediante preview de mantenimiento y apply con el digest vigente, y verifique la paridad en disco. La validacion por nombre registrado puede requerir un proceso nuevo o una recarga explicita soportada por el entorno; una cache anterior del proceso no invalida los archivos verificados y no debe suponerse un comando de recarga.
 
 ```powershell
 python -B -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"

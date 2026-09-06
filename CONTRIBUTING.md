@@ -6,7 +6,7 @@ Contributions start with an issue and end with maintainer review. Keep each chan
 
 1. Open or choose a [GitHub issue](https://github.com/LCubero/repo-harness-builder/issues). Agree on scope with a maintainer before implementation.
 2. Create a short, focused branch such as `docs/contribution-workflow` or `fix/projection-drift`.
-3. Change canonical sources first. For product behavior, edit `skill/repo-harness-builder/` or `command/repo-harness-builder.md`; treat `.claude/` and `.opencode/` as runtime projections.
+3. Change canonical sources first. For product behavior, edit `skill/repo-harness-builder/` or `command/repo-harness-builder.md`; treat `.claude/`, `.opencode/`, and `.pi/` as runtime projections.
 4. Keep implementation, tests, and nearby documentation in the same work unit.
 5. Run the relevant checks and inspect the complete diff.
 6. Open a focused PR that links the issue with `Closes #<number>` and states scope, verification, and risks.
@@ -38,7 +38,7 @@ Run the read-only harness check for documentation, canonical-source, or projecti
 python .repo-harness/check.py
 ```
 
-The checker must report `current`, exit 0, and report 0 writes. If canonical product sources changed, confirm the corresponding `.claude/` and `.opencode/` projections contain the same intended bytes. Documentation-only changes that do not alter generated contracts must not rewrite those projections.
+The checker must report `current`, exit 0, and report 0 writes. If canonical product sources changed, synchronize affected managed outputs through maintenance preview and current-digest apply, then confirm the corresponding `.claude/`, `.opencode/`, and `.pi/` projections contain the same intended bytes. Documentation-only changes that do not alter generated contracts must not rewrite those projections.
 
 ## PR Checklist
 

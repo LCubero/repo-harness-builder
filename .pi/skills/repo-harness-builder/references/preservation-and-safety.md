@@ -20,15 +20,15 @@ Scope planning evidence to intended write paths, relevant existing ancestors, an
 | Present but obsolete or incompatible | Offer archive and clean-baseline generation separately |
 | Selected root pointer missing its exact directive | Append only the smallest newline-delimited directive |
 | Selected root pointer already containing its exact directive | Leave every byte unchanged |
-| Root `.gitignore` missing exact `.codegraph/` with default enabled | Create it or append only that directive; preserve all existing bytes and line endings |
-| `--no-codegraph-ignore` selected | Record `project.ignoreCodegraph: false`; do not create or edit `.gitignore` |
+| Root `.gitignore` missing a required exact directive | Create it or append only missing directives; preserve all existing bytes and line endings |
+| `--no-codegraph-ignore` selected | Record `project.ignoreCodegraph: false`; suppress only `.codegraph/`, retaining the four harness-local-state directives and all existing lines |
 | Root `.gitattributes` lacks an exact generated-contract LF rule | Append only the missing `<path> text eol=lf` rules for byte-compared generated paths, preserving all existing bytes and line endings |
 | A matching `.gitattributes` rule assigns incompatible text or EOL behavior | Block the plan before any write |
 | Present as a directory or indirect target | Refuse apply before creating anything |
 
 Root pointer detection matches the exact directive as a complete line. Substrings, comments, prefixes, suffixes, and near-matches do not count. Append preserves every existing byte, uses the file's consistent CRLF convention when present, otherwise uses LF, and adds only the separator needed plus the directive and its terminating newline.
 
-The same byte-preserving integration applies narrowly to root `.gitignore`. Default render records `project.ignoreCodegraph: true` and manages exactly one line, `.codegraph/`. `--no-codegraph-ignore` records false and omits `.gitignore` entirely. `check` reads that manifest boolean so an explicit opt-out is never reinterpreted. The builder never creates or writes anything inside `.codegraph/` and manages no other ignore rule.
+The same byte-preserving integration applies narrowly to root `.gitignore`. Default render records `project.ignoreCodegraph: true` and includes `.codegraph/`. Every render also includes `/.repo-harness/tmp/`, `/.repo-harness/archive/`, `/.repo-harness/state/`, and `/.repo-harness/memory-bk/`. `--no-codegraph-ignore` records false and suppresses only the `.codegraph/` directive, not `.gitignore` or the four local-state directives. `check` reads that manifest boolean so an explicit opt-out is never reinterpreted. Existing lines are never removed. The builder never creates or writes anything inside `.codegraph/` and manages no ignore rules beyond these five directives.
 
 Root `.gitattributes` is also human-owned. The builder manages only one exact `<path> text eol=lf` line per byte-compared generated path, because those paths form the exact-byte contract that checking compares. It creates exactly those lines when the file is absent, appends only missing lines with the existing newline convention, leaves a correct file byte-identical, and blocks any matching rule that assigns incompatible `text` or `eol` behavior. It neither normalizes nor claims control over unrelated paths, and never pins human-owned documents.
 
@@ -65,7 +65,7 @@ README language selectors are atomic across peers. When an existing `README.md` 
 After creation, two kinds of file behave differently under `check`:
 
 - **Generated**: canonical skills, runtime projections, wrappers, and the manifest. Compared byte for byte. A difference is reported as `modified`.
-- **Human-owned**: root `README.md`, `.gitignore`, `.gitattributes`, the rulebook, `CHANGELOG.md`, and everything under `docs/repo-harness/`. `.gitignore` keeps every existing byte and only receives the exact approved `.codegraph/` append. `.gitattributes` keeps every existing byte and receives only missing exact LF contract rules when no matching conflict exists. Other human-owned files are compared by the sections they promise. This tolerance supports project-specific evolution; it does not freeze content or remove the builder's duty to analyze and propose improvements.
+- **Human-owned**: root `README.md`, `.gitignore`, `.gitattributes`, the rulebook, `CHANGELOG.md`, and everything under `docs/repo-harness/`. `.gitignore` keeps every existing byte and only receives approved missing exact directives described above. `.gitattributes` keeps every existing byte and receives only missing exact LF contract rules when no matching conflict exists. Other human-owned files are compared by the sections they promise. This tolerance supports project-specific evolution; it does not freeze content or remove the builder's duty to analyze and propose improvements.
 
 This is the distinction that keeps the check useful. Comparing a rulebook by content would flag every real project as broken on day one.
 

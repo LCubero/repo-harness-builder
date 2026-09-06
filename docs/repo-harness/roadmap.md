@@ -335,7 +335,7 @@ Human decision: reopening deferred shared persistence requires explicit owner au
 
 ### Plan 21: RH-W-0072 product documentation drift
 
-Readiness `plannable now`. Priority `P1`, dependencies none. Registered outside the approved order. Next artifact: a bilingual scope document and its Spanish peer.
+Priority `P1`, dependencies none. The owner separately authorized the four-root correction under [issue #163](https://github.com/LCubero/repo-harness-builder/issues/163) on 2026-09-05 without a new plan artifact. That local documentation subset does not schedule or complete the remaining inventory. The numbered plan below is the historical broader proposal, not current execution authority; re-audit remaining claims before proposing another scope, especially the distinction between LLM license interview guidance and CLI defaults.
 
 1. Freeze the measured inventory in the record above as the scope baseline, so correction is bounded to surfaces that were actually verified drifted.
 2. Decide one question before any edit: whether this unit only corrects the surfaces, or also adds a control that ties a generated-surface change to its product-facing documentation.
@@ -795,21 +795,24 @@ Historical review-correction verification: 23 directly relevant tests and the se
 | Next advancement condition | `none`. The unit is `completed`. The generator template still renders both moved blocks into every generated rulebook; whether the compression also changes that template is a separate open owner question and does not reopen this unit, because a generated rulebook measures 650 against 700. |
 
 ### RH-W-0072
+
+Current bounded correction, 2026-09-05, [issue #163](https://github.com/LCubero/repo-harness-builder/issues/163): locally aligned ignore effects, three-runtime maintenance coverage, seeded rules and generated-path LF coverage, and maintenance versus builder activation; synchronized human EN/ES owners. This is partial targeted work, not full completion or delivery. The inventory in Completed work and its counts below remain historical 2026-08-25/26 evidence.
+
 | Field | Value |
 |---|---|
 | Origin | Read-only repository review on 2026-08-25 found product-facing documentation describing behavior the shipped product no longer has, and omitting surfaces it now generates. |
-| Priority | P1: an agent executing this skill receives instructions for a licensing mechanism that does not exist and never learns about three surfaces the tool generates. |
+| Priority | P1: retained because published contract drift can misdirect agents and maintainers. The original licensing and zero-occurrence premises below are historical, not a current behavioral finding. |
 | Dependencies | None. Reuse completed RH-W-0061, RH-W-0051, RH-W-0057, and RH-W-0067 as the owners of the behavior the documentation must now describe; none of them reopens. |
 | Status | proposed |
 | Completed work | Inventoried the drift. `SKILL.md` still routes a repository SPDX value into generated skill metadata and still promises an `UNLICENSED` fallback, and `references/audit-and-interview.md` documents reading root `LICENSE`, `package.json`, `pyproject.toml`, or `Cargo.toml`, while the code carries only `GENERATED_SKILL_LICENSE = "MIT"` and reads none of those files. `test_harness_tool.py` pins the stale `SKILL.md` wording. Across `SKILL.md` and all six references, `response-contract`, `localState`, and `memory-bk` each occur zero times. `.pi/` occurs zero times across all eight human-facing documents in both languages, while `README.md`, `README.es.md`, and `CONTRIBUTING.md` instruct maintainers to synchronize only `.claude/` and `.opencode/`. `references/architecture.md` describes two seeded rule files and a five-item manifest against three files and ten enforced fields. `references/preservation-and-safety.md`, `README.md`, and `README.es.md` describe the default ignore integration as `.codegraph/` alone. `docs/repo-harness/usage.md` and `docs/repo-harness/decisions.md` describe the `.gitattributes` contract as two exact rules, and `decisions.md` also denies any repository-wide line-ending policy and omits Pi from the projection roots. Extended on 2026-08-26 by two further measured items in the same class: `references/preservation-and-safety.md:67` reports generated drift as `modified`, a state no code path emits, and `references/validation.md:48` calls the root `.codegraph/` directive the sole ignore-file exception, which completed `RH-W-0051` ended by adding four local-state ignore directives. |
-| Remaining work | Correct each surface against current behavior and update the test that pins the stale licensing wording, test-first, after a separately approved bilingual scope. Decide whether a control should prevent a completed unit from leaving product documentation behind. |
+| Remaining work | Re-audit the remaining historical inventory against current source before a separately authorized correction, including broader manifest/local-state discoverability and generated-drift state wording. Do not infer that valid LLM license interview guidance promises CLI autodetection: preserve MIT default and explicit license override. A broader preventive control remains undecided; no new framework is authorized. |
 | Additions | None yet. A scope may add a control that ties generated-surface changes to their product-facing documentation. |
 | Exclusions | No product behavior change, no reopening of RH-W-0061, RH-W-0051, RH-W-0057, or RH-W-0067, no new runtime, no manifest or checker schema change, and no implementation before a separately approved scope. |
 | Deferrals | Whether a preventive control is added, and its shape, wait for that scope. |
 | Rejections | Rejected correcting only the licensing surface, because the same omission pattern spans licensing, namespaces, rule files, the ignore contract, the `.gitattributes` contract, and an entire supported runtime. Rejected deleting the pinning test instead of correcting both it and the documentation it pins. |
 | Evidence | Verified fact: every occurrence count, file, and line named above was measured read-only against `HEAD` `a67a6c7`, and the completed records for RH-W-0061, RH-W-0051, RH-W-0057, and RH-W-0067 carry no exclusion covering these surfaces. Supported inference: the shared cause is that each unit updated generated contracts and tests without a control covering human-facing, self-hosted, and acceptance surfaces; a written scope naming that control would raise it to verified. |
-| Decision history | 2026-08-25: registered as `proposed` under immutable ID RH-W-0072 from read-only review evidence. No scope, implementation, or lifecycle advancement is authorized. |
-| Next advancement condition | Advance only after the owner approves a bilingual scope naming which surfaces are corrected and whether a preventive control is in scope. |
+| Decision history | 2026-08-25: registered as `proposed` under immutable ID RH-W-0072; no implementation was authorized then. 2026-09-05: owner separately approved the four-root bilingual correction and normal Markdown issue #163. No license or Python behavior change, adjacent functional work, full completion, or delivery authorization follows. |
+| Next advancement condition | Parent review of the bounded local correction, then separately authorized delivery if requested. Remaining inventory requires fresh evidence and owner-approved scope; status remains `proposed`. |
 
 ### RH-W-0071
 

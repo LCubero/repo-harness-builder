@@ -20,7 +20,7 @@ Integrated mode composes Gentle AI and Engram independently; either can remain u
 ## Congruence And Ownership
 <!-- doc-role:ownership -->
 
-Run `python3 .repo-harness/check.py` (`python` on Windows) after canonical skills or runtime projections change. Root `.gitattributes` preserves LF checkout bytes through exact `.repo-harness/check.py text eol=lf` and `.repo-harness/manifest.json text eol=lf` rules. The checker proves on-disk parity, not whether the active process refreshed its registered skill content. Same-process older registered content is an expected cache limitation; defer that optional validation to a fresh process or a supported explicit registry reload without inventing a command. Engram carries temporary cross-session context; repository files remain authoritative.
+Run `python3 .repo-harness/check.py` (`python` on Windows) after canonical skills or runtime projections change. Root `.gitattributes` preserves LF checkout bytes through one exact `<path> text eol=lf` rule for every byte-compared generated path, including the checker, manifest, canonical skills and command families, runtime projections, wrappers, and optional exact product projections. Human-owned documents and directive-checked files are outside that generated-path contract. The checker proves on-disk parity, not whether the active process refreshed its registered skill content. Same-process older registered content is an expected cache limitation; defer that optional validation to a fresh process or a supported explicit registry reload without inventing a command. Engram carries temporary cross-session context; repository files remain authoritative.
 
 ## Approval Boundaries
 <!-- doc-role:approval-boundaries -->
