@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-05
 
+- Reconciled the reviewed remaining-work portfolio in bilingual canonical owners: corrected the non-terminal summary and RH-W-0015 antecedents, separated delivered subsets from residual work, and preserved approved order and lifecycle statuses. Clarified RH-W-0074 with proposed illustrative cases, without choosing outcome vocabulary or superseding RH-W-0068. Flagged RH-W-0069 plan approval, installed examples, and verification workload for reconciliation rather than declaring it executable. No product, test, generated contract, runtime, or policy change was made.
+
 - Corrected the local `RH-W-0072` checker documentation: distinguished builder `stale`/`legacy` and valid `human-evolved` prose from installed generated-checker projection states, and documented its existing ignore, command/prompt, and optional product-projection coverage. No checker behavior, schema, license, or validation framework changed; verification is recorded separately in the final handoff.
 
 - Delivered four published `RH-W-0072` contract corrections under [issue #163](https://github.com/LCubero/repo-harness-builder/issues/163) through PR #164: ignore opt-out effects, three-runtime maintenance, generated rules/LF coverage, and maintenance versus builder activation. Updated English/Spanish owners and preserved the historical inventory as partial work; no Python or license behavior change or full lifecycle completion is claimed. The [roadmap](docs/repo-harness/roadmap.md#rh-w-0072) records exact delivery and prior-candidate verification evidence.

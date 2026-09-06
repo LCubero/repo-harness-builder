@@ -4,6 +4,8 @@
 
 ## 2026-09-05
 
+- Se reconcilio la cartera revisada de trabajo pendiente en propietarios canonicos bilingues: resumen no terminal y antecedentes RH-W-0015 corregidos, subconjuntos entregados separados del residuo, y orden aprobado y estados conservados. RH-W-0074 se aclaro con ejemplos ilustrativos propuestos, sin elegir vocabulario ni reemplazar RH-W-0068. Se identificaron aprobacion, ejemplos instalados y carga de verificacion de RH-W-0069 como pendientes de reconciliacion, no como receta ejecutable. No cambiaron producto, pruebas, contratos generados, runtimes ni politica.
+
 - Se corrigio localmente la documentacion del checker de `RH-W-0072`: se distinguieron `stale`/`legacy` del builder y prosa valida `human-evolved` de los estados de proyeccion del checker generado instalado, y se documento su cobertura existente de ignorado, comandos/prompts y proyecciones opcionales de producto. No cambiaron comportamiento del checker, esquema, licencia ni marco de validacion; la verificacion se registra por separado en el informe final.
 
 - Se entregaron cuatro correcciones de contratos publicados de `RH-W-0072` bajo [issue #163](https://github.com/LCubero/repo-harness-builder/issues/163) mediante PR #164: efectos de la exclusion de ignorado, mantenimiento de tres runtimes, reglas/cobertura LF generadas y mantenimiento frente a activacion builder. Se actualizaron propietarios en ingles/espanol y se conservo el inventario historico como trabajo parcial; no se afirma cambio de comportamiento Python o licencias ni finalizacion del ciclo completo. La [hoja de ruta](docs/es/repo-harness/roadmap.md#rh-w-0072) registra entrega exacta y verificacion del candidato anterior.
