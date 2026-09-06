@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-06
 
+- Recorded the owner's technical approval of the bilingual RH-W-0022 minimal declared-documentation-relationship design. The design selects one preserved technical owner, exact three-field edges, two bounded relationship kinds, exact read-only checker failure output, human-document preservation, and separate RH-W-0065 coordination. RH-W-0022 remains `proposed`; implementation planning, implementation, and delivery remain unauthorized.
+
 - Recorded the owner's approval of the bilingual RH-W-0044 human-owned document suggestion design after the technical approval decision. The design bounds comparison to identifiable rendered contract units, excludes project-owned chronology and lifecycle facts, requires exact per-suggestion evidence and one-at-a-time digest-bound acceptance, and defines a narrow reviewable intentional-divergence declaration. RH-W-0044 remains `proposed`; implementation planning, implementation, Git delivery, and publication remain unauthorized.
 
 - Recorded owner-delegated approval of the bilingual joint RH-W-0046/RH-W-0018 design after delegated primary-source research and direct readback. It retains the fetch network gate and specifies an optional explicit, visible, revocable repository grant bound to exact fetch identity, with material-change invalidation, interactive fallback, privacy limits, `--no-recurse-submodules`, and `--no-auto-maintenance`. Both lifecycles remain separate and unchanged; implementation planning and implementation are unauthorized, and no product or runtime surface changed.

@@ -4,6 +4,8 @@
 
 ## 2026-09-06
 
+- Se registró la aprobación técnica del propietario del diseño bilingüe mínimo RH-W-0022 de relaciones documentales declaradas. El diseño selecciona un propietario técnico preservado, aristas exactas de tres campos, dos relaciones acotadas, salida exacta de fallo del checker de solo lectura, preservación de documentos humanos y coordinación separada con RH-W-0065. RH-W-0022 permanece `proposed`; planificación, implementación y entrega siguen sin autorización.
+
 - Se registró la aprobación del propietario del diseño bilingüe RH-W-0044 de sugerencias para documentos de propiedad humana después de la decisión técnica de aprobación. El diseño limita la comparación a unidades contractuales identificables, excluye cronología y hechos de ciclo poseídos por el proyecto, exige evidencia exacta y aceptación individual ligada a digest, y define una declaración estrecha y revisable de divergencia intencional. RH-W-0044 permanece `proposed`; la planificación de implementación, la implementación, la entrega Git y la publicación siguen sin autorización.
 
 - Se registró la aprobación delegada del propietario del diseño conjunto bilingüe RH-W-0046/RH-W-0018 después de investigación primaria delegada y readback directo. Conserva la compuerta de red para fetch y especifica una concesión opcional explícita, visible, revocable y ligada a identidad exacta, con invalidación por cambios materiales, fallback interactivo, límites de privacidad, `--no-recurse-submodules` y `--no-auto-maintenance`. Ambos ciclos siguen separados y sin cambios; planificación e implementación no están autorizadas y no cambió producto ni runtime.

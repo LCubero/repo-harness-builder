@@ -29,6 +29,7 @@
 | [rh-w-0048-design.md](rh-w-0048-design.md) | Owner-approved additive runtime-projection recovery design; implementation planning and implementation remain unauthorized |
 | [rh-w-0046-rh-w-0018-design.md](rh-w-0046-rh-w-0018-design.md) | Owner-delegated approved joint repository fetch-consent and low-question preference-boundary design; implementation planning and implementation remain unauthorized |
 | [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved human-owned document suggestion design; implementation planning and implementation remain unauthorized |
+| [rh-w-0022-design.md](rh-w-0022-design.md) | Owner-approved minimal declared documentation relationship design; implementation planning and implementation remain unauthorized |
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Owner-approved local memory backup and cross-source continuity design; implementation remains separately unauthorized |
 | [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Proposed continuity plan; approval, installed-value examples, and verification workload require reconciliation before execution |
 | [rh-w-0068-documentation-closure-design.md](rh-w-0068-documentation-closure-design.md) | Implemented required post-verification documentation closure gate; other RH-W-0068 defects remain proposed |
