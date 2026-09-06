@@ -1,6 +1,6 @@
 # RH-W-0071 Implementation Plan
 
-> **Status: session-only implementation separately authorized on 2026-09-05 under issue #160. The local contract implementation is present; verification and native review remain separate from delivery. RH-W-0071 remains `proposed` because shared persistence is deferred and the original full requirement is not satisfied.**
+> **Status: session-only subset verified, reviewed and delivered through PR #161 on 2026-09-05 under issue #160. The [roadmap record](roadmap.md#rh-w-0071) owns delivery evidence. RH-W-0071 remains `proposed`: shared persistence is deferred and the original full requirement is not satisfied.**
 
 Derived from the owner-approved [RH-W-0071 design](rh-w-0071-design.md) and roadmap Plan 20. Its Spanish peer is [rh-w-0071-implementation-plan.md](../es/repo-harness/rh-w-0071-implementation-plan.md).
 
@@ -14,9 +14,11 @@ The owner delegated the scope decision after read-only source-backed verificatio
 
 **Authorization and verification boundary:** the owner separately authorized session-only implementation after the documentation revision, with issue #160 and branch `feat/rh-w-0071-session-response-mode`. `rule_outputs()` now extends the existing response owner; the self-hosted human-owned rule is integrated explicitly. No parser, storage, transport API, preference interview, or dependent axis is implemented. Contract-text tests do not prove live-model compliance. Do not execute historical persistence commands or choose its shipping slices.
 
-### Local Implementation Evidence
+### Final Verification Evidence
 
-`SessionResponseModeContractTests` verifies selection instructions, shaping, preserved boundaries, one owner, budget, no generated preference state, and identical instructions across standalone/integrated and English/Spanish/bilingual renders. The focused command `python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.SessionResponseModeContractTests -v` ran 3 tests: RED produced 27 expected assertion failures in 0.007s; GREEN passed in 0.004s. These are instruction-contract receipts, not observations of runtime mode transitions. Final projection checks and the full standard-library suite required by `CONTRIBUTING.md` follow all source normalization; their final receipts belong to the implementation handoff. Native review is delegated to the parent, not claimed here.
+`SessionResponseModeContractTests` verifies selection instructions, shaping, preserved boundaries, one owner, budget, no generated preference state, and identical instructions across standalone/integrated and English/Spanish/bilingual renders. Historical focused command `python -B -m unittest skill.repo-harness-builder.tests.test_harness_tool.SessionResponseModeContractTests -v`: 3 tests, RED with 27 expected assertion failures in 0.007s; GREEN in 0.004s. The first full run executed 503 tests in 154.092s with 9 skips and one stale documented-count failure (500); both locales were corrected before final verification.
+
+Final implementation handoff receipts, after normalization: `python -B -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"` ran 503 tests in 154.714s, OK (skipped=9), exit 0; focused regression run passed 20 tests in 0.763s, exit 0; `python .repo-harness/check.py` reported `current`, 63 projections, 0 writes, exit 0; `git diff --check` exited 0. These receipts belong to the delivered implementation, not a rerun for this documentation-only follow-up. Contract tests do not prove live-model transitions or compliance. The roadmap records the parent's exact-tree native review and delivery evidence; that approval does not cover subsequent documentation edits.
 
 ## Deferred Shared Persistence: Preserved Agreement
 

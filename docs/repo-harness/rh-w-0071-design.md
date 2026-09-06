@@ -1,10 +1,12 @@
 # RH-W-0071 ADHD-Friendly Response Structure Design
 
-> **Status: OWNER-APPROVED HISTORICAL DESIGN. The session-only subset was separately authorized and implemented locally on 2026-09-05 under issue #160; see the revised plan for contract evidence. Shared persistence remains deferred, with no original full-requirement completion or delivery claim.**
+> **Status: OWNER-APPROVED HISTORICAL DESIGN. The session-only subset was separately authorized, verified, reviewed and delivered through PR #161 under issue #160 on 2026-09-05; the [roadmap](roadmap.md#rh-w-0071) owns delivery and the revised plan owns verification. Shared persistence remains deferred; the original full requirement is not complete.**
 
-The current implementation status above supersedes authorization-pending statements in the retained scope-revision and historical design below.
+**Current boundary:** the [revised implementation plan](rh-w-0071-implementation-plan.md) owns the delivered session-only subset. Shared persistence is deferred, not cancelled; RH-W-0082/RH-W-0018 dependencies remain. Only reopening persistence requires new owner authorization and reconciliation of its unresolved gates.
 
-**Current scope revision, 2026-09-05:** the completed owner-delegated review supersedes the pause and narrows immediate work to explicit session-only presentation. The [revised implementation plan](rh-w-0071-implementation-plan.md) owns that current boundary. The broader approved design below is retained as historical context and deferred shared-persistence agreement, not current execution instructions or implemented behavior. Its builder interview, persistence, scope question, transport, and delivery requirements do not gate immediate session-only work. Shared persistence is deferred, not cancelled; RH-W-0082/RH-W-0018 dependencies remain. Separate implementation authorization is still required, and the original full requirement is not satisfied.
+## Historical Approved Design (Not Current Execution Instructions)
+
+The broader design below preserves the original approvals and deferred shared-persistence agreement. Its builder interview, persistence, scope question, transport and delivery requirements are not implemented behavior or pending session-only tasks.
 
 ## Review Contract
 

@@ -49,7 +49,7 @@
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
 | [rh-w-0071-design.md](rh-w-0071-design.md) | Historical approved broader design and deferred shared-preference agreement; current scope is owned by the revised plan |
-| [rh-w-0071-implementation-plan.md](rh-w-0071-implementation-plan.md) | Authorized local session-only implementation and contract evidence; shared structured Markdown persistence and its gates remain deferred |
+| [rh-w-0071-implementation-plan.md](rh-w-0071-implementation-plan.md) | Delivered session-only subset and final verification; shared structured Markdown persistence and its gates remain deferred |
 | [rh-w-0082-design.md](rh-w-0082-design.md) | Owner-approved plain-language explanation-style design; implementation remains unauthorized |
 | [rh-w-0079-design.md](rh-w-0079-design.md) | Completed optional-capability and self-hosting release-boundary design; all five slices delivered without claiming an actual release |
 | [rh-w-0079-implementation-plan.md](rh-w-0079-implementation-plan.md) | Completed five-slice test-first plan; Slice 4 and Slice 5 delivery evidence is recorded |
