@@ -30,7 +30,7 @@ El diseno preventivo precede la arquitectura de estado local:
 2. `RH-W-0051` esta completa. Sus cuatro namespaces no autoritativos implementados son `tmp`, `archive`, `state` y `memory-bk`.
 3. Resolver primero `RH-W-0084` por direccion del propietario del 2026-08-30, porque LLM-first es la restriccion contra la que se mide toda superficie generada posterior. Este paso esta completo: el propietario acepto el hallazgo de refuerzo como control bajo `RH-W-0083` y la implementacion de RH-W-0083 autorizada por separado esta completa. Los otros hallazgos permanecen con sus duenios nombrados.
 4. La presentacion solo de sesion `RH-W-0071` esta entregada mediante PR #161. No quedan implementacion ni revision inmediatas. Reabrir persistencia Markdown estructurada compartida solo con autorizacion explicita del propietario, evidencia actual y reconciliacion de sus compuertas de API de runtime y entrega con RH-W-0082 y RH-W-0018; sigue aplazada, no cancelada.
-5. Implementar `RH-W-0069` despues del soporte `.repo-harness/memory-bk/`, sin absorber checkpoints.
+5. `RH-W-0069` ocupo la siguiente posicion historica y ahora esta completada; su continuidad permanece separada de los checkpoints.
 6. Implementar `RH-W-0053` despues de establecer su semantica de almacenamiento.
 7. Implementar `RH-W-0048`.
 8. Implementar `RH-W-0052`.
@@ -113,7 +113,7 @@ Decisiones humanas: ninguna mas alla de la aprobacion del diseno y la autorizaci
 
 ### Plan 2A: implementacion de backup local de memoria RH-W-0069
 
-Completado y entregado despues de la autorizacion explicita del propietario el 2026-09-07. Prioridad `P2`. RH-W-0051 completado probo el prerrequisito de almacenamiento. El [diseno](rh-w-0069-design.md) y el [plan](rh-w-0069-implementation-plan.md) simplificado reconciliado, ambos aprobados por el propietario, se conservan como evidencia historica de ejecucion. Se implementaron y verificaron el comportamiento del producto y las proyecciones; la verificacion reciente aprobo 512 pruebas y omitio 9. En este worktree no se autorizaron ni realizaron entrega Git, commit, push, publicacion ni acciones de red.
+Completado y entregado despues de la autorizacion explicita del propietario el 2026-09-07. Prioridad `P2`. RH-W-0051 completado probo el prerrequisito de almacenamiento. El [diseno](rh-w-0069-design.md) y el [plan](rh-w-0069-implementation-plan.md) simplificado reconciliado, ambos aprobados por el propietario, se conservan como evidencia historica de ejecucion. Se implementaron y verificaron el comportamiento del producto y las proyecciones; la suite canonica recopilo 512 pruebas y termino correctamente con 9 omisiones. En este worktree no se autorizaron ni realizaron entrega Git, commit, push, publicacion ni acciones de red.
 
 Evidencia historica de ejecucion:
 
@@ -481,9 +481,9 @@ Completado bajo autorizacion explicita y separada de implementacion del propieta
 
 Proyección vigente revisada hasta el 2026-09-07 sobre 22 encabezados de planes no terminales que cubren 22 de los 29 registros no terminales, incluidos los dos del Plan 6, más 9 planes terminales conservados como evidencia histórica. Los 88 registros comprenden 58 completados, 24 propuestos, 5 aplazados y 1 rechazado. Los Planes históricos 10, 28 y 31 no autorizan implementación ni release vigente. No se aprueba fusión de ciclos y cobertura de planes no significa preparación para implementar.
 
-Recomendación consultiva, no cambio de calendario: mantener pendiente la implementación RH-W-0074 hasta que se autorice por separado y reconciliar el residuo RH-W-0076 con la investigación de contexto RH-W-0078 antes de comprimir. La secuencia aprobada sigue RH-W-0069, RH-W-0053, RH-W-0048 y RH-W-0052, sujeta a cada condición de avance. Las entregas parciales de RH-W-0071, RH-W-0072, RH-W-0076 y RH-W-0086 no completan sus registros. RH-W-0070 es guía operativa aprobada, no motivo para construir un monitor; descubribilidad desconocida de RH-W-0072 no justifica inventar prevención.
+Recomendación consultiva, no cambio de calendario: mantener pendiente la implementación RH-W-0074 hasta que se autorice por separado y reconciliar el residuo RH-W-0076 con la investigación de contexto RH-W-0078 antes de comprimir. Con RH-W-0069 completada en su posición histórica, la secuencia de implementación aprobada restante es RH-W-0053, RH-W-0048 y RH-W-0052, sujeta a cada condición de avance. Las entregas parciales de RH-W-0071, RH-W-0072, RH-W-0076 y RH-W-0086 no completan sus registros. RH-W-0070 es guía operativa aprobada, no motivo para construir un monitor; descubribilidad desconocida de RH-W-0072 no justifica inventar prevención.
 
-La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085 y RH-W-0086 no tienen plan de accion. Cuatro aplazados aparecen en la lista no planificable; RH-W-0018 participa solo en el diseno conjunto del Plan 6. Se conservan el par de diseno RH-W-0046/RH-W-0018 y los tres pares de coordinacion vigentes RH-W-0069/RH-W-0068, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. No se aprueba fusion ni implementacion nueva.
+La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085 y RH-W-0086 no tienen plan de accion. Cuatro aplazados aparecen en la lista no planificable; RH-W-0018 participa solo en el diseno conjunto del Plan 6. Se conservan el par de diseno RH-W-0046/RH-W-0018 y dos pares de coordinacion vigentes, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. La coordinacion historica RH-W-0069/RH-W-0068 termino al completarse RH-W-0069. No se aprueba fusion ni implementacion nueva.
 
 Aqui se declaran catorce relaciones entre planes para que ninguno suponga en silencio el resultado de otro. Ninguna fusiona un ciclo de vida ni cambia estado.
 

@@ -32,7 +32,7 @@ The preventive design precedes the local-state architecture:
 2. `RH-W-0051` is complete. Its four implemented non-authoritative namespaces are `tmp`, `archive`, `state`, and `memory-bk`.
 3. Resolve `RH-W-0084` first on owner direction of 2026-08-30, because LLM-first is the constraint every later generated surface is measured against. This step is complete: the owner accepted the reinforcement finding as a control under `RH-W-0083`, and the separately authorized RH-W-0083 implementation is complete. The other findings remain with their named owners.
 4. `RH-W-0071` session-only presentation is delivered through PR #161. No immediate implementation or review remains. Reopen shared structured Markdown persistence only with explicit owner authorization, current evidence, and reconciliation of its runtime API and delivery gates with RH-W-0082 and RH-W-0018; it remains deferred, not cancelled.
-5. Implement `RH-W-0069` after RH-W-0051 establishes `.repo-harness/memory-bk/`, without absorbing typed checkpoints.
+5. `RH-W-0069` occupied the next historical position and is now completed; its continuity work remains separate from typed checkpoints.
 6. Implement `RH-W-0053` after RH-W-0051 establishes its storage semantics.
 7. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
 8. Implement `RH-W-0052` after those storage and recovery primitives are proven.
@@ -115,7 +115,7 @@ Human decisions: none beyond the design approval and explicit implementation aut
 
 ### Plan 2A: RH-W-0069 local memory backup implementation
 
-Completed and delivered after explicit owner authorization on 2026-09-07. Priority `P2`. Completed RH-W-0051 proved the storage prerequisite. The owner-approved [design](rh-w-0069-design.md) and reconciled simplified [implementation plan](rh-w-0069-implementation-plan.md) are retained as historical execution evidence. Product behavior and projections were implemented and verified; fresh verification passed 512 tests with 9 skipped. No Git delivery, commit, push, publication, or network action was authorized or performed in this worktree.
+Completed and delivered after explicit owner authorization on 2026-09-07. Priority `P2`. Completed RH-W-0051 proved the storage prerequisite. The owner-approved [design](rh-w-0069-design.md) and reconciled simplified [implementation plan](rh-w-0069-implementation-plan.md) are retained as historical execution evidence. Product behavior and projections were implemented and verified; the canonical suite collected 512 tests and completed successfully with 9 skips. No Git delivery, commit, push, publication, or network action was authorized or performed in this worktree.
 
 Historical execution evidence:
 
@@ -483,9 +483,9 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 Current projection reviewed through 2026-09-07 across 22 non-terminal plan headings covering 22 of the 29 non-terminal records, including the two records covered by Plan 6, plus 9 terminal plans retained as historical evidence. The 88 lifecycle records comprise 58 completed, 24 proposed, 5 deferred, and 1 rejected record. Historical Plans 10, 28, and 31 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
 
-Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Plan 6 joint design. The portfolio retains one joint-design pair, RH-W-0046/RH-W-0018, and three current coordination pairs with separate lifecycles: RH-W-0069/RH-W-0068, RH-W-0065/RH-W-0022, and RH-W-0066/RH-W-0044. No merger or new implementation authority follows.
+Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Plan 6 joint design. The portfolio retains one joint-design pair, RH-W-0046/RH-W-0018, and two current coordination pairs with separate lifecycles: RH-W-0065/RH-W-0022 and RH-W-0066/RH-W-0044. Historical RH-W-0069/RH-W-0068 coordination ended when RH-W-0069 completed. No merger or new implementation authority follows.
 
-Consultative recommendation, not a schedule change: keep RH-W-0074 implementation pending until separately authorized, and reconcile RH-W-0076's residual scope with RH-W-0078's loaded-context research before compression. The approved remaining implementation sequence is still RH-W-0069, RH-W-0053, RH-W-0048, then RH-W-0052, subject to each owner's advancement condition. Partial delivery under RH-W-0071, RH-W-0072, RH-W-0076, and RH-W-0086 does not complete their full records. RH-W-0070 is approved operating guidance, not a reason to build a monitor; unknown RH-W-0072 discoverability is not a reason to invent preventive work.
+Consultative recommendation, not a schedule change: keep RH-W-0074 implementation pending until separately authorized, and reconcile RH-W-0076's residual scope with RH-W-0078's loaded-context research before compression. With RH-W-0069 completed in its historical position, the approved remaining implementation sequence is RH-W-0053, RH-W-0048, then RH-W-0052, subject to each owner's advancement condition. Partial delivery under RH-W-0071, RH-W-0072, RH-W-0076, and RH-W-0086 does not complete their full records. RH-W-0070 is approved operating guidance, not a reason to build a monitor; unknown RH-W-0072 discoverability is not a reason to invent preventive work.
 
 Fourteen cross-plan relationships are declared here so no plan silently assumes another's outcome. None merges a lifecycle and none changes a status.
 

@@ -115,4 +115,4 @@ Session-start may use both, but verifies both against current owners. A backup n
 
 This design changes no product source, generated skill, test, manifest, checker, local-state directory, runtime projection, or lifecycle status. A future separately authorized implementation may update the canonical session-start and session-stop contracts and focused tests. RH-W-0051 remains the namespace and ignore owner, so RH-W-0053 adds no manifest field and the checker must not inspect checkpoint contents.
 
-The owner approved this proposed design on 2026-09-06. Implementation planning, implementation, migration, deletion, archival, and delivery remain separately unauthorized. No human product decision remains for this proposed design.
+The owner approved this proposed design on 2026-09-06 and approved implementation planning on 2026-09-07. Implementation, migration, deletion, archival, and delivery remain separately unauthorized. No human product decision remains for this proposed design.

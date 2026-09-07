@@ -33,7 +33,7 @@ La carga de verificacion es proporcional y ya no constituye un bloqueo separado 
 
 El plan no agrego `render_continuity_backup`, `filter_continuity_summary`, `write_continuity_backup`, `read_continuity`, `reconcile_continuity` ni `persist_continuity`. Tampoco agrego callbacks, API generica, base de datos, cifrado, daemon, scheduler, servicio, motor de sincronizacion, storage pluggable, state machine, limpieza, reutilizacion de aprobacion, checkpoint, copia de ciclo, recibo, store de entrega ni store de conflictos.
 
-Todos los elementos de las listas de las Tareas 1 a 3 y de la seccion de aceptacion se ejecutaron y cumplieron. Sus casillas originales sin marcar se conservan solo como instrucciones historicas de ejecucion, no como trabajo pendiente.
+Se ejecutaron y cumplieron los elementos aplicables de implementacion verificada, proyecciones, documentacion, cierre de ciclo y aceptacion. Las casillas sin marcar conservan instrucciones historicas; se excluyeron explicitamente los elementos futuros de recomendacion sobre Git y entrega, que no se afirman ejecutados.
 
 ## Tarea 1: TDD canonico de continuidad nativa
 

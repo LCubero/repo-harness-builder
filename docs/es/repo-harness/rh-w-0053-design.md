@@ -115,4 +115,4 @@ Session-start puede usar ambos, pero verifica ambos contra propietarios actuales
 
 Este diseño no cambia fuente de producto, skill generada, prueba, manifest, checker, directorio local, proyección de runtime ni estado de ciclo. Una implementación futura autorizada por separado podría actualizar los contratos canónicos de session-start y session-stop y pruebas enfocadas. RH-W-0051 conserva namespace e ignore, por lo que RH-W-0053 no agrega campo de manifest y el checker no inspecciona contenido.
 
-El propietario aprobó este diseño propuesto el 2026-09-06. Planificar, implementar, migrar, borrar, archivar y entregar siguen sin autorización separada. No queda una decisión humana de producto para este diseño propuesto.
+El propietario aprobó este diseño propuesto el 2026-09-06 y la planificación de implementación el 2026-09-07. Implementar, migrar, borrar, archivar y entregar siguen sin autorización separada. No queda una decisión humana de producto para este diseño propuesto.

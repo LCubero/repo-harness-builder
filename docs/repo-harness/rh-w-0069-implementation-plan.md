@@ -33,7 +33,7 @@ The verification workload is proportional and no longer a separate approval bloc
 
 The plan added none of these APIs: `render_continuity_backup`, `filter_continuity_summary`, `write_continuity_backup`, `read_continuity`, `reconcile_continuity`, or `persist_continuity`. It added no callbacks, generic memory API, database, encryption framework, daemon, scheduler, service, synchronization engine, pluggable storage, hidden state machine, retention cleanup, approval reuse, checkpoint, lifecycle copy, receipt, delivery store, or conflict store.
 
-All checklist items in Tasks 1 through 3 and the acceptance section below were executed and satisfied. Their original unchecked boxes are retained solely as historical execution instructions, not as pending work.
+The applicable checklist items for verified implementation, projections, documentation, lifecycle closure, and acceptance were executed and satisfied. The unchecked boxes remain historical instructions; future Git and delivery recommendation items were explicitly excluded and are not claimed as executed.
 
 ## Task 1: Canonical TDD For Native Continuity
 
