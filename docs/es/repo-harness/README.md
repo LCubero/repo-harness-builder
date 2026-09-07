@@ -29,7 +29,7 @@
 | [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado por el propietario de sugerencias para documentos humanos; planificación e implementación siguen sin autorización |
 | [Diseño RH-W-0022](rh-w-0022-design.md) | Diseño mínimo de relaciones documentales declaradas aprobado por el propietario; planificación e implementación siguen sin autorización |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno aprobado de backup local de memoria y continuidad entre fuentes; la implementacion sigue sin autorizacion separada |
-| [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan propuesto; aprobacion, ejemplos instalados y carga de verificacion requieren reconciliacion antes de ejecutar |
+| [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan reconciliado aprobado por el propietario; la implementacion sigue sin autorizacion separada |
 | [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta implementada de cierre documental; los otros defectos RH-W-0068 siguen propuestos |
 | [Diseño RH-W-0074](rh-w-0074-design.md) | Diseño de omisión aceptada aprobado por el propietario; implementación pendiente y no autorizada |
 | [Diseno RH-W-0070](rh-w-0070-design.md) | Par profesional del diseno aprobado de seguridad preventiva y proporcional de recursos |

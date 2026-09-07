@@ -115,15 +115,13 @@ Decisiones humanas: ninguna mas alla de la aprobacion del diseno y la autorizaci
 
 ### Plan 2A: implementacion de backup local de memoria RH-W-0069
 
-Preparacion `plan written; approval reconciliation required`. Prioridad `P2`. RH-W-0051 ya prueba el prerrequisito de almacenamiento. El [diseno](rh-w-0069-design.md) esta aprobado, pero el [plan](rh-w-0069-implementation-plan.md) aun se declara propuesto. Reconciliar ejemplos instalados y carga de verificacion antes de ejecutar; esta revision no infiere aprobacion del plan ni autoridad de implementacion.
+Preparacion `owner-approved plan; implementation unauthorized`. Prioridad `P2`. RH-W-0051 ya prueba el prerrequisito de almacenamiento. El [diseno](rh-w-0069-design.md) y el [plan](rh-w-0069-implementation-plan.md) simplificado reconciliado estan aprobados por el propietario. El plan usa valores instalados actuales y una sola suite canonica completa junto con evidencia enfocada y de paridad. Aprobar el plan no concede autoridad de implementacion.
 
-1. Derivar RED para schema, contencion, privacidad, lectura con repositorio primero, escritura local primero, resultados independientes y comprobacion Engram.
-2. Conservar a RH-W-0051 completada como propietaria de taxonomia e ignore para `.repo-harness/memory-bk/`; no reabrirla ni esperarla.
-3. Actualizar contratos canonicos sin acoplar Gentle AI ni memoria incorporada.
-4. Sincronizar proyecciones y verificar integrated y standalone.
-5. Reconciliar despues de implementar sin absorber RH-W-0053, RH-W-0066 ni RH-W-0068.
+1. Completar una unidad TDD canonica con grupos RED/GREEN ordenados para backup de stop, recuperacion de start y regla compartida de memoria, preservando la propiedad de RH-W-0051.
+2. Sincronizar proyecciones mecanicas y verificar suite canonica, paridad SHA exacta, bytes generados y estado del checker.
+3. Cerrar documentacion y ciclo solo despues de implementacion verificada y autoridad separada, sin absorber RH-W-0053, RH-W-0066 ni RH-W-0068.
 
-Decision humana: reconciliar aprobacion del plan y carga de verificacion, y luego autorizar implementacion por separado. El orden aprobado no cambia.
+Decision humana: autorizar la implementacion por separado o dejarla pendiente. El orden aprobado no cambia.
 
 ### Plan 3: diseno de checkpoint de sesion interrumpida RH-W-0053
 
@@ -685,7 +683,7 @@ Origen: incidente verificado durante revision delegada de un plan el 2026-08-25,
 
 ### RH-W-0069
 
-Estado: `proposed`, prioridad `P2`. El [diseno](rh-w-0069-design.md) esta aprobado y RH-W-0051 prueba almacenamiento. Trabajo restante: reconciliar aprobacion del [plan](rh-w-0069-implementation-plan.md), ejemplos de valores instalados, cobertura de tres runtimes y repeticiones de suite completa; luego obtener autorizacion de implementacion. El diseno ordena repositorio, backup valido mas nuevo y Engram; UTC identifica y ordena backups sin controlar RH-W-0081. Conflictos visibles sin fusion silenciosa y sin dependencia de memoria privada incorporada. No hay backups implementados. Siguiente condicion: resolver ambiguedad de aprobacion/carga de pruebas y autorizar implementacion por separado; no cambia el orden aprobado.
+Estado: `proposed`, prioridad `P2`. El [diseno](rh-w-0069-design.md) esta aprobado y RH-W-0051 prueba almacenamiento. En la conversacion del 2026-09-06, el propietario aprobo explicitamente con `dale` el [plan](rh-w-0069-implementation-plan.md) simplificado reconciliado con valores instalados actuales, cobertura de tres runtimes y verificacion proporcional. Trabajo restante: obtener autorizacion separada de implementacion. El diseno ordena repositorio, backup valido mas nuevo y Engram; UTC identifica y ordena backups sin controlar RH-W-0081. Conflictos visibles sin fusion silenciosa y sin dependencia de memoria privada incorporada. No hay backups implementados, la aprobacion del plan no cambia el estado y no cambia el orden aprobado.
 
 <!-- Prosa de registro reemplazada por el estado activo vigente anterior.
 Origen: direccion aprobada por el propietario el 2026-08-25 que separa documentacion canonica de memoria operativa y exige fallback propiedad del harness independiente de Engram. Prioridad: `P2`, perder continuidad degrada sesiones futuras, pero el repositorio sigue autoritativo. Dependencias: la completada RH-W-0051 ya implemento `.repo-harness/memory-bk/`; reutiliza RH-W-0050 sin reabrirla y mantiene separadas RH-W-0053, RH-W-0066 y RH-W-0068. Estado: `proposed`. Trabajo completado: registro y [diseno bilingue aprobado](rh-w-0069-design.md) con un Markdown por pausa o cierre, lectura con repositorio primero, escritura local primero, resultados Engram independientes, conflictos visibles, privacidad acotada, seguridad de rutas, sin borrado ni migracion automatica y sin Gentle AI o memoria incorporada en la mecanica. Trabajo restante: tras implementar RH-W-0051 y recibir autorizacion separada, planear, escribir RED, implementar contratos canonicos, sincronizar y verificar modos integrado y standalone. Adiciones: schema minimo, orden de autoridad, backup mas nuevo por defecto, resultados independientes y filtro sensible. Exclusiones: sin implementacion, skill, prueba, manifest, directorio, migracion, Git, red, base de datos, cifrado, daemon, API generica, borrado ni stores duplicados. Aplazamientos: implementacion, migracion y borrado esperan decisiones separadas. Rechazos: dependencia o migracion `.ld9/`, activacion de skills `wk`, memoria incorporada como autoridad, acoplar Gentle AI, fusion silenciosa y exito fabricado. Evidencia: decision humana completa; los contratos actuales no definen backup local, RH-W-0069 no existia y RH-W-0051 y RH-W-0050 poseen taxonomia y reconciliacion. Historial: registrada `proposed` el 2026-08-25 con diseno aprobado, recomendada despues de RH-W-0051 y antes de RH-W-0053. Siguiente condicion: soporte RH-W-0051 probado y autorizacion explicita de plan e implementacion.
