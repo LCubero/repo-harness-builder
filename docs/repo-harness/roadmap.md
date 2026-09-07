@@ -220,14 +220,12 @@ Resolved human decision: reject the separate mechanism. Remaining work is `none`
 
 ### Plan 12: RH-W-0060 repository state reporting design
 
-Readiness `plannable now`. Priority `P3`, dependencies none. Registered outside the approved order.
+Readiness `design approved; implementation planning unauthorized`. Priority `P3`, dependencies none. Registered outside the approved order.
 
-1. For finding `C12`, decide what a repository state review must list, and specify that a merged branch is settled by an ancestry check against both the local and the remote tip, never by name or date.
-2. For finding `C11`, specify a comparison against the committed blob before a staging classification reports a path as content-modified, because `core.autocrlf` is `true` in this clone while `.gitattributes` pins `eol=lf`.
-3. Decide, per clause, whether the obligation belongs in the generated session skills or only in this repository's own working agreements.
-4. Name the RED tests, one per clause.
+1. For finding `C11`, specify a conditional comparison of the applicable index blob or Git path-aware cleaned worktree view with the committed blob before reporting a tracked path as content-modified.
+2. Name exactly four future RED behaviors: EOL-only not content-modified, substantive remains modified, differing index blob modified, and insufficient evidence unknown.
 
-Human decision: generated contract or local agreement, decided separately for each of the two clauses.
+Resolved human decision: the owner approved the C11-only design. C12 is closed with no generated residue because branch enumeration belongs only to an explicitly requested branch review; existing session-start branch and upstream reporting remains unchanged. Implementation planning and implementation require separate authorization.
 
 ### Historical Plan 13: RH-W-0062 offline distributed-copy identity
 
@@ -506,7 +504,7 @@ Fourteen cross-plan relationships are declared here so no plan silently assumes 
 
 10. Plan 22, Plan 23, and Plan 24 all write into `.repo-harness/rules/working-agreements.md`, so none of them may be implemented concurrently and Plan 22 goes first, because completing RH-W-0073 is what lifts the no-rulebook-bytes constraint on the other two. After Plan 22 that file sits near 499 of 700 proxy tokens, leaving roughly 150 words for Plan 23 and Plan 24 together. That is workable but not generous; a later unit needing more sheds detail rather than raising the budget. Plan 24 and Plan 23 are additionally two halves of the same principle and must not be merged. Plan 23 governs what the harness may do after the consumer has answered, where a denial is never available. Plan 24 governs whether the harness should be asking at all, and what it owes the consumer when it does. Both land in `.repo-harness/rules/working-agreements.md`, so they must not be implemented concurrently, and neither may add rulebook bytes while RH-W-0073 is open.
 11. Historical Plan 28 coordinated completed RH-W-0025 and RH-W-0051 as evidence and pending Plans 4 and 5 for recovery and reinstall consequences without reopening or merging them. Its completed implementation serialized shared files while preserving every neighboring owner.
-12. Historical Plan 28 and Plan 12 coordinated semantically around generated daily-contract files. RH-W-0060 retains branch-listing and committed-blob comparison ownership; completed RH-W-0079 absorbed neither behavior.
+12. Historical Plan 28 and Plan 12 coordinated semantically around generated daily-contract files. RH-W-0060 retains only committed-blob comparison ownership; C12 branch listing is closed with no generated residue, and completed RH-W-0079 absorbed neither behavior.
 13. Plan 29 and Plan 30 remain separate. Plan 29 owns only ephemeral interaction and cannot group or replace authority. Plan 30 owns host-local human-facing changelog date derivation. Plan 18 retains changelog disposition, while Plan 2A retains machine-oriented UTC backup identity and ordering; neither chronology controls the other.
 14. Plan 31 and Plan 18 both edit generated session-stop. Plan 31 owns only the prohibition against generated AI-attribution trailers at commit creation; Plan 18 retains closure ordering, changelog disposition, Git-route regression hardening, and unrelated-skill activation. They must not be implemented concurrently and neither absorbs the other.
 
@@ -1011,18 +1009,18 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Field | Value |
 |---|---|
 | Origin | Extracted from the `RH-W-0059` design review on 2026-08-22. Two findings of the `RH-W-0056` external harness review are real here but are not transport, and they were travelling on a `P1` unit's urgency. |
-| Priority | P3: neither loses work nor produces a wrong result. Both make a repository state report incomplete or misleading in a way a reader cannot detect from the report itself. |
+| Priority | P3: C11 can make tracked-content classification misleading when normalization explains the observed bytes. |
 | Dependencies | none |
 | Status | proposed |
-| Completed work | Verified both against this repository rather than importing them. `core.autocrlf` is `true` in this clone while `.gitattributes` pins `eol=lf` for every byte-compared generated path, so the configuration that fakes a content change is present and active here, not hypothetical. The generated session-start execution step 3 inspects branch, worktree, index, upstream, remotes, and each upstream remote URL, host, and scheme, and lists no branches. |
-| Remaining work | Design and then implement test-first. Finding `C12`: a repository state review lists branches, and what settles whether a merged branch can be deleted is an ancestry check against both the local and the remote tip, never the branch name or its date. Finding `C11`: before a staging classification reports a path as content-modified, compare it against the committed blob, because a line-ending normalization under this configuration reports one spurious modification per affected file. Decide for each whether it belongs in the generated session skills or only in this repository's own working agreements. |
-| Additions | Branch coverage in the generated repository state review, and a committed-blob comparison before reporting a content change in the staging classification. |
+| Completed work | Verified C11 against this repository rather than importing it. `core.autocrlf` is `true` in this clone while `.gitattributes` pins `eol=lf` for every byte-compared generated path, so the configuration that can fake a content change is present here. Wrote the bilingual [design](rh-w-0060-design.md), reduced it to C11, and recorded owner approval. Closed C12 with no generated residue because branch enumeration belongs only to an explicitly requested branch review; existing session-start branch and upstream reporting remains unchanged. |
+| Remaining work | Obtain separate authorization before implementation planning or implementation. No implementation plan exists or is authorized. |
+| Additions | A conditional committed-blob comparison before reporting a tracked path as content-modified in generated session-stop. |
 | Exclusions | No branch deletion, no automatic cleanup, no change to the transport contract that `RH-W-0059` owns, no change to the `.gitattributes` derivation that `RH-W-0029` owns, and no change to the conflict detection that `RH-W-0042` owns. |
 | Deferrals | none |
 | Rejections | Rejected keeping these inside `RH-W-0059`. A `P1` transport defect and two `P3` reporting gaps do not share a delivery boundary, and bundling them would have let the slower work set the pace of the urgent fix. |
-| Evidence | Verified: `core.autocrlf` is `true` locally and `.gitattributes` pins `eol=lf`, so the `C11` configuration is present. Verified: generated session-start step 3 enumerates six inspection targets and branches are not among them. Verified: `RH-W-0029` derives the attribute rules and `RH-W-0042` fixed the conflict-detection half, so only the reporting half of `C11` remains. Human decision: whether either clause belongs in the generated contract or only in this repository's own agreements. |
-| Decision history | 2026-08-22: registered as proposed, extracted from the `RH-W-0059` design review that cut that unit from eight clauses to four. The same review withdrew finding `C10`, the bare local date, as a verified non-defect here and it is deliberately not carried into this unit. Registered outside the owner-approved 2026-08-21 execution order; its scheduling remains an owner decision. |
-| Next advancement condition | Advance after a written design decides, for each of the two clauses, where the obligation lives, what a state review must list, and what evidence settles a content change, with focused tests that fail before implementation. |
+| Evidence | Verified: `core.autocrlf` is `true` locally and `.gitattributes` pins `eol=lf`, so the `C11` configuration is present. Verified: `RH-W-0029` derives the attribute rules and `RH-W-0042` fixed the conflict-detection half, so only the reporting half of C11 remains. Human decisions: C12 is closed with no generated residue, and the owner approved the C11-only design. |
+| Decision history | 2026-08-22: registered as proposed, extracted from the `RH-W-0059` design review that cut that unit from eight clauses to four. The same review withdrew finding `C10`, the bare local date, as a verified non-defect here and it is deliberately not carried into this unit. Registered outside the owner-approved 2026-08-21 execution order; its scheduling remains an owner decision. 2026-09-07: the owner authorized writing the minimal bilingual design without approval, implementation planning, implementation, or lifecycle advancement; the owner then reduced it to C11 only, closed C12 with no generated residue, and explicitly approved the reduced design with `dale`. |
+| Next advancement condition | Advance only after separate owner authorization for implementation planning or implementation. |
 
 ### RH-W-0059
 | Field | Value |
