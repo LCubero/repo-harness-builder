@@ -39,6 +39,7 @@
 | [rh-w-0011-results.md](rh-w-0011-results.md) | Canonical completed reconciliation result, five-finding dispositions, and owner-accepted lifecycle closure |
 | [rh-w-0054-design.md](rh-w-0054-design.md) | Completed owner-approved stateless correction authority design; historical design body retained |
 | [rh-w-0054-implementation-plan.md](rh-w-0054-implementation-plan.md) | Completed implementation plan for stateless correction authority transport; historical task instructions retained |
+| [rh-w-0055-design.md](rh-w-0055-design.md) | Owner-approved proposed installation and onboarding design; implementation planning and implementation remain unauthorized |
 | [rh-w-0059-design.md](rh-w-0059-design.md) | Completed owner-approved non-interactive transport design; delivered test-first with historical design body retained |
 | [rh-w-0057-design.md](rh-w-0057-design.md) | Completed owner-approved canonical command and wrapper coverage design; historical design body retained |
 | [rh-w-0013-design.md](rh-w-0013-design.md) | Canonical minimal design for removing two runtime context-budget blockers |

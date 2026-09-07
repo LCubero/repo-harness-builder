@@ -37,6 +37,7 @@
 | [Resultados RH-W-0011](rh-w-0011-results.md) | Par completo del resultado canonico completado, las disposiciones de cinco hallazgos y el cierre aceptado por el propietario |
 | [Diseno RH-W-0054](rh-w-0054-design.md) | Diseno completado de autoridad de correccion sin estado aprobado por el propietario; se conserva el cuerpo historico |
 | [Plan de implementacion RH-W-0054](../../repo-harness/rh-w-0054-implementation-plan.md) | Plan de implementacion completado en ingles; se conservan las instrucciones historicas |
+| [Diseño RH-W-0055](rh-w-0055-design.md) | Diseño propuesto de instalación e incorporación aprobado por el propietario; planificación e implementación siguen sin autorización |
 | [Diseno RH-W-0059](rh-w-0059-design.md) | Diseno completado de transporte no interactivo aprobado por el propietario; entregado con pruebas primero y con el cuerpo historico conservado |
 | [Diseno RH-W-0057](rh-w-0057-design.md) | Diseno completado de comandos canonicos y cobertura de wrappers; se conserva el cuerpo historico |
 | [Diseno RH-W-0013](rh-w-0013-design.md) | Par humano completo del diseno minimo para retirar dos bloqueos de presupuesto en ejecucion |

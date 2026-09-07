@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-06
 
+- Reconciled the proposed bilingual RH-W-0055 installation and onboarding design to remain artifact-name agnostic through `ARTIFACT_ROOT`, removing future archive naming and publication-design dependencies. By separate owner authorization, closed RH-W-0062 as `completed` with no residue: installed manifest freshness and an independently retained digest exhaust the useful evidence, while embedded identity cannot authenticate its own payload. RH-W-0055 remains `proposed` and unapproved; no implementation, publication, runtime, source, test, or delivery change occurred.
+
 - Recorded the owner's technical approval of the bilingual RH-W-0022 minimal declared-documentation-relationship design. The design selects one preserved technical owner, exact three-field edges, two bounded relationship kinds, exact read-only checker failure output, human-document preservation, and separate RH-W-0065 coordination. RH-W-0022 remains `proposed`; implementation planning, implementation, and delivery remain unauthorized.
 
 - Recorded the owner's approval of the bilingual RH-W-0044 human-owned document suggestion design after the technical approval decision. The design bounds comparison to identifiable rendered contract units, excludes project-owned chronology and lifecycle facts, requires exact per-suggestion evidence and one-at-a-time digest-bound acceptance, and defines a narrow reviewable intentional-divergence declaration. RH-W-0044 remains `proposed`; implementation planning, implementation, Git delivery, and publication remain unauthorized.

@@ -44,11 +44,10 @@ Siguen consentimiento y comparacion, sin cambios:
 Onboarding y el residuo restante cierran la ruta:
 
 12. Continuar con `RH-W-0055`.
-13. Luego `RH-W-0062`.
-14. Continuar con `RH-W-0040`.
-15. Luego `RH-W-0060`.
-16. Luego `RH-W-0065`.
-17. Luego `RH-W-0066`.
+13. Continuar con `RH-W-0040`.
+14. Luego `RH-W-0060`.
+15. Luego `RH-W-0065`.
+16. Luego `RH-W-0066`.
 
 Los 5 registros aplazados conservan sus condiciones. `RH-W-0018` participa solo en el diseno conjunto con RH-W-0046 y conserva su condicion de avance. Los otros registros aplazados sin agendar son `RH-W-0014`, `RH-W-0015`, `RH-W-0026` y `RH-W-0063`.
 
@@ -201,16 +200,16 @@ Decisiones técnicas resueltas: aristas JSON exactas de tres campos en `.repo-ha
 
 ### Plan 9: diseno de instalacion y onboarding RH-W-0055
 
-Preparacion `plannable now`. Prioridad `P2`. Siguiente artefacto: un diseno de onboarding y su par en espanol.
+Preparación `diseño aprobado por el propietario; planificación de implementación sin autorización`. Prioridad `P2`. El propietario aprobó el [diseño bilingüe reducido](rh-w-0055-design.md); RH-W-0055 sigue `proposed` y no se autoriza plan ni implementación.
 
 1. Nombrar las fuentes de instalacion soportadas y los prerrequisitos.
 2. Escribir los comandos exactos de copiar y pegar por runtime para `claude-code`, `opencode` y `pi`.
-3. Definir el contrato futuro de nombrado del artefacto de release, sin afirmar que ya existe.
+3. Mantener la selección independiente del nombre mediante `ARTIFACT_ROOT`.
 4. Definir la verificacion posterior a la instalacion y los limites offline y de fallo.
 5. Enlazar la instalacion con la invocacion del builder y el uso diario de inicio y cierre de sesion, en una sola ruta en vez de fragmentos dispersos.
-6. Registrar si el diseno encuentra una identidad offline viable, porque RH-W-0062 se resuelve contra esa respuesta.
+6. Registrar la conclusión acotada sobre identidad offline sin agregar un diseño de publicación.
 
-Decisiones humanas: el patron futuro de nombrado del artefacto y la forma de la URL.
+Decisión humana resuelta: el propietario aprobó el diseño bilingüe reducido. El diseño de publicación y toda fase posterior quedan fuera de esta autoridad.
 
 ### Plan 10: diseno de registro de violaciones RH-W-0040
 
@@ -235,11 +234,11 @@ Preparacion `plannable now`. Prioridad `P3`, sin dependencias. Registrado fuera 
 
 Decision humana: contrato generado o acuerdo local, decidido por separado para cada una de las dos clausulas.
 
-### Plan 13: identidad de copia distribuida offline RH-W-0062
+### Plan histórico 13: identidad de copia distribuida offline RH-W-0062
 
-Preparacion `plannable after RH-W-0055`. Prioridad `P2`. No se produce artefacto separado antes de que ese diseno responda si existe una identidad offline viable mas alla de la frescura del manifiesto y los digests de release publicados. Si no existe, el resultado honesto es cerrar esta unidad como sin residuo en vez de disenar alrededor de ella.
+Preparación `completed without artifact`. Prioridad `P2`. RH-W-0055 aportó la evidencia acotada solicitada: la frescura del manifiesto y un digest conservado independientemente agotan la evidencia útil, mientras una identidad incluida con el payload no puede autenticarse a sí misma. El propietario autorizó el cierre sin residuo en vez de diseñar alrededor de un resto vacío.
 
-Decision humana: si la identidad offline aporta evidencia suficiente para justificar un diseno.
+Decisión humana resuelta: cerrar sin residuo; no se justifica diseño de identidad ni publicación.
 
 ### Plan 14: diseno de evidencia de investigacion y referencias durables RH-W-0065
 
@@ -490,11 +489,11 @@ Completado bajo autorizacion explicita y separada de implementacion del propieta
 
 ### Revision de coherencia de los planes
 
-Proyeccion vigente revisada hasta el 2026-09-05 sobre 24 encabezados de planes no terminales que cubren 25 de los 32 registros no terminales, incluidos los dos del Plan 6, mas 7 planes completados conservados como evidencia historica. Los 88 registros comprenden 56 completados, 27 propuestos y 5 aplazados. Los Planes historicos 28 y 31 no autorizan implementacion ni release vigente. No se aprueba fusion de ciclos y cobertura de planes no significa preparacion para implementar.
+Proyeccion vigente revisada hasta el 2026-09-05 sobre 24 encabezados de planes no terminales que cubren 24 de los 31 registros no terminales, incluidos los dos del Plan 6, mas 8 planes completados conservados como evidencia historica. Los 88 registros comprenden 57 completados, 26 propuestos y 5 aplazados. Los Planes historicos 28 y 31 no autorizan implementacion ni release vigente. No se aprueba fusion de ciclos y cobertura de planes no significa preparacion para implementar.
 
 Recomendación consultiva, no cambio de calendario: mantener pendiente la implementación RH-W-0074 hasta que se autorice por separado y reconciliar el residuo RH-W-0076 con la investigación de contexto RH-W-0078 antes de comprimir. La secuencia aprobada sigue RH-W-0069, RH-W-0053, RH-W-0048 y RH-W-0052, sujeta a cada condición de avance. Las entregas parciales de RH-W-0071, RH-W-0072, RH-W-0076 y RH-W-0086 no completan sus registros. RH-W-0070 es guía operativa aprobada, no motivo para construir un monitor; descubribilidad desconocida de RH-W-0072 no justifica inventar prevención.
 
-La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085 y RH-W-0086 no tienen plan de accion. Cuatro aplazados aparecen en la lista no planificable; RH-W-0018 participa solo en el diseno conjunto del Plan 6. Se conservan el par de diseno RH-W-0046/RH-W-0018 y los cuatro pares de coordinacion RH-W-0055/RH-W-0062, RH-W-0069/RH-W-0068, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. No se aprueba fusion ni implementacion nueva.
+La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085 y RH-W-0086 no tienen plan de accion. Cuatro aplazados aparecen en la lista no planificable; RH-W-0018 participa solo en el diseno conjunto del Plan 6. Se conservan el par de diseno RH-W-0046/RH-W-0018 y los tres pares de coordinacion vigentes RH-W-0069/RH-W-0068, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. No se aprueba fusion ni implementacion nueva.
 
 Aqui se declaran catorce relaciones entre planes para que ninguno suponga en silencio el resultado de otro. Ninguna fusiona un ciclo de vida ni cambia estado.
 
@@ -725,7 +724,7 @@ Origen: item 8 de la lista de pendientes del traspaso de arranque del 2026-08-12
 
 ### RH-W-0062
 
-Origen: item 7 y brecha abierta del traspaso de arranque del 2026-08-12, recuperados el 2026-08-23 al archivar ese documento. Prioridad: `P2`, una copia distribuida offline puede carecer de una identidad confiable que la vincule con un artefacto de release; la completada `RH-W-0010` ya informa la frescura del manifiesto instalado frente al builder en ejecucion. Dependencias: coordinar con `RH-W-0055`, que posee el nombre estable futuro de los assets de release y el onboarding de instalacion; reutilizar `RH-W-0010` sin duplicar su senal de frescura. Estado: `proposed`. Trabajo completado: se recupero la brecha original y se estrecho contra el comportamiento actual. `RH-W-0010` ya informa `fresh`, `stale`, `ahead`, `absent` o `unverifiable` al comparar el manifiesto instalado con el builder en ejecucion. El residuo distinto es offline: si los bytes distribuidos pueden identificar el artefacto de release del que provienen antes de disponer de un builder confiable. Trabajo restante: disenar solo la identidad offline de la copia distribuida, como se verifica sin red y como la nombra el onboarding, coordinada con `RH-W-0055`. Adiciones: un contrato de identidad offline de release o copia distribuida, solo si el diseno demuestra que aporta evidencia adicional a la version del generador del manifiesto y al digest publicado. Exclusiones: sin duplicar la frescura del manifiesto instalado, sin capacidad nueva del checker generado, modificacion o inspeccion de consumidores, dependencia de red, telemetria, publicacion ni accion de release. Aplazamientos: ninguno. Rechazos: se rechazo la premisa obsoleta de que no existe ninguna senal de frescura y se rechazo extender el checker generado; `RH-W-0010` posee la frescura instalada frente al builder en ejecucion. Evidencia: `package_freshness()` y `check()` informan el generador instalado frente al builder en ejecucion; la cronologia de releases registra assets y digests, mientras `RH-W-0055` registra que no existe un contrato estable futuro de nombre y onboarding. Decision humana: si la identidad offline aporta evidencia suficiente para justificar un diseno. Historial: registrada como `proposed` el 2026-08-23 al archivar el traspaso; ese mismo dia se estrecho a identidad offline de copia distribuida o release, coordinada con `RH-W-0055`, sin avanzar ni implementar ninguna unidad. Siguiente condicion: avanzar solo si el diseno de `RH-W-0055` nombra una identidad offline viable que no este ya cubierta por la frescura del manifiesto o un digest de release existente; de lo contrario cerrar esta unidad sin residuo.
+Origen: item 7 y brecha abierta del traspaso de arranque del 2026-08-12, recuperados el 2026-08-23 al archivar ese documento. Prioridad: `P2`. Dependencias: resueltas mediante la evidencia del diseño RH-W-0055 y RH-W-0010 completada; no queda dependencia de nombrado. Estado: `completed`. Trabajo completado: RH-W-0010 ya informa la frescura del manifiesto instalado frente al builder en ejecución. El diseño RH-W-0055 estableció que un digest conservado independientemente puede autenticar bytes locales, mientras una identidad incluida con esos mismos bytes no puede autenticarse a sí misma. El propietario autorizó cerrar sin residuo. Trabajo restante: `none`. Adiciones: ninguna; no queda contrato útil más allá de frescura y digest independiente. Exclusiones: sin nueva capacidad del checker, inspección de consumidores, red, telemetría, implementación, publicación ni acción de release. Aplazamientos: ninguno. Rechazos: se rechazaron la premisa obsoleta de ausencia de frescura y un diseño de identidad sin evidencia adicional. Evidencia: hecho verificado, `package_freshness()` y `check()` informan el generador instalado frente al builder en ejecución; hecho verificado, la cronología de releases conserva evidencia de digest; inferencia respaldada aceptada para cierre, una identidad autocontenida no autentica el payload que la porta. Una identidad firmada y verificada independientemente sería evidencia y trabajo nuevos. Historial: registrada y acotada el 2026-08-23; cerrada sin residuo por autorización del propietario el 2026-09-06, sin aprobar RH-W-0055 ni autorizar implementación o publicación. Siguiente condición: `none`.
 
 ### RH-W-0061
 
@@ -756,9 +755,9 @@ Origen: pedido del propietario el 2026-08-22 de revisar su propio harness extern
 
 ### RH-W-0055
 
-Actualizacion vigente del 2026-08-23: existe un asset instalable, pero no existe un contrato estable futuro de nombre y onboarding. Coordinar con `RH-W-0062` solo si su identidad offline sobrevive al diseno. La unidad sigue `proposed` sin publicacion ni implementacion autorizada.
+Actualización vigente del 2026-09-06: el propietario aprobó el [diseño bilingüe reducido](rh-w-0055-design.md). Selecciona una ruta local independiente del nombre mediante `ARTIFACT_ROOT`, copia aditiva a destinos exactos por runtime y enlaces hacia los propietarios actuales del builder, checker y sesiones. RH-W-0062 cerró sin residuo con autorización separada. La unidad sigue `proposed`; planificación de implementación, implementación, publicación y red no están autorizadas.
 
-Origen: nota del propietario que solicita instalacion mediante copiar y pegar para Claude Code, OpenCode y Pi, enlazada con la ejecucion del builder y el uso diario. Prioridad: `P2`, existe un paquete de release, pero no una ruta unica desde el artefacto hasta la operacion diaria. Dependencias: RH-W-0050 para clasificar afirmaciones del onboarding. El paquete publicado ya aporta contenido estable, de modo que el contrato para nombrar el asset de release es una adicion que esta unidad posee y no una dependencia que espera. Estado: `proposed`. Trabajo completado: se agruparon instalacion, nombre futuro del asset y recorrido instalacion-builder-sesiones en una unidad acotada. Trabajo restante: disenar comandos por runtime, prerrequisitos, nombre futuro del asset, verificacion, referencias de actualizacion y enlaces hacia builder, session-start y session-stop. Adiciones: una ruta concisa por runtime y un contrato estable para nombrar assets futuros. Exclusiones: sin publicar releases, red, renombrar paquetes, cambiar comportamiento generado ni afirmar que ya existe un asset futuro. Aplazamientos: nombre y URLs exactos quedan pendientes de un diseno de release aprobado. Rechazos: se rechazo dispersar snippets o terminar la guia al extraer el paquete. Evidencia: hecho verificado, los runtimes soportados incluyen Claude Code, OpenCode y Pi; inferencia respaldada, el nombre del asset y la instalacion deben disenarse juntos; desconocido, el nombre y patron de URL futuros. Historial: registrada como propuesta el 2026-08-21, sin aprobar release ni implementacion. Siguiente condicion: diseno escrito con fuentes, comandos exactos, nombre futuro, limites offline y de fallo, verificacion y enlaces hasta el uso diario.
+Origen: nota del propietario que solicita instalacion mediante copiar y pegar para Claude Code, OpenCode y Pi, enlazada con la ejecucion del builder y el uso diario. Prioridad: `P2`, existe un paquete de release, pero no una ruta unica desde el artefacto hasta la operacion diaria. Dependencias: RH-W-0050 para clasificar afirmaciones del onboarding; RH-W-0062 ya cerro sin residuo. Estado: `proposed`. Trabajo completado: se agruparon instalacion y recorrido instalacion-builder-sesiones en una unidad acotada y el propietario aprobó el diseño bilingüe reducido, independiente del nombre mediante `ARTIFACT_ROOT`. Trabajo restante: planificación de implementación e implementación siguen sin autorización. Adiciones: una ruta concisa independiente del nombre por runtime. Exclusiones: sin nombrado de archivos, publicacion, red, renombres, cambios generados, planes ni implementacion. Aplazamientos: publicacion, nombres y URLs quedan fuera del diseño. Rechazos: se rechazo dispersar snippets o terminar la guia al extraer el paquete. Evidencia: hecho verificado, los runtimes soportados incluyen Claude Code, OpenCode y Pi; inferencia respaldada, una identidad incluida no autentica su propio payload y solo un digest retenido por separado aporta evidencia offline. Historial: registrada como propuesta el 2026-08-21; diseño mínimo bilingüe autorizado y luego aprobado explícitamente por el propietario el 2026-09-06. Siguiente condición: autorización separada del propietario para planificación de implementación; aprobar el diseño no autoriza planificación ni implementación.
 
 ### RH-W-0054
 

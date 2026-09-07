@@ -24,7 +24,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33, and its separately authorized implementation reduced it to 32. Registering owner-prioritized `RH-W-0088` as `proposed` raised it to 33. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
-Completion of RH-W-0088 subsequently returned the portfolio to 32 non-terminal records. The chronology above is historical, not a claim that 33 remain.
+Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31. The chronology above is historical.
 
 The preventive design precedes the local-state architecture:
 
@@ -43,14 +43,13 @@ Consent and comparison follow, unchanged:
 10. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
 11. Continue with `RH-W-0022`.
 
-Onboarding and the remaining residue close the path:
+Onboarding closes the approved path:
 
 12. Continue with `RH-W-0055`.
-13. Then `RH-W-0062`, which resolves against the `RH-W-0055` design.
-14. Continue with `RH-W-0040`.
-15. Then `RH-W-0060`.
-16. Then `RH-W-0065`.
-17. Then `RH-W-0066`.
+13. Continue with `RH-W-0040`.
+14. Then `RH-W-0060`.
+15. Then `RH-W-0065`.
+16. Then `RH-W-0066`.
 
 The 5 deferred records keep their existing conditions. `RH-W-0018` participates only in joint design with RH-W-0046 and retains its own deferred advancement condition. The other unscheduled deferred records are `RH-W-0014`, `RH-W-0015`, `RH-W-0026`, and `RH-W-0063`.
 
@@ -203,16 +202,16 @@ Resolved technical decisions: exact three-field JSON edges in one preserved `.re
 
 ### Plan 9: RH-W-0055 installation and onboarding design
 
-Readiness `plannable now`. Priority `P2`. Next artifact: an onboarding design and its Spanish peer.
+Readiness `design owner-approved; implementation planning unauthorized`. Priority `P2`. The owner approved the reduced bilingual [onboarding design](rh-w-0055-design.md); RH-W-0055 remains `proposed`, and no implementation plan or implementation is authorized.
 
 1. Name the supported installation sources and prerequisites.
 2. Write the exact per-runtime copy/paste commands for `claude-code`, `opencode`, and `pi`.
-3. Define the future release asset naming contract, without claiming a future asset already exists.
+3. Keep artifact selection name-agnostic through `ARTIFACT_ROOT`.
 4. Define verification after installation, plus offline and failure boundaries.
 5. Link installation through builder invocation to daily session-start and session-stop usage, in one path rather than scattered snippets.
-6. Record whether the design finds a viable offline identity, because RH-W-0062 resolves against this answer.
+6. Record the bounded offline-identity conclusion without adding a publication design.
 
-Human decisions: the future asset naming pattern and URL shape.
+Human decision resolved: the owner approved the reduced bilingual design. Publication design and every later phase remain outside this authority.
 
 ### Plan 10: RH-W-0040 violation-record design
 
@@ -237,11 +236,11 @@ Readiness `plannable now`. Priority `P3`, dependencies none. Registered outside 
 
 Human decision: generated contract or local agreement, decided separately for each of the two clauses.
 
-### Plan 13: RH-W-0062 offline distributed-copy identity
+### Historical Plan 13: RH-W-0062 offline distributed-copy identity
 
-Readiness `plannable after RH-W-0055`. Priority `P2`. No separate artifact is produced before that design answers whether a viable offline identity exists beyond manifest freshness and published release digests. If it does not, the honest outcome is to close this unit as no residue rather than to design around it.
+Readiness `completed without artifact`. Priority `P2`. RH-W-0055 supplied the bounded evidence requested here: manifest freshness plus an independently retained digest exhaust the useful evidence, while identity embedded with the payload cannot authenticate itself. The owner authorized no-residue closure rather than a design around an empty remainder.
 
-Human decision: whether offline identity adds enough evidence to justify a design at all.
+Resolved human decision: close with no residue; no identity or publication design is justified.
 
 ### Plan 14: RH-W-0065 research evidence and durable references design
 
@@ -492,9 +491,9 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reviewed through 2026-09-05 across 24 non-terminal plan headings covering 25 of the 32 non-terminal records, including the two records covered by Plan 6, plus 7 completed plans retained as historical execution evidence. The 88 lifecycle records comprise 56 completed, 27 proposed, and 5 deferred records. Historical Plans 28 and 31 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
+Current projection reviewed through 2026-09-05 across 24 non-terminal plan headings covering 24 of the 31 non-terminal records, including the two records covered by Plan 6, plus 8 completed plans retained as historical execution evidence. The 88 lifecycle records comprise 57 completed, 26 proposed, and 5 deferred records. Historical Plans 28 and 31 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
 
-Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Plan 6 joint design. The portfolio retains one joint-design pair, RH-W-0046/RH-W-0018, and four coordination pairs with separate lifecycles: RH-W-0055/RH-W-0062, RH-W-0069/RH-W-0068, RH-W-0065/RH-W-0022, and RH-W-0066/RH-W-0044. No merger or new implementation authority follows.
+Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Plan 6 joint design. The portfolio retains one joint-design pair, RH-W-0046/RH-W-0018, and three current coordination pairs with separate lifecycles: RH-W-0069/RH-W-0068, RH-W-0065/RH-W-0022, and RH-W-0066/RH-W-0044. No merger or new implementation authority follows.
 
 Consultative recommendation, not a schedule change: keep RH-W-0074 implementation pending until separately authorized, and reconcile RH-W-0076's residual scope with RH-W-0078's loaded-context research before compression. The approved remaining implementation sequence is still RH-W-0069, RH-W-0053, RH-W-0048, then RH-W-0052, subject to each owner's advancement condition. Partial delivery under RH-W-0071, RH-W-0072, RH-W-0076, and RH-W-0086 does not complete their full records. RH-W-0070 is approved operating guidance, not a reason to build a monitor; unknown RH-W-0072 discoverability is not a reason to invent preventive work.
 
@@ -986,17 +985,17 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 |---|---|
 | Origin | Item 7 and the open gap of the 2026-08-12 bootstrap handoff, recovered on 2026-08-23 while archiving that document. It was written before the split and never reached this roadmap. |
 | Priority | P2: an offline distributed builder copy can lack a trustworthy identity tying it to a release artifact. Installed manifest freshness against the builder currently running is already reported by completed `RH-W-0010`. |
-| Dependencies | Coordinate with `RH-W-0055`, which owns stable future release asset naming and installation onboarding. Reuse completed `RH-W-0010`; do not duplicate its installed-versus-running freshness signal. |
-| Status | proposed |
-| Completed work | Recovered the original gap without inspecting or naming a consumer, then narrowed it against current behavior. Completed `RH-W-0010` already reports `fresh`, `stale`, `ahead`, `absent`, or `unverifiable` by comparing the installed manifest with the builder currently running. The distinct residue is offline: whether distributed bytes can identify the release artifact they came from before a trusted builder is available. |
-| Remaining work | Design only the offline distributed-copy identity: what immutable release identity the package carries, how a user verifies it without network access, and how onboarding names it. Coordinate the identity and naming contract with `RH-W-0055`. |
-| Additions | One offline release or distributed-copy identity contract, if design proves it adds evidence beyond the existing manifest generator version and published digest. |
+| Dependencies | Resolved through the RH-W-0055 design evidence and completed `RH-W-0010`; no naming dependency remains. |
+| Status | completed |
+| Completed work | Recovered the original gap and narrowed it against current behavior. Completed `RH-W-0010` already reports installed-manifest freshness against the running builder. The RH-W-0055 design established that an independently retained digest can authenticate local bytes, while identity embedded with those same bytes cannot authenticate itself. The owner authorized closure with no residue. |
+| Remaining work | none |
+| Additions | none; no useful identity contract remains beyond manifest freshness and independently retained digest evidence. |
 | Exclusions | No duplicate installed-manifest freshness signal, generated-checker freshness feature, consumer modification or inspection, network dependency, telemetry, publication, or release action. |
 | Deferrals | none |
 | Rejections | Rejected the stale premise that no freshness signal exists and rejected extending the generated checker: completed `RH-W-0010` owns installed freshness against the running builder. |
-| Evidence | Verified: `package_freshness()` and builder `check()` report the installed manifest generator against the running builder. Verified: the release chronology records package assets and digests, while `RH-W-0055` records that no stable future naming and onboarding contract exists. Human decision: whether offline identity adds enough evidence beyond those existing facts to justify design. |
-| Decision history | 2026-08-23: registered as proposed while archiving the bootstrap handoff. 2026-08-23: narrowed to offline distributed-copy or release identity after reconciling the original premise with completed `RH-W-0010`; coordination moved to `RH-W-0055`, without advancing or implementing either unit. |
-| Next advancement condition | Advance only with `RH-W-0055` design evidence that names a viable offline identity not already supplied by manifest freshness or an existing release digest; otherwise close this unit as no residue. |
+| Evidence | Verified: `package_freshness()` and builder `check()` report the installed manifest generator against the running builder. Verified: release chronology retains digest evidence. Supported inference accepted for closure: self-carried identity cannot authenticate the payload that carries it; an independently retained digest already supplies the useful offline comparison. A separately signed and independently verified identity would be new evidence and new work. |
+| Decision history | 2026-08-23: registered as proposed while archiving the bootstrap handoff, then narrowed against completed `RH-W-0010`. 2026-09-06: the owner authorized no-residue closure from the RH-W-0055 design conclusion, without approving RH-W-0055 or authorizing implementation or publication. |
+| Next advancement condition | none |
 
 ### RH-W-0061
 | Field | Value |
@@ -1105,17 +1104,17 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 |---|---|
 | Origin | Owner note requesting copy/paste installation guidance for Claude Code, OpenCode, and Pi, connected to builder invocation and daily session use. |
 | Priority | P2: installation is possible from a release package, but the repository does not provide one coherent consumer path from artifact selection through daily operation. |
-| Dependencies | Completed `RH-W-0050` for evidence classification. Coordinate with narrowed `RH-W-0062` if offline distributed-copy identity survives design. A release asset exists, but no stable future naming or onboarding contract exists. |
+| Dependencies | Completed `RH-W-0050` for evidence classification. RH-W-0062 is completed with no residue. |
 | Status | proposed |
-| Completed work | Grouped copy/paste installation, future release asset naming, and install-to-builder-to-session guidance into one bounded lifecycle unit. |
-| Remaining work | Design per-runtime copy/paste commands, supported prerequisites, future release asset naming, verification, upgrade references, and links from installation to builder execution and daily session-start or session-stop usage. |
-| Additions | One concise onboarding path for each supported runtime and one stable future release asset naming contract. |
+| Completed work | Grouped copy/paste installation and install-to-builder-to-session guidance into one bounded lifecycle unit. The owner approved the reduced bilingual [design](rh-w-0055-design.md): one shared artifact-name-agnostic local path through `ARTIFACT_ROOT`, exact runtime destinations, additive copy safety, existing builder/checker/daily-use links, and offline/failure boundaries. |
+| Remaining work | Implementation planning and implementation remain unauthorized. |
+| Additions | One concise artifact-name-agnostic onboarding path for each supported runtime. |
 | Exclusions | No release publication, network action, package rename, generated behavior, or claim that a future asset already exists. |
-| Deferrals | Actual asset naming and URLs remain unresolved until a release design is approved. |
+| Deferrals | Publication, archive naming, and URLs remain outside this design. |
 | Rejections | Rejected scattering installation snippets across unrelated documents or documenting only package extraction without the operational next steps. |
-| Evidence | Verified: the supported runtime set includes Claude Code, OpenCode, and Pi, and the changelog records an existing installable release asset. Verified absence in current owners: no stable future asset naming or onboarding contract exists. Supported inference: naming and installation belong together because copy/paste commands need a stable artifact reference. Unknown: exact future asset name and URL pattern. |
-| Decision history | 2026-08-21: registered as proposed from the consolidated portfolio audit; no release or implementation was approved. |
-| Next advancement condition | Advance after a written onboarding design names supported installation sources, exact per-runtime commands, future asset naming, offline and failure boundaries, verification, and links through builder invocation to daily session usage. |
+| Evidence | Verified: the supported runtime set includes Claude Code, OpenCode, and Pi, and the source artifact exposes the required package and command roots. Supported inference: no embedded identifier can authenticate copied bytes independently; only a digest retained through a trusted separate channel adds offline evidence. A separately signed, independently verifiable identity would be new evidence. |
+| Decision history | 2026-08-21: registered as proposed from the consolidated portfolio audit; no release or implementation was approved. 2026-09-06: owner authorized creation of the minimal bilingual design. 2026-09-06: owner explicitly approved the reduced bilingual design; status remains `proposed`, and implementation planning, implementation, publication, and network access remain unauthorized. |
+| Next advancement condition | Advance only after separate owner authorization for implementation planning; design approval alone does not authorize planning or implementation. |
 
 ### RH-W-0054
 | Field | Value |
