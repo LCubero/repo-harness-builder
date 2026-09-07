@@ -24,7 +24,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33, and its separately authorized implementation reduced it to 32. Registering owner-prioritized `RH-W-0088` as `proposed` raised it to 33. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
-Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31. The chronology above is historical.
+Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31, and owner-authorized rejection of RH-W-0040 reduced it to 30. The chronology above is historical.
 
 The preventive design precedes the local-state architecture:
 
@@ -46,10 +46,9 @@ Consent and comparison follow, unchanged:
 Onboarding closes the approved path:
 
 12. Continue with `RH-W-0055`.
-13. Continue with `RH-W-0040`.
-14. Then `RH-W-0060`.
-15. Then `RH-W-0065`.
-16. Then `RH-W-0066`.
+13. Continue with `RH-W-0060`.
+14. Then `RH-W-0065`.
+15. Then `RH-W-0066`.
 
 The 5 deferred records keep their existing conditions. `RH-W-0018` participates only in joint design with RH-W-0046 and retains its own deferred advancement condition. The other unscheduled deferred records are `RH-W-0014`, `RH-W-0015`, `RH-W-0026`, and `RH-W-0063`.
 
@@ -213,17 +212,11 @@ Readiness `design owner-approved; implementation planning unauthorized`. Priorit
 
 Human decision resolved: the owner approved the reduced bilingual design. Publication design and every later phase remain outside this authority.
 
-### Plan 10: RH-W-0040 violation-record design
+### Historical Plan 10: RH-W-0040 violation-record design
 
-Readiness `plannable now` for the design and for storage, because completed RH-W-0051 reserved the violation-record namespace. Priority `P3`, prerequisite RH-W-0039 completed.
+Readiness `rejected without implementation`. Priority `P3`, prerequisite RH-W-0039 completed. The owner rejected the unapproved bilingual design and authorized no-residue closure. Existing Engram continuity already handles explicit human memory requests while repository contracts remain authoritative; no incident log, occurrence count, ranking, schema, or session-start feature is justified.
 
-1. Define what a violation record contains, given the measured evidence that the violated rule was already loaded in context every turn, so this unit is not a rule reader.
-2. Decide the authority and the writer, since detection cannot be claimed as automatic and an empty ledger never proves compliance.
-3. Decide the storage location inside the RH-W-0051 namespace.
-4. Define the ranking rule and the bounded session-start presentation that surfaces only top offenders.
-5. Name the RED tests, including one proving the full rulebook is not re-read at session start.
-
-Human decisions: who writes a violation record, and whether it is tracked in Git.
+Resolved human decision: reject the separate mechanism. Remaining work is `none`.
 
 ### Plan 12: RH-W-0060 repository state reporting design
 
@@ -491,7 +484,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reviewed through 2026-09-05 across 24 non-terminal plan headings covering 24 of the 31 non-terminal records, including the two records covered by Plan 6, plus 8 completed plans retained as historical execution evidence. The 88 lifecycle records comprise 57 completed, 26 proposed, and 5 deferred records. Historical Plans 28 and 31 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
+Current projection reviewed through 2026-09-07 across 23 non-terminal plan headings covering 23 of the 30 non-terminal records, including the two records covered by Plan 6, plus 9 terminal plans retained as historical evidence. The 88 lifecycle records comprise 57 completed, 25 proposed, 5 deferred, and 1 rejected record. Historical Plans 10, 28, and 31 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
 
 Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Plan 6 joint design. The portfolio retains one joint-design pair, RH-W-0046/RH-W-0018, and three current coordination pairs with separate lifecycles: RH-W-0069/RH-W-0068, RH-W-0065/RH-W-0022, and RH-W-0066/RH-W-0044. No merger or new implementation authority follows.
 
@@ -1359,17 +1352,17 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 |---|---|
 | Origin | Owner proposal after three rule violations in one session: surface the rules that are actually forgotten instead of the whole rulebook |
 | Priority | P3: it addresses only the residue left after RH-W-0039, and its evidence source is human-fed, so it cannot be trusted as a detector |
-| Dependencies | Completed `RH-W-0039`; the prerequisite is satisfied. Only design and advancement of the proven unmechanizable residue remain pending. |
-| Status | proposed |
+| Dependencies | Completed `RH-W-0039`; the prerequisite is satisfied. |
+| Status | rejected |
 | Completed work | Established the counter-evidence that bounds this unit. `REPO-HARNESS.md:22` is injected into agent context every turn and was present throughout the session in which it was violated three times, so surfacing rules earlier is proven insufficient on its own and this unit must not be scoped as a rule reader. |
-| Remaining work | Design what a violation record contains, where it lives, who writes it, and how session start consumes it without becoming another ignored wall of text. |
-| Additions | A bounded record of repeatedly violated unmechanizable rules and a session-start path that surfaces only the top offenders. |
+| Remaining work | none |
+| Additions | none |
 | Exclusions | No re-reading of the full rulebook at session start, no duplication of rules already enforced by a check, no automatic violation detection claim, and no new state machine or third authority. |
 | Deferrals | none |
-| Rejections | Rejected framing this as a pre-session rule reader, because the violated rule was already in context. Rejected presenting it as automatic detection: it can only record violations a human or a later check noticed, so an empty ledger never proves compliance. |
+| Rejections | Rejected the separate violation-record mechanism. Explicit human memory requests already use existing Engram continuity, repository contracts remain authoritative, and no evidence justifies an incident log, occurrence count, ranking, schema, or session-start feature. Also rejected a pre-session rule reader and automatic detection because the rule was already in context and an empty record never proves compliance. |
 | Evidence | In one session the claim-classification rule was violated three times while loaded: an inference about test coverage stated as fact, a corrected restatement that was also wrong, and a stale suite count introduced while correcting stale suite counts. A fourth instance was measured on 2026-08-20 and has a sharper shape than the first three. Reviewing the consumer plan, a narrow grep for five exact phrases returned nothing, and that null result was reported to the owner as the verified fact that the builder contract carries no evidence obligation at all. A broader grep then found the obligation in the same files, at `references/audit-and-interview.md:7`, `Report uncertainty and the exact missing evidence instead of guessing`. The rule was loaded throughout and was not skipped; it was misapplied, because an unvalidated probe was labeled `verified fact` rather than the weak single-source inference it was. The named discipline that would have caught it is a positive control: a null search result supports a negative claim only after the same search is shown to return a positive on a string known to be present. Recorded here because it is the same failure the run under review had committed about a root `LICENSE`, which makes it the clearest evidence yet that this residue is about how a claim is classified and not about which rules are visible. A fifth instance was measured on 2026-08-24 and it moves the residue past claim classification: the `RH-W-0058` visibility contract was loaded and the agent still rendered the `=` and `+` delimiter as three hyphens, twice in the same conversation, after the owner corrected it once. Two properties separate it from the earlier four. It is a formatting obligation rather than an evidence obligation, so the residue is not confined to how a claim is classified. And its cause is partly structural rather than attentional, because the syntax lives only in the three daily contracts, which is the placement defect `RH-W-0067` now owns; that unit removes the structural half and leaves this record only the attentional half. |
-| Decision history | 2026-08-18: registered `proposed` under issue #65 from an owner proposal, deliberately narrowed to the unmechanizable residue after the counter-evidence showed a rule reader would have prevented none of the observed failures. |
-| Next advancement condition | RH-W-0039 is completed and the prerequisite is satisfied. Retain `proposed` until a written design decides the violation schema, authority, storage location, writer, ranking rule, and bounded session-start presentation for the measured unmechanizable residue. |
+| Decision history | 2026-08-18: registered `proposed` under issue #65 from an owner proposal, deliberately narrowed to the unmechanizable residue after the counter-evidence showed a rule reader would have prevented none of the observed failures. 2026-09-07: the owner rejected the unapproved design and authorized no-residue closure because existing memory contracts already cover explicit remember requests. |
+| Next advancement condition | Reopen only if a later explicit owner decision supersedes this rejection with evidence of an operation the existing repository and Engram continuity contracts cannot satisfy. |
 
 ### RH-W-0039
 | Field | Value |

@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-06
 
+- Rejected `RH-W-0040` by owner authorization and closed it with no residue. Existing Engram continuity already handles explicit human memory requests while repository contracts remain authoritative, so no separate incident log, occurrence count, ranking, schema, session-start feature, implementation, or retained bilingual design is justified. Removed only the two unapproved design peers and their documentation-map entries; no product, source, test, runtime, skill, manifest, network, Git delivery, or memory operation occurred.
+
 - Reconciled the proposed bilingual RH-W-0055 installation and onboarding design to remain artifact-name agnostic through `ARTIFACT_ROOT`, removing future archive naming and publication-design dependencies. By separate owner authorization, closed RH-W-0062 as `completed` with no residue: installed manifest freshness and an independently retained digest exhaust the useful evidence, while embedded identity cannot authenticate its own payload. RH-W-0055 remains `proposed` and unapproved; no implementation, publication, runtime, source, test, or delivery change occurred.
 
 - Recorded the owner's technical approval of the bilingual RH-W-0022 minimal declared-documentation-relationship design. The design selects one preserved technical owner, exact three-field edges, two bounded relationship kinds, exact read-only checker failure output, human-document preservation, and separate RH-W-0065 coordination. RH-W-0022 remains `proposed`; implementation planning, implementation, and delivery remain unauthorized.

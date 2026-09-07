@@ -4,6 +4,8 @@
 
 ## 2026-09-06
 
+- Por autorización del propietario, se rechazó `RH-W-0040` y se cerró sin residuo. La continuidad Engram existente ya atiende solicitudes humanas explícitas de memoria mientras los contratos del repositorio conservan la autoridad, por lo que no se justifican registro de incidentes, conteo de ocurrencias, ranking, esquema, función de inicio de sesión, implementación ni diseño bilingüe retenido. Solo se eliminaron los dos diseños no aprobados y sus entradas del mapa documental; no hubo cambios de producto, fuente, pruebas, runtime, skill, manifiesto, red, entrega Git ni operación de memoria.
+
 - Se reconcilió el diseño bilingüe propuesto RH-W-0055 de instalación e incorporación para que sea independiente del nombre del artefacto mediante `ARTIFACT_ROOT`, retirando el nombrado futuro de archivos y las dependencias de diseño de publicación. Por autorización separada del propietario, RH-W-0062 cerró como `completed` sin residuo: la frescura del manifiesto instalado y un digest conservado independientemente agotan la evidencia útil, mientras una identidad incluida no puede autenticar su propio payload. RH-W-0055 permanece `proposed` y sin aprobar; no hubo cambios de implementación, publicación, runtime, fuente, pruebas ni entrega.
 
 - Se registró la aprobación técnica del propietario del diseño bilingüe mínimo RH-W-0022 de relaciones documentales declaradas. El diseño selecciona un propietario técnico preservado, aristas exactas de tres campos, dos relaciones acotadas, salida exacta de fallo del checker de solo lectura, preservación de documentos humanos y coordinación separada con RH-W-0065. RH-W-0022 permanece `proposed`; planificación, implementación y entrega siguen sin autorización.
