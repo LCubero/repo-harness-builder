@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-07
+
+- Completed `RH-W-0069` with owner-authorized, test-first native session continuity contracts. Generated session-stop now creates and verifies one exclusive structured Markdown backup before independent Engram work; session-start reads repository owners before the newest valid guarded backup and scoped Engram; the shared memory rule owns schema, privacy, authority, outcomes, and exclusions. Canonical and runtime projections were synchronized and verified without a manifest field, network action, Git delivery, or built-in runtime-memory dependency.
+
 ## 2026-09-06
 
 - Rejected `RH-W-0040` by owner authorization and closed it with no residue. Existing Engram continuity already handles explicit human memory requests while repository contracts remain authoritative, so no separate incident log, occurrence count, ranking, schema, session-start feature, implementation, or retained bilingual design is justified. Removed only the two unapproved design peers and their documentation-map entries; no product, source, test, runtime, skill, manifest, network, Git delivery, or memory operation occurred.

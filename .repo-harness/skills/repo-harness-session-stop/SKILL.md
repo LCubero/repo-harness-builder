@@ -23,7 +23,7 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 - Propose one concise `CHANGELOG.md` entry for meaningful completed work under the existing documentation approval. Avoid an entry for a trivial or no-op session.
 - Reconcile every changed `RH-W-####` record in `docs/repo-harness/roadmap.md`, the concise current-state projection, localized peers, and Engram topic `work/RH-W-####` in the same work unit.
 - Gentle AI and Engram are independent optional capabilities. Block only behavior required by the operation or repository policy.
-- Save significant decisions, discoveries, fixes, and a session summary to Engram when available. If unavailable or saving fails, surface the failure and never claim successful continuity; continue the repository handoff without inventing fallback storage.
+- Save significant decisions, discoveries, fixes, and a session summary to Engram when available. If unavailable or saving fails, surface the failure and never claim successful continuity.
 - Defer routing, review, receipts, and correction to an applicable enabled Gentle workflow; supply repository context and checks, not parallel reviewers, counters, receipts, or plans. Do not auto-enable methodologies or require disabled review. Repository policy owns commit, push, and PR; informational delivery guidance creates no gate. Never fabricate a native verdict or replace human authorization.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - Promote reusable knowledge only after verifying relevance, selecting its canonical repository owner, and obtaining human approval.
@@ -37,6 +37,24 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 - Never use `git add .`, stage secrets, user-owned personal storage, `.codegraph/`, unknown generated caches, or unrelated pre-existing work automatically.
 - Never force-push, rebase, reset, auto-merge, or resolve conflicts automatically.
 - Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
+
+## Native Continuity Backup
+
+For every deliberate pause or close, use this exact local-first order:
+
+1. Refresh current repository evidence.
+2. Apply `.repo-harness/rules/memory.md`: build the structured session summary, then Apply the shared privacy filter.
+3. Guard the selected root, then resolve `.repo-harness/memory-bk/` through it. Create only that direct directory lazily; reject links, indirect paths, and cross-root resolution.
+4. Then create `YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` exclusively. Never overwrite an existing backup.
+5. Reopen the backup and verify its frontmatter and required headings.
+6. Attempt the Engram write when available and report its result independently.
+7. Cross-check only when both writes succeeded; report semantic conflict without silently merging.
+
+- Report `local_backup`, `engram_write`, and `cross_check` independently.
+- Local backup failure makes required continuity `failed`; preserve any Engram success.
+- Local backup success when Engram is unavailable or fails is `degraded`.
+- Local backup success when both writes succeed and agree is `succeeded`.
+- Local backup success when both writes succeed but conflict is `degraded`.
 
 ## Post-Delivery Reconciliation
 

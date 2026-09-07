@@ -6,14 +6,14 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 ## Flujo diario
 <!-- doc-role:daily-workflow -->
 
-1. Inicie o reanude con `repo-harness-session-start` y declare el objetivo. Reconcilia contexto con evidencia del repositorio e inspecciona Git local en solo lectura. La comprobacion remota aplica solo cuando sincronizar es pertinente y seguro. Las afirmaciones conservan su clase de evidencia.
+1. Inicie o reanude con `repo-harness-session-start` y declare el objetivo. Lee primero evidencia del repositorio, luego el backup local protegido valido mas nuevo y despues Engram acotado cuando esta disponible. Inspecciona Git local en solo lectura y conserva la clase de evidencia de cada afirmacion.
 2. Use `repo-harness-documentation` cuando cambien hechos durables o el estado visible.
-3. Cierre con `repo-harness-session-stop`, que verifica evidencia, documentacion y continuidad requeridas, usando Engram cuando esta disponible. Solo el trabajo Git solicitado activa revision de rutas y propuestas exactas bajo la politica del repositorio; no se repite una autorizacion sin cambios.
+3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia y documentacion requeridas, escribe y reabre un backup Markdown estructurado y exclusivo bajo `.repo-harness/memory-bk/`, luego escribe en Engram cuando esta disponible e informa cada resultado por separado. Solo el trabajo Git solicitado activa revision de rutas y propuestas exactas.
 
 ## Disponibilidad integrada
 <!-- doc-role:availability -->
 
-El modo integrado compone Gentle AI y Engram de forma independiente; cualquiera puede seguir siendo util sin el otro. El inicio reutiliza la recuperacion de Engram como evidencia de disponibilidad y comprueba Gentle AI solo en limites de coordinacion habilitados. Informe fallos sin prometer garantias ausentes; bloquee solo capacidades requeridas por la operacion. Un fallo de memoria opcional no impide el informe del repositorio. Standalone no usa ninguno de los dos componentes. La coordinacion administrada habilitada recibe contexto y comprobaciones del repositorio, no flujos paralelos; commit, push y PR siguen bajo politica del repositorio, sin nueva compuerta de entrega.
+El backup local es obligatorio en modos integrado y standalone. El modo integrado ademas compone Gentle AI y Engram de forma independiente; cualquiera puede seguir siendo util sin el otro. El inicio consulta Engram solo despues de la evidencia del repositorio y de continuidad local, y comprueba Gentle AI solo en limites de coordinacion habilitados. Informe fallos sin prometer garantias ausentes. Standalone no usa componentes externos. Los propietarios del repositorio conservan la autoridad, y commit, push y PR siguen bajo politica del repositorio.
 
 ## Congruencia y propiedad
 <!-- doc-role:ownership -->

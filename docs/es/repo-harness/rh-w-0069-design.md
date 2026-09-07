@@ -1,6 +1,6 @@
 # Diseno RH-W-0069 de backup local de memoria y continuidad entre fuentes
 
-> **Estado: DISENO APROBADO POR EL PROPIETARIO. La implementacion no esta autorizada por separado.**
+> **Estado: ENTREGADO. La implementacion autorizada por el propietario se completo el 2026-09-07.**
 
 ## Contrato de revision
 
@@ -155,8 +155,8 @@ Antes de implementar deben fallar pruebas para:
 
 ## Exclusiones
 
-- Sin implementacion ni avance mas alla de `proposed`.
-- Sin codigo, skills generadas, pruebas, manifest, checker, directorio, migracion, staging, commit, push, publicacion o red.
+- Durante la fase de diseno no hubo implementacion ni avance mas alla de `proposed`; la implementacion se autorizo por separado el 2026-09-07 y ahora esta completada.
+- Esta fase de diseno no realizo codigo de producto, skills generadas, pruebas, manifest, checker, directorio, migracion, staging, commit, push, publicacion ni acciones de red. La implementacion autorizada posterior no autorizo entrega Git, commit, push, publicacion ni acciones de red en este worktree.
 - Sin borrado automatico ni limpieza inicial.
 - Sin API generica, base de datos, cifrado, daemon, scheduler, servicio, sync engine ni configuracion compleja.
 - Sin continuacion automatica, reutilizar aprobacion, checkpoint ejecutable, duplicar documentacion, ciclo, recibo, entrega o conflictos.
@@ -171,9 +171,9 @@ El rollback de diseno elimina documento y referencias. Un rollback futuro quita 
 - Los disenos y registros bilingues son equivalentes y estan enlazados.
 - RH-W-0051 reserva `.repo-harness/memory-bk/` sin poseer sesiones.
 - RH-W-0069 posee schema, autoridad, ordenes, resultados, privacidad, conflictos, compatibilidad, pruebas y exclusiones.
-- El orden propuesto coloca RH-W-0069 inmediatamente despues de implementar RH-W-0051 y antes de RH-W-0053, porque consume la taxonomia y establece continuidad ordinaria sin absorber checkpoints tipados.
-- La implementacion sigue no autorizada por separado.
+- El orden historico de ejecucion coloco RH-W-0069 inmediatamente despues de implementar RH-W-0051 y antes de RH-W-0053, porque consume la taxonomia y establece continuidad ordinaria sin absorber checkpoints tipados.
+- La implementacion se autorizo por separado el 2026-09-07 y esta completada y verificada.
 
 ## Decisiones humanas restantes
 
-Ninguna para este diseno. Implementacion y cualquier migracion o borrado futuro exigen decisiones explicitas separadas.
+Ninguna para este diseno o implementacion. Cualquier migracion, politica de borrado, entrega Git, commit, push, publicacion o accion de red futura exige autorizacion explicita separada del propietario.

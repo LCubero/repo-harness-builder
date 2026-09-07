@@ -1,12 +1,14 @@
 # Plan de implementacion RH-W-0069 de continuidad nativa de sesion
 
-> **Estado: propuesto; aprobado por el propietario en la conversacion del 2026-09-06.** La implementacion sigue sin autorizacion separada. Esta aprobacion no autoriza cambio de producto, transicion de ciclo, accion Git, publicacion ni red.
+> **Estado: entregado.** El propietario autorizo la implementacion directa acotada el 2026-09-07; no autorizo ni se realizo entrega Git, publicacion o acceso de red.
+
+La implementacion siguio los tres grupos RED/GREEN enfocados, sincronizo proyecciones canonicas y de runtime, y reconcilio los propietarios bilingues del ciclo despues de verificar. Los recibos de comandos permanecen en el informe de la sesion de implementacion; este plan conserva el contrato historico de ejecucion.
 
 ## Reconciliacion de preparacion para ejecutar
 
-El diseno esta aprobado y RH-W-0051 ya entrego soporte de almacenamiento. En la conversacion del 2026-09-06, el propietario aprobo explicitamente este plan simplificado reconciliado con `dale`, despues de la recomendacion del asistente. Esa aprobacion es evidencia documental solo para el limite del plan. La implementacion exige una autorizacion posterior y separada del propietario, y RH-W-0069 permanece `proposed` segun la convencion de ciclo del roadmap.
+El diseno esta aprobado y RH-W-0051 ya entrego soporte de almacenamiento. En la conversacion del 2026-09-06, el propietario aprobo explicitamente este plan simplificado reconciliado con `dale`, despues de la recomendacion del asistente. Esa aprobacion fue evidencia documental solo para el limite del plan. El propietario autorizo despues la implementacion por separado el 2026-09-07; RH-W-0069 ahora esta completado y entregado segun la convencion de ciclo del roadmap.
 
-Los comandos siguientes usan los valores instalados autenticados actuales: runtimes `claude-code`, `opencode` y `pi`; licencia `MIT`; idioma del informe `english`; locales documentales `en` y `es`; idioma de conversacion `espanol`; y activacion de mantenimiento. Volver a leer el manifest inmediatamente antes de una futura ejecucion autorizada y actualizar los comandos si cambian esas declaraciones. Un ejemplo nunca debe cambiar preferencias instaladas.
+Durante la ejecucion, los comandos siguientes usaron los valores instalados autenticados: runtimes `claude-code`, `opencode` y `pi`; licencia `MIT`; idioma del informe `english`; locales documentales `en` y `es`; idioma de conversacion `espanol`; y activacion de mantenimiento. La instruccion de volver a leer el manifest se conserva como guia historica de ejecucion. Un ejemplo nunca debe cambiar preferencias instaladas.
 
 La carga de verificacion es proporcional y ya no constituye un bloqueo separado de aprobacion. La Tarea 1 es una sola unidad TDD canonica con tres grupos de comportamiento RED/GREEN ordenados. La Tarea 2 ejecuta una vez la suite canonica completa y luego prueba las copias mediante paridad SHA exacta y las salidas generadas mediante render/checker. La Tarea 3 posee las comprobaciones enfocadas de documentacion y cierre de ciclo. Solo se repite una suite proyectada si falla la paridad, difiere fuente especifica de runtime o una comprobacion enfocada expone un requisito sin probar.
 
@@ -16,11 +18,11 @@ La carga de verificacion es proporcional y ya no constituye un bloqueo separado 
 
 **Stack:** Python 3.10+ estandar, `unittest`, Markdown generado determinista, checks existentes de renderer y bytes, y proyecciones canonica, OpenCode y Claude identicas.
 
-**Propietario de ciclo:** [RH-W-0069](roadmap.md#rh-w-0069), estado `proposed`. El [diseno](rh-w-0069-design.md) aprobado posee el comportamiento y este plan esta aprobado por el propietario. Prerrequisito: RH-W-0051 implementado y probado. Aprobar el plan no cambia el estado ni autoriza implementar.
+**Propietario de ciclo:** [RH-W-0069](roadmap.md#rh-w-0069), estado `completed`. El [diseno](rh-w-0069-design.md) aprobado posee el comportamiento y este plan aprobado por el propietario se conserva como evidencia historica de ejecucion. Prerrequisito: RH-W-0051 implementado y probado. Aprobar el plan no concedio autoridad para implementar; esa autorizacion separada se otorgo el 2026-09-07.
 
 ## Call paths probados y mapa
 
-| Ruta o simbolo | Responsabilidad y call path |
+| Ruta o simbolo | Responsabilidad ejecutada y call path |
 |---|---|
 | `render()` -> `render_with_skill_mapping()` -> `session_start_skill()` | Renderiza instrucciones de start con repositorio primero. |
 | `render()` -> `render_with_skill_mapping()` -> `session_stop_skill()` | Renderiza instrucciones de pause/close local primero. |
@@ -29,7 +31,9 @@ La carga de verificacion es proporcional y ya no constituye un bloqueo separado 
 | Skills generadas y regla de memoria | Ordenan lecturas acotadas y writes exclusivos en `.repo-harness/memory-bk/`; no crean subsistema Python. |
 | Proyecciones y archivos autoalojados | Sincronizacion mecanica exacta despues de GREEN canonico. |
 
-El plan no agrega `render_continuity_backup`, `filter_continuity_summary`, `write_continuity_backup`, `read_continuity`, `reconcile_continuity` ni `persist_continuity`. Tampoco agrega callbacks, API generica, base de datos, cifrado, daemon, scheduler, servicio, motor de sincronizacion, storage pluggable, state machine, limpieza, reutilizacion de aprobacion, checkpoint, copia de ciclo, recibo, store de entrega ni store de conflictos.
+El plan no agrego `render_continuity_backup`, `filter_continuity_summary`, `write_continuity_backup`, `read_continuity`, `reconcile_continuity` ni `persist_continuity`. Tampoco agrego callbacks, API generica, base de datos, cifrado, daemon, scheduler, servicio, motor de sincronizacion, storage pluggable, state machine, limpieza, reutilizacion de aprobacion, checkpoint, copia de ciclo, recibo, store de entrega ni store de conflictos.
+
+Todos los elementos de las listas de las Tareas 1 a 3 y de la seccion de aceptacion se ejecutaron y cumplieron. Sus casillas originales sin marcar se conservan solo como instrucciones historicas de ejecucion, no como trabajo pendiente.
 
 ## Tarea 1: TDD canonico de continuidad nativa
 
@@ -114,13 +118,13 @@ if ($apply.status -ne "VALIDATED") { throw "maintenance apply was not VALIDATED"
 - [ ] Issue, commit, PR, push, publicacion o red futuros siguen `CONTRIBUTING.md` con aprobacion separada. RH-W-0069 conserva unidad propia.
 - [ ] Limite documental de ciclo recomendado para un commit futuro: `docs(harness): close RH-W-0069 lifecycle`. Es solo una recomendacion posterior a implementacion verificada y autoridad de ciclo separada, no autoridad para preparar ni crear un commit ahora.
 
-## Aceptacion y Pronostico de carga de revision
+## Aceptacion historica y pronostico de carga de revision
 
-- [ ] RH-W-0051 permanece probado como propietario completado del namespace; el plan esta aprobado por el propietario y queda la autorizacion separada de implementacion.
+- [ ] RH-W-0051 permanece probado como propietario completado del namespace; el plan fue aprobado por el propietario y la autorizacion separada de implementacion se otorgo el 2026-09-07.
 - [ ] Stop exige write local exclusivo y readback antes de Engram independiente.
 - [ ] Start exige repositorio primero, reads acotados validos y reconciliacion visible sin merge.
 - [ ] Una regla compartida posee schema, privacidad, autoridad, resultados y exclusiones.
 - [ ] No se agrega API Python, callbacks, subsistema, campo manifest, inspeccion checker, migracion ni borrado.
 - [ ] Canon, proyecciones, ciclo, rollback y entrega quedan separados de RH-W-0051.
 
-Pronostico: 3 limites coherentes: TDD funcional canonico, proyecciones mecanicas y cierre documental de ciclo. El volumen esperado sigue siendo 280 a 380 lineas autorales y 180 a 300 lineas mecanicas de proyecciones o salida generada. Riesgo medio por la interseccion entre inicio, cierre, privacidad, orden y resultados parciales, sin subsistema runtime. No se espera superar el presupuesto autoral de 400 lineas. Los limites de commit son recomendaciones; implementacion, staging, commits y avance siguen sin autorizacion separada.
+Pronostico historico: 3 limites coherentes: TDD funcional canonico, proyecciones mecanicas y cierre documental de ciclo. El volumen esperado era de 280 a 380 lineas autorales y 180 a 300 lineas mecanicas de proyecciones o salida generada. El riesgo se evaluo como medio por la interseccion entre inicio, cierre, privacidad, orden y resultados parciales, sin planear un subsistema runtime. No se esperaba superar el presupuesto autoral de 400 lineas. Los limites de commit siguen siendo recomendaciones; esta implementacion completada no autoriza entrega Git, staging, commit, push, publicacion ni acciones de red.

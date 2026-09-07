@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-07
+
+- Se completo `RH-W-0069` con contratos de continuidad nativa de sesion autorizados por el propietario e implementados primero con pruebas. Session-stop generado crea y verifica un backup Markdown estructurado y exclusivo antes del trabajo Engram independiente; session-start lee propietarios del repositorio antes del backup protegido valido mas nuevo y Engram acotado; la regla compartida de memoria posee esquema, privacidad, autoridad, resultados y exclusiones. Se sincronizaron y verificaron proyecciones canonicas y de runtime sin campo de manifiesto, red, entrega Git ni dependencia de memoria incorporada del runtime.
+
 ## 2026-09-06
 
 - Por autorización del propietario, se rechazó `RH-W-0040` y se cerró sin residuo. La continuidad Engram existente ya atiende solicitudes humanas explícitas de memoria mientras los contratos del repositorio conservan la autoridad, por lo que no se justifican registro de incidentes, conteo de ocurrencias, ranking, esquema, función de inicio de sesión, implementación ni diseño bilingüe retenido. Solo se eliminaron los dos diseños no aprobados y sus entradas del mapa documental; no hubo cambios de producto, fuente, pruebas, runtime, skill, manifiesto, red, entrega Git ni operación de memoria.

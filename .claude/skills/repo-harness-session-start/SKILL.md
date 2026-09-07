@@ -46,6 +46,22 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Invalidate synchronization consent and pause if the remote advanced into divergence, the upstream or destination changed, integration is not fast-forward-only, authentication needs a different credential path, verification fails, or any destructive or conflict-resolving action becomes necessary.
 - Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
 
+## Native Continuity Recovery
+
+Use this exact read-only order:
+
+1. Validate the selected repository root.
+2. Read applicable repository owners, source, tests, Git, and checker evidence required by the objective.
+3. Resolve the guarded `.repo-harness/memory-bk/` directory. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree.
+4. Read scoped Engram context when available and preserve its independent outcome.
+5. Read at most one older backup, and only for `newest_invalid`, `objective_names_backup`, `conflict_needs_chronology`, or `newest_lacks_relevant_continuity`.
+
+- Absent directory or empty history is `not_found`, not failure.
+- Reject and report malformed, unsafe, indirect, or contradictory candidates without repair. Startup performs no write, staging, automatic continuation, or link following.
+- For every source, check every recalled claim against its current applicable repository owner. Report claims as `accepted`, `stale`, `conflicting`, `unavailable`, or `unverifiable`.
+- When repository evidence resolves a conflict, use repository evidence and report the conflict. When it cannot resolve a material conflict, ask one human decision question and do not choose a source.
+- Never merge continuity sources silently.
+
 ## Bounded Reconciliation
 
 - Build one ephemeral baseline from the applicable roadmap record, its current-state direct projection, declared localized peers, exact-ID decision and changelog matches, and local Git evidence. Persist no trigger state.

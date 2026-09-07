@@ -3187,6 +3187,70 @@ class GeneratedCoreTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, stop)
 
+    def test_session_stop_requires_native_local_first_pause_and_close_backup(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        ordered = (
+            "Refresh current repository evidence",
+            "build the structured session summary",
+            "Apply the shared privacy filter",
+            "resolve `.repo-harness/memory-bk/`",
+            "Create only that direct directory lazily",
+            "create `YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` exclusively",
+            "Reopen the backup and verify its frontmatter and required headings",
+            "Attempt the Engram write when available",
+            "Cross-check only when both writes succeeded",
+        )
+        positions = [stop.index(phrase) for phrase in ordered]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("deliberate pause or close", stop)
+        self.assertIn("Never overwrite", stop)
+
+    def test_session_stop_reports_local_engram_and_cross_check_independently(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        for phrase in (
+            "`local_backup`, `engram_write`, and `cross_check`",
+            "Local backup failure makes required continuity `failed`",
+            "Engram is unavailable or fails is `degraded`",
+            "both writes succeed and agree is `succeeded`",
+            "both writes succeed but conflict is `degraded`",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, stop)
+
+    def test_session_start_requires_repository_first_bounded_continuity_read(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        ordered = (
+            "Validate the selected repository root",
+            "Read applicable repository owners, source, tests, Git, and checker evidence",
+            "Inspect only direct regular `.md` files",
+            "Read scoped Engram context when available",
+        )
+        positions = [start.index(phrase) for phrase in ordered]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("at most one older backup", start)
+        for reason in ("`newest_invalid`", "`objective_names_backup`", "`conflict_needs_chronology`", "`newest_lacks_relevant_continuity`"):
+            self.assertIn(reason, start)
+
+    def test_session_start_validates_newest_backup_before_use(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        for phrase in (
+            "filename and frontmatter agree",
+            "Absent directory or empty history is `not_found`",
+            "malformed, unsafe, indirect, or contradictory",
+            "without repair",
+            "no write, staging, automatic continuation, or link following",
+        ):
+            self.assertIn(phrase, start)
+
+    def test_session_start_reports_conflicts_without_merging(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        for phrase in ("`accepted`", "`stale`", "`conflicting`", "`unavailable`", "`unverifiable`"):
+            self.assertIn(phrase, start)
+        self.assertIn("check every recalled claim against its current applicable repository owner", start)
+        self.assertIn("use repository evidence and report the conflict", start)
+        self.assertIn("one human decision question", start)
+        self.assertIn("Never merge continuity sources silently", start)
+
     def test_documentation_skill_generates_finding_dispositions(self):
         outputs = TOOL.render("Example", [])
         documentation = outputs[".repo-harness/skills/repo-harness-documentation/SKILL.md"]
@@ -3219,6 +3283,56 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, memory)
+
+    def test_memory_rule_declares_native_backup_schema_authority_and_privacy(self):
+        memory = TOOL.render("Example", [])[".repo-harness/rules/memory.md"]
+        for phrase in (
+            "`project`, `timestamp_utc`, `source`, and `session_id`",
+            "`# Session Continuity`",
+            "Goal, Instructions, Discoveries, Accomplished, Next Steps, and Relevant Files",
+            "Empty sections use `None.`",
+            "repository-relative paths",
+            "verified fact`, `supported inference`, `unknown or unverifiable`, or `human decision required",
+            "source and tests; roadmap; current state; decisions; changelog; Git and checker",
+            "credentials, tokens, passwords, private keys, cookies, connection strings",
+            "raw environment values and provider payloads",
+            "copied source, diffs, logs, stack traces, generated bytes, and test output",
+            "bounded privacy reduction",
+        ):
+            self.assertIn(phrase, memory)
+
+    def test_memory_rule_omits_external_private_repository_names_and_locations_without_approved_aliases(self):
+        memory = TOOL.render("Example", [])[".repo-harness/rules/memory.md"]
+        self.assertIn("external private repository names and locations", memory)
+        self.assertIn("approved stable alias", memory)
+        self.assertIn("private name, absolute location, remote URL, or sibling path", memory)
+
+    def test_integrated_and_standalone_continuity_keep_source_outcomes_independent(self):
+        for standalone in (False, True):
+            outputs = TOOL.render("Example", [], standalone=standalone)
+            scoped = "\n".join(outputs[path] for path in (
+                ".repo-harness/rules/memory.md",
+                ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+                ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+            ))
+            with self.subTest(standalone=standalone):
+                self.assertIn("Local backup is required in every mode", scoped)
+                self.assertIn("independent outcome", scoped)
+                self.assertIn("unavailable", scoped)
+                self.assertIn("never emulated", scoped)
+
+    def test_generated_continuity_excludes_runtime_memory_and_stateful_overreach(self):
+        for standalone in (False, True):
+            outputs = TOOL.render("Example", [], standalone=standalone)
+            scoped = "\n".join(outputs[path] for path in (
+                ".repo-harness/rules/memory.md",
+                ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+                ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+            ))
+            with self.subTest(standalone=standalone):
+                self.assertIn("Built-in runtime memory is ignored and never required", scoped)
+                self.assertIn("No generic memory API, database, encryption subsystem, daemon, scheduler, background service, synchronization engine, retention cleanup, or separate conflict-state persistence", scoped)
+                self.assertIn("approval, checkpoint, lifecycle copy, receipt, or delivery state", scoped)
 
     def test_standalone_reconciliation_never_requires_or_emulates_engram(self):
         outputs = TOOL.render("Example", [], standalone=True)
@@ -3390,8 +3504,8 @@ class GeneratedCoreTests(unittest.TestCase):
             (repository / "docs/es/repo-harness/current-state.md").read_text(encoding="utf-8"),
         )
         stale_state = (
-            ("29 non-terminal records", "at Slice 3 merge commit", "awaits only replacement and merge"),
-            ("29 registros no terminales", "en el commit de merge del Corte 3", "solo espera el reemplazo y merge"),
+            ("at Slice 3 merge commit", "awaits only replacement and merge"),
+            ("en el commit de merge del Corte 3", "solo espera el reemplazo y merge"),
         )
         for text, stale_phrases in zip(current_state, stale_state):
             for phrase in stale_phrases:

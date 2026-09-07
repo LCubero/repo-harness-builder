@@ -1,6 +1,6 @@
 # RH-W-0069 Local Memory Backup And Cross-Source Continuity Design
 
-> **Status: OWNER-APPROVED DESIGN. Implementation is separately unauthorized.**
+> **Status: DELIVERED. Owner-authorized implementation completed on 2026-09-07.**
 
 ## Review Contract
 
@@ -155,8 +155,8 @@ Before implementation, focused tests must fail for:
 
 ## Exclusions
 
-- No implementation in this design work and no lifecycle advancement beyond `proposed`.
-- No product code, generated skill, test, manifest, checker, directory, migration, staging, commit, push, publication, or network action.
+- During the design phase, no implementation occurred and lifecycle did not advance beyond `proposed`; implementation was authorized separately on 2026-09-07 and is now completed.
+- This design phase performed no product code, generated skill, test, manifest, checker, directory, migration, staging, commit, push, publication, or network action. The later authorized implementation did not authorize Git delivery, commit, push, publication, or network action in this worktree.
 - No automatic deletion or retention cleanup initially.
 - No generic memory API, database, encryption subsystem, daemon, scheduler, background service, synchronization engine, or complex configuration.
 - No automatic continuation, approval reuse, executable checkpoint, documentation duplication, lifecycle copy, receipt, delivery record, or conflict store.
@@ -171,9 +171,9 @@ Design rollback removes this document and its lifecycle references. A future imp
 - The bilingual designs and lifecycle records are semantically equivalent and linked.
 - RH-W-0051 reserves `.repo-harness/memory-bk/` without owning session behavior.
 - RH-W-0069 owns the exact schema, authority, read/write order, outcomes, privacy, conflicts, compatibility, tests, and exclusions.
-- The proposed execution order places RH-W-0069 immediately after RH-W-0051 implementation and before RH-W-0053, because it consumes the taxonomy and establishes ordinary session continuity without absorbing typed checkpoint recovery.
-- Implementation remains separately unauthorized.
+- The historical execution order placed RH-W-0069 immediately after RH-W-0051 implementation and before RH-W-0053, because it consumes the taxonomy and establishes ordinary session continuity without absorbing typed checkpoint recovery.
+- Implementation was separately authorized on 2026-09-07 and is completed and verified.
 
 ## Remaining Human Decisions
 
-None for this design. Implementation authorization and any future migration or deletion policy require separate explicit owner decisions.
+None for this design or implementation. Any future migration, deletion policy, Git delivery, commit, push, publication, or network action requires separate explicit owner authorization.

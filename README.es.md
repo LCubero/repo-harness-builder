@@ -55,7 +55,7 @@ Un harness es solo en ingles salvo que se declaren mas locales de documentacion.
 | `REPO-HARNESS.md` | Libro de reglas conciso que siempre se lee: proposito, reglas obligatorias y rutas hacia detalles. |
 | `docs/repo-harness/` | Propietarios durables de uso, estado actual y decisiones. |
 | `CHANGELOG.md` | Registro fechado de cambios completados, separado del estado y trabajo futuro. |
-| Continuidad en Engram | Memoria temporal opcional entre sesiones cuando esta disponible, reconciliada siempre con evidencia del repositorio. |
+| Continuidad de sesion | Backups locales estructurados obligatorios bajo `.repo-harness/memory-bk/`, mas continuidad Engram opcional cuando esta disponible; el repositorio conserva la autoridad. |
 | Proyecciones | Superficies delgadas para Claude Code, OpenCode o Pi generadas desde habilidades canonicas y pares de comandos por familia. |
 | `.repo-harness/check.py` | Comprobacion de solo lectura que detecta proyecciones de habilidades, comandos y prompts faltantes u obsoletas. |
 
@@ -67,9 +67,9 @@ El constructor instala o actualiza. Las tres habilidades del repositorio forman 
 | Habilidad | Cuando usarla | Resultado |
 |---|---|---|
 | `repo-harness-builder` | Crear, auditar o actualizar con seguridad un harness | Un harness planificado, aprobado y verificado |
-| `repo-harness-session-start` | Iniciar o reanudar trabajo | Resultado acotado, evidencia actual etiquetada con su clase, estado Git local y una pregunta concreta de verificacion remota cuando es seguro |
+| `repo-harness-session-start` | Iniciar o reanudar trabajo | Evidencia del repositorio primero, backup local valido mas nuevo, contexto Engram acotado opcional y reconciliacion visible |
 | `repo-harness-documentation` | Cambiaron hechos durables o estado visible | Documentos canonicos actualizados sin duplicacion |
-| `repo-harness-session-stop` | Pausar o terminar | Continuidad verificada y unidades de trabajo revisables |
+| `repo-harness-session-stop` | Pausar o terminar | Backup local exclusivo verificado, resultado Engram independiente y unidades de trabajo revisables |
 
 ## Ciclo de vida
 <!-- doc-role:lifecycle -->
@@ -83,13 +83,13 @@ Primera ejecucion del constructor
   -> harness generado y verificado
 
 Sesion normal
-  -> session-start recupera y reconcilia contexto
+  -> session-start lee evidencia del repositorio, luego backup local y despues Engram opcional
   -> el trabajo sigue REPO-HARNESS.md
   -> documentation actualiza propietarios durables
-  -> session-stop verifica y registra la transferencia
+  -> session-stop verifica y escribe la transferencia local primero
 ```
 
-El modo integrado compone de forma independiente las capacidades disponibles de Gentle AI y Engram y omite solo las garantias que pertenecen a una capacidad no disponible. Engram conecta sesiones cuando esta disponible, pero nunca reemplaza los archivos actuales. El modo standalone explicito conserva continuidad solo en el repositorio.
+Ambos modos usan el backup local nativo. El modo integrado compone de forma independiente las capacidades disponibles de Gentle AI y Engram. Engram conecta sesiones cuando esta disponible, pero nunca reemplaza los archivos actuales; standalone no usa componentes externos de continuidad.
 
 ## Flujo de ejemplo
 <!-- doc-role:example -->

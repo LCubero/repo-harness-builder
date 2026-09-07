@@ -8,14 +8,14 @@ Use the three generated skills as a loop: recover context, keep durable document
 ## Daily Workflow
 <!-- doc-role:daily-workflow -->
 
-1. Start or resume with `repo-harness-session-start` and state the objective. It reconciles context with repository evidence and inspects local Git read-only. Remote checking applies only when synchronization is relevant and safe. Claims retain their evidence class.
+1. Start or resume with `repo-harness-session-start` and state the objective. It reads repository evidence first, then the newest valid guarded local backup, then scoped Engram when available. It inspects local Git read-only, and claims retain their evidence class.
 2. Use `repo-harness-documentation` when durable documentation or visible project state needs updating.
-3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation and continuity, using Engram when available. Only requested Git work triggers path screening and exact work-unit proposals under repository policy; unchanged authorization is not requested again.
+3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation, writes and reopens one exclusive structured Markdown backup under `.repo-harness/memory-bk/`, then writes Engram when available and reports each outcome independently. Only requested Git work triggers path screening and exact work-unit proposals under repository policy.
 
 ## Integrated Availability
 <!-- doc-role:availability -->
 
-Integrated mode composes Gentle AI and Engram independently; either can remain useful without the other. Startup reuses Engram recovery as availability evidence and checks Gentle AI only at enabled coordination boundaries. Surface failures without claiming missing guarantees; block only operation-required capabilities. Optional memory failure does not withhold the repository handoff. Standalone explicitly uses neither component. Enabled managed coordination receives repository context and checks, not parallel workflows; commit, push, and PR remain repository-owned, with no new delivery gate.
+The local backup is required in integrated and standalone modes. Integrated mode additionally composes Gentle AI and Engram independently; either can remain useful without the other. Startup checks Engram only after repository and local continuity evidence and checks Gentle AI only at enabled coordination boundaries. Surface failures without claiming missing guarantees. Standalone uses neither external component. Repository owners remain authoritative, and commit, push, and PR remain repository-owned.
 
 ## Congruence And Ownership
 <!-- doc-role:ownership -->

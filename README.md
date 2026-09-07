@@ -56,7 +56,7 @@ A harness is English-only unless you declare more documentation locales. See [Do
 | `REPO-HARNESS.md` | The concise, always-read rulebook: purpose, hard rules, and routing to deeper guidance. |
 | `docs/repo-harness/` | Durable owners for usage, current state, and decisions, so facts have one home. |
 | `CHANGELOG.md` | A dated record of meaningful completed changes, separate from current and future work. |
-| Engram continuity | Optional temporary cross-session memory when available, always reconciled with repository evidence. |
+| Session continuity | Required structured local backups under `.repo-harness/memory-bk/`, plus optional Engram continuity when available; repository evidence remains authoritative. |
 | Runtime projections | Thin Claude Code, OpenCode, or Pi surfaces generated from canonical skills and family-specific command peers. |
 | `.repo-harness/check.py` | A read-only congruence check that detects missing or stale skill, command, and prompt projections. |
 
@@ -68,9 +68,9 @@ The builder is the installer and upgrader. The three repository skills are the d
 | Skill | Use it when | Outcome |
 |---|---|---|
 | `repo-harness-builder` | Creating, auditing, or safely upgrading a harness | A planned, approved, verified repository harness |
-| `repo-harness-session-start` | Starting or resuming work | A scoped outcome, current evidence labelled with its class, local Git state, and one concrete remote-check question when safe |
+| `repo-harness-session-start` | Starting or resuming work | Repository-first evidence, the newest valid local backup, optional scoped Engram context, and visible reconciliation |
 | `repo-harness-documentation` | Durable facts or visible state changed | Canonical docs updated without duplication or stale ownership |
-| `repo-harness-session-stop` | Pausing or ending work | Verified continuity, screened exact-path work units, and one outcome-scoped Git question when needed |
+| `repo-harness-session-stop` | Pausing or ending work | An exclusive verified local backup, independent Engram outcome, screened work units, and any required Git question |
 
 ## Lifecycle
 <!-- doc-role:lifecycle -->
@@ -84,14 +84,14 @@ First builder run
   -> generated harness plus verification
 
 Normal session
-  -> session-start recovers and reconciles context
+  -> session-start reads repository evidence, then local backup, then optional Engram context
   -> project work happens under REPO-HARNESS.md rules
   -> documentation skill updates durable owners when needed
-  -> session-stop verifies evidence and records the handoff
-  -> next session-start continues from current files and continuity memory
+  -> session-stop verifies evidence and writes the local-first handoff
+  -> next session-start continues from current files and reconciled continuity
 ```
 
-Integrated mode composes available Gentle AI and Engram capabilities independently and withholds only guarantees owned by an unavailable capability. Engram can bridge sessions when available, but it never overrides current repository files. Explicit standalone mode remains repository-only.
+Both modes use the native local backup. Integrated mode composes available Gentle AI and Engram capabilities independently. Engram can bridge sessions when available, but it never overrides current repository files; standalone uses no external continuity component.
 
 ## Example Workflow
 <!-- doc-role:example -->

@@ -1,12 +1,14 @@
 # RH-W-0069 Native Session Continuity Implementation Plan
 
-> **Status: proposed; owner-approved in the 2026-09-06 conversation.** Implementation remains separately unauthorized. This approval authorizes no product change, lifecycle transition, Git action, publication, or network access.
+> **Status: delivered.** The owner authorized bounded direct implementation on 2026-09-07; no Git delivery, publication, or network action was authorized or performed.
+
+Implementation followed the three focused RED/GREEN groups, synchronized canonical and runtime projections, and reconciled the bilingual lifecycle owners after verification. Command receipts remain in the implementing session report; this plan remains the historical execution contract.
 
 ## Execution Readiness Reconciliation
 
-The design is approved and RH-W-0051 storage support is delivered. In the 2026-09-06 conversation, the owner explicitly approved this reconciled simplified plan with `dale` after the assistant recommended it. That approval is documentary evidence for the plan boundary only. Implementation still requires a later, separate owner authorization, and RH-W-0069 remains `proposed` under the roadmap lifecycle convention.
+The design is approved and RH-W-0051 storage support is delivered. In the 2026-09-06 conversation, the owner explicitly approved this reconciled simplified plan with `dale` after the assistant recommended it. That approval was documentary evidence for the plan boundary only. The owner then separately authorized implementation on 2026-09-07; RH-W-0069 is now completed and delivered under the roadmap lifecycle convention.
 
-The commands below use the current authenticated installed values: runtimes `claude-code`, `opencode`, and `pi`; license `MIT`; report language `english`; documentation locales `en` and `es`; conversation language `espanol`; and maintenance activation. Re-read the installed manifest immediately before a future authorized execution and update the commands if those declarations changed. An example must never change installed preferences.
+At execution, the commands below used the authenticated installed values: runtimes `claude-code`, `opencode`, and `pi`; license `MIT`; report language `english`; documentation locales `en` and `es`; conversation language `espanol`; and maintenance activation. The instruction to re-read the installed manifest remains historical execution guidance. An example must never change installed preferences.
 
 The verification workload is proportional and no longer a separate approval blocker. Task 1 is one canonical TDD work unit with three ordered RED/GREEN behavior groups. Task 2 runs the full canonical suite once, then proves package copies by exact SHA parity and generated outputs by render/checker evidence. Task 3 owns focused documentation and lifecycle closure checks. Rerun a projected suite only if parity fails, runtime-specific source differs, or a focused check exposes an unproved requirement.
 
@@ -16,11 +18,11 @@ The verification workload is proportional and no longer a separate approval bloc
 
 **Tech Stack:** Python 3.10+ standard library, `unittest`, deterministic generated Markdown, existing renderer and generated-byte checks, and byte-identical canonical, OpenCode, and Claude package projections.
 
-**Lifecycle owner:** [RH-W-0069](roadmap.md#rh-w-0069), status `proposed`. The approved [design](rh-w-0069-design.md) owns behavior, and this plan is owner-approved. Required predecessor: completed and proven RH-W-0051 implementation. Plan approval changes no lifecycle status and grants no implementation authority.
+**Lifecycle owner:** [RH-W-0069](roadmap.md#rh-w-0069), status `completed`. The approved [design](rh-w-0069-design.md) owns behavior, and this owner-approved plan is retained as historical execution evidence. Required predecessor: completed and proven RH-W-0051 implementation. Plan approval did not grant implementation authority; separate authorization was granted on 2026-09-07.
 
 ## Proven Call Paths And File Map
 
-| Path or symbol | Planned responsibility and call path |
+| Path or symbol | Executed responsibility and call path |
 |---|---|
 | `render()` -> `render_with_skill_mapping()` -> `session_start_skill()` | Render repository-first startup instructions into the generated session-start skill. |
 | `render()` -> `render_with_skill_mapping()` -> `session_stop_skill()` | Render local-first pause/close instructions into the generated session-stop skill. |
@@ -29,7 +31,9 @@ The verification workload is proportional and no longer a separate approval bloc
 | Generated session-start/session-stop and memory rule | Direct an executing agent to perform bounded reads and exclusive writes under `.repo-harness/memory-bk/`; no Python callback or orchestration subsystem is introduced. |
 | Package projections and self-hosted generated files | Mechanical exact-byte synchronization only after canonical GREEN. |
 
-The plan adds none of these APIs: `render_continuity_backup`, `filter_continuity_summary`, `write_continuity_backup`, `read_continuity`, `reconcile_continuity`, or `persist_continuity`. It adds no callbacks, generic memory API, database, encryption framework, daemon, scheduler, service, synchronization engine, pluggable storage, hidden state machine, retention cleanup, approval reuse, checkpoint, lifecycle copy, receipt, delivery store, or conflict store.
+The plan added none of these APIs: `render_continuity_backup`, `filter_continuity_summary`, `write_continuity_backup`, `read_continuity`, `reconcile_continuity`, or `persist_continuity`. It added no callbacks, generic memory API, database, encryption framework, daemon, scheduler, service, synchronization engine, pluggable storage, hidden state machine, retention cleanup, approval reuse, checkpoint, lifecycle copy, receipt, delivery store, or conflict store.
+
+All checklist items in Tasks 1 through 3 and the acceptance section below were executed and satisfied. Their original unchecked boxes are retained solely as historical execution instructions, not as pending work.
 
 ## Task 1: Canonical TDD For Native Continuity
 
@@ -118,13 +122,13 @@ if ($apply.status -ne "VALIDATED") { throw "maintenance apply was not VALIDATED"
 - [ ] Future issue, commit, PR, push, publication, or network action follows `CONTRIBUTING.md` under separate approval. RH-W-0069 retains its own lifecycle and delivery unit.
 - [ ] Recommended future documentary lifecycle commit boundary: `docs(harness): close RH-W-0069 lifecycle`. This is a recommendation only after verified implementation and separate lifecycle authority, not authority to stage or commit now.
 
-## Acceptance And Review Workload Forecast
+## Historical Acceptance And Review Workload Forecast
 
-- [ ] RH-W-0051 remains proven as the completed namespace owner; the plan is owner-approved and separate implementation authorization remains.
+- [ ] RH-W-0051 remains proven as the completed namespace owner; the plan was owner-approved and separate implementation authorization was granted on 2026-09-07.
 - [ ] Generated stop instructions require direct exclusive local write and readback before independent Engram work.
 - [ ] Generated start instructions require repository-first evidence, bounded valid backup reads, and visible no-merge reconciliation.
 - [ ] One shared memory rule owns schema, privacy, authority, outcomes, and exclusions.
 - [ ] No Python continuity API, callback orchestration, generic subsystem, manifest field, checker content inspection, migration, or deletion is added.
 - [ ] Canonical behavior, mechanical projections, lifecycle, rollback, and delivery remain separate from RH-W-0051.
 
-Forecast: 3 coherent boundaries: functional canonical TDD, mechanical projections, and documentary lifecycle closure. Expected volume remains 280 to 380 authored changed lines plus 180 to 300 mechanical projection or generated lines. Risk is medium because start, stop, privacy, ordering, and partial outcomes intersect, but no runtime subsystem is planned. The 400-line authored review budget is not expected to be exceeded. Commit boundaries are recommendations only; implementation, staging, commits, and lifecycle advancement remain separately unauthorized.
+Historical forecast: 3 coherent boundaries: functional canonical TDD, mechanical projections, and documentary lifecycle closure. Expected volume was 280 to 380 authored changed lines plus 180 to 300 mechanical projection or generated lines. Risk was assessed as medium because start, stop, privacy, ordering, and partial outcomes intersect, but no runtime subsystem was planned. The 400-line authored review budget was not expected to be exceeded. Commit boundaries remain recommendations only; no Git delivery, staging, commit, push, publication, or network action is authorized by this completed implementation.
