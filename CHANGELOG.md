@@ -6,6 +6,10 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-07
 
+- Recorded the owner's explicit approval of the existing bilingual RH-W-0053 implementation plan as written. RH-W-0053 remains `proposed`; implementation, lifecycle advancement, staging, commit, push, publication, and network access remain separately unauthorized.
+
+- Created the bilingual proposed RH-W-0053 implementation plan under planning authority. It defines three minimal RED/GREEN groups for explicit-request-only safe checkpoint replacement, read-only semantic-expiry discovery, and fresh resume authority; names exact canonical, projection, verification, rollback, and lifecycle surfaces; and preserves RH-W-0050, RH-W-0051, and RH-W-0069 ownership. RH-W-0053 remains `proposed`; plan approval and implementation remain separate authorities.
+
 - Completed `RH-W-0069` with owner-authorized, test-first native session continuity contracts. Generated session-stop now creates and verifies one exclusive structured Markdown backup before independent Engram work; session-start reads repository owners before the newest valid guarded backup and scoped Engram; the shared memory rule owns schema, privacy, authority, outcomes, and exclusions. Canonical and runtime projections were synchronized and verified without a manifest field, network action, Git delivery, or built-in runtime-memory dependency.
 
 ## 2026-09-06

@@ -4,6 +4,10 @@
 
 ## 2026-09-07
 
+- Se registró la aprobación explícita del propietario del plan de implementación bilingüe RH-W-0053 existente sin cambios. RH-W-0053 permanece `proposed`; implementación, avance de ciclo, staging, commit, push, publicación y acceso de red siguen sin autorización separada.
+
+- Se creó el plan de implementación bilingüe propuesto RH-W-0053 bajo autoridad de planificación. Define tres grupos RED/GREEN mínimos para reemplazo seguro del checkpoint solo por solicitud explícita, descubrimiento de solo lectura con expiración semántica y autoridad nueva de reanudación; nombra superficies exactas canónicas, de proyección, verificación, rollback y ciclo; y conserva la propiedad de RH-W-0050, RH-W-0051 y RH-W-0069. RH-W-0053 permanece `proposed`; aprobación del plan e implementación son autoridades separadas.
+
 - Se completo `RH-W-0069` con contratos de continuidad nativa de sesion autorizados por el propietario e implementados primero con pruebas. Session-stop generado crea y verifica un backup Markdown estructurado y exclusivo antes del trabajo Engram independiente; session-start lee propietarios del repositorio antes del backup protegido valido mas nuevo y Engram acotado; la regla compartida de memoria posee esquema, privacidad, autoridad, resultados y exclusiones. Se sincronizaron y verificaron proyecciones canonicas y de runtime sin campo de manifiesto, red, entrega Git ni dependencia de memoria incorporada del runtime.
 
 ## 2026-09-06

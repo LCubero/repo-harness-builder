@@ -125,19 +125,16 @@ Historical execution evidence:
 
 Human decisions: none for implementation or lifecycle closure. Any future Git delivery, commit, push, publication, or network action remains separately unauthorized.
 
-### Plan 3: RH-W-0053 interrupted-session checkpoint design
+### Plan 3: RH-W-0053 interrupted-operation checkpoint implementation
 
-Readiness `design approved; implementation unauthorized`, because completed RH-W-0051 established the storage semantics and the owner approved the bilingual [proposed design](rh-w-0053-design.md). Priority `P1`, shared with `RH-W-0068`, `RH-W-0070`, `RH-W-0072`, `RH-W-0073`, and `RH-W-0074`.
+Readiness `plan owner-approved; implementation unauthorized`, because completed RH-W-0051 established storage semantics, completed RH-W-0069 established separate ordinary continuity, and the owner approved the bilingual [design](rh-w-0053-design.md) and [implementation plan](rh-w-0053-implementation-plan.md). The plan is test-first and remains unauthorized for execution. Priority `P1`, shared with `RH-W-0068`, `RH-W-0070`, `RH-W-0072`, `RH-W-0073`, and `RH-W-0074`.
 
-1. Define the typed checkpoint schema and its evidence classes, separating completed facts, unfinished intent, supported inference, unknown state, and decisions still requiring a human.
-2. Decide the checkpoint owner and storage inside the namespace RH-W-0051 reserves, never in user-owned personal paths.
-3. Define creation and expiry triggers, and sensitive-data limits on what a checkpoint may contain.
-4. Define how an interrupted step is represented without claiming it completed.
-5. Define session-start discovery, stale and conflicting checkpoint outcomes, and non-mutating startup behavior.
-6. Define explicit resumption authority: resumption re-verifies repository evidence and never reuses a prior approval.
-7. Name the RED tests, including one proving a checkpoint never triggers automatic continuation.
+1. Write focused RED groups for explicit-request-only safe write/replacement, read-only discovery and semantic expiry, and fresh resume authority with owner separation.
+2. Add only minimal instruction text to canonical `session_stop_skill()` and `session_start_skill()`; add no runtime subsystem, parser, manifest field, checker content inspection, or automatic cleanup.
+3. Run focused GREEN and the canonical suite, synchronize exact package and generated skill projections, and verify a zero-action second maintenance preview plus checker `current` with zero writes.
+4. Close documentation and lifecycle only after verified implementation and separate authority; plan approval does not authorize implementation, delivery, or lifecycle advancement.
 
-Resolved design decisions: RH-W-0053 owns one `.repo-harness/state/checkpoints/active.md` structured Markdown file; no write occurs without an explicit current human request. Separate implementation authorization remains required.
+Resolved decisions: RH-W-0053 owns one `.repo-harness/state/checkpoints/active.md` structured Markdown file; no write occurs without an explicit current human request; and the owner approved the implementation plan as written on 2026-09-07. Implementation authorization remains separate.
 
 ### Plan 4: RH-W-0048 runtime projection recovery design
 
@@ -484,7 +481,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reviewed through 2026-09-07 across 23 non-terminal plan headings covering 23 of the 30 non-terminal records, including the two records covered by Plan 6, plus 9 terminal plans retained as historical evidence. The 88 lifecycle records comprise 57 completed, 25 proposed, 5 deferred, and 1 rejected record. Historical Plans 10, 28, and 31 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
+Current projection reviewed through 2026-09-07 across 22 non-terminal plan headings covering 22 of the 29 non-terminal records, including the two records covered by Plan 6, plus 9 terminal plans retained as historical evidence. The 88 lifecycle records comprise 58 completed, 24 proposed, 5 deferred, and 1 rejected record. Historical Plans 10, 28, and 31 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
 
 Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Plan 6 joint design. The portfolio retains one joint-design pair, RH-W-0046/RH-W-0018, and three current coordination pairs with separate lifecycles: RH-W-0069/RH-W-0068, RH-W-0065/RH-W-0022, and RH-W-0066/RH-W-0044. No merger or new implementation authority follows.
 
@@ -1133,15 +1130,15 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Priority | P1: unfinished work can be mistaken for completed continuity or resumed from stale assumptions if the interruption is not represented explicitly. |
 | Dependencies | RH-W-0050 evidence classification, and the RH-W-0051 storage semantics for any future harness-owned local checkpoint bytes, which completed RH-W-0051 now provides. |
 | Status | proposed |
-| Completed work | Bounded the capability and created the owner-approved bilingual [proposed design](rh-w-0053-design.md). It assigns one ignored non-authoritative structured Markdown file at `.repo-harness/state/checkpoints/active.md`, requires an explicit current request for every write, represents the interrupted step only as `not_started`, `started_unverified`, or `failed`, defines semantic expiry without deletion, and makes session-start discovery read-only and resumption dependent on current evidence and fresh authority. |
-| Remaining work | Approve a separate implementation plan, then separately authorize implementation and focused verification. No implementation is authorized by this design. |
+| Completed work | Bounded the capability and created the owner-approved bilingual [design](rh-w-0053-design.md) and [test-first implementation plan](rh-w-0053-implementation-plan.md). The design assigns one ignored non-authoritative structured Markdown file at `.repo-harness/state/checkpoints/active.md`, requires an explicit current request for every write, represents the interrupted step only as `not_started`, `started_unverified`, or `failed`, defines semantic expiry without deletion, and makes session-start discovery read-only and resumption dependent on current evidence and fresh authority. |
+| Remaining work | Separate implementation authorization and focused verification. Plan approval grants no implementation authority. |
 | Additions | A typed unfinished checkpoint and safe session-start route that distinguishes completed facts, unfinished intent, supported inference, unknown state, and decisions still requiring a human. |
 | Exclusions | No automatic continuation, mutation, approval reuse, claim that an interrupted action completed, duplicate backlog, or storage in user-owned personal paths. |
 | Deferrals | none |
 | Rejections | Rejected treating a generic session summary as proof of an executable checkpoint or resuming an interrupted mutation without fresh evidence and authority. |
 | Evidence | Verified: generated session-start reconciles Engram with repository evidence, but no product contract implements a typed unfinished checkpoint. Owner-approved design: RH-W-0053 owns the exact checkpoint file and schema; writes require an explicit current request; discovery does not mutate; repository evidence and fresh authority precede resumption. |
-| Decision history | 2026-08-21: registered as proposed from the consolidated audit and placed first in the later review order. 2026-08-21: the same-day portfolio re-audit superseded that review order and placed this unit sixth overall, immediately after `RH-W-0051`, because it is `P1` and both declared dependencies are satisfied at that point. 2026-09-06: the owner approved the bilingual proposed design; status remains `proposed` and implementation remains separately unauthorized. |
-| Next advancement condition | Advance only after separate owner approval of an implementation plan and separate authorization to implement the approved checkpoint contract with focused evidence. |
+| Decision history | 2026-08-21: registered as proposed from the consolidated audit and placed first in the later review order. 2026-08-21: the same-day portfolio re-audit superseded that review order and placed this unit sixth overall, immediately after `RH-W-0051`, because it is `P1` and both declared dependencies are satisfied at that point. 2026-09-06: the owner approved the bilingual proposed design. 2026-09-07: the bilingual implementation plan was created as proposed, then the owner explicitly approved it as written; status remains `proposed` and implementation remains separately unauthorized. |
+| Next advancement condition | Separate authorization to implement the owner-approved checkpoint contract with focused evidence. |
 
 ### RH-W-0052
 | Field | Value |
