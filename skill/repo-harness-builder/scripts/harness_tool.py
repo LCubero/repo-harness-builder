@@ -1482,6 +1482,11 @@ def session_start_skill(
         if standalone
         else "Use at most two Engram reads capped at 10 observations each after explicit project resolution."
     )
+    checkpoint_reconciliation_bounds = (
+        "Checkpoint evidence/path reads and reconciliation work count within the existing RH-W-0050 bounds: at most 12 distinct local evidence paths, direct dependents capped at 8 records, and at most 20 commits touching owner paths. This adds no new limits."
+        if standalone
+        else "Checkpoint evidence/path reads and reconciliation work count within the existing RH-W-0050 bounds: at most 12 distinct local evidence paths, direct dependents capped at 8 records, at most 20 commits touching owner paths, and, when applicable, at most two Engram reads capped at 10 observations each. This adds no new limits."
+    )
     continuity_engram_step = (
         "4. In standalone mode, record the external-memory source as `not_applicable`; do not emulate it."
         if standalone
@@ -1523,7 +1528,7 @@ Use this exact read-only order:
 
 1. Validate the selected repository root.
 2. Read applicable repository owners, source, tests, Git, and checker evidence required by the objective.
-3. Resolve the guarded `.repo-harness/memory-bk/` directory. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree.
+3. First resolve `.repo-harness/memory-bk/` through the guarded root. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree.
 {continuity_engram_step}
 5. Read at most one older backup, and only for `newest_invalid`, `objective_names_backup`, `conflict_needs_chronology`, or `newest_lacks_relevant_continuity`.
 
@@ -1532,6 +1537,27 @@ Use this exact read-only order:
 - For every source, check every recalled claim against its current applicable repository owner. Report claims as `accepted`, `stale`, `conflicting`, `unavailable`, or `unverifiable`.
 - When repository evidence resolves a conflict, use repository evidence and report the conflict. When it cannot resolve a material conflict, ask one human decision question and do not choose a source.
 - Never merge continuity sources silently.
+
+## Interrupted-Operation Checkpoint Discovery
+
+- Complete the native repository-first continuity recovery first. Check only the exact `.repo-harness/state/checkpoints/active.md` path. Absence is `not_found`, not failure.
+- Reject non-regular, indirect, escaping, malformed, or project-mismatched input without following links.
+- Compare every material checkpoint claim with applicable current repository, Git, checker, lifecycle, and decision evidence. Current repository evidence wins over a checkpoint.
+- Classify the checkpoint as `usable`, `stale`, `contradictory`, `expired`, or `invalid`, and report the bounded reason. `usable` means only that the checkpoint can inform a resume proposal. `stale` means newer evidence exists and wins. `contradictory` means material claims disagree and current owners do not resolve the operational meaning. `invalid` covers unsafe path or schema failure.
+- Treat a checkpoint as logically expired when its objective completed, was abandoned, or was superseded; its project identity no longer matches; current evidence contradicts a material premise or shows the step settled; its lifecycle owner no longer permits the intent; or its path or structure is invalid. Age alone is advisory and never proves expiry.
+- An expired checkpoint remains untouched until an explicit authorized replacement or deletion action. No timer, scheduler, daemon, cleanup job, retention database, or automatic archival exists.
+- Startup discovery performs no write, deletion, archive, consumed mark, timestamp update, staging, or automatic continuation.
+
+## Checkpoint Resume Proposal
+
+- Reconstruct the smallest current objective from repository evidence and the usable checkpoint.
+- Re-verify completed facts and the interrupted step; do not rerun a step whose current completion is verified.
+- Reclassify remaining intent against current lifecycle, decisions, scope, dependencies, and repository state.
+- Discard stale checkpoint claims from the proposed route; preserve them only as reported non-authoritative evidence.
+- Ask one concrete question only when current human authority or a real product decision is required. Execute only after fresh authority covers the exact current action. Prior approvals, consent, digests, tokens, and session intent are never reused.
+- A stale, contradictory, expired, or invalid checkpoint cannot authorize or trigger work. No checkpoint grants implementation, mutation, Git, publication, receipt, or delivery authority.
+- A backup never becomes a checkpoint, a checkpoint never substitutes for the pause or close summary, and neither source copies the other. Native backups and optional external-memory continuity remain separate non-authoritative sources.
+- {checkpoint_reconciliation_bounds}
 
 ## Bounded Reconciliation
 
@@ -1691,6 +1717,39 @@ For every deliberate pause or close, use this exact local-first order:
 {backup_outcome_names}
 {local_backup_failure}
 {external_backup_outcomes}
+
+## Interrupted-Operation Checkpoint
+
+- Create or replace `.repo-harness/state/checkpoints/active.md` only after an explicit current human request to save the current incomplete operation as a checkpoint.
+- Interruption, pause, close, continuity authorization, an earlier approval, or implementation authority alone never authorizes checkpoint creation or replacement.
+- Create only `.repo-harness/state/checkpoints/` lazily for an authorized checkpoint write. Keep at most one `active.md`; create no checkpoint history or secondary index.
+- Use this exact structured Markdown shape:
+
+```markdown
+---
+schema_version: 1
+project: <stable repository project id>
+checkpoint_id: <bounded lowercase ASCII id>
+created_at_utc: <RFC 3339 UTC timestamp>
+objective: <one-line non-sensitive objective>
+step_state: not_started | started_unverified | failed
+resume_authority: required
+---
+
+# Incomplete Operational Checkpoint
+
+## Verified Completed Facts
+## Interrupted Step
+## Remaining Intent
+## Supported Inferences
+## Unknowns
+## Human Decisions Required
+## Relevant Files
+```
+
+- Empty sections contain `None.`. Record only current-evidence-supported completed facts, one interrupted action with bounded observed evidence, remaining intent rather than an authorization promise, supported inferences with their evidence and verification condition, and repository-relative regular paths.
+- Exclude secrets, credentials, tokens, cookies, private keys, connection strings, environment values, provider payloads, absolute paths, personal data, source excerpts, diffs, logs, stack traces, and test output. Omit unsafe detail as `unknown or unverifiable` rather than fabricating it.
+- Inspect the current regular-file bytes before replacement. Use a safe same-directory replacement that preserves the old file on failure. Structurally read back the replacement before reporting success.
 
 ## Post-Delivery Reconciliation
 
@@ -3599,9 +3658,7 @@ def generated_skill_paths(manifest: dict[str, Any]) -> set[str]:
         paths.add(path)
         for runtime in runtimes:
             require(runtime in RUNTIMES, "manifest ownership is unverifiable")
-            if runtime == "pi":
-                continue
-            base = ".opencode" if runtime == "opencode" else ".claude"
+            base = ".opencode" if runtime == "opencode" else ".pi" if runtime == "pi" else ".claude"
             paths.add(f"{base}/skills/{name}/SKILL.md")
     return paths
 

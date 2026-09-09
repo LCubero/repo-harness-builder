@@ -56,6 +56,39 @@ For every deliberate pause or close, use this exact local-first order:
 - Local backup success when both writes succeed and agree is `succeeded`.
 - Local backup success when both writes succeed but conflict is `degraded`.
 
+## Interrupted-Operation Checkpoint
+
+- Create or replace `.repo-harness/state/checkpoints/active.md` only after an explicit current human request to save the current incomplete operation as a checkpoint.
+- Interruption, pause, close, continuity authorization, an earlier approval, or implementation authority alone never authorizes checkpoint creation or replacement.
+- Create only `.repo-harness/state/checkpoints/` lazily for an authorized checkpoint write. Keep at most one `active.md`; create no checkpoint history or secondary index.
+- Use this exact structured Markdown shape:
+
+```markdown
+---
+schema_version: 1
+project: <stable repository project id>
+checkpoint_id: <bounded lowercase ASCII id>
+created_at_utc: <RFC 3339 UTC timestamp>
+objective: <one-line non-sensitive objective>
+step_state: not_started | started_unverified | failed
+resume_authority: required
+---
+
+# Incomplete Operational Checkpoint
+
+## Verified Completed Facts
+## Interrupted Step
+## Remaining Intent
+## Supported Inferences
+## Unknowns
+## Human Decisions Required
+## Relevant Files
+```
+
+- Empty sections contain `None.`. Record only current-evidence-supported completed facts, one interrupted action with bounded observed evidence, remaining intent rather than an authorization promise, supported inferences with their evidence and verification condition, and repository-relative regular paths.
+- Exclude secrets, credentials, tokens, cookies, private keys, connection strings, environment values, provider payloads, absolute paths, personal data, source excerpts, diffs, logs, stack traces, and test output. Omit unsafe detail as `unknown or unverifiable` rather than fabricating it.
+- Inspect the current regular-file bytes before replacement. Use a safe same-directory replacement that preserves the old file on failure. Structurally read back the replacement before reporting success.
+
 ## Post-Delivery Reconciliation
 
 - A meaningful stop follows repository mutation, verified delivery, lifecycle or next-ready correction, a retained finding, or a continuity write attempt. A non-meaningful stop returns `not_triggered` and creates no chronology or continuity noise.

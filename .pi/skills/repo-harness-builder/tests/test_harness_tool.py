@@ -1644,6 +1644,25 @@ class ApprovedGeneratedOutputReplacementTests(unittest.TestCase):
                 self.assertEqual(item["destinationSha256"], TOOL.digest_text(desired[item["path"]]))
                 self.assertEqual(item["planSha256"], digest)
 
+    def test_maintenance_preview_replaces_all_eight_manifest_owned_session_skills(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            installed = install(root, "Example", ("opencode", "claude-code", "pi"))
+            paths = {
+                f"{base}/skills/repo-harness-session-{session}/SKILL.md"
+                for base in (".repo-harness", ".claude", ".opencode", ".pi")
+                for session in ("start", "stop")
+            }
+            desired = dict(installed)
+            for path in paths:
+                desired[path] += "\nApproved generated update.\n"
+
+            plan = TOOL.plan_changes(root, desired)
+
+            self.assertEqual({item["path"] for item in plan["replace"]}, paths)
+            self.assertTrue(all(item["action"] == "replace-generated-output" for item in plan["replace"]))
+            self.assertFalse(paths & {item["path"] for item in plan["existing"]})
+
     def test_unowned_and_human_evolved_paths_remain_proposal_only(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -3242,6 +3261,168 @@ class GeneratedCoreTests(unittest.TestCase):
         ):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, stop)
+
+    def test_checkpoint_write_requires_explicit_current_human_request(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        for phrase in (
+            "## Interrupted-Operation Checkpoint",
+            "`.repo-harness/state/checkpoints/active.md`",
+            "explicit current human request",
+            "Interruption, pause, close, continuity authorization, an earlier approval, or implementation authority alone never authorizes checkpoint creation or replacement.",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, stop)
+
+    def test_checkpoint_schema_is_exact_and_bounded(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        schema_start = stop.index("```markdown\n---\n", stop.index("## Interrupted-Operation Checkpoint"))
+        schema_end = stop.index("\n```", schema_start) + len("\n```")
+        self.assertEqual(
+            stop[schema_start:schema_end],
+            """```markdown
+---
+schema_version: 1
+project: <stable repository project id>
+checkpoint_id: <bounded lowercase ASCII id>
+created_at_utc: <RFC 3339 UTC timestamp>
+objective: <one-line non-sensitive objective>
+step_state: not_started | started_unverified | failed
+resume_authority: required
+---
+
+# Incomplete Operational Checkpoint
+
+## Verified Completed Facts
+## Interrupted Step
+## Remaining Intent
+## Supported Inferences
+## Unknowns
+## Human Decisions Required
+## Relevant Files
+```""",
+        )
+        for phrase in (
+            "Empty sections contain `None.`",
+            "repository-relative regular paths",
+            "Exclude secrets, credentials, tokens, cookies, private keys, connection strings, environment values, provider payloads, absolute paths, personal data, source excerpts, diffs, logs, stack traces, and test output.",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, stop)
+
+    def test_checkpoint_replacement_is_safe_and_read_back(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        for phrase in (
+            "Create only `.repo-harness/state/checkpoints/` lazily for an authorized checkpoint write.",
+            "Inspect the current regular-file bytes before replacement.",
+            "Use a safe same-directory replacement that preserves the old file on failure.",
+            "Structurally read back the replacement before reporting success.",
+            "Keep at most one `active.md`; create no checkpoint history or secondary index.",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, stop)
+
+    def test_checkpoint_discovery_is_exact_read_only_and_non_continuing(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        ordered = (
+            "Read applicable repository owners, source, tests, Git, and checker evidence",
+            "resolve `.repo-harness/memory-bk/`",
+            "Read scoped Engram context when available",
+            "Check only the exact `.repo-harness/state/checkpoints/active.md` path.",
+        )
+        positions = [start.index(phrase) for phrase in ordered]
+        self.assertEqual(positions, sorted(positions))
+        for phrase in (
+            "## Interrupted-Operation Checkpoint Discovery",
+            "Absence is `not_found`, not failure.",
+            "Reject non-regular, indirect, escaping, malformed, or project-mismatched input without following links.",
+            "Startup discovery performs no write, deletion, archive, consumed mark, timestamp update, staging, or automatic continuation.",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, start)
+
+    def test_checkpoint_discovery_classifies_all_outcomes(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        for phrase in (
+            "Classify the checkpoint as `usable`, `stale`, `contradictory`, `expired`, or `invalid`, and report the bounded reason.",
+            "`usable` means only that the checkpoint can inform a resume proposal.",
+            "`stale` means newer evidence exists and wins.",
+            "`contradictory` means material claims disagree and current owners do not resolve the operational meaning.",
+            "`invalid` covers unsafe path or schema failure.",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, start)
+
+    def test_checkpoint_expiry_is_semantic_and_never_deletes(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        for phrase in (
+            "Treat a checkpoint as logically expired when its objective completed, was abandoned, or was superseded; its project identity no longer matches; current evidence contradicts a material premise or shows the step settled; its lifecycle owner no longer permits the intent; or its path or structure is invalid.",
+            "Age alone is advisory and never proves expiry.",
+            "An expired checkpoint remains untouched until an explicit authorized replacement or deletion action.",
+            "No timer, scheduler, daemon, cleanup job, retention database, or automatic archival exists.",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, start)
+
+    def test_checkpoint_resume_reverifies_current_evidence_and_authority(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        for phrase in (
+            "## Checkpoint Resume Proposal",
+            "Reconstruct the smallest current objective from repository evidence and the usable checkpoint.",
+            "Re-verify completed facts and the interrupted step; do not rerun a step whose current completion is verified.",
+            "Reclassify remaining intent against current lifecycle, decisions, scope, dependencies, and repository state.",
+            "Discard stale checkpoint claims from the proposed route; preserve them only as reported non-authoritative evidence.",
+            "Ask one concrete question only when current human authority or a real product decision is required.",
+            "Execute only after fresh authority covers the exact current action.",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, start)
+
+    def test_checkpoint_never_reuses_approval_or_grants_delivery(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        for phrase in (
+            "Prior approvals, consent, digests, tokens, and session intent are never reused.",
+            "No checkpoint grants implementation, mutation, Git, publication, receipt, or delivery authority.",
+            "A stale, contradictory, expired, or invalid checkpoint cannot authorize or trigger work.",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, start)
+
+    def test_checkpoint_contract_stays_separate_from_continuity_and_subsystems(self):
+        for standalone in (False, True):
+            outputs = TOOL.render("Example", [], standalone=standalone)
+            start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+            stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+            checkpoint_contract = start[
+                start.index("## Interrupted-Operation Checkpoint Discovery"):
+                start.index("## Bounded Reconciliation")
+            ].lower()
+            with self.subTest(standalone=standalone):
+                self.assertIn("A backup never becomes a checkpoint, a checkpoint never substitutes for the pause or close summary, and neither source copies the other.", start)
+                self.assertIn("Native backups and optional external-memory continuity remain separate non-authoritative sources.", start)
+                self.assertIn("No timer, scheduler, daemon, cleanup job, retention database, or automatic archival exists.", start)
+                self.assertIn("Keep at most one `active.md`; create no checkpoint history or secondary index.", stop)
+                for forbidden in (
+                    "generic parsing",
+                    "checkpoint service",
+                    "checkpoint ledger",
+                    "checkpoint cache",
+                    "generic parser service",
+                    "global checkpoint state",
+                    "workflow engine",
+                    "duplicate memory",
+                    "conflict store",
+                    "receipt store",
+                    "delivery store",
+                ):
+                    with self.subTest(forbidden=forbidden):
+                        self.assertNotIn(forbidden, checkpoint_contract)
+
+    def test_checkpoint_reads_and_reconciliation_count_within_existing_rh_w_0050_bounds(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        self.assertIn(
+            "Checkpoint evidence/path reads and reconciliation work count within the existing RH-W-0050 bounds: at most 12 distinct local evidence paths, direct dependents capped at 8 records, at most 20 commits touching owner paths, and, when applicable, at most two Engram reads capped at 10 observations each. This adds no new limits.",
+            start,
+        )
 
     def test_session_start_requires_repository_first_bounded_continuity_read(self):
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
