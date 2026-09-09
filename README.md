@@ -45,7 +45,7 @@ With no operation, the builder performs a read-only audit. It does not initializ
 - Complete English durable documentation under `docs/repo-harness/`.
 - Runtime-neutral session and documentation skills under `.repo-harness/skills/`, plus canonical command peers under `.repo-harness/commands/` and `.repo-harness/prompts/` for emitted surface families.
 - Selected Claude Code, OpenCode, or Pi runtime projections.
-- `.repo-harness/check.py` for read-only projection drift checks.
+- `.repo-harness/check.py` for ordinary read-only projection drift checks (`writes: 0`); only explicit `repair --apply --approved-plan-sha256 <digest>` may create missing-local projections.
 - One exact root `.gitignore` directive, `.codegraph/`, unless explicitly disabled.
 - Root `.gitattributes` with exact LF protection for every byte-compared generated path.
 
@@ -58,7 +58,7 @@ A harness is English-only unless you declare more documentation locales. See [Do
 | `CHANGELOG.md` | A dated record of meaningful completed changes, separate from current and future work. |
 | Session continuity | Required structured local backups under `.repo-harness/memory-bk/`, plus optional Engram continuity when available; repository evidence remains authoritative. |
 | Runtime projections | Thin Claude Code, OpenCode, or Pi surfaces generated from canonical skills and family-specific command peers. |
-| `.repo-harness/check.py` | A read-only congruence check that detects missing or stale skill, command, and prompt projections. |
+| `.repo-harness/check.py` | An ordinary read-only congruence check that reports `writes: 0`; only explicit `repair --apply --approved-plan-sha256 <digest>` may create missing-local projections. |
 
 ## Builder And Generated Skills
 <!-- doc-role:skills -->

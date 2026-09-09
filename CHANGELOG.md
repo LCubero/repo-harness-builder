@@ -6,6 +6,10 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-09
 
+- Reopened RH-W-0048 from completed to proposed only for mutability-contract reconciliation and independent re-verification. Issue #173 is OPEN with title `Implement explicit RH-W-0048 runtime projection repair` and labels `status:approved`, `type:feature`; no commit, push, PR, merge, or delivery is claimed.
+
+- Recorded the owner's explicit approval of the existing bilingual RH-W-0048 implementation plan. The plan approval history remains distinct from the later separately authorized local implementation.
+
 - Delivered `RH-W-0053` through issue #170 and PR #171, squash-merged as `c7290fcf6c703df0839699a9cb8b77686bf18e74`. The prior 2026-09-08 no-delivery statement describes the implementation-record stage only; the completed lifecycle, bounded scope, RED/GREEN, projection, checker, and Pi ownership-correction evidence remain unchanged. Runtime registered-name freshness remains unverified.
 
 ## 2026-09-08

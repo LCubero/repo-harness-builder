@@ -1,6 +1,6 @@
 # Diseño RH-W-0048 de recuperación de proyecciones de runtime
 
-> **Estado: DISEÑO APROBADO POR EL PROPIETARIO. RH-W-0048 permanece `proposed`; el plan de implementación y la implementación requieren autorizaciones separadas.**
+> **Estado: PROPUESTO (reabierto).** El diseño aprobado y la implementación autorizada por separado permanecen como evidencia histórica. El único trabajo restante es reconciliar el contrato de mutabilidad y volver a verificar de forma independiente. La revisión nativa no está disponible porque falta el binario local del paquete, por lo que no existe linaje; eso no es un veredicto. La entrega permanece separada y sin realizar.
 
 ## Decisión
 
@@ -75,4 +75,4 @@ Para proyecciones solo locales, el render futuro omite reglas nuevas de `.gitatt
 
 ## Ciclo de vida y decisiones humanas
 
-RH-W-0048 permanece `proposed`. El propietario aprobó este diseño después de la revisión técnica delegada y la revisión directa del padre. Resuelve comando, señal rastreada, autoridad, fuente, conjunto, clasificaciones, preservación, transacción, límite con update, `.gitattributes`, paridad y resultados. La aprobación no autoriza plan de implementación ni implementación.
+RH-W-0048 está `proposed`, reabierta solo para reconciliar el contrato de mutabilidad y volver a verificar de forma independiente. El propietario aprobó este diseño después de la revisión técnica delegada y la revisión directa del padre; la implementación autorizada por separado permanece como evidencia histórica completada. Resuelve comando, señal rastreada, autoridad, fuente, conjunto, clasificaciones, preservación, transacción, límite con update, `.gitattributes`, paridad y resultados. La evidencia histórica de verificación es 536 pruebas con 9 omitidas; checker `current` con 63 proyecciones y `writes: 0`; paridad de paquetes canónico, Claude Code, OpenCode y Pi; y verificación independiente sin hallazgos. La revisión nativa no está disponible porque falta el binario local del paquete, por lo que no existe linaje; eso no es un veredicto. Commit, push, PR, entrega, publicación, release y red permanecen separados, no autorizados y sin realizar.

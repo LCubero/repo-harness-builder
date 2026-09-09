@@ -1,6 +1,6 @@
 # RH-W-0048 Runtime Projection Recovery Design
 
-> **Status: OWNER-APPROVED DESIGN. RH-W-0048 remains proposed; implementation planning and implementation are separately unauthorized.**
+> **Status: PROPOSED (reopened).** The owner-approved design and separately authorized implementation remain historical evidence. The only remaining work is mutability-contract reconciliation and independent re-verification. Native review is unavailable because the package-local binary is missing, so no lineage exists; that is not a verdict. Delivery remains separate and unperformed.
 
 ## Decision
 
@@ -75,4 +75,4 @@ For local-only projections, future rendering omits new `.gitattributes` rules be
 
 ## Lifecycle And Human Decisions
 
-RH-W-0048 remains `proposed`. The owner approved this design after delegated technical review and the parent's direct review. It resolves the command name, tracked signal, authority, source, recoverable set, classifications, preservation, transaction, update boundary, `.gitattributes` policy, runtime-parity limit, and result semantics. Approval does not authorize an implementation plan or implementation.
+RH-W-0048 is `proposed`, reopened only for mutability-contract reconciliation and independent re-verification. The owner approved this design after delegated technical review and the parent's direct review; separately authorized implementation remains completed historical evidence. It resolves the command name, tracked signal, authority, source, recoverable set, classifications, preservation, transaction, update boundary, `.gitattributes` policy, runtime-parity limit, and result semantics. Historical verification evidence is 536 tests with 9 skipped; checker `current` with 63 projections and `writes: 0`; canonical, Claude Code, OpenCode, and Pi package parity; and independent verification without findings. Native review is unavailable because the package-local binary is missing, so no lineage exists; that is not a verdict. Commit, push, PR, delivery, publication, release, and network remain separately unauthorized and unperformed.

@@ -4,6 +4,10 @@
 
 ## 2026-09-09
 
+- Se reabrió RH-W-0048 de completada a propuesta solo para reconciliar el contrato de mutabilidad y volver a verificar de forma independiente. El issue #173 está OPEN con título `Implement explicit RH-W-0048 runtime projection repair` y etiquetas `status:approved`, `type:feature`; no se afirma commit, push, PR, merge ni entrega.
+
+- Se registró la aprobación explícita del propietario del plan de implementación bilingüe RH-W-0048 existente. El historial de aprobación del plan permanece separado de la implementación local autorizada posteriormente.
+
 - Se entregó `RH-W-0053` mediante issue #170 y PR #171, fusionado por squash como `c7290fcf6c703df0839699a9cb8b77686bf18e74`. La afirmación previa del 2026-09-08 sin entrega describe solo la etapa del registro de implementación; el ciclo completado, alcance acotado y evidencia RED/GREEN, de proyecciones, checker y corrección de propiedad de Pi permanecen sin cambios. La frescura de nombres registrados de runtime sigue sin verificar.
 
 ## 2026-09-08

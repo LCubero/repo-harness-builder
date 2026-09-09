@@ -6957,7 +6957,17 @@ class GeneratedCheckScriptTests(unittest.TestCase):
 
     @unittest.skipIf(os.environ.get(CHILD_SUITE_ENV), "requires the reciprocal source repository")
     def test_detects_missing_builder_package_file_and_stale_pi_builder_prompt(self):
-        repository = ROOT.parents[1]
+        repository = next(
+            (
+                candidate
+                for candidate in (ROOT, *ROOT.parents)
+                if (candidate / "skill/repo-harness-builder").is_dir()
+                and (candidate / "command/repo-harness-builder.md").is_file()
+            ),
+            None,
+        )
+        if repository is None:
+            self.skipTest("requires the reciprocal source repository")
         render_repository = getattr(TOOL, "render_repository", None)
         self.assertIsNotNone(render_repository, "self-hosted projection drift needs a root-aware renderer")
 
@@ -6987,6 +6997,328 @@ class GeneratedCheckScriptTests(unittest.TestCase):
             root = Path(directory)
             install(root, runtimes=("opencode",))
             self.assertEqual(self.loaded(root).check_projections(root)["status"], "current")
+
+    def declared_projection_targets(self, root: Path) -> set[str]:
+        """Derive the recoverable runtime targets from the authenticated declaration."""
+        manifest = json.loads((root / TOOL.MANIFEST_PATH).read_text(encoding="utf-8"))
+        targets: set[str] = set()
+        for name in manifest["canonicalSkills"]:
+            for runtime in manifest["runtimes"]:
+                targets.add(self.loaded(root).SKILL_SURFACES[runtime].format(name=name))
+        for name, families in manifest["canonicalCommands"].items():
+            for family in families:
+                for runtime in manifest["runtimes"]:
+                    surface_family, surface = self.loaded(root).COMMAND_SURFACES[runtime]
+                    if surface_family == family:
+                        targets.add(surface.format(name=name))
+        for runtime_targets in manifest.get("canonicalProjections", {}).values():
+            targets.update(runtime_targets.values())
+        return targets
+
+    def run_repair(self, root: Path, *arguments: str):
+        return subprocess.run(
+            [sys.executable, "-B", str(root / ".repo-harness" / "check.py"), "repair", *arguments],
+            cwd=root,
+            capture_output=True,
+            text=True,
+        )
+
+    def test_plain_check_remains_read_only_when_repair_is_available(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = install(root, runtimes=self.RUNTIMES)
+            before = {path: (root / path).read_bytes() for path in outputs}
+            result = subprocess.run(
+                [sys.executable, "-B", str(root / ".repo-harness" / "check.py")],
+                cwd=root,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual({path: (root / path).read_bytes() for path in outputs}, before)
+            payload = json.loads(result.stdout)
+            self.assertEqual(payload["status"], "current")
+            self.assertEqual(payload["writes"], 0)
+            self.assertNotIn("repair", payload)
+
+    def test_repair_preview_derives_missing_local_targets_from_authenticated_manifest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=self.RUNTIMES)
+            targets = self.declared_projection_targets(root)
+            self.assertTrue(targets)
+            missing = sorted(targets)[::max(1, len(targets) // 3)]
+            for relative in missing:
+                (root / relative).unlink()
+            result = self.run_repair(root)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            payload = json.loads(result.stdout)
+            states = {item["path"]: item["state"] for item in payload["files"]}
+            self.assertEqual(set(states), targets)
+            self.assertEqual({path for path, state in states.items() if state == "missing-local"}, set(missing))
+            self.assertEqual(payload["create"], missing)
+            self.assertEqual(payload["writes"], 0)
+            self.assertEqual(len(payload["planSha256"]), 64)
+            self.assertEqual(payload["exclusions"], [])
+            self.assertTrue(all(not (root / relative).exists() for relative in missing))
+
+    def test_repair_reports_missing_tracked_and_preserves_stale_targets(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("opencode",))
+            targets = sorted(self.declared_projection_targets(root))
+            local_missing, tracked_missing, stale = targets[:3]
+            subprocess.run(("git", "init", "-q", str(root)), check=True, capture_output=True, text=True)
+            subprocess.run(("git", "-C", str(root), "add", "--", tracked_missing), check=True, capture_output=True, text=True)
+            (root / local_missing).unlink()
+            (root / tracked_missing).unlink()
+            stale_bytes = b"human-evolved runtime bytes\n"
+            (root / stale).write_bytes(stale_bytes)
+            result = self.run_repair(root)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            payload = json.loads(result.stdout)
+            states = {item["path"]: item["state"] for item in payload["files"]}
+            self.assertEqual(states[local_missing], "missing-local")
+            self.assertEqual(states[tracked_missing], "missing-tracked")
+            self.assertEqual(states[stale], "stale")
+            self.assertEqual(payload["create"], [local_missing])
+            self.assertEqual((root / stale).read_bytes(), stale_bytes)
+            self.assertFalse((root / tracked_missing).exists())
+            exclusions = {item["path"]: item["reason"] for item in payload["exclusions"]}
+            self.assertTrue(exclusions[tracked_missing])
+            self.assertTrue(exclusions[stale])
+            self.assertTrue(all(str(root) not in reason for reason in exclusions.values()))
+
+    def test_repair_apply_reports_partial_when_creation_coexists_with_limitations(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("opencode",))
+            local_missing, tracked_missing, stale = sorted(self.declared_projection_targets(root))[:3]
+            subprocess.run(("git", "init", "-q", str(root)), check=True, capture_output=True, text=True)
+            subprocess.run(("git", "-C", str(root), "add", "--", tracked_missing), check=True, capture_output=True, text=True)
+            (root / local_missing).unlink()
+            (root / tracked_missing).unlink()
+            stale_bytes = b"human-evolved runtime bytes\n"
+            (root / stale).write_bytes(stale_bytes)
+
+            preview = json.loads(self.run_repair(root).stdout)
+            result = self.run_repair(root, "--apply", "--approved-plan-sha256", preview["planSha256"])
+
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            payload = json.loads(result.stdout)
+            self.assertEqual(payload["status"], "partial")
+            self.assertNotEqual(payload["status"], "recovered")
+            self.assertEqual(payload["created"], [local_missing])
+            self.assertEqual(payload["skipped"], [tracked_missing])
+            self.assertEqual(payload["refused"], [stale])
+            self.assertEqual(payload["limitations"], [tracked_missing, stale])
+            self.assertEqual(payload["postCheck"][tracked_missing], "missing-tracked")
+            self.assertEqual(payload["postCheck"][stale], "stale")
+            self.assertEqual((root / stale).read_bytes(), stale_bytes)
+
+    def test_repair_preflight_classifies_every_target_when_canonical_is_missing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=self.RUNTIMES)
+            manifest = json.loads((root / TOOL.MANIFEST_PATH).read_text(encoding="utf-8"))
+            name, canonical = next(iter(sorted(manifest["canonicalSkills"].items())))
+            expected_targets = {
+                self.loaded(root).SKILL_SURFACES[runtime].format(name=name)
+                for runtime in manifest["runtimes"]
+            }
+            (root / canonical).unlink()
+
+            payload = self.loaded(root).repair(root)
+            states = {item["path"]: item["state"] for item in payload["files"]}
+            exclusions = {item["path"]: item["reason"] for item in payload["exclusions"]}
+
+            self.assertTrue(expected_targets <= set(states))
+            self.assertEqual({states[path] for path in expected_targets}, {"canonical-missing"})
+            self.assertTrue(all(exclusions[path] for path in expected_targets))
+            self.assertEqual(payload["create"], [])
+
+    def test_directory_canonical_source_is_damaged_not_canonical_missing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=self.RUNTIMES)
+            manifest = json.loads((root / TOOL.MANIFEST_PATH).read_text(encoding="utf-8"))
+            name, canonical = next(iter(sorted(manifest["canonicalSkills"].items())))
+            expected_targets = {
+                self.loaded(root).SKILL_SURFACES[runtime].format(name=name)
+                for runtime in manifest["runtimes"]
+            }
+            (root / canonical).unlink()
+            (root / canonical).mkdir()
+
+            checked = self.loaded(root).check_projections(root)
+            payload = self.loaded(root).repair(root)
+            states = {item["path"]: item["state"] for item in payload["files"]}
+            exclusions = {item["path"]: item["reason"] for item in payload["exclusions"]}
+
+            self.assertEqual(
+                [item["state"] for item in checked["files"] if item["path"] == canonical],
+                ["damaged"],
+            )
+            self.assertEqual({states[path] for path in expected_targets}, {"damaged"})
+            self.assertTrue(all(exclusions[path] for path in expected_targets))
+            self.assertEqual(payload["create"], [])
+
+    def test_repair_classifies_damaged_source_and_target_without_creation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("opencode",))
+            manifest = json.loads((root / TOOL.MANIFEST_PATH).read_text(encoding="utf-8"))
+            skill_name, canonical = next(iter(sorted(manifest["canonicalSkills"].items())))
+            damaged_source_target = self.loaded(root).SKILL_SURFACES["opencode"].format(name=skill_name)
+            (root / canonical).write_bytes(b"\xff")
+            target = next(
+                path for path in sorted(self.declared_projection_targets(root)) if path != damaged_source_target
+            )
+            (root / target).unlink()
+            (root / target).mkdir()
+
+            payload = self.loaded(root).repair(root)
+            states = {item["path"]: item["state"] for item in payload["files"]}
+            exclusions = {item["path"]: item["reason"] for item in payload["exclusions"]}
+
+            self.assertEqual(states[damaged_source_target], "damaged")
+            self.assertEqual(states[target], "damaged")
+            self.assertTrue(exclusions[damaged_source_target])
+            self.assertTrue(exclusions[target])
+            self.assertNotIn(damaged_source_target, payload["create"])
+            self.assertNotIn(target, payload["create"])
+
+    def test_repair_plan_digest_independently_binds_manifest_and_expected_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("pi",))
+            target = sorted(self.declared_projection_targets(root))[0]
+            (root / target).unlink()
+
+            module = self.loaded(root)
+            preview = module.repair_preflight(root)
+            binding = {
+                "manifestSha256": hashlib.sha256((root / TOOL.MANIFEST_PATH).read_bytes()).hexdigest(),
+                "create": [
+                    {"path": path, "sha256": hashlib.sha256(preview["_expected"][path]).hexdigest()}
+                    for path in sorted(preview["_expected"])
+                ],
+            }
+            independently_recomputed = hashlib.sha256(
+                json.dumps(binding, sort_keys=True, separators=(",", ":")).encode("utf-8")
+            ).hexdigest()
+
+            self.assertEqual(preview["planSha256"], independently_recomputed)
+
+    def test_repair_rolls_back_file_created_before_close_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("opencode",))
+            module = self.loaded(root)
+            target = sorted(self.declared_projection_targets(root))[0]
+            (root / target).unlink()
+            preview = module.repair(root)
+            original_fdopen = module.os.fdopen
+
+            class FailingClose:
+                def __init__(self, descriptor, mode):
+                    self.handle = original_fdopen(descriptor, mode)
+
+                def __enter__(self):
+                    return self.handle
+
+                def __exit__(self, exc_type, exc_value, traceback):
+                    self.handle.flush()
+                    self.handle.close()
+                    raise OSError("close failed after exclusive creation")
+
+            with mock.patch.object(module.os, "fdopen", side_effect=FailingClose):
+                result = module.repair(root, apply=True, approved_plan_sha256=preview["planSha256"])
+
+            self.assertEqual(result["status"], "failed")
+            self.assertEqual(result["rollback"], {target: "removed"})
+            self.assertFalse((root / target).exists())
+            self.assertEqual(result["writes"], 1)
+
+    def test_repair_apply_requires_current_preview_digest_and_rechecks_preflight(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("pi",))
+            target = sorted(self.declared_projection_targets(root))[0]
+            (root / target).unlink()
+            preview = self.run_repair(root)
+            self.assertEqual(preview.returncode, 0, preview.stdout + preview.stderr)
+            preview_payload = json.loads(preview.stdout)
+            self.assertEqual(preview_payload["writes"], 0)
+            self.assertEqual(len(preview_payload["manifestSha256"]), 64)
+            self.assertEqual(preview_payload["create"], [target])
+            (root / target).parent.mkdir(parents=True, exist_ok=True)
+            (root / target).write_bytes(b"changed after preview\n")
+            refused = self.run_repair(
+                root, "--apply", "--approved-plan-sha256", preview_payload["planSha256"]
+            )
+            self.assertNotEqual(refused.returncode, 0)
+            self.assertIn("plan", refused.stderr.lower())
+            self.assertEqual((root / target).read_bytes(), b"changed after preview\n")
+            (root / target).unlink()
+            current = json.loads(self.run_repair(root).stdout)
+            applied = self.run_repair(root, "--apply", "--approved-plan-sha256", current["planSha256"])
+            self.assertEqual(applied.returncode, 0, applied.stdout + applied.stderr)
+            payload = json.loads(applied.stdout)
+            self.assertEqual(payload["created"], [target])
+            self.assertEqual(payload["rollback"], {})
+            self.assertEqual(payload["postCheck"][target], "current")
+            self.assertEqual(payload["writes"], 1)
+
+    def test_repair_creates_only_dynamic_missing_local_targets_and_post_checks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=self.RUNTIMES)
+            targets = sorted(self.declared_projection_targets(root))
+            for relative in targets:
+                (root / relative).unlink()
+            preview = self.run_repair(root)
+            self.assertEqual(preview.returncode, 0, preview.stdout + preview.stderr)
+            plan = json.loads(preview.stdout)
+            self.assertEqual(plan["create"], targets)
+            applied = self.run_repair(root, "--apply", "--approved-plan-sha256", plan["planSha256"])
+            self.assertEqual(applied.returncode, 0, applied.stdout + applied.stderr)
+            payload = json.loads(applied.stdout)
+            self.assertEqual(payload["created"], targets)
+            self.assertEqual(payload["current"], [])
+            self.assertEqual(payload["skipped"], [])
+            self.assertEqual(payload["refused"], [])
+            self.assertEqual(payload["postCheck"], {relative: "current" for relative in targets})
+            self.assertEqual(payload["runtimeReload"], "unverified")
+            self.assertTrue(all((root / relative).is_file() for relative in targets))
+
+    def test_repair_rolls_back_only_unchanged_files_created_by_that_invocation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, runtimes=("opencode",))
+            targets = sorted(self.declared_projection_targets(root))[:2]
+            for relative in targets:
+                (root / relative).unlink()
+            module = self.loaded(root)
+            preview = module.repair(root)
+            calls = 0
+            original = module.write_exclusive
+
+            def change_second_creation(path, expected, registered):
+                nonlocal calls
+                calls += 1
+                original(path, expected, registered)
+                if calls == 2:
+                    path.write_bytes(b"changed during repair\n")
+
+            with mock.patch.object(module, "write_exclusive", side_effect=change_second_creation):
+                result = module.repair(root, apply=True, approved_plan_sha256=preview["planSha256"])
+            self.assertEqual(result["status"], "failed")
+            self.assertEqual(result["created"], [targets[0]])
+            self.assertEqual(result["rollback"][targets[0]], "removed")
+            self.assertEqual(result["rollback"][targets[1]], "preserved-changed")
+            self.assertFalse((root / targets[0]).exists())
+            self.assertEqual((root / targets[1]).read_bytes(), b"changed during repair\n")
 
     def test_check_script_writes_nothing(self):
         with tempfile.TemporaryDirectory() as directory:
