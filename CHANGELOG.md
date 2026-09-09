@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-08
+
+- Reconciled the verified local `RH-W-0072` ecosystem-alignment documentation continuation across English canonical owners and Spanish peers. It corrected current Gentle AI delivery ownership wording and clarified that the historical RH-W-0054 builder preview/apply authority remains RH-W-0054 without renaming it. Verification recorded 513 tests OK with 9 skipped, checker `current` with 0 writes, and `git diff --check` clean except non-failing CRLF/LF warnings on the two research working-copy files; independent follow-up found no candidate-caused findings. RH-W-0072 remains `proposed` with its remaining work unchanged. No staging, commit, push, Git delivery, publication, or network action was authorized or performed.
+
 ## 2026-09-07
 
 - Completed the reopened `RH-W-0031` lifecycle after independent verification and explicit owner closure authorization. Session-start now reapplies the conversation-language rule at response composition and rejects wrappers, task names, command text, and ordinary prose as verified human switch instructions. No reliable RED receipt exists, so no RED is claimed. The canonical suite passed 513 tests with 9 skips; the checker reported `current` with 0 writes; Gentle AI review lineage `review-f1fc2d80510d8949` was acknowledged and its authority burned. No Git delivery, staging, commit, push, publication, or network action was authorized or performed.

@@ -19,7 +19,7 @@ El harness conserva su utilidad por si solo. El modo integrado predeterminado co
 | Componente | Limite |
 |---|---|
 | `repo-harness` | Guia operativa acotada al repositorio y verdad durable del proyecto para agentes de programacion con IA compatibles. |
-| Gentle AI | Un ecosistema mas amplio para agentes de IA que puede proporcionar enrutamiento, revision, recibos y puertas de entrega. |
+| Gentle AI | Un ecosistema más amplio para agentes de IA que puede proporcionar enrutamiento, revisión del candidato exacto, recibos y corrección acotada de la revisión; la política del repositorio es responsable de commits, pushes, PR y releases. |
 | Engram | Memoria semantica y continuidad entre sesiones. Nunca reemplaza la verdad del repositorio. |
 | CodeGraph | El componente mas opcional: una ayuda local al repositorio para ubicar archivos, simbolos, relaciones e impacto. No es un almacen de autoridad. |
 

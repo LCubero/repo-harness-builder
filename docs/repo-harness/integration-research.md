@@ -25,7 +25,7 @@ Generated consumer harnesses remain generic and never mention improving `repo-ha
 | Concern | Authority | Harness responsibility |
 |---|---|---|
 | Durable policy, current truth, source, tests, and backlog | Repository | Reconcile evidence and update its canonical owners |
-| Routing, exact-candidate review, receipts, and delivery gates | Gentle AI when enabled | Invoke and relay owner-issued status without copying it |
+| Routing, exact-candidate review, receipts, and bounded review correction | Gentle AI when enabled | Invoke and relay owner-issued status without copying it |
 | Semantic observations, relations, stale-state metadata, and session continuity | Engram | Retrieve or save context, then reconcile claims with repository evidence |
 | Capability composition | Harness | Select a valid branch without persisting another lifecycle |
 
@@ -33,7 +33,7 @@ Generated consumer harnesses remain generic and never mention improving `repo-ha
 
 | Gentle AI | Engram | Required behavior |
 |---|---|---|
-| Available | Available | Repository policy remains primary; use Engram for continuity and Gentle AI for applicable owner-controlled routing, review, and delivery |
+| Available | Available | Repository policy remains primary and owns commit, push, PR, and release; use Engram for continuity and Gentle AI for applicable owner-controlled routing, exact-candidate review, receipts, and bounded review correction |
 | Available | Unavailable | Use repository evidence and Gentle AI contracts; report continuity degradation |
 | Unavailable | Available | Use Engram continuity under repository policy; never infer Gentle AI approval |
 | Unavailable | Unavailable | Work from repository evidence alone; report unavailable integration capabilities without blocking ordinary work unless local policy requires them |
@@ -67,7 +67,7 @@ Engram observations and session summaries are continuity inputs, not durable tea
 
 - Missing or contradictory repository authority blocks the affected work or requires a decision.
 - Engram failure degrades continuity only; never claim recovery or persistence succeeded.
-- Gentle AI absent or disabled defers to repository policy and leaves its review or delivery capability unmanaged.
+- Gentle AI absent or disabled defers to repository policy; only its routing, exact-candidate review, receipts, and bounded review correction become unavailable or unmanaged, while repository policy continues to own delivery.
 - Malformed owner status stops that optional branch with exact evidence; the harness must not reconstruct authority.
 - Stale memory must be labeled and verified. Marking it reviewed requires explicit confirmation.
 - Pending memory conflict remains component-scoped and follows Engram's judgment gates.

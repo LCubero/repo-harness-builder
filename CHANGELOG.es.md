@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-08
+
+- Se reconcilio la continuacion documental local y verificada de alineacion del ecosistema RH-W-0072 entre propietarios canonicos en ingles y pares en espanol. Corrigio la redaccion vigente sobre la propiedad de entrega de Gentle AI y aclaro que la autoridad historica de preview/apply del builder de RH-W-0054 sigue siendo RH-W-0054 sin renombrarla. La verificacion registro 513 pruebas OK con 9 omitidas, checker `current` con 0 escrituras y `git diff --check` limpio salvo advertencias CRLF/LF no fallidas en los dos archivos de investigacion del working copy; el seguimiento independiente no encontro hallazgos causados por el candidato. RH-W-0072 sigue `proposed` con su trabajo restante sin cambios. No se autorizaron ni realizaron staging, commit, push, entrega Git, publicacion ni acceso de red.
+
 ## 2026-09-07
 
 - Se completo el ciclo reabierto de `RH-W-0031` tras verificacion independiente y autorizacion explicita del propietario para cerrarlo. Session-start vuelve a aplicar la regla del idioma de conversacion al redactar la respuesta y rechaza wrappers, nombres de tarea, texto de comandos y prosa ordinaria como instrucciones humanas verificadas de cambio. No existe un recibo RED fiable, por lo que no se afirma RED. La suite canonica paso 513 pruebas con 9 omisiones; el checker informo `current` con 0 escrituras; el linaje de revision Gentle AI `review-f1fc2d80510d8949` fue reconocido y su autoridad quedo consumida. No se autorizaron ni realizaron entrega Git, staging, commit, push, publicacion ni acceso de red.

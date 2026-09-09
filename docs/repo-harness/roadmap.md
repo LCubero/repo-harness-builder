@@ -798,6 +798,8 @@ Delivered bounded correction, [issue #163](https://github.com/LCubero/repo-harne
 
 Delivered continuation: PR #165, local commit `4cdaa9ed89551c0738af1f3ff280c94ca3d2d9f7`, corrected builder versus installed generated-checker states and coverage in `preservation-and-safety.md` and `validation.md`, synchronized runtime copies, and reconciled bilingual tracking. Local Git proves inclusion; the supplied delivery evidence identifies the PR, without a new network check. No implementation, verification, or review of that delivered subset remains pending here. The inventory below is historical 2026-08-25/26 evidence; neither PR #164 nor PR #165 completes RH-W-0072.
 
+Local ecosystem-alignment continuation, not delivered: corrected current Gentle AI delivery ownership wording and clarified that the historical RH-W-0054 builder preview/apply authority remains RH-W-0054, without renaming it. Verification recorded 513 tests OK with 9 skipped; checker `current` with 0 writes; `git diff --check` clean except non-failing CRLF/LF warnings on the two research working-copy files; and independent follow-up found no candidate-caused findings. RH-W-0072 remains `proposed` with its remaining work unchanged. No staging, commit, push, Git delivery, or network action was authorized or performed.
+
 | Field | Value |
 |---|---|
 | Origin | Read-only repository review on 2026-08-25 found product-facing documentation describing behavior the shipped product no longer has, and omitting surfaces it now generates. |

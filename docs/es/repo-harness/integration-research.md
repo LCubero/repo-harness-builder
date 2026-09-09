@@ -25,7 +25,7 @@ Los harnesses generados para repositorios consumidores permanecen genéricos y n
 | Asunto | Autoridad | Responsabilidad del harness |
 |---|---|---|
 | Política durable, verdad actual, fuente, pruebas y backlog | Repositorio | Reconciliar evidencia y actualizar sus propietarios canónicos |
-| Enrutamiento, revisión del candidato exacto, recibos y compuertas de entrega | Gentle AI cuando está habilitado | Invocar y transmitir el estado emitido por el propietario sin copiarlo |
+| Enrutamiento, revisión del candidato exacto, recibos y corrección acotada de la revisión | Gentle AI cuando está habilitado | Invocar y transmitir el estado emitido por el propietario sin copiarlo |
 | Observaciones semánticas, relaciones, metadatos de obsolescencia y continuidad de sesión | Engram | Recuperar o guardar contexto y después reconciliar afirmaciones con evidencia del repositorio |
 | Composición de capacidades | Harness | Seleccionar una rama válida sin persistir otro ciclo de vida |
 
@@ -33,7 +33,7 @@ Los harnesses generados para repositorios consumidores permanecen genéricos y n
 
 | Gentle AI | Engram | Comportamiento requerido |
 |---|---|---|
-| Disponible | Disponible | La política del repositorio sigue siendo primaria; usar Engram para continuidad y Gentle AI para enrutamiento, revisión y entrega aplicables bajo control del propietario |
+| Disponible | Disponible | La política del repositorio sigue siendo primaria y es responsable de commits, pushes, PR y releases; usar Engram para continuidad y Gentle AI para el enrutamiento, la revisión del candidato exacto, los recibos y la corrección acotada de la revisión aplicables bajo control del propietario |
 | Disponible | No disponible | Usar evidencia del repositorio y contratos de Gentle AI; informar degradación de continuidad |
 | No disponible | Disponible | Usar continuidad de Engram bajo la política del repositorio; nunca inferir aprobación de Gentle AI |
 | No disponible | No disponible | Trabajar solo con evidencia del repositorio; informar capacidades de integración no disponibles sin bloquear trabajo ordinario salvo que la política local las requiera |
@@ -67,7 +67,7 @@ Las observaciones y los resúmenes de sesión de Engram son entradas de continui
 
 - La autoridad del repositorio ausente o contradictoria bloquea el trabajo afectado o requiere una decisión.
 - Un fallo de Engram degrada solo la continuidad; nunca se debe afirmar que la recuperación o persistencia tuvo éxito.
-- Gentle AI ausente o deshabilitado delega en la política del repositorio y deja su capacidad de revisión o entrega sin administrar.
+- Gentle AI ausente o deshabilitado delega en la política del repositorio; solo sus capacidades de enrutamiento, revisión del candidato exacto, recibos y corrección acotada de la revisión dejan de estar disponibles o de administrarse, mientras la política del repositorio sigue siendo responsable de la entrega.
 - Un estado malformado de un propietario detiene esa rama opcional con evidencia exacta; el harness no debe reconstruir autoridad.
 - La memoria obsoleta debe etiquetarse y verificarse. Marcarla como revisada requiere confirmación explícita.
 - Un conflicto de memoria pendiente permanece limitado a su componente y sigue las compuertas de juicio de Engram.

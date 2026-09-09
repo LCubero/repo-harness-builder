@@ -19,7 +19,7 @@ The harness remains useful on its own. Default integrated mode composes availabl
 | Component | Boundary |
 |---|---|
 | `repo-harness` | Repository-scoped operating guidance and durable project truth for supported AI coding agents. |
-| Gentle AI | A broader AI-agent ecosystem that may provide routing, review, receipts, and delivery gates. |
+| Gentle AI | A broader AI-agent ecosystem that may provide routing, exact-candidate review, receipts, and bounded review correction; repository policy owns commit, push, PR, and release. |
 | Engram | Cross-session semantic memory and continuity. It never replaces repository truth. |
 | CodeGraph | The most optional component: a repository-local aid for locating files, symbols, relationships, and impact. It is not an authority store. |
 
