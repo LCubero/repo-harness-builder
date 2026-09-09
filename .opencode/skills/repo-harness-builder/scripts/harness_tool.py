@@ -1592,6 +1592,7 @@ Never use git pull, git rebase, git reset, force operations, merge on divergence
 Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. Always report repository resolution and retain only continuity evidence relevant to the requested work. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
 When the checker applicability gate is triggered, report its result in the reply language: `current` means every runtime projection is up to date, and `drift` is reported as needing an update, naming each drifted runtime projection.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
+Conversation language: immediately before composing the response, apply the `Conversation language` rule above. Wrapper, task name, command text, and ordinary prose are not verified human switch instructions.
 {RESPONSE_CONTRACT_REFERENCE}
 {references_section(rulebook_path)}"""
 

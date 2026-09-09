@@ -4,6 +4,8 @@
 
 ## 2026-09-07
 
+- Se completo el ciclo reabierto de `RH-W-0031` tras verificacion independiente y autorizacion explicita del propietario para cerrarlo. Session-start vuelve a aplicar la regla del idioma de conversacion al redactar la respuesta y rechaza wrappers, nombres de tarea, texto de comandos y prosa ordinaria como instrucciones humanas verificadas de cambio. No existe un recibo RED fiable, por lo que no se afirma RED. La suite canonica paso 513 pruebas con 9 omisiones; el checker informo `current` con 0 escrituras; el linaje de revision Gentle AI `review-f1fc2d80510d8949` fue reconocido y su autoridad quedo consumida. No se autorizaron ni realizaron entrega Git, staging, commit, push, publicacion ni acceso de red.
+
 - Se registró la aprobación explícita del propietario del plan de implementación bilingüe RH-W-0053 existente sin cambios. RH-W-0053 permanece `proposed`; implementación, avance de ciclo, staging, commit, push, publicación y acceso de red siguen sin autorización separada.
 
 - Se creó el plan de implementación bilingüe propuesto RH-W-0053 bajo autoridad de planificación. Define tres grupos RED/GREEN mínimos para reemplazo seguro del checkpoint solo por solicitud explícita, descubrimiento de solo lectura con expiración semántica y autoridad nueva de reanudación; nombra superficies exactas canónicas, de proyección, verificación, rollback y ciclo; y conserva la propiedad de RH-W-0050, RH-W-0051 y RH-W-0069. RH-W-0053 permanece `proposed`; aprobación del plan e implementación son autoridades separadas.

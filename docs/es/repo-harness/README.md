@@ -18,7 +18,7 @@
 | [Investigacion de continuidad de agentes](agent-continuity-research.md) | Par completo de la comparacion sobre continuidad, aprendizaje, confianza y recuperacion en Hermes Agent, OpenClaw y Pi |
 | [Plan de implementacion RH-W-0025](rh-w-0025-implementation-plan.md) | Espejo humano completo del plan canonico de coordinacion consciente de capacidades |
 | [Investigacion RH-W-0031](../../repo-harness/rh-w-0031-research.md) | Propietario canonico en ingles de la evidencia primaria sobre los limites del idioma de conversacion |
-| [Plan tecnico RH-W-0031](../../repo-harness/rh-w-0031-implementation-plan.md) | Plan completado en ingles para corregir los limites del idioma de conversacion; se conservan las instrucciones historicas |
+| [Plan tecnico RH-W-0031](../../repo-harness/rh-w-0031-implementation-plan.md) | Plan completado en ingles para la correccion minima de session-start; se conservan las instrucciones historicas |
 | [Plan de implementacion RH-W-0034](rh-w-0034-implementation-plan.md) | Par humano del plan completado para recuperacion de consumidores y correccion del modo solo en espanol; se conservan las instrucciones historicas |
 | [Diseno RH-W-0050](rh-w-0050-design.md) | Diseno completado de reconciliacion acotada aprobado por el propietario; entregado con el cuerpo historico conservado |
 | [Diseno RH-W-0051](rh-w-0051-design.md) | Diseno aprobado y completado de taxonomia de estado local; cuerpo historico conservado |

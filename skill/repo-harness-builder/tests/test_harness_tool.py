@@ -571,6 +571,32 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                 for phrase in required:
                     self.assertIn(phrase, text)
 
+    def test_session_start_output_contract_reapplies_language_rule_at_composition(self):
+        outputs = TOOL.render("Example", ["opencode"])
+        session_start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        output_contract = session_start.split("## Output Contract", 1)[1].split("## References", 1)[0]
+
+        self.assertEqual(output_contract.count("Conversation language:"), 1)
+        obligation = output_contract.split("Conversation language:", 1)[1].splitlines()[0].lower()
+        for phrase in (
+            "immediately before composing",
+            "rule above",
+            "wrapper",
+            "task name",
+            "command text",
+            "ordinary prose",
+            "not verified human switch instructions",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, obligation)
+
+        for path in (
+            ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+            ".opencode/commands/repo-harness-help.md",
+        ):
+            with self.subTest(path=path):
+                self.assertNotIn("immediately before composing the response", outputs[path])
+
     def test_help_guide_locale_does_not_select_reply_language(self):
         help_text = TOOL.help_wrapper("opencode", "espanol", ["en"])
         self.assertIn("docs/repo-harness/usage.md", help_text)

@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-07
 
+- Completed the reopened `RH-W-0031` lifecycle after independent verification and explicit owner closure authorization. Session-start now reapplies the conversation-language rule at response composition and rejects wrappers, task names, command text, and ordinary prose as verified human switch instructions. No reliable RED receipt exists, so no RED is claimed. The canonical suite passed 513 tests with 9 skips; the checker reported `current` with 0 writes; Gentle AI review lineage `review-f1fc2d80510d8949` was acknowledged and its authority burned. No Git delivery, staging, commit, push, publication, or network action was authorized or performed.
+
 - Recorded the owner's explicit approval of the existing bilingual RH-W-0053 implementation plan as written. RH-W-0053 remains `proposed`; implementation, lifecycle advancement, staging, commit, push, publication, and network access remain separately unauthorized.
 
 - Created the bilingual proposed RH-W-0053 implementation plan under planning authority. It defines three minimal RED/GREEN groups for explicit-request-only safe checkpoint replacement, read-only semantic-expiry discovery, and fresh resume authority; names exact canonical, projection, verification, rollback, and lifecycle surfaces; and preserves RH-W-0050, RH-W-0051, and RH-W-0069 ownership. RH-W-0053 remains `proposed`; plan approval and implementation remain separate authorities.
