@@ -52,7 +52,7 @@ Use this exact read-only order:
 
 1. Validate the selected repository root.
 2. Read applicable repository owners, source, tests, Git, and checker evidence required by the objective.
-3. Resolve the guarded `.repo-harness/memory-bk/` directory. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree.
+3. First resolve `.repo-harness/memory-bk/` through the guarded root. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree.
 4. Read scoped Engram context when available and preserve its independent outcome.
 5. Read at most one older backup, and only for `newest_invalid`, `objective_names_backup`, `conflict_needs_chronology`, or `newest_lacks_relevant_continuity`.
 
@@ -61,6 +61,27 @@ Use this exact read-only order:
 - For every source, check every recalled claim against its current applicable repository owner. Report claims as `accepted`, `stale`, `conflicting`, `unavailable`, or `unverifiable`.
 - When repository evidence resolves a conflict, use repository evidence and report the conflict. When it cannot resolve a material conflict, ask one human decision question and do not choose a source.
 - Never merge continuity sources silently.
+
+## Interrupted-Operation Checkpoint Discovery
+
+- Complete the native repository-first continuity recovery first. Check only the exact `.repo-harness/state/checkpoints/active.md` path. Absence is `not_found`, not failure.
+- Reject non-regular, indirect, escaping, malformed, or project-mismatched input without following links.
+- Compare every material checkpoint claim with applicable current repository, Git, checker, lifecycle, and decision evidence. Current repository evidence wins over a checkpoint.
+- Classify the checkpoint as `usable`, `stale`, `contradictory`, `expired`, or `invalid`, and report the bounded reason. `usable` means only that the checkpoint can inform a resume proposal. `stale` means newer evidence exists and wins. `contradictory` means material claims disagree and current owners do not resolve the operational meaning. `invalid` covers unsafe path or schema failure.
+- Treat a checkpoint as logically expired when its objective completed, was abandoned, or was superseded; its project identity no longer matches; current evidence contradicts a material premise or shows the step settled; its lifecycle owner no longer permits the intent; or its path or structure is invalid. Age alone is advisory and never proves expiry.
+- An expired checkpoint remains untouched until an explicit authorized replacement or deletion action. No timer, scheduler, daemon, cleanup job, retention database, or automatic archival exists.
+- Startup discovery performs no write, deletion, archive, consumed mark, timestamp update, staging, or automatic continuation.
+
+## Checkpoint Resume Proposal
+
+- Reconstruct the smallest current objective from repository evidence and the usable checkpoint.
+- Re-verify completed facts and the interrupted step; do not rerun a step whose current completion is verified.
+- Reclassify remaining intent against current lifecycle, decisions, scope, dependencies, and repository state.
+- Discard stale checkpoint claims from the proposed route; preserve them only as reported non-authoritative evidence.
+- Ask one concrete question only when current human authority or a real product decision is required. Execute only after fresh authority covers the exact current action. Prior approvals, consent, digests, tokens, and session intent are never reused.
+- A stale, contradictory, expired, or invalid checkpoint cannot authorize or trigger work. No checkpoint grants implementation, mutation, Git, publication, receipt, or delivery authority.
+- A backup never becomes a checkpoint, a checkpoint never substitutes for the pause or close summary, and neither source copies the other. Native backups and optional external-memory continuity remain separate non-authoritative sources.
+- Checkpoint evidence/path reads and reconciliation work count within the existing RH-W-0050 bounds: at most 12 distinct local evidence paths, direct dependents capped at 8 records, at most 20 commits touching owner paths, and, when applicable, at most two Engram reads capped at 10 observations each. This adds no new limits.
 
 ## Bounded Reconciliation
 

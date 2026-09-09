@@ -33,7 +33,7 @@ The preventive design precedes the local-state architecture:
 3. Resolve `RH-W-0084` first on owner direction of 2026-08-30, because LLM-first is the constraint every later generated surface is measured against. This step is complete: the owner accepted the reinforcement finding as a control under `RH-W-0083`, and the separately authorized RH-W-0083 implementation is complete. The other findings remain with their named owners.
 4. `RH-W-0071` session-only presentation is delivered through PR #161. No immediate implementation or review remains. Reopen shared structured Markdown persistence only with explicit owner authorization, current evidence, and reconciliation of its runtime API and delivery gates with RH-W-0082 and RH-W-0018; it remains deferred, not cancelled.
 5. `RH-W-0069` occupied the next historical position and is now completed; its continuity work remains separate from typed checkpoints.
-6. Implement `RH-W-0053` after RH-W-0051 establishes its storage semantics.
+6. `RH-W-0053` is completed after its verified, bounded checkpoint-contract implementation; it remains separate from RH-W-0069 continuity and RH-W-0051 storage ownership.
 7. Implement `RH-W-0048` to prove additive, non-overwriting runtime recovery.
 8. Implement `RH-W-0052` after those storage and recovery primitives are proven.
 
@@ -125,16 +125,16 @@ Historical execution evidence:
 
 Human decisions: none for implementation or lifecycle closure. Any future Git delivery, commit, push, publication, or network action remains separately unauthorized.
 
-### Plan 3: RH-W-0053 interrupted-operation checkpoint implementation
+### Historical Plan 3: RH-W-0053 interrupted-operation checkpoint implementation
 
-Readiness `plan owner-approved; implementation unauthorized`, because completed RH-W-0051 established storage semantics, completed RH-W-0069 established separate ordinary continuity, and the owner approved the bilingual [design](rh-w-0053-design.md) and [implementation plan](rh-w-0053-implementation-plan.md). The plan is test-first and remains unauthorized for execution. Priority `P1`, shared with `RH-W-0068`, `RH-W-0070`, `RH-W-0072`, `RH-W-0073`, and `RH-W-0074`.
+Completed after separate implementation and lifecycle authority. The bilingual [design](rh-w-0053-design.md) and [implementation plan](rh-w-0053-implementation-plan.md) remain the historical test-first execution record. RH-W-0053 adds only the bounded generated start/stop checkpoint contract; RH-W-0051 retains storage semantics and RH-W-0069 retains ordinary continuity.
 
-1. Write focused RED groups for explicit-request-only safe write/replacement, read-only discovery and semantic expiry, and fresh resume authority with owner separation.
-2. Add only minimal instruction text to canonical `session_stop_skill()` and `session_start_skill()`; add no runtime subsystem, parser, manifest field, checker content inspection, or automatic cleanup.
-3. Run focused GREEN and the canonical suite, synchronize exact package and generated skill projections, and verify a zero-action second maintenance preview plus checker `current` with zero writes.
-4. Close documentation and lifecycle only after verified implementation and separate authority; plan approval does not authorize implementation, delivery, or lifecycle advancement.
+1. Control gate 4 passed. RED A recorded 27 failures; RED B recorded 9 failures and 1 error; RED C recorded 12 failures. Each focused GREEN group then passed.
+2. Canonical `session_stop_skill()` and `session_start_skill()` gained only the approved instruction contract; no runtime subsystem, parser, manifest field, checker content inspection, or automatic cleanup was added.
+3. A Pi ownership regression first failed, then passed after correcting generated-skill ownership: without the correction the acceptance required eight projections while maintenance preview offered six. The corrected maintenance apply used digest `15d2f3fcfe3beead92559bf8dd57e55291967d178a8d5a55994fcdd62d91c683` and applied all eight generated projections.
+4. Final evidence: `GeneratedCoreTests` passed 142 tests with 5 skipped; the canonical suite passed 523 tests with 9 skipped; the checker reported `current`, exit 0, and 0 writes. No Git delivery, commit, PR, or runtime registered-name freshness is claimed.
 
-Resolved decisions: RH-W-0053 owns one `.repo-harness/state/checkpoints/active.md` structured Markdown file; no write occurs without an explicit current human request; and the owner approved the implementation plan as written on 2026-09-07. Implementation authorization remains separate.
+Resolved decisions: RH-W-0053 owns one `.repo-harness/state/checkpoints/active.md` structured Markdown file; no write occurs without an explicit current human request; checkpoint discovery is read-only; and fresh evidence and authority remain required for resumption.
 
 ### Plan 4: RH-W-0048 runtime projection recovery design
 
@@ -1130,17 +1130,17 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 |---|---|
 | Origin | Owner note requiring safe recovery from a partial or interrupted session. |
 | Priority | P1: unfinished work can be mistaken for completed continuity or resumed from stale assumptions if the interruption is not represented explicitly. |
-| Dependencies | RH-W-0050 evidence classification, and the RH-W-0051 storage semantics for any future harness-owned local checkpoint bytes, which completed RH-W-0051 now provides. |
-| Status | proposed |
-| Completed work | Bounded the capability and created the owner-approved bilingual [design](rh-w-0053-design.md) and [test-first implementation plan](rh-w-0053-implementation-plan.md). The design assigns one ignored non-authoritative structured Markdown file at `.repo-harness/state/checkpoints/active.md`, requires an explicit current request for every write, represents the interrupted step only as `not_started`, `started_unverified`, or `failed`, defines semantic expiry without deletion, and makes session-start discovery read-only and resumption dependent on current evidence and fresh authority. |
-| Remaining work | Separate implementation authorization and focused verification. Plan approval grants no implementation authority. |
+| Dependencies | RH-W-0050 evidence classification, and the RH-W-0051 storage semantics for any future harness-owned local checkpoint bytes, which completed RH-W-0051 provides. |
+| Status | completed |
+| Completed work | Implemented the owner-approved bilingual [design](rh-w-0053-design.md) and [test-first implementation plan](rh-w-0053-implementation-plan.md): one ignored, non-authoritative structured Markdown checkpoint at `.repo-harness/state/checkpoints/active.md`; explicit-current-request-only safe replacement and structural readback; read-only semantic-expiry discovery; and resume proposals that reverify current repository evidence and require fresh authority. RH-W-0051 retains storage semantics and RH-W-0069 retains ordinary continuity. |
+| Remaining work | none |
 | Additions | A typed unfinished checkpoint and safe session-start route that distinguishes completed facts, unfinished intent, supported inference, unknown state, and decisions still requiring a human. |
-| Exclusions | No automatic continuation, mutation, approval reuse, claim that an interrupted action completed, duplicate backlog, or storage in user-owned personal paths. |
+| Exclusions | No automatic continuation, mutation, approval reuse, claim that an interrupted action completed, duplicate backlog, storage in user-owned personal paths, runtime subsystem, parser, manifest field, checker content inspection, automatic cleanup, Git delivery, commit, PR, or runtime registered-name freshness claim. |
 | Deferrals | none |
 | Rejections | Rejected treating a generic session summary as proof of an executable checkpoint or resuming an interrupted mutation without fresh evidence and authority. |
-| Evidence | Verified: generated session-start reconciles Engram with repository evidence, but no product contract implements a typed unfinished checkpoint. Owner-approved design: RH-W-0053 owns the exact checkpoint file and schema; writes require an explicit current request; discovery does not mutate; repository evidence and fresh authority precede resumption. |
-| Decision history | 2026-08-21: registered as proposed from the consolidated audit and placed first in the later review order. 2026-08-21: the same-day portfolio re-audit superseded that review order and placed this unit sixth overall, immediately after `RH-W-0051`, because it is `P1` and both declared dependencies are satisfied at that point. 2026-09-06: the owner approved the bilingual proposed design. 2026-09-07: the bilingual implementation plan was created as proposed, then the owner explicitly approved it as written; status remains `proposed` and implementation remains separately unauthorized. |
-| Next advancement condition | Separate authorization to implement the owner-approved checkpoint contract with focused evidence. |
+| Evidence | Verified: control gate 4 passed; RED A recorded 27 failures, RED B 9 failures plus 1 error, and RED C 12 failures; each focused GREEN group passed. `GeneratedCoreTests` passed 142 tests with 5 skipped; the final canonical suite passed 523 tests with 9 skipped; the checker reported `current`, exit 0, and 0 writes. A Pi ownership defect was discovered and corrected: acceptance required eight generated projections, but preview offered six because Pi generated-skill ownership was omitted. The regression failed before the correction and passed after it; maintenance apply used digest `15d2f3fcfe3beead92559bf8dd57e55291967d178a8d5a55994fcdd62d91c683` and applied all eight projections. |
+| Decision history | 2026-08-21: registered as proposed from the consolidated audit and placed first in the later review order. 2026-08-21: the same-day portfolio re-audit superseded that review order and placed this unit sixth overall, immediately after `RH-W-0051`, because it is `P1` and both declared dependencies are satisfied at that point. 2026-09-06: the owner approved the bilingual proposed design. 2026-09-07: the bilingual implementation plan was created as proposed, then the owner explicitly approved it as written. Verified implementation and separate lifecycle authority subsequently completed the record without transferring RH-W-0051 or RH-W-0069 ownership. |
+| Next advancement condition | none |
 
 ### RH-W-0052
 | Field | Value |

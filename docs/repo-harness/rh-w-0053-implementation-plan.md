@@ -1,6 +1,8 @@
 # RH-W-0053 Interrupted-Operation Checkpoint Implementation Plan
 
-> **Status: owner-approved plan; RH-W-0053 remains proposed.** The owner approved this plan as written on 2026-09-07. This approval does not authorize implementation, lifecycle advancement, staging, commit, push, publication, or network access.
+> **Status: completed execution record; RH-W-0053 is completed.** The plan was owner-approved on 2026-09-07 and later executed under separate implementation and lifecycle authority. No Git delivery, staging, commit, push, publication, network access, or runtime registered-name freshness is claimed.
+
+**Recorded execution evidence:** control gate 4 passed. RED A recorded 27 failures; RED B recorded 9 failures plus 1 error; RED C recorded 12 failures; each focused GREEN group passed. `GeneratedCoreTests` passed 142 tests with 5 skipped, the final canonical suite passed 523 tests with 9 skipped, and the checker reported `current`, exit 0, and 0 writes. The Pi ownership regression went RED then GREEN: acceptance required eight generated projections but preview offered six until Pi generated-skill ownership was corrected. Digest-bound maintenance apply `15d2f3fcfe3beead92559bf8dd57e55291967d178a8d5a55994fcdd62d91c683` applied all eight projections. The task checklist remains the approved historical instruction record; rollback steps were not executed.
 
 Derived from the owner-approved [design](rh-w-0053-design.md). Spanish peer: [rh-w-0053-implementation-plan.md](../es/repo-harness/rh-w-0053-implementation-plan.md).
 
@@ -87,4 +89,4 @@ Expected: all selected tests pass; bilingual owners and links exist; the checker
 
 Forecast: 180 to 260 authored implementation and test lines, plus 120 to 220 mechanical package/generated projection lines and focused lifecycle documentation. Risk is high for authority semantics and medium for safe replacement wording, but low for runtime complexity because no executable checkpoint subsystem is added. Review in three bounded units: write/schema, discovery/resume, then projections/lifecycle. Keep RED beside its owning GREEN; the repository's approximately 400-line authored review target is not expected to be exceeded.
 
-Remaining human decision: separately authorize implementation. Later maintenance apply, lifecycle advancement, Git delivery, commit, push, publication, and network access each remain governed by their current owners and are not authorized by this plan approval.
+Remaining authority: implementation is completed. Any future amendment, maintenance apply, lifecycle advancement, Git delivery, commit, push, publication, network access, or runtime registered-name validation remains governed by its current owner. This historical plan claims none of those delivery or registered-freshness outcomes.

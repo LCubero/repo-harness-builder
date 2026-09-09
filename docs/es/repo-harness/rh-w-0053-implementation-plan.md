@@ -1,6 +1,8 @@
 # Plan de implementación RH-W-0053 del checkpoint de operación interrumpida
 
-> **Estado: plan aprobado por el propietario; RH-W-0053 permanece propuesto.** El propietario aprobó este plan sin cambios el 2026-09-07. Esta aprobación no autoriza implementación, avance de ciclo, staging, commit, push, publicación ni acceso de red.
+> **Estado: registro de ejecución completado; RH-W-0053 está completada.** El plan fue aprobado por el propietario el 2026-09-07 y se ejecutó después bajo autoridad separada de implementación y ciclo. No se afirman entrega Git, staging, commit, push, publicación, acceso de red ni frescura de nombres registrados de runtime.
+
+**Evidencia de ejecución registrada:** la compuerta de control 4 pasó. RED A registró 27 fallos; RED B, 9 fallos y 1 error; RED C, 12 fallos; cada grupo GREEN enfocado pasó. `GeneratedCoreTests` pasó 142 pruebas con 5 omitidas, la suite canónica final pasó 523 pruebas con 9 omitidas y el checker informó `current`, salida 0 y 0 escrituras. La regresión de propiedad de Pi pasó de RED a GREEN: aceptación exigía ocho proyecciones generadas pero preview ofrecía seis hasta corregir la propiedad de skills generadas de Pi. El apply de mantenimiento ligado al digest `15d2f3fcfe3beead92559bf8dd57e55291967d178a8d5a55994fcdd62d91c683` aplicó las ocho proyecciones. La lista de tareas se conserva como registro histórico de instrucciones aprobadas; no se ejecutaron pasos de rollback.
 
 Derivado del [diseño](rh-w-0053-design.md) aprobado por el propietario. Propietario canónico en inglés: [rh-w-0053-implementation-plan.md](../../repo-harness/rh-w-0053-implementation-plan.md).
 
@@ -87,4 +89,4 @@ Se espera que pasen las pruebas, existan los propietarios y enlaces bilingües, 
 
 Pronóstico: 180 a 260 líneas autorales de implementación y pruebas, más 120 a 220 líneas mecánicas de paquete/proyección y documentación enfocada de ciclo. Riesgo alto en semántica de autoridad, medio en reemplazo seguro y bajo en complejidad de runtime porque no se agrega subsistema ejecutable. Revisar en tres unidades: escritura/esquema, descubrimiento/reanudación y proyecciones/ciclo. Mantener cada RED junto a su GREEN; no se espera superar el objetivo autoral aproximado de 400 líneas.
 
-Decisión humana restante: autorizar por separado la implementación. Apply de mantenimiento, avance de ciclo, entrega Git, commit, push, publicación y red conservan sus propietarios actuales y no están autorizados por esta aprobación del plan.
+Autoridad restante: la implementación está completada. Toda enmienda futura, apply de mantenimiento, avance de ciclo, entrega Git, commit, push, publicación, acceso de red o validación de nombres registrados de runtime conserva su propietario actual. Este plan histórico no afirma ninguno de esos resultados de entrega ni frescura de nombres registrados.

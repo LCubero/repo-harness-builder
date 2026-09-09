@@ -1,6 +1,6 @@
 # Diseño RH-W-0053 de checkpoint para sesión interrumpida
 
-> **Estado: DISEÑO PROPUESTO APROBADO POR EL PROPIETARIO. La implementación requiere autorización separada.**
+> **Estado: REGISTRO HISTÓRICO DE DISEÑO COMPLETADO.** El propietario aprobó este diseño propuesto antes de completar su implementación autorizada por separado. Este registro conserva el contexto de aprobación y diseño; no afirma entrega Git, staging, commit, push, publicación, acceso de red ni frescura de nombres registrados de runtime.
 
 ## Decisión
 
@@ -113,6 +113,6 @@ Session-start puede usar ambos, pero verifica ambos contra propietarios actuales
 
 ## Exclusiones e impacto futuro
 
-Este diseño no cambia fuente de producto, skill generada, prueba, manifest, checker, directorio local, proyección de runtime ni estado de ciclo. Una implementación futura autorizada por separado podría actualizar los contratos canónicos de session-start y session-stop y pruebas enfocadas. RH-W-0051 conserva namespace e ignore, por lo que RH-W-0053 no agrega campo de manifest y el checker no inspecciona contenido.
+Este diseño aprobado por el propietario no cambió por sí mismo fuente de producto, skill generada, prueba, manifest, checker, directorio local, proyección de runtime ni estado de ciclo. La implementación completada después actualizó solo los contratos canónicos de session-start y session-stop y las pruebas enfocadas. RH-W-0051 conserva namespace e ignore, por lo que RH-W-0053 no agrega campo de manifest y el checker no inspecciona contenido.
 
-El propietario aprobó este diseño propuesto el 2026-09-06 y la planificación de implementación el 2026-09-07. Implementar, migrar, borrar, archivar y entregar siguen sin autorización separada. No queda una decisión humana de producto para este diseño propuesto.
+El propietario aprobó este diseño propuesto el 2026-09-06 y la planificación de implementación el 2026-09-07. La implementación fue autorizada por separado después y está completada. Este diseño histórico conserva ese contexto de aprobación; futuras migración, eliminación, archivado, entrega y validación de nombres registrados de runtime siguen bajo gobierno separado. No se afirma entrega Git, staging, commit, push, publicación, acceso de red ni frescura de nombres registrados.

@@ -1,6 +1,6 @@
 # RH-W-0053 Interrupted-Session Checkpoint Design
 
-> **Status: OWNER-APPROVED PROPOSED DESIGN. Implementation is separately unauthorized.**
+> **Status: COMPLETED HISTORICAL DESIGN RECORD.** The owner approved this proposed design before its separately authorized implementation was completed. This record preserves the approval and design context; no Git delivery, staging, commit, push, publication, network access, or runtime registered-name freshness is claimed.
 
 ## Decision
 
@@ -113,6 +113,6 @@ Session-start may use both, but verifies both against current owners. A backup n
 
 ## Exclusions And Future Impact
 
-This design changes no product source, generated skill, test, manifest, checker, local-state directory, runtime projection, or lifecycle status. A future separately authorized implementation may update the canonical session-start and session-stop contracts and focused tests. RH-W-0051 remains the namespace and ignore owner, so RH-W-0053 adds no manifest field and the checker must not inspect checkpoint contents.
+This owner-approved design itself changed no product source, generated skill, test, manifest, checker, local-state directory, runtime projection, or lifecycle status. The later completed implementation updated only the canonical session-start and session-stop contracts and focused tests. RH-W-0051 remains the namespace and ignore owner, so RH-W-0053 adds no manifest field and the checker must not inspect checkpoint contents.
 
-The owner approved this proposed design on 2026-09-06 and approved implementation planning on 2026-09-07. Implementation, migration, deletion, archival, and delivery remain separately unauthorized. No human product decision remains for this proposed design.
+The owner approved this proposed design on 2026-09-06 and approved implementation planning on 2026-09-07. Implementation was later separately authorized and is completed. This historical design preserves that approval context; future migration, deletion, archival, delivery, and runtime registered-name validation remain separately governed. No Git delivery, staging, commit, push, publication, network access, or registered-name freshness is claimed.
