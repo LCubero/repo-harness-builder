@@ -1,6 +1,6 @@
 # Diseño RH-W-0053 de checkpoint para sesión interrumpida
 
-> **Estado: REGISTRO HISTÓRICO DE DISEÑO COMPLETADO.** El propietario aprobó este diseño propuesto antes de completar su implementación autorizada por separado. Este registro conserva el contexto de aprobación y diseño; no afirma entrega Git, staging, commit, push, publicación, acceso de red ni frescura de nombres registrados de runtime.
+> **Estado: REGISTRO HISTÓRICO DE DISEÑO COMPLETADO.** El propietario aprobó este diseño propuesto antes de completar su implementación autorizada por separado. Este registro conserva el contexto de aprobación y diseño; en esa etapa de diseño no se afirmaban entrega Git, staging, commit, push, publicación, acceso de red ni frescura de nombres registrados de runtime. La entrega posterior mediante issue #170 y PR #171 se fusionó por squash como `c7290fcf6c703df0839699a9cb8b77686bf18e74`.
 
 ## Decisión
 
@@ -115,4 +115,4 @@ Session-start puede usar ambos, pero verifica ambos contra propietarios actuales
 
 Este diseño aprobado por el propietario no cambió por sí mismo fuente de producto, skill generada, prueba, manifest, checker, directorio local, proyección de runtime ni estado de ciclo. La implementación completada después actualizó solo los contratos canónicos de session-start y session-stop y las pruebas enfocadas. RH-W-0051 conserva namespace e ignore, por lo que RH-W-0053 no agrega campo de manifest y el checker no inspecciona contenido.
 
-El propietario aprobó este diseño propuesto el 2026-09-06 y la planificación de implementación el 2026-09-07. La implementación fue autorizada por separado después y está completada. Este diseño histórico conserva ese contexto de aprobación; futuras migración, eliminación, archivado, entrega y validación de nombres registrados de runtime siguen bajo gobierno separado. No se afirma entrega Git, staging, commit, push, publicación, acceso de red ni frescura de nombres registrados.
+El propietario aprobó este diseño propuesto el 2026-09-06 y la planificación de implementación el 2026-09-07. La implementación fue autorizada por separado después y está completada. Este diseño histórico conserva ese contexto de aprobación; futuras migración, eliminación, archivado, entrega y validación de nombres registrados de runtime siguen bajo gobierno separado. En la etapa de diseño no se afirmaban entrega Git, staging, commit, push, publicación, acceso de red ni frescura de nombres registrados. La implementación posterior se entregó mediante issue #170 y PR #171, fusionado por squash como `c7290fcf6c703df0839699a9cb8b77686bf18e74`; la frescura de nombres registrados de runtime sigue sin verificar.

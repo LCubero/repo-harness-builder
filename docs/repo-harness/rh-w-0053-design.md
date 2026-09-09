@@ -1,6 +1,6 @@
 # RH-W-0053 Interrupted-Session Checkpoint Design
 
-> **Status: COMPLETED HISTORICAL DESIGN RECORD.** The owner approved this proposed design before its separately authorized implementation was completed. This record preserves the approval and design context; no Git delivery, staging, commit, push, publication, network access, or runtime registered-name freshness is claimed.
+> **Status: COMPLETED HISTORICAL DESIGN RECORD.** The owner approved this proposed design before its separately authorized implementation was completed. This record preserves the approval and design context; at that design stage, no Git delivery, staging, commit, push, publication, network access, or runtime registered-name freshness was claimed. The later delivery through issue #170 and PR #171 was squash-merged as `c7290fcf6c703df0839699a9cb8b77686bf18e74`.
 
 ## Decision
 
@@ -115,4 +115,4 @@ Session-start may use both, but verifies both against current owners. A backup n
 
 This owner-approved design itself changed no product source, generated skill, test, manifest, checker, local-state directory, runtime projection, or lifecycle status. The later completed implementation updated only the canonical session-start and session-stop contracts and focused tests. RH-W-0051 remains the namespace and ignore owner, so RH-W-0053 adds no manifest field and the checker must not inspect checkpoint contents.
 
-The owner approved this proposed design on 2026-09-06 and approved implementation planning on 2026-09-07. Implementation was later separately authorized and is completed. This historical design preserves that approval context; future migration, deletion, archival, delivery, and runtime registered-name validation remain separately governed. No Git delivery, staging, commit, push, publication, network access, or registered-name freshness is claimed.
+The owner approved this proposed design on 2026-09-06 and approved implementation planning on 2026-09-07. Implementation was later separately authorized and is completed. This historical design preserves that approval context; future migration, deletion, archival, delivery, and runtime registered-name validation remain separately governed. No Git delivery, staging, commit, push, publication, network access, or registered-name freshness was claimed at the design stage. The later implementation was delivered through issue #170 and PR #171, squash-merged as `c7290fcf6c703df0839699a9cb8b77686bf18e74`; runtime registered-name freshness remains unverified.

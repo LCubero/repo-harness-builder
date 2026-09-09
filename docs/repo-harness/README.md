@@ -25,8 +25,8 @@
 | [rh-w-0050-design.md](rh-w-0050-design.md) | Completed owner-approved bounded reconciliation design; delivered with historical design body retained |
 | [rh-w-0051-design.md](rh-w-0051-design.md) | Completed owner-approved local-state taxonomy design; historical design body retained |
 | [rh-w-0051-implementation-plan.md](rh-w-0051-implementation-plan.md) | Completed local-state taxonomy implementation plan; historical execution instructions retained |
-| [rh-w-0053-design.md](rh-w-0053-design.md) | Owner-approved interrupted-session checkpoint design; verified implementation is complete and the historical design body is retained |
-| [rh-w-0053-implementation-plan.md](rh-w-0053-implementation-plan.md) | Completed test-first RH-W-0053 interrupted-operation checkpoint execution record; verified evidence is retained |
+| [rh-w-0053-design.md](rh-w-0053-design.md) | Delivered interrupted-session checkpoint design; the historical design body and its pre-delivery context are retained |
+| [rh-w-0053-implementation-plan.md](rh-w-0053-implementation-plan.md) | Delivered test-first RH-W-0053 interrupted-operation checkpoint execution record; verified evidence is retained |
 | [rh-w-0048-design.md](rh-w-0048-design.md) | Owner-approved additive runtime-projection recovery design; implementation planning and implementation remain unauthorized |
 | [rh-w-0046-rh-w-0018-design.md](rh-w-0046-rh-w-0018-design.md) | Owner-delegated approved joint repository fetch-consent and low-question preference-boundary design; implementation planning and implementation remain unauthorized |
 | [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved human-owned document suggestion design; implementation planning and implementation remain unauthorized |
