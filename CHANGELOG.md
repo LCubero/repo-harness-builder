@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-10
+
+- Completed `RH-W-0048` only for its reopened mutability-contract reconciliation and independent re-verification. PR #174 squash-merged to `main` as `f2b4e2bd59dffd4c0ea34258cbcba45ab86a0a94` at 2026-09-10T01:45:21Z; issue #173 closed automatically at 2026-09-10T01:45:22Z. Implementation-branch commits `c74e0e0` and `86e6951`, historical strict-TDD evidence, and the ordinary checker baseline (`current`, `writes: 0`) remain historical. Verified external diagnosis: installed `gentle-pi` 2.5.0 predates Gentleman-Programming/gentle-pi #775's Windows candidate-owner fix, merged as #795 (`fix(review): secure Windows candidate ownership`) at `4e7b243d9a001bb8a9f0d29fe7468dfe56ca8c6d` on 2026-09-09T23:42:31Z. A POSIX-UID assumption rejected the private candidate view before native START, masking `native-mutation-status-reconciled`/unknown/no lineage; `gentle-ai` 2.7.0 works via PATH, and related open gentle-ai #4332 covers empty native output/no lineage. The owner will restart Pi/gentle-pi from main next session; resolution remains a supported inference pending fresh verification. Remaining work is `none`.
+
 ## 2026-09-09
 
 - Reopened RH-W-0048 from completed to proposed only for mutability-contract reconciliation and independent re-verification. Issue #173 is OPEN with title `Implement explicit RH-W-0048 runtime projection repair` and labels `status:approved`, `type:feature`; the 28-path commit `c74e0e0` was pushed on `feat/rh-w-0048-runtime-repair` to `origin` (0 ahead and 0 behind), with no PR, merge, main delivery, or lifecycle closure.
