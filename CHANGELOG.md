@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-09
 
-- Reopened RH-W-0048 from completed to proposed only for mutability-contract reconciliation and independent re-verification. Issue #173 is OPEN with title `Implement explicit RH-W-0048 runtime projection repair` and labels `status:approved`, `type:feature`; no commit, push, PR, merge, or delivery is claimed.
+- Reopened RH-W-0048 from completed to proposed only for mutability-contract reconciliation and independent re-verification. Issue #173 is OPEN with title `Implement explicit RH-W-0048 runtime projection repair` and labels `status:approved`, `type:feature`; the 28-path commit `c74e0e0` was pushed on `feat/rh-w-0048-runtime-repair` to `origin` (0 ahead and 0 behind), with no PR, merge, main delivery, or lifecycle closure.
 
 - Recorded the owner's explicit approval of the existing bilingual RH-W-0048 implementation plan. The plan approval history remains distinct from the later separately authorized local implementation.
 
