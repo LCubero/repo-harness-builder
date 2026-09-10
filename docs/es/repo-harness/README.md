@@ -25,7 +25,8 @@
 | [Plan de implementacion RH-W-0051](rh-w-0051-implementation-plan.md) | Plan completado de taxonomia de estado local; instrucciones historicas conservadas |
 | [Diseño RH-W-0053](rh-w-0053-design.md) | Diseño entregado de checkpoint para sesión interrumpida; se conservan el cuerpo histórico y el contexto previo a la entrega |
 | [Plan de implementación RH-W-0053](rh-w-0053-implementation-plan.md) | Registro de ejecución RH-W-0053 entregado y completado con pruebas primero; se conserva la evidencia verificada |
-| [Diseño RH-W-0048](rh-w-0048-design.md) | Diseño aprobado de recuperación aditiva de proyecciones de runtime; plan de implementación e implementación sin autorizar |
+| [Diseño RH-W-0048](rh-w-0048-design.md) | Diseño propuesto de recuperación reabierto; el roadmap posee la reconciliación de mutabilidad y la verificación independiente restante |
+| [Plan de implementación RH-W-0048](rh-w-0048-implementation-plan.md) | Registro histórico de ejecución con TDD estricto; el roadmap posee el trabajo restante del ciclo |
 | [Diseño RH-W-0046/RH-W-0018](rh-w-0046-rh-w-0018-design.md) | Diseño conjunto aprobado por delegación del propietario sobre consentimiento de fetch y preferencias de menos preguntas; planificación e implementación siguen sin autorización |
 | [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado por el propietario de sugerencias para documentos humanos; planificación e implementación siguen sin autorización |
 | [Diseño RH-W-0022](rh-w-0022-design.md) | Diseño mínimo de relaciones documentales declaradas aprobado por el propietario; planificación e implementación siguen sin autorización |

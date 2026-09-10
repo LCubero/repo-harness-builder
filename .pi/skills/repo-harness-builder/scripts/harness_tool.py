@@ -2672,24 +2672,31 @@ def help_wrapper(
 
 
 def check_script(manifest_sha256: str) -> str:
-    """Render the in-repo congruence check that ships with the generated harness.
+    """Render the installed checker with an ordinary read-only check and bounded explicit repair.
 
     The builder is not installed in the repositories it builds, so the harness needs
     one small control of its own: are the runtime copies still the canonical skill?
-    That is the failure this catches, and the only one it claims to.
+    Ordinary no-command checking reports that answer with ``writes: 0``; only explicit
+    ``repair --apply --approved-plan-sha256 <digest>`` may create missing-local projections.
     """
     return f'''#!/usr/bin/env python3
-"""Report whether the runtime copies still match the canonical skills. Writes nothing.
+"""Report whether runtime copies match canonical skills; ordinary no-command checking writes nothing.
+
+Only explicit ``repair --apply --approved-plan-sha256 <digest>`` may create missing-local
+projections under the bounded repair contract.
 
 {GENERATED_MARKER}; source: core/check-script:{VERSION}
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import hashlib
 import os
 import re
+import subprocess
+import sys
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
@@ -2903,7 +2910,8 @@ def check_projections(root: Path) -> dict:
     for name, canonical_relative in sorted(manifest["canonicalSkills"].items()):
         canonical = guarded_path(root, canonical_relative)
         if not canonical.is_file():
-            entries.append({{"skill": name, "path": canonical_relative, "state": "canonical-missing"}})
+            state = "canonical-missing" if not canonical.exists() and not canonical.is_symlink() else "damaged"
+            entries.append({{"skill": name, "path": canonical_relative, "state": state}})
             continue
         expected = comparable(canonical.read_bytes().decode("utf-8"))
         for runtime in manifest["runtimes"]:
@@ -2923,7 +2931,8 @@ def check_projections(root: Path) -> dict:
         for family, canonical_relative in sorted(families.items()):
             canonical = guarded_path(root, canonical_relative)
             if not canonical.is_file():
-                entries.append({{"command": name, "family": family, "path": canonical_relative, "state": "canonical-missing"}})
+                state = "canonical-missing" if not canonical.exists() and not canonical.is_symlink() else "damaged"
+                entries.append({{"command": name, "family": family, "path": canonical_relative, "state": state}})
                 continue
             expected = canonical.read_bytes()
             for runtime in manifest["runtimes"]:
@@ -2942,7 +2951,8 @@ def check_projections(root: Path) -> dict:
     for canonical_relative, targets in sorted(manifest.get("canonicalProjections", {{}}).items()):
         canonical = guarded_path(root, canonical_relative)
         if not canonical.is_file():
-            entries.append({{"canonical": canonical_relative, "path": canonical_relative, "state": "canonical-missing"}})
+            state = "canonical-missing" if not canonical.exists() and not canonical.is_symlink() else "damaged"
+            entries.append({{"canonical": canonical_relative, "path": canonical_relative, "state": state}})
             continue
         expected = canonical.read_bytes()
         for runtime, relative in sorted(targets.items()):
@@ -2958,11 +2968,319 @@ def check_projections(root: Path) -> dict:
     return {{"status": "drift" if drifted else "current", "files": entries, "writes": 0}}
 
 
+def repair_digest(manifest_sha256: str, expected: dict) -> str:
+    """Bind repair authority to authenticated bytes and additive creations only."""
+    binding = {{
+        "manifestSha256": manifest_sha256,
+        "create": [
+            {{"path": relative, "sha256": hashlib.sha256(expected[relative]).hexdigest()}}
+            for relative in sorted(expected)
+        ],
+    }}
+    return hashlib.sha256(json.dumps(binding, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+
+
+def tracked_by_git(root: Path, relative: str) -> bool:
+    """Return exact index evidence when Git is available; otherwise local is conservative."""
+    try:
+        result = subprocess.run(
+            ("git", "-C", str(root), "ls-files", "--error-unmatch", "--", relative),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError:
+        return False
+    return result.returncode == 0
+
+
+def skill_projection_bytes(canonical_relative: str, raw: bytes) -> bytes:
+    """Derive the regular runtime copy while retaining its canonical provenance pointer."""
+    text = raw.decode("utf-8")
+    return text.replace(
+        "canonical-source: core/", "canonical-source: " + canonical_relative + "#core/", 1
+    ).encode("utf-8")
+
+
+def repair_preflight(root: Path) -> dict:
+    """Classify only authenticated manifest-derived runtime targets without writing."""
+    try:
+        manifest_path = guarded_path(root, ".repo-harness/manifest.json")
+        raw_manifest = manifest_path.read_bytes()
+        manifest = parse_manifest(raw_manifest, MANIFEST_SHA256)
+    except (OSError, ValueError, UnicodeError, json.JSONDecodeError):
+        return {{
+            "status": "refused",
+            "files": [{{"path": ".repo-harness/manifest.json", "state": "damaged"}}],
+            "create": [],
+            "exclusions": [{{
+                "path": ".repo-harness/manifest.json",
+                "reason": "manifest authentication or schema validation failed",
+            }}],
+            "manifestSha256": None,
+            "planSha256": None,
+            "_expected": {{}},
+        }}
+
+    materials = {{}}
+    damaged = {{}}
+    canonical_missing = {{}}
+
+    def add_material(relative: str, canonical_relative: str, expected: bytes, kind: str) -> None:
+        if relative in materials:
+            damaged[relative] = "multiple canonical declarations name the same target"
+            return
+        materials[relative] = {{"canonical": canonical_relative, "expected": expected, "kind": kind}}
+
+    for name, canonical_relative in sorted(manifest["canonicalSkills"].items()):
+        try:
+            canonical = guarded_path(root, canonical_relative)
+            if not canonical.exists() and not canonical.is_symlink():
+                for runtime in manifest["runtimes"]:
+                    relative = SKILL_SURFACES[runtime].format(name=name)
+                    add_material(relative, canonical_relative, b"", "damaged")
+                    canonical_missing[relative] = "canonical source is missing"
+                continue
+            if not canonical.is_file():
+                raise ValueError("canonical source is not a direct regular file")
+            expected = skill_projection_bytes(canonical_relative, canonical.read_bytes())
+        except (OSError, ValueError, UnicodeError):
+            for runtime in manifest["runtimes"]:
+                relative = SKILL_SURFACES[runtime].format(name=name)
+                add_material(relative, canonical_relative, b"", "damaged")
+                damaged[relative] = "canonical source is unavailable or unsafe"
+            continue
+        for runtime in manifest["runtimes"]:
+            add_material(SKILL_SURFACES[runtime].format(name=name), canonical_relative, expected, "skill")
+
+    for name, families in sorted(manifest["canonicalCommands"].items()):
+        for family, canonical_relative in sorted(families.items()):
+            try:
+                canonical = guarded_path(root, canonical_relative)
+                if not canonical.exists() and not canonical.is_symlink():
+                    for runtime in manifest["runtimes"]:
+                        surface_family, surface = COMMAND_SURFACES[runtime]
+                        if surface_family == family:
+                            relative = surface.format(name=name)
+                            add_material(relative, canonical_relative, b"", "damaged")
+                            canonical_missing[relative] = "canonical source is missing"
+                    continue
+                if not canonical.is_file():
+                    raise ValueError("canonical source is not a direct regular file")
+                expected = canonical.read_bytes()
+            except (OSError, ValueError):
+                for runtime in manifest["runtimes"]:
+                    surface_family, surface = COMMAND_SURFACES[runtime]
+                    if surface_family == family:
+                        relative = surface.format(name=name)
+                        add_material(relative, canonical_relative, b"", "damaged")
+                        damaged[relative] = "canonical source is unavailable or unsafe"
+                continue
+            for runtime in manifest["runtimes"]:
+                surface_family, surface = COMMAND_SURFACES[runtime]
+                if surface_family == family:
+                    add_material(surface.format(name=name), canonical_relative, expected, "bytes")
+
+    for canonical_relative, targets in sorted(manifest.get("canonicalProjections", {{}}).items()):
+        try:
+            canonical = guarded_path(root, canonical_relative)
+            if not canonical.exists() and not canonical.is_symlink():
+                for relative in targets.values():
+                    add_material(relative, canonical_relative, b"", "damaged")
+                    canonical_missing[relative] = "canonical source is missing"
+                continue
+            if not canonical.is_file():
+                raise ValueError("canonical source is not a direct regular file")
+            expected = canonical.read_bytes()
+        except (OSError, ValueError):
+            for relative in targets.values():
+                add_material(relative, canonical_relative, b"", "damaged")
+                damaged[relative] = "canonical source is unavailable or unsafe"
+            continue
+        for relative in targets.values():
+            add_material(relative, canonical_relative, expected, "bytes")
+
+    entries = []
+    expected_create = {{}}
+    exclusions = []
+    for relative, material in sorted(materials.items()):
+        entry = {{"path": relative}}
+        if relative in canonical_missing:
+            entry["state"] = "canonical-missing"
+            exclusions.append({{"path": relative, "reason": canonical_missing[relative]}})
+        elif relative in damaged:
+            entry["state"] = "damaged"
+            exclusions.append({{"path": relative, "reason": damaged[relative]}})
+        else:
+            try:
+                target = guarded_path(root, relative)
+                if not target.exists() and not target.is_symlink():
+                    if tracked_by_git(root, relative):
+                        entry["state"] = "missing-tracked"
+                        exclusions.append({{"path": relative, "reason": "target is tracked in Git and remains preserved"}})
+                    else:
+                        entry["state"] = "missing-local"
+                        expected_create[relative] = material["expected"]
+                elif not target.is_file():
+                    entry["state"] = "damaged"
+                    exclusions.append({{"path": relative, "reason": "target is not a direct regular file"}})
+                else:
+                    actual = target.read_bytes()
+                    matches = (
+                        comparable(actual.decode("utf-8")) == comparable(material["expected"].decode("utf-8"))
+                        if material["kind"] == "skill"
+                        else actual == material["expected"]
+                    )
+                    entry["state"] = "current" if matches else "stale"
+                    if not matches:
+                        exclusions.append({{"path": relative, "reason": "target differs from canonical bytes; repair does not overwrite"}})
+            except (OSError, ValueError, UnicodeError):
+                entry["state"] = "damaged"
+                exclusions.append({{"path": relative, "reason": "target is unavailable, unreadable, or unsafe"}})
+        entries.append(entry)
+    manifest_sha256 = hashlib.sha256(raw_manifest).hexdigest()
+    return {{
+        "status": "ready" if expected_create else "nothing-to-repair",
+        "files": sorted(entries, key=lambda item: item["path"]),
+        "create": sorted(expected_create),
+        "exclusions": sorted(exclusions, key=lambda item: item["path"]),
+        "manifestSha256": manifest_sha256,
+        "planSha256": repair_digest(manifest_sha256, expected_create),
+        "_expected": expected_create,
+    }}
+
+
+def create_parent_directories(root: Path, target: Path) -> list[Path]:
+    """Create only missing direct parents under root and remember them for bounded cleanup."""
+    canonical = root.resolve(strict=True)
+    missing = []
+    current = target.parent
+    while current != canonical and not current.exists():
+        missing.append(current)
+        current = current.parent
+    if current != canonical and (not current.is_dir() or is_indirect(current)):
+        raise ValueError("target parent is unavailable or unsafe")
+    created = []
+    for parent in reversed(missing):
+        parent.mkdir()
+        created.append(parent)
+    return created
+
+
+def write_exclusive(path: Path, expected: bytes, registered) -> None:
+    """Create one target without overwriting a competing or existing path."""
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_BINARY", 0)
+    descriptor = os.open(path, flags, 0o600)
+    registered()
+    with os.fdopen(descriptor, "wb") as handle:
+        handle.write(expected)
+
+
+def post_check_states(root: Path) -> dict:
+    return {{entry["path"]: entry["state"] for entry in repair_preflight(root)["files"]}}
+
+
+def repair(root: Path, apply: bool = False, approved_plan_sha256: str | None = None) -> dict:
+    """Preview or add only authenticated missing-local runtime projections."""
+    initial = repair_preflight(root)
+    if not apply:
+        return {{key: value for key, value in initial.items() if key != "_expected"}} | {{"writes": 0}}
+    if not initial["planSha256"] or approved_plan_sha256 != initial["planSha256"]:
+        raise ValueError("repair plan digest is missing or changed; run repair preview again")
+    repeated = repair_preflight(root)
+    if repeated["planSha256"] != approved_plan_sha256:
+        raise ValueError("repair plan changed during preflight; run repair preview again")
+    created = []
+    invocation_paths = []
+    created_directories = []
+    rollback = {{}}
+    try:
+        for relative in repeated["create"]:
+            target = guarded_path(root, relative)
+            created_directories.extend(create_parent_directories(root, target))
+            expected = repeated["_expected"][relative]
+            write_exclusive(
+                target,
+                expected,
+                lambda: invocation_paths.append((relative, target, expected)),
+            )
+            guarded_path(root, relative)
+            if hashlib.sha256(target.read_bytes()).hexdigest() != hashlib.sha256(repeated["_expected"][relative]).hexdigest():
+                raise OSError("creation verification failed")
+            created.append(relative)
+        post_check = post_check_states(root)
+        if any(post_check.get(relative) != "current" for relative in repeated["create"]):
+            raise OSError("post-check did not reach current")
+        current = [entry["path"] for entry in repeated["files"] if entry["state"] == "current"]
+        skipped = [entry["path"] for entry in repeated["files"] if entry["state"] == "missing-tracked"]
+        refused = [entry["path"] for entry in repeated["files"] if entry["state"] in {{"stale", "damaged", "canonical-missing"}}]
+        limitations = sorted(path for path, state in post_check.items() if state != "current")
+        return {{
+            "status": "recovered" if created and not limitations else ("partial" if created else ("limited" if limitations else "nothing-to-repair")),
+            "created": created,
+            "current": current,
+            "skipped": skipped,
+            "refused": refused,
+            "limitations": limitations,
+            "rollback": rollback,
+            "postCheck": post_check,
+            "runtimeReload": "unverified",
+            "writes": len(invocation_paths),
+        }}
+    except (OSError, ValueError):
+        for relative, target, expected in reversed(invocation_paths):
+            try:
+                if target.is_file() and target.read_bytes() == expected:
+                    target.unlink()
+                    rollback[relative] = "removed"
+                else:
+                    rollback[relative] = "preserved-changed"
+            except OSError:
+                rollback[relative] = "unavailable"
+        for parent in reversed(created_directories):
+            try:
+                parent.rmdir()
+            except OSError:
+                pass
+        post_check = post_check_states(root)
+        return {{
+            "status": "failed",
+            "created": created,
+            "current": [],
+            "skipped": [],
+            "refused": [],
+            "limitations": sorted(path for path, state in post_check.items() if state != "current"),
+            "rollback": rollback,
+            "postCheck": post_check,
+            "runtimeReload": "unverified",
+            "writes": len(invocation_paths),
+        }}
+
+
 def main() -> int:
-    """Print the report and exit non-zero when a copy is stale or missing."""
-    report = check_projections(HARNESS.parent)
+    """Keep ordinary checking read-only; repair is the only explicit mutation route."""
+    parser = argparse.ArgumentParser(
+        description="Check installed runtime projections without writes; explicit repair apply may create missing local projections"
+    )
+    sub = parser.add_subparsers(dest="command")
+    repair_parser = sub.add_parser(
+        "repair",
+        help="preview missing local projections; only --apply with the approved digest may create them",
+    )
+    repair_parser.add_argument("--apply", action="store_true", help="allow bounded creation after digest approval")
+    repair_parser.add_argument("--approved-plan-sha256", help="required exact preview digest for --apply")
+    args = parser.parse_args()
+    if args.command != "repair":
+        report = check_projections(HARNESS.parent)
+        print(json.dumps(report, indent=2, sort_keys=True))
+        return 1 if report["status"] == "drift" else 0
+    try:
+        report = repair(HARNESS.parent, args.apply, args.approved_plan_sha256)
+    except ValueError as error:
+        print(str(error), file=sys.stderr)
+        return 2
     print(json.dumps(report, indent=2, sort_keys=True))
-    return 1 if report["status"] == "drift" else 0
+    return 0 if report["status"] != "failed" else 1
 
 
 if __name__ == "__main__":

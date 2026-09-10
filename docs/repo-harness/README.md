@@ -27,7 +27,8 @@
 | [rh-w-0051-implementation-plan.md](rh-w-0051-implementation-plan.md) | Completed local-state taxonomy implementation plan; historical execution instructions retained |
 | [rh-w-0053-design.md](rh-w-0053-design.md) | Delivered interrupted-session checkpoint design; the historical design body and its pre-delivery context are retained |
 | [rh-w-0053-implementation-plan.md](rh-w-0053-implementation-plan.md) | Delivered test-first RH-W-0053 interrupted-operation checkpoint execution record; verified evidence is retained |
-| [rh-w-0048-design.md](rh-w-0048-design.md) | Owner-approved additive runtime-projection recovery design; implementation planning and implementation remain unauthorized |
+| [rh-w-0048-design.md](rh-w-0048-design.md) | Reopened proposed recovery design; the roadmap owns mutability-contract reconciliation and independent re-verification |
+| [rh-w-0048-implementation-plan.md](rh-w-0048-implementation-plan.md) | Historical strict-TDD recovery execution record; the roadmap owns remaining lifecycle work |
 | [rh-w-0046-rh-w-0018-design.md](rh-w-0046-rh-w-0018-design.md) | Owner-delegated approved joint repository fetch-consent and low-question preference-boundary design; implementation planning and implementation remain unauthorized |
 | [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved human-owned document suggestion design; implementation planning and implementation remain unauthorized |
 | [rh-w-0022-design.md](rh-w-0022-design.md) | Owner-approved minimal declared documentation relationship design; implementation planning and implementation remain unauthorized |
