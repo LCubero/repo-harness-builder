@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-10
+
+- Se completó `RH-W-0048` solo para su reconciliación reabierta del contrato de mutabilidad y su verificación independiente. El PR #174 se fusionó por squash a `main` como `f2b4e2bd59dffd4c0ea34258cbcba45ab86a0a94` a las 2026-09-10T01:45:21Z; el issue #173 se cerró automáticamente a las 2026-09-10T01:45:22Z. Los commits de rama de implementación `c74e0e0` y `86e6951`, la evidencia histórica de TDD estricto y la línea base del checker ordinario (`current`, `writes: 0`) permanecen como históricos. Diagnóstico externo verificado: `gentle-pi` 2.5.0 instalado antecede la corrección de propietario de candidato de Windows de Gentleman-Programming/gentle-pi #775, fusionada como #795 (`fix(review): secure Windows candidate ownership`) en `4e7b243d9a001bb8a9f0d29fe7468dfe56ca8c6d` el 2026-09-09T23:42:31Z. Una suposición de UID POSIX rechazó la vista privada del candidato antes del START nativo y enmascaró `native-mutation-status-reconciled`/unknown/sin linaje; `gentle-ai` 2.7.0 funciona mediante PATH y el issue abierto relacionado gentle-ai #4332 cubre salida nativa vacía/sin linaje. El propietario reiniciará Pi/gentle-pi desde main en la siguiente sesión; la resolución sigue siendo una inferencia respaldada pendiente de verificación nueva. El trabajo restante es `none`.
+
 ## 2026-09-09
 
 - Se reabrió RH-W-0048 de completada a propuesta solo para reconciliar el contrato de mutabilidad y volver a verificar de forma independiente. El issue #173 está OPEN con título `Implement explicit RH-W-0048 runtime projection repair` y etiquetas `status:approved`, `type:feature`; el commit de 28 rutas `c74e0e0` se envió en `feat/rh-w-0048-runtime-repair` a `origin` (0 por delante y 0 por detrás), sin PR, merge, entrega a `main` ni cierre de ciclo.
