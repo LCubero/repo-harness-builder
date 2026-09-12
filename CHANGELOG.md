@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-12
+
+- Delivered the verified RH-W-0052 archive-only implementation slice through approved, closed issue #177 and PR #178, squash-merged to `main` as `827feff98b2ec2b90cd8321868bcdec680c50c38` at 2026-09-12T00:54:42Z; issue #177 closed at 2026-09-12T00:54:43Z. Immediately after fast-forward synchronization and before this documentation reconciliation began, local `main` and `origin/main` were equal at `827feff98b2ec2b90cd8321868bcdec680c50c38`, 0 ahead/0 behind, with a clean worktree and index. Final evidence retained `ArchiveOnlyTests` 9 passed/1 skipped, the full suite 545 passed/10 skipped, checker `current` with 0 writes and 63 projections, exact canonical/Claude/OpenCode/Pi parity, clean `git diff --check`, and no severe or medium findings in final independent verification. Native review stopped before START because managed Pi assets were outdated, so no lineage or verdict exists. RH-W-0052 remains `proposed`: uninstall, reinstall, and deletion remain undesigned and unauthorized; no release or publication is claimed.
+
 ## 2026-09-11
 
 - Reconciled the separately owner-authorized, verified RH-W-0052 archive-only implementation evidence. The completed slice requires the exact destination parent chain to preexist as direct real directories; missing, indirect, or non-directory parents refuse without writes, and apply performs no `mkdir`, rollback deletion, or cleanup. Final receipts: `ArchiveOnlyTests` 9 passed/1 skipped; neighboring 132 passed/2 skipped; full canonical 545 passed/10 skipped; checker `current`, exit 0, `writes: 0`, 63 projections; exact canonical/Claude/OpenCode/Pi parity; and clean `git diff --check`. RH-W-0052 remains `proposed`: uninstall, reinstall, and deletion are undesigned and unauthorized. Native review stopped before START because managed Pi assets were outdated, producing no lineage or verdict. This reconciliation changed no product, source, test, projection, checker, manifest, or lifecycle-status bytes.
