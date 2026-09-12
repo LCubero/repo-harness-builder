@@ -24,7 +24,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33, and its separately authorized implementation reduced it to 32. Registering owner-prioritized `RH-W-0088` as `proposed` raised it to 33. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
-Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31, and owner-authorized rejection of RH-W-0040 reduced it to 30. After later completions recorded below, reopening RH-W-0048 only for mutability-contract reconciliation and independent re-verification, and completing that reopened scope, direct current derivation yielded 27 non-terminal records. Owner-authorized registration of RH-W-0089 raises the current derivation to 28. The prior chronology is historical.
+Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31, and owner-authorized rejection of RH-W-0040 reduced it to 30. After later completions recorded below, reopening RH-W-0048 only for mutability-contract reconciliation and independent re-verification, and completing that reopened scope, direct current derivation yielded 27 non-terminal records. Owner-authorized registration of RH-W-0089 raised the current derivation to 28. Owner-authorized registration of RH-W-0090 raises it to 29. The prior chronology is historical.
 
 The preventive design precedes the local-state architecture:
 
@@ -476,6 +476,15 @@ Readiness `scope/design decision required; implementation unauthorized`. Priorit
 
 Human decision: approve or correct the bilingual scope/design decision. Implementation requires separate authorization.
 
+### Plan 33: RH-W-0090 incremental memory-backup design decision
+
+Readiness `scope/design decision required; implementation unauthorized`. Priority `P2`, dependencies none. Compare one incremental `.repo-harness/memory-bk/` file with the completed RH-W-0069 timestamped exclusive backups without changing current behavior.
+
+1. Compare atomicity, corruption radius and recovery, concurrent writers, privacy, bounded growth and retention, migration and compatibility, and startup/stop recovery.
+2. Preserve RH-W-0069 as the authoritative current behavior and RH-W-0051 namespace ownership; reject a database, daemon, lock service, auto-migration, deletion, or contract change unless separately designed and authorized.
+
+Human decision: approve or correct the bilingual scope/design decision. Implementation remains separately unauthorized.
+
 ### Not plannable yet
 
 These records have an unmet advancement condition, so no artifact can be produced without inventing the evidence the condition requires.
@@ -487,7 +496,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reconciled on 2026-09-12 across 21 non-terminal plan headings covering 21 of the 28 non-terminal records, including the two records covered by Plan 6; terminal plans are retained as historical evidence. Direct record derivation yields 89 lifecycle records: 60 completed, 23 proposed, 5 deferred, and 1 rejected (60 + 23 + 5 + 1 = 89). Historical Plans 4, 10, 28, and 31 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
+Current projection reconciled on 2026-09-12 across 22 non-terminal plan headings covering 22 of the 29 non-terminal records, including the two records covered by Plan 6; terminal plans are retained as historical evidence. Direct record derivation yields 90 lifecycle records: 60 completed, 24 proposed, 5 deferred, and 1 rejected (60 + 24 + 5 + 1 = 90). Historical Plans 4, 10, 28, and 31 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
 
 Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Plan 6 joint design. The portfolio retains one joint-design pair, RH-W-0046/RH-W-0018, and two current coordination pairs with separate lifecycles: RH-W-0065/RH-W-0022 and RH-W-0066/RH-W-0044. Historical RH-W-0069/RH-W-0068 coordination ended when RH-W-0069 completed. No merger or new implementation authority follows.
 
@@ -518,6 +527,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0090
+| Field | Value |
+|---|---|
+| Origin | Owner-authorized bilingual documentation finding: evaluate one incremental `.repo-harness/memory-bk/` file against the current timestamped exclusive backups. |
+| Priority | P2: continuity design may affect recovery and privacy, but RH-W-0069 current behavior remains authoritative and no defect or implementation need is established. |
+| Dependencies | Completed RH-W-0069 owns current backup behavior; completed RH-W-0051 retains `.repo-harness/memory-bk/` namespace ownership. Neither is reopened. |
+| Status | proposed |
+| Completed work | Documentation-only registration of the immutable record. |
+| Remaining work | Obtain a bilingual scope/design decision comparing atomicity, corruption radius and recovery, concurrent writers, privacy, bounded growth and retention, migration and compatibility, and startup/stop recovery. Implementation requires separate authorization. |
+| Additions | One future design comparison only; no behavior is selected. |
+| Exclusions | No database, daemon, lock service, auto-migration, deletion, contract change, implementation, test, generated change, network, or Git delivery now. |
+| Deferrals | The choice between an incremental file and timestamped exclusive backups, and every implementation consequence, await the scope/design decision. |
+| Rejections | Rejected treating this registration as authorization to replace RH-W-0069 behavior or to alter RH-W-0051 namespace ownership. |
+| Evidence | Human decision: register the comparison without inspecting candidate implementation or changing behavior. Verified current owner evidence: RH-W-0069 is completed and RH-W-0051 owns the namespace. |
+| Decision history | 2026-09-12: registered as immutable `proposed` RH-W-0090 under owner authorization for bilingual documentation only. |
+| Next advancement condition | Advance only after an owner-approved bilingual scope/design decision addresses every comparison dimension; implementation remains separately unauthorized. |
 
 ### RH-W-0089
 | Field | Value |
@@ -949,17 +975,17 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 |---|---|
 | Origin | Owner-approved analysis registered on 2026-08-23 for research evidence and useful durable links that currently have no thematic canonical owner. |
 | Priority | P2: research conclusions become misleading when used sources were never opened, unreadable sources disappear from the report, or useful links are scattered without provenance or revalidation state. |
-| Dependencies | Reuse the completed `RH-W-0050` classification baseline and the completed `RH-W-0031` primary-source research precedent. Relate to `RH-W-0022` only for future documentation-relationship checking. |
+| Dependencies | Reuse the completed `RH-W-0050` classification baseline and the completed `RH-W-0031` primary-source research precedent. Relate to `RH-W-0022` only for future documentation-relationship checking. Coordinate future candidate evaluation with RH-W-0078, RH-W-0070, RH-W-0089, and, after exact evidence, RH-W-0086 without merging any lifecycle. |
 | Status | proposed |
-| Completed work | Registered the research and durable-reference boundary only. Internet research must attempt to open and evaluate every source used. Results explicitly list located sources that could not be read, with a bounded reason such as authentication, transport failure, incomplete content, or snippet-only evidence. Useful owner-supplied or research-produced links may be persisted in a tracked maintainable reference owner only when they do not belong better to an existing thematic document. No reference file or schema was created. |
-| Remaining work | Design the future URL, date, title, purpose, provenance, status, last-verified, owner-document, and notes schema, plus deduplication, sensitive URL rejection, archival, localization, and revalidation. |
+| Completed work | Registered the research and durable-reference boundary only. Internet research must attempt to open and evaluate every source used. Results explicitly list located sources that could not be read, with a bounded reason such as authentication, transport failure, incomplete content, or snippet-only evidence. Useful owner-supplied or research-produced links may be persisted in a tracked maintainable reference owner only when they do not belong better to an existing thematic document. No reference file or schema was created. Owner-supplied unread candidates are `https://github.com/j0k3r-dev-rgl/j0k3r-pi`, repository-local `.ld9/repos_references/j0k3r-pi-main` (including `anti-overengineering`), `https://github.com/unclebob/swarm-forge`, and path-neutral `chikiro`; no finding is claimed from any candidate. |
+| Remaining work | Design the future URL, date, title, purpose, provenance, status, last-verified, owner-document, and notes schema, plus deduplication, sensitive URL rejection, archival, localization, and revalidation. If authorized, extract only evidence-backed ideas from j0k3r candidates without mechanically copying architecture, compare swarm-forge coordination/work splitting with RH-W-0070 and RH-W-0089 while rejecting swarm architecture, a coordinator, queue, or new state by default absent concrete evidence, and compare `chikiro` with `current-state.md` only after exact repository/path evidence and separate external-access authorization. |
 | Additions | One future maintainable owner for otherwise-ownerless durable research links, plus explicit reporting of unread located sources. |
-| Exclusions | No `references.md`, no schema or file creation now, no network access in this registration, no replacement for thematic research owners, and no implementation. Do not absorb `RH-W-0051`, `RH-W-0040`, or `RH-W-0062`. |
-| Deferrals | File location, schema representation, lifecycle operations, localization mechanics, and revalidation cadence remain deferred to a future approved design. |
-| Rejections | Rejected persisting links that belong to an existing thematic document, sensitive URLs, and source lists that hide located but unread evidence. Rejected merging this with future documentation relationship checking under `RH-W-0022`. |
-| Evidence | Human decision: the owner approved this bounded lifecycle scope and immutable ID. Verified repository precedent: `RH-W-0031` owns primary-source research evidence, `RH-W-0050` supplies the classification baseline, and the documentation map assigns thematic research to dedicated owners. No source was researched and no implementation evidence is claimed in this registration. |
-| Decision history | 2026-08-23: registered as `proposed` from owner-approved analysis, without creating a reference file or schema. Registered outside the owner-approved 2026-08-21 execution order; scheduling remains an owner decision. |
-| Next advancement condition | Advance only after an owner-approved design defines the complete field schema, deduplication, sensitive URL rejection, archival, localization, revalidation, thematic-owner preference, and the exact relationship-checking boundary with `RH-W-0022`. |
+| Exclusions | No `references.md`, schema, or file creation now; no network or local candidate access in this registration; no replacement for thematic research owners; no implementation; no mechanical architecture copying; and no swarm architecture, coordinator, queue, or new state absent concrete evidence. Do not absorb `RH-W-0051`, `RH-W-0040`, or `RH-W-0062`. |
+| Deferrals | File location, schema representation, lifecycle operations, localization mechanics, and revalidation cadence remain deferred to a future approved design. `chikiro` remains path-neutral until exact repository/path evidence is supplied and external access is separately authorized. |
+| Rejections | Rejected persisting links that belong to an existing thematic document, sensitive URLs, source lists that hide located but unread evidence, and merging this with future documentation relationship checking under `RH-W-0022`. Rejected any current finding about the unread candidates. |
+| Evidence | Human decision: the owner approved this bounded lifecycle scope and immutable ID and supplied the unread candidates. Verified repository precedent: `RH-W-0031` owns primary-source research evidence, `RH-W-0050` supplies the classification baseline, and the documentation map assigns thematic research to dedicated owners. No candidate source was researched or read, and no implementation evidence is claimed in this registration. |
+| Decision history | 2026-08-23: registered as `proposed` from owner-approved analysis, without creating a reference file or schema. 2026-09-12: recorded the unread candidates and future coordination boundaries under documentation-only authority; no candidate access, design, implementation, or delivery was authorized. Registered outside the owner-approved 2026-08-21 execution order; scheduling remains an owner decision. |
+| Next advancement condition | Advance only after an owner-approved design defines the complete field schema, deduplication, sensitive URL rejection, archival, localization, revalidation, thematic-owner preference, the exact relationship-checking boundary with `RH-W-0022`, and any authorized candidate-evaluation boundary. |
 
 ### RH-W-0064
 | Field | Value |
