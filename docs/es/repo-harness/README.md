@@ -23,6 +23,8 @@
 | [Diseno RH-W-0050](rh-w-0050-design.md) | Diseno completado de reconciliacion acotada aprobado por el propietario; entregado con el cuerpo historico conservado |
 | [Diseno RH-W-0051](rh-w-0051-design.md) | Diseno aprobado y completado de taxonomia de estado local; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0051](rh-w-0051-implementation-plan.md) | Plan completado de taxonomia de estado local; instrucciones historicas conservadas |
+| [Diseño RH-W-0052](rh-w-0052-design.md) | Diseño solo de archivo aprobado por el propietario y límite de implementación verificado; los padres de destino deben preexistir como directorios reales directos, mientras RH-W-0052 sigue propuesta para desinstalación, reinstalación y borrado sin diseño |
+| [Plan de implementación RH-W-0052](rh-w-0052-implementation-plan.md) | Registro de ejecución solo de archivo con TDD estricto verificado; la implementación está completa para la porción, mientras RH-W-0052 sigue propuesta para trabajo de ciclo residual sin autorización |
 | [Diseño RH-W-0053](rh-w-0053-design.md) | Diseño entregado de checkpoint para sesión interrumpida; se conservan el cuerpo histórico y el contexto previo a la entrega |
 | [Plan de implementación RH-W-0053](rh-w-0053-implementation-plan.md) | Registro de ejecución RH-W-0053 entregado y completado con pruebas primero; se conserva la evidencia verificada |
 | [Diseño RH-W-0048](rh-w-0048-design.md) | Diseño propuesto de recuperación reabierto; el roadmap posee la reconciliación de mutabilidad y la verificación independiente restante |

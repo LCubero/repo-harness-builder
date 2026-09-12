@@ -1147,6 +1147,349 @@ def install(
     return outputs
 
 
+class ArchiveOnlyTests(unittest.TestCase):
+    SOURCE = ".repo-harness/skills/repo-harness-session-start/SKILL.md"
+
+    def fixture(self, root: Path, archive_parents: bool = True) -> dict[str, str]:
+        outputs = install(root, "Example", ("opencode",))
+        if archive_parents:
+            destination = root / ".repo-harness/archive/.repo-harness/skills/repo-harness-session-start/SKILL.md"
+            destination.parent.mkdir(parents=True)
+        return outputs
+
+    @staticmethod
+    def snapshot(root: Path) -> dict[str, bytes]:
+        return {
+            path.relative_to(root).as_posix(): path.read_bytes()
+            for path in root.rglob("*")
+            if path.is_file() and not path.is_symlink()
+        }
+
+    def test_archive_inspect_accepts_only_one_explicit_direct_regular_manifest_owned_source(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.fixture(root)
+            before = self.snapshot(root)
+
+            eligible = TOOL.archive_inspect(root, self.SOURCE)
+
+            self.assertEqual(eligible["status"], "eligible")
+            self.assertEqual(eligible["sourcePath"], self.SOURCE)
+            self.assertEqual(
+                eligible["destinationPath"],
+                ".repo-harness/archive/.repo-harness/skills/repo-harness-session-start/SKILL.md",
+            )
+            self.assertEqual(eligible["writes"], 0)
+            for source, reason in (
+                ("", "unsafe-source"),
+                ("../outside.txt", "unsafe-source"),
+                (".repo-harness", "non-regular-source"),
+                (".repo-harness/archive/prior-copy", "archive-internal-source"),
+            ):
+                with self.subTest(source=source):
+                    result = TOOL.archive_inspect(root, source)
+                    self.assertEqual(result["status"], "refused")
+                    self.assertEqual(result["reason"], reason)
+                    self.assertEqual(result["writes"], 0)
+            self.assertEqual(self.snapshot(root), before)
+
+    def test_archive_inspect_reports_ownership_unresolved_without_writing(self):
+        mutations = ("missing", "malformed", "unauthenticated", "stale-authentic", "non-covering")
+        for mutation in mutations:
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                self.fixture(root)
+                manifest = root / TOOL.MANIFEST_PATH
+                checker = root / ".repo-harness/check.py"
+                if mutation == "missing":
+                    manifest.unlink()
+                elif mutation == "malformed":
+                    manifest.write_bytes(b"{\n")
+                elif mutation == "unauthenticated":
+                    checker.write_bytes(b"untrusted checker\n")
+                elif mutation == "stale-authentic":
+                    checker.write_bytes(checker.read_bytes() + b"# stale but authentic\n")
+                else:
+                    data = json.loads(manifest.read_text(encoding="utf-8"))
+                    del data["canonicalSkills"]["repo-harness-session-start"]
+                    manifest.write_text(TOOL.dump_json(data), encoding="utf-8", newline="\n")
+                    checker.write_text(
+                        TOOL.check_script(TOOL.digest_bytes(manifest.read_bytes())),
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                before = self.snapshot(root)
+
+                result = TOOL.archive_inspect(root, self.SOURCE)
+
+                self.assertEqual(result, {"status": "ownership-unresolved", "writes": 0})
+                self.assertEqual(self.snapshot(root), before)
+
+    def test_archive_preview_emits_one_exact_mapping_with_zero_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.fixture(root)
+            before = self.snapshot(root)
+
+            preview = TOOL.archive_preview(root, self.SOURCE)
+
+            self.assertEqual(preview["status"], "eligible")
+            self.assertEqual(preview["action"], "archive-copy")
+            self.assertEqual(preview["sourcePath"], self.SOURCE)
+            self.assertEqual(
+                preview["destinationPath"],
+                ".repo-harness/archive/.repo-harness/skills/repo-harness-session-start/SKILL.md",
+            )
+            self.assertEqual(preview["writes"], 0)
+            self.assertRegex(preview["planSha256"], r"^[0-9a-f]{64}$")
+            self.assertEqual(self.snapshot(root), before)
+
+    def test_archive_preview_refuses_collision_and_unsafe_destination_without_writing(self):
+        for setup, reason in (
+            ("missing", "unsafe-destination"),
+            ("collision", "destination-collision"),
+            ("unsafe", "unsafe-destination"),
+            ("indirect", "unsafe-destination"),
+        ):
+            with self.subTest(setup=setup), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                self.fixture(root, archive_parents=setup == "collision")
+                destination = root / ".repo-harness/archive/.repo-harness/skills/repo-harness-session-start/SKILL.md"
+                if setup == "collision":
+                    destination.write_bytes(b"existing archive copy\n")
+                elif setup == "unsafe":
+                    (root / ".repo-harness/archive").write_bytes(b"not a directory\n")
+                elif setup == "indirect":
+                    outside = root / "outside-archive-parent"
+                    outside.mkdir()
+                    try:
+                        (root / ".repo-harness/archive").symlink_to(outside, target_is_directory=True)
+                    except OSError:
+                        continue
+                before_files = self.snapshot(root)
+                before_directories = {
+                    path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_dir()
+                }
+
+                preview = TOOL.archive_preview(root, self.SOURCE)
+                applied = TOOL.apply_archive_copy(root, self.SOURCE, preview.get("planSha256", ""))
+
+                self.assertEqual(preview, {"status": "refused", "reason": reason, "writes": 0})
+                self.assertEqual(applied, {"status": "refused", "reason": "approval-invalidated", "writes": 0})
+                self.assertEqual(self.snapshot(root), before_files)
+                self.assertEqual(
+                    {path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_dir()},
+                    before_directories,
+                )
+
+    def test_archive_approval_is_invalidated_by_material_mapping_or_ownership_change(self):
+        for change in ("source", "destination", "ownership"):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                self.fixture(root)
+                preview = TOOL.archive_preview(root, self.SOURCE)
+                destination = root / preview["destinationPath"]
+                if change == "source":
+                    (root / self.SOURCE).write_bytes(b"changed source bytes\n")
+                elif change == "destination":
+                    destination.write_bytes(b"new collision\n")
+                else:
+                    manifest = root / TOOL.MANIFEST_PATH
+                    manifest.write_bytes(manifest.read_bytes() + b"\n")
+                    (root / ".repo-harness/check.py").write_text(
+                        TOOL.check_script(TOOL.digest_bytes(manifest.read_bytes())),
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                protected = self.snapshot(root)
+
+                result = TOOL.apply_archive_copy(root, self.SOURCE, preview["planSha256"])
+
+                self.assertEqual(result, {"status": "refused", "reason": "approval-invalidated", "writes": 0})
+                self.assertEqual(self.snapshot(root), protected)
+        self.assert_archive_ownership_change_before_apply_creates_no_archive_tree()
+
+    def assert_archive_ownership_change_before_apply_creates_no_archive_tree(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.fixture(root)
+            preview = TOOL.archive_preview(root, self.SOURCE)
+            original_preview = TOOL.archive_preview
+            calls = 0
+
+            def invalidate_before_second_validation(root_arg, source_arg):
+                nonlocal calls
+                calls += 1
+                if calls == 2:
+                    manifest = root / TOOL.MANIFEST_PATH
+                    manifest.write_bytes(manifest.read_bytes() + b"\n")
+                    (root / ".repo-harness/check.py").write_text(
+                        TOOL.check_script(TOOL.digest_bytes(manifest.read_bytes())),
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                return original_preview(root_arg, source_arg)
+
+            source_bytes = (root / self.SOURCE).read_bytes()
+            before_directories = {
+                path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_dir()
+            }
+            with mock.patch.object(TOOL, "archive_preview", side_effect=invalidate_before_second_validation):
+                result = TOOL.apply_archive_copy(root, self.SOURCE, preview["planSha256"])
+
+            self.assertEqual(result, {"status": "refused", "reason": "approval-invalidated", "writes": 0})
+            self.assertEqual(
+                {path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_dir()},
+                before_directories,
+            )
+            self.assertEqual((root / self.SOURCE).read_bytes(), source_bytes)
+
+    def test_archive_apply_creates_only_the_approved_new_copy_and_preserves_source(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.fixture(root)
+            source_bytes = (root / self.SOURCE).read_bytes()
+            preview = TOOL.archive_preview(root, self.SOURCE)
+            protected = self.snapshot(root)
+
+            result = TOOL.apply_archive_copy(root, self.SOURCE, preview["planSha256"])
+
+            destination = root / preview["destinationPath"]
+            self.assertEqual(result, {"status": "applied", "changed": [preview["destinationPath"]], "writes": 1})
+            self.assertEqual(destination.read_bytes(), source_bytes)
+            self.assertEqual((root / self.SOURCE).read_bytes(), source_bytes)
+            after = self.snapshot(root)
+            self.assertEqual(after.pop(preview["destinationPath"]), source_bytes)
+            self.assertEqual(after, protected)
+
+    def test_archive_apply_refusal_preserves_local_unknown_and_tool_owned_paths(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.fixture(root)
+            protected_paths = (
+                ".repo-harness/state/current.json",
+                ".repo-harness/memory-bk/backup.txt",
+                ".repo-harness/tmp/session.txt",
+                ".atl/private.txt",
+                ".codegraph/index.txt",
+                ".engram/context.txt",
+                "notes/human.txt",
+            )
+            for relative in protected_paths:
+                target = root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(f"preserve {relative}\n".encode("utf-8"))
+            preview = TOOL.archive_preview(root, self.SOURCE)
+            (root / self.SOURCE).write_bytes(b"changed after approval\n")
+            protected = self.snapshot(root)
+
+            result = TOOL.apply_archive_copy(root, self.SOURCE, preview["planSha256"])
+
+            self.assertEqual(result, {"status": "refused", "reason": "approval-invalidated", "writes": 0})
+            self.assertFalse((root / preview["destinationPath"]).exists())
+            self.assertEqual(self.snapshot(root), protected)
+        self.assert_archive_race_collision_preserves_competitor_bytes()
+
+    def assert_archive_race_collision_preserves_competitor_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.fixture(root)
+            preview = TOOL.archive_preview(root, self.SOURCE)
+            destination = root / preview["destinationPath"]
+            source_bytes = (root / self.SOURCE).read_bytes()
+            before_files = self.snapshot(root)
+            before_directories = {
+                path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_dir()
+            }
+            competitor_bytes = b"competitor archive copy\n"
+            original_destination_target = TOOL.archive_destination_target
+            calls = 0
+            competitor_created = False
+
+            def compete(root_arg, source_arg):
+                nonlocal calls, competitor_created
+                calls += 1
+                target, relative = original_destination_target(root_arg, source_arg)
+                if calls == 4 and target == destination:
+                    target.write_bytes(competitor_bytes)
+                    competitor_created = True
+                return target, relative
+
+            with mock.patch.object(TOOL, "archive_destination_target", side_effect=compete):
+                result = TOOL.apply_archive_copy(root, self.SOURCE, preview["planSha256"])
+
+            self.assertTrue(competitor_created)
+            self.assertEqual(result, {"status": "refused", "reason": "approval-invalidated", "writes": 0})
+            self.assertEqual(destination.read_bytes(), competitor_bytes)
+            self.assertEqual((root / self.SOURCE).read_bytes(), source_bytes)
+            self.assertEqual(
+                self.snapshot(root),
+                {**before_files, preview["destinationPath"]: competitor_bytes},
+            )
+            self.assertEqual(
+                {path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_dir()},
+                before_directories,
+            )
+
+    def test_archive_cli_uses_one_named_source_and_digest_bound_apply_without_git_state(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.fixture(root)
+            base = [sys.executable, "-B", str(SCRIPT), "archive", "--root", str(root), "--source", self.SOURCE]
+
+            inspected = subprocess.run([*base, "--inspect"], check=True, capture_output=True, text=True)
+            previewed = subprocess.run(base, check=True, capture_output=True, text=True)
+            preview = json.loads(previewed.stdout)
+            applied = subprocess.run(
+                [*base, "--apply", "--approved-plan-sha256", preview["planSha256"]],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(json.loads(inspected.stdout)["status"], "eligible")
+            self.assertNotIn("gitState", preview)
+            self.assertEqual(json.loads(applied.stdout)["status"], "applied")
+            self.assertEqual((root / preview["destinationPath"]).read_bytes(), (root / self.SOURCE).read_bytes())
+        self.assert_archive_cli_rejects_approved_digest_for_inspect()
+
+    def assert_archive_cli_rejects_approved_digest_for_inspect(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.fixture(root)
+            base = [sys.executable, "-B", str(SCRIPT), "archive", "--root", str(root), "--source", self.SOURCE]
+            preview = json.loads(subprocess.run(base, check=True, capture_output=True, text=True).stdout)
+
+            inspected = subprocess.run(
+                [*base, "--inspect", "--approved-plan-sha256", preview["planSha256"]],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(inspected.returncode, 2)
+            self.assertIn("--approved-plan-sha256 belongs to archive apply", inspected.stderr)
+
+    def test_archive_inspect_refuses_an_indirect_source_without_writing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.fixture(root)
+            source = root / self.SOURCE
+            outside = root / "outside.txt"
+            outside.write_bytes(b"outside\n")
+            source.unlink()
+            try:
+                source.symlink_to(outside)
+            except OSError as error:
+                self.skipTest(f"symlink unavailable: {error}")
+            before = self.snapshot(root)
+
+            result = TOOL.archive_inspect(root, self.SOURCE)
+
+            self.assertEqual(result, {"status": "refused", "reason": "indirect-source", "writes": 0})
+            self.assertEqual(self.snapshot(root), before)
+
+
 class LocalStateTaxonomyTests(unittest.TestCase):
     EXPECTED_LOCAL_STATE = {
         "tmp": {"path": ".repo-harness/tmp/", "class": "disposable"},

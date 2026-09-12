@@ -35,7 +35,7 @@ The preventive design precedes the local-state architecture:
 5. `RH-W-0069` occupied the next historical position and is now completed; its continuity work remains separate from typed checkpoints.
 6. `RH-W-0053` is completed after its verified, bounded checkpoint-contract implementation and delivery through issue #170 and PR #171, squash-merged as `c7290fcf6c703df0839699a9cb8b77686bf18e74`; it remains separate from RH-W-0069 continuity and RH-W-0051 storage ownership.
 7. `RH-W-0048` is completed after its reopened mutability-contract reconciliation and independent re-verification. PR #174 squash-merged to `main` as `f2b4e2bd59dffd4c0ea34258cbcba45ab86a0a94` at 2026-09-10T01:45:21Z, and issue #173 closed automatically one second later. Its historical implementation/TDD evidence and owner workload acceptance are retained. Verified external evidence attributes the no-lineage result to the installed `gentle-pi` 2.5.0 Windows candidate-owner defect, fixed after that release by Gentleman-Programming/gentle-pi #795, which closed #775. The RH-W-0048 record retains the diagnosis and next-session verification boundary.
-8. `RH-W-0052` remains proposed with no design. It may advance only after separate authorization for a minimal archive-only design; uninstall, reinstall, and deletion architecture are out of scope.
+8. `RH-W-0052` remains proposed although its separately authorized archive-only implementation slice is complete and verified. The exact destination parent chain must preexist as direct real directories; missing, indirect, or non-directory parents refuse without writes, and apply performs no `mkdir`, rollback deletion, or cleanup. The owner selected that minimum after the raced-directory finding to avoid the impossible combination of absent parents, race collision, zero-write refusal, and no rollback deletion. Uninstall, reinstall, and deletion remain undesigned and unauthorized; no lifecycle advancement, issue/PR work, Git delivery, network access, commit, push, or publication is implied.
 
 Consent and comparison follow, unchanged:
 
@@ -147,16 +147,15 @@ Readiness `completed`. Priority `P2`. The owner-approved bilingual [design](rh-w
 
 Resolved design decisions remain unchanged: `python .repo-harness/check.py repair` is explicit; Git-index evidence distinguishes tracked targets without a new manifest mode; local-only paths receive no new `.gitattributes` rules. The plan approval and implementation-authority histories are preserved. The lifecycle is `completed` with remaining work `none`.
 
-### Plan 5: RH-W-0052 minimal archive-only design
+### Plan 5: RH-W-0052 minimal archive-only implementation
 
-Readiness `not plannable`. Priority `P2`. RH-W-0052 remains `proposed` with no design.
+Readiness `archive-only slice complete and verified; residual lifecycle remains proposed`. Priority `P2`. The [bilingual design](rh-w-0052-design.md) and [bilingual implementation plan](rh-w-0052-implementation-plan.md) retain the verified execution record for one explicit archive copy under `.repo-harness/archive/`; RH-W-0052 remains `proposed`.
 
-1. Obtain separate authorization for a minimal archive-only design.
-2. Preserve local state, unknown paths, and tool-owned paths.
-3. Exclude uninstall, reinstall, deletion, and any architecture for them.
-4. Keep the failed prototype as origin evidence only and keep this unit separate from RH-W-0048.
+1. Preserve the authenticated current-manifest eligibility, one direct regular source, zero-write inspect/preview, exact mapping, material-change invalidation, one-copy apply, and preservation/refusal boundaries.
+2. Require the exact destination parent chain to preexist as direct real directories; missing, indirect, or non-directory parents refuse without writes. Apply performs no `mkdir`, rollback deletion, or cleanup.
+3. Keep uninstall, reinstall, deletion, cleanup, and RH-W-0048 recovery outside the completed slice. No implementation work remains for the archive-only slice.
 
-Human decision: separately authorize the minimal archive-only design. That authorization does not authorize implementation, deletion, Git delivery, network, commit, or publication.
+Verified execution: three original RED/GREEN groups completed; independent review first reported high and low findings, correction RED/GREEN followed, a raced-directory case produced a medium finding, and the owner selected the parent-precondition correction before final correction and independent PASS. Final receipts were `ArchiveOnlyTests` 9 passed/1 skipped, neighboring 132 passed/2 skipped, full canonical 545 passed/10 skipped, checker `current`/exit 0/`writes: 0`/63 projections, exact canonical/Claude/OpenCode/Pi parity, and clean `git diff --check`. Windows source-symlink coverage was skipped for privilege; junction-parent refusal passed. Native review stopped before START because managed Pi assets were outdated, so no lineage or verdict exists. RH-W-0052 remains `proposed`; uninstall, reinstall, deletion, lifecycle advancement, issue/PR work, Git delivery, network access, commit, push, and publication remain separately undesigned or unauthorized.
 
 ### Plan 6: RH-W-0046 and RH-W-0018 joint consent design
 
@@ -481,7 +480,7 @@ Current projection reconciled on 2026-09-10 across 20 non-terminal plan headings
 
 Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Plan 6 joint design. The portfolio retains one joint-design pair, RH-W-0046/RH-W-0018, and two current coordination pairs with separate lifecycles: RH-W-0065/RH-W-0022 and RH-W-0066/RH-W-0044. Historical RH-W-0069/RH-W-0068 coordination ended when RH-W-0069 completed. No merger or new implementation authority follows.
 
-Consultative recommendation, not a schedule change: keep RH-W-0074 implementation pending until separately authorized, and reconcile RH-W-0076's residual scope with RH-W-0078's loaded-context research before compression. RH-W-0048 is completed; RH-W-0052 remains proposed with no design and requires separate authorization for a minimal archive-only design. Partial delivery under RH-W-0071, RH-W-0072, RH-W-0076, and RH-W-0086 does not complete their full records. RH-W-0070 is approved operating guidance, not a reason to build a monitor; unknown RH-W-0072 discoverability is not a reason to invent preventive work.
+Consultative recommendation, not a schedule change: keep RH-W-0074 implementation pending until separately authorized, and reconcile RH-W-0076's residual scope with RH-W-0078's loaded-context research before compression. RH-W-0048 is completed; RH-W-0052 remains proposed although its archive-only slice is complete and verified, while uninstall, reinstall, and deletion remain separately undesigned and unauthorized. Partial delivery under RH-W-0071, RH-W-0072, RH-W-0076, and RH-W-0086 does not complete their full records. RH-W-0070 is approved operating guidance, not a reason to build a monitor; unknown RH-W-0072 discoverability is not a reason to invent preventive work.
 
 Fourteen cross-plan relationships are declared here so no plan silently assumes another's outcome. None merges a lifecycle and none changes a status.
 
@@ -1143,17 +1142,17 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 |---|---|
 | Origin | Approved VPS findings reconciliation: an existing non-Git information folder without a harness exposed a need for explicit uninstall, archive, and reinstall behavior. |
 | Priority | P2: recovery and replacement can destroy useful local information if ownership and manifests are not proved first. |
-| Dependencies | Completed RH-W-0051 storage semantics and completed RH-W-0048 additive recovery primitives; manifest ownership remains a design question. |
+| Dependencies | Completed RH-W-0051 storage semantics and completed RH-W-0048 additive recovery primitives. |
 | Status | proposed |
-| Completed work | Classified the failed VPS prototype as evidence for a separate capability, not as an implementation, and fixed the fixture boundary. No RH-W-0052 design or product work remains. |
-| Remaining work | Separately authorize a minimal archive-only design. |
-| Additions | A minimal archive-only design, if separately authorized. |
-| Exclusions | No promotion of the failed prototype, uninstall, reinstall, deletion architecture, automatic deletion, assumption of Git, fixture mutation, or merged implementation with RH-W-0048. |
+| Completed work | Classified the failed VPS prototype as evidence for a separate capability, not as an implementation; completed the separately authorized archive-only slice; and preserved the bilingual design and plan as its execution record. Three original RED/GREEN groups, correction RED/GREEN, raced-directory correction, final correction, and independent PASS are recorded in the plan. |
+| Remaining work | None for the archive-only implementation slice. Uninstall, reinstall, and deletion remain separately undesigned and unauthorized. |
+| Additions | Archive eligibility requires an authenticated current manifest proving the exact direct source is harness-owned. The exact destination parent chain must preexist as direct real directories; missing, indirect, or non-directory parents refuse without writes. Apply performs no `mkdir`, rollback deletion, or cleanup. |
+| Exclusions | No promotion of the failed prototype, uninstall, reinstall, deletion architecture, automatic deletion, assumption of Git, fixture mutation, merged implementation with RH-W-0048, or lifecycle advancement. |
 | Deferrals | none |
 | Rejections | Rejected treating the failed prototype as shipped behavior or proof that destructive cleanup is safe. |
-| Evidence | Owner-approved reconciliation decision; the current repository implements no uninstall, archive, or reinstall command. |
-| Decision history | 2026-08-20: registered as a separate proposed capability. RH-W-0052 remains separate from RH-W-0048 and carries no prepared design. |
-| Next advancement condition | Separately authorize a minimal archive-only design. That authorization does not authorize implementation, uninstall, reinstall, deletion, Git delivery, network, commit, or publication. |
+| Evidence | `ArchiveOnlyTests` 9 passed/1 skipped; neighboring 132 passed/2 skipped; full canonical 545 passed/10 skipped; checker `current`, exit 0, `writes: 0`, 63 projections; exact canonical/Claude/OpenCode/Pi parity; and clean `git diff --check`. Windows source-symlink coverage skipped for privilege; junction-parent refusal passed. Native review stopped before START because managed Pi assets were outdated, with no lineage or verdict. |
+| Decision history | 2026-08-20: registered as a separate proposed capability. RH-W-0052 remains separate from RH-W-0048. 2026-09-11: the bilingual archive-only design and plan were approved. Separate owner authority authorized implementation. Independent review first reported high and low findings; correction RED/GREEN followed, the raced-directory case produced a medium finding, and the owner selected the direct-real-parent precondition before final correction and independent PASS. |
+| Next advancement condition | Separate owner authority must select any residual lifecycle scope. The archive-only slice needs no further implementation. Plan and implementation authority authorize no lifecycle advancement, issue/PR work, Git delivery, network access, commit, push, publication, uninstall, reinstall, deletion, or cleanup. |
 
 ### RH-W-0051
 | Field | Value |
