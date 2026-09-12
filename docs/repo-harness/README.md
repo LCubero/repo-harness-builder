@@ -55,6 +55,7 @@
 | [rh-w-0084-scope.md](rh-w-0084-scope.md) | Completed owner-approved LLM-first research scope; historical scope body and lifecycle updates are retained |
 | [rh-w-0083-scope.md](rh-w-0083-scope.md) | Completed owner-approved immediate-before-response obligation and focused acceptance-test scope; historical boundary retained |
 | [rh-w-0087-scope.md](rh-w-0087-scope.md) | Completed owner-approved generated-commit AI-attribution prohibition scope; historical boundary retained |
+| [rh-w-0089-scope.md](rh-w-0089-scope.md) | Completed owner-approved scope for preserving pending human gates under delayed subagent notifications; historical boundary retained |
 | [rh-w-0012-boundaries.md](rh-w-0012-boundaries.md) | Owner-accepted specification of the seven external-research safety boundaries RH-W-0012 had only named; completed, including the boundary 4 undated-source clause that first use surfaced |
 | [rh-w-0084-research.md](rh-w-0084-research.md) | Canonical primary-source evidence owner for LLM-first formats, sizes, paths, reinforcement, and forms; the reinforcement finding is accepted under RH-W-0083 while other findings remain with their owners |
 | [rh-w-0078-gentle-ai-binary-research.md](rh-w-0078-gentle-ai-binary-research.md) | Canonical Gentle AI source research informing RH-W-0078 progressive disclosure and deterministic machine ownership without authorizing a new binary or implementation |

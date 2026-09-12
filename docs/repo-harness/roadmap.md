@@ -24,7 +24,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33, and its separately authorized implementation reduced it to 32. Registering owner-prioritized `RH-W-0088` as `proposed` raised it to 33. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
-Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31, and owner-authorized rejection of RH-W-0040 reduced it to 30. After later completions recorded below, reopening RH-W-0048 only for mutability-contract reconciliation and independent re-verification, and completing that reopened scope, direct current derivation yielded 27 non-terminal records. Owner-authorized registration of RH-W-0089 raised the current derivation to 28. Owner-authorized registration of RH-W-0090 raises it to 29. The prior chronology is historical.
+Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31, and owner-authorized rejection of RH-W-0040 reduced it to 30. After later completions recorded below, reopening RH-W-0048 only for mutability-contract reconciliation and independent re-verification, and completing that reopened scope, direct current derivation yielded 27 non-terminal records. Owner-authorized registration of RH-W-0089 raised the current derivation to 28; its completed lifecycle closure returned it to 27. Owner-authorized registration of RH-W-0090 raises it to 28. The prior chronology is historical.
 
 The preventive design precedes the local-state architecture:
 
@@ -467,14 +467,14 @@ Completed under separate explicit owner implementation authorization; the steps 
 
 ### Plan 32: RH-W-0089 pending human gates under asynchronous notifications
 
-Readiness `scope/design decision required; implementation unauthorized`. Priority `P1`, dependencies none. This minimal plan owns only one future generated contractual rule in the existing response-contract owner, reached through the existing daily reference.
+Readiness `completed`. Priority `P1`, dependencies none. The bilingual [completed scope](rh-w-0089-scope.md) retains the historical authorization boundary for the one generated contractual rule in the existing response-contract owner, reached through the existing daily reference.
 
-1. Decide bilingual exact wording, canonical owner, and the Pi limitation: later user-role subagent notifications are an external trigger/compatibility boundary, while this repository can own only defensive generated behavior.
-2. Specify one rule: while a human gate is pending, delayed subagent reports are informational only; they neither answer it as human intent nor trigger action, and they do not replace or repeat the question. The latest final verified result supersedes stale intermediate reports.
-3. Add focused generated-contract tests for the exact rule, sole owner, existing daily reference, and preserved gate; do not add runtime interception or state.
-4. Seek separate authorization before implementation.
+1. The bounded rule is implemented: while a human gate is pending, delayed subagent notifications are informational only; they neither supply human intent nor authority, trigger action, replace, repeat, or displace the question. Only the latest verified terminal provider or subagent-operation result supersedes stale intermediate reports. Pi user-role notifications remain the external trigger/compatibility boundary.
+2. RED recorded `0 != 1`; focused GREEN recorded `RuleFileTests` 15 passed. The existing daily reference and blocking form remain preserved; no runtime interception or state was added.
+3. Canonical, self-host, and Claude/OpenCode/Pi runtime projections are synchronized. The full suite passed 546 with 10 skipped; the checker was `current` with 0 writes; exact package parity and `git diff --check` passed; no daily skill changed.
+4. Independent verification found all technical checks passed and was blocked only by stale lifecycle wording. Native review stopped before START because managed Pi assets were outdated, so no lineage or verdict exists. Lifecycle closure is complete with remaining work `none`.
 
-Human decision: approve or correct the bilingual scope/design decision. Implementation requires separate authorization.
+Human decision: the prior scope approval is historical. `RH-W-0089` is `completed`; Git delivery remains separately unauthorized.
 
 ### Plan 33: RH-W-0090 incremental memory-backup design decision
 
@@ -496,7 +496,7 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reconciled on 2026-09-12 across 22 non-terminal plan headings covering 22 of the 29 non-terminal records, including the two records covered by Plan 6; terminal plans are retained as historical evidence. Direct record derivation yields 90 lifecycle records: 60 completed, 24 proposed, 5 deferred, and 1 rejected (60 + 24 + 5 + 1 = 90). Historical Plans 4, 10, 28, and 31 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
+Current projection reconciled on 2026-09-12 across 21 non-terminal plan headings covering 21 of the 28 non-terminal records, including the two records covered by Plan 6; terminal plans are retained as historical evidence. Direct record derivation yields 90 lifecycle records: 61 completed, 23 proposed, 5 deferred, and 1 rejected (61 + 23 + 5 + 1 = 90). Historical Plans 4, 10, 28, 31, and 32 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
 
 Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Plan 6 joint design. The portfolio retains one joint-design pair, RH-W-0046/RH-W-0018, and two current coordination pairs with separate lifecycles: RH-W-0065/RH-W-0022 and RH-W-0066/RH-W-0044. Historical RH-W-0069/RH-W-0068 coordination ended when RH-W-0069 completed. No merger or new implementation authority follows.
 
@@ -548,19 +548,19 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ### RH-W-0089
 | Field | Value |
 |---|---|
-| Origin | Owner-authorized bilingual finding recorded on 2026-09-12. Session evidence is the current screenshot and observed sequence in which a delayed Pi subagent completion arrived as a later user-role turn while a human authority gate remained unresolved. This is session evidence, not a repository-verifiable claim about Pi runtime semantics or root cause. The repository-verifiable generated-contract gap is separate. |
+| Origin | Owner-authorized bilingual finding recorded on 2026-09-11. Session evidence is the current screenshot and observed sequence in which a delayed Pi subagent completion arrived as a later user-role turn while a human authority gate remained unresolved. This is session evidence, not a repository-verifiable claim about Pi runtime semantics or root cause. The repository-verifiable generated-contract gap is separate. |
 | Priority | P1: the observed sequence can visually displace an unresolved authority gate and make later work appear authorized. |
 | Dependencies | None. Reuse the existing working-agreements gate, the complete response-contract owner, and its existing daily `RESPONSE_CONTRACT_REFERENCE`; do not duplicate any response owner. Pi user-role notification semantics remain the external trigger and compatibility boundary. |
-| Status | proposed |
-| Completed work | Documentation-only registration. Verified repository gap: working-agreements requires one blocking question and waiting; response-contract owns the visual form; daily contracts carry only `RESPONSE_CONTRACT_REFERENCE`; no rule defines asynchronous event precedence, pending-gate preservation, or stale-intermediate-result handling. |
-| Remaining work | Obtain a bilingual scope/design decision identifying exact wording, canonical owner, the Pi limitation, and focused generated-contract tests. Implementation requires separate authorization. |
-| Additions | Prefer one generated contractual rule in the existing response-contract owner, reached through the existing daily reference: while a human gate is pending, delayed subagent reports are informational only; do not answer them as human intent, do not act, do not replace or repeat the question; the latest final verified result supersedes stale intermediate reports. |
+| Status | completed |
+| Completed work | The historical bilingual [proposed scope](rh-w-0089-scope.md) received owner-delegated technical approval. The one minimal response-contract rule and its focused coverage are implemented: RED `0 != 1`; GREEN `RuleFileTests` 15 passed; the full suite passed 546 with 10 skipped; the checker was `current` with 0 writes; exact canonical/self-host/Claude/OpenCode/Pi package parity and `git diff --check` passed; and no daily skill changed. The existing daily reference and blocking form remain preserved. |
+| Remaining work | none |
+| Additions | The completed scope retains one generated contractual rule in the existing response-contract owner, reached through the existing daily reference: while a human gate is pending, delayed subagent reports are informational only; they neither supply human intent nor authority, trigger action, replace, repeat, or displace the question. Only the latest verified terminal provider or subagent-operation result supersedes stale intermediate reports. |
 | Exclusions | No persistent state, queue, coordinator, daemon, scheduler, event bus, new runtime service, notification interception, Pi patch, duplicate response owner, automatic authority, or broad subagent redesign. |
-| Deferrals | Exact wording, canonical owner confirmation, Pi limitation, and focused generated-contract tests await the bilingual scope/design decision. |
+| Deferrals | None for product work. Git delivery remains separately unauthorized. |
 | Rejections | Rejected claiming root cause or final ownership between Pi and repo-harness-builder. Pi user-role notification semantics are the external trigger/compatibility boundary; this repository can own defensive generated behavior only. |
-| Evidence | Verified fact: the repository gap described above. Session evidence: the current 2026-09-12 screenshot and observed sequence. Unknown: Pi root cause, final ownership, and whether the runtime can preserve a pending gate; no repository source proves them. |
-| Decision history | 2026-09-12: registered as immutable `proposed` RH-W-0089 under owner authorization for bilingual roadmap documentation only. No design, implementation, tests, generated-contract change, issue/PR, network, commit, push, or publication is authorized. |
-| Next advancement condition | Advance only after a bilingual scope/design decision identifies exact wording, canonical owner, Pi limitation, and focused generated-contract tests; implementation remains separately unauthorized. |
+| Evidence | Verified fact: the repository gap and the completed receipts above. Session evidence: the current 2026-09-11 screenshot and observed sequence. Native review stopped before START because managed Pi assets were outdated, so no lineage or verdict exists. Unknown: Pi root cause, final ownership, and whether the runtime can preserve a pending gate; no repository source proves them. |
+| Decision history | 2026-09-11: registered as immutable `proposed` RH-W-0089 under owner authorization for bilingual roadmap documentation only; the parent later recorded owner-delegated technical approval of the bilingual proposed scope after complete applicable repository review and independent PASS verification. 2026-09-11: the bounded rule and focused test were implemented and technically verified; independent verification found all technical checks passed and was blocked only by stale lifecycle wording. 2026-09-12: under owner-delegated technical authority, lifecycle closure completed with remaining work `none`; Git delivery remains separately unauthorized. |
+| Next advancement condition | none |
 
 ### RH-W-0088
 | Field | Value |
