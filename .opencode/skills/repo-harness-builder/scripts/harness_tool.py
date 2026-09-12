@@ -3617,6 +3617,128 @@ def manifest_owned_generated_paths(root: Path) -> set[str]:
     return paths | {MANIFEST_PATH, ".repo-harness/check.py"}
 
 
+def archive_source_target(root: Path, source: str) -> tuple[Optional[Path], Optional[str], Optional[str]]:
+    """Resolve one explicit archive source without following indirect paths."""
+    try:
+        relative = safe_relative(source)
+        archive = LOCAL_STATE["archive"]["path"].rstrip("/")
+        if relative == archive or relative.startswith(f"{archive}/"):
+            return None, None, "archive-internal-source"
+        target = guarded_target(root, relative)
+    except (ContractError, OSError, RuntimeError):
+        return None, None, "unsafe-source"
+    if is_indirect(target):
+        return None, None, "indirect-source"
+    if not target.is_file():
+        return None, None, "non-regular-source"
+    return target, relative, None
+
+
+def archive_destination_target(root: Path, source: str) -> tuple[Optional[Path], Optional[str]]:
+    """Derive the one deterministic archive destination for an eligible source."""
+    archive = LOCAL_STATE["archive"]["path"].rstrip("/")
+    relative = f"{archive}/{source}"
+    try:
+        target = guarded_target(root, relative)
+    except (ContractError, OSError, RuntimeError):
+        return None, None
+    current = root.resolve(strict=True)
+    for part in PurePosixPath(relative).parts[:-1]:
+        current /= part
+        if is_indirect(current) or not current.is_dir():
+            return None, None
+    return target, relative
+
+
+def archive_inspect(root: Path, source: str) -> dict[str, Any]:
+    """Inspect one archive-copy candidate without writing or invoking Git."""
+    source_target, source_relative, refusal = archive_source_target(root, source)
+    if refusal:
+        return {"status": "refused", "reason": refusal, "writes": 0}
+    assert source_target is not None and source_relative is not None
+    destination_target, destination_relative = archive_destination_target(root, source_relative)
+    if destination_target is None or destination_relative is None:
+        return {"status": "refused", "reason": "unsafe-destination", "writes": 0}
+    try:
+        manifest_target = guarded_target(root, MANIFEST_PATH)
+        checker_target = guarded_target(root, ".repo-harness/check.py")
+        if (
+            not manifest_target.is_file()
+            or is_indirect(manifest_target)
+            or not checker_target.is_file()
+            or is_indirect(checker_target)
+        ):
+            return {"status": "ownership-unresolved", "writes": 0}
+        manifest_bytes = manifest_target.read_bytes()
+        checker_bytes = checker_target.read_bytes()
+        if checker_bytes.decode("utf-8", errors="replace") != check_script(digest_bytes(manifest_bytes)):
+            return {"status": "ownership-unresolved", "writes": 0}
+        if source_relative not in manifest_owned_generated_paths(root):
+            return {"status": "ownership-unresolved", "writes": 0}
+    except (ContractError, OSError, RuntimeError, UnicodeDecodeError, json.JSONDecodeError, KeyError, TypeError):
+        return {"status": "ownership-unresolved", "writes": 0}
+    if destination_target.exists() or destination_target.is_symlink():
+        return {"status": "refused", "reason": "destination-collision", "writes": 0}
+    return {
+        "status": "eligible",
+        "action": "archive-copy",
+        "sourcePath": source_relative,
+        "destinationPath": destination_relative,
+        "sourceSha256": digest_bytes(source_target.read_bytes()),
+        "manifestSha256": digest_bytes(manifest_bytes),
+        "checkerSha256": digest_bytes(checker_bytes),
+        "writes": 0,
+    }
+
+
+def archive_preview(root: Path, source: str) -> dict[str, Any]:
+    """Preview one archive-copy operation with a digest-bound exact mapping."""
+    inspection = archive_inspect(root, source)
+    if inspection["status"] != "eligible":
+        return inspection
+    binding = {
+        key: inspection[key]
+        for key in ("action", "sourcePath", "destinationPath", "sourceSha256", "manifestSha256", "checkerSha256")
+    }
+    return {**inspection, "planSha256": plan_digest({"archive": [binding]})}
+
+
+def apply_archive_copy(root: Path, source: str, approved_plan_sha256: str) -> dict[str, Any]:
+    """Create only an exact, currently approved archive copy."""
+    preview = archive_preview(root, source)
+    if preview.get("status") != "eligible" or preview.get("planSha256") != approved_plan_sha256:
+        return {"status": "refused", "reason": "approval-invalidated", "writes": 0}
+    destination_target, destination_relative = archive_destination_target(root, preview["sourcePath"])
+    if destination_target is None or destination_relative != preview["destinationPath"]:
+        return {"status": "refused", "reason": "approval-invalidated", "writes": 0}
+    preview = archive_preview(root, source)
+    if preview.get("status") != "eligible" or preview.get("planSha256") != approved_plan_sha256:
+        return {"status": "refused", "reason": "approval-invalidated", "writes": 0}
+    source_target, source_relative, refusal = archive_source_target(root, source)
+    destination_target, destination_relative = archive_destination_target(root, source_relative or "")
+    if (
+        refusal
+        or source_target is None
+        or source_relative != preview["sourcePath"]
+        or destination_target is None
+        or destination_relative != preview["destinationPath"]
+        or destination_target.exists()
+        or destination_target.is_symlink()
+    ):
+        return {"status": "refused", "reason": "approval-invalidated", "writes": 0}
+    source_bytes = source_target.read_bytes()
+    if digest_bytes(source_bytes) != preview["sourceSha256"]:
+        return {"status": "refused", "reason": "approval-invalidated", "writes": 0}
+    try:
+        with destination_target.open("xb") as destination_file:
+            destination_file.write(source_bytes)
+    except FileExistsError:
+        return {"status": "refused", "reason": "approval-invalidated", "writes": 0}
+    if destination_target.read_bytes() != source_bytes or source_target.read_bytes() != source_bytes:
+        return {"status": "failed", "reason": "copy-verification-failed", "writes": 1}
+    return {"status": "applied", "changed": [destination_relative], "writes": 1}
+
+
 def authenticated_wrapper_versions(root: Path) -> dict[str, str]:
     """Return versions for exact marker-free wrappers owned by an authenticated manifest."""
     manifest_target = guarded_target(root, MANIFEST_PATH)
@@ -4678,6 +4800,13 @@ def main(argv: Optional[list[str]] = None) -> int:
             child.add_argument("--project-id", help="exact normalized project identifier the authority context declares; builder activation only")
             child.add_argument("--authority-context-file", help="path to the exact canonical authority context, or - to read it from stdin; builder activation only")
             child.add_argument("--approved-generation-sha256", help="generation digest printed by the approved builder preview; builder apply only")
+    archive = sub.add_parser("archive", help="inspect, preview, or apply one owned archive copy")
+    archive.add_argument("--root", type=Path, required=True)
+    archive.add_argument("--source", required=True, help="one repository-relative manifest-owned regular file")
+    archive_mode = archive.add_mutually_exclusive_group()
+    archive_mode.add_argument("--inspect", action="store_true", help="inspect without producing an approval digest")
+    archive_mode.add_argument("--apply", action="store_true", help="create the exact currently approved archive copy")
+    archive.add_argument("--approved-plan-sha256", help="digest printed by the approved archive preview")
     self_test = sub.add_parser("self-test", help="bootstrap and verify a temporary empty project")
     self_test.add_argument("--standalone", action="store_true", help="test repository-only continuity")
     args = parser.parse_args(argv)
@@ -4687,6 +4816,18 @@ def main(argv: Optional[list[str]] = None) -> int:
             return 0
         root = args.root.resolve(strict=True)
         require(root.is_dir(), "root must be a directory")
+        if args.command == "archive":
+            if args.inspect:
+                require(not args.approved_plan_sha256, "--approved-plan-sha256 belongs to archive apply")
+                report = archive_inspect(root, args.source)
+            elif args.apply:
+                require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
+                report = apply_archive_copy(root, args.source, args.approved_plan_sha256)
+            else:
+                require(not args.approved_plan_sha256, "--approved-plan-sha256 belongs to archive apply")
+                report = archive_preview(root, args.source)
+            print(dump_json(report), end="")
+            return 0
         selected = args.runtime or (recorded_runtimes(root) or [])
         git_state = inspect_git_state(root)
         if args.command == "check":
