@@ -1,6 +1,6 @@
 # RH-W-0089 Completed Scope
 
-**Status: completed; owner-delegated technical closure recorded.** This bilingual scope retains the approved bounded generated-contract rule and its historical authorization boundary. `RH-W-0089` is completed with remaining work `none`; the [roadmap record](roadmap.md#rh-w-0089) remains the lifecycle owner. Git delivery remains separately unauthorized.
+**Status: completed and delivered.** This bilingual scope retains the approved bounded generated-contract rule and its historical authorization boundary. `RH-W-0089` is completed with remaining work `none`; the [roadmap record](roadmap.md#rh-w-0089) remains the lifecycle owner. Approved issue #182 and PR #183 squash-merged to `main` as `8ff35bb66739b8acd45b9ca42c199fe4b83685ab` at 2026-09-12T05:19:32Z; issue #182 closed one second later. Immediately after fast-forward, local `main` and `origin/main` were equal at that commit, 0 ahead/0 behind, with a clean worktree and index.
 
 ## Exact Implemented Contract
 
@@ -42,4 +42,4 @@ Verified repository fact: the existing working-agreements gate requires one bloc
 
 Session evidence: a delayed Pi subagent completion was observed as a later user-role turn while a human authority gate remained unresolved. It does not establish Pi runtime semantics or root cause. Unknown: Pi notification semantics, root cause, final ownership, and whether the runtime itself can preserve a pending gate. Native review stopped before START because managed Pi assets were outdated, so no lineage or verdict exists.
 
-Human decision: the parent recorded owner-delegated technical closure after complete applicable repository review and independent PASS verification. The bounded rule and focused tests are implemented and verified; `RH-W-0089` is `completed` with remaining work `none`. The prior stage-bound approval did not authorize Git delivery, network access, commit, push, issue, pull request, or publication; Git delivery remains separately unauthorized.
+Human decision: the parent recorded owner-delegated technical closure after complete applicable repository review and independent PASS verification. The bounded rule and focused tests are implemented and verified; `RH-W-0089` is `completed` with remaining work `none`. The prior stage-bound approval did not authorize Git delivery, network access, commit, push, issue, pull request, or publication; approved issue #182 and PR #183 later delivered the work by squash merge to `main` as `8ff35bb66739b8acd45b9ca42c199fe4b83685ab` at 2026-09-12T05:19:32Z, with issue #182 closed one second later.
