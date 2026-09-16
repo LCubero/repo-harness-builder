@@ -31,7 +31,8 @@
 | [rh-w-0053-implementation-plan.md](rh-w-0053-implementation-plan.md) | Delivered test-first RH-W-0053 interrupted-operation checkpoint execution record; verified evidence is retained |
 | [rh-w-0048-design.md](rh-w-0048-design.md) | Reopened proposed recovery design; the roadmap owns mutability-contract reconciliation and independent re-verification |
 | [rh-w-0048-implementation-plan.md](rh-w-0048-implementation-plan.md) | Historical strict-TDD recovery execution record; the roadmap owns remaining lifecycle work |
-| [rh-w-0046-rh-w-0018-design.md](rh-w-0046-rh-w-0018-design.md) | Owner-delegated approved joint repository fetch-consent and low-question preference-boundary design; implementation planning and implementation remain unauthorized |
+| [rh-w-0046-rh-w-0018-design.md](rh-w-0046-rh-w-0018-design.md) | Owner-delegated approved joint repository fetch-consent and low-question preference-boundary design; completed RH-W-0046 remains separate from deferred RH-W-0018 |
+| [rh-w-0046-implementation-plan.md](rh-w-0046-implementation-plan.md) | Completed historical RH-W-0046 repository fetch-consent execution record; the exact consent boundary may reopen only on regression |
 | [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved human-owned document suggestion design; implementation planning and implementation remain unauthorized |
 | [rh-w-0022-design.md](rh-w-0022-design.md) | Owner-approved minimal declared documentation relationship design; implementation planning and implementation remain unauthorized |
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Delivered local memory backup and cross-source continuity design |
@@ -56,6 +57,7 @@
 | [rh-w-0083-scope.md](rh-w-0083-scope.md) | Completed owner-approved immediate-before-response obligation and focused acceptance-test scope; historical boundary retained |
 | [rh-w-0087-scope.md](rh-w-0087-scope.md) | Completed owner-approved generated-commit AI-attribution prohibition scope; historical boundary retained |
 | [rh-w-0089-scope.md](rh-w-0089-scope.md) | Completed owner-approved scope for preserving pending human gates under delayed subagent notifications; historical boundary retained |
+| [rh-w-0091-scope.md](rh-w-0091-scope.md) | Proposed bilingual startup-priority and resume-first scope is owner-approved; design, planning, and implementation remain unauthorized |
 | [rh-w-0012-boundaries.md](rh-w-0012-boundaries.md) | Owner-accepted specification of the seven external-research safety boundaries RH-W-0012 had only named; completed, including the boundary 4 undated-source clause that first use surfaced |
 | [rh-w-0084-research.md](rh-w-0084-research.md) | Canonical primary-source evidence owner for LLM-first formats, sizes, paths, reinforcement, and forms; the reinforcement finding is accepted under RH-W-0083 while other findings remain with their owners |
 | [rh-w-0078-gentle-ai-binary-research.md](rh-w-0078-gentle-ai-binary-research.md) | Canonical Gentle AI source research informing RH-W-0078 progressive disclosure and deterministic machine ownership without authorizing a new binary or implementation |

@@ -2,6 +2,24 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-15
+
+- Se completó el cierre técnico y de ciclo RH-W-0046. Pasó la prueba enfocada consolidada real `GeneratedCoreTests.test_session_start_fetch_consent_schema_is_exact_and_fail_closed`; la verificación independiente de suite completa informó 547 passed/10 skipped; el checker estuvo `current` con 0 escrituras; y la paridad exacta de proyecciones y `git diff --check` quedaron limpios. El linaje de aprobación nativa `review-9d5afc68be68d0be` fue reconocido con autoridad consumida para el objetivo `sha256:628449dd9144825559da6617e237b3d09a80dbd851c39522e6f57ab54b3c5e23`. La publicación y la lectura de vuelta posteriores confirmaron el issue #184 aprobado y abierto, y el PR #185 abierto para el commit `380915a` en la rama enviada `feat/rh-w-0046-fetch-consent`; antes del push, la rama estaba 0 por detrás/1 por delante de `origin/main`. El PR tiene exactamente `type:feature` y GitHub informó que todavía no hay checks. El PR sigue abierto, no está fusionado ni entregado a `main`; no se afirman cierre del issue, sincronización de main, release ni entrega remota completada.
+
+## 2026-09-13
+
+- Se registró la autorización separada del propietario para implementar el candidato de consentimiento de fetch RH-W-0046, ahora bajo revisión nativa. RH-W-0046 sigue `proposed`, RH-W-0018 sigue `deferred` y fuera de alcance, y faltan verificación final y cierre. No se autorizan acciones Git, de red ni de entrega.
+
+- Se registró la aprobación explícita de la persona usuaria del alcance bilingüe propuesto RH-W-0091 existente. RH-W-0091 sigue `proposed`; la aprobación del alcance por sí sola no autoriza ninguna fase posterior ni mutación: sin diseño, planificación de implementación, implementación, pruebas, proyecciones de runtime, cambios de persistencia, backup o preferencias, Git, red ni entrega.
+
+- Se redactó el alcance bilingüe propuesto RH-W-0091 autorizado por el propietario y se reconciliaron sus proyecciones documentales requeridas; no cambió ninguna proyección de runtime. Define solo resultados observables futuros de prioridad de inicio y reanudación primero, conserva los propietarios existentes de carta, backup, disponibilidad, divulgación progresiva, idioma y preferencias, y espera aprobación del propietario. RH-W-0091 sigue `proposed`; no ocurrieron diseño, implementación, pruebas, cambio de backup o preferencia, Git ni acción de red.
+
+- Se registró la RH-W-0091 inmutable propuesta como dueña bilingüe de ciclo de vida para prioridad de inicio y orden de lectura de reanudación primero. Aplica la carta existente del proyecto sin duplicarla, conserva el comportamiento de backup RH-W-0069 y la evidencia de disponibilidad RH-W-0088, mantiene separados RH-W-0078 y los propietarios de idioma/preferencias, y aplaza un futuro alcance bilingüe a autoridad explícita y separada. No hubo diseño, implementación, prueba, proyección de runtime, persistencia de preferencias, cambio de backup ni acción Git.
+
+- Entrada histórica de etapa de planificación: se registró la aprobación explícita del propietario del plan bilingüe existente de implementación RH-W-0046 únicamente. RH-W-0046 permanece `proposed` y RH-W-0018 permanece `deferred`; la autorización separada para implementar es la siguiente condición. La aprobación no autoriza implementación, cambios de producto/pruebas/runtime, avance de ciclo, entrega Git, acceso de red, commit, push ni publicación.
+
+- Entrada histórica de etapa de planificación: se creó el plan bilingüe propuesto de implementación de consentimiento para fetch RH-W-0046 y se reconciliaron sus mapas, hoja de ruta y proyecciones de estado actual. El diseño aprobado no cambia: la aprobación de red sigue predeterminada y toda futura concesión exacta de fetch por repositorio es visible y revocable. RH-W-0046 sigue `proposed`, RH-W-0018 sigue `deferred`, y aprobar el plan y autorizar implementación siguen separados. No cambiaron comportamiento de producto, pruebas, proyecciones de runtime, entrega Git ni comportamiento RH-W-0018.
+
 ## 2026-09-12
 
 - Reconciliación posterior a la entrega de `RH-W-0089`: el issue #182 aprobado y el PR #183 se fusionaron por squash a `main` como `8ff35bb66739b8acd45b9ca42c199fe4b83685ab` a las 2026-09-12T05:19:32Z; el issue #182 se cerró un segundo después. Inmediatamente después del fast-forward, `main` local y `origin/main` eran iguales en ese commit, 0 por delante/0 por detrás, con worktree e índice limpios. No se afirma cambio de producto, pruebas, proyecciones, mapas, ciclo de vida ajeno, release, versión, borrado de rama, staging, commit, push, red ni publicación.

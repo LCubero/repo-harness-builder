@@ -1,6 +1,6 @@
 # Diseño RH-W-0046 / RH-W-0018 de consentimiento por repositorio
 
-**Estado:** diseño aprobado por delegación del propietario y no implementado. RH-W-0046 permanece `proposed` y RH-W-0018 permanece `deferred`. Es un diseño para dos unidades con seguimiento independiente; no fusiona sus ciclos de vida, implementaciones, pruebas ni entrega. La planificación de implementación y la implementación siguen sin autorización.
+**Estado:** diseño conjunto aprobado por delegación del propietario con implementación RH-W-0046 completada. RH-W-0046 está `completed`; RH-W-0018 permanece `deferred`. Es un diseño para dos unidades con seguimiento independiente; no fusiona sus ciclos de vida, implementaciones, pruebas ni entrega. La porción RH-W-0046 completada conserva el límite histórico de este diseño; la implementación RH-W-0018 sigue separada y sin seleccionar.
 
 Revise este diseño contra [RH-W-0046](roadmap.md#rh-w-0046), [RH-W-0018](roadmap.md#rh-w-0018), la [taxonomía de estado local](rh-w-0051-design.md), las [decisiones permanentes](decisions.md) y el [propietario canónico en inglés](../../repo-harness/rh-w-0046-rh-w-0018-design.md).
 
@@ -67,7 +67,7 @@ Cada uso recordado informa `operation`, `remote`, identidad saneada de host/esqu
 - El fetch autorizado es no interactivo, acotado a refs exactas, con `--no-recurse-submodules` y `--no-auto-maintenance`.
 - No autoriza LFS, submódulos, integración, commit, push, proveedor, publicación, acciones destructivas ni el modo RH-W-0018.
 - Lecturas y checks no crean directorios, archivos, consentimiento ni cambios Git.
-- La documentación bilingüe conserva RH-W-0046 `proposed` y RH-W-0018 `deferred`.
+- La documentación bilingüe conserva el ciclo RH-W-0046 completado mientras RH-W-0018 permanece `deferred`.
 
 ## Evidencia
 
@@ -75,4 +75,4 @@ Documentación primaria de Git revisada para esta decisión: [`git-fetch`](https
 
 ## Fuera de alcance
 
-No hay excepción global de fetch, ledger, caché, base de datos, servicio, daemon, protocolo, expiración programada, limpieza automática, framework general de preferencias, implementación, pruebas, proyecciones ni plan de implementación. La aprobación delegada del diseño no autoriza planificación de implementación, implementación ni entrega.
+Límite histórico del diseño: no hay excepción global de fetch, ledger, caché, base de datos, servicio, daemon, protocolo, expiración programada, limpieza automática ni framework general de preferencias. La implementación, pruebas, proyecciones de runtime, verificación y aprobación nativa RH-W-0046 están completas bajo autoridad separada; el comportamiento, la implementación y la entrega RH-W-0018 siguen sin seleccionar.

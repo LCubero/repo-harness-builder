@@ -3546,18 +3546,17 @@ class GeneratedCoreTests(unittest.TestCase):
     def test_session_start_generates_bounded_reconciliation_contract(self):
         outputs = TOOL.render("Example", [])
         start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
-        for phrase in (
-            "## Bounded Reconciliation",
-            "at most 20 commits",
-            "at most 12 distinct local evidence paths",
-            "capped at 8 records",
-            "`bound_exhausted`",
-            "Explicit bounded inspection stays bounded",
-            "`baseline: unknown`",
-            "authoritative next-ready routing",
-        ):
-            with self.subTest(phrase=phrase):
-                self.assertIn(phrase, start)
+
+        self.assertIn("## Bounded Reconciliation", start)
+        self.assertIn("at most 20 commits", start)
+        self.assertIn("at most 12 distinct local evidence paths", start)
+        self.assertIn("capped at 8 records", start)
+        self.assertIn("`bound_exhausted`", start)
+        self.assertIn("Explicit bounded inspection stays bounded", start)
+        self.assertIn("`baseline: unknown`", start)
+        self.assertIn("authoritative next-ready routing", start)
+        self.assertIn("Every authorized network command uses a bounded host execution timeout.", start)
+        self.assertIn("Timeout expiry is an authentication or transport failure.", start)
 
     def test_session_stop_generates_meaningful_stop_and_delivery_contract(self):
         outputs = TOOL.render("Example", [])
@@ -5140,6 +5139,10 @@ resume_authority: required
             self.assertIn(phrase, start)
         self.assertNotIn("APROBAR", start)
         self.assertNotIn("DENEGAR", start)
+
+    def test_session_start_fetch_consent_schema_is_exact_and_fail_closed(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        for phrase in ('document = "---\\nfetch-consent: v1\\nrepository: b64url\\nremote: b64url\\nurl: b64url\\ntransport: b64url\\nupstream: b64url\\ndestination: b64url\\ncredential: b64url\\n---\\n"', "fields are in that order exactly once", "decoding then unpadded base64url re-encoding must produce identical UTF-8 bytes", "as `mismatch` when one differs; as `ambiguous` when current configuration yields more than one value; otherwise as `malformed`", "`malformed`, `ambiguous`, and `mismatch` grants never authorize network access", "fall back to interactive approval"): self.assertIn(phrase, start)
 
     def test_session_contracts_define_outcomes_by_scope(self):
         outputs = TOOL.render("Example", [])

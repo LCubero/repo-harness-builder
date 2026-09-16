@@ -24,7 +24,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33, and its separately authorized implementation reduced it to 32. Registering owner-prioritized `RH-W-0088` as `proposed` raised it to 33. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
-Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31, and owner-authorized rejection of RH-W-0040 reduced it to 30. After later completions recorded below, reopening RH-W-0048 only for mutability-contract reconciliation and independent re-verification, and completing that reopened scope, direct current derivation yielded 27 non-terminal records. Owner-authorized registration of RH-W-0089 raised the current derivation to 28; its completed lifecycle closure returned it to 27. Owner-authorized registration of RH-W-0090 raises it to 28. The prior chronology is historical.
+Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31, and owner-authorized rejection of RH-W-0040 reduced it to 30. After later completions recorded below, reopening RH-W-0048 only for mutability-contract reconciliation and independent re-verification, and completing that reopened scope, direct current derivation yielded 27 non-terminal records. Owner-authorized registration of RH-W-0089 raised the current derivation to 28; its completed lifecycle closure returned it to 27. Owner-authorized registration of RH-W-0090 raises it to 28, and RH-W-0091 raises it to 29. The prior chronology is historical.
 
 The preventive design precedes the local-state architecture:
 
@@ -39,7 +39,7 @@ The preventive design precedes the local-state architecture:
 
 Consent and comparison follow, unchanged:
 
-9. Design `RH-W-0046` and `RH-W-0018` together around one visible, revocable repository-scoped consent or preference, while keeping implementations separate and `RH-W-0018` deferred until its own condition is met.
+9. `RH-W-0046` is completed as the historical fetch-consent implementation; its joint design boundary remains separate from `RH-W-0018`, which stays deferred until its own condition is met.
 10. Continue with `RH-W-0044`; its completed `RH-W-0043` antecedent is satisfied and only design or advancement work remains.
 11. Continue with `RH-W-0022`.
 
@@ -157,17 +157,15 @@ Readiness `archive-only slice complete and verified; residual lifecycle remains 
 
 Verified execution: three original RED/GREEN groups completed; independent review first reported high and low findings, correction RED/GREEN followed, a raced-directory case produced a medium finding, and the owner selected the parent-precondition correction before final correction. Final independent verification reported no severe or medium findings. Final receipts were `ArchiveOnlyTests` 9 passed/1 skipped, neighboring 132 passed/2 skipped, full canonical 545 passed/10 skipped, checker `current`/exit 0/`writes: 0`/63 projections, exact canonical/Claude/OpenCode/Pi parity, and clean `git diff --check`. Windows source-symlink coverage was skipped for privilege; junction-parent refusal passed. Native review stopped before START because managed Pi assets were outdated, so no lineage or verdict exists. Delivery: issue #177 was approved and closed; PR #178 squash-merged to `main` as `827feff98b2ec2b90cd8321868bcdec680c50c38` at 2026-09-12T00:54:42Z, with issue closure at 2026-09-12T00:54:43Z. Immediately after fast-forward synchronization and before this documentation reconciliation began, local `main` and `origin/main` were synchronized at that commit, 0 ahead/0 behind, with a clean worktree and index. RH-W-0052 remains `proposed`; uninstall, reinstall, and deletion remain separately undesigned and unauthorized. No release or publication is claimed.
 
-### Plan 6: RH-W-0046 and RH-W-0018 joint consent design
+### Plan 6 (historical): RH-W-0046 implementation with RH-W-0018 joint-design coverage
 
-Readiness: joint design approved by owner delegation; implementation planning remains unauthorized. RH-W-0046 is `proposed`, RH-W-0018 is `deferred`, and both keep separate implementations, statuses, and advancement conditions.
+Completed historical execution: the owner-delegated joint design remains associated with RH-W-0046 and RH-W-0018 without merging their lifecycles. The bilingual [RH-W-0046 implementation plan](rh-w-0046-implementation-plan.md) records the completed RH-W-0046 scope only; RH-W-0018 remains `deferred` with its separate implementation and advancement condition.
 
-1. Reconcile the two thresholds the generated contract already carries: approval before an external mutation, and approval before network access. A read-only `git fetch` satisfies only the second because it writes nothing on the remote.
-2. Decide whether read-only fetch leaves the network-access threshold at all. This is the whole risk: the contract installs into every consumer repository, so a harness that fetches silently takes network access in repositories whose owner never granted it.
-3. If it does not leave the threshold, define a durable per-repository consent recorded inside the RH-W-0051 namespace, visible and revocable, never a second location.
-4. Define the RH-W-0018 half in the same design: the exact session-start question, the session-only and remembered consent scopes, precedence rules, and the unchanged interactive default.
-5. Name the RED tests, including one per excluded action class proving product code, Git, commit, push, pull requests, publication, secrets, providers, and destructive actions still require interaction.
+1. Preserved the owner-approved plan and separate implementation authority as historical evidence.
+2. Implemented the focused `session_start_skill()` and consolidated `GeneratedCoreTests.test_session_start_fetch_consent_schema_is_exact_and_fail_closed` scope, synchronized through established runtime projections.
+3. Completed final verification, lifecycle reconciliation, and native approval lineage `review-9d5afc68be68d0be` with burned authority.
 
-Human decisions: whether read-only fetch is reclassified at all, and how a remembered preference is shown and withdrawn.
+Subsequent post-closure publication/readback confirmed approved open issue #184 and open PR #185 for commit `380915a` on pushed branch `feat/rh-w-0046-fetch-consent`. Before push, the branch was 0 behind/1 ahead of `origin/main`; the PR has exactly `type:feature`, and GitHub reported no checks yet. The open PR is not a merge or delivery to `main`: no merge, issue closure, main synchronization, release, or completed remote delivery is claimed. RH-W-0018 behavior is not selected.
 
 ### Plan 7: RH-W-0044 compare-and-suggest scope design
 
@@ -485,6 +483,16 @@ Readiness `scope/design decision required; implementation unauthorized`. Priorit
 
 Human decision: approve or correct the bilingual scope/design decision. Implementation remains separately unauthorized.
 
+### Plan 34: RH-W-0091 startup priority and resume-first scope
+
+Readiness `bilingual scope owner-approved; RH-W-0091 remains proposed; no further phase authorized`. Priority `P1`, dependencies: completed RH-W-0069, completed RH-W-0088, and coordination with RH-W-0078 without merging records.
+
+1. The owner-approved bilingual [scope](rh-w-0091-scope.md) applies the existing project charter first without copying it and bounds startup evidence priority and resume-first disclosure.
+2. Scope approval alone authorizes no later phase or mutation: no design, implementation planning, implementation, tests, runtime projections, persistence or backup/preference changes, Git, network, or delivery.
+3. Preserve RH-W-0069 current backup behavior, RH-W-0088 Engram availability evidence, RH-W-0078 generated session-start/session-stop body and dependency-context reduction, and the separate language and preference owners.
+
+Human decision: none. Any further phase requires separate explicit authorization.
+
 ### Not plannable yet
 
 These records have an unmet advancement condition, so no artifact can be produced without inventing the evidence the condition requires.
@@ -496,9 +504,9 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reconciled on 2026-09-12 across 21 non-terminal plan headings covering 21 of the 28 non-terminal records, including the two records covered by Plan 6; terminal plans are retained as historical evidence. Direct record derivation yields 90 lifecycle records: 61 completed, 23 proposed, 5 deferred, and 1 rejected (61 + 23 + 5 + 1 = 90). Historical Plans 4, 10, 28, 31, and 32 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
+Current projection reconciled on 2026-09-15 across 21 non-terminal plan headings covering 21 of the 28 non-terminal records, including deferred RH-W-0018 through Historical Plan 6; terminal plans are retained as historical evidence. Direct record derivation yields 91 lifecycle records: 62 completed, 23 proposed, 5 deferred, and 1 rejected (62 + 23 + 5 + 1 = 91). Historical Plans 4, 6, 10, 28, 31, and 32 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
 
-Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Plan 6 joint design. The portfolio retains one joint-design pair, RH-W-0046/RH-W-0018, and two current coordination pairs with separate lifecycles: RH-W-0065/RH-W-0022 and RH-W-0066/RH-W-0044. Historical RH-W-0069/RH-W-0068 coordination ended when RH-W-0069 completed. No merger or new implementation authority follows.
+Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Historical Plan 6 joint design. The portfolio retains one historical joint-design pair, completed RH-W-0046/deferred RH-W-0018, and two current coordination pairs with separate lifecycles: RH-W-0065/RH-W-0022 and RH-W-0066/RH-W-0044. Historical RH-W-0069/RH-W-0068 coordination ended when RH-W-0069 completed. No merger or new implementation authority follows.
 
 Consultative recommendation, not a schedule change: keep RH-W-0074 implementation pending until separately authorized, and reconcile RH-W-0076's residual scope with RH-W-0078's loaded-context research before compression. RH-W-0048 is completed; RH-W-0052 remains proposed although its archive-only slice is complete and verified, while uninstall, reinstall, and deletion remain separately undesigned and unauthorized. Partial delivery under RH-W-0071, RH-W-0072, RH-W-0076, and RH-W-0086 does not complete their full records. RH-W-0070 is approved operating guidance, not a reason to build a monitor; unknown RH-W-0072 discoverability is not a reason to invent preventive work.
 
@@ -527,6 +535,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0091
+| Field | Value |
+|---|---|
+| Origin | Owner-authorized bilingual lifecycle registration for a new bounded startup priority and read-order owner that evolves completed RH-W-0069 through a new immutable ID. |
+| Priority | P1: startup ordering affects every resumed session, and presenting authoritative next work before incidental detail protects the harness's evidence-first purpose. |
+| Dependencies | Completed RH-W-0069 retains current local-backup behavior; completed RH-W-0088 retains Engram recovery as availability evidence; RH-W-0078 retains generated session-start/session-stop body and dependency-context reduction, beginning with those two skills. Reuse, do not merge or reopen, RH-W-0031 language provenance and RH-W-0071/RH-W-0082/RH-W-0018 preference ownership. |
+| Status | proposed |
+| Completed work | Documentation-only registration of the immutable record and its concise bilingual projections, plus the owner-approved bilingual [proposed scope](rh-w-0091-scope.md). |
+| Remaining work | No further work is authorized. RH-W-0091 remains `proposed`; any later phase requires separate explicit authorization. |
+| Additions | A future bounded direction only: session-start reads, in this exact order: (1) the canonical harness soul/project charter; (2) verified language, active stable preferences, and continuing constraints from their existing declared owners; (3) the newest valid backup's `Where We Left Off` section; and (4) details and owners only when objective relevance, contradiction, invalid or missing priority evidence, or mandatory repository reconciliation requires them. Scoped Engram recovery remains separate continuity evidence: recovery itself is availability evidence, requires no separate preflight, and never supplies or infers preferences. Its native `Where We Left Off` presentation places exactly `Next Action`, `Pending Work`, and `Current Blocker` before details, expanding details and owners only for that same bounded trigger set. |
+| Exclusions | No new or copied charter, design, implementation plan, product behavior, test, runtime projection, preference schema/file/persistence/axis, backup behavior, checkpoint, retention, migration, parser, service, database, cache, daemon, scheduler, automatic cleanup, RH-W-0046 work, modification or copying of Chiki-RO or `wk` global skills, or Git action. RH-W-0090 incremental single-file design and RH-W-0053 checkpoints remain separate. |
+| Deferrals | Design, implementation mechanics, tests, and any future consumer of language or preference evidence require separate explicit authorization. |
+| Rejections | Rejected a separate Engram preflight, probe, cache, repeated capability report, or per-session recovery mechanism: completed RH-W-0088 keeps recovery itself as availability evidence. Rejected treating this record as authority to alter completed RH-W-0069 backups, create a second charter or preference owner, or merge RH-W-0078. |
+| Evidence | Human decision: register this proposed bounded owner and correct its scope to apply the harness soul first. Verified owner evidence: the project charter and LLM-first constraint in [decisions](decisions.md), completed RH-W-0069 continuity, completed RH-W-0088 availability evidence, and the separate owners named above. Owner-authorized read-only comparative evidence may later name Chiki-RO local bounded skills and `wk-mem-write`/`wk-mem-read` without private path detail or adoption; none was read for this registration. |
+| Decision history | 2026-09-13: registered as immutable `proposed` RH-W-0091 under explicit owner authorization for bilingual lifecycle documentation only. Later that day, the owner-authorized bilingual proposed scope was drafted. The user then explicitly approved that existing scope only; RH-W-0091 remains `proposed` and no behavior changes. |
+| Next advancement condition | No advancement is authorized. Any design, implementation, test, projection, persistence, Git, network, or delivery action requires separate explicit authorization. |
 
 ### RH-W-0090
 | Field | Value |
@@ -1299,16 +1324,16 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Origin | Owner observation on 2026-08-20 that a `/session-start` run in this repository ends on the same `git fetch` approval question in every session |
 | Priority | P2: no behavior is wrong and no state is at risk, but the contract spends its one mandated final question, on every clean session, on a read-only operation the owner has never declined. |
 | Dependencies | none |
-| Status | proposed |
-| Completed work | Confirmed the recurrence is structural rather than an execution slip and bounded the unaffected session-start states. Created and obtained owner-delegated approval of the bilingual [joint design](rh-w-0046-rh-w-0018-design.md): fetch remains inside the network threshold, while one explicit visible and revocable repository grant may be bound to the exact remote, URL/transport, upstream, destination, credential path and `git-fetch` operation. It selects the RH-W-0051 namespace without using the general `user-preferences.md` agreement. The design is not implemented. |
-| Remaining work | Obtain separate authorization before implementation planning. RH-W-0046 implementation remains separate from RH-W-0018 and must prove invalidation, privacy, interactive fallback, exact-ref fetch, no submodule recursion and no automatic maintenance. |
-| Additions | Proposed `.repo-harness/state/preferences/fetch-consent.md`: one non-authoritative structured Markdown grant, read without mutation, visible on use, simply revocable, and invalidated by material identity or credential-path changes. |
+| Status | completed |
+| Completed work | Confirmed the recurrence is structural; approved the bilingual joint design and implementation plan; then implemented the narrow `.repo-harness/state/preferences/fetch-consent.md` contract without using `user-preferences.md`. The actual consolidated focused test `GeneratedCoreTests.test_session_start_fetch_consent_schema_is_exact_and_fail_closed` passed. Independent verification recorded 547 passed/10 skipped, checker `current` with 0 writes, exact projection parity, and clean `git diff --check`. Native approval lineage `review-9d5afc68be68d0be` was acknowledged with burned authority for target `sha256:628449dd9144825559da6617e237b3d09a80dbd851c39522e6f57ab54b3c5e23`. |
+| Remaining work | none |
+| Additions | Completed contract for one non-authoritative structured Markdown fetch grant, read without mutation, visible on use, simply revocable, and invalidated by material identity or credential-path changes. |
 | Exclusions | No change to any integration approval. Fast-forward-only integration, push, commit, publication, and every destructive path keep their own separate approval. No weakening of the dirty, detached, missing-upstream, ambiguous-remote, diverged, or transport-failure rows, and no change to the two-attempt transport bound. |
 | Deferrals | none |
 | Rejections | Rejected deleting the approval outright. The generated contract installs into every consumer repository, so a harness that fetches silently on session start would take network access in repositories whose owner never granted it, which is a larger defect than the friction it removes. |
 | Evidence | The obligation is at `skill/repo-harness-builder/scripts/harness_tool.py:742`, `A clean worktree and index with a usable upstream requires one conversational approval before network access`, with no condition and no persistence. The clean-with-upstream row at line 774 restates it as `keep network approval mandatory`. The Output Contract at line 787 then requires a safe pending approval to be the single final user-facing line, so the question is not merely permitted but mandated into the most prominent position of the report. Observed live on 2026-08-20: this repository was clean, `main` tracked `origin/main`, the session ended on the fetch question, and the approved fetch reported 0 ahead and 0 behind. The recurrence across earlier sessions is owner-reported and is not recorded by any repository artifact; an Engram search for prior fetch-approval observations returned none. The unconditional rule with no persistence surface is what explains the report. |
-| Decision history | 2026-08-20: the owner reported the repeated question, approved that session's fetch, and requested later design. 2026-09-06: delegated research selected the safer narrow route and direct readback approved the bilingual joint design: retain network approval by default and permit only explicit repository-scoped remembered fetch consent. Implementation planning, implementation, and delivery remain unauthorized. |
-| Next advancement condition | Separate authorization for implementation planning. Lifecycle remains `proposed`; design approval does not authorize implementation planning or implementation. |
+| Decision history | 2026-08-20: the owner reported the repeated question, approved that session's fetch, and requested later design. 2026-09-06: delegated research selected the safer narrow route and direct readback approved the bilingual joint design: retain network approval by default and permit only explicit repository-scoped remembered fetch consent. 2026-09-13: the owner approved the existing bilingual implementation plan and separately authorized implementation. 2026-09-15: final verification, lifecycle reconciliation, and native approval completed. Subsequent post-closure publication/readback confirmed approved open issue #184 and open PR #185 for commit `380915a` on pushed branch `feat/rh-w-0046-fetch-consent`; before push, the branch was 0 behind/1 ahead of `origin/main`. The PR has exactly `type:feature`, and GitHub reported no checks yet. The PR remains open and is not a merge or delivery to `main`; no issue closure, main synchronization, release, or completed remote delivery is claimed. |
+| Next advancement condition | Reopen only for a regression of the exact repository fetch-consent boundary. |
 
 ### RH-W-0043
 | Field | Value |
