@@ -1,6 +1,6 @@
 # RH-W-0046 / RH-W-0018 Repository Consent Design
 
-**Status:** owner-delegated approved design, not implemented. RH-W-0046 remains `proposed` and RH-W-0018 remains `deferred`. This is one design for two independently tracked work items; it does not merge their lifecycles, implementations, tests, or delivery. Implementation planning and implementation remain unauthorized.
+**Status:** owner-delegated approved joint design with completed RH-W-0046 implementation. RH-W-0046 is `completed`; RH-W-0018 remains `deferred`. This is one design for two independently tracked work items; it does not merge their lifecycles, implementations, tests, or delivery. The completed RH-W-0046 slice preserves this design's historical boundary; RH-W-0018 implementation remains separate and unselected.
 
 Review this design against [RH-W-0046](roadmap.md#rh-w-0046), [RH-W-0018](roadmap.md#rh-w-0018), the [local-state taxonomy](rh-w-0051-design.md), [standing decisions](decisions.md), and the [Spanish peer](../es/repo-harness/rh-w-0046-rh-w-0018-design.md).
 
@@ -67,7 +67,7 @@ Every remembered use reports `operation`, `remote`, sanitized host/scheme identi
 - The authorized fetch is non-interactive, exact-ref bounded, `--no-recurse-submodules`, and `--no-auto-maintenance`.
 - Fetch consent cannot authorize LFS, submodules, integration, commit, push, provider, publication, destructive work, or RH-W-0018 low-question behavior.
 - Plain reads/checks do not create directories, files, consent, or Git changes.
-- English and Spanish documentation describe the same lifecycle while RH-W-0046 remains `proposed` and RH-W-0018 remains `deferred`.
+- English and Spanish documentation describe the completed RH-W-0046 lifecycle while RH-W-0018 remains `deferred`.
 
 ## Evidence
 
@@ -75,4 +75,4 @@ Primary Git documentation reviewed for this decision: [`git-fetch`](https://git-
 
 ## Non-Goals
 
-No global fetch exception, consent ledger, cache, database, service, daemon, protocol, expiry scheduler, automatic cleanup, generalized preference framework, product implementation, tests, runtime projection, or implementation plan. Owner-delegated design approval does not authorize implementation planning, implementation, or delivery.
+Historical design boundary: no global fetch exception, consent ledger, cache, database, service, daemon, protocol, expiry scheduler, automatic cleanup, or generalized preference framework. RH-W-0046 implementation, tests, runtime projections, verification, and native approval are complete under separate authority; RH-W-0018 behavior, implementation, and delivery remain unselected.

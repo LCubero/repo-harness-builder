@@ -4,6 +4,24 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-15
+
+- Completed RH-W-0046 technical and lifecycle closure. The actual consolidated focused test `GeneratedCoreTests.test_session_start_fetch_consent_schema_is_exact_and_fail_closed` passed; independent full-suite verification reported 547 passed/10 skipped; the checker was `current` with 0 writes; and exact projection parity and `git diff --check` were clean. Native approval lineage `review-9d5afc68be68d0be` was acknowledged with authority burned for target `sha256:628449dd9144825559da6617e237b3d09a80dbd851c39522e6f57ab54b3c5e23`. No commit, push, PR, delivery, release, or network action occurred.
+
+## 2026-09-13
+
+- Recorded the owner's separate implementation authorization for the RH-W-0046 fetch-consent candidate now under native review. RH-W-0046 remains `proposed`, RH-W-0018 remains `deferred` and out of scope, and final verification and closure remain pending. No Git, network, or delivery action is authorized.
+
+- Recorded the user's explicit approval of the existing bilingual proposed `RH-W-0091` scope. `RH-W-0091` remains `proposed`; scope approval alone authorizes no later phase or mutation: no design, implementation planning, implementation, tests, runtime projections, persistence or backup/preference changes, Git, network, or delivery.
+
+- Drafted the owner-authorized bilingual proposed `RH-W-0091` scope and reconciled its required documentation projections; no runtime projections changed. It defines only future startup priority and resume-first observable outcomes, preserves existing charter, backup, availability, progressive-disclosure, language, and preference owners, and awaits owner approval. `RH-W-0091` remains `proposed`; no design, implementation, tests, backup or preference change, Git, or network action occurred.
+
+- Registered immutable proposed `RH-W-0091` as the bilingual lifecycle owner for startup priority and resume-first read order. It applies the existing project charter without duplication, preserves RH-W-0069 backup behavior and RH-W-0088 availability evidence, keeps RH-W-0078 and the language/preference owners separate, and defers a future bilingual scope to separate explicit authority. No design, implementation, test, runtime projection, preference persistence, backup change, or Git action occurred.
+
+- Historical planning-stage entry: recorded the owner's explicit approval of the existing bilingual RH-W-0046 implementation plan only. RH-W-0046 remains `proposed` and RH-W-0018 remains `deferred`; separate implementation authorization is the next condition. The approval authorizes no implementation, product/test/runtime change, lifecycle advancement, Git delivery, network access, commit, push, or publication.
+
+- Historical planning-stage entry: created the bilingual proposed RH-W-0046 repository fetch-consent implementation plan and reconciled its maps, roadmap, and current-state projections. The approved design remains unchanged: network approval is the default, and any future exact repository fetch grant is visible and revocable. RH-W-0046 remains `proposed`, RH-W-0018 remains `deferred`, and plan approval and implementation authority remain separate. No product behavior, tests, runtime projections, Git delivery, or RH-W-0018 behavior changed.
+
 ## 2026-09-12
 
 - Post-delivery reconciliation for `RH-W-0089`: approved issue #182 and PR #183 squash-merged to `main` as `8ff35bb66739b8acd45b9ca42c199fe4b83685ab` at 2026-09-12T05:19:32Z; issue #182 closed one second later. Immediately after fast-forward, local `main` and `origin/main` were equal at that commit, 0 ahead/0 behind, with a clean worktree and index. No product, test, projection, map, unrelated lifecycle, release, version, branch-deletion, staging, commit, push, network, or publication change is claimed.

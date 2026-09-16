@@ -29,7 +29,8 @@
 | [Plan de implementación RH-W-0053](rh-w-0053-implementation-plan.md) | Registro de ejecución RH-W-0053 entregado y completado con pruebas primero; se conserva la evidencia verificada |
 | [Diseño RH-W-0048](rh-w-0048-design.md) | Diseño propuesto de recuperación reabierto; el roadmap posee la reconciliación de mutabilidad y la verificación independiente restante |
 | [Plan de implementación RH-W-0048](rh-w-0048-implementation-plan.md) | Registro histórico de ejecución con TDD estricto; el roadmap posee el trabajo restante del ciclo |
-| [Diseño RH-W-0046/RH-W-0018](rh-w-0046-rh-w-0018-design.md) | Diseño conjunto aprobado por delegación del propietario sobre consentimiento de fetch y preferencias de menos preguntas; planificación e implementación siguen sin autorización |
+| [Diseño RH-W-0046/RH-W-0018](rh-w-0046-rh-w-0018-design.md) | Diseño conjunto aprobado por delegación del propietario sobre consentimiento de fetch y preferencias de menos preguntas; RH-W-0046 completada sigue separada de RH-W-0018 aplazada |
+| [Plan RH-W-0046](rh-w-0046-implementation-plan.md) | Registro histórico de ejecución RH-W-0046 completada; el límite exacto de consentimiento solo puede reabrirse por regresión |
 | [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado por el propietario de sugerencias para documentos humanos; planificación e implementación siguen sin autorización |
 | [Diseño RH-W-0022](rh-w-0022-design.md) | Diseño mínimo de relaciones documentales declaradas aprobado por el propietario; planificación e implementación siguen sin autorización |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno entregado de backup local de memoria y continuidad entre fuentes |
@@ -54,6 +55,7 @@
 | [Alcance RH-W-0083](rh-w-0083-scope.md) | Alcance completado y aprobado por el propietario de la obligacion inmediatamente anterior a responder y sus pruebas enfocadas; se conserva el limite historico |
 | [Alcance RH-W-0087](rh-w-0087-scope.md) | Alcance completado y aprobado por el propietario que prohibe atribucion de IA en commits generados; se conserva el limite historico |
 | [Alcance RH-W-0089](rh-w-0089-scope.md) | Alcance completado y aprobado por el propietario para preservar compuertas humanas pendientes ante notificaciones diferidas de subagentes; se conserva el límite histórico |
+| [Alcance RH-W-0091](rh-w-0091-scope.md) | Alcance bilingüe propuesto de prioridad de inicio y reanudación primero aprobado por el propietario; diseño, planificación e implementación siguen sin autorización |
 | [Limites RH-W-0012](rh-w-0012-boundaries.md) | Especificacion aceptada por el propietario de los siete limites de seguridad de investigacion externa que RH-W-0012 solo habia nombrado; completada, incluida la clausula de fuente sin fecha del limite 4 que destapo su primer uso |
 | [Investigacion RH-W-0084](rh-w-0084-research.md) | Par localizado completo del propietario canonico de evidencia primaria sobre formatos, tamanios, rutas, refuerzo y formas LLM-first; el hallazgo de refuerzo esta aceptado bajo RH-W-0083 y los otros permanecen con sus duenios |
 | [Investigacion RH-W-0078 sobre Gentle AI](rh-w-0078-gentle-ai-binary-research.md) | Par localizado de la investigacion que informa divulgacion progresiva y propiedad determinista sin autorizar un binario nuevo ni implementacion |
