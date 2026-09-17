@@ -31,3 +31,8 @@ Reconcile current official Gentle AI, gentle-shell, and Engram evidence, then au
 - Completed work reopens only when its own current evidence or contract is materially contradicted; new ecosystem capability alone is not a defect.
 - Keep the audit bounded to records and surfaces with a verified Gentle AI, gentle-shell, Engram, ODD, SDD, RDD, Pi orchestration, review, receipt, correction, memory, or continuity relationship.
 - `E:\code\04-github_a\gentleman-programing\gentle-shell`, `E:\code\04-github_a\gentleman-programing\engram`, and `E:\code\04-github_a\gentleman-programing\gentle-ai` are read-only evidence sources. Never mutate them. If any external mutation appears necessary, stop and ask the user to perform it.
+
+## Delivery evidence
+- Approved issue: `#186`.
+- Work-unit commit: `9246a75` (`docs: refresh current Gentle ecosystem evidence`).
+- Delivery strategy: one focused PR; the 184-line work unit is below the repository's approximately 400-line review target.
