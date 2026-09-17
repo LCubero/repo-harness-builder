@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-17
+
+- Reconciled current Gentle Shell, Gentle AI, and Engram evidence across the bilingual integration research, RH-W-0078 interpretation, durable decisions, and ODD task record. The documentation now records exact reviewed local revisions, work-unit commit and commit-or-PR-slice review boundaries, bounded delivery slicing, policy-conditioned background subagents, and Engram backup compatibility without changing product behavior, lifecycle, tests, generated contracts, or runtime projections. Independent verification found no substantive issues; the checker reported `current` with 0 writes and `git diff --check` passed. Issue #186 carried `status:approved`, and PR #187 delivered the seven-path documentation unit, squash-merged as `ecb14638e99f902b85e9a3ee2ef3bb226295ee0e`; the issue closed immediately afterward. Post-merge local `main` equaled `origin/main` with a clean worktree and index. The three external repositories were used only as read-only evidence during this work.
+
 ## 2026-09-16
 
 - Reconciled the post-merge RH-W-0046 lifecycle evidence across the bilingual roadmap, current-state, and changelog owners. PR #185 squash-merged at 2026-09-16T01:47:28Z as commit `101aef39ca9429bec1015c1397fff033ad6a2be6`; issue #184 closed at 2026-09-16T01:47:30Z. Immediately after fast-forward synchronization, local `main` was at that commit, equaled `origin/main` 0 ahead/0 behind, and had a clean worktree and index. The maintainer explicitly authorized a direct-main exception for this bounded post-merge bilingual documentation reconciliation; that authorization does not claim its documentation commit or push. RH-W-0046 remains `completed` with remaining work `none`; RH-W-0018 remains `deferred` and out of scope, and RH-W-0091 retains its approved scope and `proposed` status. No release, tag, publication, branch deletion, or post-merge full-suite rerun is claimed.
