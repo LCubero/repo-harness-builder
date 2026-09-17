@@ -14,6 +14,69 @@ Generated consumer harnesses remain generic and never mention improving `repo-ha
 | Gentle AI | [`4004a0825d03a3d123a3c4f67bf375cb16fd6d8c`](https://github.com/Gentleman-Programming/gentle-ai/tree/4004a0825d03a3d123a3c4f67bf375cb16fd6d8c) |
 | Engram | [`1dafc0f63051b2214100f7bd801357e4aab61c26`](https://github.com/Gentleman-Programming/engram/tree/1dafc0f63051b2214100f7bd801357e4aab61c26) |
 
+## Current Refresh (2026-09-17)
+
+**Verified fact:** this refresh reviewed the selected local `gentle-shell`, Gentle AI, and Engram reference snapshots at these exact local Git commits: `gentle-shell` [`2b579c80824e83442b8ae9f7bfad629a52f9f711`](https://github.com/Gentleman-Programming/gentle-pi/tree/2b579c80824e83442b8ae9f7bfad629a52f9f711), Gentle AI [`eae8fadd5ece2622cb072c836fa49cef520afc8e`](https://github.com/Gentleman-Programming/gentle-ai/tree/eae8fadd5ece2622cb072c836fa49cef520afc8e), and Engram [`f6b22f89d024fb6aaa207606d893f47b3f4e23a9`](https://github.com/Gentleman-Programming/engram/tree/f6b22f89d024fb6aaa207606d893f47b3f4e23a9). These are current local refresh evidence, not replacement revision pins. The pinned material above remains separate historical evidence and was not rewritten as a new observation.
+
+**Verified fact:** `gentle-shell` is the current Pi-facing product/repository name, while npm, runtime, package, and source-repository identities can still use `gentle-pi`. This is an in-progress mixed naming transition, not a completed package rename. Stable refresh sources are the [gentle-shell repository](https://github.com/Gentleman-Programming/gentle-pi), [Gentle AI repository](https://github.com/Gentleman-Programming/gentle-ai), and [Engram repository](https://github.com/Gentleman-Programming/engram); refresh when their documented product naming, ownership boundary, Pi setup, or workflow semantics change.
+
+**Verified fact:** `gentle-shell` owns Pi-native orchestration, bounded subagents, ODD task artifacts and their project-scoped mirroring through Engram, optional SDD, review-transport/mirror contracts, and optional Engram composition. Its ODD flow closes each substantial task with a work-unit commit; native review candidates are work-unit commits or PR slices, never a checkbox or accumulated feature branch; and delivery strategy considers chained slices around 400 authored changed lines. When background-subagent policy is active and `subagent_run` is available, routine delegations default to background execution. The Engram mirror is specific to ODD coordination and does not limit Engram's broader continuity capability. Native review semantics remain Gentle AI/provider-owned. Gentle AI documents ODD as the default workflow, SDD as explicitly selected, and RDD as user-owned and opt-in; an SDD archive is neither review approval nor delivery. Engram `f6b22f89d024fb6aaa207606d893f47b3f4e23a9` makes direct backup format `0.2.0` preserve local pins and complete memory-relation metadata while accepting legacy `0.1.0` backups that omit those fields.
+
+## Bounded Impact Assessment (2026-09-17)
+
+**Verified fact:** the audit covered 11/12 repository evidence paths, 8/8 direct dependent records, and 0/20 commits; the bound was not exhausted. No ownerless affected surface was found. Every direct record is currently **no impact**:
+
+### Reproducibility Boundary
+
+`11/12` means the eleven exact repository paths below were inspected and one capacity slot remained unused; it does not mean a known path was omitted. The audit inspected no commits (`0/20`) and does not claim unbounded proof.
+
+Repository evidence paths inspected:
+
+- `REPO-HARNESS.md`
+- `.pi/skills/repo-harness-documentation/SKILL.md`
+- `odd/tasks/gentle-ecosystem-reconciliation.md`
+- `docs/repo-harness/roadmap.md`
+- `docs/repo-harness/current-state.md`
+- `docs/repo-harness/decisions.md`
+- `docs/repo-harness/integration-research.md`
+- `docs/repo-harness/README.md`
+- `.repo-harness/rules/response-contract.md`
+- `skill/repo-harness-builder/scripts/harness_tool.py`
+- `skill/repo-harness-builder/tests/test_harness_tool.py`
+
+The following official-repository-relative source locators were inspected from owner-selected local snapshots. Their storage location is intentionally not part of canonical documentation; their exact local Git commit identities are recorded in the current refresh above:
+
+- [gentle-shell](https://github.com/Gentleman-Programming/gentle-pi)
+  - `assets/orchestrator-delegation.md`
+  - `assets/orchestrator-memory.md`
+  - `assets/sdd-orchestrator-workflow.md`
+  - `contracts/review-provider-contract-mirror/v1.2.0/bundle/orchestration/pi.md`
+- [Gentle AI](https://github.com/Gentleman-Programming/gentle-ai)
+  - `docs/intended-usage.md`
+  - `docs/trigger-rules.md`
+  - `docs/review-integration.md`
+- [Engram](https://github.com/Gentleman-Programming/engram)
+  - `docs/AGENT-SETUP.md`
+  - `docs/intended-usage.md`
+  - `docs/codebase/memory-core.md`
+
+`RH-W-0077` is not a direct Gentle ecosystem contract dependent: its personal-storage containment issue is unaffected because no canonical owner adopts or depends on the snapshot location. The direct set remains 8/8; audit inputs are promoted as source identities and conclusions, not as a repository dependency.
+
+| Record | Classification and current basis | Reopen or advancement condition |
+|---|---|---|
+| `RH-W-0025` | **no impact** — current naming and capability evidence preserves its completed two-component, owner-scoped contract. | Reopen only if capability classification gains another state, integrated selection bypasses either verification, owner state is copied, post-installation loss affects the wrong component, promotion bypasses repository verification or human approval, or RH-W-0008 replacement safety regresses. |
+| `RH-W-0048` | **no impact** — no current evidence contradicts the completed bounded recovery contract. | None. |
+| `RH-W-0050` | **no impact** — current evidence does not alter its completed reconciliation or continuity boundaries. | Reopen only if bounded reconciliation, finding disposition, operation-level continuity outcomes, standalone degradation, projection parity, or post-delivery convergence regresses. |
+| `RH-W-0053` | **no impact** — no contradiction affects the completed checkpoint contract. | None. |
+| `RH-W-0069` | **no impact** — current evidence leaves the completed local-backup boundary intact. | Terminal; reopen only through a new immutable owner record. |
+| `RH-W-0072` | **no impact** — no concrete missing route or affected operation was found. | A concrete missing route and affected operation, followed by owner-approved scope, are required for any further correction. |
+| `RH-W-0078` | **no impact** — upstream evidence supports rather than changes its measured progressive-disclosure direction or scope gate. | Advance only after `RH-W-0076` lands the corrected guide sentence and the owner approves a bilingual scope that prices and verifies the recommended direction. Implementation remains separately unauthorized. |
+| `RH-W-0079` | **no impact** — current optional-capability evidence does not contradict its completed release-boundary classification. | None. Any actual release remains separate. |
+
+**Verified fact:** historical pins, versions, receipts, and old failures remain historical evidence; they must not be rewritten as current defects. Current upstream capability growth or naming changes alone do not reopen completed work. This audit requires no roadmap status, priority, dependency, scope, current-state, map, changelog, product, test, generated-contract, or runtime-projection change.
+
+**Current evidence, not a permanent claim:** refresh this assessment if owner contracts change, a concrete missing route appears, capability behavior fails, or a listed reopen condition is violated.
+
 ## Primary Sources
 
 - Harness: [rulebook](https://github.com/LCubero/repo-harness-builder/blob/58f41a790556d9dbb2c9e3094459b85c206b8fbd/REPO-HARNESS.md), [memory rule](https://github.com/LCubero/repo-harness-builder/blob/58f41a790556d9dbb2c9e3094459b85c206b8fbd/.repo-harness/rules/memory.md), and [RH-W-0022](https://github.com/LCubero/repo-harness-builder/blob/58f41a790556d9dbb2c9e3094459b85c206b8fbd/docs/repo-harness/roadmap.md#rh-w-0022).
@@ -48,7 +111,7 @@ Generated consumer harnesses remain generic and never mention improving `repo-ha
 
 ## Organic and Proportional Behavior
 
-Use direct work by default. Delegate or use SDD only when requested or materially useful and accepted. Memory retrieval, checks, review, and retries must stay bounded by the task. Integration availability must not cause broad reads, synthetic artifacts, or ceremony that the repository does not need. Gentle AI disabled mode means ordinary repository policy, not denial or approval.
+Use direct work by default. Gentle AI uses ODD as the default workflow; enter SDD only when explicitly selected. Memory retrieval, checks, review, and retries must stay bounded by the task. Integration availability must not cause broad reads, synthetic artifacts, or ceremony that the repository does not need. Gentle AI disabled mode means ordinary repository policy, not denial or approval.
 
 ## Durable Knowledge Promotion Rule
 
