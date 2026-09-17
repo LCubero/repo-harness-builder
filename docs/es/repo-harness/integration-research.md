@@ -14,6 +14,69 @@ Los harnesses generados para repositorios consumidores permanecen genéricos y n
 | Gentle AI | [`4004a0825d03a3d123a3c4f67bf375cb16fd6d8c`](https://github.com/Gentleman-Programming/gentle-ai/tree/4004a0825d03a3d123a3c4f67bf375cb16fd6d8c) |
 | Engram | [`1dafc0f63051b2214100f7bd801357e4aab61c26`](https://github.com/Gentleman-Programming/engram/tree/1dafc0f63051b2214100f7bd801357e4aab61c26) |
 
+## Actualización actual (2026-09-17)
+
+**Hecho verificado:** esta actualización revisó los snapshots locales seleccionados de referencia de `gentle-shell`, Gentle AI y Engram en estos commits Git locales exactos: `gentle-shell` [`2b579c80824e83442b8ae9f7bfad629a52f9f711`](https://github.com/Gentleman-Programming/gentle-pi/tree/2b579c80824e83442b8ae9f7bfad629a52f9f711), Gentle AI [`eae8fadd5ece2622cb072c836fa49cef520afc8e`](https://github.com/Gentleman-Programming/gentle-ai/tree/eae8fadd5ece2622cb072c836fa49cef520afc8e) y Engram [`f6b22f89d024fb6aaa207606d893f47b3f4e23a9`](https://github.com/Gentleman-Programming/engram/tree/f6b22f89d024fb6aaa207606d893f47b3f4e23a9). Son evidencia local actual de la actualización, no pines de revisión de reemplazo. El material fijado anterior conserva su carácter de evidencia histórica separada y no se reescribió como una observación nueva.
+
+**Hecho verificado:** `gentle-shell` es el nombre actual del producto/repositorio orientado a Pi, mientras que las identidades de npm, runtime, paquete y repositorio fuente pueden seguir usando `gentle-pi`. Es una transición de nombres mixta en curso, no un cambio de nombre de paquete ya completado. Las fuentes estables para actualizar son el [repositorio de gentle-shell](https://github.com/Gentleman-Programming/gentle-pi), el [repositorio de Gentle AI](https://github.com/Gentleman-Programming/gentle-ai) y el [repositorio de Engram](https://github.com/Gentleman-Programming/engram); actualizar cuando cambien el nombre documentado del producto, el límite de propiedad, la configuración de Pi o la semántica del flujo de trabajo.
+
+**Hecho verificado:** `gentle-shell` posee la orquestación nativa de Pi, subagentes acotados, artefactos de tareas ODD y su reflejo con alcance de proyecto mediante Engram, SDD opcional, contratos de transporte/espejo de revisión y composición opcional con Engram. Su flujo ODD cierra cada tarea sustancial con un commit de unidad de trabajo; los candidatos de revisión nativa son commits de unidad de trabajo o cortes de PR, nunca una casilla ni una rama de funcionalidad acumulada; y la estrategia de entrega considera cortes encadenados alrededor de 400 líneas modificadas de autoría. Cuando la política de subagentes en segundo plano está activa y `subagent_run` está disponible, las delegaciones ordinarias se ejecutan en segundo plano de forma predeterminada. El espejo de Engram es específico de la coordinación ODD y no limita la capacidad más amplia de continuidad de Engram. La semántica de revisión nativa sigue siendo propiedad de Gentle AI/proveedor. Gentle AI documenta ODD como flujo predeterminado, SDD como selección explícita y RDD como propiedad de la persona usuaria y opcional; archivar SDD no es aprobación de revisión ni entrega. Engram `f6b22f89d024fb6aaa207606d893f47b3f4e23a9` hace que el formato de backup directo `0.2.0` conserve pines locales y metadatos completos de relaciones de memoria, a la vez que acepta backups heredados `0.1.0` que omiten esos campos.
+
+## Evaluación de impacto acotada (2026-09-17)
+
+**Hecho verificado:** la auditoría cubrió 11/12 rutas de evidencia del repositorio, 8/8 registros dependientes directos y 0/20 commits; el límite no se agotó. No se encontró una superficie afectada sin propietario. Todos los registros directos son actualmente de **sin impacto**:
+
+### Límite de reproducibilidad
+
+`11/12` significa que se inspeccionaron las once rutas exactas del repositorio siguientes y que quedó sin usar un cupo de capacidad; no que se omitió una ruta conocida. La auditoría no inspeccionó commits (`0/20`) y no afirma una prueba ilimitada.
+
+Rutas de evidencia del repositorio inspeccionadas:
+
+- `REPO-HARNESS.md`
+- `.pi/skills/repo-harness-documentation/SKILL.md`
+- `odd/tasks/gentle-ecosystem-reconciliation.md`
+- `docs/repo-harness/roadmap.md`
+- `docs/repo-harness/current-state.md`
+- `docs/repo-harness/decisions.md`
+- `docs/repo-harness/integration-research.md`
+- `docs/repo-harness/README.md`
+- `.repo-harness/rules/response-contract.md`
+- `skill/repo-harness-builder/scripts/harness_tool.py`
+- `skill/repo-harness-builder/tests/test_harness_tool.py`
+
+Los siguientes localizadores de fuente relativos al repositorio oficial se inspeccionaron desde snapshots locales seleccionados por el propietario. Su ubicación de almacenamiento se omite intencionalmente de la documentación canónica; sus identidades de commit Git locales exactas se registran en la actualización actual anterior:
+
+- [gentle-shell](https://github.com/Gentleman-Programming/gentle-pi)
+  - `assets/orchestrator-delegation.md`
+  - `assets/orchestrator-memory.md`
+  - `assets/sdd-orchestrator-workflow.md`
+  - `contracts/review-provider-contract-mirror/v1.2.0/bundle/orchestration/pi.md`
+- [Gentle AI](https://github.com/Gentleman-Programming/gentle-ai)
+  - `docs/intended-usage.md`
+  - `docs/trigger-rules.md`
+  - `docs/review-integration.md`
+- [Engram](https://github.com/Gentleman-Programming/engram)
+  - `docs/AGENT-SETUP.md`
+  - `docs/intended-usage.md`
+  - `docs/codebase/memory-core.md`
+
+`RH-W-0077` no es un dependiente directo del contrato del ecosistema Gentle: su asunto de contención de almacenamiento personal no cambia porque ningún propietario canónico adopta ni depende de la ubicación del snapshot. El conjunto directo se mantiene en 8/8; las entradas de auditoría se promueven como identidades de fuente y conclusiones, no como dependencia del repositorio.
+
+| Registro | Clasificación y fundamento actual | Condición para reabrir o avanzar |
+|---|---|---|
+| `RH-W-0025` | **sin impacto** — la evidencia actual de nombres y capacidades preserva su contrato completado de dos componentes y con autoridad delimitada. | Reabrir solo si la clasificación de capacidades obtiene otro estado, la selección integrada omite alguna verificación, se copia estado de propietario, la pérdida posterior a la instalación afecta el componente equivocado, la promoción omite verificación del repositorio o aprobación humana, o la seguridad de reemplazo de RH-W-0008 se degrada. |
+| `RH-W-0048` | **sin impacto** — ninguna evidencia actual contradice el contrato completado de recuperación acotada. | Ninguna. |
+| `RH-W-0050` | **sin impacto** — la evidencia actual no altera sus límites completados de reconciliación ni continuidad. | Reabrir solo si se degrada la reconciliación acotada, la disposición de hallazgos, los resultados de continuidad por operación, la degradación autónoma, la paridad de proyecciones o la convergencia posterior a la entrega. |
+| `RH-W-0053` | **sin impacto** — ninguna contradicción afecta el contrato completado de checkpoints. | Ninguna. |
+| `RH-W-0069` | **sin impacto** — la evidencia actual deja intacto el límite completado de respaldo local. | Terminal; reabrir solo mediante un nuevo registro de propietario inmutable. |
+| `RH-W-0072` | **sin impacto** — no se encontró una ruta faltante concreta ni una operación afectada. | Una ruta faltante concreta y una operación afectada, seguidas de un alcance aprobado por el propietario, son requeridas para cualquier corrección posterior. |
+| `RH-W-0078` | **sin impacto** — la evidencia upstream respalda, sin cambiar, su dirección medida de divulgación progresiva ni su compuerta de alcance. | Avanzar solo después de que `RH-W-0076` entregue la frase corregida de la guía y el propietario apruebe un alcance bilingüe que valore y verifique la dirección recomendada. La implementación sigue sin autorización separada. |
+| `RH-W-0079` | **sin impacto** — la evidencia actual de capacidades opcionales no contradice su clasificación completada de límite de release. | Ninguna. Cualquier release real permanece separado. |
+
+**Hecho verificado:** los pines, versiones, recibos y fallos antiguos permanecen como evidencia histórica; no deben reescribirse como defectos actuales. El crecimiento actual de capacidades upstream o cambios de nombres por sí solos no reabren trabajo completado. Esta auditoría no requiere cambios de estado, prioridad, dependencia ni alcance del roadmap, ni de estado actual, mapa, changelog, producto, pruebas, contrato generado o proyección de runtime.
+
+**Evidencia actual, no afirmación permanente:** actualizar esta evaluación si cambian los contratos de propietario, aparece una ruta faltante concreta, falla el comportamiento de una capacidad o se viola una condición de reapertura listada.
+
 ## Fuentes primarias
 
 - Harness: [reglamento](https://github.com/LCubero/repo-harness-builder/blob/58f41a790556d9dbb2c9e3094459b85c206b8fbd/REPO-HARNESS.md), [regla de memoria](https://github.com/LCubero/repo-harness-builder/blob/58f41a790556d9dbb2c9e3094459b85c206b8fbd/.repo-harness/rules/memory.md) y [RH-W-0022](https://github.com/LCubero/repo-harness-builder/blob/58f41a790556d9dbb2c9e3094459b85c206b8fbd/docs/repo-harness/roadmap.md#rh-w-0022).
@@ -48,7 +111,7 @@ Los harnesses generados para repositorios consumidores permanecen genéricos y n
 
 ## Comportamiento orgánico y proporcional
 
-Usar trabajo directo de forma predeterminada. Delegar o usar SDD solo cuando se solicite o sea materialmente útil y aceptado. La recuperación de memoria, las comprobaciones, la revisión y los reintentos deben estar limitados por la tarea. La disponibilidad de integraciones no debe causar lecturas amplias, artefactos sintéticos ni ceremonia innecesaria. El modo deshabilitado de Gentle AI significa política ordinaria del repositorio, no rechazo ni aprobación.
+Usar trabajo directo de forma predeterminada. Gentle AI usa ODD como flujo predeterminado; entrar en SDD solo cuando se seleccione explícitamente. La recuperación de memoria, las comprobaciones, la revisión y los reintentos deben estar limitados por la tarea. La disponibilidad de integraciones no debe causar lecturas amplias, artefactos sintéticos ni ceremonia innecesaria. El modo deshabilitado de Gentle AI significa política ordinaria del repositorio, no rechazo ni aprobación.
 
 ## Regla de promoción de conocimiento durable
 
@@ -96,7 +159,7 @@ Este contrato está relacionado con `RH-W-0022`, pero es independiente. Esa unid
 ## Preguntas sin resolver y confianza
 
 - ¿Debe Engram ser obligatorio solo cuando un repositorio generado seleccione explícitamente continuidad integrada? Confianza: media.
-- ¿Qué sonda de capacidad de Gentle AI de solo lectura es estable e independiente de la estructura de instalación? Confianza: media.
+- ¿Qué sonda de capacidad de Gentle AI de solo lectura es estable e independiente de la estructura de instalación? Resuelta el 2026-08-15: `gentle-ai version` devuelve `gentle-ai <version>`, se resuelve mediante PATH en vez de un directorio conocido y retorna antes de la detección del sistema, las lecturas de configuración o las comprobaciones de actualización. Tratar un código de salida validado y la forma de salida como `verified`; la mera presencia en PATH permanece `found_on_path` y nunca autoriza una capacidad, porque este documento prohíbe usar la presencia del ejecutable como base de detección. Confianza: alta.
 - ¿Debe el resultado público exponer algún estado agregado? Recomendación: resultado del repositorio más resultados por componente. Confianza: alta.
 
 La confianza es alta para límites de autoridad, comportamiento por disponibilidad, reglas de promoción, antipatrones y semántica de degradación. Es media para futuras interfaces de descubrimiento porque las fuentes fijadas definen contratos de propietarios, pero no una sonda genérica para el harness.
