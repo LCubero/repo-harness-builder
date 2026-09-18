@@ -78,6 +78,7 @@ Startup ordering affects every resumed session. A compact authoritative next-act
 - Conventional Commit `815e6097f44c76bbc9aa4f716d9f667dbbb542ae` contains the exact verified 31-path candidate.
 - The pre-commit sensitive-scan script had an escaping defect and the shell continued into the authorized commit. Post-commit incident diagnosis reran a corrected additions-only scan successfully, `git show --check` passed, and the worktree was clean before this evidence update.
 - Commit-level native assessment classified the candidate high risk. Review lineage `review-1a09eb0895ffdb4c` escalated after three of four reviewer submissions with unknown causality on finding `R3-privacy-report-redaction`; no native approval is claimed. An attempted literal `STOP` transition was unsupported, so no substitute transition or fabricated result was used.
+- Evidence commit `264a0ca` was independently verified as one-file, factual, private-path-free, and clean. A fresh review of the resulting branch target used lineage `review-59c900fe6f09a99e` and reproduced the same three-of-four unknown-causality escalation on `R3-privacy-report-redaction`; again, no native approval is claimed.
 
 ## Next Step
-Request authority for one evidence-only commit that records this post-commit outcome, then separately request any push and PR publication.
+Obtain an explicit target-scoped decision on proceeding without native approval; if authorized, push the branch and open the approved single PR with `size:exception`, both review escalations, and no merge.
