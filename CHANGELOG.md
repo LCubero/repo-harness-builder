@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-18
 
+- Reconciled shared RH-W-0078/RH-W-0092 scope-delivery evidence: PR #194 squash-merged at 2026-09-18T16:38:24Z as `38b7901e122e367ef38fa3f1520324b873ccce22`, and issue #193 closed one second later. The approved head was `e9506498f7cb3b30b084afdaaaf92ce0a65c5ca0`; PR #194 had exactly `type:docs`, was CLEAN/MERGEABLE, and GitHub's no configured checks means no checks, not failed checks. Local `main` fast-forwarded and cleanly matched `origin/main`. Both records remain `proposed`, P2; design and implementation remain separate.
 - Recorded the owner's approval of the corrected bilingual RH-W-0092 scope. RH-W-0092 remains `proposed`, `P2`; exact detection evidence and wording await a separately authorized design, while implementation and delivery remain separately unauthorized. Conditional guidance remains Windows-only and actual-failure-only, and `git config --global core.longpaths true` remains human-run remediation only, never automatic or required.
 - Recorded the owner's approval of the corrected bilingual RH-W-0078 scope. RH-W-0078 remains `proposed`, `P2`; a separately authorized design must select exact mechanics and reproducible measurements, while implementation remains separately unauthorized.
 - At the proposal stage, documented the RH-W-0078 scope for concise multi-file generated skills, reachable local references, and selective existing-Python deterministic mechanics; neither scope approval nor implementation was then claimed.
