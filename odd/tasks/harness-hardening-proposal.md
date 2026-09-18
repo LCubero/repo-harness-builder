@@ -27,6 +27,7 @@ The notes span existing completed and proposed owners. Treating them as one new 
 - [x] **HHP-T5 — Record RH-W-0078 scope approval.** Reconciled the corrected bilingual scope approval across lifecycle, current-state, chronology, and continuity owners while preserving separate design and implementation authorization.
 - [x] **HHP-T6 — Record RH-W-0092 scope approval.** Reconciled the corrected bilingual scope approval while preserving separately authorized design, implementation, and delivery boundaries.
 - [x] **HHP-T7 — Correct prior-session review and current-state reconciliation.** Preserved the owner-approved RH-W-0078 scope projection in both current-state peers and reconciled the prior-session review chronology without authorizing design or implementation.
+- [x] **HHP-T8 — Record shared post-merge scope delivery.** Issue #193 closed at 2026-09-18T16:38:25Z after PR #194 squash-merged at 2026-09-18T16:38:24Z as main commit `38b7901e122e367ef38fa3f1520324b873ccce22`; the exact approved head was `e9506498f7cb3b30b084afdaaaf92ce0a65c5ca0`. PR #194 had exactly `type:docs`, was CLEAN/MERGEABLE, and GitHub's no configured checks means no checks, not failed checks. Local `main` fast-forwarded and cleanly matched `origin/main`. RH-W-0078 and RH-W-0092 remain `proposed`, P2; future design remains separate.
 
 ## Acceptance Criteria And Checks
 - Existing `.gitattributes` behavior is not presented as missing.
@@ -58,4 +59,4 @@ The notes span existing completed and proposed owners. Treating them as one new 
 - Native review: historical proposal-review lineage `review-0deebb8572c733bd` was approved and acknowledged for the 15-path, 327-line documentation candidate; the prior session's final approval lineage `review-7b0f7ae498784096` covered its 15-path, 339-line candidate.
 
 ## Next Step
-Both corrected bilingual scope approvals are recorded. RH-W-0078 and RH-W-0092 remain `proposed`; no implementation is authorized.
+The next lifecycle boundary is separate owner authorization of an RH-W-0078 or RH-W-0092 design. Both remain `proposed`, P2; scope delivery authorizes neither design nor implementation.
