@@ -61,6 +61,8 @@
 | [Limites RH-W-0012](rh-w-0012-boundaries.md) | Especificacion aceptada por el propietario de los siete limites de seguridad de investigacion externa que RH-W-0012 solo habia nombrado; completada, incluida la clausula de fuente sin fecha del limite 4 que destapo su primer uso |
 | [Investigacion RH-W-0084](rh-w-0084-research.md) | Par localizado completo del propietario canonico de evidencia primaria sobre formatos, tamanios, rutas, refuerzo y formas LLM-first; el hallazgo de refuerzo esta aceptado bajo RH-W-0083 y los otros permanecen con sus duenios |
 | [Investigacion RH-W-0078 sobre Gentle AI](rh-w-0078-gentle-ai-binary-research.md) | Par localizado de la investigacion que informa divulgacion progresiva y propiedad determinista sin autorizar un binario nuevo ni implementacion |
+| [Alcance RH-W-0078](rh-w-0078-scope.md) | Alcance propuesto para skills generadas de varios archivos, referencias alcanzables y mecánica selectiva en Python existente; aprobación e implementación siguen separadas |
+| [Alcance RH-W-0092](rh-w-0092-scope.md) | Alcance propuesto para guía condicional de rutas largas en Windows; la remediación global de Git solo la ejecuta la persona |
 | [Diseno RH-W-0067](rh-w-0067-design.md) | Par humano del diseno completado del contrato de respuesta; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0067](rh-w-0067-implementation-plan.md) | Par humano del plan de implementacion completado; instrucciones historicas conservadas |
 | [Diseno RH-W-0071](rh-w-0071-design.md) | Diseno historico mas amplio aprobado y acuerdo compartido de preferencias aplazado; el plan revisado posee el alcance vigente |

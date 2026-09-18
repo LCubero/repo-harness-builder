@@ -63,6 +63,8 @@
 | [rh-w-0012-boundaries.md](rh-w-0012-boundaries.md) | Owner-accepted specification of the seven external-research safety boundaries RH-W-0012 had only named; completed, including the boundary 4 undated-source clause that first use surfaced |
 | [rh-w-0084-research.md](rh-w-0084-research.md) | Canonical primary-source evidence owner for LLM-first formats, sizes, paths, reinforcement, and forms; the reinforcement finding is accepted under RH-W-0083 while other findings remain with their owners |
 | [rh-w-0078-gentle-ai-binary-research.md](rh-w-0078-gentle-ai-binary-research.md) | Canonical Gentle AI source research informing RH-W-0078 progressive disclosure and deterministic machine ownership without authorizing a new binary or implementation |
+| [rh-w-0078-scope.md](rh-w-0078-scope.md) | Proposed scope for multi-file generated skills, reachable references, and selective existing-Python mechanics; approval and implementation remain separate |
+| [rh-w-0092-scope.md](rh-w-0092-scope.md) | Proposed scope for conditional Windows long-path guidance; global Git remediation remains human-run only |
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
 | [rh-w-0071-design.md](rh-w-0071-design.md) | Historical approved broader design and deferred shared-preference agreement; current scope is owned by the revised plan |
