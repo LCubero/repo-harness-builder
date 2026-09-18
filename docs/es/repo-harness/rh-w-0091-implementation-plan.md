@@ -1,6 +1,6 @@
 # Plan de implementación RH-W-0091 de prioridad de inicio y reanudación primero
 
-> **Estado: registro histórico de ejecución completado.** RH-W-0091 está `completed`. La aprobación del plan, la autorización de implementación y el cierre de ciclo fueron decisiones separadas del propietario; no se afirman commit, push, PR, merge, release ni publicación.
+> **Estado: registro histórico de ejecución completado.** RH-W-0091 está `completed`. La aprobación del plan, la autorización de implementación y el cierre de ciclo fueron decisiones separadas del propietario; la declaración de no entrega inferior es evidencia histórica previa a la entrega.
 
 ## Evidencia de ejecución completada
 
@@ -8,7 +8,14 @@
 - El digest de mantenimiento `5077cc89efdd1032a7dcd4e8374eb84bcd8925cee7110e4f8276a536aa5ca59e` aplicó exactamente ocho contratos de sesión generados. El RED de corrección midió 879; el 697 intermedio perdió dos frases exactas; el 697 final conserva `repository evidence remains authoritative` y `never claim successful continuity`.
 - Suite completa final: 554 pruebas, 10 omitidas, salida 0. El checker estuvo `current` con cero escrituras; pasan cuatro pruebas de ciclo/enlaces; pasó `git diff --check`.
 - Paridad exacta de paquetes: SHA del script `b08fa14b2e11e7b050371279c6837165112c07ce40374da38e35d7777dab0ac0`; SHA de pruebas `f1119d226386d5ac3144e34f515fd2038697b0d6fcd19691f56f0de982b94f1b`. Ocho contratos de sesión generados coinciden con los bytes del render vigente.
-- `.repo-harness/rules/memory.md` instalado y de propiedad humana quedó idéntico a HEAD y no reemplazable; el preview no tiene mutaciones. El issue #190 está aprobado/abierto; la rama local es `feat/rh-w-0091-resume-first`.
+- `.repo-harness/rules/memory.md` instalado y de propiedad humana quedó idéntico a HEAD y no reemplazable; el preview no tiene mutaciones. En esa etapa histórica previa a la entrega, el issue #190 estaba aprobado/abierto y la rama local era `feat/rh-w-0091-resume-first`.
+
+## Evidencia de entrega posterior al merge
+
+- El PR #191 se fusionó por squash a `main` como `158fdf0b7d8861d804613e742aee46c745787912` a las 2026-09-18T02:08:21Z; el issue #190 se cerró a las 2026-09-18T02:08:22Z. La cabeza exacta aprobada del PR fue `cbf85a379469b076ec175c9c0feff4c0991ef6e8`.
+- El propietario aceptó `size:exception` y la ausencia explícita de aprobación nativa antes del merge. GitHub informó que no había checks configurados, lo que significa que no había checks y no que fallaran.
+- Antes de crear esta rama de reconciliación, `main` local, `origin/main` y `main` remoto estaban sincronizados en el commit de merge, 0 por delante/0 por detrás, con worktree limpio. La rama remota de funcionalidad estaba ausente después del merge sin inferir un mecanismo de borrado; la rama local permanece salvo limpieza separada.
+- El cuerpo corregido del PR registra 778 líneas autorales más 732 generadas, 554 pruebas ejecutadas/10 omitidas/salida 0 y comandos ejecutables exactos. No se autorizan ni afirman release, tag, limpieza de ramas ni publicación adicional.
 
 Derivado estrictamente del [alcance](rh-w-0091-scope.md) y [diseño](rh-w-0091-design.md) aprobados por el propietario. Par canónico: [rh-w-0091-implementation-plan.md](../../repo-harness/rh-w-0091-implementation-plan.md).
 
@@ -121,4 +128,4 @@ Cambio autoral esperado: 140 a 220 líneas de fuente y pruebas. Cambio mecánico
 - [x] El preview de mantenimiento determina el conjunto exacto de reemplazos y se conserva contenido de propiedad humana.
 - [x] No se introduce infraestructura nueva, parser/API, propietario de esquema, cache, daemon, servicio, scheduler, migración, limpieza, retención, framework de preferencias, prueba de Gentle, preflight de Engram ni segundo almacén.
 
-Decisiones técnicas o de producto sin resolver: ninguna. La ejecución completada preservó los límites declarados y el fallo histórico de verificación como evidencia de corrección. El cierre de ciclo está completo con trabajo restante `none`; la entrega Git, commit, push, PR, merge, release y publicación siguen sin afirmarse.
+Decisiones técnicas o de producto sin resolver: ninguna. La ejecución completada preservó los límites declarados y el fallo histórico de verificación como evidencia de corrección. El cierre de ciclo está completo con trabajo restante `none`; la declaración anterior de no entrega es evidencia histórica previa a la entrega. La entrega posterior al merge se registra arriba; no se autorizan ni afirman release, tag, limpieza de ramas ni publicación adicional.

@@ -1,6 +1,6 @@
 # RH-W-0091 Startup Priority and Resume-First Implementation Plan
 
-> **Status: completed historical execution record.** RH-W-0091 is `completed`. Plan approval, implementation authorization, and lifecycle closure were separate owner decisions; no commit, push, PR, merge, release, or publication is claimed.
+> **Status: completed historical execution record.** RH-W-0091 is `completed`. Plan approval, implementation authorization, and lifecycle closure were separate owner decisions; the no-delivery statement below is historical pre-delivery evidence.
 
 ## Completed Execution Evidence
 
@@ -8,7 +8,14 @@
 - Maintenance digest `5077cc89efdd1032a7dcd4e8374eb84bcd8925cee7110e4f8276a536aa5ca59e` applied exactly eight generated session contracts. The correction RED measured 879; the intermediate 697 lost two exact phrases; final 697 preserves `repository evidence remains authoritative` and `never claim successful continuity`.
 - Final full suite: 554 tests, 10 skipped, exit 0. The checker was `current` with zero writes; four lifecycle/link tests pass; `git diff --check` passed.
 - Exact package parity: script SHA `b08fa14b2e11e7b050371279c6837165112c07ce40374da38e35d7777dab0ac0`; tests SHA `f1119d226386d5ac3144e34f515fd2038697b0d6fcd19691f56f0de982b94f1b`. Eight generated session contracts match current render bytes.
-- Installed human-owned `.repo-harness/rules/memory.md` remained HEAD-identical and non-replaceable; preview has no mutations. Issue #190 is approved/open; the local branch is `feat/rh-w-0091-resume-first`.
+- Installed human-owned `.repo-harness/rules/memory.md` remained HEAD-identical and non-replaceable; preview has no mutations. At that historical pre-delivery stage, issue #190 was approved/open and the local branch was `feat/rh-w-0091-resume-first`.
+
+## Post-Merge Delivery Evidence
+
+- PR #191 squash-merged to `main` as `158fdf0b7d8861d804613e742aee46c745787912` at 2026-09-18T02:08:21Z; issue #190 closed at 2026-09-18T02:08:22Z. The approved exact PR head was `cbf85a379469b076ec175c9c0feff4c0991ef6e8`.
+- The owner accepted `size:exception` and the explicit absence of native approval before merge. GitHub reported no configured checks, meaning no checks rather than failed checks.
+- Before this reconciliation branch, local `main`, `origin/main`, and remote `main` were synchronized at the merge commit, 0 ahead/0 behind, with a clean worktree. The remote feature branch was absent after merge without an inferred deletion mechanism; the local feature branch remains unless separately cleaned.
+- The corrected PR body records 778 authored plus 732 generated lines, 554 tests run/10 skipped/exit 0, and exact runnable commands. No release, tag, branch cleanup, or additional publication is authorized or claimed.
 
 Derived strictly from the owner-approved [scope](rh-w-0091-scope.md) and [design](rh-w-0091-design.md). Spanish peer: [rh-w-0091-implementation-plan.md](../es/repo-harness/rh-w-0091-implementation-plan.md).
 
@@ -121,4 +128,4 @@ Expected authored change: 140 to 220 source and test lines. Expected mechanical 
 - [x] Maintenance preview determines the exact replacement set and human-owned content is preserved.
 - [x] No new infrastructure, parser/API, schema owner, cache, daemon, service, scheduler, migration, cleanup, retention behavior, preference framework, Gentle probe, Engram preflight, or second store is introduced.
 
-Unresolved technical or product decisions: none. The completed execution preserved the stated boundaries and the historical failed verification as correction evidence. Lifecycle closure is complete with remaining work `none`; Git delivery, commit, push, PR, merge, release, and publication remain unclaimed.
+Unresolved technical or product decisions: none. The completed execution preserved the stated boundaries and the historical failed verification as correction evidence. Lifecycle closure is complete with remaining work `none`; the prior no-delivery statement is historical pre-delivery evidence. Post-merge delivery is recorded above; no release, tag, branch cleanup, or additional publication is authorized or claimed.
