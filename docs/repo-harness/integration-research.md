@@ -22,6 +22,18 @@ Generated consumer harnesses remain generic and never mention improving `repo-ha
 
 **Verified fact:** `gentle-shell` owns Pi-native orchestration, bounded subagents, ODD task artifacts and their project-scoped mirroring through Engram, optional SDD, review-transport/mirror contracts, and optional Engram composition. Its ODD flow closes each substantial task with a work-unit commit; native review candidates are work-unit commits or PR slices, never a checkbox or accumulated feature branch; and delivery strategy considers chained slices around 400 authored changed lines. When background-subagent policy is active and `subagent_run` is available, routine delegations default to background execution. The Engram mirror is specific to ODD coordination and does not limit Engram's broader continuity capability. Native review semantics remain Gentle AI/provider-owned. Gentle AI documents ODD as the default workflow, SDD as explicitly selected, and RDD as user-owned and opt-in; an SDD archive is neither review approval nor delivery. Engram `f6b22f89d024fb6aaa207606d893f47b3f4e23a9` makes direct backup format `0.2.0` preserve local pins and complete memory-relation metadata while accepting legacy `0.1.0` backups that omit those fields.
 
+## Planning-with-files Comparison (2026-09-18)
+
+**Verified fact:** the inspected upstream repository `OthmanAdi/planning-with-files` at exact commit `2fbbd77ba9a74cddb9504285935ef9ae0837cdec` was reviewed through bounded local evidence: its [canonical skill](https://github.com/OthmanAdi/planning-with-files/blob/2fbbd77ba9a74cddb9504285935ef9ae0837cdec/skills/planning-with-files/SKILL.md), [workflow](https://github.com/OthmanAdi/planning-with-files/blob/2fbbd77ba9a74cddb9504285935ef9ae0837cdec/docs/workflow.md), [long-running modes](https://github.com/OthmanAdi/planning-with-files/blob/2fbbd77ba9a74cddb9504285935ef9ae0837cdec/docs/long-running-agent-tasks.md), [Pi adapter](https://github.com/OthmanAdi/planning-with-files/blob/2fbbd77ba9a74cddb9504285935ef9ae0837cdec/docs/pi-agent.md), [templates](https://github.com/OthmanAdi/planning-with-files/tree/2fbbd77ba9a74cddb9504285935ef9ae0837cdec/templates), security boundary in the canonical skill, and [evaluation limitations](https://github.com/OthmanAdi/planning-with-files/blob/2fbbd77ba9a74cddb9504285935ef9ae0837cdec/docs/evals.md).
+
+**Verified overlap:** those sources document persistent active-task continuity, recovery after context loss, exact task/plan selection, bounded context refresh, and orchestrator-owned shared state; the current ODD owners document the corresponding repository-side responsibilities.
+
+**Verified ownership difference:** repo-harness/Gentle Shell ODD already owns one `odd/tasks/<feature-name>.md`, its project-scoped Engram mirror, and the visible todo projection under repository and human authority.
+
+**Supported future direction, owner approval required:** consider only these bounded ideas: exact active-task binding; a compact structured context projection; pre-compaction synchronization through existing owners; read-only continuity diagnostics; and a measured recovery benchmark. Do not directly adopt `task_plan.md`, `findings.md`, or `progress.md`; per-agent JSONL ledgers; per-tool recitation; automatic completion gates; hash-as-approval; newest-plan guessing; or any third lifecycle or authority store.
+
+This research does not authorize implementation or change the roadmap, current state, product behavior, or runtime behavior.
+
 ## Bounded Impact Assessment (2026-09-17)
 
 **Verified fact:** the audit covered 11/12 repository evidence paths, 8/8 direct dependent records, and 0/20 commits; the bound was not exhausted. No ownerless affected surface was found. Every direct record is currently **no impact**:

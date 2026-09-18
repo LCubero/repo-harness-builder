@@ -24,7 +24,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33, and its separately authorized implementation reduced it to 32. Registering owner-prioritized `RH-W-0088` as `proposed` raised it to 33. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
-Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31, and owner-authorized rejection of RH-W-0040 reduced it to 30. After later completions recorded below, reopening RH-W-0048 only for mutability-contract reconciliation and independent re-verification, and completing that reopened scope, direct current derivation yielded 27 non-terminal records. Owner-authorized registration of RH-W-0089 raised the current derivation to 28; its completed lifecycle closure returned it to 27. Owner-authorized registration of RH-W-0090 raised it to 28, and RH-W-0091 raised it to 29; its completed lifecycle closure leaves the current owner-row derivation at 27. The prior chronology is historical.
+Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31, and owner-authorized rejection of RH-W-0040 reduced it to 30. After later completions recorded below, reopening RH-W-0048 only for mutability-contract reconciliation and independent re-verification, and completing that reopened scope, direct current derivation yielded 27 non-terminal records. Owner-authorized registration of RH-W-0089 raised the current derivation to 28; its completed lifecycle closure returned it to 27. Owner-authorized registrations of RH-W-0090 and RH-W-0091 later raised it to 29; RH-W-0091 closure left the recorded current derivation at 27. The owner rejection of RH-W-0090 and registration of RH-W-0092 replace one non-terminal record with another, so the direct derivation remains 27. The prior chronology is historical.
 
 The preventive design precedes the local-state architecture:
 
@@ -398,19 +398,17 @@ Readiness `plannable now`. Priority `P2`, dependencies none. Registered outside 
 
 Human decisions: the containment boundary for a personal directory inside the repository, and whether the delivery policy or the delivery practice changes.
 
-### Plan 27: RH-W-0078 generated skills cannot meet the ceiling they are bound by
+### Plan 27: RH-W-0078 generated-skill scope
 
-Readiness `plannable after RH-W-0076`, because `RH-W-0076` must land the corrected guide sentence before this unit has a rule to satisfy. The ceiling's scope is already settled. Priority `P2`. Registered outside the approved order. Next artifact: a bilingual scope document and its Spanish peer.
+Readiness `scope owner-approved; design remains separately unauthorized`. Priority `P2`. The owner approved the corrected bilingual [scope](rh-w-0078-scope.md); the record remains `proposed`.
 
-1. Take the settled answer as given: the owner decided on 2026-08-27 that the ceiling binds the builder skill and every skill it generates, so this unit closes a breach and never reopens whether the breach exists.
-2. Measure the real gap before designing anything. The three generated skills measure 2822, 2707, and 878 body proxy tokens against 1000, so two breach and one does not; the smallest honest change may be two skills, not three.
-3. Price the research-backed preferred surface: generated multi-file skills with concise entry bodies and progressive disclosure, plus selective deterministic ownership in the existing Python renderer/checker. Compare a bounded content cut as a fallback, not as an equal default, and do not add a compiled binary.
-4. Treat model reachability as the constraint. The over-budget bodies carry consent, transport, evidence, and safety rules, so every moved rule must keep a verified owner and remain reachable at its action point. File splitting alone is not proof of a smaller effective context footprint.
-5. If a `references/` surface is chosen, it changes the manifest, the checker's owned-path set, `.gitattributes` byte comparison, and every runtime projection for three runtimes. Price that before proposing it.
-6. Reuse the development-time assertion surface `RH-W-0073` establishes and `RH-W-0076` extends. Add no runtime refusal; completed `RH-W-0013` removed that deliberately and it stays removed.
-7. Measure effective loaded-context reduction and reference reachability across Claude Code, OpenCode, and Pi; verify no consumer behavior changes beyond the generated skill structure itself, and that the checker reports `current` with zero writes.
+1. Preserve the verified breach: generated session-start and session-stop exceed the established body ceiling while generated documentation complies.
+2. Prefer concise multi-file entry contracts with reachable local references and selective deterministic rendering, validation, path, and byte mechanics in the existing Python renderer/checker.
+3. Preserve model-visible human authority, consent, judgment, evidence, and action-point obligations. Do not treat file splitting as proof.
+4. Before a later implementation decision, measure effective loaded context and reference reachability across Claude Code, OpenCode, and Pi.
+5. Add no compiled binary, runtime, service, dependency, runtime refusal, blind prose deletion, or automated human-decision machinery.
 
-Human decision: approve, correct, or reject the preferred direction in a bilingual scope. Exact design and implementation remain separately unauthorized.
+Human decision recorded: the owner approved the corrected bilingual scope. The next gate is a separately authorized design selecting exact mechanics and reproducible measurements; implementation remains separately unauthorized.
 
 ### Historical Plan 28: RH-W-0079 generic baseline and self-hosting release boundary
 
@@ -474,14 +472,16 @@ Readiness `completed`. Priority `P1`, dependencies none. The bilingual [complete
 
 Human decision: the prior scope approval is historical. `RH-W-0089` is `completed` and was delivered through approved issue #182 and PR #183, squash-merged to `main` as `8ff35bb66739b8acd45b9ca42c199fe4b83685ab` at 2026-09-12T05:19:32Z; issue #182 closed one second later.
 
-### Plan 33: RH-W-0090 incremental memory-backup design decision
+### Plan 33: RH-W-0092 Windows long-path guidance scope
 
-Readiness `scope/design decision required; implementation unauthorized`. Priority `P2`, dependencies none. Compare one incremental `.repo-harness/memory-bk/` file with the completed RH-W-0069 timestamped exclusive backups without changing current behavior.
+Readiness `scope owner-approved; design remains separately unauthorized`. Priority `P2`, dependencies none. The owner approved the corrected bilingual [scope](rh-w-0092-scope.md) for conditional Windows guidance only.
 
-1. Compare atomicity, corruption radius and recovery, concurrent writers, privacy, bounded growth and retention, migration and compatibility, and startup/stop recovery.
-2. Preserve RH-W-0069 as the authoritative current behavior and RH-W-0051 namespace ownership; reject a database, daemon, lock service, auto-migration, deletion, or contract change unless separately designed and authorized.
+1. Preserve the verified exact `text eol=lf` protection for every byte-compared generated path and `core.autocrlf=true` verification; do not reopen it without a measured defect.
+2. Detect and suggest only when an actual Windows path-length condition affects an operation. Present `git config --global core.longpaths true` only as a human-run global-Git remediation option, with its consequences.
+3. Keep the guidance absent on non-Windows and when no relevant failure exists; never execute it automatically or treat it as a prerequisite or authority to change global configuration.
+4. Add no registry or OS-policy change, manifest field, preference, state, repeated startup warning, dependency, or platform abstraction.
 
-Human decision: approve or correct the bilingual scope/design decision. Implementation remains separately unauthorized.
+Human decision recorded: the owner approved the corrected bilingual scope. Exact detection evidence and wording await a separately authorized design; implementation and delivery remain separately unauthorized.
 
 ### Historical Plan 34: RH-W-0091 startup priority and resume-first implementation
 
@@ -553,22 +553,39 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Decision history | 2026-09-13: registered as immutable `proposed` RH-W-0091. The owner separately approved scope, design, corrected plan, implementation, and lifecycle closure. Final technical and independent verification completed; historical failed verification remains correction evidence. |
 | Next advancement condition | none; lifecycle and delivery reconciliation are complete. No release, tag, branch cleanup, or additional publication is authorized or claimed. |
 
+### RH-W-0092
+| Field | Value |
+|---|---|
+| Origin | Owner-authorized immutable bilingual proposal for conditional Windows long-path guidance only. |
+| Priority | P2: guidance may unblock an affected Windows operation, but ordinary work remains unaffected and current `.gitattributes` behavior is already verified. |
+| Dependencies | Reuse the existing exact-LF and `core.autocrlf=true` verification; do not reopen RH-W-0029 or redesign `.gitattributes` without a measured defect. |
+| Status | proposed |
+| Completed work | Registered the immutable record and owner-approved corrected bilingual [scope](rh-w-0092-scope.md). |
+| Remaining work | A separately authorized design must define exact detection evidence and wording; implementation and delivery remain separately unauthorized. |
+| Additions | Conditional detection and suggestion only when an actual Windows path-length condition affects an operation. |
+| Exclusions | No automatic global-Git mutation, prerequisite, non-Windows guidance, guidance without a relevant failure, registry or OS-policy change, manifest field, preference, state, repeated startup warning, dependency, platform abstraction, product change, or delivery. |
+| Deferrals | Exact detection evidence and wording await a separately authorized design. |
+| Rejections | Rejected reopening existing byte-protection behavior without a measured defect and treating `git config --global core.longpaths true` as automatic, required, or authority to change global configuration. |
+| Evidence | Verified fact: every byte-compared generated path already has exact `text eol=lf` protection and verification covers `core.autocrlf=true`. Human decision: conditional Windows guidance only; the displayed command is a human-run remediation option with global consequences. |
+| Decision history | Registered as immutable proposed P2 RH-W-0092 under owner authorization for documentation only. The owner approved the corrected bilingual scope; status remains `proposed`. |
+| Next advancement condition | Separately authorize a design that defines exact detection evidence and wording. Implementation and delivery remain separately unauthorized. |
+
 ### RH-W-0090
 | Field | Value |
 |---|---|
-| Origin | Owner-authorized bilingual documentation finding: evaluate one incremental `.repo-harness/memory-bk/` file against the current timestamped exclusive backups. |
-| Priority | P2: continuity design may affect recovery and privacy, but RH-W-0069 current behavior remains authoritative and no defect or implementation need is established. |
-| Dependencies | Completed RH-W-0069 owns current backup behavior; completed RH-W-0051 retains `.repo-harness/memory-bk/` namespace ownership. Neither is reopened. |
-| Status | proposed |
-| Completed work | Documentation-only registration of the immutable record. |
-| Remaining work | Obtain a bilingual scope/design decision comparing atomicity, corruption radius and recovery, concurrent writers, privacy, bounded growth and retention, migration and compatibility, and startup/stop recovery. Implementation requires separate authorization. |
-| Additions | One future design comparison only; no behavior is selected. |
-| Exclusions | No database, daemon, lock service, auto-migration, deletion, contract change, implementation, test, generated change, network, or Git delivery now. |
-| Deferrals | The choice between an incremental file and timestamped exclusive backups, and every implementation consequence, await the scope/design decision. |
-| Rejections | Rejected treating this registration as authorization to replace RH-W-0069 behavior or to alter RH-W-0051 namespace ownership. |
-| Evidence | Human decision: register the comparison without inspecting candidate implementation or changing behavior. Verified current owner evidence: RH-W-0069 is completed and RH-W-0051 owns the namespace. |
-| Decision history | 2026-09-12: registered as immutable `proposed` RH-W-0090 under owner authorization for bilingual documentation only. |
-| Next advancement condition | Advance only after an owner-approved bilingual scope/design decision addresses every comparison dimension; implementation remains separately unauthorized. |
+| Origin | Owner-authorized bilingual documentation finding that evaluated one incremental shared `.repo-harness/memory-bk/` file against current timestamped exclusive backups. |
+| Priority | P2: historical comparison only; current continuity remains authoritative under RH-W-0069. |
+| Dependencies | Completed RH-W-0069 owns current backup behavior; completed RH-W-0051 retains namespace ownership. Neither is reopened. |
+| Status | rejected |
+| Completed work | Owner decision recorded: retain separate timestamped exclusive backups per session and reject one incremental shared file. |
+| Remaining work | none |
+| Additions | None. Bounded `session_id` remains technical metadata and short filename disambiguation, not authority or routine display. |
+| Exclusions | No product change, migration, deletion, retention mechanism, implementation, test, generated change, network, or Git delivery. |
+| Deferrals | none |
+| Rejections | Rejected one incremental shared backup file; rejected treating `session_id` as authority or routine user-facing state. |
+| Evidence | Human decision: the local backup cannot be one incremental shared file and must remain separate per session. Verified current owner evidence: delivered RH-W-0069 writes timestamped exclusive pause/close backups. |
+| Decision history | 2026-09-12: registered as immutable `proposed` RH-W-0090. Later owner decision rejected the alternative without implementation. |
+| Next advancement condition | none |
 
 ### RH-W-0089
 | Field | Value |
@@ -767,14 +784,14 @@ Historical review-correction verification: 23 directly relevant tests and the se
 | Dependencies | `RH-W-0076` must land the corrected guide sentence first, because that sentence is the rule this unit satisfies. Reuse the development-time assertion surface `RH-W-0073` establishes rather than inventing a third. |
 | Status | proposed |
 | Completed work | Measured and located, nothing changed. By `TOOL.token_proxy` over the body, generated `repo-harness-session-stop` is 2822 and `repo-harness-session-start` is 2707 against the guide's 1000 hard maximum; `repo-harness-documentation` is 878 and complies. The cause is structural rather than editorial: `references/` appears zero times in `harness_tool.py` for generated output, and generated skills render to exactly one path, `outputs[f"{base}/skills/{name}/SKILL.md"]`, so they have no surface to move conceptual detail into and the guide's own remedy is unavailable to them. The recursion the owner named is verified: `REPO-HARNESS.md` declares self-hosting, `decisions.md` declares the same generic contract applies to this repository's own product source, and the canonical builder `SKILL.md` is byte-identical to its `.claude/` projection at 16279 bytes. The owner-approved bands recorded in completed `RH-W-0013`, which extend to `1001 to 1200 priority attention` and `immediate review advice above 1200`, do not soften this. They are a severity vocabulary, not a permission scale, and the repository already proves it: `RULEBOOK_TOKEN_BUDGET` is still 700, the canonical suite still asserts `token_proxy(text) < RULEBOOK_TOKEN_BUDGET`, and `RH-W-0073` calls `REPO-HARNESS.md` at 763 a breach to be closed by shrinking the file even though 763 sits inside the `701 to 1000 warning` band. What completed `RH-W-0013` removed was the runtime blocker, not the number. So 2822 and 2707 are a breach of 1000 and also sit above the top band; both are true at once. The bilingual [Gentle AI binary research](rh-w-0078-gentle-ai-binary-research.md) now provides an evidence-backed direction without changing the breach or lifecycle. |
-| Remaining work | Draft and obtain approval for a bilingual scope that prices the recommended multi-file generated-skill direction, selectively assigns suitable deterministic mechanics to the existing Python renderer/checker, preserves model-visible decisions and action-point rules, and proves effective loaded-context reduction plus reference reachability across Claude Code, OpenCode, and Pi. Then obtain separate implementation authorization. |
-| Additions | None yet. A future scope may add generated `references/` files and selective deterministic Python ownership, which would extend the manifest, the checker's owned-path set, `.gitattributes` byte comparison, and runtime projections across three runtimes. |
+| Remaining work | A separately authorized design must select exact mechanics and reproducible measurements, including effective loaded-context reduction plus reference reachability across Claude Code, OpenCode, and Pi. Implementation remains separately unauthorized. |
+| Additions | None yet. The approved scope permits a separately authorized design to select generated `references/` files and selective deterministic Python ownership, which would extend the manifest, the checker's owned-path set, `.gitattributes` byte comparison, and runtime projections across three runtimes. |
 | Exclusions | No runtime render or check refusal, which completed `RH-W-0013` deliberately removed. No raised ceiling, for the same reason `RH-W-0073` rejected raising 700 and this unit exists rather than exempting. No reopening of whether the ceiling binds generated skills, which the owner settled. No deletion of a consent, transport, or safety rule to fit a number. |
-| Deferrals | Whether `repo-harness-documentation` at 878 is touched at all waits for the scope; compliance today is not a guarantee against future growth. |
+| Deferrals | Whether `repo-harness-documentation` at 878 is touched at all waits for the separately authorized design; compliance today is not a guarantee against future growth. |
 | Rejections | Rejected folding this into `RH-W-0076`, whose corrections are documentation-only and whose non-goals exclude a generated `references/` directory; this unit is renderer work with manifest, checker, and projection consequences. Rejected declaring generated contracts a stated exception. The research also rejects adding a new compiled binary and blindly cutting consent, authority, transport-safety, evidence, or action-point obligations. |
-| Evidence | Verified fact: the four body `token_proxy` measurements, the zero `references/` occurrences for generated output in `harness_tool.py`, the single hardcoded generated output path, the byte-identical builder canonical and projection at 16279 bytes, and the `RH-W-0073` rejection of treating a breach as acceptable drift. Class 2 primary-source evidence in the bilingual [Gentle AI research](rh-w-0078-gentle-ai-binary-research.md) supports progressive disclosure and deterministic machine ownership but requires this repository to measure runtime loading and reachability. Human decision required: approve, correct, or reject the recommended direction in a bilingual scope. |
-| Decision history | 2026-08-27: registered as `proposed` under immutable ID RH-W-0078, from the owner's answer that the ceiling binds both. The answer was volunteered as a correction to a scope draft that had proposed the opposite, and verification confirmed both the recursion premise and the contradicted precedent. 2026-09-04: bilingual Gentle AI research recommended multi-file generated skills plus selective ownership in the existing Python renderer/checker, rejected a new compiled binary and blind cutting, and left exact design and implementation unauthorized. |
-| Next advancement condition | Advance only after `RH-W-0076` lands the corrected guide sentence and the owner approves a bilingual scope that prices and verifies the recommended direction. Implementation remains separately unauthorized. |
+| Evidence | Verified fact: the four body `token_proxy` measurements, the zero `references/` occurrences for generated output in `harness_tool.py`, the single hardcoded generated output path, the byte-identical builder canonical and projection at 16279 bytes, and the `RH-W-0073` rejection of treating a breach as acceptable drift. Supported inference: Class 2 primary-source evidence in the bilingual [Gentle AI research](rh-w-0078-gentle-ai-binary-research.md) supports progressive disclosure and deterministic machine ownership; reproducible runtime measurements would raise this to verified design evidence. Human decision: the owner approved the corrected bilingual scope. |
+| Decision history | 2026-08-27: registered as `proposed` under immutable ID RH-W-0078, from the owner's answer that the ceiling binds both. 2026-09-04: bilingual Gentle AI research recommended multi-file generated skills plus selective ownership in the existing Python renderer/checker, rejected a new compiled binary and blind cutting, and left exact design and implementation unauthorized. The owner approved the corrected bilingual scope; status remains `proposed`. |
+| Next advancement condition | Separately authorize a design that selects exact mechanics and reproducible measurements. Implementation remains separately unauthorized. |
 
 ### RH-W-0077
 | Field | Value |
