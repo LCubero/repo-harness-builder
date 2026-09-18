@@ -27,9 +27,11 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 - Engram owns semantic continuity, relations, conflict state, review-age metadata, and session memory.
 - Defer routing, review, receipts, and correction to an applicable enabled Gentle workflow; supply repository context and checks, not parallel reviewers, counters, receipts, or plans. Do not auto-enable methodologies or require disabled review. Repository policy owns commit, push, and PR; informational delivery guidance creates no gate. Never fabricate a native verdict or replace human authorization.
 - Recover relevant recent context from Engram and reconcile every recalled claim with current repository evidence; the recovery attempt is also the current Engram availability evidence. Do not run a separate Engram preflight.
+- Scoped Engram recovery is availability evidence itself; no separate Engram probe, preflight, or repeated unchanged-success report is introduced.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - If Engram is unavailable or recovery fails, surface the failure and must not claim successful continuity.
 - Check Gentle AI only when requested work reaches its enabled routing, review, receipt, or correction boundary; do not probe or report it separately during ordinary startup.
+- Gentle AI is reached only at an applicable enabled routing, review, receipt, or correction boundary and receives no startup probe.
 - Gentle AI loss degrades only its enabled coordination; Engram loss degrades continuity only. Block only when the operation or repository policy requires the missing component.
 - Omit successful unchanged capability and continuity detail from routine startup display, not from per-operation outcome accounting. Report only capability discrepancies that affect requested work; always surface continuity failures and task-relevant results, with repository and affected component outcomes separated, exact failure evidence, and one next action. Never reconstruct malformed owner output as success.
 - Conversation language: Follow a current verified human language instruction; otherwise preserve an explicit persisted preference. Without one, use verified session language, validated manifest fallback, then deterministic English. Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes. This flattened host cannot reliably detect language switches; preserve persisted preference.
@@ -48,19 +50,35 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 
 ## Native Continuity Recovery
 
-Use this exact read-only order:
+Use this exact read-only order before any deeper owner read:
 
 1. Validate the selected repository root.
-2. Read applicable repository owners, source, tests, Git, and checker evidence required by the objective.
-3. First resolve `.repo-harness/memory-bk/` through the guarded root. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree.
-4. Read scoped Engram context when available and preserve its independent outcome.
-5. Read at most one older backup, and only for `newest_invalid`, `objective_names_backup`, `conflict_needs_chronology`, or `newest_lacks_relevant_continuity`.
+2. Read the bounded charter pointer in `docs/repo-harness/decisions.md`; the charter pointer is bounded input and is never copied as policy.
+3. Resolve verified conversation language plus active stable preferences or continuing constraints from their existing owners. Never infer a preference or constraint from absent or invalid evidence.
+4. First resolve `.repo-harness/memory-bk/` through the guarded root. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree. Read `Where We Left Off` from the newest valid RH-W-0069 backup.
+5. Read deeper current owners only when one named trigger requires them.
 
+- An old valid backup without `Where We Left Off` falls back to RH-W-0069 detailed continuity without synthesizing fields.
+- Read at most one older backup, and only for `newest_invalid`, `objective_names_backup`, `conflict_needs_chronology`, or `newest_lacks_relevant_continuity`; this compatibility fallback is not a deeper owner read.
 - Absent directory or empty history is `not_found`, not failure.
 - Reject and report malformed, unsafe, indirect, or contradictory candidates without repair. Startup performs no write, staging, automatic continuation, or link following.
 - For every source, check every recalled claim against its current applicable repository owner. Report claims as `accepted`, `stale`, `conflicting`, `unavailable`, or `unverifiable`.
 - When repository evidence resolves a conflict, use repository evidence and report the conflict. When it cannot resolve a material conflict, ask one human decision question and do not choose a source.
 - Never merge continuity sources silently.
+4. Read scoped Engram context when available and preserve its independent outcome.
+
+## Resume-First Deeper-Read Triggers
+
+| Trigger | Required deeper read |
+|---|---|
+| Explicit objective or `RH-W-####` | The named owner and directly relevant evidence. |
+| Contradiction | The conflicting current owners until repository evidence resolves it, or one concrete human decision when it cannot. |
+| Invalid or missing priority evidence | The owner that can validate or replace that evidence. |
+| Mandatory reconciliation | The applicable canonical lifecycle, projection, localization, and continuity owners. |
+
+- No other trigger, alias, or catch-all authorizes a deeper owner read.
+- Each trigger selects only its required current owner evidence and never authorizes exhaustive reading, automatic continuation, preference inference, or a new store.
+- With valid priority evidence and none of the four named triggers, stop after the resume-first read and perform no deeper owner read.
 
 ## Interrupted-Operation Checkpoint Discovery
 
@@ -136,6 +154,7 @@ Outcomes are scoped. Startup uses `ready`, `paused`, `blocked`, `failed`, or `de
 | fast-forward-only failure | Preserve state and exact command error, stop only the Git synchronization branch, and do not claim synchronization. |
 
 ## Remembered Fetch Consent
+
 - A valid remembered grant alone may replace interactive approval for the bounded `git fetch`; read only `.repo-harness/state/preferences/fetch-consent.md`, with no preference service, cache, or automatic mutation. It is UTF-8 without BOM, LF-only, no body, and exactly this versioned frontmatter grammar: `document = "---\nfetch-consent: v1\nrepository: b64url\nremote: b64url\nurl: b64url\ntransport: b64url\nupstream: b64url\ndestination: b64url\ncredential: b64url\n---\n"`; fields are in that order exactly once, `b64url` matches `[A-Za-z0-9_-]+`, and decoding then unpadded base64url re-encoding must produce identical UTF-8 bytes. Canonical decoded values are the real absolute Git-dir/worktree destination without a trailing separator; exact configured remote name; HTTPS or SSH sanitized URL identity with lower-case scheme/host, no userinfo, query, or fragment, default port omitted, and normalized percent escapes; matching lower-case transport; full `refs/...` upstream and destination; and transport-tagged effective credential binding (HTTPS ordered helper identities plus path scopes, or SSH effective command plus config identity). Empty, control-containing, non-canonical, or unsupported values are malformed; never serialize credentials, tokens, helper output, environment secrets, OIDs, or fetched data. Re-resolve every binding before use. Classify a precisely parsed grant as `valid` only when every canonical value equals current Git configuration; as `mismatch` when one differs; as `ambiguous` when current configuration yields more than one value; otherwise as `malformed`. `malformed`, `ambiguous`, and `mismatch` grants never authorize network access, are not rewritten or deleted, report their category, and fall back to interactive approval. A valid grant authorizes only `git fetch --no-recurse-submodules --no-auto-maintenance <remote> <upstream-ref>:<destination-ref>`, never submodules, LFS, integration, commit, push, publication, provider tooling, destructive work, or RH-W-0018 behavior. Only a current explicit human instruction may create, replace, or revoke it; replacement is never inferred or automatic; confirm or report the operation, remote, sanitized URL identity, upstream, destination, and exact local revocation path; reading or using it never creates, refreshes, rewrites, extends, deletes, or transfers it.
 
 Never use git pull, git rebase, git reset, force operations, merge on divergence, or automatic conflict resolution. Every authorized network command uses a bounded host execution timeout. Timeout expiry is an authentication or transport failure. Native Git is the core transport. Recognized provider tooling is only an alternate credential path if installed and separately approved. For transport diagnostics, retain each attempted command, exit status, stderr, and safely-local state. Make at most 2 distinct transport attempts, never indefinite retries. After an authentication or transport failure, check read-only whether an alternate credential path is actually available and name it in remediation instead of stopping with none: prefer installed and authenticated provider tooling used as a single-command credential helper that changes no global configuration, and when the only remaining path needs a passphrase or secret the agent cannot supply, hand the exact command to the human to run. Every authorized network command runs non-interactively, because an agent has no TTY and a passphrase or credential prompt hangs the session with no error, no banner, and no timeout instead of reaching that remediation. Cover both transports: `git -c core.sshCommand="ssh -o BatchMode=yes -o ConnectTimeout=20"` for SSH, and `GIT_TERMINAL_PROMPT=0` in the environment for HTTPS. Neither replaces the other. Set that variable per shell, `export GIT_TERMINAL_PROMPT=0` in Bash and Zsh or `$env:GIT_TERMINAL_PROMPT=0` in PowerShell, never as a `VAR=value command` prefix, which PowerShell parses as a command name and fails before Git runs. Quote the upstream shorthand as `"@{u}"`, which PowerShell can otherwise parse as a hashtable expression. Two limits bound this and it removes neither: `-c core.sshCommand` is ignored when `GIT_SSH_COMMAND` is already set and it overrides a configured `core.sshCommand`, and `GIT_TERMINAL_PROMPT=0` does not silence a credential helper's graphical prompt.

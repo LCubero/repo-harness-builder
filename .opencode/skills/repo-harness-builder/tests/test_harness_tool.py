@@ -3574,6 +3574,110 @@ class GeneratedCoreTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, stop)
 
+    def test_resume_first_backup_shape_and_stop_order_are_exact(self):
+        outputs = TOOL.render("Example", [])
+        memory = outputs[".repo-harness/rules/memory.md"]
+        stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        expected_body = (
+            "# Session Continuity",
+            "## Where We Left Off",
+            "### Next Action",
+            "### Pending Work",
+            "### Current Blocker",
+            "## Goal",
+            "## Instructions",
+            "## Discoveries",
+            "## Accomplished",
+            "## Next Steps",
+            "## Relevant Files",
+        )
+        positions = [memory.index(heading) for heading in expected_body]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("Its exact frontmatter keys are `project`, `timestamp_utc`, `source`, and `session_id`.", memory)
+        self.assertIn("Empty resume fields and detailed sections use `None.`", memory)
+        ordered = (
+            "Refresh current repository evidence",
+            "determine `Next Action`, `Pending Work`, and `Current Blocker` in that order",
+            "place the exact frontmatter-preserving resume block before detailed continuity",
+            "Apply the shared privacy filter",
+            "create `YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` exclusively",
+            "Reopen the backup and verify its frontmatter and required headings",
+            "Attempt the Engram write when available",
+        )
+        positions = [stop.index(phrase) for phrase in ordered]
+        self.assertEqual(positions, sorted(positions))
+
+    def test_resume_first_old_backups_remain_readable_without_synthesized_fields(self):
+        outputs = TOOL.render("Example", [])
+        scoped = "\n".join(
+            outputs[path]
+            for path in (
+                ".repo-harness/rules/memory.md",
+                ".repo-harness/skills/repo-harness-session-start/SKILL.md",
+                ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
+            )
+        )
+        self.assertIn(
+            "Existing valid backups without `Where We Left Off` remain readable through detailed continuity and never gain synthesized, migrated, rewritten, or backfilled fields.",
+            scoped,
+        )
+
+    def test_session_start_uses_exact_resume_first_priority(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        priority = (
+            "bounded charter pointer in `docs/repo-harness/decisions.md`",
+            "verified conversation language plus active stable preferences or continuing constraints from their existing owners",
+            "`Where We Left Off` from the newest valid RH-W-0069 backup",
+            "deeper current owners only when one named trigger requires them",
+        )
+        positions = [start.index(phrase) for phrase in priority]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("An old valid backup without `Where We Left Off` falls back to RH-W-0069 detailed continuity without synthesizing fields.", start)
+        self.assertIn("charter pointer is bounded input and is never copied as policy", start)
+
+    def test_session_start_deep_reads_for_exactly_four_triggers(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        matrix = start[start.index("## Resume-First Deeper-Read Triggers"):start.index("## Interrupted-Operation Checkpoint Discovery")]
+        triggers = (
+            "| Explicit objective or `RH-W-####` |",
+            "| Contradiction |",
+            "| Invalid or missing priority evidence |",
+            "| Mandatory reconciliation |",
+        )
+        self.assertEqual(sum(matrix.count(trigger) for trigger in triggers), 4)
+        for trigger in triggers:
+            self.assertIn(trigger, matrix)
+        self.assertIn("No other trigger, alias, or catch-all authorizes a deeper owner read.", matrix)
+        self.assertIn("never authorizes exhaustive reading, automatic continuation, preference inference, or a new store", matrix)
+
+    def test_session_start_does_not_deep_read_without_a_named_trigger(self):
+        start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        self.assertIn(
+            "With valid priority evidence and none of the four named triggers, stop after the resume-first read and perform no deeper owner read.",
+            start,
+        )
+
+    def test_resume_first_preserves_capability_and_owner_boundaries(self):
+        outputs = TOOL.render("Example", [])
+        memory = outputs[".repo-harness/rules/memory.md"]
+        start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        self.assertIn(
+            "RH-W-0069 retains the native backup schema, privacy, exclusive-write, local-before-Engram, validation, and independent-outcome ownership.",
+            memory,
+        )
+        self.assertIn("RH-W-0078 retains physical generated-skill splitting and progressive disclosure.", memory)
+        self.assertIn("RH-W-0031, RH-W-0071, RH-W-0082, and RH-W-0018 retain language and preference semantics.", memory)
+        self.assertIn("Roadmap, current state, and changelog retain their current roles.", memory)
+        self.assertIn("Scoped Engram recovery is availability evidence itself; no separate Engram probe, preflight, or repeated unchanged-success report is introduced.", start)
+        self.assertIn("Gentle AI is reached only at an applicable enabled routing, review, receipt, or correction boundary and receives no startup probe.", start)
+
+    def test_resume_first_excludes_new_state_services_and_preflights(self):
+        memory = TOOL.render("Example", [])[".repo-harness/rules/memory.md"]
+        self.assertIn(
+            "No new infrastructure, parser/API, schema owner, cache, daemon, service, scheduler, migration, cleanup, retention behavior, checkpoint, preference framework, Gentle probe, Engram preflight, or second continuity store is introduced.",
+            memory,
+        )
+
     def test_session_stop_requires_native_local_first_pause_and_close_backup(self):
         stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         ordered = (
@@ -3666,7 +3770,7 @@ resume_authority: required
     def test_checkpoint_discovery_is_exact_read_only_and_non_continuing(self):
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         ordered = (
-            "Read applicable repository owners, source, tests, Git, and checker evidence",
+            "bounded charter pointer in `docs/repo-harness/decisions.md`",
             "resolve `.repo-harness/memory-bk/`",
             "Read scoped Engram context when available",
             "Check only the exact `.repo-harness/state/checkpoints/active.md` path.",
@@ -3770,7 +3874,7 @@ resume_authority: required
         start = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
         ordered = (
             "Validate the selected repository root",
-            "Read applicable repository owners, source, tests, Git, and checker evidence",
+            "bounded charter pointer in `docs/repo-harness/decisions.md`",
             "Inspect only direct regular `.md` files",
             "Read scoped Engram context when available",
         )

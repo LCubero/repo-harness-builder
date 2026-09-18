@@ -43,12 +43,13 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 For every deliberate pause or close, use this exact local-first order:
 
 1. Refresh current repository evidence.
-2. Apply `.repo-harness/rules/memory.md`: build the structured session summary, then Apply the shared privacy filter.
-3. Guard the selected root, then resolve `.repo-harness/memory-bk/` through it. Create only that direct directory lazily; reject links, indirect paths, and cross-root resolution.
-4. Then create `YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` exclusively. Never overwrite an existing backup.
-5. Reopen the backup and verify its frontmatter and required headings.
-6. Attempt the Engram write when available and report its result independently.
-7. Cross-check only when both writes succeeded; report semantic conflict without silently merging.
+2. Apply `.repo-harness/rules/memory.md`: build the structured session summary; determine `Next Action`, `Pending Work`, and `Current Blocker` in that order; then place the exact frontmatter-preserving resume block before detailed continuity.
+3. Apply the shared privacy filter.
+4. Guard the selected root, then resolve `.repo-harness/memory-bk/` through it. Create only that direct directory lazily; reject links, indirect paths, and cross-root resolution.
+5. Then create `YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` exclusively. Never overwrite an existing backup.
+6. Reopen the backup and verify its frontmatter and required headings.
+7. Attempt the Engram write when available and report its result independently.
+8. Cross-check only when both writes succeeded; report semantic conflict without silently merging.
 
 - Report `local_backup`, `engram_write`, and `cross_check` independently.
 - Local backup failure makes required continuity `failed`; preserve any Engram success.
