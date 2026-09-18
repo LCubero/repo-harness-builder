@@ -1459,9 +1459,11 @@ def session_start_skill(
 - Engram owns semantic continuity, relations, conflict state, review-age metadata, and session memory.
 - Defer routing, review, receipts, and correction to an applicable enabled Gentle workflow; supply repository context and checks, not parallel reviewers, counters, receipts, or plans. Do not auto-enable methodologies or require disabled review. Repository policy owns commit, push, and PR; informational delivery guidance creates no gate. Never fabricate a native verdict or replace human authorization.
 - Recover relevant recent context from Engram and reconcile every recalled claim with current repository evidence; the recovery attempt is also the current Engram availability evidence. Do not run a separate Engram preflight.
+- Scoped Engram recovery is availability evidence itself; no separate Engram probe, preflight, or repeated unchanged-success report is introduced.
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - If Engram is unavailable or recovery fails, surface the failure and must not claim successful continuity.
 - Check Gentle AI only when requested work reaches its enabled routing, review, receipt, or correction boundary; do not probe or report it separately during ordinary startup.
+- Gentle AI is reached only at an applicable enabled routing, review, receipt, or correction boundary and receives no startup probe.
 - Gentle AI loss degrades only its enabled coordination; Engram loss degrades continuity only. Block only when the operation or repository policy requires the missing component.
 - Omit successful unchanged capability and continuity detail from routine startup display, not from per-operation outcome accounting. Report only capability discrepancies that affect requested work; always surface continuity failures and task-relevant results, with repository and affected component outcomes separated, exact failure evidence, and one next action. Never reconstruct malformed owner output as success.
 """
@@ -1524,19 +1526,35 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 
 ## Native Continuity Recovery
 
-Use this exact read-only order:
+Use this exact read-only order before any deeper owner read:
 
 1. Validate the selected repository root.
-2. Read applicable repository owners, source, tests, Git, and checker evidence required by the objective.
-3. First resolve `.repo-harness/memory-bk/` through the guarded root. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree.
-{continuity_engram_step}
-5. Read at most one older backup, and only for `newest_invalid`, `objective_names_backup`, `conflict_needs_chronology`, or `newest_lacks_relevant_continuity`.
+2. Read the bounded charter pointer in `docs/repo-harness/decisions.md`; the charter pointer is bounded input and is never copied as policy.
+3. Resolve verified conversation language plus active stable preferences or continuing constraints from their existing owners. Never infer a preference or constraint from absent or invalid evidence.
+4. First resolve `.repo-harness/memory-bk/` through the guarded root. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree. Read `Where We Left Off` from the newest valid RH-W-0069 backup.
+5. Read deeper current owners only when one named trigger requires them.
 
+- An old valid backup without `Where We Left Off` falls back to RH-W-0069 detailed continuity without synthesizing fields.
+- Read at most one older backup, and only for `newest_invalid`, `objective_names_backup`, `conflict_needs_chronology`, or `newest_lacks_relevant_continuity`; this compatibility fallback is not a deeper owner read.
 - Absent directory or empty history is `not_found`, not failure.
 - Reject and report malformed, unsafe, indirect, or contradictory candidates without repair. Startup performs no write, staging, automatic continuation, or link following.
 - For every source, check every recalled claim against its current applicable repository owner. Report claims as `accepted`, `stale`, `conflicting`, `unavailable`, or `unverifiable`.
 - When repository evidence resolves a conflict, use repository evidence and report the conflict. When it cannot resolve a material conflict, ask one human decision question and do not choose a source.
 - Never merge continuity sources silently.
+{continuity_engram_step}
+
+## Resume-First Deeper-Read Triggers
+
+| Trigger | Required deeper read |
+|---|---|
+| Explicit objective or `RH-W-####` | The named owner and directly relevant evidence. |
+| Contradiction | The conflicting current owners until repository evidence resolves it, or one concrete human decision when it cannot. |
+| Invalid or missing priority evidence | The owner that can validate or replace that evidence. |
+| Mandatory reconciliation | The applicable canonical lifecycle, projection, localization, and continuity owners. |
+
+- No other trigger, alias, or catch-all authorizes a deeper owner read.
+- Each trigger selects only its required current owner evidence and never authorizes exhaustive reading, automatic continuation, preference inference, or a new store.
+- With valid priority evidence and none of the four named triggers, stop after the resume-first read and perform no deeper owner read.
 
 ## Interrupted-Operation Checkpoint Discovery
 
@@ -1659,9 +1677,9 @@ def session_stop_skill(
     output_continuity = "continuity result" if standalone else "memory result"
     lifecycle_mirror = "repository continuity record keyed by `RH-W-####`" if standalone else "Engram topic `work/RH-W-####`"
     external_backup_steps = (
-        "6. Record the external-memory source as `not_applicable`; do not emulate it.\n7. Report the local result as the aggregate continuity result."
+        "7. Record the external-memory source as `not_applicable`; do not emulate it.\n8. Report the local result as the aggregate continuity result."
         if standalone
-        else "6. Attempt the Engram write when available and report its result independently.\n7. Cross-check only when both writes succeeded; report semantic conflict without silently merging."
+        else "7. Attempt the Engram write when available and report its result independently.\n8. Cross-check only when both writes succeeded; report semantic conflict without silently merging."
     )
     external_backup_outcomes = (
         "- The external-memory and cross-check outcomes are `not_applicable` in standalone mode."
@@ -1712,10 +1730,11 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 For every deliberate pause or close, use this exact local-first order:
 
 1. Refresh current repository evidence.
-2. Apply `.repo-harness/rules/memory.md`: build the structured session summary, then Apply the shared privacy filter.
-3. Guard the selected root, then resolve `.repo-harness/memory-bk/` through it. Create only that direct directory lazily; reject links, indirect paths, and cross-root resolution.
-4. Then create `YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` exclusively. Never overwrite an existing backup.
-5. Reopen the backup and verify its frontmatter and required headings.
+2. Apply `.repo-harness/rules/memory.md`: build the structured session summary; determine `Next Action`, `Pending Work`, and `Current Blocker` in that order; then place the exact frontmatter-preserving resume block before detailed continuity.
+3. Apply the shared privacy filter.
+4. Guard the selected root, then resolve `.repo-harness/memory-bk/` through it. Create only that direct directory lazily; reject links, indirect paths, and cross-root resolution.
+5. Then create `YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` exclusively. Never overwrite an existing backup.
+6. Reopen the backup and verify its frontmatter and required headings.
 {external_backup_steps}
 
 {backup_outcome_names}
@@ -1982,22 +2001,28 @@ def rule_outputs(rulebook_path: str, standalone: bool) -> dict[str, str]:
     native_external_contract = (
         "External-memory and cross-check outcomes are `not_applicable` and are never emulated."
         if standalone
-        else "Engram is an additional independent destination only when available; every unavailable operation remains visible and is never emulated."
+        else "Engram optional; unavailable operations visible, never emulated."
     )
     continuity_evidence_tail = (
         "then non-authoritative local backup evidence"
         if standalone
         else "then non-authoritative Engram and local backup evidence"
     )
+    native_owner_contract = "" if standalone else """- RH-W-0069 retains the native backup schema, privacy, exclusive-write, local-before-Engram, validation, and independent-outcome ownership.
+- RH-W-0078 retains physical generated-skill splitting and progressive disclosure.
+- RH-W-0031, RH-W-0071, RH-W-0082, and RH-W-0018 retain language and preference semantics. Roadmap, current state, and changelog retain their current roles.
+- No new infrastructure, parser/API, schema owner, cache, daemon, service, scheduler, migration, cleanup, retention behavior, checkpoint, preference framework, Gentle probe, Engram preflight, or second continuity store is introduced.
+"""
     native_memory_contract = f"""## Native Backup Contract
 
-- Local backup is required in every mode. {native_external_contract} Each source reports an independent outcome.
-- Write one direct `.repo-harness/memory-bk/YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` file with exclusive creation. Its exact frontmatter keys are `project`, `timestamp_utc`, `source`, and `session_id`.
-- The body starts with `# Session Continuity` and contains Goal, Instructions, Discoveries, Accomplished, Next Steps, and Relevant Files. Empty sections use `None.`; relevant files use repository-relative paths only.
-- Applicable claims carry one inline classification: `verified fact`, `supported inference`, `unknown or unverifiable`, or `human decision required`.
-- Verify recalled claims in this authority order: source and tests; roadmap; current state; decisions; changelog; Git and checker; {continuity_evidence_tail}.
-- Before either destination, omit credentials, tokens, passwords, private keys, cookies, connection strings; raw environment values and provider payloads; outside-root absolute paths; copied source, diffs, logs, stack traces, generated bytes, and test output; sensitive personal data; and approval, checkpoint, lifecycle copy, receipt, or delivery state. Report bounded privacy reduction without copying rejected values.
-- Omit external private repository names and locations unless a current repository owner records an approved stable alias. Even then, exclude the private name, absolute location, remote URL, or sibling path.
+- Local backup is required in every mode. {native_external_contract} Sources report independent outcomes.
+- Exclusively write direct `.repo-harness/memory-bk/YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md`. Its exact frontmatter keys are `project`, `timestamp_utc`, `source`, and `session_id`.
+- New backups preserve frontmatter. Body: `# Session Continuity`; `## Where We Left Off`; `### Next Action`; `### Pending Work`; `### Current Blocker`; `## Goal`; `## Instructions`; `## Discoveries`; `## Accomplished`; `## Next Steps`; `## Relevant Files`. Detail: Goal, Instructions, Discoveries, Accomplished, Next Steps, and Relevant Files. Empty resume fields and detailed sections use `None.`; Empty sections use `None.`; relevant files use repository-relative paths only.
+- Existing valid backups without `Where We Left Off` remain readable through detailed continuity and never gain synthesized, migrated, rewritten, or backfilled fields.
+{native_owner_contract}- Applicable claims carry one inline classification: `verified fact`, `supported inference`, `unknown or unverifiable`, or `human decision required`.
+- Verify recalled claims in authority order: source and tests; roadmap; current state; decisions; changelog; Git and checker; {continuity_evidence_tail}.
+- Omit from both destinations: credentials, tokens, passwords, private keys, cookies, connection strings; raw environment values and provider payloads; outside-root absolute paths; copied source, diffs, logs, stack traces, generated bytes, and test output; sensitive personal data; approval, checkpoint, lifecycle copy, receipt, or delivery state. Report bounded privacy reduction.
+- Omit external private repository names and locations absent current-owner-approved stable alias; exclude private name, absolute location, remote URL, or sibling path.
 - Built-in runtime memory is ignored and never required. No generic memory API, database, encryption subsystem, daemon, scheduler, background service, synchronization engine, retention cleanup, or separate conflict-state persistence is introduced.
 """
     if standalone:
@@ -2030,16 +2055,13 @@ Load when: saving or recalling across sessions with Engram.
 
 ## Rules
 
-- Engram is optional and independent of Gentle AI. Repository evidence remains authoritative; block only continuity required by the operation or repository policy.
-- Resolve explicit repository project scope before every operation. Under project ambiguity, perform zero Engram reads or writes.
-- Each operation reports its own outcome. This is per-operation accounting, not mandatory startup display: routine session-start omits unchanged successful continuity details, but always surfaces failures and task-relevant results. Session-stop preserves independent save results. Never fabricate an aggregate Engram status or collapse successful reads, writes, prompt association, conflict discovery, lifecycle review, capture, or sync because another operation failed.
-- Surface Engram failures and never claim successful continuity when recovery or saving failed.
-- Reconcile before trusting: check every recalled claim against the file it describes before acting on it.
-- Accept an empty exact-topic or exact-subject result only when it is a validated empty from successful same-surface evidence or a same-surface positive control.
-- Treat `judgment_required`, `needs_review`, and other review-age or conflict hints as advisory metadata until current repository owners verify the underlying claim.
-- Save significant decisions, discoveries, fixes, and session summaries to Engram when available.
-- Do not save what the repository already records. A restatement of current code or history is noise.
-- Never let memory replace documentation. If a fact belongs in `{rulebook_path}` or `docs/repo-harness/`, write it there.
+- Engram optional, independent of Gentle AI; repository evidence remains authoritative; block only operation/policy-required continuity.
+- Resolve explicit repository project scope; ambiguity: zero reads/writes.
+- Each operation reports its own outcome. This is per-operation accounting, not mandatory startup display: startup omits unchanged success but always surfaces failures and task-relevant results; stop preserves saves. Never fabricate an aggregate Engram status or collapse success because another failed.
+- Surface Engram failures from recovery/saving; never claim successful continuity; reconcile claims against files before acting.
+- Accept an empty exact-topic or exact-subject result only as a validated empty from successful same-surface evidence or a same-surface positive control.
+- Treat `judgment_required`, `needs_review`, and review-age/conflict hints as advisory metadata until current repository owners verify the claim.
+- Save significant decisions/discoveries/fixes/session summaries when available; never restatements. Facts belong in `{rulebook_path}` or `docs/repo-harness/`.
 
 {native_memory_contract.rstrip()}
 

@@ -1,6 +1,6 @@
 # RH-W-0091 Startup Priority and Resume-First Scope
 
-**Status: proposed; scope approved by the owner.** `RH-W-0091` remains `proposed`; its [roadmap record](roadmap.md#rh-w-0091) is the lifecycle owner. This document defines a future observable contract only. Scope approval alone authorizes no later phase or mutation: no design, implementation planning, implementation, tests, runtime projections, persistence or backup/preference changes, Git, network, or delivery.
+**Status: completed; historical scope approved by the owner.** `RH-W-0091` is `completed`; its [roadmap record](roadmap.md#rh-w-0091) is the lifecycle owner. This document retains the approved observable contract and boundaries. Implementation and final independent verification are complete under separate authority; no commit, push, PR, merge, release, or publication is claimed.
 
 ## Canonical owners and boundary
 
@@ -67,4 +67,4 @@ These future tests prove rendered or observable contract behavior, not automatic
 
 ## Approval boundary
 
-**Scope approved by the owner.** `RH-W-0091` remains `proposed`; scope approval alone authorizes no later phase or mutation.
+**Scope approved by the owner.** The completed implementation and lifecycle closure preserve this scope; delivery remains unclaimed.

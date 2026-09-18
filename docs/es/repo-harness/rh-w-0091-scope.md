@@ -1,6 +1,6 @@
 # Alcance RH-W-0091 de prioridad de inicio y reanudación primero
 
-**Estado: `proposed`; alcance aprobado por el propietario.** `RH-W-0091` sigue `proposed`; su [registro de la hoja de ruta](roadmap.md#rh-w-0091) es el propietario del ciclo de vida. Este documento define solo un contrato observable futuro. La aprobación del alcance por sí sola no autoriza ninguna fase posterior ni mutación: sin diseño, planificación de implementación, implementación, pruebas, proyecciones de runtime, cambios de persistencia, backup o preferencias, Git, red ni entrega.
+**Estado: `completed`; alcance histórico aprobado por el propietario.** `RH-W-0091` está `completed`; su [registro de la hoja de ruta](roadmap.md#rh-w-0091) es el propietario del ciclo de vida. Este documento conserva el contrato observable y los límites aprobados. La implementación y la verificación independiente final están completas bajo autoridad separada; no se afirman commit, push, PR, merge, release ni publicación.
 
 ## Propietarios canónicos y límite
 
@@ -67,4 +67,4 @@ Estas pruebas futuras demuestran comportamiento de contrato renderizado u observ
 
 ## Límite de aprobación
 
-**Alcance aprobado por el propietario.** `RH-W-0091` sigue `proposed`; la aprobación del alcance por sí sola no autoriza ninguna fase posterior ni mutación.
+**Alcance aprobado por el propietario.** La implementación y el cierre de ciclo completados preservan este alcance; la entrega sigue sin afirmarse.
