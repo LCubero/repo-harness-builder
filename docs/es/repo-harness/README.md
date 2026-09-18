@@ -57,7 +57,7 @@
 | [Alcance RH-W-0089](rh-w-0089-scope.md) | Alcance completado y aprobado por el propietario para preservar compuertas humanas pendientes ante notificaciones diferidas de subagentes; se conserva el límite histórico |
 | [Alcance RH-W-0091](rh-w-0091-scope.md) | Alcance bilingüe completado de prioridad de inicio y reanudación primero; conserva el límite histórico |
 | [Diseño RH-W-0091](rh-w-0091-design.md) | Diseño bilingüe mínimo completado de reanudación primero; conserva evidencia histórica aprobada por el propietario |
-| [Plan de implementación RH-W-0091](rh-w-0091-implementation-plan.md) | Registro bilingüe completado de ejecución con TDD estricto y verificación independiente final; la entrega sigue sin afirmarse |
+| [Plan de implementación RH-W-0091](rh-w-0091-implementation-plan.md) | Registro bilingüe completado y entregado de ejecución con TDD estricto, verificación independiente final y cierre documental posterior al merge |
 | [Limites RH-W-0012](rh-w-0012-boundaries.md) | Especificacion aceptada por el propietario de los siete limites de seguridad de investigacion externa que RH-W-0012 solo habia nombrado; completada, incluida la clausula de fuente sin fecha del limite 4 que destapo su primer uso |
 | [Investigacion RH-W-0084](rh-w-0084-research.md) | Par localizado completo del propietario canonico de evidencia primaria sobre formatos, tamanios, rutas, refuerzo y formas LLM-first; el hallazgo de refuerzo esta aceptado bajo RH-W-0083 y los otros permanecen con sus duenios |
 | [Investigacion RH-W-0078 sobre Gentle AI](rh-w-0078-gentle-ai-binary-research.md) | Par localizado de la investigacion que informa divulgacion progresiva y propiedad determinista sin autorizar un binario nuevo ni implementacion |
