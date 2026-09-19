@@ -26,5 +26,9 @@ Record the repository-local agreement to handle one coherent feature, blocker, i
 - English and Spanish guidance are semantically aligned.
 - The checker reports `current` with zero writes and `git diff --check` passes.
 
+## Delivery Evidence
+- Work-unit commit: `82fdbbe48e65796dc623450b386138ed61571ce5` on `docs/session-boundary-workflow`.
+- Approved issue: `#197`.
+
 ## Next Step
-Run `repo-harness-session-stop`, close Pi, and resume the next named objective in a fresh session through `repo-harness-session-start`.
+Open a focused pull request that closes `#197`, obtain maintainer approval, then complete the session through `repo-harness-session-stop`.
