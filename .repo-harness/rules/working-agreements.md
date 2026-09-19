@@ -27,7 +27,7 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 
 ## Project Agreements
 
-Replace this section with the agreements this project actually has. Delete it if there are none yet.
+- Work one coherent feature, blocker, issue, or named objective per session; an issue need not be a remote-provider issue. Complete its applicable documentation, verification, review, and authorized delivery before `repo-harness-session-stop`; begin adjacent work in a fresh Pi session through `repo-harness-session-start`.
 
 ## Budget
 

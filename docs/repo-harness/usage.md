@@ -8,9 +8,9 @@ Use the three generated skills as a loop: recover context, keep durable document
 ## Daily Workflow
 <!-- doc-role:daily-workflow -->
 
-1. Start or resume with `repo-harness-session-start` and state the objective. It reads repository evidence first, then the newest valid guarded local backup, then scoped Engram when available. It inspects local Git read-only, and claims retain their evidence class.
-2. Use `repo-harness-documentation` when durable documentation or visible project state needs updating.
-3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation, writes and reopens one exclusive structured Markdown backup under `.repo-harness/memory-bk/`, then writes Engram when available and reports each outcome independently. Only requested Git work triggers path screening and exact work-unit proposals under repository policy.
+1. Start or resume with `repo-harness-session-start` and state one coherent feature, blocker, issue, or named objective; an issue need not be a remote-provider issue. It reads repository evidence first, then the newest valid guarded local backup, then scoped Engram when available. It inspects local Git read-only, and claims retain their evidence class.
+2. Use `repo-harness-documentation` when durable documentation or visible project state needs updating. Complete the objective's applicable documentation, verification, review, and authorized delivery before closing it.
+3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation, writes and reopens one exclusive structured Markdown backup under `.repo-harness/memory-bk/`, then writes Engram when available and reports each outcome independently. Only requested Git work triggers path screening and exact work-unit proposals under repository policy. Start adjacent work in a fresh Pi session through `repo-harness-session-start`.
 
 ## Integrated Availability
 <!-- doc-role:availability -->

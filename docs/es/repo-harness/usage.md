@@ -6,9 +6,9 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 ## Flujo diario
 <!-- doc-role:daily-workflow -->
 
-1. Inicie o reanude con `repo-harness-session-start` y declare el objetivo. Lee primero evidencia del repositorio, luego el backup local protegido valido mas nuevo y despues Engram acotado cuando esta disponible. Inspecciona Git local en solo lectura y conserva la clase de evidencia de cada afirmacion.
-2. Use `repo-harness-documentation` cuando cambien hechos durables o el estado visible.
-3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia y documentacion requeridas, escribe y reabre un backup Markdown estructurado y exclusivo bajo `.repo-harness/memory-bk/`, luego escribe en Engram cuando esta disponible e informa cada resultado por separado. Solo el trabajo Git solicitado activa revision de rutas y propuestas exactas.
+1. Inicie o reanude con `repo-harness-session-start` y declare una funcionalidad, bloqueo, issue u objetivo nombrado coherente; un issue no tiene que ser de un proveedor remoto. Lee primero evidencia del repositorio, luego el backup local protegido valido mas nuevo y despues Engram acotado cuando esta disponible. Inspecciona Git local en solo lectura y conserva la clase de evidencia de cada afirmacion.
+2. Use `repo-harness-documentation` cuando cambien hechos durables o el estado visible. Complete la documentacion, verificacion, revision y entrega autorizada aplicables al objetivo antes de cerrarlo.
+3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia y documentacion requeridas, escribe y reabre un backup Markdown estructurado y exclusivo bajo `.repo-harness/memory-bk/`, luego escribe en Engram cuando esta disponible e informa cada resultado por separado. Solo el trabajo Git solicitado activa revision de rutas y propuestas exactas. Inicie el trabajo adyacente en una sesion nueva de Pi mediante `repo-harness-session-start`.
 
 ## Disponibilidad integrada
 <!-- doc-role:availability -->
