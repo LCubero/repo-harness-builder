@@ -3698,6 +3698,11 @@ class GeneratedCoreTests(unittest.TestCase):
 
     def test_session_stop_reports_local_engram_and_cross_check_independently(self):
         stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        self.assertIn(
+            "Git, commit, push, provider, external backup, and publication actions are separate optional gates and are never implied by session stop.",
+            stop,
+        )
+        self.assertNotIn("provider, backup, and publication actions", stop)
         for phrase in (
             "`local_backup`, `engram_write`, and `cross_check`",
             "Local backup failure makes required continuity `failed`",

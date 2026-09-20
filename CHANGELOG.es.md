@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-20
+
+- Se completaron las dos aclaraciones locales RH-W-0093 (#200): el backup opcional de session-stop ahora significa backup externo y la regla de memoria instalada nombra el bloque existente de reanudación primero. Se preservan backup nativo obligatorio, Engram opcional e independiente, esquema y compatibilidad con backups antiguos. Cobertura de regresión y proyecciones sincronizadas; la verificación independiente ejecutó 554 pruebas con 10 omitidas y salida 0 usando aislamiento Git de fixtures solo por proceso. Commit, PR y merge siguen pendientes.
+
 ## 2026-09-18
 
 - Se documentó el flujo local al repositorio de límites de sesión: cada sesión de trabajo mantiene una sola funcionalidad, bloqueo, issue u objetivo nombrado coherente; completa su documentación, verificación, revisión y entrega autorizada aplicables; y después usa session-stop antes de que una sesión Pi nueva se reanude mediante session-start. El issue no necesita ser remoto, y no se añadieron cierre forzado, reanudación automática, almacén nuevo ni autoridad.

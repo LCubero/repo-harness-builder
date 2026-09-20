@@ -28,7 +28,7 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 - Repository evidence remains authoritative when Engram conflicts with current files or validated state.
 - Promote reusable knowledge only after verifying relevance, selecting its canonical repository owner, and obtaining human approval.
 - Date and revalidate changing external facts before reuse. Leave incidental noise unpromoted.
-- Git, commit, push, provider, backup, and publication actions are separate optional gates and are never implied by session stop.
+- Git, commit, push, provider, external backup, and publication actions are separate optional gates and are never implied by session stop.
 - Keep ordinary handoff and continuation questions conversational. Do not use the builder's exact digest-bound approval vocabulary.
 - Ask for explicit conversational approval before any external mutation.
 - Ask only one blocking question per turn. Every blocking approval is a resumable intermediate checkpoint, not terminal completion or a new unrelated task.

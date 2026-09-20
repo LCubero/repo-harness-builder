@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-20
+
+- Completed RH-W-0093's two local clarifications (#200): optional session-stop backup now means external backup, while the installed memory rule names the existing resume-first block. Required native backup, independent optional Engram, schema and legacy fallback remain unchanged. Regression coverage and projections are synchronized; independent verification ran 554 tests with 10 skips and exit 0 using process-local Git fixture isolation. Commit, PR and merge remain pending.
+
 ## 2026-09-18
 
 - Documented the repository-local session-boundary workflow: each working session keeps one coherent feature, blocker, issue, or named objective; completes its applicable documentation, verification, review, and authorized delivery; then uses session-stop before a fresh Pi session resumes through session-start. An issue need not be remote, and no forced shutdown, automatic resume, new store, or authority was added.
