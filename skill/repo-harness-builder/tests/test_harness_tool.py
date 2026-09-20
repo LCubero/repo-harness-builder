@@ -2045,6 +2045,35 @@ class ApprovedGeneratedOutputReplacementTests(unittest.TestCase):
                     TOOL.VERSION,
                 )
 
+        for old in (True, False):
+            with self.subTest(old_pi_bytes=old), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                desired = install(root, "Example", ("opencode", "claude-code", "pi"))
+                paths = {
+                    f"{base}/prompts/{command}.md"
+                    for base in (".repo-harness", ".pi")
+                    for command in TOOL.COMMAND_TO_SKILL
+                }
+                for path in paths:
+                    skill = TOOL.COMMAND_TO_SKILL[Path(path).stem]
+                    content = (
+                        f"Load the `{skill}` skill by registered name through the runtime prompt mechanism and follow it exactly.\n"
+                        "The skill is authoritative. Never duplicate or replace its behavior in this wrapper.\n"
+                        if old else desired[path]
+                    )
+                    (root / path).write_text(content, encoding="utf-8", newline="\n")
+                self.assertTrue(paths <= set(TOOL.authenticated_wrapper_versions(root)))
+                self.assertTrue(paths <= TOOL.manifest_owned_generated_paths(root))
+                plan = TOOL.plan_changes(root, desired)
+                self.assertEqual({item["path"] for item in plan["replace"]}, paths if old else set())
+                TOOL.write_outputs(root, desired, plan)
+                for path in paths:
+                    self.assertEqual((root / path).read_bytes(), desired[path].encode("utf-8"))
+                repeat = TOOL.plan_changes(root, desired)
+                for action in ("create", "append", "replace", "migrate", "blocked"):
+                    self.assertEqual(repeat[action], [])
+                TOOL.write_outputs(root, desired, repeat)
+
     def test_unauthenticated_manifest_cannot_classify_marker_free_wrappers(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -2071,6 +2100,42 @@ class ApprovedGeneratedOutputReplacementTests(unittest.TestCase):
             self.assertEqual(plan["replace"], [])
             for path in self.WRAPPER_PATHS:
                 self.assertIsNone(TOOL.authenticated_wrapper_version(root, path))
+
+        for defect in ("edited", "missing-checker", "tampered-checker", "undeclared", "malformed", "arbitrary", "no-pi"):
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                desired = install(root, "Example", ("pi",))
+                path = ".repo-harness/prompts/session-start.md"
+                old = (
+                    "Load the `repo-harness-session-start` skill by registered name through the runtime prompt mechanism and follow it exactly.\n"
+                    "The skill is authoritative. Never duplicate or replace its behavior in this wrapper.\n"
+                )
+                manifest = json.loads(desired[TOOL.MANIFEST_PATH])
+                if defect == "undeclared":
+                    del manifest["canonicalCommands"]["session-start"]
+                elif defect == "malformed":
+                    manifest["canonicalCommands"]["session-start"] = []
+                elif defect == "arbitrary":
+                    path = "arbitrary.md"
+                    manifest["canonicalCommands"]["session-start"]["prompts"] = path
+                    desired[path] = TOOL.wrapper("pi", "repo-harness-session-start")
+                elif defect == "no-pi":
+                    manifest["runtimes"] = ["opencode"]
+                manifest_text = json.dumps(manifest)
+                (root / TOOL.MANIFEST_PATH).write_text(manifest_text, encoding="utf-8", newline="\n")
+                checker = root / ".repo-harness/check.py"
+                checker.write_text(TOOL.check_script(TOOL.digest_text(manifest_text)), encoding="utf-8", newline="\n")
+                if defect == "missing-checker":
+                    checker.unlink()
+                elif defect == "tampered-checker":
+                    checker.write_text("not an authenticated checker\n", encoding="utf-8", newline="\n")
+                content = old + ("Human addition.\n" if defect == "edited" else "")
+                (root / path).write_text(content, encoding="utf-8", newline="\n")
+                self.assertIsNone(TOOL.authenticated_wrapper_version(root, path))
+                self.assertNotIn(path, TOOL.manifest_owned_generated_paths(root))
+                plan = TOOL.plan_changes(root, desired)
+                self.assertNotIn(path, {item["path"] for item in plan["replace"]})
+                self.assertEqual((root / path).read_bytes(), content.encode("utf-8"))
 
     def test_human_modified_current_generated_bytes_require_exact_approved_replacement(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -4555,8 +4620,23 @@ resume_authority: required
         for runtime in (".opencode", ".claude", ".pi"):
             projected = outputs[f"{runtime}/skills/repo-harness-session-start/SKILL.md"]
             self.assertIn(f"canonical-source: {canonical}#core/", projected)
-        self.assertIn(".pi/prompts/session-start.md", outputs)
-        self.assertIn("Load the `repo-harness-session-start` skill by registered name", outputs[".pi/prompts/session-start.md"])
+        authority = "The skill is authoritative. Never duplicate or replace its behavior in this wrapper.\n"
+        for command in ("session-start", "session-stop", "documentation"):
+            skill_name = f"repo-harness-{command}"
+            with self.subTest(command=command):
+                pi_wrapper = outputs[f".pi/prompts/{command}.md"]
+                self.assertEqual(
+                    pi_wrapper,
+                    f"Load the `{skill_name}` skill by registered name: read its `SKILL.md` and follow it exactly.\n"
+                    "Do not require a separate prompt- or skill-invocation API.\n" + authority,
+                )
+                self.assertNotIn("through the runtime prompt mechanism", pi_wrapper)
+                for runtime in (".claude", ".opencode"):
+                    self.assertEqual(
+                        outputs[f"{runtime}/commands/{command}.md"],
+                        f"Load the `{skill_name}` skill by registered name through the runtime skill mechanism and follow it exactly.\n"
+                        + authority,
+                    )
 
     def test_pi_selected_runtime_carries_every_manifested_operational_skill(self):
         outputs = TOOL.render("Example", ["pi"])
