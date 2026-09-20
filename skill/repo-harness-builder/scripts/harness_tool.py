@@ -2669,11 +2669,13 @@ This file records meaningful completed changes in chronological order, newest fi
 
 def wrapper(runtime: str, skill_name: str) -> str:
     """Render one thin runtime wrapper without installation paths."""
-    mechanism = "prompt mechanism" if runtime == "pi" else "skill mechanism"
-    return (
-        f"Load the `{skill_name}` skill by registered name through the runtime {mechanism} and follow it exactly.\n"
-        "The skill is authoritative. Never duplicate or replace its behavior in this wrapper.\n"
+    instruction = (
+        f"Load the `{skill_name}` skill by registered name: read its `SKILL.md` and follow it exactly.\n"
+        "Do not require a separate prompt- or skill-invocation API.\n"
+        if runtime == "pi"
+        else f"Load the `{skill_name}` skill by registered name through the runtime skill mechanism and follow it exactly.\n"
     )
+    return instruction + "The skill is authoritative. Never duplicate or replace its behavior in this wrapper.\n"
 
 
 def help_wrapper(
@@ -3633,6 +3635,10 @@ def manifest_owned_generated_paths(root: Path) -> set[str]:
         paths = generated_skill_paths(manifest)
     except (ContractError, json.JSONDecodeError):
         return set()
+    paths.update(
+        path for path in authenticated_wrapper_versions(root)
+        if path.startswith(".repo-harness/prompts/")
+    )
     for runtime in manifest["runtimes"]:
         if runtime == "pi":
             paths.update(f".pi/prompts/{command}.md" for command in COMMAND_TO_SKILL)
@@ -3801,16 +3807,31 @@ def authenticated_wrapper_versions(root: Path) -> dict[str, str]:
     )
     if canonical_names != set(skill_mapping.values()):
         return {}
-    expected: dict[str, str] = {}
+    expected: dict[str, tuple[str, ...]] = {}
     for runtime in manifest["runtimes"]:
         base = ".pi/prompts" if runtime == "pi" else f"{'.opencode' if runtime == 'opencode' else '.claude'}/commands"
         for command, skill_name in skill_mapping.items():
-            expected[f"{base}/{command}.md"] = wrapper(runtime, skill_name)
-        expected[f"{base}/repo-harness-help.md"] = help_wrapper(runtime, conversation, languages)
+            variants = (wrapper(runtime, skill_name),)
+            if runtime == "pi":
+                variants += (
+                    f"Load the `{skill_name}` skill by registered name through the runtime prompt mechanism and follow it exactly.\n"
+                    "The skill is authoritative. Never duplicate or replace its behavior in this wrapper.\n",
+                )
+                canonical = f".repo-harness/prompts/{command}.md"
+                declarations = manifest.get("canonicalCommands", {})
+                peer = declarations.get(command) if isinstance(declarations, dict) else None
+                if (
+                    skill_name == COMMAND_TO_SKILL.get(command)
+                    and isinstance(peer, dict)
+                    and peer.get("prompts") == canonical
+                ):
+                    expected[canonical] = variants
+            expected[f"{base}/{command}.md"] = variants
+        expected[f"{base}/repo-harness-help.md"] = (help_wrapper(runtime, conversation, languages),)
     versions: dict[str, str] = {}
-    for relative, content in expected.items():
+    for relative, variants in expected.items():
         target = guarded_target(root, relative)
-        if target.is_file() and not is_indirect(target) and target.read_bytes() == content.encode("utf-8"):
+        if target.is_file() and not is_indirect(target) and target.read_bytes() in tuple(content.encode("utf-8") for content in variants):
             versions[relative] = version
     return versions
 

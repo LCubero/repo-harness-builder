@@ -4,6 +4,8 @@
 
 ## 2026-09-20
 
+- Se aclaró la carga de skills de Pi mediante lectura de `SKILL.md` y se corrigió la actualización segura de los prompts anteriores exactos y sus pares canónicos declarados (#199). Verificado localmente; sin commit, push, release ni publicación.
+
 - Se completaron las dos aclaraciones locales RH-W-0093 (#200): el backup opcional de session-stop ahora significa backup externo y la regla de memoria instalada nombra el bloque existente de reanudación primero. Se preservan backup nativo obligatorio, Engram opcional e independiente, esquema y compatibilidad con backups antiguos. Cobertura de regresión y proyecciones sincronizadas; la verificación independiente ejecutó 554 pruebas con 10 omitidas y salida 0 usando aislamiento Git de fixtures solo por proceso. Entregado mediante PR [#201](https://github.com/LCubero/repo-harness-builder/pull/201), fusionado por squash a las 2026-09-20T17:21:24Z como `2e2563355d7218cfe090445092b8398bdcb5288a`; issue #200 se cerró dos segundos después. El candidato exacto revisado pasó verificación independiente de 554 pruebas/10 omitidas/salida 0 en 165.928s. No se afirma aprobación nativa, release ni tag.
 
 ## 2026-09-18

@@ -1,2 +1,3 @@
-Load the `repo-harness-session-stop` skill by registered name through the runtime prompt mechanism and follow it exactly.
+Load the `repo-harness-session-stop` skill by registered name: read its `SKILL.md` and follow it exactly.
+Do not require a separate prompt- or skill-invocation API.
 The skill is authoritative. Never duplicate or replace its behavior in this wrapper.
