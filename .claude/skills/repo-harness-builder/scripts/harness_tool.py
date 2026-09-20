@@ -1715,7 +1715,7 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 - Propose one concise `CHANGELOG.md` entry for meaningful completed work under the existing documentation approval. Avoid an entry for a trivial or no-op session.
 - Reconcile every changed `RH-W-####` record in `docs/repo-harness/roadmap.md`, the concise current-state projection, localized peers, and {lifecycle_mirror} in the same work unit.
 {continuity.rstrip()}
-- Git, commit, push, provider, backup, and publication actions are separate optional gates and are never implied by session stop.
+- Git, commit, push, provider, external backup, and publication actions are separate optional gates and are never implied by session stop.
 - Keep ordinary handoff and continuation questions conversational. Do not use the builder's exact digest-bound approval vocabulary.
 - Ask for explicit conversational approval before any external mutation.
 - Ask only one blocking question per turn. Every blocking approval is a resumable intermediate checkpoint, not terminal completion or a new unrelated task.
