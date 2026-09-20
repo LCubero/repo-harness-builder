@@ -955,7 +955,11 @@ def conversation_language_contract(provenance_aware: bool = True) -> str:
     principle = (
         "Follow a current verified human language instruction; otherwise preserve an explicit persisted preference. "
         "Without one, use verified session language, validated manifest fallback, then deterministic English. "
-        "Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes."
+        "Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes. "
+        "If a verified host instruction conflicts with the resolved conversation-language preference, "
+        "report the compatibility limitation without reclassifying it as a preference change. "
+        "Never claim repository instructions override higher-priority host instructions. "
+        "Wrong-language output alone does not prove an external cause."
     )
     if provenance_aware:
         return principle
@@ -3638,6 +3642,7 @@ def manifest_owned_generated_paths(root: Path) -> set[str]:
     paths.update(
         path for path in authenticated_wrapper_versions(root)
         if path.startswith(".repo-harness/prompts/")
+        or path == ".repo-harness/commands/repo-harness-help.md"
     )
     for runtime in manifest["runtimes"]:
         if runtime == "pi":
@@ -3827,7 +3832,29 @@ def authenticated_wrapper_versions(root: Path) -> dict[str, str]:
                 ):
                     expected[canonical] = variants
             expected[f"{base}/{command}.md"] = variants
-        expected[f"{base}/repo-harness-help.md"] = (help_wrapper(runtime, conversation, languages),)
+        # Exact pre-host-conflict help bytes: never normalize or accept edited bodies.
+        guide = (
+            "docs/es/repo-harness/usage.md"
+            if localized_documentation(conversation, languages)
+            else "docs/repo-harness/usage.md"
+        )
+        historical_help = (
+            f"Read `{guide}` as the available guide, present concise help, and answer in the resolved conversation language. "
+            "Follow a current verified human language instruction; otherwise preserve an explicit persisted preference. "
+            "Without one, use verified session language, validated manifest fallback, then deterministic English. "
+            "Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes. "
+            "This flattened host cannot reliably detect language switches; preserve persisted preference. "
+            "Work read-only: do not modify files, load skills, or invoke commands.\n"
+            "Do not duplicate the guide content. If the guide is missing, report that the harness is incomplete or outdated and recommend running the builder in read-only inspection mode.\n"
+        )
+        help_variants = (help_wrapper(runtime, conversation, languages), historical_help)
+        expected[f"{base}/repo-harness-help.md"] = help_variants
+        declarations = manifest.get("canonicalCommands", {})
+        help_peers = declarations.get("repo-harness-help") if isinstance(declarations, dict) else None
+        kind = "prompts" if runtime == "pi" else "commands"
+        canonical = f".repo-harness/{kind}/repo-harness-help.md"
+        if isinstance(help_peers, dict) and help_peers.get(kind) == canonical:
+            expected[canonical] = help_variants
     versions: dict[str, str] = {}
     for relative, variants in expected.items():
         target = guarded_target(root, relative)
