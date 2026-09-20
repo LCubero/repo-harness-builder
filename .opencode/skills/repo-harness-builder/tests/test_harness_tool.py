@@ -549,6 +549,18 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                 self.assertEqual(rendered, f"`{value}`")
                 self.assertEqual(rendered[1:-1].encode("utf-8"), value.encode("utf-8"))
 
+    def test_verified_host_conflict_is_a_limitation_not_a_preference_change(self):
+        for provenance_aware in (True, False):
+            with self.subTest(provenance_aware=provenance_aware):
+                contract = TOOL.conversation_language_contract(provenance_aware)
+                for phrase in (
+                    "If a verified host instruction conflicts with the resolved conversation-language preference",
+                    "report the compatibility limitation without reclassifying it as a preference change",
+                    "Never claim repository instructions override higher-priority host instructions",
+                    "Wrong-language output alone does not prove an external cause",
+                ):
+                    self.assertIn(phrase, contract)
+
     def test_shared_runtime_principle_is_concise_and_used_by_start_stop_and_help(self):
         outputs = TOOL.render("Example", ["opencode"])
         paths = (
@@ -564,6 +576,10 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
             "deterministic English",
             "ordinary prose",
             "machine-significant bytes",
+            "verified host instruction conflicts",
+            "compatibility limitation without reclassifying it as a preference change",
+            "Never claim repository instructions override higher-priority host instructions",
+            "Wrong-language output alone does not prove an external cause",
         )
         for path in paths:
             with self.subTest(path=path):
@@ -2073,6 +2089,96 @@ class ApprovedGeneratedOutputReplacementTests(unittest.TestCase):
                 for action in ("create", "append", "replace", "migrate", "blocked"):
                     self.assertEqual(repeat[action], [])
                 TOOL.write_outputs(root, desired, repeat)
+
+    def test_help_historical_and_current_declared_peers_evolve_exactly(self):
+        for historical in (True, False):
+            for conversation, languages in (("english", ["en"]), ("espanol", ["en", "es"])):
+                with self.subTest(historical=historical, conversation=conversation), tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    desired = install(root, "Example", ("opencode", "claude-code", "pi"))
+                    # Re-render the fixture's authenticated language declarations together.
+                    desired = TOOL.render("Example", ["opencode", "claude-code", "pi"],
+                                          conversation_language=conversation, documentation_languages=languages)
+                    for path, content in desired.items():
+                        (root / path).parent.mkdir(parents=True, exist_ok=True)
+                        (root / path).write_text(content, encoding="utf-8", newline="\n")
+                    paths = {path for path in desired if path.endswith("/repo-harness-help.md")}
+                    self.assertEqual(len(paths), 5)
+                    old_contract = (
+                        "Follow a current verified human language instruction; otherwise preserve an explicit persisted preference. "
+                        "Without one, use verified session language, validated manifest fallback, then deterministic English. "
+                        "Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes. "
+                        "This flattened host cannot reliably detect language switches; preserve persisted preference."
+                    )
+                    for path in paths:
+                        content = desired[path].replace(TOOL.conversation_language_contract(False), old_contract) if historical else desired[path]
+                        (root / path).write_text(content, encoding="utf-8", newline="\n")
+                    self.assertTrue(paths <= set(TOOL.authenticated_wrapper_versions(root)))
+                    plan = TOOL.plan_changes(root, desired)
+                    self.assertEqual({item["path"] for item in plan["replace"]}, paths if historical else set())
+                    TOOL.write_outputs(root, desired, plan)
+                    for path in paths:
+                        self.assertEqual((root / path).read_bytes(), desired[path].encode("utf-8"))
+                    repeat = TOOL.plan_changes(root, desired)
+                    for action in ("create", "append", "replace", "migrate", "blocked"):
+                        self.assertEqual(repeat[action], [])
+
+    def test_help_rejects_custom_undeclared_and_unauthenticated_peers(self):
+        paths = (".opencode/commands/repo-harness-help.md", ".claude/commands/repo-harness-help.md",
+                 ".pi/prompts/repo-harness-help.md", ".repo-harness/commands/repo-harness-help.md",
+                 ".repo-harness/prompts/repo-harness-help.md")
+        for defect in ("customized", "undeclared", "manifest", "checker", "indirect"):
+            for path in paths:
+                with self.subTest(defect=defect, path=path), tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    desired = install(root, "Example", ("opencode", "claude-code", "pi"))
+                    manifest = json.loads(desired[TOOL.MANIFEST_PATH])
+                    if defect == "undeclared":
+                        if not path.startswith(".repo-harness/"):
+                            runtime = {".opencode": "opencode", ".claude": "claude-code", ".pi": "pi"}[path.split("/")[0]]
+                            manifest["runtimes"].remove(runtime)
+                        else:
+                            del manifest["canonicalCommands"]["repo-harness-help"]
+                        text = json.dumps(manifest)
+                        (root / TOOL.MANIFEST_PATH).write_text(text, encoding="utf-8")
+                        (root / ".repo-harness/check.py").write_text(TOOL.check_script(TOOL.digest_text(text)), encoding="utf-8")
+                    elif defect == "manifest":
+                        (root / TOOL.MANIFEST_PATH).write_text(json.dumps(manifest) + "\n", encoding="utf-8")
+                    elif defect == "checker":
+                        (root / ".repo-harness/check.py").write_text("unauthenticated\n", encoding="utf-8")
+                    elif defect == "customized":
+                        (root / path).write_text(desired[path] + "Human addition.\n", encoding="utf-8")
+                    if defect == "indirect":
+                        original = TOOL.is_indirect
+                        with mock.patch.object(TOOL, "is_indirect", side_effect=lambda target: target == root / path or original(target)):
+                            try:
+                                versions = TOOL.authenticated_wrapper_versions(root)
+                            except TOOL.ContractError:
+                                versions = {}
+                    else:
+                        versions = TOOL.authenticated_wrapper_versions(root)
+                    self.assertNotIn(path, versions)
+                    if defect != "indirect":
+                        before = (root / path).read_bytes()
+                        changed = dict(desired)
+                        changed[path] += "Desired help update.\n"
+                        plan = TOOL.plan_changes(root, changed)
+                        self.assertNotIn(path, {item["path"] for item in plan["replace"]})
+                        self.assertEqual((root / path).read_bytes(), before)
+
+    def test_help_evolution_rejects_stale_plan_after_customization(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            desired = install(root, "Example", ("opencode",))
+            path = ".opencode/commands/repo-harness-help.md"
+            desired[path] += "Approved help update.\n"
+            plan = TOOL.plan_changes(root, desired)
+            self.assertIn(path, {item["path"] for item in plan["replace"]})
+            customized = (root / path).read_bytes() + b"Human addition.\n"
+            (root / path).write_bytes(customized)
+            with self.assertRaises(TOOL.ContractError):
+                TOOL.write_outputs(root, desired, plan)
+            self.assertEqual((root / path).read_bytes(), customized)
 
     def test_unauthenticated_manifest_cannot_classify_marker_free_wrappers(self):
         with tempfile.TemporaryDirectory() as directory:

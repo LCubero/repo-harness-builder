@@ -22,7 +22,7 @@ Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 
 
 ## Orden de ejecucion aprobado restante
 
-Reconciliado el 2026-08-25 sobre los 26 registros no terminales de entonces y extendido a 28 con `RH-W-0076` y `RH-W-0077`. `RH-W-0078` lo elevo a 29; completar `RH-W-0073` lo redujo a 28; `RH-W-0079` lo devolvio temporalmente a 29 y su finalizacion lo redujo a 28. Las aprobadas RH-W-0080 y RH-W-0081 lo elevan a 30. Los siguientes IDs inmutables verificados, `RH-W-0082`, `RH-W-0083` y `RH-W-0084`, elevaron el portafolio autoritativo a 33. El 2026-08-31 `RH-W-0012` se completo, lo que lo redujo a 32, y se registro `RH-W-0085` desde un barrido de revision manual, lo que lo devolvio a 33. `RH-W-0086` se registro el 2026-09-01, lo que lo elevo a 34. El 2026-09-04 el propietario acepto el hallazgo de refuerzo de `RH-W-0084` como control bajo `RH-W-0083`, completo `RH-W-0084` y redujo el portafolio a 33; la implementacion autorizada por separado completo despues `RH-W-0083` y lo redujo a 32. Registrar `RH-W-0087` como `proposed` lo elevo a 33 y su implementacion autorizada por separado lo redujo a 32. Registrar `RH-W-0088`, priorizado por el propietario, como `proposed` lo elevo a 33. Después de las finalizaciones posteriores registradas abajo, de reabrir RH-W-0048 solo para reconciliar el contrato de mutabilidad y volver a verificar de forma independiente, y de completar ese alcance reabierto, la derivación vigente daba 27 registros no terminales. El registro autorizado por el propietario de RH-W-0089 elevó la derivación vigente a 28; su cierre de ciclo completado la devolvió a 27. El registro autorizado por el propietario de RH-W-0090 la elevó a 28 y RH-W-0091 la elevó a 29; su cierre de ciclo completado deja la derivación vigente de las filas del propietario en 27. El rechazo de RH-W-0090 y el registro de RH-W-0092 mantuvieron ese total; registrar RH-W-0093 lo elevó a 28; completar sus dos aclaraciones locales lo devuelve a 27 registros no terminales sin cambiar el orden aprobado. La entrega RH-W-0093 se completó mediante PR #201. La cronología anterior es histórica. Los otros registros nuevos siguen sin programar. Estos registros se derivan de evidencia completa de la hoja de ruta, revision de solo lectura o una decision directa del propietario y quedan fuera del orden aprobado hasta ser programados.
+Reconciliado el 2026-08-25 sobre los 26 registros no terminales de entonces y extendido a 28 con `RH-W-0076` y `RH-W-0077`. `RH-W-0078` lo elevo a 29; completar `RH-W-0073` lo redujo a 28; `RH-W-0079` lo devolvio temporalmente a 29 y su finalizacion lo redujo a 28. Las aprobadas RH-W-0080 y RH-W-0081 lo elevan a 30. Los siguientes IDs inmutables verificados, `RH-W-0082`, `RH-W-0083` y `RH-W-0084`, elevaron el portafolio autoritativo a 33. El 2026-08-31 `RH-W-0012` se completo, lo que lo redujo a 32, y se registro `RH-W-0085` desde un barrido de revision manual, lo que lo devolvio a 33. `RH-W-0086` se registro el 2026-09-01, lo que lo elevo a 34. El 2026-09-04 el propietario acepto el hallazgo de refuerzo de `RH-W-0084` como control bajo `RH-W-0083`, completo `RH-W-0084` y redujo el portafolio a 33; la implementacion autorizada por separado completo despues `RH-W-0083` y lo redujo a 32. Registrar `RH-W-0087` como `proposed` lo elevo a 33 y su implementacion autorizada por separado lo redujo a 32. Registrar `RH-W-0088`, priorizado por el propietario, como `proposed` lo elevo a 33. Después de las finalizaciones posteriores registradas abajo, de reabrir RH-W-0048 solo para reconciliar el contrato de mutabilidad y volver a verificar de forma independiente, y de completar ese alcance reabierto, la derivación vigente daba 27 registros no terminales. El registro autorizado por el propietario de RH-W-0089 elevó la derivación vigente a 28; su cierre de ciclo completado la devolvió a 27. El registro autorizado por el propietario de RH-W-0090 la elevó a 28 y RH-W-0091 la elevó a 29; su cierre de ciclo completado deja la derivación vigente de las filas del propietario en 27. El rechazo de RH-W-0090 y el registro de RH-W-0092 mantuvieron ese total; registrar RH-W-0093 lo elevó a 28; completar sus dos aclaraciones locales lo devuelve a 27 registros no terminales sin cambiar el orden aprobado. La entrega RH-W-0093 se completó mediante PR #201. Registrar RH-W-0094 activo eleva el total vigente a 28 sin reprogramar trabajo ajeno. La cronología anterior es histórica. Los otros registros nuevos siguen sin programar. Estos registros se derivan de evidencia completa de la hoja de ruta, revision de solo lectura o una decision directa del propietario y quedan fuera del orden aprobado hasta ser programados.
 
 El diseno preventivo precede la arquitectura de estado local:
 
@@ -502,11 +502,11 @@ La ejecución y la verificación independiente final se completaron bajo autorid
 
 ### Revision de coherencia de los planes
 
-Proyección vigente reconciliada después de completar localmente las aclaraciones RH-W-0093 sobre 20 encabezados de planes no terminales que cubren 20 de los 27 registros no terminales, incluida RH-W-0018 aplazada mediante el Plan histórico 6; los planes terminales se conservan como evidencia histórica. La derivación directa de registros da 93 registros de ciclo: 64 completados, 22 propuestos, 5 aplazados y 2 rechazados (64 + 22 + 5 + 2 = 93). Los Planes históricos 4, 6, 10, 28, 31 y 32 no autorizan implementación ni release vigente. No se aprueba fusión de ciclos y cobertura de planes no significa preparación para implementar.
+Proyección vigente reconciliada después de completar localmente las aclaraciones RH-W-0093 sobre 20 encabezados de planes no terminales que cubren 20 de los 28 registros no terminales, incluida RH-W-0018 aplazada mediante el Plan histórico 6; los planes terminales se conservan como evidencia histórica. Tras registrar RH-W-0094 activo, la derivación directa da 94 registros de ciclo: 64 completados, 22 propuestos, 5 aplazados, 2 rechazados y 1 activo (64 + 22 + 5 + 2 + 1 = 94). Los Planes históricos 4, 6, 10, 28, 31 y 32 no autorizan implementación ni release vigente. No se aprueba fusión de ciclos y cobertura de planes no significa preparación para implementar.
 
 Recomendación consultiva, no cambio de calendario: mantener pendiente la implementación RH-W-0074 hasta que se autorice por separado y reconciliar el residuo RH-W-0076 con la investigación de contexto RH-W-0078 antes de comprimir. RH-W-0048 está completada; RH-W-0052 sigue propuesta aunque su porción solo de archivo está completa y verificada, mientras desinstalación, reinstalación y borrado permanecen sin diseño ni autorización separados. Las entregas parciales de RH-W-0071, RH-W-0072, RH-W-0076 y RH-W-0086 no completan sus registros. RH-W-0070 es guía operativa aprobada, no motivo para construir un monitor; descubribilidad desconocida de RH-W-0072 no justifica inventar prevención.
 
-La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085 y RH-W-0086 no tienen plan de accion. Cuatro aplazados aparecen en la lista no planificable; RH-W-0018 participa solo en el diseño conjunto del Plan histórico 6. Se conserva el par histórico de diseño RH-W-0046 completada/RH-W-0018 aplazada y dos pares de coordinación vigentes, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. La coordinación histórica RH-W-0069/RH-W-0068 terminó al completarse RH-W-0069. No se aprueba fusión ni implementación nueva.
+La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, RH-W-0086 y RH-W-0094 no tienen plan de acción. Cuatro aplazados aparecen en la lista no planificable; RH-W-0018 participa solo en el diseño conjunto del Plan histórico 6. Se conserva el par histórico de diseño RH-W-0046 completada/RH-W-0018 aplazada y dos pares de coordinación vigentes, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. La coordinación histórica RH-W-0069/RH-W-0068 terminó al completarse RH-W-0069. No se aprueba fusión ni implementación nueva.
 
 Aqui se declaran catorce relaciones entre planes para que ninguno suponga en silencio el resultado de otro. Ninguna fusiona un ciclo de vida ni cambia estado.
 
@@ -533,6 +533,34 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 ## Registros activos
 
 <!-- doc-role:active-records -->
+
+### RH-W-0094
+
+Origen: Implementación acotada aprobada por el usuario bajo [issue #205](https://github.com/LCubero/repo-harness-builder/issues/205).
+
+Prioridad: P3: diagnóstico honesto de conflictos verificados de idioma del host, no un mecanismo de cumplimiento del modelo.
+
+Dependencias: Preservar la jerarquía de preferencias y el resolvedor puro de RH-W-0031 completado, sin reabrir su ciclo.
+
+Estado: `active`.
+
+Trabajo completado: Aclaración local del contrato compartido y reconocimiento exacto de ayuda histórica/actual en rutas de runtime autenticadas y pares canónicos declarados; regresiones con pruebas primero; 22 salidas de paquete/generadas sincronizadas mediante mantenimiento ligado a un digest nuevo.
+
+Trabajo restante: Entrega autorizada por separado; no se afirma aprobación nativa ni cierre del ciclo.
+
+Adiciones: Informar solo instrucciones del host verificadas y contradictorias como limitaciones de compatibilidad, no cambios de preferencia. Una respuesta en otro idioma no demuestra causa externa; las instrucciones del repositorio no prevalecen sobre instrucciones del host de mayor prioridad.
+
+Exclusiones: Sin cambios en herramientas externas, parser, almacén de preferencias, anulación mediante wrappers, mecanismo de runtime ni afirmación de cumplimiento del agente en vivo.
+
+Aplazamientos: La entrega requiere autorización humana separada.
+
+Rechazos: Sin reconocimiento permisivo de propiedad ni reemplazo de ayuda personalizada.
+
+Evidencia: RED/GREEN de idioma: 14 pruebas; RED de ayuda: cuatro subcasos fallidos, GREEN final: 11 pruebas. La verificación técnica independiente pasó sin hallazgos de implementación bloqueantes: 14 pruebas de idioma y 11 de ayuda pasaron; suite completa de 558 ejecutadas, 10 omitidas, salida 0; checker current, cero escrituras; preview del propietario idempotente; paridad exacta de paquetes/salidas generadas y resolvedor puro sin cambios verificados.
+
+Historial de decisiones: El usuario aprobó la aclaración diagnóstica y después la extensión mínima de evolución autenticada de ayuda tras detectar el problema de propiedad en preview.
+
+Próxima condición de avance: Decisiones humanas de entrega del candidato verificado de forma independiente.
 
 ### RH-W-0093
 
