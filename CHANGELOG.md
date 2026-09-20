@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-20
 
-- Completed RH-W-0093's two local clarifications (#200): optional session-stop backup now means external backup, while the installed memory rule names the existing resume-first block. Required native backup, independent optional Engram, schema and legacy fallback remain unchanged. Regression coverage and projections are synchronized; independent verification ran 554 tests with 10 skips and exit 0 using process-local Git fixture isolation. Commit, PR and merge remain pending.
+- Completed RH-W-0093's two local clarifications (#200): optional session-stop backup now means external backup, while the installed memory rule names the existing resume-first block. Required native backup, independent optional Engram, schema and legacy fallback remain unchanged. Regression coverage and projections are synchronized; independent verification ran 554 tests with 10 skips and exit 0 using process-local Git fixture isolation. Delivered through PR [#201](https://github.com/LCubero/repo-harness-builder/pull/201), squash-merged at 2026-09-20T17:21:24Z as `2e2563355d7218cfe090445092b8398bdcb5288a`; issue #200 closed two seconds later. The exact reviewed candidate independently passed 554 tests/10 skips/exit 0 in 165.928s. No native approval, release or tag is claimed.
 
 ## 2026-09-18
 
