@@ -1,6 +1,6 @@
 # RH-W-0052 Minimal Archive-Only Design
 
-> **Status: PROPOSED.** The owner-delegated technical decision approved the archive eligibility rule below. Separate owner authority then authorized the archive-only implementation slice, which is complete and verified. RH-W-0052 remains `proposed` because uninstall, reinstall, and deletion remain undesigned and unauthorized; no lifecycle advancement, delivery, network access, commit, or publication is implied.
+> **Design status: approved; archive-only slice complete, verified, and delivered through issue #177 and PR #178. Unit lifecycle: `deferred`.** The [roadmap record](roadmap.md#rh-w-0052) owns the owner-delegated residual deferral and evidence-based re-entry condition. Uninstall, reinstall, and deletion remain undesigned; future design and implementation require separate authority. The historical design body below grants no new authority.
 
 ## Review Contract
 
