@@ -8,3 +8,6 @@ __pycache__/
 /.repo-harness/archive/
 /.repo-harness/state/
 /.repo-harness/memory-bk/
+
+# Local Organic Driven Development task state
+/odd/
