@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-21
+
+- Completed RH-W-0095 with strict TDD: the new sole-owner regression failed `0 != 1`, then 7 focused tests and the isolated 559-test suite passed; digest-bound maintenance validated exactly six Claude/OpenCode/Pi script/test projections, with checker `current`, exact parity, and the 698/700 response-rule budget passing. Existing authority, pending-gate ownership, RH-W-0018 separation, and the generated-instruction-versus-live-model boundary remain intact. No issue, branch, commit, push, PR, merge, release, or other Git delivery is claimed.
+
 ## 2026-09-20
 
 - Recorded the owner-delegated documentation disposition for [RH-W-0052](docs/repo-harness/roadmap.md#rh-w-0052) under [issue #208](https://github.com/LCubero/repo-harness-builder/issues/208): residual uninstall, reinstall, and deletion are `deferred` pending a concrete current gap in existing archive/repair coverage. The archive-only slice remains complete, verified, and delivered via #177/#178; no new product work or delivery is claimed.
