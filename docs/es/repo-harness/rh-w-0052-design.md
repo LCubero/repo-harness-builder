@@ -1,6 +1,6 @@
 # Diseño mínimo solo de archivo RH-W-0052
 
-> **Estado: PROPUESTO.** La decisión técnica delegada por el propietario aprobó la regla de elegibilidad de archivo indicada abajo. Una autoridad separada del propietario autorizó después la porción de implementación solo de archivo, que está completa y verificada. RH-W-0052 sigue `proposed` porque desinstalación, reinstalación y borrado permanecen sin diseño ni autorización; no se infieren avance de ciclo, entrega, acceso a red, commit ni publicación.
+> **Estado del diseño: aprobado; porción solo de archivo completa, verificada y entregada mediante issue #177 y PR #178. Ciclo de la unidad: `deferred`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0052) posee el aplazamiento residual delegado por el propietario y la condición de reentrada basada en evidencia. Desinstalación, reinstalación y borrado siguen sin diseño; el diseño y la implementación futuros requieren autoridad separada. El cuerpo histórico del diseño que sigue no concede autoridad nueva.
 
 ## Contrato de revisión
 
