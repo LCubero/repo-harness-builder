@@ -596,6 +596,10 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
         obligation = output_contract.split("Conversation language:", 1)[1].splitlines()[0].lower()
         for phrase in (
             "immediately before composing",
+            "compose all user-facing prose in the resolved conversation language",
+            "preserve exact machine-significant bytes",
+            "keep artifact language separate",
+            "verified human and higher-priority host instructions",
             "rule above",
             "wrapper",
             "task name",
@@ -605,6 +609,14 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
         ):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, obligation)
+
+        repository = ROOT.parents[1]
+        projected = TOOL.render_repository(repository, "repo-harness-builder", ["claude-code", "opencode", "pi"])
+        canonical = projected[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+        for runtime in ("claude", "opencode", "pi"):
+            path = f".{runtime}/skills/repo-harness-session-start/SKILL.md"
+            with self.subTest(runtime=runtime):
+                self.assertEqual(projected[path].split("## Output Contract", 1)[1], canonical.split("## Output Contract", 1)[1])
 
         for path in (
             ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
