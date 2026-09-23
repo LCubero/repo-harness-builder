@@ -17,6 +17,8 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo reciente completado
 <!-- doc-role:recent-work -->
 
+- La corrección de la salida de continuidad de session-start está completa en el commit local no enviado `abf6b1e`: el inicio generado informa el resultado observado de una comprobación pendiente y pertinente recuperada antes de recomendar otro objetivo; la continuidad sigue sin ser autoritativa. El [registro de tareas](../../../odd/tasks/session-start-continuity-output.md) conserva la verificación aislada (560 pruebas, 10 omitidas; checker `current` con cero escrituras) y la aprobación nativa con acuse. No se garantiza el cumplimiento del modelo en vivo; no se afirma PR, fusión ni publicación.
+
 - [RH-W-0095](roadmap.md#rh-w-0095) está `completed`: el PR #213 se fusionó por squash como `bd8e35d`; se cerró el issue #212. La hoja de ruta posee los detalles de entrega y verificación. RH-W-0018 sigue aplazada y separada; no se afirma release ni cumplimiento del modelo en vivo.
 
 - [RH-W-0094](roadmap.md#rh-w-0094) está `completed`: PR #206 se fusionó por squash como `cc0ff53d4ad13b77091039e585962921c5930283`; issue #205 cerrado. La aprobación nativa histórica de implementación con cuatro lentes recibió acuse y consumió su autoridad; no aprueba este delta documental local. La hoja de ruta posee entrega, verificación y limitaciones; main local no se sincronizó. No se afirma release, tag ni cumplimiento del modelo en vivo.

@@ -17,6 +17,8 @@
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
+- The session-start continuity-output correction is complete in local, unpushed commit `abf6b1e`: generated startup reports the observed outcome of a recovered relevant pending check before recommending a different objective; continuity remains non-authoritative. The [task record](../../odd/tasks/session-start-continuity-output.md) retains isolated verification (560 tests, 10 skipped; checker `current` with zero writes) and native approval/acknowledgement. Live-model compliance is not guaranteed; no PR, merge, or release is claimed.
+
 - [RH-W-0095](roadmap.md#rh-w-0095) is `completed`: PR #213 squash-merged as `bd8e35d`; issue #212 closed. The roadmap owns delivery and verification details. RH-W-0018 remains deferred and separate; no release or live-model compliance is claimed.
 
 - [RH-W-0094](roadmap.md#rh-w-0094) is `completed`: PR #206 squash-merged as `cc0ff53d4ad13b77091039e585962921c5930283`; issue #205 closed. Historical native four-lens implementation approval was acknowledged with authority burned, not approval of this local documentation delta. The roadmap owns delivery, verification and limitations; local main was not synchronized. No release, tag or live-model compliance is claimed.
