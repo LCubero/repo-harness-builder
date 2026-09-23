@@ -17,7 +17,7 @@
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
-- The session-start continuity-output correction is complete in local, unpushed commit `abf6b1e`: generated startup reports the observed outcome of a recovered relevant pending check before recommending a different objective; continuity remains non-authoritative. The [task record](../../odd/tasks/session-start-continuity-output.md) retains isolated verification (560 tests, 10 skipped; checker `current` with zero writes) and native approval/acknowledgement. Live-model compliance is not guaranteed; no PR, merge, or release is claimed.
+- The session-start continuity-output correction is complete in commit `abf6b1e` and published in open [PR #218](https://github.com/LCubero/repo-harness-builder/pull/218): generated startup reports the observed outcome of a recovered relevant pending check before recommending a different objective; continuity remains non-authoritative. The [task record](../../odd/tasks/session-start-continuity-output.md) retains isolated verification (560 tests, 10 skipped; checker `current` with zero writes) and native approval/acknowledgement. Live-model compliance is not guaranteed; no merge or release is claimed.
 
 - [RH-W-0095](roadmap.md#rh-w-0095) is `completed`: PR #213 squash-merged as `bd8e35d`; issue #212 closed. The roadmap owns delivery and verification details. RH-W-0018 remains deferred and separate; no release or live-model compliance is claimed.
 

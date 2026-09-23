@@ -17,7 +17,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo reciente completado
 <!-- doc-role:recent-work -->
 
-- La corrección de la salida de continuidad de session-start está completa en el commit local no enviado `abf6b1e`: el inicio generado informa el resultado observado de una comprobación pendiente y pertinente recuperada antes de recomendar otro objetivo; la continuidad sigue sin ser autoritativa. El [registro de tareas](../../../odd/tasks/session-start-continuity-output.md) conserva la verificación aislada (560 pruebas, 10 omitidas; checker `current` con cero escrituras) y la aprobación nativa con acuse. No se garantiza el cumplimiento del modelo en vivo; no se afirma PR, fusión ni publicación.
+- La corrección de la salida de continuidad de session-start está completa en el commit `abf6b1e` y publicada en el [PR #218](https://github.com/LCubero/repo-harness-builder/pull/218) abierto: el inicio generado informa el resultado observado de una comprobación pendiente y pertinente recuperada antes de recomendar otro objetivo; la continuidad sigue sin ser autoritativa. El [registro de tareas](../../../odd/tasks/session-start-continuity-output.md) conserva la verificación aislada (560 pruebas, 10 omitidas; checker `current` con cero escrituras) y la aprobación nativa con acuse. No se garantiza el cumplimiento del modelo en vivo; no se afirma fusión ni release.
 
 - [RH-W-0095](roadmap.md#rh-w-0095) está `completed`: el PR #213 se fusionó por squash como `bd8e35d`; se cerró el issue #212. La hoja de ruta posee los detalles de entrega y verificación. RH-W-0018 sigue aplazada y separada; no se afirma release ni cumplimiento del modelo en vivo.
 
