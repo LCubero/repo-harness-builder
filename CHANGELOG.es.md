@@ -4,6 +4,8 @@
 
 ## 2026-09-23
 
+- Se entregó la corrección reabierta del idioma de session-start RH-W-0031 mediante el [PR #215](https://github.com/LCubero/repo-harness-builder/pull/215), fusionado a las 2026-09-23T04:12:18Z como `1e16b9a0357c4b9d65c0efecdcedf0839b134fab`; el issue #214 se cerró a las 04:12:19Z. La hoja de ruta conserva los límites de verificación; no se afirma veredicto nativo ni garantía de cumplimiento del modelo en vivo.
+
 - Se entregó [RH-W-0095](docs/es/repo-harness/roadmap.md#rh-w-0095) mediante el PR #213 fusionado; se cerró el issue #212. La hoja de ruta posee los detalles de entrega y verificación. No se afirma release ni garantía de modelo en vivo.
 
 ## 2026-09-21
