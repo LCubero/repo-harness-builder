@@ -65,7 +65,7 @@
 | [rh-w-0078-gentle-ai-binary-research.md](rh-w-0078-gentle-ai-binary-research.md) | Canonical Gentle AI source research informing RH-W-0078 progressive disclosure and deterministic machine ownership without authorizing a new binary or implementation |
 | [rh-w-0078-scope.md](rh-w-0078-scope.md) | Proposed scope for multi-file generated skills, reachable references, and selective existing-Python mechanics; approval and implementation remain separate |
 | [rh-w-0092-scope.md](rh-w-0092-scope.md) | Proposed scope for conditional Windows long-path guidance; global Git remediation remains human-run only |
-| [rh-w-0095-design.md](rh-w-0095-design.md) | Implemented and independently verified contextual-acknowledgement design; completed historical design retained, with Git delivery unclaimed |
+| [rh-w-0095-design.md](rh-w-0095-design.md) | Delivered contextual-acknowledgement design; historical implementation evidence retained and PR #213 merge recorded |
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
 | [rh-w-0071-design.md](rh-w-0071-design.md) | Historical approved broader design and deferred shared-preference agreement; current scope is owned by the revised plan |

@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-23
+
+- Se entregó [RH-W-0095](docs/es/repo-harness/roadmap.md#rh-w-0095) mediante el PR #213 fusionado; se cerró el issue #212. La hoja de ruta posee los detalles de entrega y verificación. No se afirma release ni garantía de modelo en vivo.
+
 ## 2026-09-21
 
 - Se completó RH-W-0095 con TDD estricto: la nueva regresión de propietario único falló `0 != 1`, y después pasaron 7 pruebas enfocadas y la suite aislada de 559 pruebas; mantenimiento ligado al digest validó exactamente seis proyecciones de script/pruebas Claude/OpenCode/Pi, con checker `current`, paridad exacta y presupuesto 698/700 de la regla aprobados. Se preservan la autoridad vigente, la propiedad de compuertas pendientes, la separación de RH-W-0018 y el límite entre contrato de instrucciones generado y modelo en vivo. No se afirman issue, rama, commit, push, PR, merge, release ni otra entrega Git.

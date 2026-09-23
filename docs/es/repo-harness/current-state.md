@@ -17,7 +17,7 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo reciente completado
 <!-- doc-role:recent-work -->
 
-- [RH-W-0095](roadmap.md#rh-w-0095) está `completed` después de implementación autorizada por el propietario y verificación independiente: RED estricto falló `0 != 1`, GREEN enfocado pasó 7 pruebas exactas, mantenimiento ligado al digest aplicó exactamente seis proyecciones de script/pruebas Claude/OpenCode/Pi como `VALIDATED`, el checker `current` informó 0 escrituras, pasaron la paridad exacta y el presupuesto 698/700 de la regla, y la suite completa aislada pasó 559 pruebas con 10 omitidas. La hoja de ruta posee los recibos detallados y el aislamiento de fixtures Git solo por proceso. RH-W-0018 sigue aplazada y separada; entrega y cumplimiento del modelo en vivo siguen sin autorización y sin afirmar.
+- [RH-W-0095](roadmap.md#rh-w-0095) está `completed`: el PR #213 se fusionó por squash como `bd8e35d`; se cerró el issue #212. La hoja de ruta posee los detalles de entrega y verificación. RH-W-0018 sigue aplazada y separada; no se afirma release ni cumplimiento del modelo en vivo.
 
 - [RH-W-0094](roadmap.md#rh-w-0094) está `completed`: PR #206 se fusionó por squash como `cc0ff53d4ad13b77091039e585962921c5930283`; issue #205 cerrado. La aprobación nativa histórica de implementación con cuatro lentes recibió acuse y consumió su autoridad; no aprueba este delta documental local. La hoja de ruta posee entrega, verificación y limitaciones; main local no se sincronizó. No se afirma release, tag ni cumplimiento del modelo en vivo.
 

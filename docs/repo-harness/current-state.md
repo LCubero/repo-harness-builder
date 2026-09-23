@@ -17,7 +17,7 @@
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
-- [RH-W-0095](roadmap.md#rh-w-0095) is `completed` after owner-authorized implementation and independent verification: strict RED failed `0 != 1`, focused GREEN passed 7 exact tests, digest-bound maintenance applied exactly six Claude/OpenCode/Pi script/test projections as `VALIDATED`, checker `current` reported 0 writes, exact parity and the 698/700 response-rule budget passed, and the isolated full suite passed 559 tests with 10 skipped. The roadmap owns detailed receipts and the process-local Git-fixture isolation. RH-W-0018 remains deferred and separate; delivery and live-model compliance remain unauthorized and unclaimed.
+- [RH-W-0095](roadmap.md#rh-w-0095) is `completed`: PR #213 squash-merged as `bd8e35d`; issue #212 closed. The roadmap owns delivery and verification details. RH-W-0018 remains deferred and separate; no release or live-model compliance is claimed.
 
 - [RH-W-0094](roadmap.md#rh-w-0094) is `completed`: PR #206 squash-merged as `cc0ff53d4ad13b77091039e585962921c5930283`; issue #205 closed. Historical native four-lens implementation approval was acknowledged with authority burned, not approval of this local documentation delta. The roadmap owns delivery, verification and limitations; local main was not synchronized. No release, tag or live-model compliance is claimed.
 

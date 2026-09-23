@@ -1,6 +1,6 @@
 # Diseño RH-W-0095 de acuse contextual
 
-> **Estado: IMPLEMENTADO, VERIFICADO DE FORMA INDEPENDIENTE Y `completed`. La entrega Git sigue separada, sin autorización y sin afirmar.**
+> **Estado: IMPLEMENTADO, VERIFICADO DE FORMA INDEPENDIENTE, ENTREGADO Y `completed`.**
 
 ## Contrato de revisión
 
@@ -39,7 +39,7 @@ La autoridad vigente no cambia: `REPO-HARNESS.md` posee autoridad y no-trabajo-n
 ## Superficies implementadas
 
 - **Semilla canónica y propietario generado:** una viñeta concisa del contrato de respuesta en `skill/repo-harness-builder/scripts/harness_tool.py` y `.repo-harness/rules/response-contract.md`.
-- **Pruebas canónicas:** aserciones enfocadas en `RuleFileTests` y `QuestionVisibilityTests` existentes de `skill/repo-harness-builder/tests/test_harness_tool.py`.
+- **Pruebas canónicas:** una prueba enfocada en `RuleFileTests` existente de `skill/repo-harness-builder/tests/test_harness_tool.py`.
 - **Proyecciones de paquete declaradas:** proyecciones canónicas de script y pruebas en `.claude/skills/repo-harness-builder/`, `.opencode/skills/repo-harness-builder/` y `.pi/skills/repo-harness-builder/`.
 - **Propiedad sin cambios:** no se agregó copia del contrato específica por runtime ni edición de skills diarias.
 
@@ -51,7 +51,7 @@ La autoridad vigente no cambia: `REPO-HARNESS.md` posee autoridad y no-trabajo-n
 - La primera corrida completa no aislada recopiló 559 pruebas y falló cinco comprobaciones: un conteo documentado obsoleto de 558 y cuatro fallos de fixtures Git directos/anidados causados por el repositorio ancestro ajeno `C:/Users/LD9/.git`. Después de actualizar ambos conteos de colección y aplicar `GIT_CEILING_DIRECTORIES=C:/Users/LD9/AppData/Local/Temp` solo al proceso, pasaron los tres selectores Git directos y la suite completa pasó 559 pruebas con 10 omitidas, salida 0, en 205.400s. No hubo cambio persistente del entorno.
 - El proxy de tokens de la regla de respuesta renderizada es 698 contra presupuesto 700. Pasó `git diff --check` y el estado previo/posterior fue idéntico.
 
-Estas pruebas verifican el contrato de instrucciones generado; no garantizan el cumplimiento de un modelo arbitrario. La revisión nativa final sigue bajo propiedad del padre y no constituye una afirmación durable de ciclo ni entrega.
+Estas pruebas de implementación verifican el contrato de instrucciones generado; no garantizan el cumplimiento de un modelo arbitrario. La [hoja de ruta](roadmap.md#rh-w-0095) posee los detalles de entrega y verificación posterior a la implementación.
 
 ## Rollback
 
@@ -61,4 +61,4 @@ Quitar la cláusula acotada y sus aserciones enfocadas de fuente/pruebas canóni
 
 Sin clasificador, parser, detector, allowlist de frases, máquina de estados, formatter, middleware, rechazo en runtime, eje de preferencia, reapertura RH-W-0018, persistencia, telemetría, analytics, log de cumplimiento, observador en vivo, schema, manifest, config, migración, dependencia, componente externo, copia del contrato por runtime, duplicación en skills diarias, menú fijo, volcado de backlog, ejecución automática ni segundo propietario de respuesta.
 
-Decisiones de diseño restantes: **ninguna**. La implementación y verificación independiente están completas; issue, rama, commit, push, pull request, merge, release y cualquier garantía de modelo en vivo siguen sin autorización y sin afirmar.
+Decisiones de diseño restantes: **ninguna**. La implementación, la verificación independiente y la entrega del PR están completas; no se afirma release ni garantía de modelo en vivo.

@@ -1,6 +1,6 @@
 # RH-W-0095 Contextual Acknowledgement Design
 
-> **Status: IMPLEMENTED, INDEPENDENTLY VERIFIED, AND `completed`. Git delivery remains separate, unauthorized, and unclaimed.**
+> **Status: IMPLEMENTED, INDEPENDENTLY VERIFIED, DELIVERED, AND `completed`.**
 
 ## Review Contract
 
@@ -39,7 +39,7 @@ Existing authority remains unchanged: `REPO-HARNESS.md` owns authority and no-un
 ## Implemented Surfaces
 
 - **Canonical seed and generated owner:** one concise response-contract bullet in `skill/repo-harness-builder/scripts/harness_tool.py` and `.repo-harness/rules/response-contract.md`.
-- **Canonical tests:** focused assertions in the existing `RuleFileTests` and `QuestionVisibilityTests` in `skill/repo-harness-builder/tests/test_harness_tool.py`.
+- **Canonical tests:** one focused test in the existing `RuleFileTests` in `skill/repo-harness-builder/tests/test_harness_tool.py`.
 - **Declared package projections:** canonical script and test projections in `.claude/skills/repo-harness-builder/`, `.opencode/skills/repo-harness-builder/`, and `.pi/skills/repo-harness-builder/`.
 - **Unchanged ownership:** no runtime-specific response-contract copy or daily-skill edit was added.
 
@@ -51,7 +51,7 @@ Existing authority remains unchanged: `REPO-HARNESS.md` owns authority and no-un
 - The initial non-isolated full run collected 559 tests and failed five checks: one stale documented 558 count and four direct/nested Git-fixture failures caused by unrelated ancestor repository `C:/Users/LD9/.git`. After updating both collection counts and applying process-local `GIT_CEILING_DIRECTORIES=C:/Users/LD9/AppData/Local/Temp`, the three direct Git selectors passed and the full suite passed 559 tests with 10 skipped, exit 0, in 205.400s. No persistent environment change was made.
 - The rendered response-rule token proxy is 698 against budget 700. `git diff --check` passed, and pre/post status was identical.
 
-These tests verify the generated instruction contract; they do not guarantee compliance by an arbitrary model. Native final review remains parent-owned and is not a durable lifecycle or delivery claim.
+These implementation tests verify the generated instruction contract; they do not guarantee compliance by an arbitrary model. The [roadmap](roadmap.md#rh-w-0095) owns delivery and post-implementation verification details.
 
 ## Rollback
 
@@ -61,4 +61,4 @@ Remove the bounded clause and its focused assertions from canonical source/tests
 
 No classifier, parser, detector, phrase allowlist, state machine, formatter, middleware, runtime refusal, preference axis, RH-W-0018 reopening, persistence, telemetry, analytics, compliance log, live observer, schema, manifest, config, migration, dependency, external component, runtime-specific response-contract copy, daily-skill duplication, fixed menu, backlog dump, automatic execution, or second response-contract owner.
 
-Remaining design decisions: **none**. Implementation and independent verification are complete; issue, branch, commit, push, pull request, merge, release, and any live-model guarantee remain unauthorized and unclaimed.
+Remaining design decisions: **none**. Implementation, independent verification, and PR delivery are complete; no release or live-model guarantee is claimed.

@@ -63,7 +63,7 @@
 | [Investigacion RH-W-0078 sobre Gentle AI](rh-w-0078-gentle-ai-binary-research.md) | Par localizado de la investigacion que informa divulgacion progresiva y propiedad determinista sin autorizar un binario nuevo ni implementacion |
 | [Alcance RH-W-0078](rh-w-0078-scope.md) | Alcance propuesto para skills generadas de varios archivos, referencias alcanzables y mecánica selectiva en Python existente; aprobación e implementación siguen separadas |
 | [Alcance RH-W-0092](rh-w-0092-scope.md) | Alcance propuesto para guía condicional de rutas largas en Windows; la remediación global de Git solo la ejecuta la persona |
-| [Diseño RH-W-0095](rh-w-0095-design.md) | Diseño de acuses contextuales implementado y verificado de forma independiente; se conserva como diseño histórico completado, sin afirmar entrega Git |
+| [Diseño RH-W-0095](rh-w-0095-design.md) | Diseño de acuses contextuales entregado; conserva la evidencia histórica de implementación y registra la fusión del PR #213 |
 | [Diseno RH-W-0067](rh-w-0067-design.md) | Par humano del diseno completado del contrato de respuesta; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0067](rh-w-0067-implementation-plan.md) | Par humano del plan de implementacion completado; instrucciones historicas conservadas |
 | [Diseno RH-W-0071](rh-w-0071-design.md) | Diseno historico mas amplio aprobado y acuerdo compartido de preferencias aplazado; el plan revisado posee el alcance vigente |
