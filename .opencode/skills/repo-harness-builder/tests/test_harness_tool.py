@@ -587,6 +587,22 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                 for phrase in required:
                     self.assertIn(phrase, text)
 
+    def test_session_start_output_contract_reports_recovered_startup_check_before_new_objective(self):
+        outputs = TOOL.render("Example", ["opencode"])
+        contract = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"].split(
+            "## Output Contract", 1
+        )[1].split("## References", 1)[0]
+        self.assertIn(
+            "When a recovered relevant next action is precisely the current session-start check, "
+            "report its observed outcome before recommending a different objective", contract
+        )
+        for safeguard in (
+            "continuity sources remain non-authoritative",
+            "does not authorize automatic continuation or bypass human gates",
+        ):
+            with self.subTest(safeguard=safeguard):
+                self.assertIn(safeguard, contract)
+
     def test_session_start_output_contract_reapplies_language_rule_at_composition(self):
         outputs = TOOL.render("Example", ["opencode"])
         session_start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]

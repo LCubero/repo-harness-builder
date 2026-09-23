@@ -7,7 +7,7 @@
 
 - Harness present and reporting `current`: generated checker exit 0 with 0 writes and 63 exact runtime projections current.
 - Verified RH-W-0052 archive-only receipt: `ArchiveOnlyTests` 9 passed/1 skipped; neighboring 132 passed/2 skipped; full canonical suite 545 passed/10 skipped; exact canonical/Claude/OpenCode/Pi parity; checker `current` with 0 writes and 63 projections; and clean `git diff --check`. Final independent verification reported no severe or medium findings. Windows source-symlink coverage skipped for privilege; junction-parent refusal passed.
-- Canonical suite collection: 559 tests. Final RH-W-0071 implementation verification: 503 tests in 154.714s, OK (skipped=9), exit 0. The [plan](rh-w-0071-implementation-plan.md#final-verification-evidence) retains the first stale-count failure and final receipts. Historical integration-correction verification remains 500 tests in 145.877s, OK (skipped=9), exit 0; RH-W-0088 remains 497 tests run, 9 skipped, OK.
+- Canonical suite collection: 560 tests. Final RH-W-0071 implementation verification: 503 tests in 154.714s, OK (skipped=9), exit 0. The [plan](rh-w-0071-implementation-plan.md#final-verification-evidence) retains the first stale-count failure and final receipts. Historical integration-correction verification remains 500 tests in 145.877s, OK (skipped=9), exit 0; RH-W-0088 remains 497 tests run, 9 skipped, OK.
 - Root `.gitattributes` currently has all 76 expected explicit rules present, with 0 missing, extra, or duplicate rules. This verified count is distinct from checker authority: the installed checker's `current` result over 63 projections does not report `.gitattributes`.
 - Runtime set `claude-code`, `opencode`, and `pi`. Completed `RH-W-0057` gives every generated command or prompt a family-specific canonical peer. The delivered RH-W-0048 parity slice adds the complete Pi builder package, Pi's callable builder prompt, all three operational skills, and their four existing prompts. The authenticated manifest and checker also compare exact builder package and entry projections for all three selected runtimes. Integration mode `integrated`. Conversation language `espanol`; documentation locales `en` and `es`. Generator 3.0, skill package 3.1.
 - Packaged suite covers generated Git state, intent-scoped consent, exact staged-scope comparison, pre-existing index separation, material-change invalidation, scoped outcomes, sensitive screening, bounded transport receipts, and runtime-cache contracts.
@@ -16,6 +16,8 @@
 
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
+
+- The session-start continuity-output correction is complete in commit `abf6b1e` and published in open [PR #218](https://github.com/LCubero/repo-harness-builder/pull/218): generated startup reports the observed outcome of a recovered relevant pending check before recommending a different objective; continuity remains non-authoritative. The [task record](../../odd/tasks/session-start-continuity-output.md) retains isolated verification (560 tests, 10 skipped; checker `current` with zero writes) and native approval/acknowledgement. Live-model compliance is not guaranteed; no merge or release is claimed.
 
 - [RH-W-0095](roadmap.md#rh-w-0095) is `completed`: PR #213 squash-merged as `bd8e35d`; issue #212 closed. The roadmap owns delivery and verification details. RH-W-0018 remains deferred and separate; no release or live-model compliance is claimed.
 
