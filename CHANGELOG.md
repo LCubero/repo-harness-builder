@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-23
 
+- Delivered the reopened RH-W-0031 session-start language correction through [PR #215](https://github.com/LCubero/repo-harness-builder/pull/215), merged at 2026-09-23T04:12:18Z as `1e16b9a0357c4b9d65c0efecdcedf0839b134fab`; issue #214 closed at 04:12:19Z. The roadmap retains verification limits; no native verdict or live-model compliance guarantee is claimed.
+
 - Delivered [RH-W-0095](docs/repo-harness/roadmap.md#rh-w-0095) through merged PR #213; issue #212 closed. The roadmap owns the delivery and verification details. No release or live-model guarantee is claimed.
 
 ## 2026-09-21
