@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-21
+
+- Se completó RH-W-0095 con TDD estricto: la nueva regresión de propietario único falló `0 != 1`, y después pasaron 7 pruebas enfocadas y la suite aislada de 559 pruebas; mantenimiento ligado al digest validó exactamente seis proyecciones de script/pruebas Claude/OpenCode/Pi, con checker `current`, paridad exacta y presupuesto 698/700 de la regla aprobados. Se preservan la autoridad vigente, la propiedad de compuertas pendientes, la separación de RH-W-0018 y el límite entre contrato de instrucciones generado y modelo en vivo. No se afirman issue, rama, commit, push, PR, merge, release ni otra entrega Git.
+
 ## 2026-09-20
 
 - Se registró la disposición documental delegada por el propietario para [RH-W-0052](docs/es/repo-harness/roadmap.md#rh-w-0052) bajo [issue #208](https://github.com/LCubero/repo-harness-builder/issues/208): desinstalación, reinstalación y borrado residuales están `deferred` hasta demostrar una carencia actual concreta en la cobertura existente de archivo/reparación. La porción solo de archivo sigue completa, verificada y entregada mediante #177/#178; no se afirma trabajo de producto ni entrega nuevos.

@@ -6981,6 +6981,17 @@ class RuleFileTests(unittest.TestCase):
         self.assertIn("setext heading", text)
         self.assertIn("blank line", text)
 
+    def test_contextual_acknowledgement_has_one_generated_response_contract_owner(self):
+        outputs = TOOL.render("Example", ["claude-code", "opencode", "pi"])
+        rule = (
+            "Brief acknowledgement without an explicit action/target preserves current subject and suggests a sensible "
+            "direction. It neither approves nor authorizes planning, delegation, mutation, delivery, or automatic "
+            "continuation; pending gates remain, and missing context is never invented."
+        )
+
+        self.assertEqual(outputs[self.RESPONSE_RULE].count(rule), 1)
+        self.assertEqual([path for path, content in outputs.items() if rule in content], [self.RESPONSE_RULE])
+
     def test_pending_human_gate_keeps_delayed_notifications_informational(self):
         outputs = TOOL.render("Example", ["claude-code", "opencode", "pi"])
         text = outputs[self.RESPONSE_RULE]
