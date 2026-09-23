@@ -6,7 +6,9 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-23
 
-- Completed locally the session-start continuity-output correction in `abf6b1e`: generated startup now reports the observed outcome of a recovered relevant pending check before recommending a different objective. Continuity remains non-authoritative. The [task record](odd/tasks/session-start-continuity-output.md) retains isolated verification (560 tests, 10 skipped; checker `current` with zero writes) and native approval/acknowledgement. Live-model compliance is not guaranteed; the commit is local and unpushed, with no PR, merge, or release claimed.
+- Delivered the session-start continuity-output correction through [PR #218](https://github.com/LCubero/repo-harness-builder/pull/218), squash-merged at 2026-09-23T20:41:15Z as `4d2bf14f302698d5c50ab6454a4bc099fe68195f`; issue #217 closed at 20:41:16Z. No release or live-model compliance is claimed.
+
+- Completed locally the session-start continuity-output correction in `abf6b1e`: generated startup now reports the observed outcome of a recovered relevant pending check before recommending a different objective. Continuity remains non-authoritative. The [task record](odd/tasks/session-start-continuity-output.md) retains isolated verification (560 tests, 10 skipped; checker `current` with zero writes) and native approval/acknowledgement. Live-model compliance is not guaranteed; at that pre-delivery stage, the commit was local and unpushed, with no PR or merge then claimed.
 
 - Delivered the reopened RH-W-0031 session-start language correction through [PR #215](https://github.com/LCubero/repo-harness-builder/pull/215), merged at 2026-09-23T04:12:18Z as `1e16b9a0357c4b9d65c0efecdcedf0839b134fab`; issue #214 closed at 04:12:19Z. The roadmap retains verification limits; no native verdict or live-model compliance guarantee is claimed.
 
