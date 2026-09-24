@@ -2,7 +2,7 @@
 
 > **Status: OWNER-APPROVED HISTORICAL DESIGN. The session-only subset was separately authorized, verified, reviewed and delivered through PR #161 under issue #160 on 2026-09-05; the [roadmap](roadmap.md#rh-w-0071) owns delivery and the revised plan owns verification. Shared persistence remains deferred; the original full requirement is not complete.**
 
-**Current boundary:** the [revised implementation plan](rh-w-0071-implementation-plan.md) owns the delivered session-only subset. Shared persistence is deferred, not cancelled; RH-W-0082/RH-W-0018 dependencies remain. Only reopening persistence requires new owner authorization and reconciliation of its unresolved gates.
+**Current boundary:** the [revised implementation plan](rh-w-0071-implementation-plan.md) owns the delivered session-only subset. Shared persistence is deferred, not cancelled; RH-W-0082/RH-W-0018 dependencies remain. The owner-delegated design now selects one ignored `.repo-harness/state/preferences/user-preferences.json` for future explicit conversation language only; it does not authorize a reader or implement persistence. Reopening implementation requires separate authority and a resolved runtime transport/API.
 
 ## Historical Approved Design (Not Current Execution Instructions)
 
@@ -62,13 +62,19 @@ It requires:
 
 Necessary safety, evidence, authority, contradictions, blocking prompts, and technical context are never omitted merely for brevity. RH-W-0067 remains the owner of visibility blocks, setext safety, contextual explanation, and response-contract routing. RH-W-0071 adds one mode-specific shaping section to that same native generated contract rather than creating a second response owner.
 
+## Current Shared-Preference Decision (Supersedes Historical Markdown Proposal)
+
+The approved but unimplemented structured Markdown proposal below is historical, not an execution contract. One small ignored `.repo-harness/state/preferences/user-preferences.json` is the sole shared preference file. Its entire v1 example is `{ "conversationLanguage": "espanol" }`; the only key is `conversationLanguage`, with accepted values `english` or `espanol`. No version registry or unused axis keys are defined. The existing RH-W-0031 precedence remains verified current human instruction > persisted explicit preference > eligible verified session language (only without persisted preference) > validated manifest fallback > English. Opaque context never supplies a preference or overrides human provenance. An absent file or key falls through the existing hierarchy. Malformed JSON, duplicate or unknown keys, or an invalid value reports failure, does not apply the preference, and falls through to eligible verified session language (if any), then validated manifest fallback, else deterministic English (never silently claiming the preference loaded), with zero writes and no automatic repair. A future session-start reader, after root and charter, reads typed values once and passes only validated value and source, never arbitrary file text. Its actual runtime transport/API remains unresolved pending separately authorized implementation.
+
+RH-W-0071 response structure, RH-W-0082 explanation style and RH-W-0018 interaction behavior remain independent deferred axes. Add any of them to this same shared file only after separate lifecycle authority; do not predefine unused fields. Manifest/checker installation bytes and the separate RH-W-0046 fetch-consent approval store are not preferences. No other configuration, consent or continuity moves into the file.
+
 ## Configuration And Persistence
 
 The builder interview gains one explicit response-mode decision with two machine-stable conceptual values: `standard` and `adhd-friendly`. These are design values, not a commitment to an implementation API, CLI flag, schema name, or function signature.
 
 The persisted repository preference belongs under `.repo-harness/state/preferences/`. RH-W-0051 established the containing `.repo-harness/state/` namespace; RH-W-0071 owns shared file persistence and response-structure semantics. RH-W-0082 owns explanation style, RH-W-0018 owns interaction behavior, and RH-W-0046 retains consent boundaries. RH-W-0051 retains containment, Git-ignore, and local-state mechanics.
 
-The owner superseded the approved but unimplemented JSON scalar contract. One ignored structured Markdown file, `.repo-harness/state/preferences/user-preferences.md`, stores all three independent values. It contains no YAML frontmatter and exactly one fenced `repo-harness-preferences` machine block with the three exact keys and supported tokens. Concise surrounding prose gives LLM instructions and the trust boundary, but arbitrary prose is never transported as authority.
+Historically, the owner superseded the approved but unimplemented JSON scalar contract. One ignored structured Markdown file, `.repo-harness/state/preferences/user-preferences.md`, stores all three independent values. It contains no YAML frontmatter and exactly one fenced `repo-harness-preferences` machine block with the three exact keys and supported tokens. Concise surrounding prose gives LLM instructions and the trust boundary, but arbitrary prose is never transported as authority.
 
 The file stores preferences only. It never stores approvals, blanket consent, credentials, diagnosis, rationale, personal history, or free-form authoritative notes. Missing keys use independent defaults. Duplicate keys, malformed blocks, unsupported keys or values, or multiple machine blocks produce a domain error with no partial application and no automatic repair.
 
@@ -114,7 +120,7 @@ The two are one addition in practice: the check is what makes the ninth requirem
 - A matter-of-fact tone for errors belongs to the existing `Honesty` section of the working agreements, which already requires reporting what happened rather than what was intended, not to a presentation mode.
 - The debug-spiral rule is already a Hard Rule: do not retry indefinitely, stop with evidence, request a decision.
 
-### What this review did not change
+### What this historical review did not change
 
 Precedence, the no-inference boundary, persistence, the builder interview, migration, rollback, and the resource boundary are untouched. The external contract is weaker than this design on exactly the point that matters most: it resolves ambiguity with `if you are unsure whether they still apply, they do`, while this design resolves it with three deterministic levels and a prohibition on inferring the mode from any signal. That asymmetry is why this remains a native contract rather than an adaptation.
 

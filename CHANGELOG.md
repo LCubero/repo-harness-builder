@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-24
+
+- Documented the owner-delegated [issue #220](https://github.com/LCubero/repo-harness-builder/issues/220) format decision: one future ignored JSON shared preference owner replaces the unimplemented Markdown proposal, initially for explicit conversation language. RH-W-0071/RH-W-0082 remain proposed, RH-W-0018 deferred, and completed RH-W-0031 precedence and separate fetch consent remain intact. No preference file, runtime reader, source/test change, generated skill, or delivery is claimed.
+
 ## 2026-09-23
 
 - Delivered the session-start continuity-output correction through [PR #218](https://github.com/LCubero/repo-harness-builder/pull/218), squash-merged at 2026-09-23T20:41:15Z as `4d2bf14f302698d5c50ab6454a4bc099fe68195f`; issue #217 closed at 20:41:16Z. No release or live-model compliance is claimed.
