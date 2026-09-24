@@ -33,8 +33,8 @@
 | [rh-w-0048-implementation-plan.md](rh-w-0048-implementation-plan.md) | Historical strict-TDD recovery execution record; the roadmap owns remaining lifecycle work |
 | [rh-w-0046-rh-w-0018-design.md](rh-w-0046-rh-w-0018-design.md) | Owner-delegated approved joint repository fetch-consent and low-question preference-boundary design; completed RH-W-0046 remains separate from deferred RH-W-0018 |
 | [rh-w-0046-implementation-plan.md](rh-w-0046-implementation-plan.md) | Completed historical RH-W-0046 repository fetch-consent execution record; the exact consent boundary may reopen only on regression |
-| [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved human-owned document suggestion design; corrected plan accepted locally, implementation unauthorized |
-| [rh-w-0044-implementation-plan.md](rh-w-0044-implementation-plan.md) | Corrected owner-accepted test-first plan on a locally undelivered branch; implementation unauthorized |
+| [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved human-owned document suggestion design; corrected plan delivered via PR #226, implementation unauthorized |
+| [rh-w-0044-implementation-plan.md](rh-w-0044-implementation-plan.md) | Corrected owner-accepted test-first plan delivered through PR #226; implementation unauthorized |
 | [rh-w-0022-design.md](rh-w-0022-design.md) | Owner-approved minimal declared documentation relationship design; implementation planning and implementation remain unauthorized |
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Delivered local memory backup and cross-source continuity design |
 | [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Delivered owner-approved native continuity implementation plan |

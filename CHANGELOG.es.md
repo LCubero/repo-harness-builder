@@ -4,6 +4,8 @@
 
 ## 2026-09-24
 
+- Se entregó el plan de implementación bilingüe corregido RH-W-0044 mediante el [PR #226](https://github.com/LCubero/repo-harness-builder/pull/226), fusionado por squash a las 2026-09-24T19:07:16Z como `d3acaa750d4416d994e92e6b1cb56bafacab67d2`; el issue #225 está cerrado. RH-W-0044 permanece `proposed`; implementar el producto requiere autorización separada.
+
 - Se entregaron el lector JSON de ruta fija del idioma de conversación al inicio y el contrato generado de una lectura en session-start en `origin/main` como squash `644701c7c5b7241508096cd86c1f6569c693cc70`. Una sesión Pi nueva aportada por el propietario observó el lector instalado con `valid`/`espanol` y una respuesta en español; esto no garantiza cumplimiento universal del modelo en vivo. El commit local no demuestra número de PR de producto ni cierre del issue. RH-W-0071 sigue `proposed`; la persistencia de tres ejes permanece aplazada.
 
 - Se documentó la decisión de formato delegada por el propietario bajo [issue #220](https://github.com/LCubero/repo-harness-builder/issues/220): un único propietario JSON ignorado futuro reemplaza la propuesta Markdown no implementada, inicialmente para idioma explícito de conversación. RH-W-0071/RH-W-0082 siguen `proposed`, RH-W-0018 `deferred`; se preservan precedencia RH-W-0031 completada y consentimiento fetch separado. No se afirman archivo de preferencias, lector de runtime, cambios de fuente/pruebas, skill generada ni entrega.
