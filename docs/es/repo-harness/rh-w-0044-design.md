@@ -1,6 +1,6 @@
 # Diseño RH-W-0044 de sugerencias para documentos de propiedad humana
 
-> **Estado: DISEÑO APROBADO POR EL PROPIETARIO. RH-W-0044 permanece `proposed`; la planificación de implementación y la implementación no están autorizadas.**
+> **Estado: DISEÑO APROBADO Y PLAN DE IMPLEMENTACIÓN CORREGIDO ACEPTADO LOCALMENTE POR EL PROPIETARIO. RH-W-0044 permanece `proposed`; la implementación no está autorizada.**
 
 ## Decisión
 
@@ -30,13 +30,13 @@ Esto compara presencia contractual; no reescribe prosa general, corrige estilo, 
 
 ## Forma y presentación
 
-Cada sugerencia contiene `suggestionId` estable, ruta, idioma, rol o ancla, clasificación, motivo, evidencia, SHA-256 fuente, bytes UTF-8 propuestos, extracto y preview acotados, y opciones `accept`, `keep` o `declare-intentional-divergence`.
+Cada sugerencia contiene `suggestionId` estable para identidad semántica, ruta, idioma, rol o ancla, clasificación, motivo, evidencia, SHA-256 fuente, bytes UTF-8 propuestos, extracto y preview acotados, y opciones `accept`, `keep` o `declare-intentional-divergence`. Un `suggestionEvidenceSha256` mostrado por separado liga a contenido la versión del contrato, identidad de la sugerencia, idioma, ruta, ID estable de unidad contractual, digest de la fuente actual, tipo de acción y bytes propuestos exactos.
 
 Se ordenan y quedan fuera del plan ejecutable hasta aceptarse. Preview informa `writes: 0`. Se presenta una por vez por ruta y resolverla obliga a comparar de nuevo.
 
 ## Aceptación y autoridad
 
-`accept` autoriza solo lo mostrado. El builder relee, recalcula e incorpora una integración al plan ligado a contenido, con ruta, digests, tipo y digest del plan. Todo cambio invalida la aceptación. No existen aceptación masiva, aprobación por documento, reutilización, archivo automático ni escritura directa. `keep` solo conserva bytes durante el preview actual y no crea estado.
+`accept` autoriza solo lo mostrado y debe suministrar su `suggestionEvidenceSha256`. El builder relee los bytes exactos de fuente, vuelve a renderizar la propuesta exacta, recalcula el digest de evidencia y verifica igualdad antes de construir el plan existente ligado a contenido. Después incorpora una integración con ruta, digests, tipo, bytes exactos, identidad, digest de evidencia y digest del plan. Todo cambio invalida la aceptación. No existen aceptación masiva, aprobación por documento, reutilización, archivo automático ni escritura directa. `keep` solo conserva bytes durante el preview actual y no crea estado.
 
 ## Divergencia intencional
 
@@ -60,6 +60,7 @@ Solo participan idiomas declarados. Inglés y español usan sugerencias y acepta
 - No cambian clasificaciones actuales.
 - Historial, estado, roadmap y decisiones no reciben sugerencias genéricas.
 - Cada sugerencia lleva identidad, ruta, digest, motivo, evidencia, bytes y tres opciones.
+- Cada selección suministra el digest de evidencia mostrado por separado, que liga versión de contrato, identidad, idioma/ruta/unidad, digest fuente, tipo de acción y bytes propuestos exactos, y se verifica antes de construir el plan.
 - Se acepta una por vez mediante plan nuevo ligado a digest; cualquier cambio invalida antes de escribir.
 - `keep` es efímero y la supresión durable requiere declaración válida y aceptada.
 - La divergencia no suprime autoridad, contención, preservación o enrutamiento protegidos.
@@ -72,18 +73,21 @@ Solo participan idiomas declarados. Inglés y español usan sugerencias y acepta
 - Prosa específica válida no recibe reemplazo completo.
 - Historial, estado, roadmap, decisiones, producto e ignorados no reciben sugerencias.
 - No se aceptan dos juntas y la primera obliga a comparar de nuevo.
-- Cambios posteriores rechazan antes de escribir.
+- Un cambio de fuente posterior a la selección rechaza antes de construir el plan.
+- Un cambio del renderer o de los bytes propuestos exactos posterior a la selección rechaza antes de construir el plan.
+- Si no está disponible la evidencia Git de archivos rastreados, se cierra de forma segura como no disponible/ambiguo con cero sugerencias y cero escrituras, sin inventar un conjunto rastreado limpio.
 - `keep` reaparece; un marcador válido suprime solo su unidad.
 - Marcadores inválidos no suprimen y reportan ambigüedad.
 - Aceptar inglés no acepta ni muta español.
+- Un fallo posterior en una transacción mixta con la acción humana aceptada más acciones existentes de creación, append y reemplazo restaura byte por byte todos los destinos preexistentes y elimina cada destino recién creado.
 - Los bytes humanos quedan intactos ante cualquier fallo.
 
 ## No objetivos
 
-- Sin implementación, plan de implementación, avance, staging, commit, push, PR, release ni mutación de consumidores.
+- Sin implementación, avance, staging, commit, push, PR, release ni mutación de consumidores.
 - Sin regeneración completa, aceptación masiva, merge automático, modelo semántico, juez LLM, puntuación, daemon, base de datos, ledger ni dependencia externa.
 - Sin nuevo propietario durable ni reemplazo de límites RH-W-0022, RH-W-0045 o RH-W-0066.
 
 ## Ciclo de vida y decisión humana
 
-RH-W-0044 permanece `proposed`. El propietario aprobó el conjunto, las unidades, el schema, la aceptación individual y la divergencia. La planificación de implementación y la implementación requieren autorización posterior y separada.
+RH-W-0044 permanece `proposed`. El propietario aprobó el conjunto, las unidades, el esquema, la aceptación individual y la divergencia, y después de la revisión enfocada aceptó el [plan de implementación bilingüe](rh-w-0044-implementation-plan.md) corregido en una rama local todavía no entregada. La implementación es la siguiente fase con autorización separada y permanece sin autorizar.

@@ -1,6 +1,6 @@
 # RH-W-0044 Human-Owned Document Suggestion Design
 
-> **Status: OWNER-APPROVED DESIGN. RH-W-0044 remains `proposed`; implementation planning and implementation are unauthorized.**
+> **Status: OWNER-APPROVED DESIGN; CORRECTED IMPLEMENTATION PLAN ACCEPTED LOCALLY. RH-W-0044 remains `proposed`; implementation is unauthorized.**
 
 ## Decision
 
@@ -37,13 +37,13 @@ This is contract-presence comparison, not general prose rewriting, style correct
 
 ## Suggestion Shape And Presentation
 
-Each suggestion contains a stable `suggestionId` derived from the rendered contract unit; repository-relative `path`, locale, owner role or anchor, and classification; a concise reason and evidence; the exact current source SHA-256; the exact proposed UTF-8 insertion or replacement; a bounded current excerpt and proposed preview; and explicit choices `accept`, `keep`, or `declare-intentional-divergence`.
+Each suggestion contains a stable `suggestionId` for semantic identity; repository-relative `path`, locale, owner role or anchor, and classification; a concise reason and evidence; the exact current source SHA-256; the exact proposed UTF-8 insertion or replacement; a bounded current excerpt and proposed preview; and explicit choices `accept`, `keep`, or `declare-intentional-divergence`. A separately displayed `suggestionEvidenceSha256` content-binds the contract version, suggestion identity, locale, path, stable contract-unit ID, current source digest, action kind, and exact proposed bytes.
 
 Suggestions are sorted by path and contract-unit order and remain outside the executable plan until accepted. Preview reports `writes: 0`. No suggestion is represented as mandatory, semantically equivalent, or already approved. A path with multiple findings presents one suggestion at a time; resolving one requires a fresh comparison before the next is accepted.
 
 ## Individual Acceptance And Write Authority
 
-`accept` authorizes only the displayed suggestion. The builder re-reads the exact source bytes, recomputes the suggestion, and places one bounded human-document integration action into the existing content-bound plan. The action binds path, source digest, destination digest, action kind, and plan digest. Existing builder activation, approval, containment, atomic write, rollback, and post-apply verification rules remain unchanged.
+`accept` authorizes only the displayed suggestion and must supply its displayed `suggestionEvidenceSha256`. The builder re-reads the exact source bytes, rerenders the exact proposal, recomputes the evidence digest, and verifies equality before constructing the existing content-bound plan. It then places one bounded human-document integration action into that plan. The action binds path, source digest, destination digest, action kind, exact bytes, suggestion identity, evidence digest, and plan digest. Existing builder activation, approval, containment, atomic write, rollback, and post-apply verification rules remain unchanged.
 
 Any source change, moved anchor, changed proposed bytes, locale mismatch, indirect path, or additional suggestion invalidates that acceptance. The builder pauses with fresh evidence instead of rebasing prose automatically. There is no `accept-all`, document-wide approval, approval reuse, automatic archive, or direct write from the comparison report.
 
@@ -75,6 +75,7 @@ RH-W-0022 retains declared cross-document relationships. RH-W-0066 may route a f
 - Current generated-file, structural, locale, directive, and legacy-reference classifications remain unchanged.
 - Project facts in changelog, current state, roadmap, and decisions never receive generic content suggestions.
 - Every suggestion includes stable identity, exact path and source digest, reason, bounded evidence, exact proposed bytes, and three explicit choices.
+- Every selection supplies the separately displayed evidence digest that binds contract version, identity, locale/path/unit, current source digest, action kind, and exact proposed bytes; it is verified before plan construction.
 - Acceptance is one suggestion at a time and becomes executable only through a fresh digest-bound integration plan.
 - Changed source or proposal evidence invalidates acceptance before writes.
 - `keep` is ephemeral; durable suppression requires one valid, narrow, individually accepted declaration.
@@ -88,19 +89,22 @@ RH-W-0022 retains declared cross-document relationships. RH-W-0066 may route a f
 - A current obligation expressed with valid project-specific surrounding prose receives no whole-section replacement.
 - Changelog, current state, roadmap, decisions, arbitrary product prose, and ignored files receive no suggestions.
 - Two suggestions cannot be accepted together, and accepting the first forces fresh comparison before the second.
-- A source-byte change after acceptance rejects the integration plan before writing.
+- A source-byte change after selection rejects before plan construction.
+- A renderer or exact proposed-byte change after selection rejects before plan construction.
+- Unavailable Git tracked-file evidence fails closed as unavailable/ambiguous with zero suggestions and zero writes; it never implies a clean tracked set.
 - `keep` reappears on a later preview, while a valid accepted-divergence marker suppresses only its exact unit.
 - An unknown, misplaced, duplicate, or non-suppressible divergence marker suppresses nothing and reports bounded ambiguity.
 - Accepting an English suggestion does not accept or mutate its Spanish peer.
+- A later failure in a mixed transaction containing the accepted human action plus existing create, append, and replace actions restores all pre-existing destinations byte-for-byte and removes every newly created destination.
 - Existing human-owned bytes remain unchanged when preview, comparison, or validation fails.
 
 ## Non-Goals
 
-- No implementation, implementation plan, lifecycle advancement, staging, commit, push, PR, release, or consumer-repository mutation.
+- No implementation, lifecycle advancement, staging, commit, push, PR, release, or consumer-repository mutation.
 - No whole-document regeneration, bulk acceptance, automatic merge, semantic model, LLM judge, prose scoring, daemon, database, ledger, or new external dependency.
 - No new lifecycle, decision, chronology, research, or memory owner.
 - No replacement of generated-file update, directive integration, localization validation, RH-W-0045 scanning, RH-W-0022 relationships, or RH-W-0066 routing.
 
 ## Lifecycle And Human Decision
 
-RH-W-0044 remains `proposed`. The owner approved the compared set, contract-unit boundary, suggestion schema, one-at-a-time acceptance flow, and narrow intentional-divergence declaration. Implementation planning and implementation require later, separate authorization.
+RH-W-0044 remains `proposed`. The owner approved the compared set, contract-unit boundary, suggestion schema, one-at-a-time acceptance flow, and narrow intentional-divergence declaration, then accepted the corrected bilingual [implementation plan](rh-w-0044-implementation-plan.md) after focused review on a local, not-yet-delivered branch. Implementation is the next separately authorized phase and remains unauthorized.
