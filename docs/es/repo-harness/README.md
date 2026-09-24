@@ -31,8 +31,8 @@
 | [Plan de implementación RH-W-0048](rh-w-0048-implementation-plan.md) | Registro histórico de ejecución con TDD estricto; el roadmap posee el trabajo restante del ciclo |
 | [Diseño RH-W-0046/RH-W-0018](rh-w-0046-rh-w-0018-design.md) | Diseño conjunto aprobado por delegación del propietario sobre consentimiento de fetch y preferencias de menos preguntas; RH-W-0046 completada sigue separada de RH-W-0018 aplazada |
 | [Plan RH-W-0046](rh-w-0046-implementation-plan.md) | Registro histórico de ejecución RH-W-0046 completada; el límite exacto de consentimiento solo puede reabrirse por regresión |
-| [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado por el propietario; plan corregido aceptado localmente, implementación sin autorización |
-| [Plan de implementación RH-W-0044](rh-w-0044-implementation-plan.md) | Plan corregido con pruebas primero, aceptado por el propietario en una rama local todavía no entregada; implementación sin autorización |
+| [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado por el propietario; plan corregido entregado mediante PR #226, implementación sin autorización |
+| [Plan de implementación RH-W-0044](rh-w-0044-implementation-plan.md) | Plan corregido con pruebas primero, aceptado por el propietario y entregado mediante PR #226; implementación sin autorización |
 | [Diseño RH-W-0022](rh-w-0022-design.md) | Diseño mínimo de relaciones documentales declaradas aprobado por el propietario; planificación e implementación siguen sin autorización |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno entregado de backup local de memoria y continuidad entre fuentes |
 | [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan aprobado y entregado de implementacion de continuidad nativa |

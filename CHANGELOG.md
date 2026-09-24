@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-24
 
+- Delivered the corrected bilingual RH-W-0044 implementation plan through [PR #226](https://github.com/LCubero/repo-harness-builder/pull/226), squash-merged at 2026-09-24T19:07:16Z as `d3acaa750d4416d994e92e6b1cb56bafacab67d2`; issue #225 closed. RH-W-0044 remains `proposed`; product implementation requires separate authorization.
+
 - Delivered the fixed-path startup conversation-language JSON reader and generated one-read session-start contract to `origin/main` as squash `644701c7c5b7241508096cd86c1f6569c693cc70`. One owner-supplied fresh Pi session observed installed reader `valid`/`espanol` and a Spanish reply; this is not a universal live-model guarantee. The local commit does not establish a product PR number or issue closure. RH-W-0071 stays `proposed`; three-axis persistence remains deferred.
 
 - Documented the owner-delegated [issue #220](https://github.com/LCubero/repo-harness-builder/issues/220) format decision: one future ignored JSON shared preference owner replaces the unimplemented Markdown proposal, initially for explicit conversation language. RH-W-0071/RH-W-0082 remain proposed, RH-W-0018 deferred, and completed RH-W-0031 precedence and separate fetch consent remain intact. No preference file, runtime reader, source/test change, generated skill, or delivery is claimed.
