@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-24
+
+- Se documentó la decisión de formato delegada por el propietario bajo [issue #220](https://github.com/LCubero/repo-harness-builder/issues/220): un único propietario JSON ignorado futuro reemplaza la propuesta Markdown no implementada, inicialmente para idioma explícito de conversación. RH-W-0071/RH-W-0082 siguen `proposed`, RH-W-0018 `deferred`; se preservan precedencia RH-W-0031 completada y consentimiento fetch separado. No se afirman archivo de preferencias, lector de runtime, cambios de fuente/pruebas, skill generada ni entrega.
+
 ## 2026-09-23
 
 - Se entregó la corrección de la salida de continuidad de session-start mediante el [PR #218](https://github.com/LCubero/repo-harness-builder/pull/218), fusionado por squash a las 2026-09-23T20:41:15Z como `4d2bf14f302698d5c50ab6454a4bc099fe68195f`; el issue #217 se cerró a las 20:41:16Z. No se afirma release ni cumplimiento del modelo en vivo.

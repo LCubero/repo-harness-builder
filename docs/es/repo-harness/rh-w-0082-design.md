@@ -10,7 +10,7 @@ Este eje se combina con `response-structure: standard | adhd-friendly` de RH-W-0
 
 ## Contrato compartido de preferencias
 
-El contrato LLM-first compartido aprobado es `.repo-harness/state/preferences/user-preferences.md`. RH-W-0071 posee su diseno completo de persistencia y resolucion en runtime. Esta unidad posee solo la semantica del estilo de explicacion y no puede crear otro archivo, registro, framework de parser, propietario de respuesta, store de consentimiento ni store de ciclo de vida.
+La decision delegada del archivo compartido reemplaza la propuesta Markdown estructurada no implementada: un unico `.repo-harness/state/preferences/user-preferences.json` pequeno e ignorado contiene inicialmente solo idioma explicito de conversacion. El estilo de explicacion RH-W-0082 sigue aplazado; agregarlo al mismo archivo exige autoridad de ciclo de vida separada, sin predefinir su campo sin uso. RH-W-0071 conserva propiedad del diseno compartido; el transporte/API real de runtime sigue sin resolver. Esta unidad posee solo semantica de estilo y no puede crear otro archivo, registro, framework de parser, propietario de respuesta, store de consentimiento ni store de ciclo de vida. Los bytes de instalacion del manifiesto/checker y la aprobacion de consentimiento fetch siguen separados.
 
 `plain-language` nunca elimina terminos tecnicos necesarios, clases de evidencia, contradicciones, contexto de seguridad, limites de autoridad ni compuertas obligatorias. Los explica con palabras directas, frases cortas y definiciones cuando hagan falta. No simplifica por omision.
 

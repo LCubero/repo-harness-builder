@@ -12,7 +12,7 @@ RH-W-0018 may reuse the same **preference pattern**, but not this fetch grant. G
 
 ## Minimal Owner And Format
 
-The ignored, non-authoritative file `.repo-harness/state/preferences/fetch-consent.md` owns only remembered fetch consent. RH-W-0051 owns its parent namespace and Git-ignore behavior. This file does not duplicate lifecycle or approval authority and is distinct from the deferred `.repo-harness/state/preferences/user-preferences.md` presentation agreement.
+The ignored, non-authoritative file `.repo-harness/state/preferences/fetch-consent.md` owns only remembered fetch consent. RH-W-0051 owns its parent namespace and Git-ignore behavior. This file does not duplicate lifecycle or approval authority and is distinct from the deferred shared `.repo-harness/state/preferences/user-preferences.json` design. The earlier Markdown preference agreement was never implemented and is now historical.
 
 The file is structured Markdown with one current grant and these required fields:
 

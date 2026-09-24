@@ -2,7 +2,7 @@
 
 > **Estado: DISENO HISTORICO APROBADO POR EL PROPIETARIO. El subconjunto solo de sesion fue autorizado por separado, verificado, revisado y entregado mediante PR #161 bajo issue #160 el 2026-09-05; el [roadmap](roadmap.md#rh-w-0071) posee entrega y el plan revisado verificacion. Persistencia compartida aplazada; requisito original integro sin completar.**
 
-**Limite vigente:** el [plan revisado](rh-w-0071-implementation-plan.md) posee el subconjunto solo de sesion entregado. Persistencia compartida aplazada, no cancelada; dependencias RH-W-0082/RH-W-0018 intactas. Solo reabrir persistencia exige nueva autorizacion del propietario y reconciliar sus compuertas pendientes.
+**Limite vigente:** el [plan revisado](rh-w-0071-implementation-plan.md) posee el subconjunto solo de sesion entregado. Persistencia compartida aplazada, no cancelada; dependencias RH-W-0082/RH-W-0018 intactas. El diseno delegado por el propietario ahora elige un unico `.repo-harness/state/preferences/user-preferences.json` ignorado inicialmente solo para idioma explicito de conversacion; no autoriza lector ni implementa persistencia. Implementarlo exige autoridad separada y resolver transporte/API de runtime.
 
 ## Diseno historico aprobado (no son instrucciones vigentes de ejecucion)
 
@@ -62,13 +62,19 @@ Exige:
 
 La seguridad, evidencia, autoridad, contradicciones, preguntas bloqueantes y contexto tecnico necesarios nunca se omiten solo por brevedad. RH-W-0067 sigue como propietario de bloques visibles, seguridad setext, explicacion contextual y enrutamiento del contrato de respuesta. RH-W-0071 agrega una seccion de forma especifica del modo al mismo contrato generado nativo, en vez de crear un segundo propietario de respuesta.
 
+## Decision vigente de preferencias compartidas (reemplaza la propuesta historica Markdown)
+
+La propuesta Markdown estructurada aprobada pero no implementada que aparece abajo es historia, no un contrato ejecutable. Un unico archivo pequeno e ignorado `.repo-harness/state/preferences/user-preferences.json` sera el archivo compartido de preferencias. Su ejemplo v1 completo es `{ "conversationLanguage": "espanol" }`; la unica clave es `conversationLanguage`, con valores admitidos `english` o `espanol`. No se define registro de versiones ni claves de ejes sin uso. Se conserva la precedencia RH-W-0031: instruccion humana actual verificada > preferencia explicita persistida > idioma de sesion verificado elegible (solo sin preferencia persistida) > fallback validado del manifiesto > ingles. El contexto opaco no aporta preferencias ni reemplaza procedencia humana. Archivo o clave ausente deja seguir la jerarquia existente. JSON malformado, claves duplicadas o desconocidas, o valor invalido informa el fallo, no aplica la preferencia y sigue al fallback validado del manifiesto (sin fingir en silencio que se cargo la preferencia), con cero escrituras y sin reparacion automatica. Un lector futuro de session-start, despues de raiz y carta, lee valores tipados una sola vez y pasa solo valor y fuente validados, nunca texto arbitrario del archivo. El transporte/API real de runtime sigue sin resolver hasta una implementacion autorizada por separado.
+
+Estructura de respuesta RH-W-0071, estilo de explicacion RH-W-0082 y comportamiento de interaccion RH-W-0018 siguen como ejes independientes aplazados. Agregar cualquiera al mismo archivo compartido exige autoridad de ciclo de vida separada; no se definen campos aun sin uso. Los bytes de instalacion del manifiesto/checker y el almacen separado de aprobacion de consentimiento fetch RH-W-0046 no son preferencias. No se traslada ninguna otra configuracion, consentimiento ni continuidad al archivo.
+
 ## Configuracion y persistencia
 
 La entrevista del builder gana una decision explicita de modo con dos valores conceptuales estables para maquina: `standard` y `adhd-friendly`. Son valores de diseno, no un compromiso con API, flag CLI, nombre de schema ni firma de funcion.
 
 La preferencia persistida pertenece bajo `.repo-harness/state/preferences/`. RH-W-0051 establecio el namespace contenedor `.repo-harness/state/`; RH-W-0071 posee persistencia compartida y semantica de estructura. RH-W-0082 posee estilo de explicacion, RH-W-0018 posee interaccion y RH-W-0046 conserva limites de consentimiento. RH-W-0051 conserva contencion, ignore Git y mecanica de estado local.
 
-El propietario reemplazo el contrato escalar JSON aprobado pero no implementado. Un unico archivo Markdown estructurado e ignorado, `.repo-harness/state/preferences/user-preferences.md`, guarda los tres valores independientes. No tiene frontmatter YAML y contiene exactamente un bloque fenced `repo-harness-preferences` con las tres claves exactas y tokens admitidos. La prosa concisa alrededor da instrucciones al LLM y delimita confianza, pero nunca se transporta como autoridad arbitraria.
+Historicamente, el propietario reemplazo el contrato escalar JSON aprobado pero no implementado. Un unico archivo Markdown estructurado e ignorado, `.repo-harness/state/preferences/user-preferences.md`, guarda los tres valores independientes. No tiene frontmatter YAML y contiene exactamente un bloque fenced `repo-harness-preferences` con las tres claves exactas y tokens admitidos. La prosa concisa alrededor da instrucciones al LLM y delimita confianza, pero nunca se transporta como autoridad arbitraria.
 
 El archivo guarda solo preferencias. Nunca guarda aprobaciones, consentimiento general, credenciales, diagnostico, justificacion, historia personal ni notas autoritativas de forma libre. Las claves ausentes usan defaults independientes. Claves duplicadas, bloque mal formado, claves o valores no admitidos, o varios bloques de maquina producen error de dominio sin aplicacion parcial ni reparacion automatica.
 
@@ -114,7 +120,7 @@ Los dos son una sola adicion en la practica: el chequeo es lo que hace exigible 
 - Un tono neutro para errores pertenece a la seccion `Honesty` existente de los acuerdos de trabajo, que ya exige reportar lo que paso y no lo que se pretendia, no a un modo de presentacion.
 - La regla de espiral de depuracion ya es regla obligatoria: no reintentar indefinidamente, parar con evidencia, pedir una decision.
 
-### Lo que esta revision no cambio
+### Lo que esta revision historica no cambio
 
 Precedencia, el limite de no inferencia, persistencia, la entrevista del constructor, migracion, rollback y el limite de recursos quedan intactos. El contrato externo es mas debil que este diseno justo en el punto que mas importa: resuelve la ambiguedad con `si dudas de si siguen aplicando, aplican`, mientras este diseno la resuelve con tres niveles deterministas y una prohibicion de inferir el modo desde cualquier senal. Esa asimetria es por que esto sigue siendo un contrato nativo y no una adaptacion.
 

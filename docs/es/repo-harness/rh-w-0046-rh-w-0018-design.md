@@ -12,7 +12,7 @@ RH-W-0018 puede reutilizar el mismo **patrón de preferencia**, pero no esta con
 
 ## Propietario y formato mínimos
 
-El archivo ignorado y no autoritativo `.repo-harness/state/preferences/fetch-consent.md` posee únicamente el consentimiento recordado para fetch. RH-W-0051 posee el namespace padre y su exclusión de Git. Este archivo no duplica autoridad de ciclo o aprobación y es distinto del acuerdo aplazado de presentación `.repo-harness/state/preferences/user-preferences.md`.
+El archivo ignorado y no autoritativo `.repo-harness/state/preferences/fetch-consent.md` posee únicamente el consentimiento recordado para fetch. RH-W-0051 posee el namespace padre y su exclusión de Git. Este archivo no duplica autoridad de ciclo o aprobación y es distinto del diseño compartido aplazado `.repo-harness/state/preferences/user-preferences.json`. El acuerdo Markdown de preferencias anterior nunca se implementó y ahora es histórico.
 
 Es Markdown estructurado con una sola concesión vigente y estos campos obligatorios:
 
