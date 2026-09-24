@@ -167,17 +167,16 @@ Completed historical execution: the owner-delegated joint design remains associa
 
 The historical post-closure readback confirmed approved open issue #184 and open PR #185 for commit `380915a` on pushed branch `feat/rh-w-0046-fetch-consent`; before push, the branch was 0 behind/1 ahead of `origin/main`, the PR had exactly `type:feature`, and GitHub reported no checks yet. PR #185 subsequently squash-merged at 2026-09-16T01:47:28Z as commit `101aef39ca9429bec1015c1397fff033ad6a2be6`, and issue #184 closed at 2026-09-16T01:47:30Z. Immediately after fast-forward synchronization, local `main` was at that commit, equaled `origin/main` 0 ahead/0 behind, and had a clean worktree and index. The maintainer explicitly authorized a direct-main exception for this bounded post-merge bilingual documentation reconciliation; that authorization does not claim its documentation commit or push. No release, tag, publication, branch deletion, or post-merge full-suite rerun is claimed. RH-W-0018 behavior is not selected.
 
-### Plan 7: RH-W-0044 compare-and-suggest scope design
+### Plan 7: RH-W-0044 compare-and-suggest implementation
 
-Readiness `design owner-approved; implementation planning unauthorized`. Priority `P2`, prerequisite RH-W-0043 completed. The owner-approved bilingual [design](rh-w-0044-design.md) resolves the compared set, suggestion shape, individual acceptance, and intentional-divergence mechanism. Implementation planning and implementation remain unauthorized.
+Readiness `corrected implementation plan owner-accepted locally, not delivered; implementation authorization pending`. Priority `P2`, prerequisite RH-W-0043 completed. The owner-approved bilingual [design](rh-w-0044-design.md) fixes the behavior boundary, and the locally accepted bilingual [implementation plan](rh-w-0044-implementation-plan.md) defines focused RED/GREEN work with content-bound selection evidence. RH-W-0044 remains `proposed`; implementation is unauthorized.
 
-1. Name the exact set of human-owned documents that are compared; detection already reports `stale`, `missing`, `human-evolved`, `sections-missing`, and `directive-missing` per path, so this unit adds content-level comparison only.
-2. Define what one suggestion contains and how it is presented.
-3. Define one-at-a-time acceptance, with no bulk accept and no overwrite of a human-owned document.
-4. Define how the builder avoids proposing to undo legitimate divergence the repository intended.
-5. Name the RED tests, including one proving a human-owned document stays proposal-only.
+1. Add deterministic, localized contract-unit comparison to the existing render preview/report while preserving current classifications and zero writes.
+2. Enforce one-at-a-time `accept`, ephemeral `keep`, and narrow individually accepted intentional-divergence declarations.
+3. Verify the separately displayed selection-evidence digest before plan construction, then put exactly one accepted human-document action into the existing content-bound plan with fresh source/proposal checks, mixed-transaction atomic rollback, and post-write validation.
+4. Synchronize existing package projections through the established maintenance workflow and reconcile lifecycle owners only after verified, separately authorized implementation.
 
-Human decision recorded: the owner approved the proposed compared document set and intentional-divergence declaration. Any implementation plan requires separate authorization.
+Human decision required: separately authorize or decline implementation. Plan acceptance does not authorize implementation, apply, Git, or delivery.
 
 ### Plan 8: RH-W-0022 declared documentation relationships design
 
@@ -1425,17 +1424,17 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 |---|---|
 | Origin | Owner statement of the goal on 2026-08-19: a new skill version is copied over the repository, run once, and the update reviews the core, key decisions, and tools against what the builder would produce now, then suggests the changes without damaging anything |
 | Priority | P2: regeneration already repairs everything the builder owns, so the update is useful without this unit, but the human-owned half of a harness is where drift actually accumulates and today it is reported only as a missing section or a missing directive. |
-| Dependencies | Completed `RH-W-0043`; the antecedent is satisfied. Only this unit's scope design and advancement remain pending. |
+| Dependencies | Completed `RH-W-0043`; the antecedent is satisfied. The owner-approved design and locally accepted implementation plan fix scope and execution boundaries. |
 | Status | proposed |
-| Completed work | Bounded what already exists so this unit does not rebuild it. Congruence checking already reports `stale`, `missing`, `human-evolved`, `sections-missing`, and `directive-missing` per path, and human-owned documents already stay proposal-only. The owner-approved bilingual [design](rh-w-0044-design.md) names the bounded contract-document set, stable comparison units, exact suggestion shape, one-at-a-time acceptance through the existing content-bound plan, and a narrow inline declaration for intentional divergence. |
-| Remaining work | Implementation planning and implementation require later, separate authorization. |
+| Completed work | Congruence checking already reports `stale`, `missing`, `human-evolved`, `sections-missing`, and `directive-missing` per path, and human-owned documents remain proposal-only. The owner-approved bilingual [design](rh-w-0044-design.md) fixes the behavior boundary. The owner accepted the corrected bilingual [implementation plan](rh-w-0044-implementation-plan.md) after focused review on a locally undelivered branch; it defines content-bound selection evidence verified before plan construction, fail-closed Git-evidence handling, mixed rollback, and final verification. |
+| Remaining work | Separate owner authorization for implementation, then authorized implementation and verification. |
 | Additions | A compare-and-suggest pass over human-owned core documents that presents per-document proposed changes for individual acceptance. |
 | Exclusions | No overwriting of a human-owned document, no bulk accept, no claim of semantic equivalence, and no builder ownership of the roadmap, decisions, or changelog content this repository owns. |
 | Deferrals | none |
 | Rejections | Rejected registering this `ready`. Its scope boundary is the entire risk, which is the same reason `RH-W-0022` stays `proposed`, and an undesigned boundary here would propose edits to the documents holding this project's durable truth. |
 | Evidence | The classification surface already exists: `plan_changes` routes a human-owned path to `existing` with a proposal-only reason at `skill/repo-harness-builder/scripts/harness_tool.py:2085`. The owner-run consumer report listed `REPO-HARNESS.md` and `CHANGELOG.md` as human-evolved plus four documents with missing sections, which is exactly the detection half without the suggestion half. |
-| Decision history | 2026-08-19: registered `proposed` at P2 in the same work unit as `RH-W-0043`, from the owner's description of the update he wants. Recorded as `proposed` rather than `ready` because the compared document set and the acceptance interaction were undesigned. 2026-09-06: after completion of the preceding approved-order item at local commit `0f8e309`, the owner authorized designing the next item, then explicitly approved the resulting bilingual design after the technical approval decision. |
-| Next advancement condition | Separate owner authorization for implementation planning. Design approval alone does not authorize planning or implementation. |
+| Decision history | 2026-08-19: registered `proposed` at P2 in the same work unit as `RH-W-0043`, from the owner's description of the update he wants. Recorded as `proposed` rather than `ready` because the compared document set and the acceptance interaction were undesigned. 2026-09-06: after completion of the preceding approved-order item at local commit `0f8e309`, the owner authorized designing the next item, then explicitly approved the resulting bilingual design after the technical approval decision. 2026-09-18: the owner authorized implementation planning only. 2026-09-19: the owner approved the bilingual plan, authorized a narrow correction after read-only review, and accepted the corrected plan after focused review on a locally undelivered branch. No implementation or delivery authority followed. |
+| Next advancement condition | Separate owner decision on implementation authorization. Local plan acceptance does not authorize implementation. |
 
 ### RH-W-0045
 | Field | Value |

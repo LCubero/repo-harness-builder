@@ -32,7 +32,13 @@
 
 - Se completaron las dos aclaraciones locales RH-W-0093 (#200): el backup opcional de session-stop ahora significa backup externo y la regla de memoria instalada nombra el bloque existente de reanudación primero. Se preservan backup nativo obligatorio, Engram opcional e independiente, esquema y compatibilidad con backups antiguos. Cobertura de regresión y proyecciones sincronizadas; la verificación independiente ejecutó 554 pruebas con 10 omitidas y salida 0 usando aislamiento Git de fixtures solo por proceso. Entregado mediante PR [#201](https://github.com/LCubero/repo-harness-builder/pull/201), fusionado por squash a las 2026-09-20T17:21:24Z como `2e2563355d7218cfe090445092b8398bdcb5288a`; issue #200 se cerró dos segundos después. El candidato exacto revisado pasó verificación independiente de 554 pruebas/10 omitidas/salida 0 en 165.928s. No se afirma aprobación nativa, release ni tag.
 
+## 2026-09-19
+
+- En una rama local todavía no entregada, el propietario aceptó el plan bilingüe de implementación RH-W-0044 corregido después de la revisión enfocada. La corrección separa identidad estable y evidencia de selección ligada a contenido, comprobada antes de construir el plan, y exige cierre seguro ante evidencia Git no disponible y rollback mixto. Esta reconciliación solo documental conserva `proposed`; la implementación sigue sin autorización.
+
 ## 2026-09-18
+
+- Se preparó el plan bilingüe propuesto RH-W-0044 autorizado por el propietario sin cambiar comportamiento del producto. La aceptación del plan y la autorización de implementación permanecieron separadas.
 
 - Se documentó el flujo local al repositorio de límites de sesión: cada sesión de trabajo mantiene una sola funcionalidad, bloqueo, issue u objetivo nombrado coherente; completa su documentación, verificación, revisión y entrega autorizada aplicables; y después usa session-stop antes de que una sesión Pi nueva se reanude mediante session-start. El issue no necesita ser remoto, y no se añadieron cierre forzado, reanudación automática, almacén nuevo ni autoridad.
 
