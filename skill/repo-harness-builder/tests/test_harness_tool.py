@@ -418,6 +418,27 @@ class ApprovalUxTests(unittest.TestCase):
 
 
 class ConversationLanguageBoundaryTests(unittest.TestCase):
+    def test_generated_startup_uses_one_active_runtime_fixed_reader(self):
+        for standalone in (True, False):
+            with self.subTest(standalone=standalone):
+                skill = TOOL.session_start_skill("example", "REPO-HARNESS.md", "MIT", standalone)
+                self.assertEqual(skill.count("read-preference --root <selected-repository-root>"), 1)
+                for path in (
+                    ".claude/skills/repo-harness-builder/scripts/harness_tool.py",
+                    ".opencode/skills/repo-harness-builder/scripts/harness_tool.py",
+                    ".pi/skills/repo-harness-builder/scripts/harness_tool.py",
+                ):
+                    self.assertIn(path, skill)
+                self.assertIn("actual active runtime, not whichever copies happen to exist on disk", skill)
+                self.assertIn("after steps 1 and 2 and before deeper owner reads", skill)
+                self.assertIn("`invalid` supplies no preference", skill)
+                self.assertIn("reader returns exit code 2 with this typed result", skill)
+                self.assertIn("Any other nonzero exit", skill)
+                self.assertIn("`unavailable`: report that continuity could not be read", skill)
+                self.assertIn("validated manifest fallback, then English", skill)
+                self.assertIn("without raw preference bytes", skill)
+                self.assertIn("Do not retry, repair, or write", skill)
+
     def test_fixed_preference_cli_valid_absent_and_invalid_without_writes(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
