@@ -418,6 +418,81 @@ class ApprovalUxTests(unittest.TestCase):
 
 
 class ConversationLanguageBoundaryTests(unittest.TestCase):
+    def test_generated_startup_uses_one_active_runtime_fixed_reader(self):
+        for standalone in (True, False):
+            with self.subTest(standalone=standalone):
+                skill = TOOL.session_start_skill("example", "REPO-HARNESS.md", "MIT", standalone)
+                self.assertEqual(skill.count("read-preference --root <selected-repository-root>"), 1)
+                for path in (
+                    ".claude/skills/repo-harness-builder/scripts/harness_tool.py",
+                    ".opencode/skills/repo-harness-builder/scripts/harness_tool.py",
+                    ".pi/skills/repo-harness-builder/scripts/harness_tool.py",
+                ):
+                    self.assertIn(path, skill)
+                self.assertIn("actual active runtime, not whichever copies happen to exist on disk", skill)
+                self.assertIn("after steps 1 and 2 and before deeper owner reads", skill)
+                self.assertIn("`invalid` supplies no preference", skill)
+                self.assertIn("reader returns exit code 2 with this typed result", skill)
+                self.assertIn("Any other nonzero exit", skill)
+                self.assertIn("`unavailable`: report that continuity could not be read", skill)
+                self.assertIn("validated manifest fallback, then English", skill)
+                self.assertIn("without raw preference bytes", skill)
+                self.assertIn("Do not retry, repair, or write", skill)
+
+    def test_fixed_preference_cli_valid_absent_and_invalid_without_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / TOOL.PREFERENCE_PATH
+
+            def invoke():
+                output = io.StringIO()
+                with contextlib.redirect_stdout(output):
+                    code = TOOL.main(["read-preference", "--root", str(root)])
+                return code, json.loads(output.getvalue())
+
+            self.assertEqual(invoke(), (0, {"status": "absent", "conversationLanguage": None, "source": None}))
+            target.parent.mkdir(parents=True)
+            for text, expected in (
+                ('{"conversationLanguage":"espanol"}', "valid"),
+                ('{"conversationLanguage":"english"}', "valid"),
+                ('{"conversationLanguage":', "invalid"),
+                ('{"conversationLanguage":"english","conversationLanguage":"espanol"}', "invalid"),
+                ('{"conversationLanguage":"english","other":1}', "invalid"),
+                ('{"conversationLanguage":"francais"}', "invalid"),
+                ('{"conversationLanguage":null}', "invalid"),
+                ('{}', "invalid"),
+            ):
+                with self.subTest(text=text):
+                    target.write_text(text, encoding="utf-8")
+                    before = target.read_bytes()
+                    code, report = invoke()
+                    self.assertEqual(code, 0 if expected == "valid" else 2)
+                    self.assertEqual(report["status"], expected)
+                    self.assertEqual(target.read_bytes(), before)
+                    if expected == "invalid":
+                        self.assertEqual(report["diagnostic"], TOOL.PREFERENCE_DIAGNOSTIC)
+                        self.assertEqual(report["conversationLanguage"], None)
+                        self.assertEqual(report["source"], None)
+                    else:
+                        self.assertEqual(report["conversationLanguage"], json.loads(text)["conversationLanguage"])
+                        self.assertEqual(report["source"], "persisted-explicit-preference")
+
+    def test_fixed_preference_rejects_indirection_and_read_errors(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / TOOL.PREFERENCE_PATH
+            target.parent.mkdir(parents=True)
+            target.write_text('{"conversationLanguage":"english"}', encoding="utf-8")
+            with mock.patch.object(Path, "open", side_effect=PermissionError("private payload")):
+                self.assertEqual(TOOL.read_conversation_preference(root)["diagnostic"], TOOL.PREFERENCE_DIAGNOSTIC)
+            target.unlink()
+            try:
+                target.symlink_to(root / "elsewhere")
+            except (OSError, NotImplementedError):
+                pass
+            else:
+                self.assertEqual(TOOL.read_conversation_preference(root)["status"], "invalid")
+
     def resolve(self, **evidence):
         resolver = getattr(
             TOOL,
