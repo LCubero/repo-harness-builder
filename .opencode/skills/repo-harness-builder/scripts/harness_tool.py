@@ -1299,7 +1299,7 @@ def is_indirect(path: Path) -> bool:
     if path.is_symlink():
         return True
     try:
-        attributes = getattr(path.stat(follow_symlinks=False), "st_file_attributes", 0)
+        attributes = getattr(path.lstat(), "st_file_attributes", 0)
     except FileNotFoundError:
         return False
     return bool(attributes & 0x400)
@@ -4865,7 +4865,7 @@ def read_conversation_preference(root: Path) -> dict[str, Any]:
         if path.is_symlink() or is_indirect(path):
             raise ValueError("indirect preference")
         try:
-            mode = path.stat(follow_symlinks=False).st_mode
+            mode = path.lstat().st_mode
         except FileNotFoundError:
             return {"status": "absent", "conversationLanguage": None, "source": None}
         if not stat.S_ISREG(mode):
