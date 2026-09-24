@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 import re
+import stat
 import subprocess
 import sys
 import tempfile
@@ -4851,6 +4852,43 @@ def bootstrap_demo(standalone: bool = False) -> dict[str, Any]:
         return {"status": "pass", "files": written, "check": report["status"]}
 
 
+PREFERENCE_PATH = ".repo-harness/state/preferences/user-preferences.json"
+PREFERENCE_DIAGNOSTIC = "conversation preference is invalid or unreadable"
+
+
+def read_conversation_preference(root: Path) -> dict[str, Any]:
+    """Read only the fixed, direct repository preference; never expose file bytes."""
+    try:
+        canonical = root.resolve(strict=True)
+        require(canonical.is_dir() and not is_indirect(root), "invalid root")
+        path = guarded_target(canonical, PREFERENCE_PATH)
+        if path.is_symlink() or is_indirect(path):
+            raise ValueError("indirect preference")
+        try:
+            mode = path.stat(follow_symlinks=False).st_mode
+        except FileNotFoundError:
+            return {"status": "absent", "conversationLanguage": None, "source": None}
+        if not stat.S_ISREG(mode):
+            raise ValueError("non-regular preference")
+        with path.open("rb") as stream:
+            raw = stream.read()
+
+        def unique_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+            result: dict[str, Any] = {}
+            for key, value in pairs:
+                if key in result:
+                    raise ValueError("duplicate preference key")
+                result[key] = value
+            return result
+
+        data = json.loads(raw.decode("utf-8"), object_pairs_hook=unique_pairs)
+        if not isinstance(data, dict) or set(data) != {"conversationLanguage"} or not isinstance(data["conversationLanguage"], str) or data["conversationLanguage"] not in CONVERSATION_LANGUAGES:
+            raise ValueError("invalid preference schema")
+        return {"status": "valid", "conversationLanguage": data["conversationLanguage"], "source": "persisted-explicit-preference"}
+    except (OSError, ValueError, UnicodeError, ContractError):
+        return {"status": "invalid", "conversationLanguage": None, "source": None, "diagnostic": PREFERENCE_DIAGNOSTIC}
+
+
 def main(argv: Optional[list[str]] = None) -> int:
     """Run the command-line interface."""
     require(tuple(sys.version_info[:2]) >= MIN_PYTHON, "Python 3.10+ is required")
@@ -4876,6 +4914,8 @@ def main(argv: Optional[list[str]] = None) -> int:
             child.add_argument("--project-id", help="exact normalized project identifier the authority context declares; builder activation only")
             child.add_argument("--authority-context-file", help="path to the exact canonical authority context, or - to read it from stdin; builder activation only")
             child.add_argument("--approved-generation-sha256", help="generation digest printed by the approved builder preview; builder apply only")
+    preference = sub.add_parser("read-preference", help="read the fixed repository conversation preference")
+    preference.add_argument("--root", type=Path, required=True)
     archive = sub.add_parser("archive", help="inspect, preview, or apply one owned archive copy")
     archive.add_argument("--root", type=Path, required=True)
     archive.add_argument("--source", required=True, help="one repository-relative manifest-owned regular file")
@@ -4890,6 +4930,10 @@ def main(argv: Optional[list[str]] = None) -> int:
         if args.command == "self-test":
             print(dump_json(bootstrap_demo(args.standalone)), end="")
             return 0
+        if args.command == "read-preference":
+            result = read_conversation_preference(args.root)
+            print(dump_json(result), end="")
+            return 2 if result["status"] == "invalid" else 0
         root = args.root.resolve(strict=True)
         require(root.is_dir(), "root must be a directory")
         if args.command == "archive":
