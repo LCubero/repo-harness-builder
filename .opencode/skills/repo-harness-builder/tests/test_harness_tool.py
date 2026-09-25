@@ -3523,6 +3523,49 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
                         self.assertIn(relative, uncertain["ambiguousPaths"])
                         self.assertEqual(uncertain["writes"], 0)
 
+    def test_translation_sync_literal_omission_is_locale_scoped_and_fail_closed(self):
+        for locale, relative, literal, heading in (
+            ("en", "docs/repo-harness/i18n-maintenance.md",
+             "Update the factual owner first, then update its Spanish peer in the same work unit. Equivalent meaning is required; literal heading or sentence equality is not. Locale-specific phrasing is allowed when facts, commands, paths, constraints, and outcomes remain equivalent.",
+             "## Translation Sync"),
+            ("es", "docs/es/repo-harness/i18n-maintenance.md",
+             "Actualice primero el propietario factual y luego su par en espanol dentro de la misma unidad de trabajo. Se exige significado equivalente, no igualdad literal de encabezados u oraciones. Se permite redaccion propia de cada idioma si los hechos, comandos, rutas, restricciones y resultados permanecen equivalentes.",
+             "## Sincronizacion de traducciones"),
+        ):
+            with self.subTest(locale=locale), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                outputs = install(root, documentation_languages=["en", "es"])
+                subprocess.run(("git", "-C", str(root), "init", "-q"), check=True)
+                subprocess.run(("git", "-C", str(root), "add", "--", relative), check=True)
+                rendered = outputs[relative]
+                self.assertIn("<!-- doc-role:translation-sync -->\n" + heading, rendered)
+                self.assertEqual(rendered.count(literal + "\n"), 1)
+                path = root / relative
+                for newline in ("\n", "\r\n"):
+                    with self.subTest(newline=repr(newline)):
+                        text = rendered.replace("\n", newline)
+                        line = literal + newline
+                        path.write_bytes(text.replace(line, "").encode("utf-8"))
+                        before = path.read_bytes()
+                        report = self.preview(root, outputs)
+                        self.assertEqual(report["writes"], 0)
+                        self.assertEqual(len(report["suggestions"]), 1)
+                        item = report["suggestions"][0]
+                        self.assertEqual((item["path"], item["locale"], item["ownerRole"],
+                                          item["contractUnitId"], item["proposedBytes"]),
+                                         (relative, locale, "translation-sync", "translation-sync/factual-owner-peer", line))
+                        self.assertEqual(item["sourceSha256"], hashlib.sha256(before).hexdigest())
+                        self.assertEqual(path.read_bytes(), before)
+                        for changed in (text.replace(line, "Project-specific translation wording." + newline),
+                                        text.replace(line, "").replace("<!-- doc-role:translation-sync -->" + newline + heading,
+                                                                       heading + newline + "<!-- doc-role:translation-sync -->"),
+                                        text.replace(line, "").replace(heading, heading + newline + "Unrelated prose.")):
+                            path.write_bytes(changed.encode("utf-8"))
+                            uncertain = self.preview(root, outputs)
+                            self.assertEqual(uncertain["suggestions"], [])
+                            self.assertIn(relative, uncertain["ambiguousPaths"])
+                            self.assertEqual(uncertain["writes"], 0)
+
     def test_unavailable_git_tracked_file_evidence_fails_closed_with_zero_suggestions_and_writes(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

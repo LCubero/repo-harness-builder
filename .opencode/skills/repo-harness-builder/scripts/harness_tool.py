@@ -3341,6 +3341,12 @@ SUGGESTION_UNITS = {
     "docs/es/repo-harness/usage.md": (
         ("overview/three-generated-skills-loop", "Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vigente la documentacion durable y deje una transferencia verificada."),
     ),
+    "docs/repo-harness/i18n-maintenance.md": (
+        ("translation-sync/factual-owner-peer", "Update the factual owner first, then update its Spanish peer in the same work unit. Equivalent meaning is required; literal heading or sentence equality is not. Locale-specific phrasing is allowed when facts, commands, paths, constraints, and outcomes remain equivalent."),
+    ),
+    "docs/es/repo-harness/i18n-maintenance.md": (
+        ("translation-sync/factual-owner-peer", "Actualice primero el propietario factual y luego su par en espanol dentro de la misma unidad de trabajo. Se exige significado equivalente, no igualdad literal de encabezados u oraciones. Se permite redaccion propia de cada idioma si los hechos, comandos, rutas, restricciones y resultados permanecen equivalentes."),
+    ),
 }
 
 SUGGESTION_ELIGIBLE = frozenset({
@@ -3386,6 +3392,8 @@ def human_suggestion_preview(
             ".repo-harness/rules/response-contract.md": ("## Visibility\n", "\n## Contextual Explanation", "visibility"),
             "docs/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Daily Workflow", "overview"),
             "docs/es/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Flujo diario", "overview"),
+            "docs/repo-harness/i18n-maintenance.md": ("<!-- doc-role:translation-sync -->\n## Translation Sync\n", "\n<!-- doc-role:link-validation -->", "translation-sync"),
+            "docs/es/repo-harness/i18n-maintenance.md": ("<!-- doc-role:translation-sync -->\n## Sincronizacion de traducciones\n", "\n<!-- doc-role:link-validation -->", "translation-sync"),
         }[relative]
         if rendered.count(anchor) != 1 or current.count(anchor) != 1:
             ambiguous_paths.append(relative)
