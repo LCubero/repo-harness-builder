@@ -1,6 +1,6 @@
 # RH-W-0044 Human-Owned Document Suggestion Design
 
-> **Status: OWNER-APPROVED DESIGN; CORRECTED IMPLEMENTATION PLAN ACCEPTED LOCALLY. RH-W-0044 remains `proposed`; implementation is unauthorized.**
+> **Current status: owner-approved design; RH-W-0044 remains `proposed`. Two partial preview slices are locally committed and natively reviewed; R44-1 remains open, R44-2/R44-3 untouched, and R44-4 documentation reconciliation is in progress. No product delivery or complete implementation is claimed.**
 
 ## Decision
 
@@ -107,4 +107,6 @@ RH-W-0022 retains declared cross-document relationships. RH-W-0066 may route a f
 
 ## Lifecycle And Human Decision
 
-RH-W-0044 remains `proposed`. The owner approved the compared set, contract-unit boundary, suggestion schema, one-at-a-time acceptance flow, and narrow intentional-divergence declaration, then accepted the corrected bilingual [implementation plan](rh-w-0044-implementation-plan.md) after focused review on a local, not-yet-delivered branch. Implementation is the next separately authorized phase and remains unauthorized.
+The following design-approval account records the historical boundary before implementation authorization. Current partial progress is stated in the status notice above.
+
+RH-W-0044 remains `proposed`. The owner approved the compared set, contract-unit boundary, suggestion schema, one-at-a-time acceptance flow, and narrow intentional-divergence declaration, then accepted the corrected bilingual [implementation plan](rh-w-0044-implementation-plan.md) after focused review on a local, not-yet-delivered branch. Implementation was the next separately authorized phase and had not yet been authorized at that time.

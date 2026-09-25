@@ -1,6 +1,6 @@
 # RH-W-0044 Human-Owned Document Suggestion Implementation Plan
 
-> **Status: corrected plan accepted by the owner; lifecycle `proposed`.** After focused review and the narrow content-binding correction, the owner accepted this bilingual plan only. Implementation remains a separate, unauthorized phase.
+> **Current status: corrected plan accepted; lifecycle `proposed`.** Owner-authorized rulebook-core (`63220c047e4e3c589f274f36ac1462c478618763`) and bilingual usage-overview (`f31c49446b770f4502e9f5c40dc217bd75757276`) preview slices are locally committed and natively reviewed. R44-1 remains open for other EN/ES families; R44-2/R44-3 are untouched, and R44-4 documentation reconciliation is in progress. No product push, PR, merge, release, or complete implementation is claimed.
 
 Derived only from the owner-approved [design](rh-w-0044-design.md). Spanish peer: [rh-w-0044-implementation-plan.md](../es/repo-harness/rh-w-0044-implementation-plan.md).
 

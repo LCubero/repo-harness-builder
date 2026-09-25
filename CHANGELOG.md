@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-25
+
+- Owner-authorized RH-W-0044 preview slices were independently verified, locally committed as `63220c047e4e3c589f274f36ac1462c478618763` (rulebook core) and `f31c49446b770f4502e9f5c40dc217bd75757276` (bilingual usage overview), and natively reviewed. R44-1 remains partial; R44-2/R44-3 are untouched and R44-4 documentation reconciliation is in progress. No product push, PR, merge, release, or complete implementation is claimed; lifecycle remains `proposed`.
+
 ## 2026-09-24
 
 - Delivered the corrected bilingual RH-W-0044 implementation plan through [PR #226](https://github.com/LCubero/repo-harness-builder/pull/226), squash-merged at 2026-09-24T19:07:16Z as `d3acaa750d4416d994e92e6b1cb56bafacab67d2`; issue #225 closed. RH-W-0044 remains `proposed`; product implementation requires separate authorization.

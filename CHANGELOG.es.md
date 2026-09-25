@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-25
+
+- Las porciones de vista previa RH-W-0044 autorizadas por el propietario se verificaron independientemente, se confirmaron localmente como `63220c047e4e3c589f274f36ac1462c478618763` (núcleo del rulebook) y `f31c49446b770f4502e9f5c40dc217bd75757276` (resumen bilingüe de uso), y recibieron revisión nativa. R44-1 sigue parcial; R44-2/R44-3 no se han iniciado y R44-4 está reconciliando la documentación. No se afirma push, PR de producto, fusión, release ni implementación completa; el ciclo permanece `proposed`.
+
 ## 2026-09-24
 
 - Se entregó el plan de implementación bilingüe corregido RH-W-0044 mediante el [PR #226](https://github.com/LCubero/repo-harness-builder/pull/226), fusionado por squash a las 2026-09-24T19:07:16Z como `d3acaa750d4416d994e92e6b1cb56bafacab67d2`; el issue #225 está cerrado. RH-W-0044 permanece `proposed`; implementar el producto requiere autorización separada.

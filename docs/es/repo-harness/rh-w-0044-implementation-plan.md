@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0044 de sugerencias para documentos humanos
 
-> **Estado: plan corregido aceptado por el propietario; ciclo `proposed`.** Tras la revisión enfocada y la corrección acotada del vínculo de contenido, el propietario aceptó solo este plan bilingüe. La implementación sigue siendo una fase separada y no autorizada.
+> **Estado vigente: plan corregido aceptado; ciclo `proposed`.** Las porciones de vista previa del núcleo del rulebook (`63220c047e4e3c589f274f36ac1462c478618763`) y del resumen bilingüe de uso (`f31c49446b770f4502e9f5c40dc217bd75757276`), autorizadas por el propietario, están confirmadas en commits locales y revisadas de forma nativa. R44-1 sigue abierto para otras familias EN/ES; R44-2/R44-3 no se han iniciado y R44-4 está reconciliando la documentación. No se afirma push, PR de producto, fusión, release ni implementación completa.
 
 Derivado solo del [diseno](rh-w-0044-design.md) aprobado. Par canonico: [rh-w-0044-implementation-plan.md](../../repo-harness/rh-w-0044-implementation-plan.md).
 

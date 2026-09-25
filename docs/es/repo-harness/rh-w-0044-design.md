@@ -1,6 +1,6 @@
 # Diseño RH-W-0044 de sugerencias para documentos de propiedad humana
 
-> **Estado: DISEÑO APROBADO Y PLAN DE IMPLEMENTACIÓN CORREGIDO ACEPTADO LOCALMENTE POR EL PROPIETARIO. RH-W-0044 permanece `proposed`; la implementación no está autorizada.**
+> **Estado vigente: diseño aprobado; RH-W-0044 permanece `proposed`. Dos porciones parciales de vista previa están confirmadas localmente y revisadas de forma nativa; R44-1 sigue abierto, R44-2/R44-3 no se han iniciado y R44-4 está reconciliando la documentación. No se afirma entrega de producto ni implementación completa.**
 
 ## Decisión
 
@@ -90,4 +90,6 @@ Solo participan idiomas declarados. Inglés y español usan sugerencias y acepta
 
 ## Ciclo de vida y decisión humana
 
-RH-W-0044 permanece `proposed`. El propietario aprobó el conjunto, las unidades, el esquema, la aceptación individual y la divergencia, y después de la revisión enfocada aceptó el [plan de implementación bilingüe](rh-w-0044-implementation-plan.md) corregido en una rama local todavía no entregada. La implementación es la siguiente fase con autorización separada y permanece sin autorizar.
+El siguiente relato de aprobación del diseño conserva el límite histórico anterior a la autorización de implementación; el estado parcial vigente figura arriba.
+
+RH-W-0044 permanece `proposed`. El propietario aprobó el conjunto, las unidades, el esquema, la aceptación individual y la divergencia, y después de la revisión enfocada aceptó el [plan de implementación bilingüe](rh-w-0044-implementation-plan.md) corregido en una rama local todavía no entregada. La implementación era la siguiente fase con autorización separada y aún no estaba autorizada en aquel momento.
