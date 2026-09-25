@@ -3420,6 +3420,38 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
                 "- Do not introduce unrelated scope. This project also protects local notes."), encoding="utf-8")
             self.assertEqual(self.preview(root, outputs)["suggestions"], [])
 
+    def test_english_response_visibility_exact_omission_and_paraphrase_boundary(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            relative = ".repo-harness/rules/response-contract.md"
+            subprocess.run(("git", "-C", str(root), "add", "--", relative), check=True)
+            literal = "- Never mix forms, use `=` for information or `+` for questions, or add side borders/corners.\n"
+            rendered = outputs[relative]
+            self.assertEqual(rendered.count(literal), 1)
+            path = root / relative
+            for newline in ("\n", "\r\n"):
+                with self.subTest(newline=repr(newline)):
+                    text = rendered.replace("\n", newline)
+                    line = literal.replace("\n", newline)
+                    path.write_bytes(text.replace(line, "").encode("utf-8"))
+                    before = path.read_bytes()
+                    report = self.preview(root, outputs)
+                    self.assertEqual(report["writes"], 0)
+                    self.assertEqual(len(report["suggestions"]), 1)
+                    item = report["suggestions"][0]
+                    self.assertEqual((item["path"], item["locale"], item["ownerRole"],
+                                      item["contractUnitId"], item["classification"], item["proposedBytes"]),
+                                     (relative, "en", "visibility", "visibility/never-mix-forms",
+                                      "missing-obligation", line))
+                    self.assertEqual(item["sourceSha256"], hashlib.sha256(before).hexdigest())
+                    self.assertEqual(path.read_bytes(), before)
+                    path.write_bytes(text.replace(line, "- Keep response forms distinct." + newline).encode("utf-8"))
+                    uncertain = self.preview(root, outputs)
+                    self.assertEqual(uncertain["suggestions"], [])
+                    self.assertIn(relative, uncertain["ambiguousPaths"])
+                    self.assertEqual(uncertain["writes"], 0)
+
     def test_usage_overview_exact_omission_and_paraphrase_boundary(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

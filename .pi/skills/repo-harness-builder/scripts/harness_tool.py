@@ -3332,6 +3332,9 @@ SUGGESTION_UNITS = {
         ("hard-rules/do-not-introduce-unrelated-scope", "- Do not introduce unrelated scope."),
         ("hard-rules/do-not-continue-automatically", "- Do not continue automatically into unrequested tasks."),
     ),
+    ".repo-harness/rules/response-contract.md": (
+        ("visibility/never-mix-forms", "- Never mix forms, use `=` for information or `+` for questions, or add side borders/corners."),
+    ),
     "docs/repo-harness/usage.md": (
         ("overview/generated-skills-loop", "Use the three generated skills as a loop: recover context, keep durable documentation current, then leave a verified handoff."),
     ),
@@ -3342,6 +3345,7 @@ SUGGESTION_UNITS = {
 
 SUGGESTION_ELIGIBLE = frozenset({
     RULEBOOK_PATH, "REPO-HARNESS.es.md", "README.md", "README.es.md",
+    ".repo-harness/rules/response-contract.md",
     "docs/repo-harness/README.md", "docs/repo-harness/usage.md",
     "docs/repo-harness/i18n-maintenance.md", "docs/es/repo-harness/README.md",
     "docs/es/repo-harness/usage.md", "docs/es/repo-harness/i18n-maintenance.md",
@@ -3379,6 +3383,7 @@ def human_suggestion_preview(
             continue
         anchor, boundary, owner_role = {
             RULEBOOK_PATH: ("## Hard Rules\n", "\n## Decision Gates", "hard-rules"),
+            ".repo-harness/rules/response-contract.md": ("## Visibility\n", "\n## Contextual Explanation", "visibility"),
             "docs/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Daily Workflow", "overview"),
             "docs/es/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Flujo diario", "overview"),
         }[relative]
