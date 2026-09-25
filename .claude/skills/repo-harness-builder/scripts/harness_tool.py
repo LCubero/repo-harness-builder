@@ -3325,6 +3325,9 @@ if __name__ == "__main__":
 
 SUGGESTION_CONTRACT_VERSION = "repo-harness-builder/human-suggestion/v1"
 SUGGESTION_CHOICES = ["accept", "keep", "declare-intentional-divergence"]
+DIVERGENCE_MARKER = re.compile(r"^<!-- repo-harness:accepted-divergence ([a-z0-9][a-z0-9/-]*) -->$")
+# Registered authority and owner-routing units are never suppressible.
+NON_SUPPRESSIBLE_SUGGESTION_ROLES = frozenset({"hard-rules", "visibility"})
 # Only uniquely anchored, standalone rendered obligations are safe to insert without
 # interpreting surrounding project prose. Other rendered text is evidence, not a patch.
 SUGGESTION_UNITS = {
@@ -3369,7 +3372,9 @@ def human_suggestion_preview(
     if tracked is None:
         return unavailable
     suggestions: list[dict[str, Any]] = []
+    marker_proposals: list[dict[str, Any]] = []
     ambiguous_paths: list[str] = []
+    accepted_divergences: list[dict[str, str]] = []
     for relative in sorted(SUGGESTION_ELIGIBLE | SUGGESTION_UNITS.keys()):
         if relative not in outputs or relative not in tracked:
             continue
@@ -3407,6 +3412,33 @@ def human_suggestion_preview(
         rendered_lines = rendered_section.splitlines()
         current_lines = current_section.splitlines()
         obligations = {literal for _, literal in units}
+        markers = [line for line in current.splitlines() if "repo-harness:accepted-divergence" in line]
+        valid_markers: dict[str, str] = {}
+        invalid_marker = False
+        for marker in markers:
+            match = DIVERGENCE_MARKER.fullmatch(marker)
+            unit = match.group(1) if match else None
+            if (unit is None or unit in valid_markers or unit not in dict(units)
+                    or owner_role in NON_SUPPRESSIBLE_SUGGESTION_ROLES
+                    or current_section.splitlines().count(marker) != 1
+                    or dict(units)[unit] in current_lines):
+                invalid_marker = True
+                break
+            valid_markers[unit] = marker
+        if invalid_marker:
+            ambiguous_paths.append(relative)
+            continue
+        for unit, marker in valid_markers.items():
+            current_lines[current_lines.index(marker)] = dict(units)[unit]
+        # A declaration belongs at the exact rendered unit position, not merely
+        # somewhere in the same section. Other registered omissions remain allowed.
+        if valid_markers:
+            expected = [line for line in rendered_lines if line not in obligations
+                        or line in (dict(units)[unit] for unit in valid_markers)
+                        or line in current_lines]
+            if current_lines != expected:
+                ambiguous_paths.append(relative)
+                continue
         if any(rendered_lines.count(literal) != 1 for literal in obligations):
             ambiguous_paths.append(relative)
             continue
@@ -3419,13 +3451,14 @@ def human_suggestion_preview(
         if retained != actual:
             ambiguous_paths.append(relative)
             continue
+        accepted_divergences.extend({"path": relative, "contractUnitId": unit} for unit in valid_markers)
         newline = "\r\n" if b"\r\n" in source and b"\n" not in source.replace(b"\r\n", b"") else "\n"
         for unit_id, obligation in units:
             # Match complete lines only inside the owned role; other prose is ambiguous.
             if rendered_section.splitlines().count(obligation) != 1:
                 ambiguous_paths.append(relative)
                 continue
-            if any(line == obligation or line.startswith(obligation + " ") for line in current_section.splitlines()):
+            if unit_id in valid_markers or any(line == obligation or line.startswith(obligation + " ") for line in current_section.splitlines()):
                 continue
             # The entire owner differs only by registered literal omissions.
             lines = rendered_section.splitlines(keepends=True)
@@ -3458,8 +3491,36 @@ def human_suggestion_preview(
                 "proposedPreview": (preceding + proposed + next_line)[:320],
                 "choices": list(SUGGESTION_CHOICES),
             })
+            if owner_role not in NON_SUPPRESSIBLE_SUGGESTION_ROLES:
+                marker_bytes = "<!-- repo-harness:accepted-divergence " + unit_id + " -->" + newline
+                marker_id = digest_text(canonical_json([SUGGESTION_CONTRACT_VERSION, locale, relative, unit_id, "marker"]))
+                marker_evidence = digest_text(canonical_json([
+                    SUGGESTION_CONTRACT_VERSION, marker_id, locale, relative, unit_id,
+                    source_sha, "insert-marker", marker_bytes,
+                ]))
+                marker_proposals.append({"suggestionId": marker_id, "suggestionEvidenceSha256": marker_evidence,
+                                         "path": relative, "locale": locale, "contractUnitId": unit_id,
+                                         "sourceSha256": source_sha, "actionKind": "insert-marker",
+                                         "proposedBytes": marker_bytes,
+                                         "reason": "Declare intentional divergence for this exact suppressible unit.",
+                                         "choices": ["declare-intentional-divergence"]})
     return {"status": "available", "classification": "ambiguous" if ambiguous_paths else "available",
-            "ambiguousPaths": sorted(set(ambiguous_paths)), "suggestions": suggestions, "writes": 0}
+            "ambiguousPaths": sorted(set(ambiguous_paths)), "acceptedDivergences": accepted_divergences,
+            "suggestions": suggestions, "markerProposals": marker_proposals, "writes": 0}
+
+
+def human_suggestion_choice(root: Path, outputs: Mapping[str, str], choice: str,
+                            suggestion_id: str, evidence_sha256: str,
+                            execute: Callable[..., subprocess.CompletedProcess[str]] = subprocess.run) -> dict[str, Any]:
+    """Recompare a single choice; selection has no executable write authority."""
+    report = human_suggestion_preview(root, outputs, execute=execute)
+    pool = report.get("markerProposals", []) if choice == "declare-intentional-divergence" else report["suggestions"]
+    matches = [item for item in pool if item["suggestionId"] == suggestion_id
+               and item["suggestionEvidenceSha256"] == evidence_sha256]
+    if choice not in SUGGESTION_CHOICES or len(matches) != 1:
+        return {"status": "rejected", "writes": 0}
+    return {"status": "kept" if choice == "keep" else "selected-preview-only",
+            "suggestion": matches[0], "writes": 0}
 
 
 def human_owned(relative: str, rulebook_path: str) -> bool:
@@ -5046,6 +5107,9 @@ def main(argv: Optional[list[str]] = None) -> int:
             child.add_argument("--conversation-language", choices=sorted(APPROVAL_DOMAINS), help="language the generated sessions converse in; ask the human, defaults to english")
             child.add_argument("--no-codegraph-ignore", dest="ignore_codegraph", action="store_false", help="do not add .codegraph/ to the root .gitignore")
             child.add_argument("--activation", choices=("builder", "maintenance"), default="maintenance", help="declare an explicitly active repo-harness-builder skill execution; only that activation uses the strict approval domain")
+            child.add_argument("--suggestion-choice", choices=SUGGESTION_CHOICES)
+            child.add_argument("--suggestion-id")
+            child.add_argument("--suggestion-evidence-sha256")
             child.add_argument("--apply", action="store_true", help="create the absent files listed in the plan")
             child.add_argument("--approved-plan-sha256", help="digest printed by the approved preview")
             child.add_argument("--approval", help="exact approval answer from the active report-language domain; builder activation only")
@@ -5161,13 +5225,16 @@ def main(argv: Optional[list[str]] = None) -> int:
         blocked_paths = {item["path"] for item in plan["blocked"]}
         entry_points = {name: path for name, path in entry_points.items() if path not in blocked_paths}
         builder_active = args.activation == "builder"
+        selection = (args.suggestion_choice, args.suggestion_id, args.suggestion_evidence_sha256)
+        require(not any(selection) or (all(selection) and not args.apply),
+                "suggestion selection requires choice, ID and evidence in read-only preview; --apply is forbidden")
         if not args.apply:
             strict = (
                 {"approvalPrompt": domain["prompt"], "approvalAnswers": [domain["approve"], domain["deny"]]}
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), "gitState": git_state, "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), **({"suggestionSelection": human_suggestion_choice(root, outputs, *selection)} if all(selection) else {}), "gitState": git_state, "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")

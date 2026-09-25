@@ -3251,6 +3251,163 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
     def preview(self, root, outputs, execute=None):
         return TOOL.human_suggestion_preview(root, outputs, execute=execute or subprocess.run)
 
+    def test_render_cli_selects_exact_marker_and_rejects_stale_or_apply_without_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            relative = "docs/repo-harness/usage.md"
+            literal = TOOL.SUGGESTION_UNITS[relative][0][1]
+            path = root / relative
+            path.write_text(outputs[relative].replace(literal + "\n", ""), encoding="utf-8")
+            before = path.read_bytes()
+            base = [sys.executable, "-B", str(SCRIPT), "render", "--root", str(root),
+                    "--project-name", "example", "--standalone"]
+            preview = subprocess.run(base, check=True, capture_output=True, text=True)
+            marker = next(item for item in json.loads(preview.stdout)["humanSuggestions"]["markerProposals"]
+                          if item["path"] == relative)
+            flags = ["--suggestion-choice", "declare-intentional-divergence",
+                     "--suggestion-id", marker["suggestionId"],
+                     "--suggestion-evidence-sha256", marker["suggestionEvidenceSha256"]]
+            selected = subprocess.run(base + flags, check=True, capture_output=True, text=True)
+            self.assertEqual(json.loads(selected.stdout)["suggestionSelection"]["status"], "selected-preview-only")
+            self.assertEqual(json.loads(selected.stdout)["writes"], 0)
+            stale = subprocess.run(base + flags[:-1] + ["0" * 64], check=True, capture_output=True, text=True)
+            self.assertEqual(json.loads(stale.stdout)["suggestionSelection"], {"status": "rejected", "writes": 0})
+            refused = subprocess.run(base + flags + ["--apply"], capture_output=True, text=True)
+            self.assertEqual(refused.returncode, 2)
+            self.assertEqual(path.read_bytes(), before)
+
+    def test_keep_is_ephemeral_and_each_path_exposes_only_one_suggestion(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            for _, literal in TOOL.SUGGESTION_UNITS[RULEBOOK]:
+                outputs[RULEBOOK] = outputs[RULEBOOK].replace(literal + "\n", "")
+            path.write_text(outputs[RULEBOOK], encoding="utf-8")
+            rendered = TOOL.render("example", [])
+            first = self.preview(root, rendered)
+            self.assertEqual(len(first["suggestions"]), 1)
+            self.assertEqual(TOOL.human_suggestion_choice(root, rendered, "keep", first["suggestions"][0]["suggestionId"], first["suggestions"][0]["suggestionEvidenceSha256"])["status"], "kept")
+            self.assertEqual(self.preview(root, rendered), first)
+
+    def test_accepting_one_suggestion_requires_fresh_comparison_before_another(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            path.write_text("".join(line for line in outputs[RULEBOOK].splitlines(keepends=True) if line.rstrip("\r\n") not in dict(TOOL.SUGGESTION_UNITS[RULEBOOK]).values()), encoding="utf-8")
+            first = self.preview(root, outputs)["suggestions"][0]
+            result = TOOL.human_suggestion_choice(root, outputs, "accept", first["suggestionId"], first["suggestionEvidenceSha256"])
+            self.assertEqual(result["status"], "selected-preview-only")
+            self.assertEqual(result["writes"], 0)
+            path.write_bytes(path.read_bytes() + b"\n")
+            self.assertEqual(TOOL.human_suggestion_choice(root, outputs, "accept", first["suggestionId"], first["suggestionEvidenceSha256"])["status"], "rejected")
+
+    def test_marker_proposal_is_distinct_and_selection_is_read_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            relative = "docs/repo-harness/usage.md"
+            unit, literal = TOOL.SUGGESTION_UNITS[relative][0]
+            path = root / relative
+            path.write_text(outputs[relative].replace(literal + "\n", ""), encoding="utf-8")
+            before = path.read_bytes()
+            report = self.preview(root, outputs)
+            obligation = next(item for item in report["suggestions"] if item["path"] == relative)
+            marker = next(item for item in report["markerProposals"] if item["path"] == relative)
+            self.assertNotEqual(obligation["suggestionId"], marker["suggestionId"])
+            self.assertNotEqual(obligation["suggestionEvidenceSha256"], marker["suggestionEvidenceSha256"])
+            self.assertEqual(marker["proposedBytes"], "<!-- repo-harness:accepted-divergence " + unit + " -->" + ("\r\n" if b"\r\n" in before else "\n"))
+            self.assertEqual(TOOL.human_suggestion_choice(root, outputs, "declare-intentional-divergence", marker["suggestionId"], marker["suggestionEvidenceSha256"])["status"], "selected-preview-only")
+            self.assertEqual(TOOL.human_suggestion_choice(root, outputs, "declare-intentional-divergence", obligation["suggestionId"], obligation["suggestionEvidenceSha256"])["status"], "rejected")
+            self.assertEqual(path.read_bytes(), before)
+
+    def test_declaration_choice_fails_closed_without_separate_marker_proposal(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            unit, literal = TOOL.SUGGESTION_UNITS[RULEBOOK][0]
+            path.write_text(outputs[RULEBOOK].replace(literal + "\n", ""), encoding="utf-8")
+            item = self.preview(root, outputs)["suggestions"][0]
+            before = path.read_bytes()
+            result = TOOL.human_suggestion_choice(root, outputs, "declare-intentional-divergence",
+                                                  item["suggestionId"], item["suggestionEvidenceSha256"])
+            self.assertEqual(result, {"status": "rejected", "writes": 0})
+            self.assertEqual(path.read_bytes(), before)
+
+    def test_divergence_marker_suppresses_only_one_valid_local_unit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            relative = "docs/repo-harness/usage.md"
+            unit, literal = TOOL.SUGGESTION_UNITS[relative][0]
+            path = root / relative
+            path.write_text(outputs[relative].replace(literal + "\n", "<!-- repo-harness:accepted-divergence " + unit + " -->\n"), encoding="utf-8")
+            report = self.preview(root, outputs)
+            self.assertEqual(report["suggestions"], [])
+            self.assertEqual(report["acceptedDivergences"], [{"path": relative, "contractUnitId": unit}])
+
+    def test_visibility_owner_routing_marker_cannot_suppress(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            relative = ".repo-harness/rules/response-contract.md"
+            unit, literal = TOOL.SUGGESTION_UNITS[relative][0]
+            path = root / relative
+            path.write_text(outputs[relative].replace(literal + "\n", "<!-- repo-harness:accepted-divergence " + unit + " -->\n"), encoding="utf-8")
+            subprocess.run(("git", "-C", str(root), "add", "--", relative), check=True)
+            report = self.preview(root, outputs)
+            self.assertIn(relative, report["ambiguousPaths"])
+            self.assertEqual(report["acceptedDivergences"], [])
+            self.assertEqual(report["suggestions"], [])
+
+    def test_marker_must_occupy_its_exact_owned_unit_position(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            relative = "docs/repo-harness/usage.md"
+            path = root / relative
+            unit, literal = TOOL.SUGGESTION_UNITS[relative][0]
+            marker = "<!-- repo-harness:accepted-divergence " + unit + " -->\n"
+            path.write_text(outputs[relative].replace(literal + "\n", "").replace("<!-- doc-role:overview -->\n", "<!-- doc-role:overview -->\n" + marker), encoding="utf-8")
+            report = self.preview(root, outputs)
+            self.assertIn(relative, report["ambiguousPaths"])
+            self.assertEqual(report["acceptedDivergences"], [])
+
+    def test_invalid_or_protected_divergence_marker_reports_ambiguity_without_suppression(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            unit, literal = TOOL.SUGGESTION_UNITS[RULEBOOK][1]
+            for marker in ("unknown", unit + " -->\n<!-- repo-harness:accepted-divergence " + unit, "hard-rules/selected-repository", unit):
+                path.write_text(outputs[RULEBOOK].replace(literal + "\n", "<!-- repo-harness:accepted-divergence " + marker + " -->\n"), encoding="utf-8")
+                report = self.preview(root, outputs)
+                self.assertEqual(report["suggestions"], [])
+                self.assertIn(RULEBOOK, report["ambiguousPaths"])
+            path.write_text(outputs[RULEBOOK].replace(literal + "\n", "") + "\n<!-- repo-harness:accepted-divergence " + unit + " -->\n", encoding="utf-8")
+            self.assertIn(RULEBOOK, self.preview(root, outputs)["ambiguousPaths"])
+
+    def test_english_choice_never_accepts_or_mutates_the_spanish_peer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            es = "docs/es/repo-harness/usage.md"
+            localized = TOOL.render("example", [], documentation_languages=["en", "es"])
+            peer = root / es
+            peer.parent.mkdir(parents=True, exist_ok=True)
+            peer.write_text(localized[es], encoding="utf-8")
+            subprocess.run(("git", "-C", str(root), "add", "--", es), check=True)
+            en = root / "docs/repo-harness/usage.md"
+            en.write_text(localized["docs/repo-harness/usage.md"].replace(TOOL.SUGGESTION_UNITS["docs/repo-harness/usage.md"][0][1] + "\n", ""), encoding="utf-8")
+            item = self.preview(root, localized)["suggestions"][0]
+            before = peer.read_bytes()
+            self.assertEqual(TOOL.human_suggestion_choice(root, localized, "accept", item["suggestionId"], item["suggestionEvidenceSha256"])["status"], "selected-preview-only")
+            self.assertEqual(peer.read_bytes(), before)
+
     def test_preview_reports_one_deterministic_contract_unit_suggestion_with_zero_writes(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
