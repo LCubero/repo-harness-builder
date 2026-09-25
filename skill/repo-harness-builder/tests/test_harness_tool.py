@@ -3241,6 +3241,199 @@ class RootPointerTests(unittest.TestCase):
             self.assertTrue((root / RULEBOOK).is_file())
 
 
+class HumanOwnedSuggestionTests(unittest.TestCase):
+    def fixture(self, root):
+        outputs = install(root)
+        subprocess.run(("git", "-C", str(root), "init", "-q"), check=True)
+        subprocess.run(("git", "-C", str(root), "add", "--", "REPO-HARNESS.md", "docs/repo-harness/usage.md"), check=True)
+        return outputs
+
+    def preview(self, root, outputs, execute=None):
+        return TOOL.human_suggestion_preview(root, outputs, execute=execute or subprocess.run)
+
+    def test_preview_reports_one_deterministic_contract_unit_suggestion_with_zero_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            rendered = outputs[RULEBOOK]
+            obligation = "- Do not introduce unrelated scope.\n"
+            path.write_text(rendered.replace(obligation, ""), encoding="utf-8")
+            before = path.read_bytes()
+            first = self.preview(root, outputs)
+            self.assertIn(RULEBOOK, TOOL.tracked_markdown_paths(root) or ())
+            self.assertEqual(first, self.preview(root, outputs))
+            self.assertEqual(first["writes"], 0)
+            self.assertEqual(len(first["suggestions"]), 1)
+            item = first["suggestions"][0]
+            self.assertEqual((item["path"], item["locale"], item["contractUnitId"], item["classification"]),
+                             (RULEBOOK, "en", "hard-rules/do-not-introduce-unrelated-scope", "missing-obligation"))
+            self.assertEqual(item["sourceSha256"], hashlib.sha256(before).hexdigest())
+            self.assertEqual(item["proposedBytes"], obligation.replace("\n", "\r\n") if b"\r\n" in before else obligation)
+            self.assertEqual(item["choices"], ["accept", "keep", "declare-intentional-divergence"])
+            self.assertRegex(item["suggestionId"], r"^[0-9a-f]{64}$")
+            self.assertRegex(item["suggestionEvidenceSha256"], r"^[0-9a-f]{64}$")
+            self.assertTrue(item["reason"] and item["evidence"] and item["currentExcerpt"] and item["proposedPreview"])
+            self.assertEqual(path.read_bytes(), before)
+
+
+
+
+
+    def test_distinct_rulebook_units_and_scoped_anchors(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            first = "- Do not introduce unrelated scope.\n"
+            second = "- Do not continue automatically into unrequested tasks.\n"
+            path.write_text(outputs[RULEBOOK].replace(first, "").replace(second, "") +
+                            "\n## Notes\n" + first + second, encoding="utf-8")
+            report = self.preview(root, outputs)
+            self.assertEqual([item["proposedBytes"] for item in report["suggestions"]], [first.replace("\n", "\r\n") if b"\r\n" in path.read_bytes() else first])
+            path.write_text(outputs[RULEBOOK].replace(first, "").replace(second, ""), encoding="utf-8")
+            self.assertEqual([item["proposedBytes"] for item in self.preview(root, outputs)["suggestions"]], [first.replace("\n", "\r\n") if b"\r\n" in path.read_bytes() else first])
+
+    def test_owner_scoped_presence_never_counts_outside_section(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            obligation = "- Do not introduce unrelated scope.\n"
+            path.write_text(outputs[RULEBOOK].replace(obligation, "") + "\n## Notes\n" + obligation, encoding="utf-8")
+            self.assertEqual(len(self.preview(root, outputs)["suggestions"]), 1)
+
+    def test_declared_locales_and_unsupported_families_are_ambiguous_not_patches(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            declared = TOOL.render("example", [], documentation_languages=["en", "es"])
+            eligible = ("README.md", "README.es.md", "REPO-HARNESS.es.md",
+                        "docs/repo-harness/README.md", "docs/repo-harness/usage.md",
+                        "docs/repo-harness/i18n-maintenance.md", "docs/es/repo-harness/README.md",
+                        "docs/es/repo-harness/usage.md", "docs/es/repo-harness/i18n-maintenance.md")
+            for relative in eligible:
+                self.assertIn(relative, declared)
+                target = root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(declared[relative] + "\nChanged prose.\n", encoding="utf-8")
+            subprocess.run(("git", "-C", str(root), "add", "--", *eligible), check=True)
+            report = self.preview(root, declared)
+            self.assertEqual(report["suggestions"], [])
+            self.assertEqual(report.get("classification"), "ambiguous")
+            for relative in ("CHANGELOG.md", "docs/repo-harness/current-state.md", "docs/repo-harness/roadmap.md",
+                             "docs/repo-harness/decisions.md"):
+                self.assertNotIn(relative, report.get("ambiguousPaths", []))
+
+    def test_untracked_ignored_and_indirect_files_never_suggest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            missing = outputs[RULEBOOK].replace("- Do not introduce unrelated scope.\n", "")
+            subprocess.run(("git", "-C", str(root), "reset", "-q", "--", RULEBOOK), check=True)
+            path.write_text(missing, encoding="utf-8")
+            self.assertEqual(self.preview(root, outputs)["suggestions"], [])
+            (root / ".gitignore").write_text("REPO-HARNESS.md\n", encoding="utf-8")
+            self.assertEqual(self.preview(root, outputs)["suggestions"], [])
+            subprocess.run(("git", "-C", str(root), "add", "-f", "--", RULEBOOK), check=True)
+            path.unlink()
+            try:
+                path.symlink_to(root / "docs/repo-harness/usage.md")
+            except OSError:
+                return  # Windows without symlink privilege; other unsafe-path checks still ran.
+            self.assertEqual(self.preview(root, outputs)["suggestions"], [])
+
+    def test_changed_owned_prose_is_ambiguous_without_proposed_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            path.write_text(outputs[RULEBOOK].replace("- Do not introduce unrelated scope.",
+                "- Restrict work to approved areas."), encoding="utf-8")
+            report = self.preview(root, outputs)
+            self.assertEqual(report["suggestions"], [])
+            self.assertEqual(report.get("classification"), "ambiguous")
+
+    def test_moved_paraphrase_in_hard_rules_is_ambiguous_even_with_adjacent_neighbors(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            literal = "- Do not introduce unrelated scope.\n"
+            paraphrase = "- Keep changes limited to the requested objective.\n"
+            for newline in ("\n", "\r\n"):
+                original = outputs[RULEBOOK]
+                changed = original.replace(literal, "").replace(
+                    "## Decision Gates\n", paraphrase + "\n## Decision Gates\n")
+                path.write_bytes(changed.replace("\n", newline).encode("utf-8"))
+                before = path.read_bytes()
+                report = self.preview(root, outputs)
+                self.assertEqual(report["suggestions"], [])
+                self.assertEqual(report["classification"], "ambiguous")
+                self.assertEqual(report["writes"], 0)
+                self.assertEqual(path.read_bytes(), before)
+
+
+
+
+
+
+
+
+    def test_exact_bytes_and_unsafe_paths_fail_closed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            missing = outputs[RULEBOOK].replace("- Do not introduce unrelated scope.\n", "")
+            path.write_bytes(missing.replace("\n", "\r\n").encode("utf-8"))
+            report = self.preview(root, outputs)
+            self.assertEqual(len(report["suggestions"]), 1)
+            self.assertEqual(report["suggestions"][0]["sourceSha256"], hashlib.sha256(path.read_bytes()).hexdigest())
+            self.assertEqual(report["suggestions"][0]["proposedBytes"], "- Do not introduce unrelated scope.\r\n")
+            path.write_bytes(b"\xff" + missing.encode("utf-8"))
+            self.assertEqual(self.preview(root, outputs)["suggestions"], [])
+            path.write_text(missing, encoding="utf-8")
+            outputs.pop(RULEBOOK)
+            self.assertEqual(self.preview(root, outputs)["suggestions"], [])
+
+    def test_project_truth_and_unstable_prose_never_receive_suggestions(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            for relative in ("CHANGELOG.md", "docs/repo-harness/current-state.md", "docs/repo-harness/roadmap.md",
+                             "docs/repo-harness/decisions.md", "docs/repo-harness/design.md", "product.md"):
+                target = root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text("# Project truth\n", encoding="utf-8")
+            usage = root / "docs/repo-harness/usage.md"
+            usage.write_text(usage.read_text(encoding="utf-8") + "\nCustom human prose.\n", encoding="utf-8")
+            self.assertEqual(self.preview(root, outputs)["suggestions"], [])
+
+    def test_project_specific_surrounding_prose_does_not_trigger_whole_section_replacement(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            path.write_text(outputs[RULEBOOK].replace("- Do not introduce unrelated scope.",
+                "- Do not introduce unrelated scope. This project also protects local notes."), encoding="utf-8")
+            self.assertEqual(self.preview(root, outputs)["suggestions"], [])
+
+    def test_unavailable_git_tracked_file_evidence_fails_closed_with_zero_suggestions_and_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            path.write_text(outputs[RULEBOOK].replace("- Do not introduce unrelated scope.\n", ""), encoding="utf-8")
+            before = path.read_bytes()
+            def unavailable(*args, **kwargs):
+                raise OSError("Git unavailable")
+            report = self.preview(root, outputs, unavailable)
+            self.assertEqual(report, {"status": "unavailable", "classification": "ambiguous", "suggestions": [], "writes": 0})
+            self.assertEqual(path.read_bytes(), before)
+
+
 class CheckTests(unittest.TestCase):
     """Check reports congruence without writing, strict on generated files and lenient on human-owned ones."""
 

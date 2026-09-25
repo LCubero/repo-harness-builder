@@ -3323,6 +3323,124 @@ if __name__ == "__main__":
 '''
 
 
+SUGGESTION_CONTRACT_VERSION = "repo-harness-builder/human-suggestion/v1"
+SUGGESTION_CHOICES = ["accept", "keep", "declare-intentional-divergence"]
+# Only uniquely anchored, standalone rendered obligations are safe to insert without
+# interpreting surrounding project prose. Other rendered text is evidence, not a patch.
+SUGGESTION_UNITS = {
+    RULEBOOK_PATH: (
+        ("hard-rules/do-not-introduce-unrelated-scope", "- Do not introduce unrelated scope."),
+        ("hard-rules/do-not-continue-automatically", "- Do not continue automatically into unrequested tasks."),
+    ),
+}
+
+SUGGESTION_ELIGIBLE = frozenset({
+    RULEBOOK_PATH, "REPO-HARNESS.es.md", "README.md", "README.es.md",
+    "docs/repo-harness/README.md", "docs/repo-harness/usage.md",
+    "docs/repo-harness/i18n-maintenance.md", "docs/es/repo-harness/README.md",
+    "docs/es/repo-harness/usage.md", "docs/es/repo-harness/i18n-maintenance.md",
+})
+
+
+def human_suggestion_preview(
+    root: Path,
+    outputs: Mapping[str, str],
+    execute: Callable[..., subprocess.CompletedProcess[str]] = subprocess.run,
+) -> dict[str, Any]:
+    """Compare only tracked, direct, stable human-owned contract units; never write."""
+    unavailable = {"status": "unavailable", "classification": "ambiguous", "suggestions": [], "writes": 0}
+    tracked = tracked_markdown_paths(root, execute=execute)
+    if tracked is None:
+        return unavailable
+    suggestions: list[dict[str, Any]] = []
+    ambiguous_paths: list[str] = []
+    for relative in sorted(SUGGESTION_ELIGIBLE | SUGGESTION_UNITS.keys()):
+        if relative not in outputs or relative not in tracked:
+            continue
+        try:
+            target = guarded_target(root, relative)
+            if is_indirect(target) or not target.is_file():
+                continue
+            source = target.read_bytes()
+            current = source.decode("utf-8").replace("\r\n", "\n")
+        except (OSError, UnicodeError, ContractError):
+            continue
+        rendered = outputs[relative].replace("\r\n", "\n")
+        units = SUGGESTION_UNITS.get(relative)
+        if not units:
+            if current != rendered:
+                ambiguous_paths.append(relative)
+            continue
+        anchor, boundary, owner_role = {
+            RULEBOOK_PATH: ("## Hard Rules\n", "\n## Decision Gates", "hard-rules"),
+        }[relative]
+        if rendered.count(anchor) != 1 or current.count(anchor) != 1:
+            ambiguous_paths.append(relative)
+            continue
+        rendered_section = rendered.split(anchor, 1)[1].split(boundary, 1)
+        current_section = current.split(anchor, 1)[1].split(boundary, 1)
+        if len(rendered_section) != 2 or len(current_section) != 2:
+            ambiguous_paths.append(relative)
+            continue
+        rendered_section, current_section = rendered_section[0], current_section[0]
+        rendered_lines = rendered_section.splitlines()
+        current_lines = current_section.splitlines()
+        obligations = {literal for _, literal in units}
+        if any(rendered_lines.count(literal) != 1 for literal in obligations):
+            ambiguous_paths.append(relative)
+            continue
+        # Only exact omissions of registered lines are actionable. Any other change
+        # inside the owner can be a moved paraphrase, not a proven missing obligation.
+        retained = [line for line in rendered_lines if line not in obligations]
+        actual = [line for line in current_lines if not any(
+            line == literal or line.startswith(literal + " ") for literal in obligations
+        )]
+        if retained != actual:
+            ambiguous_paths.append(relative)
+            continue
+        newline = "\r\n" if b"\r\n" in source and b"\n" not in source.replace(b"\r\n", b"") else "\n"
+        for unit_id, obligation in units:
+            # Match complete lines only inside the owned role; other prose is ambiguous.
+            if rendered_section.splitlines().count(obligation) != 1:
+                ambiguous_paths.append(relative)
+                continue
+            if any(line == obligation or line.startswith(obligation + " ") for line in current_section.splitlines()):
+                continue
+            # The entire owner differs only by registered literal omissions.
+            lines = rendered_section.splitlines(keepends=True)
+            index = next((i for i, line in enumerate(lines) if line.rstrip("\r\n") == obligation), None)
+            if index is None:
+                ambiguous_paths.append(relative)
+                continue
+            next_line = lines[index + 1] if index + 1 < len(lines) else ""
+            preceding = lines[index - 1] if index else ""
+            # Full owner-line equality above proves the location even when another
+            # registered omission or a blank line replaces an immediate neighbor.
+            proposed = obligation + ("\n" if relative in ("README.md", "README.es.md") else newline)
+            locale = "es" if relative.endswith(".es.md") or relative.startswith("docs/es/") else "en"
+            identity = digest_text(canonical_json([SUGGESTION_CONTRACT_VERSION, locale, relative, unit_id]))
+            source_sha = digest_bytes(source)
+            evidence_sha = digest_text(canonical_json([
+                SUGGESTION_CONTRACT_VERSION, identity, locale, relative, unit_id,
+                source_sha, "insert", proposed,
+            ]))
+            if any(item["path"] == relative for item in suggestions):
+                continue  # One proposal per path; rerun comparison after resolving it.
+            suggestions.append({
+                "suggestionId": identity, "suggestionEvidenceSha256": evidence_sha,
+                "path": relative, "locale": locale, "contractUnitId": unit_id,
+                "ownerRole": owner_role, "classification": "missing-obligation",
+                "reason": "A uniquely anchored rendered contract obligation is absent.",
+                "evidence": preceding.rstrip("\r\n")[:160],
+                "sourceSha256": source_sha, "actionKind": "insert",
+                "proposedBytes": proposed, "currentExcerpt": (preceding + next_line)[:320],
+                "proposedPreview": (preceding + proposed + next_line)[:320],
+                "choices": list(SUGGESTION_CHOICES),
+            })
+    return {"status": "available", "classification": "ambiguous" if ambiguous_paths else "available",
+            "ambiguousPaths": sorted(set(ambiguous_paths)), "suggestions": suggestions, "writes": 0}
+
+
 def human_owned(relative: str, rulebook_path: str) -> bool:
     """Report whether check validates structure instead of exact generated bytes.
 
@@ -5028,7 +5146,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "gitState": git_state, "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), "gitState": git_state, "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")
