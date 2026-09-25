@@ -1,6 +1,6 @@
 # RH-W-0044 Human-Owned Document Suggestion Implementation Plan
 
-> **Current status: corrected plan accepted; lifecycle `proposed`.** Owner-authorized rulebook-core (`63220c047e4e3c589f274f36ac1462c478618763`) and bilingual usage-overview (`f31c49446b770f4502e9f5c40dc217bd75757276`) preview slices are locally committed and natively reviewed. R44-1 remains open for other EN/ES families; R44-2/R44-3 are untouched, and R44-4 documentation reconciliation is in progress. No product push, PR, merge, release, or complete implementation is claimed.
+> **Current status: corrected plan accepted; lifecycle `proposed`.** Owner-authorized rulebook-core (`63220c047e4e3c589f274f36ac1462c478618763`), bilingual usage-overview (`f31c49446b770f4502e9f5c40dc217bd75757276`), Visibility (`018cc4aa829c410a8d1f89a6443387205f0ddc81`) and EN/ES Translation Sync (`27ca929c747d7612c03c29ce44eea1fea87de30a`) preview slices are independently verified, locally committed and natively acknowledged; the earlier documentation commit (`9c20eb4721903bac00dd40644a8fba573dba13e4`) is separate. R44-1 remains open with conservative ambiguity pending for other EN/ES families; R44-2/R44-3 are untouched, and R44-4's final whole-feature report is pending. No product push, PR, merge, release, or complete implementation is claimed.
 
 Derived only from the owner-approved [design](rh-w-0044-design.md). Spanish peer: [rh-w-0044-implementation-plan.md](../es/repo-harness/rh-w-0044-implementation-plan.md).
 
@@ -65,4 +65,4 @@ Authored product and test change: 260-380 lines. Mechanical package projections:
 - [ ] Existing plan digest, containment, approval, rollback, and post-write validation govern the only write path.
 - [ ] No bulk acceptance, semantic equivalence, persistence, service, dependency, new command, or new authority owner appears.
 
-Remaining decision: whether the owner separately authorizes implementation. No technical planning decision remains open.
+Remaining decision: the corrected plan was accepted, and the owner later authorized four partial preview slices only. Completing R44-1 and implementing R44-2/R44-3 require separate owner authorization; the final R44-4 whole-feature report remains pending. Apply and product delivery remain separate decisions. No technical planning decision remains open.

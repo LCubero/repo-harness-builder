@@ -4,7 +4,7 @@
 
 ## 2026-09-25
 
-- Las porciones de vista previa RH-W-0044 autorizadas por el propietario se verificaron independientemente, se confirmaron localmente como `63220c047e4e3c589f274f36ac1462c478618763` (núcleo del rulebook) y `f31c49446b770f4502e9f5c40dc217bd75757276` (resumen bilingüe de uso), y recibieron revisión nativa. R44-1 sigue parcial; R44-2/R44-3 no se han iniciado y R44-4 está reconciliando la documentación. No se afirma push, PR de producto, fusión, release ni implementación completa; el ciclo permanece `proposed`.
+- RH-W-0044 tiene cuatro porciones de vista previa autorizadas por el propietario, verificadas independientemente, confirmadas en commits locales y reconocidas mediante revisión nativa: núcleo del rulebook `63220c047e4e3c589f274f36ac1462c478618763`, resumen bilingüe de uso `f31c49446b770f4502e9f5c40dc217bd75757276`, Visibility `018cc4aa829c410a8d1f89a6443387205f0ddc81` y Translation Sync EN/ES `27ca929c747d7612c03c29ce44eea1fea87de30a`. La porción documental anterior es un commit local separado, `9c20eb4721903bac00dd40644a8fba573dba13e4`. La suite más reciente pasó 578 pruebas con 10 omitidas y el checker informó `current` con cero escrituras antes de esta edición documental. RH-W-0044 sigue `proposed`: R44-1 parcial con ambigüedad conservadora pendiente, R44-2/R44-3 sin iniciar, informe final de toda la funcionalidad R44-4 pendiente. No se afirma push, PR de producto, fusión, release ni implementación completa.
 
 ## 2026-09-24
 

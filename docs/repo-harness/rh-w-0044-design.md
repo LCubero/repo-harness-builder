@@ -1,6 +1,6 @@
 # RH-W-0044 Human-Owned Document Suggestion Design
 
-> **Current status: owner-approved design; RH-W-0044 remains `proposed`. Two partial preview slices are locally committed and natively reviewed; R44-1 remains open, R44-2/R44-3 untouched, and R44-4 documentation reconciliation is in progress. No product delivery or complete implementation is claimed.**
+> **Current status: owner-approved design; RH-W-0044 remains `proposed`. Four partial preview slices (rulebook core, bilingual usage overview, Visibility, EN/ES Translation Sync) are independently verified, locally committed and natively acknowledged; R44-1 remains open with conservative ambiguity pending, R44-2/R44-3 untouched, and R44-4's final whole-feature report pending. The earlier documentation commit is separate. No product delivery or complete implementation is claimed.**
 
 ## Decision
 

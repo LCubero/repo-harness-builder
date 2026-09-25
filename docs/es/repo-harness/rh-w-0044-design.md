@@ -1,6 +1,6 @@
 # Diseño RH-W-0044 de sugerencias para documentos de propiedad humana
 
-> **Estado vigente: diseño aprobado; RH-W-0044 permanece `proposed`. Dos porciones parciales de vista previa están confirmadas localmente y revisadas de forma nativa; R44-1 sigue abierto, R44-2/R44-3 no se han iniciado y R44-4 está reconciliando la documentación. No se afirma entrega de producto ni implementación completa.**
+> **Estado vigente: diseño aprobado; RH-W-0044 permanece `proposed`. Cuatro porciones parciales de vista previa (núcleo del rulebook, resumen bilingüe de uso, Visibility y Translation Sync EN/ES) están verificadas independientemente, confirmadas en commits locales y reconocidas mediante revisión nativa; R44-1 sigue abierto con ambigüedad conservadora pendiente, R44-2/R44-3 no se han iniciado y falta el informe final de toda la funcionalidad R44-4. El commit documental anterior es separado. No se afirma entrega de producto ni implementación completa.**
 
 ## Decisión
 

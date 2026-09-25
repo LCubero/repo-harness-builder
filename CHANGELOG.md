@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-25
 
-- Owner-authorized RH-W-0044 preview slices were independently verified, locally committed as `63220c047e4e3c589f274f36ac1462c478618763` (rulebook core) and `f31c49446b770f4502e9f5c40dc217bd75757276` (bilingual usage overview), and natively reviewed. R44-1 remains partial; R44-2/R44-3 are untouched and R44-4 documentation reconciliation is in progress. No product push, PR, merge, release, or complete implementation is claimed; lifecycle remains `proposed`.
+- RH-W-0044 has four owner-authorized, independently verified, locally committed and natively acknowledged preview slices: rulebook core `63220c047e4e3c589f274f36ac1462c478618763`, bilingual usage overview `f31c49446b770f4502e9f5c40dc217bd75757276`, Visibility `018cc4aa829c410a8d1f89a6443387205f0ddc81`, and EN/ES Translation Sync `27ca929c747d7612c03c29ce44eea1fea87de30a`. The earlier documentation slice is a separate local commit, `9c20eb4721903bac00dd40644a8fba573dba13e4`. The latest suite passed 578 tests with 10 skipped and the checker was `current` with zero writes before this documentation edit. RH-W-0044 remains `proposed`: R44-1 partial with conservative ambiguity pending, R44-2/R44-3 untouched, R44-4 final whole-feature report pending. No product push, PR, merge, release, or complete implementation is claimed.
 
 ## 2026-09-24
 
