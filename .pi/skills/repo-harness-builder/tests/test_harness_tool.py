@@ -3420,6 +3420,77 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
                 "- Do not introduce unrelated scope. This project also protects local notes."), encoding="utf-8")
             self.assertEqual(self.preview(root, outputs)["suggestions"], [])
 
+    def test_usage_overview_exact_omission_and_paraphrase_boundary(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            relative = "docs/repo-harness/usage.md"
+            literal = "Use the three generated skills as a loop: recover context, keep durable documentation current, then leave a verified handoff.\n"
+            rendered = outputs[relative]
+            self.assertEqual(rendered.count(literal), 1)
+            path = root / relative
+            for newline in ("\n", "\r\n"):
+                with self.subTest(newline=repr(newline)):
+                    text = rendered.replace("\n", newline)
+                    line = literal.replace("\n", newline)
+                    path.write_bytes(text.replace(line, "").encode("utf-8"))
+                    before = path.read_bytes()
+                    report = self.preview(root, outputs)
+                    self.assertEqual(report["writes"], 0)
+                    self.assertEqual(len(report["suggestions"]), 1)
+                    item = report["suggestions"][0]
+                    self.assertEqual((item["path"], item["locale"], item["ownerRole"],
+                                      item["contractUnitId"], item["classification"], item["proposedBytes"]),
+                                     (relative, "en", "overview", "overview/generated-skills-loop",
+                                      "missing-obligation", line))
+                    self.assertEqual(item["sourceSha256"], hashlib.sha256(before).hexdigest())
+                    self.assertEqual(path.read_bytes(), before)
+                    for changed in (text.replace(line, "Recover context, maintain documentation, and hand off verified work." + newline),
+                                    text.replace(line, "").replace("<!-- doc-role:overview -->", "<!-- doc-role:other -->")):
+                        path.write_bytes(changed.encode("utf-8"))
+                        uncertain = self.preview(root, outputs)
+                        self.assertEqual(uncertain["suggestions"], [])
+                        self.assertIn(relative, uncertain["ambiguousPaths"])
+                        self.assertEqual(uncertain["writes"], 0)
+
+    def test_spanish_usage_overview_literal_omission_suggests_once_without_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = install(root, documentation_languages=["en", "es"])
+            subprocess.run(("git", "-C", str(root), "init", "-q"), check=True)
+            relative = "docs/es/repo-harness/usage.md"
+            english = "docs/repo-harness/usage.md"
+            subprocess.run(("git", "-C", str(root), "add", "--", relative, english), check=True)
+            literal = ("Use las tres habilidades generadas como un ciclo: recupere contexto, "
+                       "mantenga vigente la documentacion durable y deje una transferencia verificada.\n")
+            rendered = outputs[relative]
+            self.assertEqual(rendered.count(literal), 1)
+            path = root / relative
+            for newline in ("\n", "\r\n"):
+                with self.subTest(newline=repr(newline)):
+                    text = rendered.replace("\n", newline)
+                    line = literal.replace("\n", newline)
+                    path.write_bytes(text.replace(line, "").encode("utf-8"))
+                    before = path.read_bytes()
+                    report = self.preview(root, outputs)
+                    self.assertEqual(report["writes"], 0)
+                    self.assertEqual(len(report["suggestions"]), 1)
+                    item = report["suggestions"][0]
+                    self.assertEqual((item["path"], item["locale"], item["ownerRole"],
+                                      item["contractUnitId"], item["classification"], item["proposedBytes"]),
+                                     (relative, "es", "overview", "overview/three-generated-skills-loop",
+                                      "missing-obligation", line))
+                    self.assertNotEqual(item["path"], english)
+                    self.assertEqual(item["sourceSha256"], hashlib.sha256(before).hexdigest())
+                    self.assertEqual(path.read_bytes(), before)
+                    for changed in (text.replace(line, "Use las habilidades como un ciclo de trabajo." + newline),
+                                    text.replace(line, "").replace("<!-- doc-role:overview -->", "<!-- doc-role:other -->")):
+                        path.write_bytes(changed.encode("utf-8"))
+                        uncertain = self.preview(root, outputs)
+                        self.assertEqual(uncertain["suggestions"], [])
+                        self.assertIn(relative, uncertain["ambiguousPaths"])
+                        self.assertEqual(uncertain["writes"], 0)
+
     def test_unavailable_git_tracked_file_evidence_fails_closed_with_zero_suggestions_and_writes(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

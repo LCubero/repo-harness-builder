@@ -3332,6 +3332,12 @@ SUGGESTION_UNITS = {
         ("hard-rules/do-not-introduce-unrelated-scope", "- Do not introduce unrelated scope."),
         ("hard-rules/do-not-continue-automatically", "- Do not continue automatically into unrequested tasks."),
     ),
+    "docs/repo-harness/usage.md": (
+        ("overview/generated-skills-loop", "Use the three generated skills as a loop: recover context, keep durable documentation current, then leave a verified handoff."),
+    ),
+    "docs/es/repo-harness/usage.md": (
+        ("overview/three-generated-skills-loop", "Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vigente la documentacion durable y deje una transferencia verificada."),
+    ),
 }
 
 SUGGESTION_ELIGIBLE = frozenset({
@@ -3373,6 +3379,8 @@ def human_suggestion_preview(
             continue
         anchor, boundary, owner_role = {
             RULEBOOK_PATH: ("## Hard Rules\n", "\n## Decision Gates", "hard-rules"),
+            "docs/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Daily Workflow", "overview"),
+            "docs/es/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Flujo diario", "overview"),
         }[relative]
         if rendered.count(anchor) != 1 or current.count(anchor) != 1:
             ambiguous_paths.append(relative)
