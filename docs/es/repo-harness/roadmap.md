@@ -501,11 +501,11 @@ La ejecución y la verificación independiente final se completaron bajo autorid
 
 ### Revision de coherencia de los planes
 
-Proyección vigente reconciliada después de completar RH-W-0095 sobre 20 encabezados de planes que cubren 20 de los 27 registros no terminales, incluida RH-W-0018 aplazada mediante el Plan histórico 6; los planes terminales se conservan como evidencia histórica. La derivación directa da 95 registros de ciclo: 66 completados, 21 propuestos, 6 aplazados, 2 rechazados y 0 activos (66 + 21 + 6 + 2 + 0 = 95). Los Planes históricos 4, 6, 10, 28, 31 y 32 no autorizan implementación ni release vigente. No se aprueba fusión de ciclos y cobertura de planes no significa preparación para implementar.
+Proyección vigente tras registrar la propuesta RH-W-0096: 20 encabezados de planes cubren 20 de los 28 registros no terminales, incluida RH-W-0018 aplazada mediante el Plan histórico 6; los planes terminales se conservan como evidencia histórica. La derivación directa da 96 registros de ciclo: 66 completados, 22 propuestos, 6 aplazados, 2 rechazados y 0 activos (66 + 22 + 6 + 2 + 0 = 96). Los Planes históricos 4, 6, 10, 28, 31 y 32 no autorizan implementación ni release vigente. No se aprueba fusión de ciclos y cobertura de planes no significa preparación para implementar.
 
 Recomendación consultiva, no cambio de calendario: mantener pendiente la implementación RH-W-0074 hasta que se autorice por separado y reconciliar el residuo RH-W-0076 con la investigación de contexto RH-W-0078 antes de comprimir. RH-W-0048 está completada; RH-W-0052 está `deferred` según su [condición de reentrada](#rh-w-0052); su porción solo de archivo sigue completa, verificada y entregada. Las entregas parciales de RH-W-0071, RH-W-0072, RH-W-0076 y RH-W-0086 no completan sus registros. RH-W-0070 es guía operativa aprobada, no motivo para construir un monitor; descubribilidad desconocida de RH-W-0072 no justifica inventar prevención.
 
-La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085 y RH-W-0086 no tienen plan de acción. Cuatro aplazados aparecen en la lista no planificable; RH-W-0018 participa solo en el diseño conjunto del Plan histórico 6. Se conserva el par histórico de diseño RH-W-0046 completada/RH-W-0018 aplazada y dos pares de coordinación vigentes, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. La coordinación histórica RH-W-0069/RH-W-0068 terminó al completarse RH-W-0069. No se aprueba fusión ni implementación nueva.
+La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, RH-W-0086 y RH-W-0096 no tienen plan de acción. Cuatro aplazados aparecen en la lista no planificable; RH-W-0018 participa solo en el diseño conjunto del Plan histórico 6. Se conserva el par histórico de diseño RH-W-0046 completada/RH-W-0018 aplazada y dos pares de coordinación vigentes, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. La coordinación histórica RH-W-0069/RH-W-0068 terminó al completarse RH-W-0069. No se aprueba fusión ni implementación nueva.
 
 Aqui se declaran catorce relaciones entre planes para que ninguno suponga en silencio el resultado de otro. Ninguna fusiona un ciclo de vida ni cambia estado.
 
@@ -532,6 +532,34 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 ## Registros activos
 
 <!-- doc-role:active-records -->
+
+### RH-W-0096
+
+Origen: El propietario decidió registrar una propuesta, sin aprobar un diseño ni sustituir el rechazo de RH-W-0040, a partir de comentarios contextuales sobre fricción repetida causada por comportamiento controlado por el repo-harness.
+
+Prioridad: `P3`: la mitigación podría ser útil, pero no se ha demostrado una operación sin cobertura ni recurrencia entre sesiones; no es un bloqueo confirmado.
+
+Dependencias: Preservar el rechazo y la condición de sustitución explícita de RH-W-0040. RH-W-0066 posee las solicitudes explícitas de recordar; RH-W-0050 completado posee la reconciliación de hallazgos. Reutilizar la continuidad y los límites de privacidad existentes sin reabrirlos.
+
+Estado: `proposed`.
+
+Trabajo completado: Solo registro de la propuesta; no se ha aprobado comportamiento ni diseño.
+
+Trabajo restante: Evaluar por separado evidencia contextual concreta y si una operación existente no puede atenderla antes de solicitar aprobación de diseño.
+
+Adiciones: Considerar únicamente la respuesta del orquestador principal ante fricción concreta y contextual con comportamiento propio o controlado por el repo-harness: ofrecer confirmación al usuario antes de preservar una observación y permitir la exclusión conversacional de ese comportamiento opcional solo durante la sesión actual. Engram opcional podría reforzar la continuidad, pero no tiene autoridad; prevalecen la evidencia del repositorio y la reconciliación existente. Se busca portabilidad Windows/Linux/macOS, aún no verificada.
+
+Exclusiones: Sin seguimiento de agentes secundarios ni de molestias generales del agente, preferencias persistentes inferidas, garantía de detección automática de recurrencia, registro, conteos, planificador, daemon, nuevo propietario de hallazgos, reducción de privacidad ni conservación sin confirmación.
+
+Aplazamientos: Cualquier orientación al invocar deliberadamente session-start entra en conflicto con el rechazo explícito de RH-W-0040 a una función de inicio de sesión. Requiere una decisión informada y separada del propietario, respaldada por una operación que la continuidad existente del repositorio y Engram no pueda atender; esta propuesta no la autoriza.
+
+Rechazos: No sustituir RH-W-0040 ni absorber o reabrir RH-W-0066 o RH-W-0050.
+
+Evidencia: Decisión del propietario de registrar solo la propuesta; la fricción contextual motiva investigar, pero no demuestra un detector, portabilidad en ejecución ni insuficiencia de la continuidad existente.
+
+Historial de decisiones: Registrada solo como propuesta, fuera del orden de ejecución aprobado; diseño, implementación y comportamiento de inicio permanecen sin autorización.
+
+Siguiente condición de avance: Obtener evidencia concreta de una operación sin cobertura bajo control del harness y una decisión informada y separada del propietario antes de orientar al inicio en conflicto o aprobar un diseño.
 
 ### RH-W-0095
 
