@@ -3352,6 +3352,15 @@ SUGGESTION_UNITS = {
     ),
 }
 
+SUGGESTION_OWNER_BOUNDS = {
+    RULEBOOK_PATH: ("## Hard Rules\n", "\n## Decision Gates", "hard-rules"),
+    ".repo-harness/rules/response-contract.md": ("## Visibility\n", "\n## Contextual Explanation", "visibility"),
+    "docs/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Daily Workflow", "overview"),
+    "docs/es/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Flujo diario", "overview"),
+    "docs/repo-harness/i18n-maintenance.md": ("<!-- doc-role:translation-sync -->\n## Translation Sync\n", "\n<!-- doc-role:link-validation -->", "translation-sync"),
+    "docs/es/repo-harness/i18n-maintenance.md": ("<!-- doc-role:translation-sync -->\n## Sincronizacion de traducciones\n", "\n<!-- doc-role:link-validation -->", "translation-sync"),
+}
+
 SUGGESTION_ELIGIBLE = frozenset({
     RULEBOOK_PATH, "REPO-HARNESS.es.md", "README.md", "README.es.md",
     ".repo-harness/rules/response-contract.md",
@@ -3392,14 +3401,7 @@ def human_suggestion_preview(
             if current != rendered:
                 ambiguous_paths.append(relative)
             continue
-        anchor, boundary, owner_role = {
-            RULEBOOK_PATH: ("## Hard Rules\n", "\n## Decision Gates", "hard-rules"),
-            ".repo-harness/rules/response-contract.md": ("## Visibility\n", "\n## Contextual Explanation", "visibility"),
-            "docs/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Daily Workflow", "overview"),
-            "docs/es/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Flujo diario", "overview"),
-            "docs/repo-harness/i18n-maintenance.md": ("<!-- doc-role:translation-sync -->\n## Translation Sync\n", "\n<!-- doc-role:link-validation -->", "translation-sync"),
-            "docs/es/repo-harness/i18n-maintenance.md": ("<!-- doc-role:translation-sync -->\n## Sincronizacion de traducciones\n", "\n<!-- doc-role:link-validation -->", "translation-sync"),
-        }[relative]
+        anchor, boundary, owner_role = SUGGESTION_OWNER_BOUNDS[relative]
         if rendered.count(anchor) != 1 or current.count(anchor) != 1:
             ambiguous_paths.append(relative)
             continue
@@ -3521,6 +3523,54 @@ def human_suggestion_choice(root: Path, outputs: Mapping[str, str], choice: str,
         return {"status": "rejected", "writes": 0}
     return {"status": "kept" if choice == "keep" else "selected-preview-only",
             "suggestion": matches[0], "writes": 0}
+
+
+def human_integration_action(root: Path, suggestion: Mapping[str, Any],
+                             outputs: Mapping[str, str]) -> dict[str, Any]:
+    """Bind a single missing literal to its unique rendered neighboring anchor."""
+    relative = suggestion["path"]
+    target = guarded_target(root, relative)
+    require(target.is_file() and not is_indirect(target), "invalid human suggestion target")
+    source = target.read_bytes()
+    require(digest_bytes(source) == suggestion["sourceSha256"], "human suggestion source changed")
+    require(not (b"\r\n" in source and b"\n" in source.replace(b"\r\n", b"")),
+            "mixed line endings in human suggestion target")
+    text = source.decode("utf-8")
+    proposed = suggestion["proposedBytes"]
+    require(suggestion["actionKind"] == "insert", "invalid human suggestion kind")
+    # The comparator proves that the owner differs only by registered omissions.
+    # Recheck that proof, then insert at the rendered line index inside that owner.
+    fresh = human_suggestion_preview(root, outputs)
+    require(suggestion in fresh["suggestions"], "human suggestion insertion anchor changed")
+    anchor, boundary, role = SUGGESTION_OWNER_BOUNDS[relative]
+    require(role == suggestion["ownerRole"], "human suggestion owner changed")
+    normalized = text.replace("\r\n", "\n")
+    rendered = outputs[relative].replace("\r\n", "\n")
+    require(normalized.count(anchor) == rendered.count(anchor) == 1,
+            "human suggestion owner changed")
+    before, rest = normalized.split(anchor, 1)
+    owner, separator, after = rest.partition(boundary)
+    rendered_owner = rendered.split(anchor, 1)[1].split(boundary, 1)
+    require(separator and len(rendered_owner) == 2, "human suggestion owner changed")
+    lines = rendered_owner[0].splitlines(keepends=True)
+    matches = [i for i, line in enumerate(lines) if line.rstrip("\n") == proposed.rstrip("\r\n")]
+    require(len(matches) == 1, "human suggestion insertion anchor changed")
+    index = matches[0]
+    missing = {literal for _, literal in SUGGESTION_UNITS[relative] if literal not in owner.splitlines()}
+    expected = [line for i, line in enumerate(lines)
+                if i != index and line.rstrip("\n") not in missing]
+    require(owner == "".join(expected), "human suggestion owner changed")
+    position = sum(len(line) for i, line in enumerate(lines)
+                   if i < index and line.rstrip("\n") not in missing)
+    inserted = owner[:position] + proposed.replace("\r\n", "\n") + owner[position:]
+    result = before + anchor + inserted + boundary + after
+    destination = (result.replace("\n", "\r\n") if b"\r\n" in source and b"\n" not in source.replace(b"\r\n", b"") else result).encode("utf-8")
+    return {"path": relative, "action": "integrate-human-suggestion",
+            "suggestionId": suggestion["suggestionId"],
+            "suggestionEvidenceSha256": suggestion["suggestionEvidenceSha256"],
+            "locale": suggestion["locale"], "contractUnitId": suggestion["contractUnitId"],
+            "actionKind": suggestion["actionKind"], "sourceSha256": suggestion["sourceSha256"],
+            "destinationSha256": digest_bytes(destination), "content": destination.decode("utf-8")}
 
 
 def human_owned(relative: str, rulebook_path: str) -> bool:
@@ -4070,7 +4120,8 @@ def authenticated_wrapper_version(root: Path, relative: str) -> Optional[str]:
     return authenticated_wrapper_versions(root).get(relative)
 
 
-def plan_changes(root: Path, outputs: dict[str, str], trusted_skill_license: bool = False) -> dict[str, Any]:
+def plan_changes(root: Path, outputs: dict[str, str], trusted_skill_license: bool = False,
+                 human_action: Optional[dict[str, Any]] = None) -> dict[str, Any]:
     """Classify outputs, including the two bounded root pointer append cases."""
     require(MANIFEST_PATH in outputs and ".repo-harness/check.py" in outputs, "desired manifest and checker are required")
     require(
@@ -4221,6 +4272,13 @@ def plan_changes(root: Path, outputs: dict[str, str], trusted_skill_license: boo
         "blocked": blocked,
         "migrate": migrate,
     }
+    if human_action is not None:
+        relative = human_action["path"]
+        require(relative in outputs and human_owned(relative, RULEBOOK_PATH), "invalid human integration target")
+        require(all(item["path"] != relative for item in [*create, *append, *replace]),
+                "human integration conflicts with another action")
+        plan["existing"] = [item for item in existing if item["path"] != relative]
+        plan["append"].append(dict(human_action))
     digest = plan_digest(plan)
     for item in replace:
         item["planSha256"] = digest
@@ -4615,7 +4673,16 @@ def validate_write_preconditions(
     own so an authority-carrying apply can run it as an explicit preflight and translate its
     refusal into one content-free outcome, without teaching the writer about authority.
     """
-    require(plan == plan_changes(root, outputs, trusted_skill_license), "approved plan is stale; preview again")
+    human = [item for item in plan["append"] if item["action"] == "integrate-human-suggestion"]
+    require(len(human) <= 1, "only one human suggestion may enter a plan")
+    if human:
+        item = human[0]
+        choice = human_suggestion_choice(root, outputs, "accept", item["suggestionId"], item["suggestionEvidenceSha256"])
+        require(choice["status"] == "selected-preview-only", "human suggestion evidence changed; preview again")
+        require(human_integration_action(root, choice["suggestion"], outputs) == item,
+                "human integration bytes changed; preview again")
+    require(plan == plan_changes(root, outputs, trusted_skill_license, human[0] if human else None),
+            "approved plan is stale; preview again")
     require(not plan["blocked"], "blocked plan actions require approved executable integration")
     for item in plan["existing"]:
         relative = item["path"]
@@ -4625,7 +4692,13 @@ def validate_write_preconditions(
         relative = item["path"]
         target = guarded_target(root, relative)
         require(target.is_file() and not is_indirect(target), f"invalid append target: {relative}")
-        require(digest_bytes(target.read_bytes()) == item["sha256"], f"approved append bytes changed: {relative}")
+        if item["action"] == "integrate-human-suggestion":
+            require(digest_bytes(target.read_bytes()) == item["sourceSha256"],
+                    f"approved human bytes changed: {relative}")
+            require(digest_text(item["content"]) == item["destinationSha256"],
+                    f"approved human destination changed: {relative}")
+        else:
+            require(digest_bytes(target.read_bytes()) == item["sha256"], f"approved append bytes changed: {relative}")
     for item in plan["create"]:
         target = guarded_target(root, item["path"])
         require(not target.exists() and not target.is_symlink(), f"approved create target changed: {item['path']}")
@@ -4673,6 +4746,11 @@ def write_outputs(
                 target = guarded_target(root, relative)
                 current = target.read_bytes()
                 appended[target] = current
+                if item["action"] == "integrate-human-suggestion":
+                    target.write_bytes(item["content"].encode("utf-8"))
+                    require(digest_bytes(target.read_bytes()) == item["destinationSha256"],
+                            f"human integration mismatch: {relative}")
+                    continue
                 if relative in (GITIGNORE_PATH, GITATTRIBUTES_PATH, README_PATH):
                     addition = item["content"].encode("utf-8")
                 else:
@@ -5183,7 +5261,17 @@ def main(argv: Optional[list[str]] = None) -> int:
             args.conversation_language,
             args.ignore_codegraph,
         )
-        plan = plan_changes(root, outputs, trusted_skill_license)
+        selection = (args.suggestion_choice, args.suggestion_id, args.suggestion_evidence_sha256)
+        require(not any(selection) or (all(selection) and (not args.apply or selection[0] == "accept")),
+                "suggestion selection requires choice, ID and evidence; only accept permits --apply")
+        selected_choice = human_suggestion_choice(root, outputs, *selection) if all(selection) else None
+        if selected_choice and selected_choice["status"] == "selected-preview-only" and selection[0] == "accept":
+            action = human_integration_action(root, selected_choice["suggestion"], outputs)
+            plan = plan_changes(root, outputs, trusted_skill_license, action)
+        elif selected_choice and selected_choice["status"] == "rejected" and selection[0] == "accept":
+            raise ContractError("human suggestion evidence changed; preview again")
+        else:
+            plan = plan_changes(root, outputs, trusted_skill_license)
         digest = plan_digest(plan)
         authority_projection: dict[str, Any] = {}
         if args.activation == "builder":
@@ -5225,16 +5313,13 @@ def main(argv: Optional[list[str]] = None) -> int:
         blocked_paths = {item["path"] for item in plan["blocked"]}
         entry_points = {name: path for name, path in entry_points.items() if path not in blocked_paths}
         builder_active = args.activation == "builder"
-        selection = (args.suggestion_choice, args.suggestion_id, args.suggestion_evidence_sha256)
-        require(not any(selection) or (all(selection) and not args.apply),
-                "suggestion selection requires choice, ID and evidence in read-only preview; --apply is forbidden")
         if not args.apply:
             strict = (
                 {"approvalPrompt": domain["prompt"], "approvalAnswers": [domain["approve"], domain["deny"]]}
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), **({"suggestionSelection": human_suggestion_choice(root, outputs, *selection)} if all(selection) else {}), "gitState": git_state, "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), **({"suggestionSelection": selected_choice} if all(selection) else {}), "gitState": git_state, "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")

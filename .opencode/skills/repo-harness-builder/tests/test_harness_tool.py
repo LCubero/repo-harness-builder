@@ -3277,6 +3277,119 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
             self.assertEqual(refused.returncode, 2)
             self.assertEqual(path.read_bytes(), before)
 
+    def test_accept_places_one_human_integration_action_in_the_existing_plan(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            relative = "docs/repo-harness/usage.md"
+            literal = TOOL.SUGGESTION_UNITS[relative][0][1] + "\n"
+            path = root / relative
+            path.write_text(outputs[relative].replace(literal, ""), encoding="utf-8")
+            before = path.read_bytes()
+            item = self.preview(root, outputs)["suggestions"][0]
+            arguments = ["render", "--root", str(root), "--project-name", "example", "--standalone",
+                         "--suggestion-choice", "accept", "--suggestion-id", item["suggestionId"],
+                         "--suggestion-evidence-sha256", item["suggestionEvidenceSha256"]]
+            with contextlib.redirect_stdout(io.StringIO()) as output:
+                self.assertEqual(TOOL.main(arguments), 0)
+            report = json.loads(output.getvalue())
+            actions = [action for group in ("create", "append", "replace")
+                       for action in report[group] if action["path"] == relative]
+            self.assertEqual(len(actions), 1, "accept must enter exactly one existing plan action")
+            self.assertEqual(report["planSha256"], TOOL.plan_digest({key: report[key] for key in
+                ("create", "existing", "identical", "append", "replace", "blocked", "migrate")}))
+            self.assertEqual(report["writes"], 0)
+            self.assertEqual(path.read_bytes(), before)
+            mixed = (before.replace(b"\r\n", b"\n", 1) if b"\r\n" in before
+                     else before.replace(b"\n", b"\r\n", 1))
+            self.assertIn(b"\r\n", mixed)
+            self.assertIn(b"\n", mixed.replace(b"\r\n", b""))
+            path.write_bytes(mixed)
+            fresh = self.preview(root, outputs)["suggestions"][0]
+            with self.assertRaises(TOOL.ContractError):
+                TOOL.human_integration_action(root, fresh, outputs)
+            self.assertEqual(path.read_bytes(), mixed)
+
+    def test_accepted_plan_apply_and_mixed_failure_restore_human_and_generated_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            relative = "docs/repo-harness/usage.md"
+            path = root / relative
+            literal = TOOL.SUGGESTION_UNITS[relative][0][1] + "\n"
+            path.write_text(outputs[relative].replace(literal, ""), encoding="utf-8")
+            original = path.read_bytes()
+            item = self.preview(root, outputs)["suggestions"][0]
+            flags = ["render", "--root", str(root), "--project-name", "example", "--standalone",
+                     "--suggestion-choice", "accept", "--suggestion-id", item["suggestionId"],
+                     "--suggestion-evidence-sha256", item["suggestionEvidenceSha256"]]
+            with contextlib.redirect_stdout(io.StringIO()) as stream:
+                self.assertEqual(TOOL.main(flags), 0)
+            report = json.loads(stream.getvalue())
+            generated = [action["path"] for group in ("create", "append", "replace")
+                         for action in report[group] if action["path"] != relative]
+            self.assertTrue(generated, "mixed transaction must contain a generated action")
+            generated_before = {name: (root / name).read_bytes() if (root / name).is_file() else None
+                                for name in generated}
+            def fail_after_mixed_writes(*args, **kwargs):
+                self.assertNotEqual(path.read_bytes(), original)
+                self.assertTrue(any((root / name).read_bytes() != prior for name, prior in generated_before.items()
+                                    if prior is not None))
+                raise TOOL.ContractError("forced verification failure")
+            with mock.patch.object(TOOL, "verify_outputs", side_effect=fail_after_mixed_writes):
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(TOOL.main(flags + ["--apply", "--approved-plan-sha256", report["planSha256"]]), 2)
+            self.assertEqual(path.read_bytes(), original)
+            self.assertEqual({name: (root / name).read_bytes() if (root / name).is_file() else None
+                              for name in generated}, generated_before)
+            with contextlib.redirect_stdout(io.StringIO()) as stream:
+                self.assertEqual(TOOL.main(flags + ["--apply", "--approved-plan-sha256", report["planSha256"]]), 0)
+            self.assertEqual(json.loads(stream.getvalue())["status"], "VALIDATED")
+            self.assertEqual(path.read_bytes().replace(b"\r\n", b"\n"), outputs[relative].encode("utf-8"))
+
+    def test_changed_source_invalidates_selection_before_plan_construction(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            relative = "docs/repo-harness/usage.md"
+            path = root / relative
+            path.write_text(outputs[relative].replace(TOOL.SUGGESTION_UNITS[relative][0][1] + "\n", ""), encoding="utf-8")
+            item = self.preview(root, outputs)["suggestions"][0]
+            path.write_bytes(path.read_bytes() + b"\n")
+            before = path.read_bytes()
+            with mock.patch.object(TOOL, "plan_changes", wraps=TOOL.plan_changes) as planning:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(TOOL.main(["render", "--root", str(root), "--project-name", "example", "--standalone",
+                                                "--suggestion-choice", "accept", "--suggestion-id", item["suggestionId"],
+                                                "--suggestion-evidence-sha256", item["suggestionEvidenceSha256"], "--apply",
+                                                "--approved-plan-sha256", "stale"]), 2)
+            planning.assert_not_called()
+            self.assertEqual(path.read_bytes(), before)
+
+    def test_changed_rendered_proposal_invalidates_selection_before_plan_construction(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            relative = "docs/repo-harness/usage.md"
+            literal = TOOL.SUGGESTION_UNITS[relative][0][1]
+            path = root / relative
+            path.write_text(outputs[relative].replace(literal + "\n", ""), encoding="utf-8")
+            item = self.preview(root, outputs)["suggestions"][0]
+            original_render = TOOL.render_repository
+            def changed_render(*args, **kwargs):
+                rendered = original_render(*args, **kwargs)
+                rendered[relative] = rendered[relative].replace(literal, literal + " Changed contract.")
+                return rendered
+            before = path.read_bytes()
+            with mock.patch.object(TOOL, "render_repository", side_effect=changed_render), \
+                 mock.patch.object(TOOL, "plan_changes", wraps=TOOL.plan_changes) as planning:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    TOOL.main(["render", "--root", str(root), "--project-name", "example", "--standalone",
+                               "--suggestion-choice", "accept", "--suggestion-id", item["suggestionId"],
+                               "--suggestion-evidence-sha256", item["suggestionEvidenceSha256"]])
+            planning.assert_not_called()
+            self.assertEqual(path.read_bytes(), before)
+
     def test_keep_is_ephemeral_and_each_path_exposes_only_one_suggestion(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -3301,6 +3414,8 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
             result = TOOL.human_suggestion_choice(root, outputs, "accept", first["suggestionId"], first["suggestionEvidenceSha256"])
             self.assertEqual(result["status"], "selected-preview-only")
             self.assertEqual(result["writes"], 0)
+            action = TOOL.human_integration_action(root, result["suggestion"], outputs)
+            self.assertIn(result["suggestion"]["proposedBytes"], action["content"])
             path.write_bytes(path.read_bytes() + b"\n")
             self.assertEqual(TOOL.human_suggestion_choice(root, outputs, "accept", first["suggestionId"], first["suggestionEvidenceSha256"])["status"], "rejected")
 
