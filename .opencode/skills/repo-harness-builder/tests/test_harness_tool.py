@@ -3390,21 +3390,36 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
             path.write_text(outputs[relative].replace(TOOL.SUGGESTION_UNITS[relative][0][1] + "\n", ""), encoding="utf-8")
             original = path.read_bytes()
             marker = next(item for item in self.preview(root, outputs)["markerProposals"] if item["path"] == relative)
+            (root / ".repo-harness/skills/repo-harness-session-stop/SKILL.md").unlink()
+            (root / ".gitignore").write_bytes(b"# existing project ignores\n")
             flags = ["render", "--root", str(root), "--project-name", "example", "--standalone",
                      "--suggestion-choice", "declare-intentional-divergence", "--suggestion-id", marker["suggestionId"],
                      "--suggestion-evidence-sha256", marker["suggestionEvidenceSha256"]]
             with contextlib.redirect_stdout(io.StringIO()) as stream:
                 self.assertEqual(TOOL.main(flags), 0)
             report = json.loads(stream.getvalue())
-            generated = [action["path"] for group in ("create", "append", "replace")
-                         for action in report[group] if action["path"] != relative]
-            self.assertTrue(generated)
+            generated_by_action = {
+                group: [action["path"] for action in report[group] if action["path"] != relative]
+                for group in ("create", "append", "replace")
+            }
+            for group, paths in generated_by_action.items():
+                self.assertTrue(paths, f"missing generated {group} action")
+            generated = [name for paths in generated_by_action.values() for name in paths]
             before = {name: (root / name).read_bytes() if (root / name).is_file() else None for name in generated}
-            def fail_after_writes(*args, **kwargs):
-                self.assertIn(marker["proposedBytes"].encode(), path.read_bytes())
-                self.assertTrue(any((root / name).read_bytes() != prior for name, prior in before.items() if prior is not None))
-                raise TOOL.ContractError("forced verification failure")
-            with mock.patch.object(TOOL, "verify_outputs", side_effect=fail_after_writes), \
+            failing_replace = root / generated_by_action["replace"][-1]
+            write_text = Path.write_text
+            def fail_later_replace(target, *args, **kwargs):
+                if target == failing_replace:
+                    self.assertIn(marker["proposedBytes"].encode(), path.read_bytes())
+                    self.assertTrue(all((root / name).is_file() for name in generated_by_action["create"]))
+                    self.assertTrue(any((root / name).read_bytes() != before[name]
+                                        for name in generated_by_action["append"]))
+                    self.assertTrue(any((root / name).read_bytes() != before[name]
+                                        for name in generated_by_action["replace"][:-1]))
+                    write_text(target, *args, **kwargs)
+                    raise TOOL.ContractError("forced later replace failure")
+                return write_text(target, *args, **kwargs)
+            with mock.patch.object(Path, "write_text", fail_later_replace), \
                  contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
                 self.assertEqual(TOOL.main(flags + ["--apply", "--approved-plan-sha256", report["planSha256"]]), 2)
             self.assertEqual(path.read_bytes(), original)
