@@ -503,9 +503,9 @@ These records have an unmet advancement condition, so no artifact can be produce
 
 ### Plan Coherence Review
 
-Current projection reconciled after RH-W-0095 completion across 20 plan headings covering 20 of the 27 non-terminal records, including deferred RH-W-0018 through Historical Plan 6; terminal plans are retained as historical evidence. Direct record derivation yields 95 lifecycle records: 66 completed, 21 proposed, 6 deferred, 2 rejected, and 0 active (66 + 21 + 6 + 2 + 0 = 95). Historical Plans 4, 6, 10, 28, 31, and 32 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
+Current projection after RH-W-0096 proposal registration has 20 plan headings covering 20 of the 28 non-terminal records, including deferred RH-W-0018 through Historical Plan 6; terminal plans are retained as historical evidence. Direct record derivation yields 96 lifecycle records: 66 completed, 22 proposed, 6 deferred, 2 rejected, and 0 active (66 + 22 + 6 + 2 + 0 = 96). Historical Plans 4, 6, 10, 28, 31, and 32 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
 
-Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, and RH-W-0086 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Historical Plan 6 joint design. The portfolio retains one historical joint-design pair, completed RH-W-0046/deferred RH-W-0018, and two current coordination pairs with separate lifecycles: RH-W-0065/RH-W-0022 and RH-W-0066/RH-W-0044. Historical RH-W-0069/RH-W-0068 coordination ended when RH-W-0069 completed. No merger or new implementation authority follows.
+Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, RH-W-0086, and RH-W-0096 have no action plan. Four deferred records appear in the not-plannable list; deferred RH-W-0018 participates only in Historical Plan 6 joint design. The portfolio retains one historical joint-design pair, completed RH-W-0046/deferred RH-W-0018, and two current coordination pairs with separate lifecycles: RH-W-0065/RH-W-0022 and RH-W-0066/RH-W-0044. Historical RH-W-0069/RH-W-0068 coordination ended when RH-W-0069 completed. No merger or new implementation authority follows.
 
 Consultative recommendation, not a schedule change: keep RH-W-0074 implementation pending until separately authorized, and reconcile RH-W-0076's residual scope with RH-W-0078's loaded-context research before compression. RH-W-0048 is completed; RH-W-0052 is `deferred` under its [re-entry condition](#rh-w-0052); its archive-only slice remains complete, verified, and delivered. Partial delivery under RH-W-0071, RH-W-0072, RH-W-0076, and RH-W-0086 does not complete their full records. RH-W-0070 is approved operating guidance, not a reason to build a monitor; unknown RH-W-0072 discoverability is not a reason to invent preventive work.
 
@@ -534,6 +534,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0096
+| Field | Value |
+|---|---|
+| Origin | Owner chose to record a proposal, not approve a design or supersede rejected RH-W-0040, after contextual feedback about repeated friction caused by repo-harness-controlled behavior. |
+| Priority | P3: potentially useful mitigation, but no uncovered operation or cross-session recurrence has been established; not a confirmed blocker. |
+| Dependencies | Preserve RH-W-0040's rejection and explicit supersession condition. RH-W-0066 owns explicit remember requests; completed RH-W-0050 owns finding reconciliation. Reuse existing continuity and privacy boundaries without reopening either owner. |
+| Status | proposed |
+| Completed work | Proposal registration only; no behavior or design approved. |
+| Remaining work | Separately assess concrete contextual evidence and whether an existing operation cannot handle it before seeking design approval. |
+| Additions | Consider only the principal orchestrator's response to concrete, contextual friction with behavior owned or controlled by the repo harness: offer user confirmation before preserving an observation, and permit a conversational opt-out for that optional behavior in the current session only. Optional Engram could reinforce continuity but is not authoritative; repository evidence and existing reconciliation remain authoritative. Windows/Linux/macOS portability is intended, not verified. |
+| Exclusions | No child-agent or general agent-friction tracking, inferred persistent preference, automatic recurrence guarantee, ledger, counts, scheduler, daemon, new finding owner, weakened privacy, or unconfirmed preservation. |
+| Deferrals | Any orientation at deliberately invoked session-start is conflicted with RH-W-0040's explicit rejection of a session-start feature. It requires a separate informed owner decision supported by an operation existing repository and Engram continuity cannot satisfy; this proposal does not authorize it. |
+| Rejections | No supersession of RH-W-0040 and no absorption or reopening of RH-W-0066 or RH-W-0050. |
+| Evidence | Owner decision to record the proposal only; contextual friction motivates investigation, not a verified detector, portable runtime result, or proof that existing continuity is insufficient. |
+| Decision history | Registered as a proposal only, outside approved execution order; design, implementation and startup behavior remain unauthorized. |
+| Next advancement condition | Obtain concrete evidence of an uncovered harness-controlled operation and a separate informed owner decision before any conflicted startup orientation or design approval. |
 
 ### RH-W-0095
 | Field | Value |
