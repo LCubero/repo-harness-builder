@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-25
 
+- Locally committed the bounded 16-path RH-W-0044 R44-2 read-only individual choice/marker preview as `eb54bc3717f8426064d906acdcce795740eb98ee` from `6b707b04c0f68cb9431449789f0213d677eccb46`: independent verification passed 588 tests (10 skipped), checker `current`/zero writes and parity; committed-range lineage `review-ee52db1afd824057` approved with exact acknowledgement burned. Three nonblocking warnings remain later work; RH-W-0044 stays `proposed`, without product delivery.
+
 - RH-W-0044 has four owner-authorized, independently verified, locally committed and natively acknowledged preview slices: rulebook core `63220c047e4e3c589f274f36ac1462c478618763`, bilingual usage overview `f31c49446b770f4502e9f5c40dc217bd75757276`, Visibility `018cc4aa829c410a8d1f89a6443387205f0ddc81`, and EN/ES Translation Sync `27ca929c747d7612c03c29ce44eea1fea87de30a`. The earlier documentation slice is a separate local commit, `9c20eb4721903bac00dd40644a8fba573dba13e4`. The latest suite passed 578 tests with 10 skipped and the checker was `current` with zero writes before this documentation edit. RH-W-0044 remains `proposed`: R44-1 partial with conservative ambiguity pending, R44-2/R44-3 untouched, R44-4 final whole-feature report pending. No product push, PR, merge, release, or complete implementation is claimed.
 
 ## 2026-09-24

@@ -4,6 +4,8 @@
 
 ## 2026-09-25
 
+- Se confirmó localmente la vista previa acotada de solo lectura R44-2 de RH-W-0044 para selección individual y marcadores como commit de 16 rutas `eb54bc3717f8426064d906acdcce795740eb98ee` desde `6b707b04c0f68cb9431449789f0213d677eccb46`: verificación independiente de 588 pruebas (10 omitidas), checker `current`/cero escrituras y paridad; el rango confirmado `review-ee52db1afd824057` fue aprobado con reconocimiento exacto y autoridad consumida. Tres advertencias no bloqueantes quedan para después; RH-W-0044 sigue `proposed`, sin entrega del producto.
+
 - RH-W-0044 tiene cuatro porciones de vista previa autorizadas por el propietario, verificadas independientemente, confirmadas en commits locales y reconocidas mediante revisión nativa: núcleo del rulebook `63220c047e4e3c589f274f36ac1462c478618763`, resumen bilingüe de uso `f31c49446b770f4502e9f5c40dc217bd75757276`, Visibility `018cc4aa829c410a8d1f89a6443387205f0ddc81` y Translation Sync EN/ES `27ca929c747d7612c03c29ce44eea1fea87de30a`. La porción documental anterior es un commit local separado, `9c20eb4721903bac00dd40644a8fba573dba13e4`. La suite más reciente pasó 578 pruebas con 10 omitidas y el checker informó `current` con cero escrituras antes de esta edición documental. RH-W-0044 sigue `proposed`: R44-1 parcial con ambigüedad conservadora pendiente, R44-2/R44-3 sin iniciar, informe final de toda la funcionalidad R44-4 pendiente. No se afirma push, PR de producto, fusión, release ni implementación completa.
 
 ## 2026-09-24
