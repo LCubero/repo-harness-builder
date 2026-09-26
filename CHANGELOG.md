@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-26
+
+- Locally verified the bounded RH-W-0044 R44-3 accepted-selection correction and synchronized six runtime copies: the independent suite passed 592 tests (10 skipped), checker `current`/zero writes and 6/6 byte parity. The product slice was committed locally as `0ea9ed3c5122855b829ae9319cb55545365c7c58` from `911ead8f72e37ea51d922c3a6a5341739a405ca8`; committed-only lineage `review-23cf4676bb16f50e` approved with exact acknowledgement burned. R3-001 remains a nonblocking WARNING; no product delivery is claimed. The separate pre-correction nine-document workspace target `aba75edf` was approved in `review-8d0cfc5694302c44`; that verdict does not cover this later documentation correction.
+
 ## 2026-09-25
 
 - Locally committed the bounded 16-path RH-W-0044 R44-2 read-only individual choice/marker preview as `eb54bc3717f8426064d906acdcce795740eb98ee` from `6b707b04c0f68cb9431449789f0213d677eccb46`: independent verification passed 588 tests (10 skipped), checker `current`/zero writes and parity; committed-range lineage `review-ee52db1afd824057` approved with exact acknowledgement burned. Three nonblocking warnings remain later work; RH-W-0044 stays `proposed`, without product delivery.
