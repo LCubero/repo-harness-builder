@@ -4,7 +4,11 @@
 
 ## 2026-09-26
 
+- Se confirmó localmente la cobertura de pruebas únicamente R44-2R de RH-W-0044 como `15d97c840951c13fdab582c70fdd77353bad6db0` desde `d6bd1c756bd38e7aca5f2f209b32e1c30853efe3`: creación, anexado y reemplazo generados junto con una acción humana se restauran ante un fallo posterior. La suite de 596 pruebas (10 omitidas) pasó antes de sincronizar mecánicamente las proyecciones; después pasaron 33/33 pruebas enfocadas, checker `current`/cero escrituras y paridad de pruebas. La revisión exacta de solo commits `review-a61f2ab91a217a26` fue aprobada y reconocida; no se afirma defecto de producción ni entrega del producto.
+
 - Se confirmó localmente la unidad acotada de 10 rutas de producto/proyecciones/conteo de marcadores R44-2 de RH-W-0044 como `1aff626b477a784b6eee2818d8158ed487d31093` desde `6909e47b8ba875c3995956c966ec612388d2a73a`: pasaron 33 pruebas enfocadas, la suite completa de 596 pruebas (10 omitidas), checker `current`/cero escrituras y paridad de bytes. La revisión nativa exacta de solo commits `review-5f486c7aa8818c91` fue aprobada y reconocida. R44-1 sigue parcial, R44-2 en conjunto parcial y abierto, R44-4 final pendiente y RH-W-0044 `proposed`; no se afirma push, PR de producto ni entrega.
+
+- Se verificó localmente la corrección acotada de selección aceptada R44-3 de RH-W-0044 y se sincronizaron seis copias de runtime: la suite independiente pasó 592 pruebas (10 omitidas), checker `current`/cero escrituras y paridad 6/6. La porción de producto se confirmó localmente como `0ea9ed3c5122855b829ae9319cb55545365c7c58` desde `911ead8f72e37ea51d922c3a6a5341739a405ca8`; la revisión de solo commits `review-23cf4676bb16f50e` fue aprobada con reconocimiento exacto. R3-001 sigue como advertencia no bloqueante; no se afirma entrega del producto. La revisión separada del objetivo documental anterior a la corrección `aba75edf` en `review-8d0cfc5694302c44` no cubre la corrección documental posterior.
 
 ## 2026-09-25
 
