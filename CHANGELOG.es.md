@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-26
+
+- Se confirmó localmente la unidad acotada de 10 rutas de producto/proyecciones/conteo de marcadores R44-2 de RH-W-0044 como `1aff626b477a784b6eee2818d8158ed487d31093` desde `6909e47b8ba875c3995956c966ec612388d2a73a`: pasaron 33 pruebas enfocadas, la suite completa de 596 pruebas (10 omitidas), checker `current`/cero escrituras y paridad de bytes. La revisión nativa exacta de solo commits `review-5f486c7aa8818c91` fue aprobada y reconocida. R44-1 sigue parcial, R44-2 en conjunto parcial y abierto, R44-4 final pendiente y RH-W-0044 `proposed`; no se afirma push, PR de producto ni entrega.
+
 ## 2026-09-25
 
 - Se confirmó localmente la vista previa acotada de solo lectura R44-2 de RH-W-0044 para selección individual y marcadores como commit de 16 rutas `eb54bc3717f8426064d906acdcce795740eb98ee` desde `6b707b04c0f68cb9431449789f0213d677eccb46`: verificación independiente de 588 pruebas (10 omitidas), checker `current`/cero escrituras y paridad; el rango confirmado `review-ee52db1afd824057` fue aprobado con reconocimiento exacto y autoridad consumida. Tres advertencias no bloqueantes quedan para después; RH-W-0044 sigue `proposed`, sin entrega del producto.
