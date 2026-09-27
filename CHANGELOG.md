@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-27
+
+- Committed the owner-approved minimal bilingual RH-W-0022 implementation plan as `ceff923a23e5379719f650293616bc770ada6847` on `docs/rh-w-0022-minimal-plan` and pushed it to the origin branch. Native exact work-unit review was approved and acknowledged as low-risk without lenses. RH-W-0022 remains `proposed`; implementation requires separate authorization. No PR or merge to `main` is claimed.
+
 ## 2026-09-26
 
 - Delivered the RH-W-0096 proposal through [PR #230](https://github.com/LCubero/repo-harness-builder/pull/230), squash-merged at 2026-09-26T23:27:53Z as `1df90a31e35da5c1544e2b3322e8537086c5b974`; issue #229 closed. The [roadmap](docs/repo-harness/roadmap.md#rh-w-0096) retains the exact head and review/check limits. RH-W-0096 remains `proposed`, `P3`; no design or implementation was approved.
