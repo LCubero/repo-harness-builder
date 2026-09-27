@@ -543,7 +543,7 @@ Dependencias: Preservar el rechazo y la condición de sustitución explícita de
 
 Estado: `proposed`.
 
-Trabajo completado: Solo registro de la propuesta; no se ha aprobado comportamiento ni diseño.
+Trabajo completado: Propuesta entregada en la cabeza exacta de cuatro documentos `89cca3da6a327d4e54265dac85aa868a7dbb4bb0` mediante el [PR #230](https://github.com/LCubero/repo-harness-builder/pull/230), fusionado por squash a las 2026-09-26T23:27:53Z como `1df90a31e35da5c1544e2b3322e8537086c5b974`; el [issue #229](https://github.com/LCubero/repo-harness-builder/issues/229) se cerró a las 23:27:54Z. GitHub no informó checks inmediatamente antes de la fusión (no son checks aprobados); el propietario confirmó revisión humana en vivo sin evento formal de revisión en GitHub. No se ha aprobado comportamiento ni diseño.
 
 Trabajo restante: Evaluar por separado evidencia contextual concreta y si una operación existente no puede atenderla antes de solicitar aprobación de diseño.
 
@@ -557,7 +557,7 @@ Rechazos: No sustituir RH-W-0040 ni absorber o reabrir RH-W-0066 o RH-W-0050.
 
 Evidencia: Decisión del propietario de registrar solo la propuesta; la fricción contextual motiva investigar, pero no demuestra un detector, portabilidad en ejecución ni insuficiencia de la continuidad existente.
 
-Historial de decisiones: Registrada solo como propuesta, fuera del orden de ejecución aprobado; diseño, implementación y comportamiento de inicio permanecen sin autorización.
+Historial de decisiones: Registrada y entregada solo como propuesta, fuera del orden de ejecución aprobado; diseño, implementación y comportamiento de inicio permanecen sin autorización.
 
 Siguiente condición de avance: Obtener evidencia concreta de una operación sin cobertura bajo control del harness y una decisión informada y separada del propietario antes de orientar al inicio en conflicto o aprobar un diseño.
 

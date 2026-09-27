@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-26
+
+- Se entregó la propuesta RH-W-0096 mediante el [PR #230](https://github.com/LCubero/repo-harness-builder/pull/230), fusionado por squash a las 2026-09-26T23:27:53Z como `1df90a31e35da5c1544e2b3322e8537086c5b974`; el issue #229 se cerró. La [hoja de ruta](docs/es/repo-harness/roadmap.md#rh-w-0096) conserva la cabeza exacta y los límites de revisión/checks. RH-W-0096 sigue `proposed`, `P3`; no se aprobaron diseño ni implementación.
+
 ## 2026-09-24
 
 - Se entregó el plan de implementación bilingüe corregido RH-W-0044 mediante el [PR #226](https://github.com/LCubero/repo-harness-builder/pull/226), fusionado por squash a las 2026-09-24T19:07:16Z como `d3acaa750d4416d994e92e6b1cb56bafacab67d2`; el issue #225 está cerrado. RH-W-0044 permanece `proposed`; implementar el producto requiere autorización separada.

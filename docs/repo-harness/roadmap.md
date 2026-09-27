@@ -542,14 +542,14 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Priority | P3: potentially useful mitigation, but no uncovered operation or cross-session recurrence has been established; not a confirmed blocker. |
 | Dependencies | Preserve RH-W-0040's rejection and explicit supersession condition. RH-W-0066 owns explicit remember requests; completed RH-W-0050 owns finding reconciliation. Reuse existing continuity and privacy boundaries without reopening either owner. |
 | Status | proposed |
-| Completed work | Proposal registration only; no behavior or design approved. |
+| Completed work | Proposal delivered in the exact four-document head `89cca3da6a327d4e54265dac85aa868a7dbb4bb0` through [PR #230](https://github.com/LCubero/repo-harness-builder/pull/230), squash-merged 2026-09-26T23:27:53Z as `1df90a31e35da5c1544e2b3322e8537086c5b974`; [issue #229](https://github.com/LCubero/repo-harness-builder/issues/229) closed at 23:27:54Z. GitHub reported no checks immediately before merge (not passing checks); the owner confirmed live human review without a formal GitHub review event. No behavior or design approved. |
 | Remaining work | Separately assess concrete contextual evidence and whether an existing operation cannot handle it before seeking design approval. |
 | Additions | Consider only the principal orchestrator's response to concrete, contextual friction with behavior owned or controlled by the repo harness: offer user confirmation before preserving an observation, and permit a conversational opt-out for that optional behavior in the current session only. Optional Engram could reinforce continuity but is not authoritative; repository evidence and existing reconciliation remain authoritative. Windows/Linux/macOS portability is intended, not verified. |
 | Exclusions | No child-agent or general agent-friction tracking, inferred persistent preference, automatic recurrence guarantee, ledger, counts, scheduler, daemon, new finding owner, weakened privacy, or unconfirmed preservation. |
 | Deferrals | Any orientation at deliberately invoked session-start is conflicted with RH-W-0040's explicit rejection of a session-start feature. It requires a separate informed owner decision supported by an operation existing repository and Engram continuity cannot satisfy; this proposal does not authorize it. |
 | Rejections | No supersession of RH-W-0040 and no absorption or reopening of RH-W-0066 or RH-W-0050. |
 | Evidence | Owner decision to record the proposal only; contextual friction motivates investigation, not a verified detector, portable runtime result, or proof that existing continuity is insufficient. |
-| Decision history | Registered as a proposal only, outside approved execution order; design, implementation and startup behavior remain unauthorized. |
+| Decision history | Registered and delivered as a proposal only, outside approved execution order; design, implementation and startup behavior remain unauthorized. |
 | Next advancement condition | Obtain concrete evidence of an uncovered harness-controlled operation and a separate informed owner decision before any conflicted startup orientation or design approval. |
 
 ### RH-W-0095
