@@ -33,7 +33,8 @@
 | [Plan RH-W-0046](rh-w-0046-implementation-plan.md) | Registro histórico de ejecución RH-W-0046 completada; el límite exacto de consentimiento solo puede reabrirse por regresión |
 | [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado por el propietario; plan corregido entregado mediante PR #226, implementación sin autorización |
 | [Plan de implementación RH-W-0044](rh-w-0044-implementation-plan.md) | Plan corregido con pruebas primero, aceptado por el propietario y entregado mediante PR #226; implementación sin autorización |
-| [Diseño RH-W-0022](rh-w-0022-design.md) | Diseño mínimo de relaciones documentales declaradas aprobado por el propietario; planificación e implementación siguen sin autorización |
+| [Diseño RH-W-0022](rh-w-0022-design.md) | Diseño mínimo aprobado por el propietario; se conserva su límite histórico de aprobación |
+| [Plan de implementación RH-W-0022](rh-w-0022-implementation-plan.md) | Plan bilingüe aprobado por el propietario, redactado con autorización solo de planificación; la implementación sigue sin autorización |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno entregado de backup local de memoria y continuidad entre fuentes |
 | [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan aprobado y entregado de implementacion de continuidad nativa |
 | [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta implementada de cierre documental; los otros defectos RH-W-0068 siguen propuestos |

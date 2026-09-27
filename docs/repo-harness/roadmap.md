@@ -180,7 +180,7 @@ Further work and product delivery require separate decisions; the preview author
 
 ### Plan 8: RH-W-0022 declared documentation relationships design
 
-Readiness `design owner-approved; implementation planning unauthorized`. Priority `P2`. The bilingual [design](rh-w-0022-design.md) resolves the minimal edge, single owner, exact checker result, localization, preservation, and RH-W-0065 coordination boundaries. Implementation planning and implementation remain unauthorized.
+Readiness `design owner-approved; implementation plan owner-approved`. Priority `P2`. The bilingual [design](rh-w-0022-design.md) owns the contract; the bilingual [implementation plan](rh-w-0022-implementation-plan.md) is drafted under planning-only authority. Implementation remains unauthorized.
 
 1. Define the smallest declared-edge format, rejecting inference from link graphs or filename patterns.
 2. Decide the single owner file for the declared map and keep it small enough to maintain by hand.
@@ -188,7 +188,7 @@ Readiness `design owner-approved; implementation planning unauthorized`. Priorit
 4. Keep the exclusions intact: no code-symbol graph, no call-path analysis, no dependency engine, no daemon, no scheduler, no external service, and no new runtime dependency beyond the Python standard library.
 5. Name the RED tests, ideally reproducing a real past drift.
 
-Resolved technical decisions: exact three-field JSON edges in one preserved `.repo-harness/document-relationships.json`; only `localized-peer` and `lifecycle-projection`; exact `relationship-unsatisfied` checker entries. Human decision recorded: the owner directly reviewed and technically approved the design. This does not authorize implementation planning or implementation.
+Resolved technical decisions: exact three-field JSON edges in one preserved `.repo-harness/document-relationships.json`; only `localized-peer` and `lifecycle-projection`; exact `relationship-unsatisfied` checker entries. Human decision recorded: the owner directly reviewed and technically approved the design; that approval alone did not authorize implementation planning or implementation. Later separate planning-only authorization produced the now owner-approved implementation plan; implementation remains unauthorized.
 
 ### Plan 9: RH-W-0055 installation and onboarding design
 
@@ -1851,15 +1851,15 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Priority | P2: reconciliation is currently carried by human attention and prose rules, which is the failure mode this repository keeps hitting |
 | Dependencies | Design approval on scope, because an unbounded version of this becomes a graph engine the harness must not own |
 | Status | proposed |
-| Completed work | Recorded the request and concrete drift evidence. The bilingual [proposed design](rh-w-0022-design.md) now defines one preserved `.repo-harness/document-relationships.json`, exact three-field edges, two closed relationship kinds, bounded verification, exact failure output, localization, preservation, and separate RH-W-0065 coordination. |
-| Remaining work | Implementation planning and implementation require later, separate authorization. |
+| Completed work | Recorded the request and concrete drift evidence. The owner-approved bilingual [design](rh-w-0022-design.md) defines the bounded contract; the bilingual [implementation plan](rh-w-0022-implementation-plan.md) was drafted under planning-only authority and is now owner-approved. |
+| Remaining work | The plan is owner-approved; separate authorization for implementation remains pending. |
 | Additions | Make document relationships declared and machine-checked, so touching a canonical owner reports the peers, projections, and mirrors that must move in the same work unit. |
 | Exclusions | No code-symbol graph, no call-path analysis, and no dependency engine. CodeGraph already owns code structure and is ignored at the repository root by design. This unit covers documentation relationships only. No daemon, no scheduler, no external service, no new runtime dependency, and no change to the Python 3.10+ standard-library-only constraint. |
 | Deferrals | none |
 | Rejections | Rejected inferring relationships by scanning link graphs or filename patterns. Inference produces confident wrong answers; a declared edge that the checker verifies produces a correction. |
 | Evidence | The `RH-W-0020` work unit required eight coordinated files across four owner/peer pairs, and every edge was resolved by hand from the rulebook gate table. `.repo-harness/check.py` verifies runtime projection parity only; no check covers the English-owner-to-Spanish-peer or roadmap-to-current-state-projection relationships, which are exactly the ones that drifted before. |
 | Decision history | 2026-08-14: requested after README drift showed that reconciliation rules existed only as prose. Recorded as `proposed` because scope is the risk. 2026-09-06: after RH-W-0044 design approval at clean local commit `140cc04`, the owner authorized the next design; canonical order selected RH-W-0022 and the minimal bilingual design was proposed without external research or implementation. The owner then directly reviewed and technically approved that design while keeping implementation planning and implementation unauthorized. |
-| Next advancement condition | Separate owner authorization to plan implementation. Design approval alone does not authorize planning or implementation. |
+| Next advancement condition | Separate implementation authorization; plan approval does not advance the lifecycle. |
 
 ### RH-W-0023
 | Field | Value |

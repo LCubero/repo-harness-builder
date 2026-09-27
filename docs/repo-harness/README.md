@@ -35,7 +35,8 @@
 | [rh-w-0046-implementation-plan.md](rh-w-0046-implementation-plan.md) | Completed historical RH-W-0046 repository fetch-consent execution record; the exact consent boundary may reopen only on regression |
 | [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved human-owned document suggestion design; corrected plan delivered via PR #226, implementation unauthorized |
 | [rh-w-0044-implementation-plan.md](rh-w-0044-implementation-plan.md) | Corrected owner-accepted test-first plan delivered through PR #226; implementation unauthorized |
-| [rh-w-0022-design.md](rh-w-0022-design.md) | Owner-approved minimal declared documentation relationship design; implementation planning and implementation remain unauthorized |
+| [rh-w-0022-design.md](rh-w-0022-design.md) | Owner-approved minimal declared documentation relationship design; historical approval boundary retained |
+| [rh-w-0022-implementation-plan.md](rh-w-0022-implementation-plan.md) | Owner-approved bilingual implementation plan drafted under planning-only authority; implementation unauthorized |
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Delivered local memory backup and cross-source continuity design |
 | [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Delivered owner-approved native continuity implementation plan |
 | [rh-w-0068-documentation-closure-design.md](rh-w-0068-documentation-closure-design.md) | Implemented required post-verification documentation closure gate; other RH-W-0068 defects remain proposed |
