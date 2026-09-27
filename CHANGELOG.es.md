@@ -6,6 +6,10 @@
 
 - Se entregó la propuesta RH-W-0096 mediante el [PR #230](https://github.com/LCubero/repo-harness-builder/pull/230), fusionado por squash a las 2026-09-26T23:27:53Z como `1df90a31e35da5c1544e2b3322e8537086c5b974`; el issue #229 se cerró. La [hoja de ruta](docs/es/repo-harness/roadmap.md#rh-w-0096) conserva la cabeza exacta y los límites de revisión/checks. RH-W-0096 sigue `proposed`, `P3`; no se aprobaron diseño ni implementación.
 
+## 2026-09-25
+
+- Se registró el avance local autorizado por el propietario de RH-W-0044: cuatro porciones de vista previa verificadas independientemente (`63220c0`, `f31c494`, `018cc4a`, `27ca929`) y la vista previa de solo lectura de selección/marcadores R44-2 (`eb54bc3`, 588 pruebas, 10 omitidas) en la rama de producto separada. En esa instantánea del 25 de septiembre, R44-1 y R44-2 estaban parciales, R44-3 no había comenzado y el informe final R44-4 estaba pendiente; RH-W-0044 permanece `proposed` P2. No se afirma push, PR, fusión ni entrega del producto.
+
 ## 2026-09-24
 
 - Se entregó el plan de implementación bilingüe corregido RH-W-0044 mediante el [PR #226](https://github.com/LCubero/repo-harness-builder/pull/226), fusionado por squash a las 2026-09-24T19:07:16Z como `d3acaa750d4416d994e92e6b1cb56bafacab67d2`; el issue #225 está cerrado. RH-W-0044 permanece `proposed`; implementar el producto requiere autorización separada.
