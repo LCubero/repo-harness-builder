@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-27
 
+- Delivered the RH-W-0022 documentation-only reconciliation through [PR #235](https://github.com/LCubero/repo-harness-builder/pull/235), squash-merged as `fffb4b03ac82f87997b29e313e348085fc886852` at 2026-09-27T16:17:17Z; issue #234 closed. This followed the earlier direct-main delivery without a PR. RH-W-0022 remains `proposed`, and product implementation requires separate authorization.
+
 - Later delivered the owner-approved bilingual RH-W-0022 implementation plan directly to `main` through documentation-only cherry-picks `bc91e497706e37a133c8e1d15084cd2979381c83` then `ba4dc4c668f87c286dd2e8c97d203bda3ffca893`, under the owner's direct-main exception; `origin/main` matched `ba4dc4c` at 0 behind/0 ahead after push. No PR or product implementation; RH-W-0022 remains `proposed` and implementation requires separate authorization.
 
 - Committed the owner-approved minimal bilingual RH-W-0022 implementation plan as `ceff923a23e5379719f650293616bc770ada6847` on `docs/rh-w-0022-minimal-plan` and pushed it to the origin branch. Native exact work-unit review was approved and acknowledged as low-risk without lenses. RH-W-0022 remains `proposed`; implementation requires separate authorization. No PR or merge to `main` is claimed.
