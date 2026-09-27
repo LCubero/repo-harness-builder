@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-27
+
+- Completed RH-W-0044 technically under the owner's conservative decision at published feature-branch HEAD `ac421b1`: bounded localized preview, individual choice, content-bound accepted plan and mixed rollback. Eligible families without a proven stable literal unit remain intentionally ambiguous; README selector integration is separate. Earlier full-suite evidence: 596 tests/10 skipped; checker `current`/zero writes. Issue #228 governs separate delivery; no product PR, merge or release is claimed.
+
 ## 2026-09-26
 
 - Locally committed test-only RH-W-0044 R44-2R mixed-rollback coverage as `15d97c840951c13fdab582c70fdd77353bad6db0` from `d6bd1c756bd38e7aca5f2f209b32e1c30853efe3`: generated create, append and replace plus a human action restore on later failure. The 596-test suite (10 skipped) passed before mechanical projection sync; afterward 33/33 focused tests, checker `current`/zero writes and test parity passed. Exact committed-only review `review-a61f2ab91a217a26` approved and was acknowledged; no production defect or product delivery is claimed.

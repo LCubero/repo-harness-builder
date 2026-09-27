@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-27
+
+- Se completó técnicamente RH-W-0044 por decisión conservadora del propietario en HEAD `ac421b1` de la rama de funcionalidad publicada: vista previa localizada acotada, selección individual, plan aceptado ligado al contenido y rollback mixto. Las familias elegibles sin unidad literal estable probada permanecen intencionalmente ambiguas; la integración del selector README es separada. Evidencia anterior: suite de 596 pruebas/10 omitidas; checker `current`/cero escrituras. El issue #228 gobierna la entrega separada; no se afirma PR de producto, fusión ni release.
+
 ## 2026-09-26
 
 - Se confirmó localmente la cobertura de pruebas únicamente R44-2R de RH-W-0044 como `15d97c840951c13fdab582c70fdd77353bad6db0` desde `d6bd1c756bd38e7aca5f2f209b32e1c30853efe3`: creación, anexado y reemplazo generados junto con una acción humana se restauran ante un fallo posterior. La suite de 596 pruebas (10 omitidas) pasó antes de sincronizar mecánicamente las proyecciones; después pasaron 33/33 pruebas enfocadas, checker `current`/cero escrituras y paridad de pruebas. La revisión exacta de solo commits `review-a61f2ab91a217a26` fue aprobada y reconocida; no se afirma defecto de producción ni entrega del producto.
