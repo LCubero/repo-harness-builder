@@ -4,6 +4,8 @@
 
 ## 2026-09-27
 
+- Posteriormente se entregó el plan de implementación bilingüe RH-W-0022 aprobado por el propietario directamente a `main`, mediante los cherry-picks solo documentales `bc91e497706e37a133c8e1d15084cd2979381c83` y luego `ba4dc4c668f87c286dd2e8c97d203bda3ffca893`, bajo la excepción del propietario para entrega directa a `main`; tras el push, `origin/main` coincidía con `ba4dc4c` (0 por detrás/0 por delante). No hubo PR ni implementación del producto; RH-W-0022 sigue `proposed` y la implementación requiere autorización separada.
+
 - Se registró el plan mínimo de implementación bilingüe RH-W-0022 aprobado por el propietario en el commit `ceff923a23e5379719f650293616bc770ada6847` de `docs/rh-w-0022-minimal-plan` y se envió a la rama de origin. La revisión nativa de la unidad de trabajo exacta fue aprobada y reconocida como de bajo riesgo, sin lentes. RH-W-0022 permanece `proposed`; la implementación requiere autorización separada. No se afirma PR ni fusión a `main`.
 
 ## 2026-09-26
