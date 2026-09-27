@@ -8,6 +8,10 @@ This file records meaningful completed changes in chronological order, newest fi
 
 - Delivered the RH-W-0096 proposal through [PR #230](https://github.com/LCubero/repo-harness-builder/pull/230), squash-merged at 2026-09-26T23:27:53Z as `1df90a31e35da5c1544e2b3322e8537086c5b974`; issue #229 closed. The [roadmap](docs/repo-harness/roadmap.md#rh-w-0096) retains the exact head and review/check limits. RH-W-0096 remains `proposed`, `P3`; no design or implementation was approved.
 
+## 2026-09-25
+
+- Recorded owner-authorized RH-W-0044 local progress: four independently verified preview slices (`63220c0`, `f31c494`, `018cc4a`, `27ca929`) and the read-only R44-2 choice/marker preview (`eb54bc3`, 588 tests, 10 skipped) on the separate feature branch. As of that September 25 snapshot, R44-1 and R44-2 were partial, R44-3 had not started, and R44-4's final report was pending; RH-W-0044 remains `proposed` P2. No product push, PR, merge, or delivery is claimed.
+
 ## 2026-09-24
 
 - Delivered the corrected bilingual RH-W-0044 implementation plan through [PR #226](https://github.com/LCubero/repo-harness-builder/pull/226), squash-merged at 2026-09-24T19:07:16Z as `d3acaa750d4416d994e92e6b1cb56bafacab67d2`; issue #225 closed. RH-W-0044 remains `proposed`; product implementation requires separate authorization.
