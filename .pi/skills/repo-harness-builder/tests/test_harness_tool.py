@@ -3468,6 +3468,8 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
             literal = TOOL.SUGGESTION_UNITS[relative][0][1] + "\n"
             path.write_text(outputs[relative].replace(literal, ""), encoding="utf-8")
             original = path.read_bytes()
+            (root / ".repo-harness/skills/repo-harness-session-stop/SKILL.md").unlink()
+            (root / ".gitignore").write_bytes(b"# existing project ignores\n")
             item = self.preview(root, outputs)["suggestions"][0]
             flags = ["render", "--root", str(root), "--project-name", "example", "--standalone",
                      "--suggestion-choice", "accept", "--suggestion-id", item["suggestionId"],
@@ -3475,15 +3477,21 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
             with contextlib.redirect_stdout(io.StringIO()) as stream:
                 self.assertEqual(TOOL.main(flags), 0)
             report = json.loads(stream.getvalue())
-            generated = [action["path"] for group in ("create", "append", "replace")
-                         for action in report[group] if action["path"] != relative]
-            self.assertTrue(generated, "mixed transaction must contain a generated action")
+            generated_by_action = {
+                group: [action["path"] for action in report[group] if action["path"] != relative]
+                for group in ("create", "append", "replace")
+            }
+            for group, paths in generated_by_action.items():
+                self.assertTrue(paths, f"missing generated {group} action")
+            generated = [name for paths in generated_by_action.values() for name in paths]
             generated_before = {name: (root / name).read_bytes() if (root / name).is_file() else None
                                 for name in generated}
             def fail_after_mixed_writes(*args, **kwargs):
                 self.assertNotEqual(path.read_bytes(), original)
-                self.assertTrue(any((root / name).read_bytes() != prior for name, prior in generated_before.items()
-                                    if prior is not None))
+                for group, paths in generated_by_action.items():
+                    self.assertTrue(all((root / name).is_file() and
+                                        (root / name).read_bytes() != generated_before[name]
+                                        for name in paths), f"unchanged generated {group} action")
                 raise TOOL.ContractError("forced verification failure")
             with mock.patch.object(TOOL, "verify_outputs", side_effect=fail_after_mixed_writes):
                 with contextlib.redirect_stdout(io.StringIO()):
