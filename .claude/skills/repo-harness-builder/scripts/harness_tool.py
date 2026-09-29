@@ -3537,13 +3537,19 @@ def human_integration_action(root: Path, suggestion: Mapping[str, Any],
             "mixed line endings in human suggestion target")
     text = source.decode("utf-8")
     proposed = suggestion["proposedBytes"]
-    require(suggestion["actionKind"] == "insert", "invalid human suggestion kind")
+    kind = suggestion["actionKind"]
+    require(kind in ("insert", "insert-marker"), "invalid human suggestion kind")
     # The comparator proves that the owner differs only by registered omissions.
     # Recheck that proof, then insert at the rendered line index inside that owner.
     fresh = human_suggestion_preview(root, outputs)
-    require(suggestion in fresh["suggestions"], "human suggestion insertion anchor changed")
+    pool = fresh["markerProposals"] if kind == "insert-marker" else fresh["suggestions"]
+    require(suggestion in pool, "human suggestion insertion anchor changed")
     anchor, boundary, role = SUGGESTION_OWNER_BOUNDS[relative]
-    require(role == suggestion["ownerRole"], "human suggestion owner changed")
+    if kind == "insert-marker":
+        require(role not in NON_SUPPRESSIBLE_SUGGESTION_ROLES,
+                "protected human suggestion marker")
+    else:
+        require(role == suggestion["ownerRole"], "human suggestion owner changed")
     normalized = text.replace("\r\n", "\n")
     rendered = outputs[relative].replace("\r\n", "\n")
     require(normalized.count(anchor) == rendered.count(anchor) == 1,
@@ -3553,7 +3559,8 @@ def human_integration_action(root: Path, suggestion: Mapping[str, Any],
     rendered_owner = rendered.split(anchor, 1)[1].split(boundary, 1)
     require(separator and len(rendered_owner) == 2, "human suggestion owner changed")
     lines = rendered_owner[0].splitlines(keepends=True)
-    matches = [i for i, line in enumerate(lines) if line.rstrip("\n") == proposed.rstrip("\r\n")]
+    obligation = dict(SUGGESTION_UNITS[relative])[suggestion["contractUnitId"]] if kind == "insert-marker" else proposed.rstrip("\r\n")
+    matches = [i for i, line in enumerate(lines) if line.rstrip("\n") == obligation]
     require(len(matches) == 1, "human suggestion insertion anchor changed")
     index = matches[0]
     missing = {literal for _, literal in SUGGESTION_UNITS[relative] if literal not in owner.splitlines()}
@@ -4677,7 +4684,8 @@ def validate_write_preconditions(
     require(len(human) <= 1, "only one human suggestion may enter a plan")
     if human:
         item = human[0]
-        choice = human_suggestion_choice(root, outputs, "accept", item["suggestionId"], item["suggestionEvidenceSha256"])
+        choice_name = "declare-intentional-divergence" if item["actionKind"] == "insert-marker" else "accept"
+        choice = human_suggestion_choice(root, outputs, choice_name, item["suggestionId"], item["suggestionEvidenceSha256"])
         require(choice["status"] == "selected-preview-only", "human suggestion evidence changed; preview again")
         require(human_integration_action(root, choice["suggestion"], outputs) == item,
                 "human integration bytes changed; preview again")
@@ -5262,13 +5270,13 @@ def main(argv: Optional[list[str]] = None) -> int:
             args.ignore_codegraph,
         )
         selection = (args.suggestion_choice, args.suggestion_id, args.suggestion_evidence_sha256)
-        require(not any(selection) or (all(selection) and (not args.apply or selection[0] == "accept")),
-                "suggestion selection requires choice, ID and evidence; only accept permits --apply")
+        require(not any(selection) or (all(selection) and (not args.apply or selection[0] in ("accept", "declare-intentional-divergence"))),
+                "suggestion selection requires choice, ID and evidence; only accept or declaration permits --apply")
         selected_choice = human_suggestion_choice(root, outputs, *selection) if all(selection) else None
-        if selected_choice and selected_choice["status"] == "selected-preview-only" and selection[0] == "accept":
+        if selected_choice and selected_choice["status"] == "selected-preview-only" and selection[0] in ("accept", "declare-intentional-divergence"):
             action = human_integration_action(root, selected_choice["suggestion"], outputs)
             plan = plan_changes(root, outputs, trusted_skill_license, action)
-        elif selected_choice and selected_choice["status"] == "rejected" and selection[0] == "accept":
+        elif selected_choice and selected_choice["status"] == "rejected" and (args.apply or selection[0] == "accept"):
             raise ContractError("human suggestion evidence changed; preview again")
         else:
             plan = plan_changes(root, outputs, trusted_skill_license)
