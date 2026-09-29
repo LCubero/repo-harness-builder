@@ -1,6 +1,8 @@
 # RH-W-0044 Human-Owned Document Suggestion Design
 
-> **Status: OWNER-APPROVED DESIGN; CORRECTED IMPLEMENTATION PLAN ACCEPTED LOCALLY. RH-W-0044 remains `proposed`; implementation is unauthorized.**
+> **Historical status snapshot: owner-approved design; RH-W-0044 remained `proposed`. Four partial preview slices (rulebook core, bilingual usage overview, Visibility, EN/ES Translation Sync) are independently verified, locally committed and natively acknowledged; R44-1 remains open with conservative ambiguity pending, R44-2 read-only individual choice/marker preview locally implemented and independently verified in canonical script/test and six projections (588 tests/10 skipped, checker `current`/zero writes, byte parity, empty second preview), while R44-2 remains partial and open; R44-3 locally implemented and independently verified in canonical script/tests and six synchronized runtime copies (592 tests/10 skipped, checker `current`/zero writes, 6/6 exact byte parity), locally committed as `0ea9ed3c5122855b829ae9319cb55545365c7c58` from `911ead8f72e37ea51d922c3a6a5341739a405ca8` and approved in committed-only lineage `review-23cf4676bb16f50e` with exact acknowledgement burned (R3-001 nonblocking WARNING); the subsequent marker commit `1aff626` was approved and acknowledged in exact committed-only review `review-5f486c7aa8818c91`, while R44-2 remains partial/open and R44-4's final whole-feature report remains pending. The earlier documentation commit is separate. No product delivery or complete implementation is claimed.**
+
+Current lifecycle update: RH-W-0044 is `completed` under the owner's conservative decision at published feature-branch HEAD `ac421b1`. Bounded preview, individual choice, content-bound accepted plan and rollback are implemented; eligible families without a proven stable literal unit remain intentionally ambiguous. The README selector is separate. Earlier partial statuses above are historical. Issue #228 governs delivery; no product PR, merge or release is claimed.
 
 ## Decision
 
@@ -107,4 +109,6 @@ RH-W-0022 retains declared cross-document relationships. RH-W-0066 may route a f
 
 ## Lifecycle And Human Decision
 
-RH-W-0044 remains `proposed`. The owner approved the compared set, contract-unit boundary, suggestion schema, one-at-a-time acceptance flow, and narrow intentional-divergence declaration, then accepted the corrected bilingual [implementation plan](rh-w-0044-implementation-plan.md) after focused review on a local, not-yet-delivered branch. Implementation is the next separately authorized phase and remains unauthorized.
+The following design-approval account records the historical boundary before implementation authorization. Current partial progress is stated in the status notice above.
+
+RH-W-0044 remains `proposed`. The owner approved the compared set, contract-unit boundary, suggestion schema, one-at-a-time acceptance flow, and narrow intentional-divergence declaration, then accepted the corrected bilingual [implementation plan](rh-w-0044-implementation-plan.md) after focused review on a local, not-yet-delivered branch. Implementation was the next separately authorized phase and had not yet been authorized at that time.
