@@ -1,6 +1,6 @@
 # RH-W-0022 Declared Documentation Relationships Design
 
-> **Status: OWNER-APPROVED DESIGN. RH-W-0022 remains proposed; implementation planning and implementation remain unauthorized.**
+> **Status: OWNER-APPROVED DESIGN. RH-W-0022 remains proposed; a bilingual implementation plan was drafted under later planning-only authorization and is now owner-approved. Implementation remains unauthorized.**
 
 ## Decision
 
@@ -83,7 +83,7 @@ RH-W-0044 may later suggest an individually approved human-document change after
 
 ## Non-Goals
 
-- No implementation, implementation plan, lifecycle advancement, staging, commit, push, pull request, release, or publication.
+- The original design work did not include an implementation plan or authorize implementation, lifecycle advancement, staging, commit, push, pull request, release, or publication.
 - No inference from links, names, directories, locale suffixes, or content similarity.
 - No symbol graph, call-path analysis, dependency engine, transitive closure, daemon, scheduler, watcher, database, service, or external dependency.
 - No translation scoring, semantic-equivalence claim, automatic repair, whole-document regeneration, or change to human-document ownership.
@@ -91,4 +91,4 @@ RH-W-0044 may later suggest an individually approved human-document change after
 
 ## Approval Boundary
 
-The owner directly reviewed and technically approved this design on 2026-09-06. RH-W-0022 remains `proposed`. Implementation planning and implementation require later, separate authorization.
+The owner directly reviewed and technically approved this design on 2026-09-06. Later planning-only authorization produced a proposed bilingual [implementation plan](rh-w-0022-implementation-plan.md), now owner-approved. RH-W-0022 remains `proposed`; implementation requires separate authorization.
