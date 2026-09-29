@@ -33,9 +33,10 @@
 | [rh-w-0048-implementation-plan.md](rh-w-0048-implementation-plan.md) | Historical strict-TDD recovery execution record; the roadmap owns remaining lifecycle work |
 | [rh-w-0046-rh-w-0018-design.md](rh-w-0046-rh-w-0018-design.md) | Owner-delegated approved joint repository fetch-consent and low-question preference-boundary design; completed RH-W-0046 remains separate from deferred RH-W-0018 |
 | [rh-w-0046-implementation-plan.md](rh-w-0046-implementation-plan.md) | Completed historical RH-W-0046 repository fetch-consent execution record; the exact consent boundary may reopen only on regression |
-| [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved suggestion design; two partial preview slices locally committed and natively reviewed; RH-W-0044 remains proposed |
-| [rh-w-0044-implementation-plan.md](rh-w-0044-implementation-plan.md) | Corrected test-first plan delivered through PR #226; partial local preview implementation reviewed, remaining tasks open |
-| [rh-w-0022-design.md](rh-w-0022-design.md) | Owner-approved minimal declared documentation relationship design; implementation planning and implementation remain unauthorized |
+| [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved suggestion design; implementation technically complete on the published feature branch under the conservative ambiguity decision, with delivery pending under issue #228 |
+| [rh-w-0044-implementation-plan.md](rh-w-0044-implementation-plan.md) | Corrected test-first plan delivered through PR #226; local implementation completed and verified separately from product delivery |
+| [rh-w-0022-design.md](rh-w-0022-design.md) | Owner-approved minimal declared documentation relationship design; historical approval boundary retained |
+| [rh-w-0022-implementation-plan.md](rh-w-0022-implementation-plan.md) | Owner-approved bilingual implementation plan delivered to main; product implementation unauthorized |
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Delivered local memory backup and cross-source continuity design |
 | [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Delivered owner-approved native continuity implementation plan |
 | [rh-w-0068-documentation-closure-design.md](rh-w-0068-documentation-closure-design.md) | Implemented required post-verification documentation closure gate; other RH-W-0068 defects remain proposed |

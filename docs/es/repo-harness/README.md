@@ -31,9 +31,10 @@
 | [Plan de implementación RH-W-0048](rh-w-0048-implementation-plan.md) | Registro histórico de ejecución con TDD estricto; el roadmap posee el trabajo restante del ciclo |
 | [Diseño RH-W-0046/RH-W-0018](rh-w-0046-rh-w-0018-design.md) | Diseño conjunto aprobado por delegación del propietario sobre consentimiento de fetch y preferencias de menos preguntas; RH-W-0046 completada sigue separada de RH-W-0018 aplazada |
 | [Plan RH-W-0046](rh-w-0046-implementation-plan.md) | Registro histórico de ejecución RH-W-0046 completada; el límite exacto de consentimiento solo puede reabrirse por regresión |
-| [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado; dos porciones parciales de vista previa confirmadas localmente y revisadas de forma nativa; RH-W-0044 sigue `proposed` |
-| [Plan de implementación RH-W-0044](rh-w-0044-implementation-plan.md) | Plan corregido con pruebas primero entregado mediante PR #226; implementación parcial local revisada, tareas restantes abiertas |
-| [Diseño RH-W-0022](rh-w-0022-design.md) | Diseño mínimo de relaciones documentales declaradas aprobado por el propietario; planificación e implementación siguen sin autorización |
+| [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado; implementación técnicamente completada en la rama de producto publicada por la decisión conservadora; entrega pendiente bajo el issue #228 |
+| [Plan de implementación RH-W-0044](rh-w-0044-implementation-plan.md) | Plan corregido con pruebas primero entregado mediante PR #226; implementación local completada y verificada por separado de la entrega |
+| [Diseño RH-W-0022](rh-w-0022-design.md) | Diseño mínimo aprobado por el propietario; se conserva su límite histórico de aprobación |
+| [Plan de implementación RH-W-0022](rh-w-0022-implementation-plan.md) | Plan bilingüe aprobado por el propietario y entregado a main; implementación del producto sin autorización |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno entregado de backup local de memoria y continuidad entre fuentes |
 | [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan aprobado y entregado de implementacion de continuidad nativa |
 | [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta implementada de cierre documental; los otros defectos RH-W-0068 siguen propuestos |
