@@ -3325,6 +3325,9 @@ if __name__ == "__main__":
 
 SUGGESTION_CONTRACT_VERSION = "repo-harness-builder/human-suggestion/v1"
 SUGGESTION_CHOICES = ["accept", "keep", "declare-intentional-divergence"]
+DIVERGENCE_MARKER = re.compile(r"^<!-- repo-harness:accepted-divergence ([a-z0-9][a-z0-9/-]*) -->$")
+# Registered authority and owner-routing units are never suppressible.
+NON_SUPPRESSIBLE_SUGGESTION_ROLES = frozenset({"hard-rules", "visibility"})
 # Only uniquely anchored, standalone rendered obligations are safe to insert without
 # interpreting surrounding project prose. Other rendered text is evidence, not a patch.
 SUGGESTION_UNITS = {
@@ -3332,10 +3335,35 @@ SUGGESTION_UNITS = {
         ("hard-rules/do-not-introduce-unrelated-scope", "- Do not introduce unrelated scope."),
         ("hard-rules/do-not-continue-automatically", "- Do not continue automatically into unrequested tasks."),
     ),
+    ".repo-harness/rules/response-contract.md": (
+        ("visibility/never-mix-forms", "- Never mix forms, use `=` for information or `+` for questions, or add side borders/corners."),
+    ),
+    "docs/repo-harness/usage.md": (
+        ("overview/generated-skills-loop", "Use the three generated skills as a loop: recover context, keep durable documentation current, then leave a verified handoff."),
+    ),
+    "docs/es/repo-harness/usage.md": (
+        ("overview/three-generated-skills-loop", "Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vigente la documentacion durable y deje una transferencia verificada."),
+    ),
+    "docs/repo-harness/i18n-maintenance.md": (
+        ("translation-sync/factual-owner-peer", "Update the factual owner first, then update its Spanish peer in the same work unit. Equivalent meaning is required; literal heading or sentence equality is not. Locale-specific phrasing is allowed when facts, commands, paths, constraints, and outcomes remain equivalent."),
+    ),
+    "docs/es/repo-harness/i18n-maintenance.md": (
+        ("translation-sync/factual-owner-peer", "Actualice primero el propietario factual y luego su par en espanol dentro de la misma unidad de trabajo. Se exige significado equivalente, no igualdad literal de encabezados u oraciones. Se permite redaccion propia de cada idioma si los hechos, comandos, rutas, restricciones y resultados permanecen equivalentes."),
+    ),
+}
+
+SUGGESTION_OWNER_BOUNDS = {
+    RULEBOOK_PATH: ("## Hard Rules\n", "\n## Decision Gates", "hard-rules"),
+    ".repo-harness/rules/response-contract.md": ("## Visibility\n", "\n## Contextual Explanation", "visibility"),
+    "docs/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Daily Workflow", "overview"),
+    "docs/es/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Flujo diario", "overview"),
+    "docs/repo-harness/i18n-maintenance.md": ("<!-- doc-role:translation-sync -->\n## Translation Sync\n", "\n<!-- doc-role:link-validation -->", "translation-sync"),
+    "docs/es/repo-harness/i18n-maintenance.md": ("<!-- doc-role:translation-sync -->\n## Sincronizacion de traducciones\n", "\n<!-- doc-role:link-validation -->", "translation-sync"),
 }
 
 SUGGESTION_ELIGIBLE = frozenset({
     RULEBOOK_PATH, "REPO-HARNESS.es.md", "README.md", "README.es.md",
+    ".repo-harness/rules/response-contract.md",
     "docs/repo-harness/README.md", "docs/repo-harness/usage.md",
     "docs/repo-harness/i18n-maintenance.md", "docs/es/repo-harness/README.md",
     "docs/es/repo-harness/usage.md", "docs/es/repo-harness/i18n-maintenance.md",
@@ -3353,7 +3381,9 @@ def human_suggestion_preview(
     if tracked is None:
         return unavailable
     suggestions: list[dict[str, Any]] = []
+    marker_proposals: list[dict[str, Any]] = []
     ambiguous_paths: list[str] = []
+    accepted_divergences: list[dict[str, str]] = []
     for relative in sorted(SUGGESTION_ELIGIBLE | SUGGESTION_UNITS.keys()):
         if relative not in outputs or relative not in tracked:
             continue
@@ -3371,9 +3401,7 @@ def human_suggestion_preview(
             if current != rendered:
                 ambiguous_paths.append(relative)
             continue
-        anchor, boundary, owner_role = {
-            RULEBOOK_PATH: ("## Hard Rules\n", "\n## Decision Gates", "hard-rules"),
-        }[relative]
+        anchor, boundary, owner_role = SUGGESTION_OWNER_BOUNDS[relative]
         if rendered.count(anchor) != 1 or current.count(anchor) != 1:
             ambiguous_paths.append(relative)
             continue
@@ -3386,6 +3414,33 @@ def human_suggestion_preview(
         rendered_lines = rendered_section.splitlines()
         current_lines = current_section.splitlines()
         obligations = {literal for _, literal in units}
+        markers = [line for line in current.splitlines() if "repo-harness:accepted-divergence" in line]
+        valid_markers: dict[str, str] = {}
+        invalid_marker = False
+        for marker in markers:
+            match = DIVERGENCE_MARKER.fullmatch(marker)
+            unit = match.group(1) if match else None
+            if (unit is None or unit in valid_markers or unit not in dict(units)
+                    or owner_role in NON_SUPPRESSIBLE_SUGGESTION_ROLES
+                    or current_section.splitlines().count(marker) != 1
+                    or dict(units)[unit] in current_lines):
+                invalid_marker = True
+                break
+            valid_markers[unit] = marker
+        if invalid_marker:
+            ambiguous_paths.append(relative)
+            continue
+        for unit, marker in valid_markers.items():
+            current_lines[current_lines.index(marker)] = dict(units)[unit]
+        # A declaration belongs at the exact rendered unit position, not merely
+        # somewhere in the same section. Other registered omissions remain allowed.
+        if valid_markers:
+            expected = [line for line in rendered_lines if line not in obligations
+                        or line in (dict(units)[unit] for unit in valid_markers)
+                        or line in current_lines]
+            if current_lines != expected:
+                ambiguous_paths.append(relative)
+                continue
         if any(rendered_lines.count(literal) != 1 for literal in obligations):
             ambiguous_paths.append(relative)
             continue
@@ -3398,13 +3453,14 @@ def human_suggestion_preview(
         if retained != actual:
             ambiguous_paths.append(relative)
             continue
+        accepted_divergences.extend({"path": relative, "contractUnitId": unit} for unit in valid_markers)
         newline = "\r\n" if b"\r\n" in source and b"\n" not in source.replace(b"\r\n", b"") else "\n"
         for unit_id, obligation in units:
             # Match complete lines only inside the owned role; other prose is ambiguous.
             if rendered_section.splitlines().count(obligation) != 1:
                 ambiguous_paths.append(relative)
                 continue
-            if any(line == obligation or line.startswith(obligation + " ") for line in current_section.splitlines()):
+            if unit_id in valid_markers or any(line == obligation or line.startswith(obligation + " ") for line in current_section.splitlines()):
                 continue
             # The entire owner differs only by registered literal omissions.
             lines = rendered_section.splitlines(keepends=True)
@@ -3437,8 +3493,91 @@ def human_suggestion_preview(
                 "proposedPreview": (preceding + proposed + next_line)[:320],
                 "choices": list(SUGGESTION_CHOICES),
             })
+            if owner_role not in NON_SUPPRESSIBLE_SUGGESTION_ROLES:
+                marker_bytes = "<!-- repo-harness:accepted-divergence " + unit_id + " -->" + newline
+                marker_id = digest_text(canonical_json([SUGGESTION_CONTRACT_VERSION, locale, relative, unit_id, "marker"]))
+                marker_evidence = digest_text(canonical_json([
+                    SUGGESTION_CONTRACT_VERSION, marker_id, locale, relative, unit_id,
+                    source_sha, "insert-marker", marker_bytes,
+                ]))
+                marker_proposals.append({"suggestionId": marker_id, "suggestionEvidenceSha256": marker_evidence,
+                                         "path": relative, "locale": locale, "contractUnitId": unit_id,
+                                         "sourceSha256": source_sha, "actionKind": "insert-marker",
+                                         "proposedBytes": marker_bytes,
+                                         "reason": "Declare intentional divergence for this exact suppressible unit.",
+                                         "choices": ["declare-intentional-divergence"]})
     return {"status": "available", "classification": "ambiguous" if ambiguous_paths else "available",
-            "ambiguousPaths": sorted(set(ambiguous_paths)), "suggestions": suggestions, "writes": 0}
+            "ambiguousPaths": sorted(set(ambiguous_paths)), "acceptedDivergences": accepted_divergences,
+            "suggestions": suggestions, "markerProposals": marker_proposals, "writes": 0}
+
+
+def human_suggestion_choice(root: Path, outputs: Mapping[str, str], choice: str,
+                            suggestion_id: str, evidence_sha256: str,
+                            execute: Callable[..., subprocess.CompletedProcess[str]] = subprocess.run) -> dict[str, Any]:
+    """Recompare a single choice; selection has no executable write authority."""
+    report = human_suggestion_preview(root, outputs, execute=execute)
+    pool = report.get("markerProposals", []) if choice == "declare-intentional-divergence" else report["suggestions"]
+    matches = [item for item in pool if item["suggestionId"] == suggestion_id
+               and item["suggestionEvidenceSha256"] == evidence_sha256]
+    if choice not in SUGGESTION_CHOICES or len(matches) != 1:
+        return {"status": "rejected", "writes": 0}
+    return {"status": "kept" if choice == "keep" else "selected-preview-only",
+            "suggestion": matches[0], "writes": 0}
+
+
+def human_integration_action(root: Path, suggestion: Mapping[str, Any],
+                             outputs: Mapping[str, str]) -> dict[str, Any]:
+    """Bind a single missing literal to its unique rendered neighboring anchor."""
+    relative = suggestion["path"]
+    target = guarded_target(root, relative)
+    require(target.is_file() and not is_indirect(target), "invalid human suggestion target")
+    source = target.read_bytes()
+    require(digest_bytes(source) == suggestion["sourceSha256"], "human suggestion source changed")
+    require(not (b"\r\n" in source and b"\n" in source.replace(b"\r\n", b"")),
+            "mixed line endings in human suggestion target")
+    text = source.decode("utf-8")
+    proposed = suggestion["proposedBytes"]
+    kind = suggestion["actionKind"]
+    require(kind in ("insert", "insert-marker"), "invalid human suggestion kind")
+    # The comparator proves that the owner differs only by registered omissions.
+    # Recheck that proof, then insert at the rendered line index inside that owner.
+    fresh = human_suggestion_preview(root, outputs)
+    pool = fresh["markerProposals"] if kind == "insert-marker" else fresh["suggestions"]
+    require(suggestion in pool, "human suggestion insertion anchor changed")
+    anchor, boundary, role = SUGGESTION_OWNER_BOUNDS[relative]
+    if kind == "insert-marker":
+        require(role not in NON_SUPPRESSIBLE_SUGGESTION_ROLES,
+                "protected human suggestion marker")
+    else:
+        require(role == suggestion["ownerRole"], "human suggestion owner changed")
+    normalized = text.replace("\r\n", "\n")
+    rendered = outputs[relative].replace("\r\n", "\n")
+    require(normalized.count(anchor) == rendered.count(anchor) == 1,
+            "human suggestion owner changed")
+    before, rest = normalized.split(anchor, 1)
+    owner, separator, after = rest.partition(boundary)
+    rendered_owner = rendered.split(anchor, 1)[1].split(boundary, 1)
+    require(separator and len(rendered_owner) == 2, "human suggestion owner changed")
+    lines = rendered_owner[0].splitlines(keepends=True)
+    obligation = dict(SUGGESTION_UNITS[relative])[suggestion["contractUnitId"]] if kind == "insert-marker" else proposed.rstrip("\r\n")
+    matches = [i for i, line in enumerate(lines) if line.rstrip("\n") == obligation]
+    require(len(matches) == 1, "human suggestion insertion anchor changed")
+    index = matches[0]
+    missing = {literal for _, literal in SUGGESTION_UNITS[relative] if literal not in owner.splitlines()}
+    expected = [line for i, line in enumerate(lines)
+                if i != index and line.rstrip("\n") not in missing]
+    require(owner == "".join(expected), "human suggestion owner changed")
+    position = sum(len(line) for i, line in enumerate(lines)
+                   if i < index and line.rstrip("\n") not in missing)
+    inserted = owner[:position] + proposed.replace("\r\n", "\n") + owner[position:]
+    result = before + anchor + inserted + boundary + after
+    destination = (result.replace("\n", "\r\n") if b"\r\n" in source and b"\n" not in source.replace(b"\r\n", b"") else result).encode("utf-8")
+    return {"path": relative, "action": "integrate-human-suggestion",
+            "suggestionId": suggestion["suggestionId"],
+            "suggestionEvidenceSha256": suggestion["suggestionEvidenceSha256"],
+            "locale": suggestion["locale"], "contractUnitId": suggestion["contractUnitId"],
+            "actionKind": suggestion["actionKind"], "sourceSha256": suggestion["sourceSha256"],
+            "destinationSha256": digest_bytes(destination), "content": destination.decode("utf-8")}
 
 
 def human_owned(relative: str, rulebook_path: str) -> bool:
@@ -3988,7 +4127,8 @@ def authenticated_wrapper_version(root: Path, relative: str) -> Optional[str]:
     return authenticated_wrapper_versions(root).get(relative)
 
 
-def plan_changes(root: Path, outputs: dict[str, str], trusted_skill_license: bool = False) -> dict[str, Any]:
+def plan_changes(root: Path, outputs: dict[str, str], trusted_skill_license: bool = False,
+                 human_action: Optional[dict[str, Any]] = None) -> dict[str, Any]:
     """Classify outputs, including the two bounded root pointer append cases."""
     require(MANIFEST_PATH in outputs and ".repo-harness/check.py" in outputs, "desired manifest and checker are required")
     require(
@@ -4139,6 +4279,13 @@ def plan_changes(root: Path, outputs: dict[str, str], trusted_skill_license: boo
         "blocked": blocked,
         "migrate": migrate,
     }
+    if human_action is not None:
+        relative = human_action["path"]
+        require(relative in outputs and human_owned(relative, RULEBOOK_PATH), "invalid human integration target")
+        require(all(item["path"] != relative for item in [*create, *append, *replace]),
+                "human integration conflicts with another action")
+        plan["existing"] = [item for item in existing if item["path"] != relative]
+        plan["append"].append(dict(human_action))
     digest = plan_digest(plan)
     for item in replace:
         item["planSha256"] = digest
@@ -4533,7 +4680,17 @@ def validate_write_preconditions(
     own so an authority-carrying apply can run it as an explicit preflight and translate its
     refusal into one content-free outcome, without teaching the writer about authority.
     """
-    require(plan == plan_changes(root, outputs, trusted_skill_license), "approved plan is stale; preview again")
+    human = [item for item in plan["append"] if item["action"] == "integrate-human-suggestion"]
+    require(len(human) <= 1, "only one human suggestion may enter a plan")
+    if human:
+        item = human[0]
+        choice_name = "declare-intentional-divergence" if item["actionKind"] == "insert-marker" else "accept"
+        choice = human_suggestion_choice(root, outputs, choice_name, item["suggestionId"], item["suggestionEvidenceSha256"])
+        require(choice["status"] == "selected-preview-only", "human suggestion evidence changed; preview again")
+        require(human_integration_action(root, choice["suggestion"], outputs) == item,
+                "human integration bytes changed; preview again")
+    require(plan == plan_changes(root, outputs, trusted_skill_license, human[0] if human else None),
+            "approved plan is stale; preview again")
     require(not plan["blocked"], "blocked plan actions require approved executable integration")
     for item in plan["existing"]:
         relative = item["path"]
@@ -4543,7 +4700,13 @@ def validate_write_preconditions(
         relative = item["path"]
         target = guarded_target(root, relative)
         require(target.is_file() and not is_indirect(target), f"invalid append target: {relative}")
-        require(digest_bytes(target.read_bytes()) == item["sha256"], f"approved append bytes changed: {relative}")
+        if item["action"] == "integrate-human-suggestion":
+            require(digest_bytes(target.read_bytes()) == item["sourceSha256"],
+                    f"approved human bytes changed: {relative}")
+            require(digest_text(item["content"]) == item["destinationSha256"],
+                    f"approved human destination changed: {relative}")
+        else:
+            require(digest_bytes(target.read_bytes()) == item["sha256"], f"approved append bytes changed: {relative}")
     for item in plan["create"]:
         target = guarded_target(root, item["path"])
         require(not target.exists() and not target.is_symlink(), f"approved create target changed: {item['path']}")
@@ -4591,6 +4754,11 @@ def write_outputs(
                 target = guarded_target(root, relative)
                 current = target.read_bytes()
                 appended[target] = current
+                if item["action"] == "integrate-human-suggestion":
+                    target.write_bytes(item["content"].encode("utf-8"))
+                    require(digest_bytes(target.read_bytes()) == item["destinationSha256"],
+                            f"human integration mismatch: {relative}")
+                    continue
                 if relative in (GITIGNORE_PATH, GITATTRIBUTES_PATH, README_PATH):
                     addition = item["content"].encode("utf-8")
                 else:
@@ -5025,6 +5193,9 @@ def main(argv: Optional[list[str]] = None) -> int:
             child.add_argument("--conversation-language", choices=sorted(APPROVAL_DOMAINS), help="language the generated sessions converse in; ask the human, defaults to english")
             child.add_argument("--no-codegraph-ignore", dest="ignore_codegraph", action="store_false", help="do not add .codegraph/ to the root .gitignore")
             child.add_argument("--activation", choices=("builder", "maintenance"), default="maintenance", help="declare an explicitly active repo-harness-builder skill execution; only that activation uses the strict approval domain")
+            child.add_argument("--suggestion-choice", choices=SUGGESTION_CHOICES)
+            child.add_argument("--suggestion-id")
+            child.add_argument("--suggestion-evidence-sha256")
             child.add_argument("--apply", action="store_true", help="create the absent files listed in the plan")
             child.add_argument("--approved-plan-sha256", help="digest printed by the approved preview")
             child.add_argument("--approval", help="exact approval answer from the active report-language domain; builder activation only")
@@ -5098,7 +5269,17 @@ def main(argv: Optional[list[str]] = None) -> int:
             args.conversation_language,
             args.ignore_codegraph,
         )
-        plan = plan_changes(root, outputs, trusted_skill_license)
+        selection = (args.suggestion_choice, args.suggestion_id, args.suggestion_evidence_sha256)
+        require(not any(selection) or (all(selection) and (not args.apply or selection[0] in ("accept", "declare-intentional-divergence"))),
+                "suggestion selection requires choice, ID and evidence; only accept or declaration permits --apply")
+        selected_choice = human_suggestion_choice(root, outputs, *selection) if all(selection) else None
+        if selected_choice and selected_choice["status"] == "selected-preview-only" and selection[0] in ("accept", "declare-intentional-divergence"):
+            action = human_integration_action(root, selected_choice["suggestion"], outputs)
+            plan = plan_changes(root, outputs, trusted_skill_license, action)
+        elif selected_choice and selected_choice["status"] == "rejected" and (args.apply or selection[0] == "accept"):
+            raise ContractError("human suggestion evidence changed; preview again")
+        else:
+            plan = plan_changes(root, outputs, trusted_skill_license)
         digest = plan_digest(plan)
         authority_projection: dict[str, Any] = {}
         if args.activation == "builder":
@@ -5146,7 +5327,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), "gitState": git_state, "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), **({"suggestionSelection": selected_choice} if all(selection) else {}), "gitState": git_state, "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")
