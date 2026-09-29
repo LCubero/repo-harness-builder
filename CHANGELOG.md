@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-29
+
+- Delivered RH-W-0044 through [PR #236](https://github.com/LCubero/repo-harness-builder/pull/236), merged to `main` with merge commit `5dce041fae2e4bd40ed61f0a54185df2b9f0357d` at 2026-09-29T00:32:02Z; [issue #228](https://github.com/LCubero/repo-harness-builder/issues/228) closed at 00:32:03Z. Child PRs #237–243 merged. The conservative ambiguity boundary and separate README selector remain unchanged. Earlier final-tree verification ran 596 tests with 10 skipped under a process-local Git ceiling and checker `current` with zero writes; no post-documentation full-suite rerun or release is claimed.
+
 ## 2026-09-27
 
 - Completed RH-W-0044 technically under the owner's conservative decision at published feature-branch HEAD `ac421b1`: bounded localized preview, individual choice, content-bound accepted plan and mixed rollback. Eligible families without a proven stable literal unit remain intentionally ambiguous; README selector integration is separate. Earlier full-suite evidence: 596 tests/10 skipped; checker `current`/zero writes. Issue #228 governs separate delivery; no product PR, merge or release is claimed.

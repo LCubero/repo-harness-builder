@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-29
+
+- Se entregó RH-W-0044 mediante el [PR #236](https://github.com/LCubero/repo-harness-builder/pull/236), fusionado a `main` mediante el commit de fusión `5dce041fae2e4bd40ed61f0a54185df2b9f0357d` a las 2026-09-29T00:32:02Z; el [issue #228](https://github.com/LCubero/repo-harness-builder/issues/228) se cerró a las 00:32:03Z. Se fusionaron los PR hijos #237–243. El límite conservador para la ambigüedad y el selector README separado no cambian. La verificación anterior del árbol final ejecutó 596 pruebas con 10 omitidas bajo un límite Git local al proceso y checker `current` con cero escrituras; no se afirma repetir la suite completa después de este cambio documental ni un release.
+
 ## 2026-09-27
 
 - Se completó técnicamente RH-W-0044 por decisión conservadora del propietario en HEAD `ac421b1` de la rama de funcionalidad publicada: vista previa localizada acotada, selección individual, plan aceptado ligado al contenido y rollback mixto. Las familias elegibles sin unidad literal estable probada permanecen intencionalmente ambiguas; la integración del selector README es separada. Evidencia anterior: suite de 596 pruebas/10 omitidas; checker `current`/cero escrituras. El issue #228 gobierna la entrega separada; no se afirma PR de producto, fusión ni release.
