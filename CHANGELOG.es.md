@@ -2,15 +2,34 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-27
+
+- Se completó técnicamente RH-W-0044 por decisión conservadora del propietario en HEAD `ac421b1` de la rama de funcionalidad publicada: vista previa localizada acotada, selección individual, plan aceptado ligado al contenido y rollback mixto. Las familias elegibles sin unidad literal estable probada permanecen intencionalmente ambiguas; la integración del selector README es separada. Evidencia anterior: suite de 596 pruebas/10 omitidas; checker `current`/cero escrituras. El issue #228 gobierna la entrega separada; no se afirma PR de producto, fusión ni release.
+
+- Se entregó la reconciliación solo documental de RH-W-0022 mediante el [PR #235](https://github.com/LCubero/repo-harness-builder/pull/235), fusionado por squash como `fffb4b03ac82f87997b29e313e348085fc886852` el 2026-09-27T16:17:17Z; se cerró el issue #234. Siguió a la entrega documental directa a `main`. RH-W-0022 permanece `proposed`; implementar el producto requiere autorización separada.
+
+- Se entregó el plan bilingüe RH-W-0022 aprobado por el propietario directamente a `main` mediante cherry-picks documentales `bc91e497706e37a133c8e1d15084cd2979381c83` y `ba4dc4c668f87c286dd2e8c97d203bda3ffca893`, bajo la excepción directa a `main`. La observación histórica posterior al push mostró `origin/main` igual a `ba4dc4c` (0 por detrás/0 por delante). No hubo implementación del producto; RH-W-0022 sigue `proposed` y requiere autorización separada.
+
+- Se registró el plan mínimo bilingüe RH-W-0022 aprobado en `ceff923a23e5379719f650293616bc770ada6847` en `docs/rh-w-0022-minimal-plan` y se envió a la rama origin. La revisión nativa exacta fue aprobada y reconocida como de bajo riesgo sin lentes. RH-W-0022 sigue `proposed`; implementar requiere autorización separada. En esa etapa no se afirmaba PR ni fusión a `main`.
+
 ## 2026-09-26
 
+- Se confirmó localmente la cobertura de pruebas únicamente R44-2R de RH-W-0044 como `15d97c840951c13fdab582c70fdd77353bad6db0` desde `d6bd1c756bd38e7aca5f2f209b32e1c30853efe3`: creación, anexado y reemplazo generados junto con una acción humana se restauran ante un fallo posterior. La suite de 596 pruebas (10 omitidas) pasó antes de sincronizar mecánicamente las proyecciones; después pasaron 33/33 pruebas enfocadas, checker `current`/cero escrituras y paridad de pruebas. La revisión exacta de solo commits `review-a61f2ab91a217a26` fue aprobada y reconocida; no se afirma defecto de producción ni entrega del producto.
+
 - Se confirmó localmente la unidad acotada de 10 rutas de producto/proyecciones/conteo de marcadores R44-2 de RH-W-0044 como `1aff626b477a784b6eee2818d8158ed487d31093` desde `6909e47b8ba875c3995956c966ec612388d2a73a`: pasaron 33 pruebas enfocadas, la suite completa de 596 pruebas (10 omitidas), checker `current`/cero escrituras y paridad de bytes. La revisión nativa exacta de solo commits `review-5f486c7aa8818c91` fue aprobada y reconocida. R44-1 sigue parcial, R44-2 en conjunto parcial y abierto, R44-4 final pendiente y RH-W-0044 `proposed`; no se afirma push, PR de producto ni entrega.
+
+- Se verificó localmente la corrección acotada de selección aceptada R44-3 de RH-W-0044 y se sincronizaron seis copias de runtime: la suite independiente pasó 592 pruebas (10 omitidas), checker `current`/cero escrituras y paridad 6/6. La porción de producto se confirmó localmente como `0ea9ed3c5122855b829ae9319cb55545365c7c58` desde `911ead8f72e37ea51d922c3a6a5341739a405ca8`; la revisión de solo commits `review-23cf4676bb16f50e` fue aprobada con reconocimiento exacto. R3-001 sigue como advertencia no bloqueante; no se afirma entrega del producto. La revisión separada del objetivo documental anterior a la corrección `aba75edf` en `review-8d0cfc5694302c44` no cubre la corrección documental posterior.
 
 ## 2026-09-25
 
 - Se confirmó localmente la vista previa acotada de solo lectura R44-2 de RH-W-0044 para selección individual y marcadores como commit de 16 rutas `eb54bc3717f8426064d906acdcce795740eb98ee` desde `6b707b04c0f68cb9431449789f0213d677eccb46`: verificación independiente de 588 pruebas (10 omitidas), checker `current`/cero escrituras y paridad; el rango confirmado `review-ee52db1afd824057` fue aprobado con reconocimiento exacto y autoridad consumida. Tres advertencias no bloqueantes quedan para después; RH-W-0044 sigue `proposed`, sin entrega del producto.
 
 - RH-W-0044 tiene cuatro porciones de vista previa autorizadas por el propietario, verificadas independientemente, confirmadas en commits locales y reconocidas mediante revisión nativa: núcleo del rulebook `63220c047e4e3c589f274f36ac1462c478618763`, resumen bilingüe de uso `f31c49446b770f4502e9f5c40dc217bd75757276`, Visibility `018cc4aa829c410a8d1f89a6443387205f0ddc81` y Translation Sync EN/ES `27ca929c747d7612c03c29ce44eea1fea87de30a`. La porción documental anterior es un commit local separado, `9c20eb4721903bac00dd40644a8fba573dba13e4`. La suite más reciente pasó 578 pruebas con 10 omitidas y el checker informó `current` con cero escrituras antes de esta edición documental. RH-W-0044 sigue `proposed`: R44-1 parcial con ambigüedad conservadora pendiente, R44-2/R44-3 sin iniciar, informe final de toda la funcionalidad R44-4 pendiente. No se afirma push, PR de producto, fusión, release ni implementación completa.
+- Se entregó la propuesta RH-W-0096 mediante el [PR #230](https://github.com/LCubero/repo-harness-builder/pull/230), fusionado por squash a las 2026-09-26T23:27:53Z como `1df90a31e35da5c1544e2b3322e8537086c5b974`; el issue #229 se cerró. La [hoja de ruta](docs/es/repo-harness/roadmap.md#rh-w-0096) conserva la cabeza exacta y los límites de revisión/checks. RH-W-0096 sigue `proposed`, `P3`; no se aprobaron diseño ni implementación.
+
+## 2026-09-25
+
+- Se registró el avance local autorizado por el propietario de RH-W-0044: cuatro porciones de vista previa verificadas independientemente (`63220c0`, `f31c494`, `018cc4a`, `27ca929`) y la vista previa de solo lectura de selección/marcadores R44-2 (`eb54bc3`, 588 pruebas, 10 omitidas) en la rama de producto separada. En esa instantánea del 25 de septiembre, R44-1 y R44-2 estaban parciales, R44-3 no había comenzado y el informe final R44-4 estaba pendiente; RH-W-0044 permanece `proposed` P2. No se afirma push, PR, fusión ni entrega del producto.
 
 ## 2026-09-24
 

@@ -4,7 +4,19 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-27
+
+- Completed RH-W-0044 technically under the owner's conservative decision at published feature-branch HEAD `ac421b1`: bounded localized preview, individual choice, content-bound accepted plan and mixed rollback. Eligible families without a proven stable literal unit remain intentionally ambiguous; README selector integration is separate. Earlier full-suite evidence: 596 tests/10 skipped; checker `current`/zero writes. Issue #228 governs separate delivery; no product PR, merge or release is claimed.
+
+- Delivered the RH-W-0022 documentation-only reconciliation through [PR #235](https://github.com/LCubero/repo-harness-builder/pull/235), squash-merged as `fffb4b03ac82f87997b29e313e348085fc886852` at 2026-09-27T16:17:17Z; issue #234 closed. This followed the earlier direct-main documentation delivery. RH-W-0022 remains `proposed`; product implementation requires separate authorization.
+
+- Delivered the owner-approved bilingual RH-W-0022 implementation plan directly to `main` through documentation-only cherry-picks `bc91e497706e37a133c8e1d15084cd2979381c83` then `ba4dc4c668f87c286dd2e8c97d203bda3ffca893`, under the owner's direct-main exception. The historical post-push observation had `origin/main` matching `ba4dc4c` at 0 behind/0 ahead. No product implementation; RH-W-0022 remains `proposed` and implementation requires separate authorization.
+
+- Committed the owner-approved minimal bilingual RH-W-0022 implementation plan as `ceff923a23e5379719f650293616bc770ada6847` on `docs/rh-w-0022-minimal-plan` and pushed it to the origin branch. Native exact work-unit review was approved and acknowledged as low-risk without lenses. RH-W-0022 remains `proposed`; implementation requires separate authorization. At that stage no PR or merge to `main` was claimed.
+
 ## 2026-09-26
+
+- Locally committed test-only RH-W-0044 R44-2R mixed-rollback coverage as `15d97c840951c13fdab582c70fdd77353bad6db0` from `d6bd1c756bd38e7aca5f2f209b32e1c30853efe3`: generated create, append and replace plus a human action restore on later failure. The 596-test suite (10 skipped) passed before mechanical projection sync; afterward 33/33 focused tests, checker `current`/zero writes and test parity passed. Exact committed-only review `review-a61f2ab91a217a26` approved and was acknowledged; no production defect or product delivery is claimed.
 
 - Locally committed the bounded 10-path RH-W-0044 R44-2 marker product/projection/count work unit as `1aff626b477a784b6eee2818d8158ed487d31093` from `6909e47b8ba875c3995956c966ec612388d2a73a`: 33 focused tests, full suite 596 tests (10 skipped), checker `current`/zero writes and byte parity passed. Exact committed-only lineage `review-5f486c7aa8818c91` approved and was acknowledged. R44-1 remains partial, R44-2 overall partial/open, R44-4 final report pending, and RH-W-0044 `proposed`; no push, product PR or delivery is claimed.
 
@@ -15,6 +27,11 @@ This file records meaningful completed changes in chronological order, newest fi
 - Locally committed the bounded 16-path RH-W-0044 R44-2 read-only individual choice/marker preview as `eb54bc3717f8426064d906acdcce795740eb98ee` from `6b707b04c0f68cb9431449789f0213d677eccb46`: independent verification passed 588 tests (10 skipped), checker `current`/zero writes and parity; committed-range lineage `review-ee52db1afd824057` approved with exact acknowledgement burned. Three nonblocking warnings remain later work; RH-W-0044 stays `proposed`, without product delivery.
 
 - RH-W-0044 has four owner-authorized, independently verified, locally committed and natively acknowledged preview slices: rulebook core `63220c047e4e3c589f274f36ac1462c478618763`, bilingual usage overview `f31c49446b770f4502e9f5c40dc217bd75757276`, Visibility `018cc4aa829c410a8d1f89a6443387205f0ddc81`, and EN/ES Translation Sync `27ca929c747d7612c03c29ce44eea1fea87de30a`. The earlier documentation slice is a separate local commit, `9c20eb4721903bac00dd40644a8fba573dba13e4`. The latest suite passed 578 tests with 10 skipped and the checker was `current` with zero writes before this documentation edit. RH-W-0044 remains `proposed`: R44-1 partial with conservative ambiguity pending, R44-2/R44-3 untouched, R44-4 final whole-feature report pending. No product push, PR, merge, release, or complete implementation is claimed.
+- Delivered the RH-W-0096 proposal through [PR #230](https://github.com/LCubero/repo-harness-builder/pull/230), squash-merged at 2026-09-26T23:27:53Z as `1df90a31e35da5c1544e2b3322e8537086c5b974`; issue #229 closed. The [roadmap](docs/repo-harness/roadmap.md#rh-w-0096) retains the exact head and review/check limits. RH-W-0096 remains `proposed`, `P3`; no design or implementation was approved.
+
+## 2026-09-25
+
+- Recorded owner-authorized RH-W-0044 local progress: four independently verified preview slices (`63220c0`, `f31c494`, `018cc4a`, `27ca929`) and the read-only R44-2 choice/marker preview (`eb54bc3`, 588 tests, 10 skipped) on the separate feature branch. As of that September 25 snapshot, R44-1 and R44-2 were partial, R44-3 had not started, and R44-4's final report was pending; RH-W-0044 remains `proposed` P2. No product push, PR, merge, or delivery is claimed.
 
 ## 2026-09-24
 

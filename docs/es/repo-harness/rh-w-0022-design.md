@@ -1,6 +1,6 @@
 # Diseño RH-W-0022 de relaciones documentales declaradas
 
-> **Estado: DISEÑO APROBADO POR EL PROPIETARIO. RH-W-0022 permanece `proposed`; la planificación de implementación y la implementación siguen sin autorización.**
+> **Estado: DISEÑO APROBADO POR EL PROPIETARIO. RH-W-0022 permanece `proposed`; un plan bilingüe de implementación se redactó con autorización posterior solo de planificación y ahora está aprobado por el propietario. La implementación sigue sin autorización.**
 
 ## Decisión
 
@@ -57,7 +57,7 @@ RH-W-0044 puede sugerir después un cambio humano aprobado individualmente; no p
 
 ## No objetivos
 
-- Sin implementación, plan, avance de ciclo, staging, commit, push, PR, release ni publicación.
+- El trabajo de diseño original no incluyó un plan de implementación ni autorizó implementación, avance de ciclo, staging, commit, push, PR, release ni publicación.
 - Sin inferencia por enlaces, nombres, directorios, sufijos de locale o similitud.
 - Sin grafo de símbolos, rutas de llamada, motor de dependencias, cierre transitivo, daemon, scheduler, watcher, base de datos, servicio ni dependencia externa.
 - Sin puntuación de traducción, equivalencia semántica, reparación automática, regeneración completa ni cambio de propiedad humana.
@@ -65,4 +65,4 @@ RH-W-0044 puede sugerir después un cambio humano aprobado individualmente; no p
 
 ## Límite de aprobación
 
-El propietario revisó directamente y aprobó técnicamente este diseño el 2026-09-06. RH-W-0022 permanece `proposed`. La planificación de implementación y la implementación exigirán autorizaciones posteriores y separadas.
+El propietario revisó directamente y aprobó técnicamente este diseño el 2026-09-06. Una autorización posterior solo de planificación produjo un [plan de implementación bilingüe](rh-w-0022-implementation-plan.md) propuesto, ahora aprobado por el propietario. RH-W-0022 permanece `proposed`; la implementación requiere autorización separada.
