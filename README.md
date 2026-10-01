@@ -28,7 +28,7 @@ Hermes Agent, OpenClaw, and Pi may inform research, but recreating or copying th
 ## Quick Start
 <!-- doc-role:quick-start -->
 
-1. Install or project the builder skill and command into a supported runtime.
+1. Install the builder skill and command into a supported runtime; see [Install The Builder](#install-the-builder).
 2. Open the target repository and invoke `/repo-harness-builder`.
 3. Answer the interview: runtime projections, license, conversation language, and documentation locales. Documentation stays English-only unless you declare another locale.
 4. Keep the default root `.codegraph/` ignore, or pass `--no-codegraph-ignore` to persistently opt out.
@@ -36,6 +36,51 @@ Hermes Agent, OpenClaw, and Pi may inform research, but recreating or copying th
 6. Start normal work with the generated `repo-harness-session-start` skill.
 
 With no operation, the builder performs a read-only audit. It does not initialize Git, mutate remotes, commit, push, or publish unless those separate actions are later requested and approved.
+
+### Install The Builder
+
+Start from a trusted source checkout or an already-extracted release package; this guide never downloads anything. Prerequisites: Python 3.10+ and the chosen runtime, already installed. Set two paths and confirm the artifact shape:
+
+```sh
+ARTIFACT_ROOT=/path/to/builder-artifact   # source checkout or extracted package root
+TARGET=/path/to/target-repository
+test -d "$ARTIFACT_ROOT/skill/repo-harness-builder" && test -f "$ARTIFACT_ROOT/command/repo-harness-builder.md" && echo "artifact ok" || echo "stop: not a builder artifact"
+```
+
+Every runtime receives the same two items in its own place:
+
+| Runtime | Builder package | Entry |
+|---|---|---|
+| Claude Code | `.claude/skills/repo-harness-builder/` | `.claude/commands/repo-harness-builder.md` |
+| OpenCode | `.opencode/skills/repo-harness-builder/` | `.opencode/commands/repo-harness-builder.md` |
+| Pi | `.pi/skills/repo-harness-builder/` | `.pi/prompts/repo-harness-builder.md` |
+
+Run the block for each runtime you want, in a POSIX shell (Git Bash on Windows). It copies only into free destinations and never overwrites:
+
+```sh
+# Claude Code
+D="$TARGET/.claude"
+if [ -e "$D/skills/repo-harness-builder" ] || [ -e "$D/commands/repo-harness-builder.md" ]; then echo "stop: destination exists, inspect it first"
+else mkdir -p "$D/skills" "$D/commands" && cp -R "$ARTIFACT_ROOT/skill/repo-harness-builder" "$D/skills/" && cp "$ARTIFACT_ROOT/command/repo-harness-builder.md" "$D/commands/"; fi
+```
+
+```sh
+# OpenCode
+D="$TARGET/.opencode"
+if [ -e "$D/skills/repo-harness-builder" ] || [ -e "$D/commands/repo-harness-builder.md" ]; then echo "stop: destination exists, inspect it first"
+else mkdir -p "$D/skills" "$D/commands" && cp -R "$ARTIFACT_ROOT/skill/repo-harness-builder" "$D/skills/" && cp "$ARTIFACT_ROOT/command/repo-harness-builder.md" "$D/commands/"; fi
+```
+
+```sh
+# Pi
+D="$TARGET/.pi"
+if [ -e "$D/skills/repo-harness-builder" ] || [ -e "$D/prompts/repo-harness-builder.md" ]; then echo "stop: destination exists, inspect it first"
+else mkdir -p "$D/skills" "$D/prompts" && cp -R "$ARTIFACT_ROOT/skill/repo-harness-builder" "$D/skills/" && cp "$ARTIFACT_ROOT/command/repo-harness-builder.md" "$D/prompts/"; fi
+```
+
+Then open the target repository in that runtime and invoke `repo-harness-builder`; it owns the audit, preview, approval, and apply described in [Builder And Generated Skills](#builder-and-generated-skills). If the runtime does not list the new skill, start a fresh runtime session. After apply, run `python3 .repo-harness/check.py` (`python` on Windows) in the target: only exit 0 with `"status": "current"` and `"writes": 0` means the harness is congruent. Daily work then follows the [Daily Workflow](docs/repo-harness/usage.md#daily-workflow).
+
+Stop and inspect instead of forcing when the artifact is invalid, a destination is occupied, the runtime does not list the skill, the builder refuses, or the checker reports drift. Once the artifact and prerequisites are local, no network access is needed.
 
 ## What It Builds
 <!-- doc-role:outputs -->

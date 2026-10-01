@@ -28,7 +28,7 @@ Hermes Agent, OpenClaw y Pi pueden aportar a la investigacion, pero recrearlos o
 ## Inicio rapido
 <!-- doc-role:quick-start -->
 
-1. Proyecte la habilidad y el comando del constructor en un entorno compatible.
+1. Instale la habilidad y el comando del constructor en un entorno compatible; vea [Instalar el constructor](#instalar-el-constructor).
 2. Abra el repositorio objetivo e invoque `/repo-harness-builder`.
 3. Responda la entrevista: proyecciones de entorno, licencia, idioma de conversacion y locales de documentacion. La documentacion queda solo en ingles salvo que declare otro locale.
 4. Mantenga el ignore predeterminado de `.codegraph/` en la raiz o use `--no-codegraph-ignore` para registrar el opt-out.
@@ -36,6 +36,51 @@ Hermes Agent, OpenClaw y Pi pueden aportar a la investigacion, pero recrearlos o
 6. Inicie el trabajo normal con la habilidad generada `repo-harness-session-start`.
 
 Sin operacion explicita, el constructor realiza una auditoria de solo lectura. No inicializa Git ni modifica remotos, crea commits, publica o envia cambios.
+
+### Instalar el constructor
+
+Parta de un checkout de fuente confiable o de un paquete de release ya extraido; esta guia nunca descarga nada. Requisitos: Python 3.10+ y el entorno elegido, ya instalados. Fije dos rutas y confirme la forma del artefacto:
+
+```sh
+ARTIFACT_ROOT=/path/to/builder-artifact   # source checkout or extracted package root
+TARGET=/path/to/target-repository
+test -d "$ARTIFACT_ROOT/skill/repo-harness-builder" && test -f "$ARTIFACT_ROOT/command/repo-harness-builder.md" && echo "artifact ok" || echo "stop: not a builder artifact"
+```
+
+Cada entorno recibe los mismos dos elementos en su propio lugar:
+
+| Entorno | Paquete del constructor | Entrada |
+|---|---|---|
+| Claude Code | `.claude/skills/repo-harness-builder/` | `.claude/commands/repo-harness-builder.md` |
+| OpenCode | `.opencode/skills/repo-harness-builder/` | `.opencode/commands/repo-harness-builder.md` |
+| Pi | `.pi/skills/repo-harness-builder/` | `.pi/prompts/repo-harness-builder.md` |
+
+Ejecute el bloque de cada entorno que quiera, en un shell POSIX (Git Bash en Windows). Solo copia a destinos libres y nunca sobrescribe:
+
+```sh
+# Claude Code
+D="$TARGET/.claude"
+if [ -e "$D/skills/repo-harness-builder" ] || [ -e "$D/commands/repo-harness-builder.md" ]; then echo "stop: destination exists, inspect it first"
+else mkdir -p "$D/skills" "$D/commands" && cp -R "$ARTIFACT_ROOT/skill/repo-harness-builder" "$D/skills/" && cp "$ARTIFACT_ROOT/command/repo-harness-builder.md" "$D/commands/"; fi
+```
+
+```sh
+# OpenCode
+D="$TARGET/.opencode"
+if [ -e "$D/skills/repo-harness-builder" ] || [ -e "$D/commands/repo-harness-builder.md" ]; then echo "stop: destination exists, inspect it first"
+else mkdir -p "$D/skills" "$D/commands" && cp -R "$ARTIFACT_ROOT/skill/repo-harness-builder" "$D/skills/" && cp "$ARTIFACT_ROOT/command/repo-harness-builder.md" "$D/commands/"; fi
+```
+
+```sh
+# Pi
+D="$TARGET/.pi"
+if [ -e "$D/skills/repo-harness-builder" ] || [ -e "$D/prompts/repo-harness-builder.md" ]; then echo "stop: destination exists, inspect it first"
+else mkdir -p "$D/skills" "$D/prompts" && cp -R "$ARTIFACT_ROOT/skill/repo-harness-builder" "$D/skills/" && cp "$ARTIFACT_ROOT/command/repo-harness-builder.md" "$D/prompts/"; fi
+```
+
+Luego abra el repositorio objetivo en ese entorno e invoque `repo-harness-builder`; el constructor posee la auditoria, vista previa, aprobacion y aplicacion descritas en [Constructor y habilidades generadas](#constructor-y-habilidades-generadas). Si el entorno no lista la habilidad nueva, inicie una sesion nueva del entorno. Despues de aplicar, ejecute `python3 .repo-harness/check.py` (`python` en Windows) en el objetivo: solo la salida 0 con `"status": "current"` y `"writes": 0` indica que el harness es congruente. El trabajo diario sigue el [Flujo diario](docs/es/repo-harness/usage.md#flujo-diario).
+
+Detengase e inspeccione en vez de forzar cuando el artefacto sea invalido, un destino este ocupado, el entorno no liste la habilidad, el constructor rechace o el checker informe deriva. Con el artefacto y los requisitos ya locales, no se necesita red.
 
 ## Que genera
 <!-- doc-role:outputs -->
