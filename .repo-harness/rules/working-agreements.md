@@ -24,6 +24,8 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 - Report what happened, not what was intended.
 - A verified fact needs applicable, trustworthy, proportionate evidence. An inference names its evidence and reasoning. Unknown applies when no valid mechanism exists. A human decision applies when authority or a criterion is human-owned.
 - Never substitute missing evidence, stale memory, unrelated proxies, assumptions, or confidence wording. Verify before asking; if unavailable or contradictory, name the missing capability and request only the minimum evidence, criterion, authority, or decision.
+- When research cites sources, list every source that was located but not read, with a short reason such as authentication, transport failure, incomplete content, or snippet-only evidence. Never present an unread source as evidence.
+- Keep a useful link in the document that owns its subject. Do not create a separate reference list.
 
 ## Project Agreements
 

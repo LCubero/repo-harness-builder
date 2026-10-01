@@ -8167,6 +8167,16 @@ class RuleFileTests(unittest.TestCase):
         for phrase in ("smallest change", "Stop and ask", "no retry loop"):
             self.assertIn(phrase, text)
 
+    def test_working_agreements_report_unread_sources_and_keep_links_with_their_owner(self):
+        text = TOOL.render("Example", [])[".repo-harness/rules/working-agreements.md"]
+        for phrase in (
+            "list every source that was located but not read",
+            "Never present an unread source as evidence",
+            "Keep a useful link in the document that owns its subject",
+            "Do not create a separate reference list",
+        ):
+            self.assertIn(phrase, text)
+
     def test_memory_rule_keeps_memory_subordinate_to_the_repository(self):
         text = TOOL.render("Example", [])[".repo-harness/rules/memory.md"]
         for phrase in ("repository evidence remains authoritative", "never claim successful continuity"):
