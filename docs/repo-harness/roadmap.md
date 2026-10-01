@@ -192,7 +192,7 @@ Resolved technical decisions: exact three-field JSON edges in one preserved `.re
 
 ### Plan 9: RH-W-0055 installation and onboarding design
 
-Readiness `design owner-approved; implementation planning unauthorized`. Priority `P2`. The owner approved the reduced bilingual [onboarding design](rh-w-0055-design.md); RH-W-0055 remains `proposed`, and no implementation plan or implementation is authorized.
+Readiness `implemented locally; delivery pending`. Priority `P2`. The owner approved the reduced bilingual [onboarding design](rh-w-0055-design.md) and on 2026-09-30 approved the short bilingual [implementation plan](rh-w-0055-implementation-plan.md) and delegated implementation; RH-W-0055 is `active` until delivery.
 
 1. Name the supported installation sources and prerequisites.
 2. Write the exact per-runtime copy/paste commands for `claude-code`, `opencode`, and `pi`.
@@ -1255,16 +1255,16 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Origin | Owner note requesting copy/paste installation guidance for Claude Code, OpenCode, and Pi, connected to builder invocation and daily session use. |
 | Priority | P2: installation is possible from a release package, but the repository does not provide one coherent consumer path from artifact selection through daily operation. |
 | Dependencies | Completed `RH-W-0050` for evidence classification. RH-W-0062 is completed with no residue. |
-| Status | proposed |
-| Completed work | Grouped copy/paste installation and install-to-builder-to-session guidance into one bounded lifecycle unit. The owner approved the reduced bilingual [design](rh-w-0055-design.md): one shared artifact-name-agnostic local path through `ARTIFACT_ROOT`, exact runtime destinations, additive copy safety, existing builder/checker/daily-use links, and offline/failure boundaries. |
-| Remaining work | Implementation planning and implementation remain unauthorized. |
+| Status | active |
+| Completed work | Grouped copy/paste installation and install-to-builder-to-session guidance into one bounded lifecycle unit. The owner approved the reduced bilingual [design](rh-w-0055-design.md): one shared artifact-name-agnostic local path through `ARTIFACT_ROOT`, exact runtime destinations, additive copy safety, existing builder/checker/daily-use links, and offline/failure boundaries. The owner approved the short bilingual documentation-only [implementation plan](rh-w-0055-implementation-plan.md). The `Install The Builder` subsection in `README.md` and `README.es.md` is implemented and verified locally: each runtime block, run from the README text against an ignored scratch target, produced byte-identical package and entry copies, refused on a second run, and the shape check rejected an invalid artifact; EN/ES blocks are identical; the checker reports `current` with zero writes; the canonical suite passes 606 tests with 11 skips. |
+| Remaining work | Delivery through one issue and one PR, then lifecycle closure. |
 | Additions | One concise artifact-name-agnostic onboarding path for each supported runtime. |
 | Exclusions | No release publication, network action, package rename, generated behavior, or claim that a future asset already exists. |
 | Deferrals | Publication, archive naming, and URLs remain outside this design. |
 | Rejections | Rejected scattering installation snippets across unrelated documents or documenting only package extraction without the operational next steps. |
 | Evidence | Verified: the supported runtime set includes Claude Code, OpenCode, and Pi, and the source artifact exposes the required package and command roots. Supported inference: no embedded identifier can authenticate copied bytes independently; only a digest retained through a trusted separate channel adds offline evidence. A separately signed, independently verifiable identity would be new evidence. |
-| Decision history | 2026-08-21: registered as proposed from the consolidated portfolio audit; no release or implementation was approved. 2026-09-06: owner authorized creation of the minimal bilingual design. 2026-09-06: owner explicitly approved the reduced bilingual design; status remains `proposed`, and implementation planning, implementation, publication, and network access remain unauthorized. |
-| Next advancement condition | Advance only after separate owner authorization for implementation planning; design approval alone does not authorize planning or implementation. |
+| Decision history | 2026-08-21: registered as proposed from the consolidated portfolio audit; no release or implementation was approved. 2026-09-06: owner authorized creation of the minimal bilingual design. 2026-09-06: owner explicitly approved the reduced bilingual design; status remains `proposed`, and implementation planning, implementation, publication, and network access remain unauthorized. 2026-09-30: owner authorized implementation planning; the bilingual plan was written, then approved by the owner, who delegated implementation; the unit advanced to `active`. |
+| Next advancement condition | Advance to `completed` after the delivery PR merges and its evidence is recorded. |
 
 ### RH-W-0054
 | Field | Value |
