@@ -39,7 +39,7 @@
 | [rh-w-0022-implementation-plan.md](rh-w-0022-implementation-plan.md) | Owner-approved bilingual implementation plan delivered to main; product implementation unauthorized |
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Delivered local memory backup and cross-source continuity design |
 | [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Delivered owner-approved native continuity implementation plan |
-| [rh-w-0068-documentation-closure-design.md](rh-w-0068-documentation-closure-design.md) | Implemented required post-verification documentation closure gate; other RH-W-0068 defects remain proposed |
+| [rh-w-0068-documentation-closure-design.md](rh-w-0068-documentation-closure-design.md) | Earlier verified documentation closure gate and active owner-delegated RH-W-0068 remainder; successful verification, scenario-contract coverage or authoritative terminal disposition, and delivery pending |
 | [rh-w-0074-design.md](rh-w-0074-design.md) | Completed owner-approved accepted-omission design with its minimal implementation; delivered through PR #259 |
 | [rh-w-0070-design.md](rh-w-0070-design.md) | Owner-approved proportional preventive resource-safety design for agent and harness operations |
 | [rh-w-0011-design.md](rh-w-0011-design.md) | Completed owner-approved reconciliation scope; historical design body retained |

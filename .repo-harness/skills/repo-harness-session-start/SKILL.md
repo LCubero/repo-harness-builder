@@ -17,6 +17,7 @@ Use at the start or resumption of work in `repo-harness-builder`. Invoke this sk
 
 - Load and follow the canonical rulebook at `REPO-HARNESS.md`, including its execution discipline.
 - Resolve and inspect only the selected repository. Do not follow links, aliases, sibling repositories, or external references.
+- Never activate unrelated personal or external skills by phrase matching. This does not exclude skills required by higher-priority host instructions.
 - Read `docs/repo-harness/roadmap.md` when the objective involves pending, blocked, deferred, excluded, rejected, or completed tracked work; do not infer the lifecycle from current state alone.
 - Consult only applicable owning evidence, such as current documentation, source, tests, Git state or history, and Engram when available.
 - Report discrepancies instead of silently resolving them; current repository evidence wins over memory.

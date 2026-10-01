@@ -37,7 +37,7 @@
 | [Plan de implementación RH-W-0022](rh-w-0022-implementation-plan.md) | Plan bilingüe aprobado por el propietario y entregado a main; implementación del producto sin autorización |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno entregado de backup local de memoria y continuidad entre fuentes |
 | [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan aprobado y entregado de implementacion de continuidad nativa |
-| [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta implementada de cierre documental; los otros defectos RH-W-0068 siguen propuestos |
+| [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta documental anterior verificada y del resto activo RH-W-0068 delegado por el propietario; verificacion exitosa, cobertura de escenarios del contrato o disposicion terminal autoritativa, y entrega pendientes |
 | [Diseño RH-W-0074](rh-w-0074-design.md) | Diseño completado de omisión aceptada aprobado por el propietario, con su implementación mínima; entregado mediante el PR #259 |
 | [Diseno RH-W-0070](rh-w-0070-design.md) | Par profesional del diseno aprobado de seguridad preventiva y proporcional de recursos |
 | [Diseno RH-W-0011](rh-w-0011-design.md) | Alcance de reconciliacion completado y aprobado por el propietario; se conserva el cuerpo historico |

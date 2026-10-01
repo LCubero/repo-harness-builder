@@ -1509,6 +1509,7 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 
 - Load and follow the canonical rulebook at `{rulebook_path}`, including its execution discipline.
 - Resolve and inspect only the selected repository. Do not follow links, aliases, sibling repositories, or external references.
+- Never activate unrelated personal or external skills by phrase matching. This does not exclude skills required by higher-priority host instructions.
 - Read `docs/repo-harness/roadmap.md` when the objective involves pending, blocked, deferred, excluded, rejected, or completed tracked work; do not infer the lifecycle from current state alone.
 - Consult only applicable owning evidence, such as {evidence_sources}.
 - Report discrepancies instead of silently resolving them; current repository evidence wins over memory.
@@ -1714,6 +1715,7 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 
 - Load and follow the canonical rulebook at `{rulebook_path}`, including its execution discipline.
 - Summarize only work supported by current repository evidence and verified command results.
+- Never activate unrelated personal or external skills by phrase matching. This does not exclude skills required by higher-priority host instructions.
 - Conversation language: {language_contract}
 - Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
 - Keep the rulebook inside its budget. Move durable detail down into its owned deeper document.
@@ -1833,11 +1835,11 @@ Use this exact order:
 - `degraded`: required continuity succeeded but an optional Git branch failed or is unavailable.
 - `ready`: startup is locally actionable; it is not a close outcome.
 
-Always report required continuity outcome separately from optional Git branch outcome. An optional commit, synchronization, provider, or push failure must not make the whole session `failed`.
+Always report required continuity outcome separately from optional Git branch outcome. An optional commit, synchronization, provider, or push failure must not make the whole session `failed`. Completed required continuity can coexist with a pending optional Git question, such as the push offer for an ahead-only branch after a commit; then end on that question and keep the invocation resumable instead of reporting the session as finished.
 
 ## Output Contract
 
-Return close outcome, required continuity outcome, {output_continuity}, completed work, unresolved issues, next step, and documentation result with relevant evidence. An accepted decline with nothing pending replaces the close outcome with that scoped report. Include classified Git state and work units only for applicable Git work, transport receipts only for attempted transport, and pending gates only when actionable. Preserve independent failures; memory failure never withholds the user-facing report. Ask at most one blocking question, on the final line.
+Return close outcome, required continuity outcome, {output_continuity}, completed work, unresolved issues, next step, and documentation result with relevant evidence. Report changelog disposition as exactly one of `updated`, `not needed`, `declined`, or `pending approval`, with its reason; completed designs, plans, or lifecycle changes count as meaningful work, never as `not needed`. An accepted decline with nothing pending replaces the close outcome with that scoped report. Include classified Git state and work units only for applicable Git work, transport receipts only for attempted transport, and pending gates only when actionable. Preserve independent failures; memory failure never withholds the user-facing report. Ask at most one blocking question, on the final line.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 {RESPONSE_CONTRACT_REFERENCE}
 If continuity saving fails, surface it without claiming a successful memory handoff.

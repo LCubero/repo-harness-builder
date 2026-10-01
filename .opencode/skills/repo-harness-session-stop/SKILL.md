@@ -17,6 +17,7 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke this skill del
 
 - Load and follow the canonical rulebook at `REPO-HARNESS.md`, including its execution discipline.
 - Summarize only work supported by current repository evidence and verified command results.
+- Never activate unrelated personal or external skills by phrase matching. This does not exclude skills required by higher-priority host instructions.
 - Conversation language: Follow a current verified human language instruction; otherwise preserve an explicit persisted preference. Without one, use verified session language, validated manifest fallback, then deterministic English. Never infer preference changes from context or ordinary prose, and never alter machine-significant bytes. If a verified host instruction conflicts with the resolved conversation-language preference, report the compatibility limitation without reclassifying it as a preference change. Never claim repository instructions override higher-priority host instructions. Wrong-language output alone does not prove an external cause. This flattened host cannot reliably detect language switches; preserve persisted preference.
 - Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
 - Keep the rulebook inside its budget. Move durable detail down into its owned deeper document.
@@ -144,11 +145,11 @@ Use this exact order:
 - `degraded`: required continuity succeeded but an optional Git branch failed or is unavailable.
 - `ready`: startup is locally actionable; it is not a close outcome.
 
-Always report required continuity outcome separately from optional Git branch outcome. An optional commit, synchronization, provider, or push failure must not make the whole session `failed`.
+Always report required continuity outcome separately from optional Git branch outcome. An optional commit, synchronization, provider, or push failure must not make the whole session `failed`. Completed required continuity can coexist with a pending optional Git question, such as the push offer for an ahead-only branch after a commit; then end on that question and keep the invocation resumable instead of reporting the session as finished.
 
 ## Output Contract
 
-Return close outcome, required continuity outcome, memory result, completed work, unresolved issues, next step, and documentation result with relevant evidence. An accepted decline with nothing pending replaces the close outcome with that scoped report. Include classified Git state and work units only for applicable Git work, transport receipts only for attempted transport, and pending gates only when actionable. Preserve independent failures; memory failure never withholds the user-facing report. Ask at most one blocking question, on the final line.
+Return close outcome, required continuity outcome, memory result, completed work, unresolved issues, next step, and documentation result with relevant evidence. Report changelog disposition as exactly one of `updated`, `not needed`, `declined`, or `pending approval`, with its reason; completed designs, plans, or lifecycle changes count as meaningful work, never as `not needed`. An accepted decline with nothing pending replaces the close outcome with that scoped report. Include classified Git state and work units only for applicable Git work, transport receipts only for attempted transport, and pending gates only when actionable. Preserve independent failures; memory failure never withholds the user-facing report. Ask at most one blocking question, on the final line.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 Response shaping: immediately before composing any reply or reported output that carries a notice, pending action, question, approval, visible next action, or contextual explanation, load and apply `.repo-harness/rules/response-contract.md`.
 If continuity saving fails, surface it without claiming a successful memory handoff.
