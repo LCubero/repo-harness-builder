@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-30
 
-- Delivered RH-W-0022 declared documentation relationships to `main` as `cd00671` by fast-forward under the owner's direct-main exception, without issue or PR. The read-only checker now validates explicit `localized-peer` and `lifecycle-projection` edges in `.repo-harness/document-relationships.json` (12 seeded edges) with zero writes. It immediately surfaced and fixed real drift: RH-W-0052 projected as `proposed` instead of `deferred`, and three Spanish peers without a canonical-owner link. Full suite 606 tests OK (11 skipped); checker `current`; native reviews `review-e81442d7dee7c57a` and `review-50bcca380a0abe08` approved.
+- Delivered RH-W-0022 declared documentation relationships to `main` as `cd00671` by fast-forward under the owner's direct-main exception, without a PR; [issue #245](https://github.com/LCubero/repo-harness-builder/issues/245) records it. The read-only checker now validates explicit `localized-peer` and `lifecycle-projection` edges in `.repo-harness/document-relationships.json` (12 seeded edges) with zero writes. It immediately surfaced and fixed real drift: RH-W-0052 projected as `proposed` instead of `deferred`, and three Spanish peers without a canonical-owner link. Full suite 606 tests OK (11 skipped); checker `current`; native reviews `review-e81442d7dee7c57a` and `review-50bcca380a0abe08` approved.
 
 ## 2026-09-29
 

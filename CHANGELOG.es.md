@@ -4,7 +4,7 @@
 
 ## 2026-09-30
 
-- Se entregaron las relaciones declaradas de documentación RH-W-0022 a `main` como `cd00671` por fast-forward bajo la excepción directa a `main` del propietario, sin issue ni PR. El checker de solo lectura valida ahora aristas explícitas `localized-peer` y `lifecycle-projection` en `.repo-harness/document-relationships.json` (12 aristas sembradas) sin escrituras. De inmediato detectó y se corrigió deriva real: RH-W-0052 proyectado como `proposed` en vez de `deferred` y tres pares en español sin enlace a su propietario canónico. Suite completa de 606 pruebas OK (11 omitidas); checker `current`; revisiones nativas `review-e81442d7dee7c57a` y `review-50bcca380a0abe08` aprobadas.
+- Se entregaron las relaciones declaradas de documentación RH-W-0022 a `main` como `cd00671` por fast-forward bajo la excepción directa a `main` del propietario, sin PR; el [issue #245](https://github.com/LCubero/repo-harness-builder/issues/245) lo registra. El checker de solo lectura valida ahora aristas explícitas `localized-peer` y `lifecycle-projection` en `.repo-harness/document-relationships.json` (12 aristas sembradas) sin escrituras. De inmediato detectó y se corrigió deriva real: RH-W-0052 proyectado como `proposed` en vez de `deferred` y tres pares en español sin enlace a su propietario canónico. Suite completa de 606 pruebas OK (11 omitidas); checker `current`; revisiones nativas `review-e81442d7dee7c57a` y `review-50bcca380a0abe08` aprobadas.
 
 ## 2026-09-29
 
