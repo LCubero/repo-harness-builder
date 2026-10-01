@@ -1198,10 +1198,10 @@ def byte_compared_paths(outputs: Mapping[str, str], rulebook_path: str) -> tuple
     """Return generated paths whose exact bytes checking compares.
 
     Pointer, ignore, and attribute files carry directives rather than exact
-    bytes, and human-owned documents are checked structurally, so none of them
-    depend on preserved LF checkout bytes.
+    bytes, and human-owned documents and the human-owned relationship declaration
+    are checked by content, so none of them depend on preserved LF checkout bytes.
     """
-    excluded = {*POINTER_DIRECTIVES, GITIGNORE_PATH, GITATTRIBUTES_PATH}
+    excluded = {*POINTER_DIRECTIVES, GITIGNORE_PATH, GITATTRIBUTES_PATH, RELATIONSHIP_OWNER}
     return tuple(
         path for path in sorted(outputs) if path not in excluded and not human_owned(path, rulebook_path)
     )
@@ -2379,10 +2379,14 @@ Keep one reciprocal language selector in each root README. Validate every relati
 
 `CHANGELOG.md` is the sole chronological owner and `docs/repo-harness/current-state.md` is the sole current-state owner. Localized peers present those facts and identify the canonical source, so dates and status never become independent truth.
 """
+    def canonical_source_es(name: str) -> str:
+        """Link a Spanish peer to its English owner so declared localized-peer edges hold."""
+        return "" if spanish_only else f"\nLa fuente canonica es [`../../repo-harness/{name}`](../../repo-harness/{name}).\n"
+
     maintenance_es = f"""# Mantenimiento de la documentacion bilingue
 
 {marker}
-
+{canonical_source_es("i18n-maintenance.md")}
 <!-- doc-role:canonical-ownership -->
 ## Propiedad canonica
 
@@ -2451,7 +2455,7 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
     index_es = f"""# Documentacion del harness de IA
 
 {marker}
-
+{canonical_source_es("README.md")}
 <!-- doc-role:documentation-map -->
 
 `{rulebook_path}` es la entrada operativa canonica. {spanish_index_intro}
@@ -2477,7 +2481,7 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
     usage_es = f"""# Uso del harness del repositorio
 
 {marker}
-<!-- doc-role:overview -->
+{canonical_source_es("usage.md")}<!-- doc-role:overview -->
 
 Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vigente la documentacion durable y deje una transferencia verificada.
 
@@ -2510,7 +2514,7 @@ Las habilidades diarias inspeccionan en modo de solo lectura por defecto. Los re
     state_es = f"""# Estado actual
 
 {marker}
-
+{canonical_source_es("current-state.md")}
 ## Estado verificado
 
 <!-- doc-role:verified-state -->
@@ -2538,7 +2542,7 @@ Revise `REPO-HARNESS.md` junto con este documento y actualice solo afirmaciones 
     roadmap_es = f"""# Hoja de ruta del ciclo de vida
 
 {marker}
-
+{canonical_source_es("roadmap.md")}
 <!-- doc-role:lifecycle-owner -->
 
 Esta hoja de ruta es el propietario canonico del ciclo de vida. Registre solo trabajo no trivial con IDs inmutables `RH-W-####`. Cada registro conserva origen, prioridad justificada de `P0` a `P3`, dependencias, estado, trabajo completado y restante, adiciones, exclusiones, aplazamientos, rechazos, evidencia, historial de decisiones y una Condicion del siguiente avance observable.
@@ -2565,7 +2569,7 @@ No se han resuelto registros especificos del proyecto.
     decisions_es = f"""# Decisiones y restricciones
 
 {marker}
-
+{canonical_source_es("decisions.md")}
 ## Decisiones permanentes
 
 <!-- doc-role:standing-decisions -->
@@ -2706,6 +2710,15 @@ def help_wrapper(
     )
 
 
+# Declared-relationship grammar shared with the installed checker, which cannot import this module.
+RELATIONSHIP_ROLE_PATTERN = r"<!-- doc-role:([a-z0-9-]+) -->"
+RELATIONSHIP_LINK_PATTERN = r"\]\(<?([^)\s>]+)>?\)"
+RELATIONSHIP_RECORD_PATTERN = r"^### (RH-W-\d{4})\n(.*?)(?=^### RH-W-|^## |\Z)"
+RELATIONSHIP_STATUS_PATTERNS = (r"^\| Status \| ([a-z]+) \|$", r"Estado: `([a-z]+)`")
+RELATIONSHIP_CLAIM_PATTERN = r"`(RH-W-\d{4})`(?: (?:and|y) `(RH-W-\d{4})`)? (?:is|are|remains?|stays?|está|están|esta|estan|es|son|siguen?|permanecen?) `([a-z]+)`"
+LIFECYCLE_STATUSES = ("proposed", "ready", "active", "blocked", "deferred", "completed", "excluded", "rejected")
+
+
 def check_script(manifest_sha256: str) -> str:
     """Render the installed checker with an ordinary read-only check and bounded explicit repair.
 
@@ -2729,6 +2742,7 @@ import argparse
 import json
 import hashlib
 import os
+import posixpath
 import re
 import subprocess
 import sys
@@ -2757,6 +2771,15 @@ COMMAND_SURFACES = {{
     "opencode": ("commands", ".opencode/commands/{{name}}.md"),
     "pi": ("prompts", ".pi/prompts/{{name}}.md"),
 }}
+RELATIONSHIP_OWNER = ".repo-harness/document-relationships.json"
+RELATIONS = {{"localized-peer", "lifecycle-projection"}}
+LIFECYCLE_STATUSES = {LIFECYCLE_STATUSES!r}
+LOCALE_FORBIDDEN = {{path: baseline["forbidden"] for path, baseline in {LOCALE_CONTENT_BASELINES!r}.items()}}
+ROLE = re.compile({RELATIONSHIP_ROLE_PATTERN!r})
+LINK = re.compile({RELATIONSHIP_LINK_PATTERN!r})
+RECORD = re.compile({RELATIONSHIP_RECORD_PATTERN!r}, re.M | re.S)
+STATUS = tuple(re.compile(pattern, re.M) for pattern in {RELATIONSHIP_STATUS_PATTERNS!r})
+CLAIM = re.compile({RELATIONSHIP_CLAIM_PATTERN!r})
 
 
 def valid_spdx_expression(value: str) -> bool:
@@ -2999,8 +3022,92 @@ def check_projections(root: Path) -> dict:
             else:
                 state = "current"
             entries.append({{"canonical": canonical_relative, "runtime": runtime, "path": relative, "state": state}})
+    entries.extend(check_relationships(root))
     drifted = [entry for entry in entries if entry["state"] not in {"current", "present"}]
     return {{"status": "drift" if drifted else "current", "files": entries, "writes": 0}}
+
+
+def relationship_endpoint(root: Path, relative: str) -> tuple:
+    """Return a direct contained UTF-8 Markdown endpoint, or the closed reason it is unusable."""
+    try:
+        if safe_relative(relative) != relative or not relative.endswith(".md"):
+            return None, "unsafe-endpoint"
+        path = guarded_path(root, relative)
+        if not path.exists():
+            return None, "missing-endpoint"
+        if not path.is_file():
+            return None, "unsafe-endpoint"
+        return path.read_bytes().decode("utf-8").replace("\\r\\n", "\\n"), None
+    except (ValueError, OSError):
+        return None, "unsafe-endpoint"
+
+
+def localized_peer_reason(source: str, target: str, source_text: str, target_text: str):
+    """Require the peer to link its canonical owner and keep its locale contract."""
+    owners = {{
+        posixpath.normpath(posixpath.join(posixpath.dirname(target), link.split("#", 1)[0]))
+        for link in LINK.findall(target_text)
+        if ":" not in link
+    }}
+    if source not in owners:
+        return "canonical-owner-mismatch"
+    roles = set(ROLE.findall(target_text))
+    if any(role not in roles for role in ROLE.findall(source_text)):
+        return "locale-contract-failed"
+    if any(phrase in target_text for phrase in LOCALE_FORBIDDEN.get(target, ())):
+        return "locale-contract-failed"
+    return None
+
+
+def lifecycle_projection_reason(source_text: str, target_text: str):
+    """Require every lifecycle status the projection asserts to match its roadmap record."""
+    owned = {{}}
+    for record_id, body in RECORD.findall(source_text):
+        found = next((match for match in (pattern.search(body) for pattern in STATUS) if match), None)
+        owned[record_id] = found.group(1) if found else None
+    for first, second, claimed in CLAIM.findall(target_text):
+        if claimed in LIFECYCLE_STATUSES and any(owned.get(item) != claimed for item in (first, second) if item):
+            return "status-mismatch"
+    return None
+
+
+def check_relationships(root: Path) -> list:
+    """Validate only explicitly declared documentation edges; report one entry per unsatisfied edge."""
+    invalid = [{{"path": RELATIONSHIP_OWNER, "state": "relationship-unsatisfied", "reason": "invalid-declaration"}}]
+    try:
+        owner = guarded_path(root, RELATIONSHIP_OWNER)
+        if not owner.exists():
+            return []
+        declaration = json.loads(owner.read_bytes().decode("utf-8"))
+    except (ValueError, OSError):
+        return invalid
+    if not isinstance(declaration, dict) or set(declaration) != {{"version", "edges"}} or type(declaration["version"]) is not int or declaration["version"] != 1:
+        return invalid
+    edges = declaration["edges"]
+    fields = {{"source", "relation", "target"}}
+    if not isinstance(edges, list) or not all(
+        isinstance(edge, dict) and set(edge) == fields and all(isinstance(value, str) for value in edge.values())
+        for edge in edges
+    ):
+        return invalid
+    entries, seen = [], set()
+    for edge in edges:
+        source, relation, target = edge["source"], edge["relation"], edge["target"]
+        reason = "invalid-declaration" if relation not in RELATIONS or (source, relation, target) in seen or source == target else None
+        seen.add((source, relation, target))
+        if reason is None:
+            source_text, reason = relationship_endpoint(root, source)
+        if reason is None:
+            target_text, reason = relationship_endpoint(root, target)
+        if reason is None:
+            reason = (
+                localized_peer_reason(source, target, source_text, target_text)
+                if relation == "localized-peer"
+                else lifecycle_projection_reason(source_text, target_text)
+            )
+        if reason:
+            entries.append({{"path": RELATIONSHIP_OWNER, "state": "relationship-unsatisfied", "source": source, "relation": relation, "target": target, "reason": reason}})
+    return entries
 
 
 def repair_digest(manifest_sha256: str, expected: dict) -> str:
@@ -3663,6 +3770,13 @@ def render_repository(
         conversation_language,
         ignore_codegraph,
     )
+    # CONTRIBUTING is repository-specific; declare its peer only when both are present.
+    if (guarded_target(root, "CONTRIBUTING.md").is_file()
+            and guarded_target(root, "CONTRIBUTING.es.md").is_file()
+            and "docs/es/repo-harness/roadmap.md" in outputs):
+        owner = json.loads(outputs[RELATIONSHIP_OWNER])
+        owner["edges"].insert(3, {"source": "CONTRIBUTING.md", "relation": "localized-peer", "target": "CONTRIBUTING.es.md"})
+        outputs[RELATIONSHIP_OWNER] = dump_json(owner)
     canonical_files = product_package_files(root)
     if not canonical_files:
         return outputs
@@ -3715,6 +3829,28 @@ def legacy_command_to_skill(project_id: str) -> dict[str, str]:
     }
 
 
+RELATIONSHIP_OWNER = ".repo-harness/document-relationships.json"
+
+
+def relationship_seed(outputs: dict[str, str]) -> str:
+    """Declare only emitted canonical documents and their emitted Spanish peers."""
+    sources = ("REPO-HARNESS.md", "README.md", "CONTRIBUTING.md", "CHANGELOG.md")
+    sources += tuple(f"docs/repo-harness/{name}.md" for name in (
+        "README", "usage", "current-state", "roadmap", "decisions", "i18n-maintenance"
+    ))
+    edges = []
+    for source in sources:
+        target = (source.replace("docs/repo-harness/", "docs/es/repo-harness/", 1)
+                  if source.startswith("docs/") else source.removesuffix(".md") + ".es.md")
+        if source in outputs and target in outputs:
+            edges.append({"source": source, "relation": "localized-peer", "target": target})
+    for prefix in ("docs/repo-harness", "docs/es/repo-harness"):
+        source, target = f"{prefix}/roadmap.md", f"{prefix}/current-state.md"
+        if source in outputs and target in outputs:
+            edges.append({"source": source, "relation": "lifecycle-projection", "target": target})
+    return dump_json({"version": 1, "edges": edges})
+
+
 def render_with_skill_mapping(
     project_name: str,
     runtimes: list[str],
@@ -3757,6 +3893,7 @@ def render_with_skill_mapping(
     }
     ignore_directives = (*((CODEGRAPH_IGNORE_DIRECTIVE,) if ignore_codegraph else ()), *LOCAL_STATE_IGNORE_DIRECTIVES)
     outputs[GITIGNORE_PATH] = "\n".join(ignore_directives) + "\n"
+    outputs[RELATIONSHIP_OWNER] = relationship_seed(outputs)
     for name, content in skills.items():
         outputs[f".repo-harness/skills/{name}/SKILL.md"] = content
     canonical_commands: dict[str, dict[str, str]] = {
@@ -4157,6 +4294,8 @@ def plan_changes(root: Path, outputs: dict[str, str], trusted_skill_license: boo
             create.append({"path": relative, "action": "create", "sha256": digest_text(content)})
         elif target.is_file() and not target.is_symlink() and digest_bytes(target.read_bytes()) == digest_text(content):
             identical.append(relative)
+        elif relative == RELATIONSHIP_OWNER and target.is_file() and not target.is_symlink():
+            existing.append({"path": relative, "reason": "human-owned declaration preserved", "sha256": digest_bytes(target.read_bytes())})
         elif relative in (*POINTER_DIRECTIVES, GITIGNORE_PATH) and target.is_file() and not target.is_symlink():
             current = target.read_bytes()
             missing = (
@@ -5019,6 +5158,9 @@ def check(
             entry["state"] = "missing"
         elif not target.is_file() or target.is_symlink():
             entry["state"] = "indirect-or-non-file"
+        elif relative == RELATIONSHIP_OWNER:
+            # Human-owned once seeded; the installed checker validates its edges.
+            entry["state"] = "current" if digest_bytes(target.read_bytes()) == digest_text(content) else "human-evolved"
         elif relative in (*POINTER_DIRECTIVES, GITIGNORE_PATH):
             current = target.read_bytes()
             if relative == GITIGNORE_PATH:

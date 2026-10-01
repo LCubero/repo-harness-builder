@@ -1,5 +1,7 @@
 # Contribuir a repo-harness-builder
 
+La fuente canonica es [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 Toda contribucion comienza con un issue y termina con revision del maintainer. Mantenga cada cambio pequeno, verificable y enlazado con el problema que resuelve.
 
 ## Ruta rapida

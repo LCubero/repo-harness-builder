@@ -13,6 +13,7 @@ import argparse
 import json
 import hashlib
 import os
+import posixpath
 import re
 import subprocess
 import sys
@@ -41,6 +42,15 @@ COMMAND_SURFACES = {
     "opencode": ("commands", ".opencode/commands/{name}.md"),
     "pi": ("prompts", ".pi/prompts/{name}.md"),
 }
+RELATIONSHIP_OWNER = ".repo-harness/document-relationships.json"
+RELATIONS = {"localized-peer", "lifecycle-projection"}
+LIFECYCLE_STATUSES = ('proposed', 'ready', 'active', 'blocked', 'deferred', 'completed', 'excluded', 'rejected')
+LOCALE_FORBIDDEN = {path: baseline["forbidden"] for path, baseline in {'docs/es/repo-harness/usage.md': {'required': ('Use las tres habilidades generadas', 'Limites de aprobacion', 'repositorio permanece como fuente autoritativa'), 'forbidden': ('The daily skills inspect', 'Explicit combined commit-and-push consent')}, 'docs/es/repo-harness/current-state.md': {'required': ('El harness minimo', 'hechos verificados del proyecto', 'Revise `REPO-HARNESS.md`'), 'forbidden': ('The minimal repository', 'Replace placeholders', 'Review `REPO-HARNESS.md`')}, 'docs/es/repo-harness/decisions.md': {'required': ('La documentacion del repositorio', 'archivos ausentes', 'operaciones de Git'), 'forbidden': ('Repository documentation remains', 'The harness creates absent files')}}.items()}
+ROLE = re.compile('<!-- doc-role:([a-z0-9-]+) -->')
+LINK = re.compile('\\]\\(<?([^)\\s>]+)>?\\)')
+RECORD = re.compile('^### (RH-W-\\d{4})\\n(.*?)(?=^### RH-W-|^## |\\Z)', re.M | re.S)
+STATUS = tuple(re.compile(pattern, re.M) for pattern in ('^\\| Status \\| ([a-z]+) \\|$', 'Estado: `([a-z]+)`'))
+CLAIM = re.compile('`(RH-W-\\d{4})`(?: (?:and|y) `(RH-W-\\d{4})`)? (?:is|are|remains?|stays?|está|están|esta|estan|es|son|siguen?|permanecen?) `([a-z]+)`')
 
 
 def valid_spdx_expression(value: str) -> bool:
@@ -283,8 +293,92 @@ def check_projections(root: Path) -> dict:
             else:
                 state = "current"
             entries.append({"canonical": canonical_relative, "runtime": runtime, "path": relative, "state": state})
+    entries.extend(check_relationships(root))
     drifted = [entry for entry in entries if entry["state"] not in ('current', 'present')]
     return {"status": "drift" if drifted else "current", "files": entries, "writes": 0}
+
+
+def relationship_endpoint(root: Path, relative: str) -> tuple:
+    """Return a direct contained UTF-8 Markdown endpoint, or the closed reason it is unusable."""
+    try:
+        if safe_relative(relative) != relative or not relative.endswith(".md"):
+            return None, "unsafe-endpoint"
+        path = guarded_path(root, relative)
+        if not path.exists():
+            return None, "missing-endpoint"
+        if not path.is_file():
+            return None, "unsafe-endpoint"
+        return path.read_bytes().decode("utf-8").replace("\r\n", "\n"), None
+    except (ValueError, OSError):
+        return None, "unsafe-endpoint"
+
+
+def localized_peer_reason(source: str, target: str, source_text: str, target_text: str):
+    """Require the peer to link its canonical owner and keep its locale contract."""
+    owners = {
+        posixpath.normpath(posixpath.join(posixpath.dirname(target), link.split("#", 1)[0]))
+        for link in LINK.findall(target_text)
+        if ":" not in link
+    }
+    if source not in owners:
+        return "canonical-owner-mismatch"
+    roles = set(ROLE.findall(target_text))
+    if any(role not in roles for role in ROLE.findall(source_text)):
+        return "locale-contract-failed"
+    if any(phrase in target_text for phrase in LOCALE_FORBIDDEN.get(target, ())):
+        return "locale-contract-failed"
+    return None
+
+
+def lifecycle_projection_reason(source_text: str, target_text: str):
+    """Require every lifecycle status the projection asserts to match its roadmap record."""
+    owned = {}
+    for record_id, body in RECORD.findall(source_text):
+        found = next((match for match in (pattern.search(body) for pattern in STATUS) if match), None)
+        owned[record_id] = found.group(1) if found else None
+    for first, second, claimed in CLAIM.findall(target_text):
+        if claimed in LIFECYCLE_STATUSES and any(owned.get(item) != claimed for item in (first, second) if item):
+            return "status-mismatch"
+    return None
+
+
+def check_relationships(root: Path) -> list:
+    """Validate only explicitly declared documentation edges; report one entry per unsatisfied edge."""
+    invalid = [{"path": RELATIONSHIP_OWNER, "state": "relationship-unsatisfied", "reason": "invalid-declaration"}]
+    try:
+        owner = guarded_path(root, RELATIONSHIP_OWNER)
+        if not owner.exists():
+            return []
+        declaration = json.loads(owner.read_bytes().decode("utf-8"))
+    except (ValueError, OSError):
+        return invalid
+    if not isinstance(declaration, dict) or set(declaration) != {"version", "edges"} or type(declaration["version"]) is not int or declaration["version"] != 1:
+        return invalid
+    edges = declaration["edges"]
+    fields = {"source", "relation", "target"}
+    if not isinstance(edges, list) or not all(
+        isinstance(edge, dict) and set(edge) == fields and all(isinstance(value, str) for value in edge.values())
+        for edge in edges
+    ):
+        return invalid
+    entries, seen = [], set()
+    for edge in edges:
+        source, relation, target = edge["source"], edge["relation"], edge["target"]
+        reason = "invalid-declaration" if relation not in RELATIONS or (source, relation, target) in seen or source == target else None
+        seen.add((source, relation, target))
+        if reason is None:
+            source_text, reason = relationship_endpoint(root, source)
+        if reason is None:
+            target_text, reason = relationship_endpoint(root, target)
+        if reason is None:
+            reason = (
+                localized_peer_reason(source, target, source_text, target_text)
+                if relation == "localized-peer"
+                else lifecycle_projection_reason(source_text, target_text)
+            )
+        if reason:
+            entries.append({"path": RELATIONSHIP_OWNER, "state": "relationship-unsatisfied", "source": source, "relation": relation, "target": target, "reason": reason})
+    return entries
 
 
 def repair_digest(manifest_sha256: str, expected: dict) -> str:

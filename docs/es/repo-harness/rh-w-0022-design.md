@@ -1,6 +1,6 @@
 # Diseño RH-W-0022 de relaciones documentales declaradas
 
-> **Estado: DISEÑO APROBADO POR EL PROPIETARIO. RH-W-0022 permanece `proposed`; un plan bilingüe de implementación se redactó con autorización posterior solo de planificación y ahora está aprobado por el propietario. La implementación sigue sin autorización.**
+> **Estado: DISEÑO APROBADO POR EL PROPIETARIO. RH-W-0022 permanece `proposed`; un plan bilingüe de implementación se redactó con autorización posterior solo de planificación y ahora está aprobado por el propietario. La implementación recibió autorización posterior; R22-1 está en curso, no entregado.**
 
 ## Decisión
 
@@ -34,7 +34,7 @@ La declaración y los extremos se leen sin modificar. Un fallo preserva todos lo
 
 ## Resultado exacto del checker
 
-Cada arista incumplida agrega una entrada al arreglo `files`, en orden de declaración, con `path` igual a `.repo-harness/document-relationships.json`, `state` igual a `relationship-unsatisfied`, y los campos exactos `source`, `relation`, `target` y `reason`.
+Cada arista identificable incumplida agrega una entrada al arreglo `files`, en orden de declaración. UTF-8 o JSON inválido en el propietario completo produce una sola entrada del propietario con `path`, `state` y `reason: invalid-declaration`, sin campos de arista inventados. Las entradas de aristas identificables tienen con `path` igual a `.repo-harness/document-relationships.json`, `state` igual a `relationship-unsatisfied`, y los campos exactos `source`, `relation`, `target` y `reason`.
 
 `reason` usa uno de estos tokens cerrados: `invalid-declaration`, `missing-endpoint`, `unsafe-endpoint`, `canonical-owner-mismatch`, `locale-contract-failed` o `status-mismatch`. El `status` global es `drift`, `writes` permanece `0` y la CLI sale con `1`, usando la serialización JSON existente. Las aristas satisfechas no agregan entrada y el reporte nunca incluye contenido documental.
 
@@ -65,4 +65,4 @@ RH-W-0044 puede sugerir después un cambio humano aprobado individualmente; no p
 
 ## Límite de aprobación
 
-El propietario revisó directamente y aprobó técnicamente este diseño el 2026-09-06. Una autorización posterior solo de planificación produjo un [plan de implementación bilingüe](rh-w-0022-implementation-plan.md) propuesto, ahora aprobado por el propietario. RH-W-0022 permanece `proposed`; la implementación requiere autorización separada.
+El propietario revisó directamente y aprobó técnicamente este diseño el 2026-09-06. Una autorización posterior solo de planificación produjo un [plan de implementación bilingüe](rh-w-0022-implementation-plan.md) propuesto, ahora aprobado por el propietario. RH-W-0022 permanece `proposed`; la implementación recibió autorización separada y sigue en curso.

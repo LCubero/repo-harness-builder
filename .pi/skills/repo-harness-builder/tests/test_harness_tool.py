@@ -44,6 +44,187 @@ DISCIPLINE = (
 )
 
 
+class RelationshipSeedTests(unittest.TestCase):
+    def test_relationship_seed_bilingual_and_monolingual(self):
+        bilingual = TOOL.render("example", [], documentation_languages=["en", "es"])
+        owner = ".repo-harness/document-relationships.json"
+        edges = json.loads(bilingual[owner])["edges"]
+        self.assertEqual(len(edges), 11)  # CONTRIBUTING is repository-specific, not rendered.
+        self.assertEqual(edges[-2:], [
+            {"source": "docs/repo-harness/roadmap.md", "relation": "lifecycle-projection", "target": "docs/repo-harness/current-state.md"},
+            {"source": "docs/es/repo-harness/roadmap.md", "relation": "lifecycle-projection", "target": "docs/es/repo-harness/current-state.md"},
+        ])
+        monolingual = TOOL.render("example", [], documentation_languages=["en"])
+        self.assertEqual(json.loads(monolingual[owner])["edges"], edges[-2:-1])
+
+
+class RelationshipCheckTests(unittest.TestCase):
+    """The installed checker validates only declared edges and writes nothing."""
+
+    OWNER = ".repo-harness/document-relationships.json"
+
+    @staticmethod
+    def snapshot(root: Path) -> dict[str, bytes]:
+        return {
+            path.relative_to(root).as_posix(): path.read_bytes()
+            for path in root.rglob("*")
+            if path.is_file() and "__pycache__" not in path.parts
+        }
+
+    def run_checker(self, root: Path) -> tuple[int, list[dict], dict[str, bytes]]:
+        before = self.snapshot(root)
+        completed = subprocess.run(
+            [sys.executable, "-B", str(root / ".repo-harness/check.py")],
+            cwd=root, capture_output=True, text=True,
+        )
+        self.assertEqual(self.snapshot(root), before, "checker must write nothing")
+        report = json.loads(completed.stdout)
+        self.assertEqual(report["writes"], 0)
+        self.assertEqual(report["status"], "drift" if completed.returncode else "current")
+        return completed.returncode, [e for e in report["files"] if e["path"] == self.OWNER], before
+
+    def declare(self, root: Path, edges: list[dict]) -> None:
+        (root / self.OWNER).write_text(json.dumps({"version": 1, "edges": edges}), encoding="utf-8")
+
+    def edge(self, source: str, relation: str, target: str, reason: str) -> dict:
+        return {"path": self.OWNER, "state": "relationship-unsatisfied", "source": source,
+                "relation": relation, "target": target, "reason": reason}
+
+    def test_fresh_installs_satisfy_every_seeded_edge(self):
+        for languages in (["en", "es"], ["en"], ["es"]):
+            with self.subTest(languages=languages), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                install(root, documentation_languages=languages)
+                code, entries, _ = self.run_checker(root)
+                self.assertEqual((code, entries), (0, []))
+                owner = [e for e in TOOL.check(root, "Example", [])["files"] if e["path"] == self.OWNER]
+                self.assertEqual(owner, [{"path": self.OWNER, "state": "current"}])
+
+    def test_existing_declaration_bytes_survive_render(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / ".repo-harness").mkdir()
+            (root / self.OWNER).write_bytes(b'{"version": 1, "edges": []}\n')
+            outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
+            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+            self.assertEqual((root / self.OWNER).read_bytes(), b'{"version": 1, "edges": []}\n')
+            owner = [e for e in TOOL.check(root, "Example", [])["files"] if e["path"] == self.OWNER]
+            self.assertEqual(owner[0]["state"], "human-evolved")
+
+    def test_whole_invalid_declaration_yields_one_owner_level_entry(self):
+        for raw in (b"\xff\xfe", b"{", b"[]", b'{"version": 2, "edges": []}',
+                    b'{"version": 1, "edges": [{"source": "README.md"}]}',
+                    b'{"version": 1, "edges": [], "note": "x"}'):
+            with self.subTest(raw=raw), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                install(root, documentation_languages=["en", "es"])
+                (root / self.OWNER).write_bytes(raw)
+                code, entries, _ = self.run_checker(root)
+                self.assertEqual(code, 1)
+                self.assertEqual(entries, [{"path": self.OWNER, "state": "relationship-unsatisfied", "reason": "invalid-declaration"}])
+
+    def test_identifiable_edge_failures_keep_declaration_order_and_full_shape(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, documentation_languages=["en", "es"])
+            peer = ("README.md", "localized-peer", "README.es.md")
+            declared = [
+                ("README.md", "mirrors", "README.es.md"),
+                peer,
+                peer,
+                ("README.md", "localized-peer", "README.md"),
+                ("../outside.md", "localized-peer", "README.es.md"),
+                ("README.md", "localized-peer", "/abs.md"),
+                ("./README.md", "localized-peer", "README.es.md"),
+                ("README.md", "localized-peer", "missing.es.md"),
+            ]
+            self.declare(root, [dict(zip(("source", "relation", "target"), item)) for item in declared])
+            code, entries, _ = self.run_checker(root)
+            self.assertEqual(code, 1)
+            reasons = ["invalid-declaration", None, "invalid-declaration", "invalid-declaration",
+                       "unsafe-endpoint", "unsafe-endpoint", "unsafe-endpoint", "missing-endpoint"]
+            expected = [self.edge(*item, reason) for item, reason in zip(declared, reasons) if reason]
+            self.assertEqual(entries, expected)
+
+    def test_symlinked_endpoint_is_unsafe(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, documentation_languages=["en", "es"])
+            try:
+                (root / "linked.es.md").symlink_to(root / "README.es.md")
+            except OSError:
+                self.skipTest("symlink creation requires privilege on this host")
+            self.declare(root, [{"source": "README.md", "relation": "localized-peer", "target": "linked.es.md"}])
+            _, entries, _ = self.run_checker(root)
+            self.assertEqual(entries, [self.edge("README.md", "localized-peer", "linked.es.md", "unsafe-endpoint")])
+
+    def test_localized_peer_failures_report_closed_reasons_without_touching_documents(self):
+        cases = (
+            ("REPO-HARNESS.es.md", "[`REPO-HARNESS.md`](REPO-HARNESS.md)", "`REPO-HARNESS.md`", "canonical-owner-mismatch"),
+            ("docs/es/repo-harness/usage.md", "<!-- doc-role:availability -->", "", "locale-contract-failed"),
+            ("docs/es/repo-harness/usage.md", "## Flujo diario", "## Flujo diario\n\nThe daily skills inspect", "locale-contract-failed"),
+        )
+        for target, old, new, reason in cases:
+            with self.subTest(reason=reason, target=target), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                install(root, documentation_languages=["en", "es"])
+                path = root / target
+                path.write_text(path.read_text(encoding="utf-8").replace(old, new, 1), encoding="utf-8")
+                code, entries, before = self.run_checker(root)
+                source = "REPO-HARNESS.md" if target.startswith("REPO") else "docs/repo-harness/usage.md"
+                self.assertEqual((code, entries), (1, [self.edge(source, "localized-peer", target, reason)]))
+                self.assertEqual(path.read_bytes(), before[target])
+
+    def test_lifecycle_projection_status_mismatch_recovers_when_projection_is_corrected(self):
+        languages = (
+            ("docs/repo-harness", "\n### RH-W-0002\n| Field | Value |\n|---|---|\n| Status | proposed |\n",
+             "`RH-W-0002` is `completed`", "`RH-W-0002` is `proposed`"),
+            ("docs/es/repo-harness", "\n### RH-W-0002\n\nPrioridad: `P2`. Estado: `proposed`. Historial: Estado: `active`.\n",
+             "`RH-W-0002` está `completed`", "`RH-W-0002` está `proposed`"),
+        )
+        for prefix, record, wrong, right in languages:
+            with self.subTest(prefix=prefix), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                install(root, documentation_languages=["en", "es"])
+                append(root / f"{prefix}/roadmap.md", record)
+                state = root / f"{prefix}/current-state.md"
+                original = state.read_text(encoding="utf-8")
+                state.write_text(original + f"\n- {wrong}.\n", encoding="utf-8")
+                code, entries, _ = self.run_checker(root)
+                edge = self.edge(f"{prefix}/roadmap.md", "lifecycle-projection", f"{prefix}/current-state.md", "status-mismatch")
+                self.assertEqual((code, entries), (1, [edge]))
+                state.write_text(original + "\n- `RH-W-0003` is `completed`.\n", encoding="utf-8")
+                self.assertEqual(self.run_checker(root)[1], [edge], "a record the roadmap does not own is a mismatch")
+                state.write_text(original + f"\n- {right}.\n", encoding="utf-8")
+                self.assertEqual(self.run_checker(root)[:2], (0, []))
+
+    def test_lifecycle_claims_written_with_continuing_verbs_are_checked(self):
+        record = "\n### RH-W-0002\n| Field | Value |\n|---|---|\n| Status | deferred |\n"
+        claims = {
+            "docs/repo-harness": ("stays", "remains"),
+            "docs/es/repo-harness": ("sigue", "esta", "permanece"),
+        }
+        for prefix, verbs in claims.items():
+            for verb in verbs:
+                with self.subTest(verb=verb), tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    install(root, documentation_languages=["en", "es"])
+                    append(root / f"{prefix}/roadmap.md", record)
+                    append(root / f"{prefix}/current-state.md", f"\n- `RH-W-0002` {verb} `proposed`.\n")
+                    edge = self.edge(f"{prefix}/roadmap.md", "lifecycle-projection", f"{prefix}/current-state.md", "status-mismatch")
+                    self.assertEqual(self.run_checker(root)[:2], (1, [edge]))
+
+    def test_contract_preserving_edits_and_undeclared_links_create_no_result(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, documentation_languages=["en", "es"])
+            append(root / "docs/repo-harness/roadmap.md", "\nAn ordinary edit.\n")
+            append(root / "docs/repo-harness/usage.md", "\nSee [notes](notes.md).\n")
+            (root / "docs/repo-harness/notes.md").write_text("`RH-W-0009` is `completed`\n", encoding="utf-8")
+            (root / "docs/repo-harness/notes.es.md").write_text("sin enlace\n", encoding="utf-8")
+            self.assertEqual(self.run_checker(root)[:2], (0, []))
+
+
 class AuthorityContextTests(unittest.TestCase):
     def test_authority_premise_type_models_exact_wire_keys(self):
         self.assertEqual(
@@ -1242,6 +1423,11 @@ class ProductWorkflowTests(unittest.TestCase):
         self.assertIn("patent", text.lower())
         self.assertIn("copyleft", text.lower())
         self.assertNotIn("is the most popular", text.lower())
+
+
+def append(path: Path, text: str) -> None:
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(text)
 
 
 def install(

@@ -1,6 +1,6 @@
 # RH-W-0022 Declared Documentation Relationships Design
 
-> **Status: OWNER-APPROVED DESIGN. RH-W-0022 remains proposed; a bilingual implementation plan was drafted under later planning-only authorization and is now owner-approved. Implementation remains unauthorized.**
+> **Status: OWNER-APPROVED DESIGN. RH-W-0022 remains proposed; a bilingual implementation plan was drafted under later planning-only authorization and is now owner-approved. Implementation was subsequently authorized; R22-1 is in progress, not delivered.**
 
 ## Decision
 
@@ -49,7 +49,7 @@ The declaration and every endpoint are read only. A failed check preserves all h
 
 ## Exact Checker Result
 
-Each unsatisfied edge adds one entry to the existing `files` array, in declaration order:
+Each identifiable unsatisfied edge adds one entry to the existing `files` array, in declaration order. Invalid UTF-8 or JSON affecting the entire owner instead produces one owner-level entry with `path`, `state`, and `reason: invalid-declaration`, without fabricated edge fields. An identifiable edge failure retains the complete shape:
 
 ```json
 {
@@ -91,4 +91,4 @@ RH-W-0044 may later suggest an individually approved human-document change after
 
 ## Approval Boundary
 
-The owner directly reviewed and technically approved this design on 2026-09-06. Later planning-only authorization produced a proposed bilingual [implementation plan](rh-w-0022-implementation-plan.md), now owner-approved. RH-W-0022 remains `proposed`; implementation requires separate authorization.
+The owner directly reviewed and technically approved this design on 2026-09-06. Later planning-only authorization produced a proposed bilingual [implementation plan](rh-w-0022-implementation-plan.md), now owner-approved. RH-W-0022 remains `proposed`; implementation was separately authorized and remains in progress.

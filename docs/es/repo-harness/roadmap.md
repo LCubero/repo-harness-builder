@@ -178,7 +178,7 @@ Decisión resuelta: no inventar sugerencias literales sin prueba para familias e
 
 ### Plan 8: diseno de relaciones declaradas de documentacion RH-W-0022
 
-Preparación `design owner-approved; implementation plan owner-approved`. Prioridad `P2`. El [diseño bilingüe](rh-w-0022-design.md) posee el contrato; el [plan de implementación bilingüe](rh-w-0022-implementation-plan.md) se redactó con autorización solo de planificación. La implementación sigue sin autorización.
+Preparación `design owner-approved; implementation plan owner-approved`. Prioridad `P2`. El [diseño bilingüe](rh-w-0022-design.md) posee el contrato; el [plan de implementación bilingüe](rh-w-0022-implementation-plan.md) se redactó con autorización solo de planificación. La implementación está verificada localmente y sin entregar.
 
 1. Definir el formato minimo de arista declarada, rechazando la inferencia desde grafos de enlaces o patrones de nombre.
 2. Decidir el archivo duenio unico del mapa declarado y mantenerlo lo bastante pequenio para mantenerse a mano.
@@ -186,7 +186,7 @@ Preparación `design owner-approved; implementation plan owner-approved`. Priori
 4. Mantener intactas las exclusiones: sin grafo de simbolos de codigo, sin analisis de rutas de llamada, sin motor de dependencias, sin daemon, sin planificador, sin servicio externo y sin dependencia de runtime nueva mas alla de la biblioteca estandar de Python.
 5. Nombrar las pruebas RED, idealmente reproduciendo un drift real pasado.
 
-Decisiones técnicas resueltas: aristas JSON exactas de tres campos en `.repo-harness/document-relationships.json`, preservado; solo `localized-peer` y `lifecycle-projection`; entradas exactas `relationship-unsatisfied`. Decisión humana registrada: el propietario revisó directamente y aprobó técnicamente el diseño; esa aprobación por sí sola no autorizó la planificación de implementación ni la implementación. Una autorización posterior y separada, solo para planificación, produjo el plan de implementación ahora aprobado por el propietario; la implementación sigue sin autorización.
+Decisiones técnicas resueltas: aristas JSON exactas de tres campos en `.repo-harness/document-relationships.json`, preservado; solo `localized-peer` y `lifecycle-projection`; entradas exactas `relationship-unsatisfied`. Decisión humana registrada: el propietario revisó directamente y aprobó técnicamente el diseño; esa aprobación por sí sola no autorizó la planificación de implementación ni la implementación. Una autorización posterior y separada, solo para planificación, produjo el plan de implementación ahora aprobado por el propietario; la implementación se autorizó el 2026-09-30 y está verificada localmente, sin entregar.
 
 ### Plan 9: diseno de instalacion y onboarding RH-W-0055
 
@@ -1080,6 +1080,8 @@ Actualización de diseño del 2026-09-06: después de aprobarse el diseño RH-W-
 Entrega posterior, 2026-09-27: los cherry-picks solo documentales `bc91e497706e37a133c8e1d15084cd2979381c83` y luego `ba4dc4c668f87c286dd2e8c97d203bda3ffca893` entregaron ese plan directamente a `main` bajo la excepción del propietario; tras el push, `origin/main` coincidía con `ba4dc4c` (0 por detrás/0 por delante), sin PR. Esta entrega no autorizó la implementación del producto; RH-W-0022 permanece `proposed`.
 
 Seguimiento de entrega, 2026-09-27: después de la entrega anterior directamente a `main` sin PR, la reconciliación solo documental se entregó mediante el PR #235, fusionado por squash como `fffb4b03ac82f87997b29e313e348085fc886852` a las 2026-09-27T16:17:17Z; se cerró el issue #234. RH-W-0022 permanece `proposed`; la implementación del producto aún requiere autorización separada.
+
+Implementación local, 2026-09-30: El 2026-09-30 el propietario autorizó la implementación; está implementada y verificada localmente en la rama `feat/rh-w-0022-document-relationships`, con commit local y sin entrega: script y pruebas canónicos, proyecciones `.claude/`, `.opencode/` y `.pi/` sincronizadas, un apply de mantenimiento del plan `845f3d8b5dfe8cc1ac876322320fd8cd936db69938630ece60e6081e65da8a87` que sembró `.repo-harness/document-relationships.json` (12 aristas) y regeneró `.repo-harness/check.py`, suite completa de 606 pruebas OK (11 omitidas), checker `current` sin escrituras y revisiones nativas aprobadas `review-e81442d7dee7c57a` y `review-50bcca380a0abe08` con advertencias no bloqueantes. Trabajo restante: commit, revisión de la ruta de entrega y entrega según la política del repositorio. Seguimientos no bloqueantes: títulos en enlaces y valores de estado desconocidos en afirmaciones de ciclo de vida, y el par `CONTRIBUTING.es.md` desactualizado.
 
 ### RH-W-0023
 

@@ -1,5 +1,7 @@
 # Mantenimiento de la documentacion bilingue
 
+La fuente canonica es [`../../repo-harness/i18n-maintenance.md`](../../repo-harness/i18n-maintenance.md).
+
 `REPO-HARNESS.md`, `CHANGELOG.md` y los documentos durables en ingles son propietarios de los hechos operativos. Los pares en espanol son presentaciones localizadas completas.
 
 ## Propiedad canonica

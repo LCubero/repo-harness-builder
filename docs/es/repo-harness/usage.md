@@ -1,4 +1,7 @@
 # Uso del harness del repositorio
+
+La fuente canonica es [`../../repo-harness/usage.md`](../../repo-harness/usage.md).
+
 <!-- doc-role:overview -->
 
 Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vigente la documentacion durable y deje una transferencia verificada.

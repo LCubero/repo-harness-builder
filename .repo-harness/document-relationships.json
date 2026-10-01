@@ -1,0 +1,65 @@
+{
+  "edges": [
+    {
+      "relation": "localized-peer",
+      "source": "REPO-HARNESS.md",
+      "target": "REPO-HARNESS.es.md"
+    },
+    {
+      "relation": "localized-peer",
+      "source": "README.md",
+      "target": "README.es.md"
+    },
+    {
+      "relation": "localized-peer",
+      "source": "CHANGELOG.md",
+      "target": "CHANGELOG.es.md"
+    },
+    {
+      "relation": "localized-peer",
+      "source": "CONTRIBUTING.md",
+      "target": "CONTRIBUTING.es.md"
+    },
+    {
+      "relation": "localized-peer",
+      "source": "docs/repo-harness/README.md",
+      "target": "docs/es/repo-harness/README.md"
+    },
+    {
+      "relation": "localized-peer",
+      "source": "docs/repo-harness/usage.md",
+      "target": "docs/es/repo-harness/usage.md"
+    },
+    {
+      "relation": "localized-peer",
+      "source": "docs/repo-harness/current-state.md",
+      "target": "docs/es/repo-harness/current-state.md"
+    },
+    {
+      "relation": "localized-peer",
+      "source": "docs/repo-harness/roadmap.md",
+      "target": "docs/es/repo-harness/roadmap.md"
+    },
+    {
+      "relation": "localized-peer",
+      "source": "docs/repo-harness/decisions.md",
+      "target": "docs/es/repo-harness/decisions.md"
+    },
+    {
+      "relation": "localized-peer",
+      "source": "docs/repo-harness/i18n-maintenance.md",
+      "target": "docs/es/repo-harness/i18n-maintenance.md"
+    },
+    {
+      "relation": "lifecycle-projection",
+      "source": "docs/repo-harness/roadmap.md",
+      "target": "docs/repo-harness/current-state.md"
+    },
+    {
+      "relation": "lifecycle-projection",
+      "source": "docs/es/repo-harness/roadmap.md",
+      "target": "docs/es/repo-harness/current-state.md"
+    }
+  ],
+  "version": 1
+}
