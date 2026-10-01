@@ -1,6 +1,6 @@
 # Diseno RH-W-0068 de compuerta documental obligatoria para cierre
 
-> **Estado: CORTE DOCUMENTAL ANTERIOR IMPLEMENTADO Y VERIFICADO. RH-W-0068 esta active para el resto delegado por el propietario; la implementacion, sincronizacion de proyecciones, cobertura de escenarios del contrato y verificacion de la suite completa terminaron localmente. La entrega sigue pendiente.**
+> **Estado: CORTE DOCUMENTAL ANTERIOR IMPLEMENTADO Y VERIFICADO. RH-W-0068 ESTA COMPLETED: el resto delegado por el propietario se entrego mediante el PR #261.**
 
 El [diseño RH-W-0074](rh-w-0074-design.md), implementado el 2026-10-01, reemplaza solo la clasificación forzada `paused`/`blocked` para omisiones aceptadas; la elegibilidad para completar de abajo no cambia. Una declinación aceptada se informa como `declined` con la unidad de trabajo sin completar, y `paused` o `blocked` se usan solo para información realmente pendiente o requisitos realmente faltantes.
 
@@ -55,7 +55,7 @@ RED fallo por ausencia de la compuerta ordenada. GREEN paso la regresion enfocad
 ## Limites
 
 - Este diseno no cambia fuente, salidas generadas, pruebas, evidencia de ciclo ni entrega de RH-W-0051.
-- Este corte documental anterior esta implementado y verificado; RH-W-0068 esta `active` para el resto delegado por el propietario. La implementacion actual y sincronizacion de proyecciones terminaron, pero la verificacion independiente de la suite completa fallo por el conteo documental desactualizado. La cobertura de escenarios del contrato y la verificacion de la suite completa (616 pruebas, 11 omitidas, 0 fallos) quedaron resueltas localmente; la entrega debe preceder al cierre de toda la unidad.
+- Este corte documental anterior esta implementado y verificado; RH-W-0068 esta `completed`; el resto delegado por el propietario se entrego mediante el PR #261. La implementacion actual y sincronizacion de proyecciones terminaron, pero la verificacion independiente de la suite completa fallo por el conteo documental desactualizado. La cobertura de escenarios del contrato y la verificacion de la suite completa (616 pruebas, 11 omitidas, 0 fallos) quedaron resueltas localmente; la entrega se completo mediante el PR #261.
 - No hay commit, push, red, flujo RDD, store, schema ni cambio de checker en este corte.
 - Trabajo verificado existente nunca se revierte porque la documentacion sea declinada o bloqueada.
 

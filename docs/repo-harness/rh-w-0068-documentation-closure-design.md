@@ -1,6 +1,6 @@
 # RH-W-0068 Required Documentation Closure Gate Design
 
-> **Status: EARLIER DOCUMENTATION-CLOSURE SLICE IMPLEMENTED AND VERIFIED. RH-W-0068 is active for its owner-delegated remainder; implementation, projection synchronization, scenario-contract coverage, and whole-suite verification are finished locally. Delivery remains pending.**
+> **Status: EARLIER DOCUMENTATION-CLOSURE SLICE IMPLEMENTED AND VERIFIED. RH-W-0068 IS COMPLETED: its owner-delegated remainder was delivered through PR #261.**
 
 The [RH-W-0074 design](rh-w-0074-design.md), implemented on 2026-10-01, replaces only the forced `paused`/`blocked` classification for accepted omissions; completion eligibility below is unchanged. An accepted decline is reported as `declined` with the work unit not completed, and `paused` or `blocked` apply only to actually pending input or missing prerequisites.
 
@@ -54,7 +54,7 @@ RED failed on the absent ordered gate. GREEN passed the focused closure regressi
 ## Boundaries
 
 - No RH-W-0051 source, generated output, test, lifecycle evidence, or delivery claim is changed by this design.
-- This earlier documentation-closure slice is implemented and verified; RH-W-0068 is `active` for its owner-delegated remainder. Current implementation and projection synchronization are finished, but independent whole-suite verification failed on the stale documented count. Scenario-contract coverage and whole-suite verification (616 tests, 11 skipped, 0 failures) are settled locally; delivery must precede whole-unit completion.
+- This earlier documentation-closure slice is implemented and verified; RH-W-0068 is `completed`; its owner-delegated remainder was delivered through PR #261. Current implementation and projection synchronization are finished, but independent whole-suite verification failed on the stale documented count. Scenario-contract coverage and whole-suite verification (616 tests, 11 skipped, 0 failures) are settled locally; delivery completed through PR #261.
 - No commit, push, network action, RDD flow, store, schema, or checker behavior is part of this slice.
 - Existing verified work is never rolled back because documentation is declined or blocked.
 
