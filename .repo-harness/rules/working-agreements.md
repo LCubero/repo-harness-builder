@@ -10,6 +10,7 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 - No overengineering. Do not add a tool, layer, abstraction, config surface, or process the current objective does not require. A cannon is not the answer to an ant.
 - Solve the problem in front of you. A future problem gets solved when it arrives and is real.
 - Delete what stopped being used. Dead scaffolding costs more than the work it saved.
+- Put temporary files in `.repo-harness/tmp/`; use the system temp only when that fails or a task needs a location outside Git.
 
 ## Stopping
 
@@ -31,7 +32,6 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 ## Project Agreements
 
 - Work one coherent feature, blocker, issue, or named objective per session; an issue need not be a remote-provider issue. Complete its applicable documentation, verification, review, and authorized delivery before `repo-harness-session-stop`; begin adjacent work in a fresh Pi session through `repo-harness-session-start`.
-- Put temporary files in `.repo-harness/tmp/`; use the system temp only when that fails or a task needs a location outside Git.
 
 ## Budget
 

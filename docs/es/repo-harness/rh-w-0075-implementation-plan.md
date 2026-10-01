@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0075 de necesidad y justificacion externa
 
-> **Estado: propuesto.** Requiere aprobacion del propietario y autorizacion separada para implementar. El registro sigue `proposed`.
+> **Estado: reemplazado el 2026-10-01** por la implementación mínima registrada en el [diseño](rh-w-0075-design.md#implementación-mínima-2026-10-01). Se conserva como historia.
 
 Derivado del [diseno](rh-w-0075-design.md) aprobado. Par canonico: [rh-w-0075-implementation-plan.md](../../repo-harness/rh-w-0075-implementation-plan.md).
 

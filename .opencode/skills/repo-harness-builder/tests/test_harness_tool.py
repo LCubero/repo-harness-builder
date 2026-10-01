@@ -8191,6 +8191,20 @@ class RuleFileTests(unittest.TestCase):
         standalone = TOOL.render("Example", [], standalone=True)[".repo-harness/rules/working-agreements.md"]
         self.assertIn("a working rule to this file. If it is already recorded", standalone)
 
+    def test_work_stays_inside_the_repository_and_leaving_it_says_why(self):
+        for standalone in (False, True):
+            outputs = TOOL.render("Example", [], standalone=standalone)
+            with self.subTest(standalone=standalone):
+                self.assertIn(
+                    "Ask for explicit approval before reading or modifying paths outside it. Say why and what for.",
+                    outputs[RULEBOOK],
+                )
+                self.assertIn(
+                    "Put temporary files in `.repo-harness/tmp/`; use the system temp only when that fails "
+                    "or a task needs a location outside Git.",
+                    outputs[".repo-harness/rules/working-agreements.md"],
+                )
+
     def test_memory_rule_keeps_memory_subordinate_to_the_repository(self):
         text = TOOL.render("Example", [])[".repo-harness/rules/memory.md"]
         for phrase in ("repository evidence remains authoritative", "never claim successful continuity"):

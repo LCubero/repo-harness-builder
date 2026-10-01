@@ -1958,7 +1958,7 @@ Describe what this project does and who it serves.
 ## Hard Rules
 
 - Work only inside the selected repository.
-- Ask for explicit approval before reading or modifying paths outside it.
+- Ask for explicit approval before reading or modifying paths outside it. Say why and what for.
 - Apply the smallest sufficient change.
 - Do not introduce unrelated scope.
 - Do not retry indefinitely. After repeated failure, stop with evidence and request a decision.
@@ -2087,6 +2087,7 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 - No overengineering. Do not add a tool, layer, abstraction, config surface, or process the current objective does not require. A cannon is not the answer to an ant.
 - Solve the problem in front of you. A future problem gets solved when it arrives and is real.
 - Delete what stopped being used. Dead scaffolding costs more than the work it saved.
+- Put temporary files in `.repo-harness/tmp/`; use the system temp only when that fails or a task needs a location outside Git.
 
 ## Stopping
 
