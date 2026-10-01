@@ -1,6 +1,6 @@
 # Diseno RH-W-0068 de compuerta documental obligatoria para cierre
 
-> **Estado: IMPLEMENTADO Y VERIFICADO. RH-W-0068 sigue proposed por sus defectos separados sin resolver.**
+> **Estado: CORTE DOCUMENTAL ANTERIOR IMPLEMENTADO Y VERIFICADO. RH-W-0068 esta active para el resto delegado por el propietario; la implementacion, sincronizacion de proyecciones, cobertura de escenarios del contrato y verificacion de la suite completa terminaron localmente. La entrega sigue pendiente.**
 
 El [diseño RH-W-0074](rh-w-0074-design.md), implementado el 2026-10-01, reemplaza solo la clasificación forzada `paused`/`blocked` para omisiones aceptadas; la elegibilidad para completar de abajo no cambia. Una declinación aceptada se informa como `declined` con la unidad de trabajo sin completar, y `paused` o `blocked` se usan solo para información realmente pendiente o requisitos realmente faltantes.
 
@@ -55,10 +55,17 @@ RED fallo por ausencia de la compuerta ordenada. GREEN paso la regresion enfocad
 ## Limites
 
 - Este diseno no cambia fuente, salidas generadas, pruebas, evidencia de ciclo ni entrega de RH-W-0051.
-- Este corte de cierre documental esta implementado; RH-W-0068 sigue `proposed` hasta resolver sus otros defectos.
+- Este corte documental anterior esta implementado y verificado; RH-W-0068 esta `active` para el resto delegado por el propietario. La implementacion actual y sincronizacion de proyecciones terminaron, pero la verificacion independiente de la suite completa fallo por el conteo documental desactualizado. La cobertura de escenarios del contrato y la verificacion de la suite completa (616 pruebas, 11 omitidas, 0 fallos) quedaron resueltas localmente; la entrega debe preceder al cierre de toda la unidad.
 - No hay commit, push, red, flujo RDD, store, schema ni cambio de checker en este corte.
 - Trabajo verificado existente nunca se revierte porque la documentacion sea declinada o bloqueada.
 
 ## Disposicion Del Ciclo
 
-El defecto de cierre documental esta resuelto. RH-W-0068 no esta completado porque los defectos de disposicion del changelog, politica Git y activacion de skills ajenas aun requieren diseno y autoridad de implementacion separados.
+El defecto de cierre documental esta resuelto. El 2026-10-01 el propietario delego un alcance minimo para los defectos restantes bajo el issue #260:
+
+1. Disposicion del changelog: el Output Contract de session-stop la informa como exactamente uno de `updated`, `not needed`, `declined` o `pending approval`, con su motivo; disenos, planes o cambios de ciclo completados son trabajo significativo, nunca `not needed`.
+2. Ruta Git: la continuidad obligatoria completada puede coexistir con una pregunta Git opcional pendiente, como la oferta de push de una rama adelantada tras un commit; la invocacion termina en esa pregunta y sigue reanudable.
+3. Cobertura de escenarios del contrato: un escenario determinista con Git real hace commit sobre un upstream limpio, confirma que `inspect_git_state` informa `clean` con ahead 1 y behind 0, y exige que el contrato session-stop generado ofrezca el push y mantenga el cierre reanudable para ese estado. Fallo contra el contrato anterior por la ausencia de la clausula reanudable. La disposicion del changelog y la activacion de skills no tienen helper ejecutable, asi que sus pruebas de texto del contrato son la disposicion terminal de cobertura. Las pruebas unitarias no demuestran cumplimiento del modelo en vivo.
+4. Skills ajenas: session-start y session-stop generados nunca activan skills personales o externas ajenas por coincidencia de frases.
+
+La aclaracion agregada acotada queda cubierta por el punto 2 junto con RH-W-0074 completada.

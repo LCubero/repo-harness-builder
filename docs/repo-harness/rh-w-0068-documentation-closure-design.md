@@ -1,6 +1,6 @@
 # RH-W-0068 Required Documentation Closure Gate Design
 
-> **Status: IMPLEMENTED AND VERIFIED. RH-W-0068 remains proposed for its separate unresolved defects.**
+> **Status: EARLIER DOCUMENTATION-CLOSURE SLICE IMPLEMENTED AND VERIFIED. RH-W-0068 is active for its owner-delegated remainder; implementation, projection synchronization, scenario-contract coverage, and whole-suite verification are finished locally. Delivery remains pending.**
 
 The [RH-W-0074 design](rh-w-0074-design.md), implemented on 2026-10-01, replaces only the forced `paused`/`blocked` classification for accepted omissions; completion eligibility below is unchanged. An accepted decline is reported as `declined` with the work unit not completed, and `paused` or `blocked` apply only to actually pending input or missing prerequisites.
 
@@ -54,10 +54,17 @@ RED failed on the absent ordered gate. GREEN passed the focused closure regressi
 ## Boundaries
 
 - No RH-W-0051 source, generated output, test, lifecycle evidence, or delivery claim is changed by this design.
-- This documentation-closure slice is implemented; RH-W-0068 remains `proposed` until its other owned defects are resolved.
+- This earlier documentation-closure slice is implemented and verified; RH-W-0068 is `active` for its owner-delegated remainder. Current implementation and projection synchronization are finished, but independent whole-suite verification failed on the stale documented count. Scenario-contract coverage and whole-suite verification (616 tests, 11 skipped, 0 failures) are settled locally; delivery must precede whole-unit completion.
 - No commit, push, network action, RDD flow, store, schema, or checker behavior is part of this slice.
 - Existing verified work is never rolled back because documentation is declined or blocked.
 
 ## Lifecycle Disposition
 
-The documentation-closure defect is resolved. RH-W-0068 is not complete because the changelog-disposition, Git-policy, and unrelated-skill activation defects still require separate design and implementation authority.
+The documentation-closure defect is resolved. On 2026-10-01 the owner delegated a minimal scope for the remaining defects under issue #260:
+
+1. Changelog disposition: the session-stop Output Contract reports it as exactly one of `updated`, `not needed`, `declined`, or `pending approval`, with its reason; completed designs, plans, or lifecycle changes are meaningful work, never `not needed`.
+2. Git route: completed required continuity can coexist with a pending optional Git question, such as the push offer for an ahead-only branch after a commit; the invocation ends on that question and stays resumable.
+3. Scenario-contract coverage: one deterministic real-Git scenario commits on a clean upstream, confirms `inspect_git_state` reports `clean` with ahead 1 and behind 0, and requires the generated session-stop contract to offer the push and keep the close resumable for that state. It failed against the previous contract on the missing resumable clause. Changelog disposition and skill activation have no executable helper, so their contract-text tests are the terminal coverage disposition. Unit tests do not prove live-model compliance.
+4. Unrelated skills: generated session-start and session-stop never activate unrelated personal or external skills by phrase matching.
+
+The narrow aggregate-outcome clarification is covered by item 2 together with completed RH-W-0074.

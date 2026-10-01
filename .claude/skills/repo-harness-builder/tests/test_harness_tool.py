@@ -6767,6 +6767,78 @@ resume_authority: required
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, stop)
 
+    def test_session_stop_reports_changelog_disposition_for_meaningful_work(self):
+        for standalone in (False, True):
+            with self.subTest(standalone=standalone):
+                stop = TOOL.render("Example", [], standalone=standalone)[
+                    ".repo-harness/skills/repo-harness-session-stop/SKILL.md"
+                ]
+                output = stop.split("## Output Contract\n", 1)[1].split("\n## ", 1)[0]
+                self.assertIn(
+                    "Report changelog disposition as exactly one of `updated`, `not needed`, "
+                    "`declined`, or `pending approval`, with its reason; completed designs, plans, "
+                    "or lifecycle changes count as meaningful work, never as `not needed`.",
+                    output,
+                )
+
+    def test_session_stop_keeps_pending_optional_git_question_resumable(self):
+        for standalone in (False, True):
+            with self.subTest(standalone=standalone):
+                stop = TOOL.render("Example", [], standalone=standalone)[
+                    ".repo-harness/skills/repo-harness-session-stop/SKILL.md"
+                ]
+                outcome = stop.split("## Outcome Model\n", 1)[1].split("\n## ", 1)[0]
+                self.assertIn(
+                    "Completed required continuity can coexist with a pending optional Git question, "
+                    "such as the push offer for an ahead-only branch after a commit; then end on that "
+                    "question and keep the invocation resumable instead of reporting the session as finished.",
+                    outcome,
+                )
+
+    def test_session_stop_scenario_commit_on_clean_upstream_requires_resumable_push_question(self):
+        def git(root, *args):
+            return subprocess.run(
+                ("git", "-C", str(root), *args), capture_output=True, text=True, check=True,
+            )
+
+        def commit(root, message):
+            git(root, "-c", "user.name=Harness Test", "-c", "user.email=harness@example.invalid", "commit", "-qm", message)
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            git(root, "init", "-q")
+            (root / "tracked.txt").write_text("one\n", encoding="utf-8")
+            git(root, "add", "tracked.txt")
+            commit(root, "initial")
+            git(root, "remote", "add", "elsewhere", str(root / "unused.git"))
+            git(root, "update-ref", "refs/remotes/elsewhere/main", "HEAD")
+            git(root, "branch", "--set-upstream-to=elsewhere/main")
+            (root / "tracked.txt").write_text("two\n", encoding="utf-8")
+            git(root, "add", "tracked.txt")
+            commit(root, "approved work unit")
+
+            observed = TOOL.inspect_git_state(root)
+
+        self.assertEqual((observed["state"], observed["ahead"], observed["behind"]), ("clean", 1, 0))
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        self.assertIn("Existing unpushed commits trigger a push offer without an empty commit.", stop)
+        self.assertIn("Commit approval never implies push.", stop)
+        outcome = stop.split("## Outcome Model\n", 1)[1].split("\n## ", 1)[0]
+        self.assertIn("end on that question and keep the invocation resumable", outcome)
+
+    def test_session_start_and_session_stop_reject_unrelated_skill_phrase_matching(self):
+        for standalone in (False, True):
+            outputs = TOOL.render("Example", [], standalone=standalone)
+            for skill in ("repo-harness-session-start", "repo-harness-session-stop"):
+                with self.subTest(standalone=standalone, skill=skill):
+                    text = outputs[f".repo-harness/skills/{skill}/SKILL.md"]
+                    hard_rules = text.split("## Hard Rules\n", 1)[1].split("\n## ", 1)[0]
+                    self.assertIn(
+                        "- Never activate unrelated personal or external skills by phrase matching. "
+                        "This does not exclude skills required by higher-priority host instructions.",
+                        hard_rules,
+                    )
+
     def test_session_stop_refreshes_final_continuity_after_approved_documentation(self):
         stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
 
