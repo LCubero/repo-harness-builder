@@ -2008,6 +2008,7 @@ def rule_outputs(rulebook_path: str, standalone: bool) -> dict[str, str]:
         if standalone
         else "Engram optional; unavailable operations visible, never emulated."
     )
+    preference_route = "" if standalone else ", a personal preference to Engram when available"
     continuity_evidence_tail = (
         "then non-authoritative local backup evidence"
         if standalone
@@ -2099,6 +2100,7 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 - Report what happened, not what was intended.
 - When research cites sources, list every source that was located but not read, with a short reason such as authentication, transport failure, incomplete content, or snippet-only evidence. Never present an unread source as evidence.
 - Keep a useful link in the document that owns its subject. Do not create a separate reference list.
+- When asked to remember or note something, route it to its existing owner: a decision to `docs/repo-harness/decisions.md`, pending work to `docs/repo-harness/roadmap.md`, a working rule to this file{preference_route}. If it is already recorded, do not duplicate it; if the owner is unclear, ask once. Never create a generic notes file.
 
 ## Project Agreements
 

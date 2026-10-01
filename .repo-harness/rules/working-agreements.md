@@ -26,10 +26,12 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 - Never substitute missing evidence, stale memory, unrelated proxies, assumptions, or confidence wording. Verify before asking; if unavailable or contradictory, name the missing capability and request only the minimum evidence, criterion, authority, or decision.
 - When research cites sources, list every source that was located but not read, with a short reason such as authentication, transport failure, incomplete content, or snippet-only evidence. Never present an unread source as evidence.
 - Keep a useful link in the document that owns its subject. Do not create a separate reference list.
+- When asked to remember or note something, route it to its existing owner: a decision to `docs/repo-harness/decisions.md`, pending work to `docs/repo-harness/roadmap.md`, a working rule to this file, a personal preference to Engram when available. If it is already recorded, do not duplicate it; if the owner is unclear, ask once. Never create a generic notes file.
 
 ## Project Agreements
 
 - Work one coherent feature, blocker, issue, or named objective per session; an issue need not be a remote-provider issue. Complete its applicable documentation, verification, review, and authorized delivery before `repo-harness-session-stop`; begin adjacent work in a fresh Pi session through `repo-harness-session-start`.
+- Put temporary files in `.repo-harness/tmp/`; use the system temp only when that fails or a task needs a location outside Git.
 
 ## Budget
 
