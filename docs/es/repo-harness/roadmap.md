@@ -355,9 +355,9 @@ El esquema siguiente es histórico, no un plan ejecutable ni el alcance vigente.
 
 Preguntas humanas históricas: agregar un estado terminal de excepción e incluir autoridad del builder vinculada al digest. El diseño aprobado no agrega estados y conserva esa autoridad; la autorización separada de implementación sigue siendo la siguiente compuerta.
 
-### Plan 24: el acceso externo necesita un motivo RH-W-0075
+### Plan histórico 24: el acceso externo necesita un motivo RH-W-0075
 
-Preparacion `implementado localmente; entrega pendiente`. La implementación mínima registrada en el [diseño](rh-w-0075-design.md) reemplaza el [plan](rh-w-0075-implementation-plan.md) y los pasos siguientes, que son históricos. Prioridad `P2`, sin dependencias.
+Preparacion `completed`; se entregó mediante el PR #257. La implementación mínima registrada en el [diseño](rh-w-0075-design.md) reemplaza el [plan](rh-w-0075-implementation-plan.md) y los pasos siguientes, que son históricos. Prioridad `P2`, sin dependencias.
 
 1. Obtener primero la definicion de externo del propietario, porque decide el alcance. Las reglas duras existentes nombran rutas fuera del repositorio seleccionado; la direccion puede alcanzar tambien llamadas de red, tooling de proveedor y lecturas de repositorios hermanos.
 2. Separar las dos obligaciones que las reglas actuales colapsan: la aprobacion, que ya existe, y la justificacion, que no. Hoy una peticion que no nombra motivo cumple todas las reglas.
@@ -753,7 +753,7 @@ Origen: revision completa de solo lectura del repositorio el 2026-08-26, que enc
 
 ### RH-W-0075
 
-Actualización vigente del 2026-10-01: Estado: `active`. Implementación mínima bajo el [issue #256](https://github.com/LCubero/repo-harness-builder/issues/256): la regla dura del reglamento generado termina ahora en "Say why and what for." y los acuerdos de trabajo generados guardan los temporales en `.repo-harness/tmp/`, usando el temp del sistema solo si eso falla o una tarea necesita una ubicación fuera de Git. Se descartó el contrato de cuatro campos del plan reemplazado. Trabajo restante: entrega mediante un issue y un PR, y luego cierre del ciclo de vida. Siguiente condición: avanzar a `completed` cuando se fusione el PR de entrega.
+Actualización vigente del 2026-10-01: Estado: `completed`. Entregado mediante el [PR #257](https://github.com/LCubero/repo-harness-builder/pull/257), fusionado por squash a `main` como `188c7aa4d094d6c2b4194360ee735fb91cf51909`; revisión nativa `review-6203e300ff2e4cfa` (nivel alto, cuatro lentes) aprobada y reconocida. Implementación mínima bajo el [issue #256](https://github.com/LCubero/repo-harness-builder/issues/256): la regla dura del reglamento generado termina ahora en "Say why and what for." y los acuerdos de trabajo generados guardan los temporales en `.repo-harness/tmp/`, usando el temp del sistema solo si eso falla o una tarea necesita una ubicación fuera de Git. Se descartó el contrato de cuatro campos del plan reemplazado. Trabajo restante: `none`. Siguiente condición: alcanzada el 2026-10-01 con la fusión del PR #257.
 
 Actualizacion historica del 2026-08-29: el propietario aprobo el [diseno](rh-w-0075-design.md) y existe un [plan bilingue](rh-w-0075-implementation-plan.md) propuesto a la espera de aprobacion. Externo incluye rutas fuera de raiz, repositorios hermanos, red y tooling de proveedor. Antes de preguntar se prueba necesidad estricta y se nombran objetivo, razon, uso y consecuencia; una solucion interna suprime la peticion. Estado: `proposed`. Trabajo completado: diseno aprobado y plan bilingue propuesto. Exclusiones: sin implementacion antes de aprobar el plan y autorizarla por separado. Historial de decision: el plan existe y espera aprobacion del propietario; la implementacion sigue sin autorizar. Trabajo restante: aprobar el plan; implementar requiere autoridad separada.
 

@@ -81,7 +81,7 @@
 | [Plan RH-W-0080](rh-w-0080-implementation-plan.md) | Plan propuesto de interaccion efimera por lotes a la espera de aprobacion |
 | [Diseno RH-W-0081](rh-w-0081-design.md) | Diseno aprobado de cronologia local del host para el changelog; implementacion sigue sin autorizacion |
 | [Plan RH-W-0081](rh-w-0081-implementation-plan.md) | Plan propuesto de cronologia local a la espera de aprobacion |
-| [Diseno RH-W-0075](rh-w-0075-design.md) | Diseño aprobado de acceso externo con su implementación mínima del 2026-10-01; entrega pendiente |
+| [Diseno RH-W-0075](rh-w-0075-design.md) | Diseño completado de acceso externo con su implementación mínima; entregado mediante el PR #257 |
 | [Plan RH-W-0075](rh-w-0075-implementation-plan.md) | Plan de necesidad externa reemplazado; se conserva como historia |
 | [Hallazgos RH-W-0056](rh-w-0056-findings.md) | Propietario canonico de hallazgos y de la disposicion completada de 64 recomendaciones |
 | [Traspaso de arranque archivado](../../repo-harness/archive/repo-bootstrap-handoff.md) | Registro historico en ingles de la separacion del 2026-08-12; solo procedencia, no es politica ni plan ni fuente de trabajo pendiente |

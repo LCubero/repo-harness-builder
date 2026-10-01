@@ -1,6 +1,6 @@
 # Diseno RH-W-0075 de necesidad y justificacion externa
 
-> **Estado: diseño aprobado por el propietario, implementado en su forma mínima el 2026-10-01 (ver abajo).**
+> **Estado: diseño aprobado por el propietario, implementado en su forma mínima el 2026-10-01 (ver abajo) y entregado mediante el PR #257.**
 
 ## Decision
 

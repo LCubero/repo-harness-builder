@@ -1,6 +1,6 @@
 # RH-W-0075 External Necessity And Justification Design
 
-> **Status: owner-approved design, implemented in its minimal form on 2026-10-01 (see below).**
+> **Status: owner-approved design, implemented in its minimal form on 2026-10-01 (see below) and delivered through PR #257.**
 
 ## Decision
 

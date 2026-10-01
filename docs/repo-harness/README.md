@@ -83,7 +83,7 @@
 | [rh-w-0080-implementation-plan.md](rh-w-0080-implementation-plan.md) | Proposed ephemeral batch-interaction implementation plan awaiting owner approval |
 | [rh-w-0081-design.md](rh-w-0081-design.md) | Owner-approved host-local changelog chronology design; implementation remains unauthorized |
 | [rh-w-0081-implementation-plan.md](rh-w-0081-implementation-plan.md) | Proposed host-local chronology implementation plan awaiting owner approval |
-| [rh-w-0075-design.md](rh-w-0075-design.md) | Owner-approved external access design with its minimal 2026-10-01 implementation; delivery pending |
+| [rh-w-0075-design.md](rh-w-0075-design.md) | Completed owner-approved external access design with its minimal implementation; delivered through PR #257 |
 | [rh-w-0075-implementation-plan.md](rh-w-0075-implementation-plan.md) | Superseded external necessity implementation plan; retained as history |
 | [rh-w-0056-findings.md](rh-w-0056-findings.md) | Canonical findings and completed 64-recommendation disposition owner for the external harness review |
 | [archive/repo-bootstrap-handoff.md](archive/repo-bootstrap-handoff.md) | Archived 2026-08-12 split handoff, provenance only; not policy, not a plan, and not a source of pending work |

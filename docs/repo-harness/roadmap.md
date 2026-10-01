@@ -357,9 +357,9 @@ Historical planning outline below, not an executable plan or current scope. Its 
 
 Historical human questions: whether to add a terminal exception state and include builder digest-bound authority. The approved design adds no state and leaves that authority unchanged; separate implementation authorization remains the next gate.
 
-### Plan 24: RH-W-0075 external access needs a reason
+### Historical Plan 24: RH-W-0075 external access needs a reason
 
-Readiness `implemented locally; delivery pending`. The minimal implementation recorded in the [design](rh-w-0075-design.md) supersedes the [implementation plan](rh-w-0075-implementation-plan.md) and steps 1 to 6 below, which are historical. Priority `P2`, dependencies none.
+Readiness `completed`; delivered through PR #257. The minimal implementation recorded in the [design](rh-w-0075-design.md) supersedes the [implementation plan](rh-w-0075-implementation-plan.md) and steps 1 to 6 below, which are historical. Priority `P2`, dependencies none.
 
 1. Get the owner's definition of external first, because it decides the scope. The existing Hard Rules name paths outside the selected repository; the direction may also reach network calls, provider tooling, and reads of sibling repositories.
 2. Separate the two obligations the current rules collapse: approval, which already exists, and justification, which does not. A request that names no reason satisfies every rule today.
@@ -900,16 +900,16 @@ Historical review-correction verification: 23 directly relevant tests and the se
 | Origin | Owner direction on 2026-08-25: the workspace is the repository. The harness should avoid external access unless it is strictly necessary, and whenever it does ask, it must state why and what for. |
 | Priority | P2: the existing boundary already prevents unapproved access, so this closes a justification and frequency gap rather than a containment hole. |
 | Dependencies | None. Reuse the two existing rulebook Hard Rules as the containment owner, and `.repo-harness/rules/working-agreements.md` as the owner of when work stops to ask. Coordinate with RH-W-0074 without merging: that unit governs denials, this one governs requests. |
-| Status | active |
-| Completed work | Minimal implementation (2026-10-01) under [issue #256](https://github.com/LCubero/repo-harness-builder/issues/256): the generated rulebook hard rule now ends "Say why and what for.", and generated working agreements keep temporary files in `.repo-harness/tmp/`, using the system temp only when that fails or a task needs a location outside Git. The four-field contract in the superseded [implementation plan](rh-w-0075-implementation-plan.md) was dropped. Historical: established the baseline and recorded the owner-approved bilingual [design](rh-w-0075-design.md). |
-| Remaining work | Delivery through one issue and one PR, then lifecycle closure. |
+| Status | completed |
+| Completed work | Final outcome (2026-10-01): delivered through [PR #257](https://github.com/LCubero/repo-harness-builder/pull/257), squash-merged to `main` as `188c7aa4d094d6c2b4194360ee735fb91cf51909`; native review `review-6203e300ff2e4cfa` (high tier, four lenses) approved and acknowledged. Minimal implementation (2026-10-01) under [issue #256](https://github.com/LCubero/repo-harness-builder/issues/256): the generated rulebook hard rule now ends "Say why and what for.", and generated working agreements keep temporary files in `.repo-harness/tmp/`, using the system temp only when that fails or a task needs a location outside Git. The four-field contract in the superseded [implementation plan](rh-w-0075-implementation-plan.md) was dropped. Historical: established the baseline and recorded the owner-approved bilingual [design](rh-w-0075-design.md). |
+| Remaining work | none |
 | Additions | External means paths outside the selected repository, sibling repositories, network access, and provider tooling. Before asking, prove strict necessity; then name the target, reason, intended use, and consequence of decline. |
 | Exclusions | No weakening of the existing containment rules, no new permission system, no telemetry, no access broker, no automatic denial of an access the consumer authorizes, which belongs to RH-W-0074, and no implementation before owner approval of the proposed plan and separate implementation authorization. |
 | Deferrals | none. The four-field request contract, necessity proofs, and batch-mode coupling were superseded by the minimal implementation. |
 | Rejections | Rejected treating this as already covered, because approval and justification are different obligations. Rejected an automatic block on external access, because the consumer decides. |
 | Evidence | Verified fact: the two Hard Rules exist and neither requires a stated reason. Human decision: the exact external classes, strict necessity precondition, four-field justification, and no request when an in-repository solution exists. |
-| Decision history | 2026-08-25: registered `proposed`. 2026-08-29: the owner resolved the open definition and approved the bilingual design. A proposed bilingual implementation plan now exists and awaits owner approval; implementation remains separately unauthorized. 2026-10-01: after an agent used the system temp and listed an outside path without stating why, the owner delegated a minimal scope; it was implemented and the unit advanced to `active`. |
-| Next advancement condition | Advance to `completed` after the delivery PR merges and its evidence is recorded. |
+| Decision history | 2026-08-25: registered `proposed`. 2026-08-29: the owner resolved the open definition and approved the bilingual design. A proposed bilingual implementation plan now exists and awaits owner approval; implementation remains separately unauthorized. 2026-10-01: after an agent used the system temp and listed an outside path without stating why, the owner delegated a minimal scope; it was implemented and the unit advanced to `active`. 2026-10-01: PR #257 merged and the unit advanced to `completed`. |
+| Next advancement condition | Reached on 2026-10-01 with the PR #257 merge. |
 
 ### RH-W-0074
 

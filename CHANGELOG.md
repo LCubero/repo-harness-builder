@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-01
 
+- Delivered RH-W-0075 through [PR #257](https://github.com/LCubero/repo-harness-builder/pull/257), squash-merged to `main` as `188c7aa`; [issue #256](https://github.com/LCubero/repo-harness-builder/issues/256) closed. The generated rulebook hard rule now asks the agent to say why and what for when requesting a path outside the repository, and generated working agreements keep temporary files in `.repo-harness/tmp/`, using the system temp only when that fails or a task needs a location outside Git. The minimal implementation supersedes the proposed four-field plan; it followed an agent writing to the system temp and listing an outside path without saying why. Full suite 610 tests OK (11 skipped); checker `current`; native review `review-6203e300ff2e4cfa` approved.
+
 - Delivered RH-W-0066 through [PR #255](https://github.com/LCubero/repo-harness-builder/pull/255), squash-merged to `main` as `e3cb7fc`; [issue #254](https://github.com/LCubero/repo-harness-builder/issues/254) closed. Generated working agreements now route an explicit remember or note request to its existing owner (decisions, roadmap, working agreements, or Engram when available), forbid duplicates and a generic notes file, and ask once when the owner is unclear; standalone harnesses omit the Engram clause. The owner delegated the generated-versus-project-only decision. This repository's working agreements also keep temporary files in `.repo-harness/tmp/`. Full suite 609 tests OK (11 skipped); checker `current`; native review `review-54b905e42d5abb09` approved.
 
 ## 2026-09-30
