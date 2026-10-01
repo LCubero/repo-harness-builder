@@ -8177,6 +8177,20 @@ class RuleFileTests(unittest.TestCase):
         ):
             self.assertIn(phrase, text)
 
+    def test_working_agreements_route_remember_requests_to_their_existing_owner(self):
+        text = TOOL.render("Example", [])[".repo-harness/rules/working-agreements.md"]
+        for phrase in (
+            "When asked to remember or note something, route it to its existing owner",
+            "a decision to `docs/repo-harness/decisions.md`",
+            "pending work to `docs/repo-harness/roadmap.md`",
+            "a personal preference to Engram when available",
+            "If it is already recorded, do not duplicate it",
+            "Never create a generic notes file",
+        ):
+            self.assertIn(phrase, text)
+        standalone = TOOL.render("Example", [], standalone=True)[".repo-harness/rules/working-agreements.md"]
+        self.assertIn("a working rule to this file. If it is already recorded", standalone)
+
     def test_memory_rule_keeps_memory_subordinate_to_the_repository(self):
         text = TOOL.render("Example", [])[".repo-harness/rules/memory.md"]
         for phrase in ("repository evidence remains authoritative", "never claim successful continuity"):

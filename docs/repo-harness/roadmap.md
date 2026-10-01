@@ -238,7 +238,7 @@ Human decision: whether a reference owner file exists at all.
 
 ### Plan 15: RH-W-0066 remember and note routing design
 
-Readiness `plannable now`. Priority `P2`. Registered outside the approved order.
+Readiness `implemented locally; delivery pending`. The minimal [design](rh-w-0066-design.md) decided under owner delegation answers steps 1 to 5 below with one generated rule. Priority `P2`. Scheduled as the last item of the approved order.
 
 1. Define classification for an explicit remember or note request, preferring an existing canonical owner over any new store.
 2. Define deduplication or reinforcement when the same fact is already recorded.
@@ -246,7 +246,7 @@ Readiness `plannable now`. Priority `P2`. Registered outside the approved order.
 4. Define tracked persistence and the Engram mirror boundary, keeping Engram as continuity and never as authority.
 5. Define localized ownership and the explicit-question boundary before anything is promoted to generated builder behavior.
 
-Human decision: whether any part of this becomes generated builder behavior rather than a project-only convention.
+Resolved human decision (2026-10-01, delegated by the owner): generated builder behavior, as one rule.
 
 ### Plan 16: RH-W-0013 measured context budgets
 
@@ -1068,16 +1068,16 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Origin | Owner-approved analysis registered on 2026-08-23 for explicit requests to remember or note something, where persistence is useful but the correct durable owner depends on the meaning of the request. |
 | Priority | P2: routing a durable request to the wrong owner creates duplicate or conflicting truth, while failing to persist an appropriate request loses owner intent across sessions. |
 | Dependencies | Reuse the completed `RH-W-0050` classification baseline. Relate to `RH-W-0044` for future human-owned document suggestions without absorbing its compare-and-suggest scope. |
-| Status | proposed |
-| Completed work | Registered the semantic routing boundary only. An explicit remember or note request requires durable persistence when appropriate, but first searches for an existing canonical owner. Temporary session observations route to Engram or session output; personal preferences to personal Engram; decisions to `decisions.md`; pending work to this roadmap; research sources to thematic research or the future reference owner proposed by `RH-W-0065`; and durable project facts to their existing owner. A generic notes dumping ground is rejected. If the request could mean either project-only knowledge or generated builder behavior, promotion to the product waits for one explicit human question. |
-| Remaining work | Design classification, deduplication or reinforcement, privacy, conflict handling, tracked persistence, Engram mirror boundaries, and localized ownership before any behavior or artifact is implemented. |
+| Status | active |
+| Completed work | Minimal design (2026-10-01): one Honesty rule in generated working agreements routes an explicit remember or note request to its existing owner, forbids duplicates and a generic notes file, and asks once when the owner is unclear. Implemented locally under [issue #254](https://github.com/LCubero/repo-harness-builder/issues/254). Historical registration: registered the semantic routing boundary only. An explicit remember or note request requires durable persistence when appropriate, but first searches for an existing canonical owner. Temporary session observations route to Engram or session output; personal preferences to personal Engram; decisions to `decisions.md`; pending work to this roadmap; research sources to thematic research or the future reference owner proposed by `RH-W-0065`; and durable project facts to their existing owner. A generic notes dumping ground is rejected. If the request could mean either project-only knowledge or generated builder behavior, promotion to the product waits for one explicit human question. |
+| Remaining work | Delivery through one issue and one PR, then lifecycle closure. |
 | Additions | One future semantic routing contract for explicit remember or note requests, with durable persistence only in the smallest applicable owner. |
-| Exclusions | No generic notes file, no generated builder behavior, no product promotion without resolving ambiguous scope, no new reference file, and no duplicate lifecycle, decision, research, or memory store. Do not absorb `RH-W-0051`, `RH-W-0040`, or `RH-W-0062`. |
-| Deferrals | Exact routing mechanics, persistence schema, and generated behavior remain deferred to a future approved design. |
+| Exclusions | No generic notes file, no generated behavior beyond the one routing rule, no new reference file, and no duplicate lifecycle, decision, research, or memory store. Do not absorb `RH-W-0051`, `RH-W-0040`, or `RH-W-0062`. |
+| Deferrals | none. A persistence schema, classifier, and reinforcement or conflict machinery were rejected by the minimal design. |
 | Rejections | Rejected a generic notes dumping ground and rejected treating every remember request as product behavior. Existing canonical owners remain authoritative, and ambiguous project-only versus generated behavior requires one explicit human question. |
 | Evidence | Human decision: the owner approved this bounded lifecycle scope and immutable ID. Verified repository policy: `RH-W-0050` owns finding classification and reconciliation; `decisions.md`, this roadmap, thematic research documents, localized peers, and Engram already have distinct ownership boundaries. No implementation evidence is claimed. |
-| Decision history | 2026-08-23: registered as `proposed` from owner-approved analysis, without implementation, a design artifact, or a generic notes store. Registered outside the owner-approved 2026-08-21 execution order; scheduling remains an owner decision. |
-| Next advancement condition | Advance only after an owner-approved design defines classification, deduplication or reinforcement, privacy, conflicts, tracked persistence, Engram mirror boundaries, localized ownership, and the explicit-question boundary for possible product promotion. |
+| Decision history | 2026-08-23: registered as `proposed` from owner-approved analysis, without implementation, a design artifact, or a generic notes store. Registered outside the owner-approved 2026-08-21 execution order; scheduling remains an owner decision. Later scheduled as the last item of the approved order. 2026-10-01: the owner delegated the generated-versus-project-only decision; generated behavior as one rule was chosen and implemented, and the unit advanced to `active`. |
+| Next advancement condition | Advance to `completed` after the delivery PR merges and its evidence is recorded. Historical condition: advance only after an owner-approved design defines classification, deduplication or reinforcement, privacy, conflicts, tracked persistence, Engram mirror boundaries, localized ownership, and the explicit-question boundary for possible product promotion. |
 
 ### RH-W-0065
 | Field | Value |
