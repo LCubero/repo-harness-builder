@@ -6742,10 +6742,27 @@ resume_authority: required
             "An applicable required surface resolves `completed`",
             "A genuinely irrelevant surface resolves `not_applicable`",
             "`declined`, `pending`, `failed`, or `incomplete`",
-            "must be `paused` or `blocked`, never `completed`",
+            "the close is never `completed`",
             "declines completion without discarding verified implementation, delivery, or evidence",
             "Never write documentation before successful verification",
             "Never fabricate evidence, status, chronology, or parity",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, stop)
+
+    def test_session_stop_reports_an_accepted_decline_without_a_false_outcome(self):
+        """A decline is a decision already made. Forcing `paused` or `blocked` on it contradicted the
+        Outcome Model, which reserves both for input or prerequisites that are actually missing."""
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+
+        self.assertNotIn("must be `paused` or `blocked`", stop)
+        for phrase in (
+            "Use `paused` only for actually pending human input, `blocked` only for an actually missing prerequisite, "
+            "and `failed` for a failed operation",
+            "After one warning about the consequence, report an accepted decline as `declined`",
+            "the work unit is not completed",
+            "Do not ask again or emit an aggregate close label for it",
+            "An accepted decline with nothing pending replaces the close outcome with that scoped report",
         ):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, stop)
@@ -8203,6 +8220,16 @@ class RuleFileTests(unittest.TestCase):
                     "Put temporary files in `.repo-harness/tmp/`; use the system temp only when that fails "
                     "or a task needs a location outside Git.",
                     outputs[".repo-harness/rules/working-agreements.md"],
+                )
+
+    def test_a_human_decision_gets_one_warning_and_then_compliance(self):
+        for standalone in (False, True):
+            text = TOOL.render("Example", [], standalone=standalone)[".repo-harness/rules/working-agreements.md"]
+            with self.subTest(standalone=standalone):
+                self.assertIn(
+                    "Once the human decides, warn once about the consequence, then comply within authorized scope; "
+                    "never re-ask.",
+                    text,
                 )
 
     def test_memory_rule_keeps_memory_subordinate_to_the_repository(self):

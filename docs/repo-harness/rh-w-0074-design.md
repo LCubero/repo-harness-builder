@@ -1,6 +1,6 @@
 # RH-W-0074 Accepted Omission And Completion Design
 
-> **Status: OWNER-APPROVED DESIGN. Implementation is pending and unauthorized.**
+> **Status: owner-approved design, implemented in its minimal form on 2026-10-01 (see below).**
 
 Canonical owner: this document. [Spanish peer](../es/repo-harness/rh-w-0074-design.md). Lifecycle: [RH-W-0074](roadmap.md#rh-w-0074).
 
@@ -38,3 +38,12 @@ These are design criteria, not executed tests or proof of live-model compliance.
 If separately authorized, amend only the existing working-agreements stopping guidance and session-stop closure/output clauses, their focused contract assertions, and directly affected generated projections. Reconcile the RH-W-0068 design and durable decision summary with the approved wording in that same implementation unit. No new rulebook gate or rulebook bytes are needed.
 
 No new schema, ledger, runtime, parser, state store, automatic override, or global outcome is proposed. External access, destructive actions, provider changes, publication, and digest-bound builder authority retain their existing separate approval boundaries. RH-W-0075 retains pre-request necessity; RH-W-0068 retains closure ordering. This design neither changes the approved RH-W-0069 → RH-W-0053 → RH-W-0048 → RH-W-0052 implementation chain nor authorizes a plan, implementation, review lifecycle, or Git delivery.
+
+## Minimal Implementation (2026-10-01)
+
+The owner authorized implementation and delegated the scope under issue #258. Two generated surfaces change:
+
+1. Working agreements, Stopping: "Once the human decides, warn once about the consequence, then comply within authorized scope; never re-ask."
+2. Session-stop closure gate: a declined, pending, failed, or incomplete required reconciliation still never yields `completed`, but `paused` is used only for actually pending human input, `blocked` only for an actually missing prerequisite, and `failed` for a failed operation. An accepted decline is reported as `declined` after one warning, with the work unit stated as not completed and no aggregate close label; the Output Contract permits that scoped report.
+
+To fit the new sentence, this repository's own working agreements shed the Project Agreements clause that `usage.md` already owns. No new status, schema, or store was added.

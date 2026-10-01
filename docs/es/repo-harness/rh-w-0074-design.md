@@ -1,6 +1,6 @@
 # Diseño RH-W-0074 de omisión aceptada y finalización
 
-> **Estado: DISEÑO APROBADO POR EL PROPIETARIO. La implementación está pendiente y no autorizada.**
+> **Estado: diseño aprobado por el propietario, implementado en su forma mínima el 2026-10-01 (ver abajo).**
 
 Propietario canónico: [documento en inglés](../../repo-harness/rh-w-0074-design.md). Este es su par completo en español. Ciclo: [RH-W-0074](roadmap.md#rh-w-0074).
 
@@ -38,3 +38,12 @@ Son criterios de diseño, no pruebas ejecutadas ni evidencia de cumplimiento de 
 Si se autoriza por separado, modificar solo la guía existente de detención en working-agreements y las cláusulas de cierre/salida de session-stop, sus aserciones enfocadas de contrato y las proyecciones generadas directamente afectadas. Reconciliar el diseño RH-W-0068 y el resumen de decisiones durables con la redacción aprobada en esa misma unidad de implementación. No hacen falta una compuerta nueva ni bytes nuevos en el reglamento.
 
 No se propone esquema, registro de operaciones, runtime, parser, almacenamiento de estado, anulación automática ni resultado global nuevos. Acceso externo, acciones destructivas, cambios de proveedor, publicación y autoridad del builder vinculada al digest conservan sus límites de aprobación separados. RH-W-0075 conserva la necesidad previa a pedir acceso; RH-W-0068 conserva el orden de cierre. Este diseño no cambia la cadena aprobada RH-W-0069 → RH-W-0053 → RH-W-0048 → RH-W-0052 ni autoriza un plan, implementación, ciclo de revisión o entrega Git.
+
+## Implementación mínima (2026-10-01)
+
+El propietario autorizó la implementación y delegó el alcance bajo el issue #258. Cambian dos superficies generadas:
+
+1. Acuerdos de trabajo, sección Stopping: "Once the human decides, warn once about the consequence, then comply within authorized scope; never re-ask."
+2. Compuerta de cierre de session-stop: una reconciliación obligatoria declinada, pendiente, fallida o incompleta sigue sin dar `completed`, pero `paused` se usa solo para información humana realmente pendiente, `blocked` solo para un requisito realmente faltante y `failed` para una operación fallida. Una declinación aceptada se informa como `declined` tras una sola advertencia, indicando que la unidad de trabajo no se completó y sin etiqueta global de cierre; el contrato de salida permite ese informe acotado.
+
+Para que entre la frase nueva, los acuerdos de trabajo propios de este repositorio sueltan la cláusula de Project Agreements que ya posee `usage.md`. No se agregó ningún estado, esquema ni almacén nuevo.

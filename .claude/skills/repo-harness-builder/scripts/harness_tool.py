@@ -1800,8 +1800,8 @@ Use this exact order:
 
 - Decide applicability after verification for the roadmap or lifecycle record, current-state projection, localized peers, meaningful changelog, documentation map, and other durable documentation that owns a changed fact.
 - An applicable required surface resolves `completed`. A genuinely irrelevant surface resolves `not_applicable` with a concise reason and creates no mandatory churn.
-- If any required reconciliation is `declined`, `pending`, `failed`, or `incomplete`, the close must be `paused` or `blocked`, never `completed`.
-- A user decline declines completion without discarding verified implementation, delivery, or evidence.
+- If any required reconciliation is `declined`, `pending`, `failed`, or `incomplete`, the close is never `completed`. Use `paused` only for actually pending human input, `blocked` only for an actually missing prerequisite, and `failed` for a failed operation.
+- A user decline declines completion without discarding verified implementation, delivery, or evidence. After one warning about the consequence, report an accepted decline as `declined` and state that the work unit is not completed. Do not ask again or emit an aggregate close label for it.
 - Never write documentation before successful verification. Never fabricate evidence, status, chronology, or parity.
 
 ## Self-Update And Runtime Cache
@@ -1837,7 +1837,7 @@ Always report required continuity outcome separately from optional Git branch ou
 
 ## Output Contract
 
-Return close outcome, required continuity outcome, {output_continuity}, completed work, unresolved issues, next step, and documentation result with relevant evidence. Include classified Git state and work units only for applicable Git work, transport receipts only for attempted transport, and pending gates only when actionable. Preserve independent failures; memory failure never withholds the user-facing report. Ask at most one blocking question, on the final line.
+Return close outcome, required continuity outcome, {output_continuity}, completed work, unresolved issues, next step, and documentation result with relevant evidence. An accepted decline with nothing pending replaces the close outcome with that scoped report. Include classified Git state and work units only for applicable Git work, transport receipts only for attempted transport, and pending gates only when actionable. Preserve independent failures; memory failure never withholds the user-facing report. Ask at most one blocking question, on the final line.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 {RESPONSE_CONTRACT_REFERENCE}
 If continuity saving fails, surface it without claiming a successful memory handoff.
@@ -2092,7 +2092,7 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 ## Stopping
 
 - Stop and ask when a decision is the human's, when evidence runs out, or when the same approach failed twice. There is no retry loop here; a repeated failure is a signal, not a reason to try harder.
-- Ask one blocking question at a time, then wait. Do not stack questions or guess an answer to keep moving.
+- Ask one blocking question at a time, then wait. Do not stack questions or guess an answer to keep moving. Once the human decides, warn once about the consequence, then comply within authorized scope; never re-ask.
 - Do not continue into work nobody asked for, even when it looks adjacent and cheap.
 
 ## Honesty
