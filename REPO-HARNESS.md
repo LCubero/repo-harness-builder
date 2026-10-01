@@ -13,7 +13,7 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 <!-- doc-role:hard-rules -->
 
 - Work only inside the selected repository.
-- Ask for explicit approval before reading or modifying paths outside it.
+- Ask for explicit approval before reading or modifying paths outside it. Say why and what for.
 - Apply the smallest sufficient change.
 - Do not introduce unrelated scope.
 - Do not retry indefinitely. After repeated failure, stop with evidence and request a decision.

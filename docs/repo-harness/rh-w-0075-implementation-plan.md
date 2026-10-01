@@ -1,6 +1,6 @@
 # RH-W-0075 External Necessity And Justification Implementation Plan
 
-> **Status: proposed.** Owner approval and separate implementation authorization are required. The record remains `proposed`.
+> **Status: superseded on 2026-10-01** by the minimal implementation recorded in the [design](rh-w-0075-design.md#minimal-implementation-2026-10-01). Retained as history.
 
 Derived from the owner-approved [design](rh-w-0075-design.md). Spanish peer: [rh-w-0075-implementation-plan.md](../es/repo-harness/rh-w-0075-implementation-plan.md).
 

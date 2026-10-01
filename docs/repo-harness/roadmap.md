@@ -359,7 +359,7 @@ Historical human questions: whether to add a terminal exception state and includ
 
 ### Plan 24: RH-W-0075 external access needs a reason
 
-Readiness `plan written; awaiting owner approval`. Priority `P2`, dependencies none. The owner-approved [design](rh-w-0075-design.md) and proposed bilingual [implementation plan](rh-w-0075-implementation-plan.md) exist. Implementation remains separately unauthorized.
+Readiness `implemented locally; delivery pending`. The minimal implementation recorded in the [design](rh-w-0075-design.md) supersedes the [implementation plan](rh-w-0075-implementation-plan.md) and steps 1 to 6 below, which are historical. Priority `P2`, dependencies none.
 
 1. Get the owner's definition of external first, because it decides the scope. The existing Hard Rules name paths outside the selected repository; the direction may also reach network calls, provider tooling, and reads of sibling repositories.
 2. Separate the two obligations the current rules collapse: approval, which already exists, and justification, which does not. A request that names no reason satisfies every rule today.
@@ -368,7 +368,7 @@ Readiness `plan written; awaiting owner approval`. Priority `P2`, dependencies n
 5. Place both with the existing owners rather than creating a third: containment stays in the rulebook Hard Rules, and the asking discipline belongs in `.repo-harness/rules/working-agreements.md`, which the rulebook gate row already routes to. Add no rulebook bytes while RH-W-0073 is open.
 6. Name the RED tests, including one proving a bare unjustified request fails the contract, and one proving an authorized external access still proceeds, because this unit constrains the harness and never the consumer.
 
-Human decision: approve or correct the implementation plan. Implementation requires separate authorization.
+Resolved human decision (2026-10-01, delegated by the owner): minimal implementation; the plan is superseded.
 
 ### Plan 25: RH-W-0076 unenforced declared limits on product surfaces
 
@@ -900,16 +900,16 @@ Historical review-correction verification: 23 directly relevant tests and the se
 | Origin | Owner direction on 2026-08-25: the workspace is the repository. The harness should avoid external access unless it is strictly necessary, and whenever it does ask, it must state why and what for. |
 | Priority | P2: the existing boundary already prevents unapproved access, so this closes a justification and frequency gap rather than a containment hole. |
 | Dependencies | None. Reuse the two existing rulebook Hard Rules as the containment owner, and `.repo-harness/rules/working-agreements.md` as the owner of when work stops to ask. Coordinate with RH-W-0074 without merging: that unit governs denials, this one governs requests. |
-| Status | proposed |
-| Completed work | Established the baseline, recorded the owner-approved bilingual [design](rh-w-0075-design.md), and wrote the proposed bilingual [implementation plan](rh-w-0075-implementation-plan.md). Current rules still lack the necessity and four-field request contract until implementation is separately authorized. |
-| Remaining work | Owner review of the proposed bilingual [implementation plan](rh-w-0075-implementation-plan.md). Implementation requires separate authorization. |
+| Status | active |
+| Completed work | Minimal implementation (2026-10-01) under [issue #256](https://github.com/LCubero/repo-harness-builder/issues/256): the generated rulebook hard rule now ends "Say why and what for.", and generated working agreements keep temporary files in `.repo-harness/tmp/`, using the system temp only when that fails or a task needs a location outside Git. The four-field contract in the superseded [implementation plan](rh-w-0075-implementation-plan.md) was dropped. Historical: established the baseline and recorded the owner-approved bilingual [design](rh-w-0075-design.md). |
+| Remaining work | Delivery through one issue and one PR, then lifecycle closure. |
 | Additions | External means paths outside the selected repository, sibling repositories, network access, and provider tooling. Before asking, prove strict necessity; then name the target, reason, intended use, and consequence of decline. |
 | Exclusions | No weakening of the existing containment rules, no new permission system, no telemetry, no access broker, no automatic denial of an access the consumer authorizes, which belongs to RH-W-0074, and no implementation before owner approval of the proposed plan and separate implementation authorization. |
-| Deferrals | Implementation waits for owner approval of the written plan and separate implementation authorization. |
+| Deferrals | none. The four-field request contract, necessity proofs, and batch-mode coupling were superseded by the minimal implementation. |
 | Rejections | Rejected treating this as already covered, because approval and justification are different obligations. Rejected an automatic block on external access, because the consumer decides. |
 | Evidence | Verified fact: the two Hard Rules exist and neither requires a stated reason. Human decision: the exact external classes, strict necessity precondition, four-field justification, and no request when an in-repository solution exists. |
-| Decision history | 2026-08-25: registered `proposed`. 2026-08-29: the owner resolved the open definition and approved the bilingual design. A proposed bilingual implementation plan now exists and awaits owner approval; implementation remains separately unauthorized. |
-| Next advancement condition | Advance only after owner approval of the implementation plan; implementation still requires separate authorization. |
+| Decision history | 2026-08-25: registered `proposed`. 2026-08-29: the owner resolved the open definition and approved the bilingual design. A proposed bilingual implementation plan now exists and awaits owner approval; implementation remains separately unauthorized. 2026-10-01: after an agent used the system temp and listed an outside path without stating why, the owner delegated a minimal scope; it was implemented and the unit advanced to `active`. |
+| Next advancement condition | Advance to `completed` after the delivery PR merges and its evidence is recorded. |
 
 ### RH-W-0074
 

@@ -1,6 +1,6 @@
 # RH-W-0075 External Necessity And Justification Design
 
-> **Status: OWNER-APPROVED DESIGN. Implementation is separately unauthorized.**
+> **Status: owner-approved design, implemented in its minimal form on 2026-10-01 (see below).**
 
 ## Decision
 
@@ -18,3 +18,12 @@ If strict necessity is proven, one request states the exact target, why it is ne
 ## Later Verification Targets
 
 The proposed [implementation plan](rh-w-0075-implementation-plan.md) covers every external class, strict necessity evidence, the four required request fields, no request for repository-local solutions, decline behavior, and unchanged approval gates. It awaits owner approval and authorizes no implementation.
+
+## Minimal Implementation (2026-10-01)
+
+On 2026-10-01 an agent wrote to the system temp by habit, which on Windows is outside the repository, and listed an outside path without saying why, although `.repo-harness/tmp/` was available. The owner delegated the scope. Two generated lines answer the original direction ("stay in the repository; when asking, say why and what for"):
+
+1. The rulebook hard rule becomes: "Ask for explicit approval before reading or modifying paths outside it. Say why and what for."
+2. Generated working agreements add: "Put temporary files in `.repo-harness/tmp/`; use the system temp only when that fails or a task needs a location outside Git."
+
+The four-field request contract, necessity proofs, and batch-mode coupling in the proposed implementation plan are superseded: they add process without a present failure they would catch. RH-W-0074 stays separate.
