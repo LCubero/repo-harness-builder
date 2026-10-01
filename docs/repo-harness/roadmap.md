@@ -41,7 +41,7 @@ Consent and comparison follow, unchanged:
 
 9. `RH-W-0046` is completed as the historical fetch-consent implementation; its joint design boundary remains separate from `RH-W-0018`, which stays deferred until its own condition is met.
 10. `RH-W-0044` is completed and delivered under the owner's conservative ambiguity decision through merged PR #236; the README selector remains separate. The 2026-09-25 partial preview was a historical snapshot.
-11. Continue with `RH-W-0022`.
+11. `RH-W-0022` is completed and delivered to `main` as `cd00671`.
 
 Onboarding closes the approved path:
 
@@ -180,7 +180,7 @@ Resolved decision: no unproven literal suggestions for ambiguous eligible famili
 
 ### Plan 8: RH-W-0022 declared documentation relationships design
 
-Readiness `design owner-approved; implementation plan owner-approved`. Priority `P2`. The bilingual [design](rh-w-0022-design.md) owns the contract; the bilingual [implementation plan](rh-w-0022-implementation-plan.md) is drafted under planning-only authority. Implementation is locally verified and not delivered.
+Readiness `design owner-approved; implementation plan owner-approved`. Priority `P2`. The bilingual [design](rh-w-0022-design.md) owns the contract; the bilingual [implementation plan](rh-w-0022-implementation-plan.md) is drafted under planning-only authority. Implementation is completed and delivered as `cd00671`.
 
 1. Define the smallest declared-edge format, rejecting inference from link graphs or filename patterns.
 2. Decide the single owner file for the declared map and keep it small enough to maintain by hand.
@@ -188,7 +188,7 @@ Readiness `design owner-approved; implementation plan owner-approved`. Priority 
 4. Keep the exclusions intact: no code-symbol graph, no call-path analysis, no dependency engine, no daemon, no scheduler, no external service, and no new runtime dependency beyond the Python standard library.
 5. Name the RED tests, ideally reproducing a real past drift.
 
-Resolved technical decisions: exact three-field JSON edges in one preserved `.repo-harness/document-relationships.json`; only `localized-peer` and `lifecycle-projection`; exact `relationship-unsatisfied` checker entries. Human decision recorded: the owner directly reviewed and technically approved the design; that approval alone did not authorize implementation planning or implementation. Later separate planning-only authorization produced the now owner-approved implementation plan; implementation was authorized on 2026-09-30 and is locally verified, not delivered.
+Resolved technical decisions: exact three-field JSON edges in one preserved `.repo-harness/document-relationships.json`; only `localized-peer` and `lifecycle-projection`; exact `relationship-unsatisfied` checker entries. Human decision recorded: the owner directly reviewed and technically approved the design; that approval alone did not authorize implementation planning or implementation. Later separate planning-only authorization produced the now owner-approved implementation plan; implementation was authorized on 2026-09-30 and delivered as `cd00671`.
 
 ### Plan 9: RH-W-0055 installation and onboarding design
 
@@ -1850,9 +1850,9 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Origin | User-requested capability: a documentation relationship map so an agent can see what a change affects before making it |
 | Priority | P2: reconciliation is currently carried by human attention and prose rules, which is the failure mode this repository keeps hitting |
 | Dependencies | Design approval on scope, because an unbounded version of this becomes a graph engine the harness must not own |
-| Status | proposed |
-| Completed work | Recorded the request and concrete drift evidence. The owner-approved bilingual [design](rh-w-0022-design.md) defines the bounded contract; the bilingual [implementation plan](rh-w-0022-implementation-plan.md) was drafted under planning-only authority and is now owner-approved. On 2026-09-27, documentation-only cherry-picks `bc91e497706e37a133c8e1d15084cd2979381c83` then `ba4dc4c668f87c286dd2e8c97d203bda3ffca893` delivered that plan directly to `main` under the owner's direct-main exception; `origin/main` matched `ba4dc4c` at 0 behind/0 ahead after push, without a PR. Later, the documentation-only reconciliation was delivered through PR #235, squash-merged as `fffb4b03ac82f87997b29e313e348085fc886852` at 2026-09-27T16:17:17Z; issue #234 closed. Neither delivery authorized product implementation. On 2026-09-30, the owner authorized implementation; it is implemented and locally verified on branch `feat/rh-w-0022-document-relationships`, committed locally and not delivered: canonical script and tests, synchronized `.claude/`, `.opencode/`, and `.pi/` projections, a maintenance apply of plan `845f3d8b5dfe8cc1ac876322320fd8cd936db69938630ece60e6081e65da8a87` that seeded `.repo-harness/document-relationships.json` (12 edges) and regenerated `.repo-harness/check.py`, full suite 606 tests OK (11 skipped), checker `current` with zero writes, and approved native reviews `review-e81442d7dee7c57a` and `review-50bcca380a0abe08` with nonblocking warnings. |
-| Remaining work | Commit, review of the delivery route, and delivery under repository policy. Nonblocking follow-ups: link titles and unknown status values in lifecycle claims, and the stale `CONTRIBUTING.es.md` peer. |
+| Status | completed |
+| Completed work | Recorded the request and concrete drift evidence. The owner-approved bilingual [design](rh-w-0022-design.md) defines the bounded contract; the bilingual [implementation plan](rh-w-0022-implementation-plan.md) was drafted under planning-only authority and is now owner-approved. On 2026-09-27, documentation-only cherry-picks `bc91e497706e37a133c8e1d15084cd2979381c83` then `ba4dc4c668f87c286dd2e8c97d203bda3ffca893` delivered that plan directly to `main` under the owner's direct-main exception; `origin/main` matched `ba4dc4c` at 0 behind/0 ahead after push, without a PR. Later, the documentation-only reconciliation was delivered through PR #235, squash-merged as `fffb4b03ac82f87997b29e313e348085fc886852` at 2026-09-27T16:17:17Z; issue #234 closed. Neither delivery authorized product implementation. On 2026-09-30, the owner authorized implementation; it is implemented and locally verified on branch `feat/rh-w-0022-document-relationships`, committed locally: canonical script and tests, synchronized `.claude/`, `.opencode/`, and `.pi/` projections, a maintenance apply of plan `845f3d8b5dfe8cc1ac876322320fd8cd936db69938630ece60e6081e65da8a87` that seeded `.repo-harness/document-relationships.json` (12 edges) and regenerated `.repo-harness/check.py`, full suite 606 tests OK (11 skipped), checker `current` with zero writes, and approved native reviews `review-e81442d7dee7c57a` and `review-50bcca380a0abe08` with nonblocking warnings. Delivered on 2026-09-30 by fast-forwarding `main` from `b7656279fb232b107a2fcc27ed46d8364bebcb4a` to `cd00671` under the owner's direct-main exception for this private single-owner repository, without issue or PR. Nonblocking follow-ups remain separate later work: link titles and unknown status values in lifecycle claims, and the stale `CONTRIBUTING.es.md` peer. |
+| Remaining work | none |
 | Additions | Make document relationships declared and machine-checked, so touching a canonical owner reports the peers, projections, and mirrors that must move in the same work unit. |
 | Exclusions | No code-symbol graph, no call-path analysis, and no dependency engine. CodeGraph already owns code structure and is ignored at the repository root by design. This unit covers documentation relationships only. No daemon, no scheduler, no external service, no new runtime dependency, and no change to the Python 3.10+ standard-library-only constraint. |
 | Deferrals | none |

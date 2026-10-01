@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-09-30
+
+- Delivered RH-W-0022 declared documentation relationships to `main` as `cd00671` by fast-forward under the owner's direct-main exception, without issue or PR. The read-only checker now validates explicit `localized-peer` and `lifecycle-projection` edges in `.repo-harness/document-relationships.json` (12 seeded edges) with zero writes. It immediately surfaced and fixed real drift: RH-W-0052 projected as `proposed` instead of `deferred`, and three Spanish peers without a canonical-owner link. Full suite 606 tests OK (11 skipped); checker `current`; native reviews `review-e81442d7dee7c57a` and `review-50bcca380a0abe08` approved.
+
 ## 2026-09-29
 
 - Delivered RH-W-0044 through [PR #236](https://github.com/LCubero/repo-harness-builder/pull/236), merged to `main` with merge commit `5dce041fae2e4bd40ed61f0a54185df2b9f0357d` at 2026-09-29T00:32:02Z; [issue #228](https://github.com/LCubero/repo-harness-builder/issues/228) closed at 00:32:03Z. Child PRs #237–243 merged. The conservative ambiguity boundary and separate README selector remain unchanged. Earlier final-tree verification ran 596 tests with 10 skipped under a process-local Git ceiling and checker `current` with zero writes; no post-documentation full-suite rerun or release is claimed.

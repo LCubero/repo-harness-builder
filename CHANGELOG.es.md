@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-09-30
+
+- Se entregaron las relaciones declaradas de documentación RH-W-0022 a `main` como `cd00671` por fast-forward bajo la excepción directa a `main` del propietario, sin issue ni PR. El checker de solo lectura valida ahora aristas explícitas `localized-peer` y `lifecycle-projection` en `.repo-harness/document-relationships.json` (12 aristas sembradas) sin escrituras. De inmediato detectó y se corrigió deriva real: RH-W-0052 proyectado como `proposed` en vez de `deferred` y tres pares en español sin enlace a su propietario canónico. Suite completa de 606 pruebas OK (11 omitidas); checker `current`; revisiones nativas `review-e81442d7dee7c57a` y `review-50bcca380a0abe08` aprobadas.
+
 ## 2026-09-29
 
 - Se entregó RH-W-0044 mediante el [PR #236](https://github.com/LCubero/repo-harness-builder/pull/236), fusionado a `main` mediante el commit de fusión `5dce041fae2e4bd40ed61f0a54185df2b9f0357d` a las 2026-09-29T00:32:02Z; el [issue #228](https://github.com/LCubero/repo-harness-builder/issues/228) se cerró a las 00:32:03Z. Se fusionaron los PR hijos #237–243. El límite conservador para la ambigüedad y el selector README separado no cambian. La verificación anterior del árbol final ejecutó 596 pruebas con 10 omitidas bajo un límite Git local al proceso y checker `current` con cero escrituras; no se afirma repetir la suite completa después de este cambio documental ni un release.
