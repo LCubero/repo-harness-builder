@@ -46,7 +46,7 @@ Consent and comparison follow, unchanged:
 Onboarding closes the approved path:
 
 12. `RH-W-0055` is completed and delivered through PR #249, squash-merged as `b2f9aba`.
-13. Continue with `RH-W-0060`.
+13. `RH-W-0060` is completed and delivered through PR #251, squash-merged as `b065d5a`.
 14. Then `RH-W-0065`.
 15. Then `RH-W-0066`.
 
@@ -209,9 +209,9 @@ Readiness `rejected without implementation`. Priority `P3`, prerequisite RH-W-00
 
 Resolved human decision: reject the separate mechanism. Remaining work is `none`.
 
-### Plan 12: RH-W-0060 repository state reporting design
+### Historical Plan 12: RH-W-0060 repository state reporting design
 
-Readiness `implemented locally; delivery pending`. Priority `P3`, dependencies none. Registered outside the approved order. On 2026-09-30 the owner approved the short bilingual [implementation plan](rh-w-0060-implementation-plan.md) and delegated implementation.
+Readiness `completed`; delivered through PR #251, and the steps below are historical. Priority `P3`, dependencies none. Registered outside the approved order. On 2026-09-30 the owner approved the short bilingual [implementation plan](rh-w-0060-implementation-plan.md) and delegated implementation.
 
 1. For finding `C11`, specify a conditional comparison of the applicable index blob or Git path-aware cleaned worktree view with the committed blob before reporting a tracked path as content-modified.
 2. Name exactly four future RED behaviors: EOL-only not content-modified, substantive remains modified, differing index blob modified, and insufficient evidence unknown.
@@ -1170,16 +1170,16 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Origin | Extracted from the `RH-W-0059` design review on 2026-08-22. Two findings of the `RH-W-0056` external harness review are real here but are not transport, and they were travelling on a `P1` unit's urgency. |
 | Priority | P3: C11 can make tracked-content classification misleading when normalization explains the observed bytes. |
 | Dependencies | none |
-| Status | active |
-| Completed work | Verified C11 against this repository rather than importing it. `core.autocrlf` is `true` in this clone while `.gitattributes` pins `eol=lf` for every byte-compared generated path, so the configuration that can fake a content change is present here. Wrote the bilingual [design](rh-w-0060-design.md), reduced it to C11, and recorded owner approval. Closed C12 with no generated residue because branch enumeration belongs only to an explicitly requested branch review; existing session-start branch and upstream reporting remains unchanged. |
-| Remaining work | Delivery through one issue and one PR, then lifecycle closure. Implemented locally under the owner-approved [implementation plan](rh-w-0060-implementation-plan.md): one session-stop sentence uses `git diff --quiet HEAD -- <path>` and `git diff --cached --quiet HEAD -- <path>` to separate EOL/filter-only paths from content changes, with `unknown` for missing evidence. RED: the new session-stop test failed before the change; GREEN: 13 session-stop tests pass; maintenance plan `69a51b66` replaced exactly the 10 expected generated outputs; builder projections are byte-identical to the canonical source; checker `current` with zero writes. |
+| Status | completed |
+| Completed work | Verified C11 against this repository rather than importing it. `core.autocrlf` is `true` in this clone while `.gitattributes` pins `eol=lf` for every byte-compared generated path, so the configuration that can fake a content change is present here. Wrote the bilingual [design](rh-w-0060-design.md), reduced it to C11, and recorded owner approval. Closed C12 with no generated residue because branch enumeration belongs only to an explicitly requested branch review; existing session-start branch and upstream reporting remains unchanged. Implemented locally under the owner-approved [implementation plan](rh-w-0060-implementation-plan.md): one session-stop sentence uses `git diff --quiet HEAD -- <path>` and `git diff --cached --quiet HEAD -- <path>` to separate EOL/filter-only paths from content changes, with `unknown` for missing evidence. RED: the new session-stop test failed before the change; GREEN: 13 session-stop tests pass; maintenance plan `69a51b66` replaced exactly the 10 expected generated outputs; builder projections are byte-identical to the canonical source; checker `current` with zero writes. Delivered through [issue #250](https://github.com/LCubero/repo-harness-builder/issues/250) and [PR #251](https://github.com/LCubero/repo-harness-builder/pull/251), squash-merged to `main` as `b065d5a2eab375c124298e8d9195d0739bc35bbf`; native review `review-4e8c3b6f9e774f17` (high tier, four lenses) approved and acknowledged, with three non-blocking warnings: two current-state wording issues fixed at closure, and one mode-only edge case (a mode-only change also makes `git diff` exit 1) left as possible separate work. |
+| Remaining work | none |
 | Additions | A conditional committed-blob comparison before reporting a tracked path as content-modified in generated session-stop. |
 | Exclusions | No branch deletion, no automatic cleanup, no change to the transport contract that `RH-W-0059` owns, no change to the `.gitattributes` derivation that `RH-W-0029` owns, and no change to the conflict detection that `RH-W-0042` owns. |
 | Deferrals | none |
 | Rejections | Rejected keeping these inside `RH-W-0059`. A `P1` transport defect and two `P3` reporting gaps do not share a delivery boundary, and bundling them would have let the slower work set the pace of the urgent fix. |
 | Evidence | Verified: `core.autocrlf` is `true` locally and `.gitattributes` pins `eol=lf`, so the `C11` configuration is present. Verified: `RH-W-0029` derives the attribute rules and `RH-W-0042` fixed the conflict-detection half, so only the reporting half of C11 remains. Human decisions: C12 is closed with no generated residue, and the owner approved the C11-only design. |
-| Decision history | 2026-08-22: registered as proposed, extracted from the `RH-W-0059` design review that cut that unit from eight clauses to four. The same review withdrew finding `C10`, the bare local date, as a verified non-defect here and it is deliberately not carried into this unit. Registered outside the owner-approved 2026-08-21 execution order; its scheduling remains an owner decision. 2026-09-07: the owner authorized writing the minimal bilingual design without approval, implementation planning, implementation, or lifecycle advancement; the owner then reduced it to C11 only, closed C12 with no generated residue, and explicitly approved the reduced design with `dale`. 2026-09-30: owner authorized implementation planning; the plan was written, approved, and implementation delegated; the unit advanced to `active`. |
-| Next advancement condition | Advance to `completed` after the delivery PR merges and its evidence is recorded. |
+| Decision history | 2026-08-22: registered as proposed, extracted from the `RH-W-0059` design review that cut that unit from eight clauses to four. The same review withdrew finding `C10`, the bare local date, as a verified non-defect here and it is deliberately not carried into this unit. Registered outside the owner-approved 2026-08-21 execution order; its scheduling remains an owner decision. 2026-09-07: the owner authorized writing the minimal bilingual design without approval, implementation planning, implementation, or lifecycle advancement; the owner then reduced it to C11 only, closed C12 with no generated residue, and explicitly approved the reduced design with `dale`. 2026-09-30: owner authorized implementation planning; the plan was written, approved, and implementation delegated; the unit advanced to `active`. 2026-09-30: PR #251 merged and the unit advanced to `completed`. |
+| Next advancement condition | Reached on 2026-09-30 with the PR #251 merge. |
 
 ### RH-W-0059
 | Field | Value |

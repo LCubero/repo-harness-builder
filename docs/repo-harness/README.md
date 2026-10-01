@@ -49,8 +49,8 @@
 | [rh-w-0055-design.md](rh-w-0055-design.md) | Completed owner-approved installation and onboarding design; delivered through PR #249 |
 | [rh-w-0055-implementation-plan.md](rh-w-0055-implementation-plan.md) | Completed short documentation-only installation plan; delivered through PR #249 |
 | [rh-w-0059-design.md](rh-w-0059-design.md) | Completed owner-approved non-interactive transport design; delivered test-first with historical design body retained |
-| [rh-w-0060-design.md](rh-w-0060-design.md) | Owner-approved proposed C11 tracked-content classification design; C12 is closed with no generated residue; implemented locally, delivery pending |
-| [rh-w-0060-implementation-plan.md](rh-w-0060-implementation-plan.md) | Owner-approved short C11 session-stop clause plan; implemented locally, delivery pending |
+| [rh-w-0060-design.md](rh-w-0060-design.md) | Owner-approved proposed C11 tracked-content classification design; C12 is closed with no generated residue; delivered through PR #251 |
+| [rh-w-0060-implementation-plan.md](rh-w-0060-implementation-plan.md) | Completed short C11 session-stop clause plan; delivered through PR #251 |
 | [rh-w-0057-design.md](rh-w-0057-design.md) | Completed owner-approved canonical command and wrapper coverage design; historical design body retained |
 | [rh-w-0013-design.md](rh-w-0013-design.md) | Canonical minimal design for removing two runtime context-budget blockers |
 | [rh-w-0013-implementation-plan.md](rh-w-0013-implementation-plan.md) | Canonical two-task implementation plan for the RH-W-0013 blockers |
