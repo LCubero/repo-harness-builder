@@ -4,6 +4,8 @@
 
 ## 2026-09-30
 
+- Se entregó RH-W-0055 mediante el [PR #249](https://github.com/LCubero/repo-harness-builder/pull/249), fusionado por squash a `main` como `b2f9aba`; se cerró el [issue #248](https://github.com/LCubero/repo-harness-builder/issues/248). El inicio rápido del README enlaza ahora una subsección `Instalar el constructor` (EN/ES) con `ARTIFACT_ROOT`, comprobación de forma del artefacto, tabla de destinos por runtime y un bloque POSIX de copia por runtime que se niega ante destinos ocupados. Los bloques se ejecutaron literalmente contra un destino temporal ignorado para Claude Code, OpenCode y Pi; suite completa de 606 pruebas OK (11 omitidas); checker `current`; revisión nativa `review-29731af97ce05030` aprobada. En la misma unidad se corrigió el conteo obsoleto del portafolio (67 en vez de 68 `completed`).
+
 - Se entregaron las relaciones declaradas de documentación RH-W-0022 a `main` como `cd00671` por fast-forward bajo la excepción directa a `main` del propietario, sin PR; el [issue #245](https://github.com/LCubero/repo-harness-builder/issues/245) lo registra. El checker de solo lectura valida ahora aristas explícitas `localized-peer` y `lifecycle-projection` en `.repo-harness/document-relationships.json` (12 aristas sembradas) sin escrituras. De inmediato detectó y se corrigió deriva real: RH-W-0052 proyectado como `proposed` en vez de `deferred` y tres pares en español sin enlace a su propietario canónico. Suite completa de 606 pruebas OK (11 omitidas); checker `current`; revisiones nativas `review-e81442d7dee7c57a` y `review-50bcca380a0abe08` aprobadas.
 
 ## 2026-09-29

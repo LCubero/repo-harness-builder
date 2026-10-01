@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-09-30
 
+- Delivered RH-W-0055 through [PR #249](https://github.com/LCubero/repo-harness-builder/pull/249), squash-merged to `main` as `b2f9aba`; [issue #248](https://github.com/LCubero/repo-harness-builder/issues/248) closed. README Quick Start now links to an `Install The Builder` subsection (EN/ES) with `ARTIFACT_ROOT`, an artifact shape check, the runtime destination table, and one POSIX copy block per runtime that refuses occupied destinations. The blocks were run literally against an ignored scratch target for Claude Code, OpenCode, and Pi; full suite 606 tests OK (11 skipped); checker `current`; native review `review-29731af97ce05030` approved. The stale portfolio count (67 instead of 68 `completed`) was corrected in the same unit.
+
 - Delivered RH-W-0022 declared documentation relationships to `main` as `cd00671` by fast-forward under the owner's direct-main exception, without a PR; [issue #245](https://github.com/LCubero/repo-harness-builder/issues/245) records it. The read-only checker now validates explicit `localized-peer` and `lifecycle-projection` edges in `.repo-harness/document-relationships.json` (12 seeded edges) with zero writes. It immediately surfaced and fixed real drift: RH-W-0052 projected as `proposed` instead of `deferred`, and three Spanish peers without a canonical-owner link. Full suite 606 tests OK (11 skipped); checker `current`; native reviews `review-e81442d7dee7c57a` and `review-50bcca380a0abe08` approved.
 
 ## 2026-09-29

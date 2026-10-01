@@ -45,7 +45,7 @@ Consent and comparison follow, unchanged:
 
 Onboarding closes the approved path:
 
-12. Continue with `RH-W-0055`.
+12. `RH-W-0055` is completed and delivered through PR #249, squash-merged as `b2f9aba`.
 13. Continue with `RH-W-0060`.
 14. Then `RH-W-0065`.
 15. Then `RH-W-0066`.
@@ -190,9 +190,9 @@ Readiness `design owner-approved; implementation plan owner-approved`. Priority 
 
 Resolved technical decisions: exact three-field JSON edges in one preserved `.repo-harness/document-relationships.json`; only `localized-peer` and `lifecycle-projection`; exact `relationship-unsatisfied` checker entries. Human decision recorded: the owner directly reviewed and technically approved the design; that approval alone did not authorize implementation planning or implementation. Later separate planning-only authorization produced the now owner-approved implementation plan; implementation was authorized on 2026-09-30 and delivered as `cd00671`.
 
-### Plan 9: RH-W-0055 installation and onboarding design
+### Historical Plan 9: RH-W-0055 installation and onboarding design
 
-Readiness `implemented locally; delivery pending`. Priority `P2`. The owner approved the reduced bilingual [onboarding design](rh-w-0055-design.md) and on 2026-09-30 approved the short bilingual [implementation plan](rh-w-0055-implementation-plan.md) and delegated implementation; RH-W-0055 is `active` until delivery.
+Readiness `completed`. Priority `P2`. The owner approved the reduced bilingual [onboarding design](rh-w-0055-design.md) and on 2026-09-30 approved the short bilingual [implementation plan](rh-w-0055-implementation-plan.md) and delegated implementation; RH-W-0055 was delivered through PR #249. The steps below are historical.
 
 1. Name the supported installation sources and prerequisites.
 2. Write the exact per-runtime copy/paste commands for `claude-code`, `opencode`, and `pi`.
@@ -1255,16 +1255,16 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Origin | Owner note requesting copy/paste installation guidance for Claude Code, OpenCode, and Pi, connected to builder invocation and daily session use. |
 | Priority | P2: installation is possible from a release package, but the repository does not provide one coherent consumer path from artifact selection through daily operation. |
 | Dependencies | Completed `RH-W-0050` for evidence classification. RH-W-0062 is completed with no residue. |
-| Status | active |
+| Status | completed |
 | Completed work | Grouped copy/paste installation and install-to-builder-to-session guidance into one bounded lifecycle unit. The owner approved the reduced bilingual [design](rh-w-0055-design.md): one shared artifact-name-agnostic local path through `ARTIFACT_ROOT`, exact runtime destinations, additive copy safety, existing builder/checker/daily-use links, and offline/failure boundaries. The owner approved the short bilingual documentation-only [implementation plan](rh-w-0055-implementation-plan.md). The `Install The Builder` subsection in `README.md` and `README.es.md` is implemented and verified locally: each runtime block, run from the README text against an ignored scratch target, produced byte-identical package and entry copies, refused on a second run, and the shape check rejected an invalid artifact; EN/ES blocks are identical; the checker reports `current` with zero writes; the canonical suite passes 606 tests with 11 skips. |
-| Remaining work | Delivery through one issue and one PR, then lifecycle closure. |
+| Remaining work | none. Delivered through [issue #248](https://github.com/LCubero/repo-harness-builder/issues/248) and [PR #249](https://github.com/LCubero/repo-harness-builder/pull/249), squash-merged to `main` as `b2f9aba3c659b76b1215612843a55bc515352a43`; native review `review-29731af97ce05030` approved (low risk) and acknowledged. |
 | Additions | One concise artifact-name-agnostic onboarding path for each supported runtime. |
 | Exclusions | No release publication, network action, package rename, generated behavior, or claim that a future asset already exists. |
 | Deferrals | Publication, archive naming, and URLs remain outside this design. |
 | Rejections | Rejected scattering installation snippets across unrelated documents or documenting only package extraction without the operational next steps. |
 | Evidence | Verified: the supported runtime set includes Claude Code, OpenCode, and Pi, and the source artifact exposes the required package and command roots. Supported inference: no embedded identifier can authenticate copied bytes independently; only a digest retained through a trusted separate channel adds offline evidence. A separately signed, independently verifiable identity would be new evidence. |
-| Decision history | 2026-08-21: registered as proposed from the consolidated portfolio audit; no release or implementation was approved. 2026-09-06: owner authorized creation of the minimal bilingual design. 2026-09-06: owner explicitly approved the reduced bilingual design; status remains `proposed`, and implementation planning, implementation, publication, and network access remain unauthorized. 2026-09-30: owner authorized implementation planning; the bilingual plan was written, then approved by the owner, who delegated implementation; the unit advanced to `active`. |
-| Next advancement condition | Advance to `completed` after the delivery PR merges and its evidence is recorded. |
+| Decision history | 2026-08-21: registered as proposed from the consolidated portfolio audit; no release or implementation was approved. 2026-09-06: owner authorized creation of the minimal bilingual design. 2026-09-06: owner explicitly approved the reduced bilingual design; status remains `proposed`, and implementation planning, implementation, publication, and network access remain unauthorized. 2026-09-30: owner authorized implementation planning; the bilingual plan was written, then approved by the owner, who delegated implementation; the unit advanced to `active`. 2026-09-30: PR #249 merged with owner approval and the unit advanced to `completed`. |
+| Next advancement condition | Reached on 2026-09-30 with the PR #249 merge. |
 
 ### RH-W-0054
 | Field | Value |
