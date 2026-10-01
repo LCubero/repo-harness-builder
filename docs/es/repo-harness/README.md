@@ -48,6 +48,7 @@
 | [Plan de implementación RH-W-0055](rh-w-0055-implementation-plan.md) | Plan corto de instalación completado, solo de documentación; entregado mediante el PR #249 |
 | [Diseno RH-W-0059](rh-w-0059-design.md) | Diseno completado de transporte no interactivo aprobado por el propietario; entregado con pruebas primero y con el cuerpo historico conservado |
 | [Diseño RH-W-0060](rh-w-0060-design.md) | Diseño propuesto de clasificación de contenido rastreado C11 aprobado por el propietario; C12 está cerrado sin residuo generado; entregado mediante el PR #251 |
+| [Diseño RH-W-0065](rh-w-0065-design.md) | Diseño mínimo aprobado de reglas de evidencia de investigación y enlaces; implementado localmente, entrega pendiente |
 | [Plan de implementación RH-W-0060](rh-w-0060-implementation-plan.md) | Plan corto completado de la cláusula C11 de session-stop; entregado mediante el PR #251 |
 | [Diseno RH-W-0057](rh-w-0057-design.md) | Diseno completado de comandos canonicos y cobertura de wrappers; se conserva el cuerpo historico |
 | [Diseno RH-W-0013](rh-w-0013-design.md) | Par humano completo del diseno minimo para retirar dos bloqueos de presupuesto en ejecucion |

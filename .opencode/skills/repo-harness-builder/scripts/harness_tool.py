@@ -2097,6 +2097,8 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 
 - Verify before claiming. A failing test, a skipped step, or an unverified assumption gets said out loud.
 - Report what happened, not what was intended.
+- When research cites sources, list every source that was located but not read, with a short reason such as authentication, transport failure, incomplete content, or snippet-only evidence. Never present an unread source as evidence.
+- Keep a useful link in the document that owns its subject. Do not create a separate reference list.
 
 ## Project Agreements
 
