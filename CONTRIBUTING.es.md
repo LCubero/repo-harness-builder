@@ -8,13 +8,13 @@ Toda contribucion comienza con un issue y termina con revision del maintainer. M
 
 1. Abra o elija un [issue de GitHub](https://github.com/LCubero/repo-harness-builder/issues). Acuerde el alcance con un maintainer antes de implementar.
 2. Cree una rama corta y enfocada, como `docs/contribution-workflow` o `fix/projection-drift`.
-3. Cambie primero las fuentes canonicas. Para comportamiento del producto, edite `skill/repo-harness-builder/` o `command/repo-harness-builder.md`; trate `.claude/` y `.opencode/` como proyecciones de entorno.
+3. Cambie primero las fuentes canonicas. Para comportamiento del producto, edite `skill/repo-harness-builder/` o `command/repo-harness-builder.md`; trate `.claude/`, `.opencode/` y `.pi/` como proyecciones de entorno.
 4. Mantenga implementacion, pruebas y documentacion cercana en la misma unidad de trabajo.
 5. Ejecute las comprobaciones pertinentes y revise el diff completo.
 6. Abra un PR enfocado que enlace el issue con `Closes #<numero>` e indique alcance, verificacion y riesgos.
 7. Resuelva la revision y obtenga aprobacion del maintainer antes del merge.
 
-No haga commits directos a `main`. Un maintainer puede autorizar explicitamente una excepcion de emergencia.
+No haga commits directos a `main`. Las funcionalidades, los cambios de comportamiento y todo lo que toque pruebas o proyecciones de entorno siempre usan un issue y un PR. Excepcion: las correcciones pequenas de documentacion, erratas y actualizaciones de conteos pueden ir directo a `main` con el acuerdo del propietario y una entrada en el changelog. Un maintainer tambien puede autorizar explicitamente una excepcion de emergencia.
 
 ## Reglas de desarrollo
 
@@ -40,7 +40,7 @@ Ejecute la comprobacion de solo lectura para cambios documentales, de fuentes ca
 python .repo-harness/check.py
 ```
 
-El checker debe informar `current`, terminar con codigo 0 e informar 0 escrituras. Si cambiaron fuentes canonicas del producto, confirme que las proyecciones correspondientes en `.claude/` y `.opencode/` contienen los mismos bytes previstos. Los cambios solo documentales que no alteran contratos generados no deben reescribir esas proyecciones.
+El checker debe informar `current`, terminar con codigo 0 e informar 0 escrituras. Si cambiaron fuentes canonicas del producto, sincronice las salidas administradas afectadas mediante la vista previa de mantenimiento y el apply con el digest actual, y luego confirme que las proyecciones correspondientes en `.claude/`, `.opencode/` y `.pi/` contienen los mismos bytes previstos. Los cambios solo documentales que no alteran contratos generados no deben reescribir esas proyecciones.
 
 ## Lista para el PR
 

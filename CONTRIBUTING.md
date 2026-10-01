@@ -12,7 +12,7 @@ Contributions start with an issue and end with maintainer review. Keep each chan
 6. Open a focused PR that links the issue with `Closes #<number>` and states scope, verification, and risks.
 7. Address review and obtain maintainer approval before merge.
 
-Do not commit directly to `main`. A maintainer may explicitly authorize an emergency exception.
+Do not commit directly to `main`. Features, behavior changes, and anything that touches tests or runtime projections always use an issue and a PR. Exception: small documentation corrections, typos, and count updates may go directly to `main` with the owner's agreement and a changelog entry. A maintainer may also explicitly authorize an emergency exception.
 
 ## Development Rules
 
