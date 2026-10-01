@@ -2,7 +2,7 @@
 
 > **Status: IMPLEMENTED AND VERIFIED. RH-W-0068 remains proposed for its separate unresolved defects.**
 
-The [owner-approved RH-W-0074 design](rh-w-0074-design.md) explicitly targets the forced `paused`/`blocked` classification for accepted omissions, not completion eligibility. Implementation remains separately unauthorized. This implemented contract is unchanged and remains binding until that implementation is authorized and completed.
+The [RH-W-0074 design](rh-w-0074-design.md), implemented on 2026-10-01, replaces only the forced `paused`/`blocked` classification for accepted omissions; completion eligibility below is unchanged. An accepted decline is reported as `declined` with the work unit not completed, and `paused` or `blocked` apply only to actually pending input or missing prerequisites.
 
 ## Decision
 
@@ -33,7 +33,7 @@ An applicable surface ends as `completed`. A genuinely irrelevant surface ends a
 
 ## Closure Outcomes
 
-- Declined, pending, failed, or incomplete required reconciliation makes the close `paused` when human approval or input can resolve it, otherwise `blocked`. It is never `completed`.
+- Declined, pending, failed, or incomplete required reconciliation is never `completed`. Since RH-W-0074, the close is `paused` only when human input is actually pending, `blocked` only when a prerequisite is actually missing, and `failed` for a failed operation; an accepted decline is reported as `declined` with the work unit not completed.
 - The user may decline documentation. That declines completion, not preservation of verified implementation, delivery, commits, evidence, or other successful operation outcomes.
 - Optional or `not_applicable` documentation never blocks completion.
 - Documentation is written only after implementation or delivery verification supplies proven facts. No evidence, status, delivery, chronology, or parity claim is fabricated or documented prematurely.

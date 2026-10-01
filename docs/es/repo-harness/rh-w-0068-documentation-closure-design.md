@@ -2,7 +2,7 @@
 
 > **Estado: IMPLEMENTADO Y VERIFICADO. RH-W-0068 sigue proposed por sus defectos separados sin resolver.**
 
-El [diseño RH-W-0074 aprobado por el propietario](rh-w-0074-design.md) aborda explícitamente la clasificación forzada `paused`/`blocked` para omisiones aceptadas, no la elegibilidad para completar. La implementación sigue sin autorización separada. Este contrato implementado no cambia y sigue vigente hasta que esa implementación se autorice y complete.
+El [diseño RH-W-0074](rh-w-0074-design.md), implementado el 2026-10-01, reemplaza solo la clasificación forzada `paused`/`blocked` para omisiones aceptadas; la elegibilidad para completar de abajo no cambia. Una declinación aceptada se informa como `declined` con la unidad de trabajo sin completar, y `paused` o `blocked` se usan solo para información realmente pendiente o requisitos realmente faltantes.
 
 ## Decision
 
@@ -34,7 +34,7 @@ Una superficie aplicable termina `completed`. Una superficie realmente irrelevan
 <a id="closure-outcomes"></a>
 ## Resultados De Cierre
 
-- Reconciliacion obligatoria declinada, pendiente, fallida o incompleta deja el cierre `paused` cuando aprobacion o informacion humana puede resolverla; en otro caso queda `blocked`. Nunca queda `completed`.
+- Reconciliacion obligatoria declinada, pendiente, fallida o incompleta nunca queda `completed`. Desde RH-W-0074, el cierre es `paused` solo cuando hay informacion humana realmente pendiente, `blocked` solo cuando falta realmente un requisito, y `failed` ante una operacion fallida; una declinacion aceptada se informa como `declined` con la unidad de trabajo sin completar.
 - El usuario puede declinar documentacion. Eso declina completar, no conservar implementacion, entrega, commits, evidencia u otros resultados exitosos.
 - Documentacion opcional o `not_applicable` nunca bloquea completar.
 - La documentacion se escribe solo despues de que la verificacion de implementacion o entrega aporta hechos probados. Nunca se fabrican ni documentan prematuramente evidencia, estado, entrega, cronologia o paridad.

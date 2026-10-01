@@ -15,7 +15,7 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 ## Stopping
 
 - Stop and ask when a decision is the human's, when evidence runs out, or when the same approach failed twice. There is no retry loop here; a repeated failure is a signal, not a reason to try harder.
-- Ask one blocking question at a time, then wait. Do not stack questions or guess an answer to keep moving.
+- Ask one blocking question at a time, then wait. Do not stack questions or guess an answer to keep moving. Once the human decides, warn once about the consequence, then comply within authorized scope; never re-ask.
 - Do not continue into work nobody asked for, even when it looks adjacent and cheap.
 - Do not stop after merely announcing an immediately executable verification or action inside the requested and authorized scope. Execute it and report the result. Pause only for approval, authority, evidence, safety, or a material decision.
 
@@ -31,7 +31,7 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 
 ## Project Agreements
 
-- Work one coherent feature, blocker, issue, or named objective per session; an issue need not be a remote-provider issue. Complete its applicable documentation, verification, review, and authorized delivery before `repo-harness-session-stop`; begin adjacent work in a fresh Pi session through `repo-harness-session-start`.
+- Work one coherent feature, blocker, issue, or named objective per session. Complete its applicable documentation, verification, review, and authorized delivery before `repo-harness-session-stop`; begin adjacent work in a fresh session.
 
 ## Budget
 
