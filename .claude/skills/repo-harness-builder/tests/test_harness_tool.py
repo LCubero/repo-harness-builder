@@ -6881,6 +6881,18 @@ resume_authority: required
         self.assertIn("pause before any staging", stop)
         self.assertIn("final user-facing line", stop)
 
+    def test_session_stop_separates_eol_only_paths_from_content_changes(self):
+        stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+        for phrase in (
+            "`git diff --quiet HEAD -- <path>`",
+            "`git diff --cached --quiet HEAD -- <path>`",
+            "both exit 0, report it as EOL/filter-only, not content-modified",
+            "Exit 1 from either comparison stays content-modified",
+            "any other exit, a missing `HEAD:<path>` blob, or an ambiguous filter is `unknown`",
+            "name the missing evidence",
+        ):
+            self.assertIn(phrase, stop)
+
     def test_session_stop_invalidates_consent_on_material_change(self):
         stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
         for phrase in (
