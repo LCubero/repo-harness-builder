@@ -1,5 +1,7 @@
 # RH-W-0025 Capability-Aware Integration Implementation Plan
 
+> **Status: RH-W-0025 is `completed`.** The [roadmap record](roadmap.md#rh-w-0025) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
 > **For agentic workers:** use `test-driven-development` for every behavior slice and `verification-before-completion` before delivery. Work only on approved unit RH-W-0025.
 
 **Goal:** Generate a generic repository harness that coordinates repository authority, Engram continuity, and optional Gentle AI capabilities without copying owner state or creating another lifecycle.

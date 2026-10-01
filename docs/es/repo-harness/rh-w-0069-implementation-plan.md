@@ -1,5 +1,7 @@
 # Plan de implementacion RH-W-0069 de continuidad nativa de sesion
 
+> **Estado: RH-W-0069 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0069) posee su resultado y evidencia de entrega; el plan siguiente se conserva como evidencia histórica de ejecución, no como instrucciones a seguir.
+
 > **Estado: entregado.** El propietario autorizo la implementacion directa acotada el 2026-09-07; no autorizo ni se realizo entrega Git, publicacion o acceso de red.
 
 La implementacion siguio los tres grupos RED/GREEN enfocados, sincronizo proyecciones canonicas y de runtime, y reconcilio los propietarios bilingues del ciclo despues de verificar. Los recibos de comandos permanecen en el informe de la sesion de implementacion; este plan conserva el contrato historico de ejecucion.

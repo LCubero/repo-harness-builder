@@ -1,5 +1,7 @@
 # Plan de implementación de integración consciente de capacidades RH-W-0025
 
+> **Estado: RH-W-0025 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0025) posee su resultado y evidencia de entrega; el plan siguiente se conserva como evidencia histórica de ejecución, no como instrucciones a seguir.
+
 > **Para agentes ejecutores:** usar `test-driven-development` para cada corte de comportamiento y `verification-before-completion` antes de entregar. Trabajar solo en la unidad aprobada RH-W-0025.
 
 **Objetivo:** Generar un harness genérico que coordine la autoridad del repositorio, la continuidad de Engram y las capacidades opcionales de Gentle AI sin copiar estado de propietarios ni crear otro ciclo de vida.

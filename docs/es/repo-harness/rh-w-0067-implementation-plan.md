@@ -1,5 +1,7 @@
 # Plan de implementacion RH-W-0067 del contrato de respuesta
 
+> **Estado: RH-W-0067 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0067) posee su resultado y evidencia de entrega; el plan siguiente se conserva como evidencia histórica de ejecución, no como instrucciones a seguir.
+
 > **Para trabajadores agenticos:** SUB-SKILLS OBLIGATORIAS: usar `test-driven-development` para cada cambio de comportamiento y `verification-before-completion` antes de entregar. Ejecutar las casillas en orden. Este plan no autoriza implementacion, transicion de ciclo de vida, commit, push, publicacion ni acceso externo.
 
 **Objetivo:** Generar un unico contrato condicional de respuesta, enrutarle los seis disparadores y reducir los tres contratos diarios a una referencia compartida exacta sin cambiar limites de autoridad existentes.

@@ -1,6 +1,8 @@
 # RH-W-0022 owner-approved implementation plan
 
-**Status: owner-approved plan.** The [approved design](rh-w-0022-design.md) owns the contract; implementation was separately authorized, but R22-1 remains in progress and RH-W-0022 remains `proposed`.
+> **Status: RH-W-0022 is `completed`.** The [roadmap record](roadmap.md#rh-w-0022) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
+**Historical status before completion: owner-approved plan.** The [approved design](rh-w-0022-design.md) owns the contract; implementation was separately authorized, but R22-1 remains in progress and RH-W-0022 remains `proposed`.
 
 1. **RED — seed and preservation.** Add behavior-level tests to the existing canonical suite: a fresh bilingual render lacks the declaration before implementation; the approved exact edge list is seeded only when absent; an existing human-owned declaration retains identical bytes through render. For invalid UTF-8/JSON affecting the whole owner, assert one owner-level entry without invented edge fields; identifiable failures retain the complete edge shape. Cover version/field shape, duplicates, unknown relations, missing endpoints, symlinks, traversal and other unsafe paths. Assert one exact `relationship-unsatisfied` result per unsatisfied edge, declaration order, `drift`, exit 1 and zero writes; human documents remain unchanged.
 2. **RED — closed relationship checks.** Reproduce wrong Spanish canonical owner, existing locale/semantic-role failure, and roadmap/current-state status or derived-fact contradiction; assert their exact closed reasons and recovery when only the projection is corrected. Check that contract-preserving source edits stay satisfied and undeclared links, names, symbols and RH-W-0065 sources create no edges. Reuse the existing locale/semantic-role and roadmap lifecycle parsers rather than introducing a new relationship engine.

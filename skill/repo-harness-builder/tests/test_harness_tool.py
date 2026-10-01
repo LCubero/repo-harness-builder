@@ -5632,6 +5632,27 @@ resume_authority: required
                     f"{locale} current-state portfolio counts disagree with the roadmap they project",
                 )
 
+    def test_terminal_unit_plans_open_with_their_roadmap_status(self):
+        """A finished plan that still reads as executable invites an agent to re-run it."""
+        repository = ROOT.parents[1]
+        _, records = self._roadmap_records()
+        checked = 0
+        for directory in ("docs/repo-harness", "docs/es/repo-harness"):
+            for path in sorted((repository / directory).glob("rh-w-*-implementation-plan.md")):
+                record_id = "RH-W-" + re.search(r"rh-w-(\d{4})", path.name).group(1)
+                status = records.get(record_id)
+                if status not in self.TERMINAL_STATUSES:
+                    continue
+                lines = [line for line in path.read_text(encoding="utf-8").splitlines()[1:] if line.strip()]
+                checked += 1
+                with self.subTest(plan=f"{directory}/{path.name}"):
+                    self.assertIn(
+                        f"`{status}`",
+                        lines[0] if lines else "",
+                        f"the first line under the title must state the roadmap status `{status}`",
+                    )
+        self.assertGreater(checked, 0, "no terminal-unit plan was found; the roadmap may not have parsed")
+
     def test_current_state_action_plan_coverage_is_derived_from_the_roadmap(self):
         """The uncovered set is the fact; a stale count hides records nobody planned."""
         repository = ROOT.parents[1]

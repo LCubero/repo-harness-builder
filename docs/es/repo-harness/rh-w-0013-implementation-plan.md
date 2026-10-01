@@ -1,5 +1,7 @@
 # Plan minimo de implementacion RH-W-0013 de presupuesto de contexto
 
+> **Estado: RH-W-0013 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0013) posee su resultado y evidencia de entrega; el plan siguiente se conserva como evidencia histórica de ejecución, no como instrucciones a seguir.
+
 > **Para agentes ejecutores:** SUB-SKILL REQUERIDA: usar `test-driven-development` para cambios de comportamiento y `verification-before-completion` antes de entregar. Este plan no autoriza implementacion ni cambio de ciclo de vida.
 
 **Objetivo:** Retirar dos bloqueos de presupuesto en ejecucion y conservar los presupuestos de plantilla durante desarrollo.

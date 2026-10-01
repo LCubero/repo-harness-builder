@@ -1,5 +1,7 @@
 # RH-W-0051 Local-State Taxonomy Implementation Plan
 
+> **Status: RH-W-0051 is `completed`.** The [roadmap record](roadmap.md#rh-w-0051) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
 > **Status: COMPLETED ON 2026-08-25.** The execution instructions below are retained as historical evidence. Before execution, this plan granted no implementation, lifecycle, Git, publication, or network authority; implementation later proceeded under separate owner authorization.
 
 **Goal:** Add the approved fixed local-state taxonomy, exact root ignore directives, one minimal `localState` manifest policy, and read-only checker validation without adding consumer behavior.

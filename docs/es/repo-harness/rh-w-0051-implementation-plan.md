@@ -1,5 +1,7 @@
 # Plan de implementacion RH-W-0051 de taxonomia de estado local
 
+> **Estado: RH-W-0051 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0051) posee su resultado y evidencia de entrega; el plan siguiente se conserva como evidencia histórica de ejecución, no como instrucciones a seguir.
+
 > **Estado: COMPLETADO EL 2026-08-25.** Las instrucciones siguientes se conservan como evidencia historica. Antes de ejecutar, este plan no otorgaba autoridad de implementacion, ciclo, Git, publicacion ni red; la implementacion procedio despues bajo autorizacion separada del propietario.
 
 **Objetivo:** Agregar la taxonomia fija aprobada, cuatro directivas raiz exactas, una politica minima `localState` en el manifest y validacion de checker de solo lectura, sin agregar consumidores.

@@ -16,7 +16,7 @@
 | [Investigacion del flujo de contribucion](contribution-workflow-research.md) | Comparacion primaria y recomendacion en espanol |
 | [Investigacion de integracion](integration-research.md) | Espejo humano completo de la investigacion canonica sobre Gentle AI y Engram |
 | [Investigacion de continuidad de agentes](agent-continuity-research.md) | Par completo de la comparacion sobre continuidad, aprendizaje, confianza y recuperacion en Hermes Agent, OpenClaw y Pi |
-| [Plan de implementacion RH-W-0025](rh-w-0025-implementation-plan.md) | Espejo humano completo del plan canonico de coordinacion consciente de capacidades |
+| [Plan de implementacion RH-W-0025](rh-w-0025-implementation-plan.md) | Par humano del plan completado de coordinacion consciente de capacidades; instrucciones historicas conservadas |
 | [Investigacion RH-W-0031](../../repo-harness/rh-w-0031-research.md) | Propietario canonico en ingles de la evidencia primaria sobre los limites del idioma de conversacion |
 | [Plan tecnico RH-W-0031](../../repo-harness/rh-w-0031-implementation-plan.md) | Plan completado en ingles para la correccion minima de session-start; se conservan las instrucciones historicas |
 | [Plan de implementacion RH-W-0034](rh-w-0034-implementation-plan.md) | Par humano del plan completado para recuperacion de consumidores y correccion del modo solo en espanol; se conservan las instrucciones historicas |
@@ -34,7 +34,7 @@
 | [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado; implementación técnicamente completada en la rama de producto publicada por la decisión conservadora; entrega pendiente bajo el issue #228 |
 | [Plan de implementación RH-W-0044](rh-w-0044-implementation-plan.md) | Plan corregido con pruebas primero entregado mediante PR #226; implementación local completada y verificada por separado de la entrega |
 | [Diseño RH-W-0022](rh-w-0022-design.md) | Diseño mínimo aprobado por el propietario; se conserva su límite histórico de aprobación |
-| [Plan de implementación RH-W-0022](rh-w-0022-implementation-plan.md) | Plan bilingüe aprobado por el propietario y entregado a main; implementación del producto sin autorización |
+| [Plan de implementación RH-W-0022](rh-w-0022-implementation-plan.md) | Plan completado de relaciones documentales declaradas; evidencia histórica de ejecución conservada |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno entregado de backup local de memoria y continuidad entre fuentes |
 | [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan aprobado y entregado de implementacion de continuidad nativa |
 | [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta documental anterior verificada y del resto activo RH-W-0068 delegado por el propietario; verificacion exitosa, cobertura de escenarios del contrato o disposicion terminal autoritativa, y entrega pendientes |
@@ -53,7 +53,7 @@
 | [Plan de implementación RH-W-0060](rh-w-0060-implementation-plan.md) | Plan corto completado de la cláusula C11 de session-stop; entregado mediante el PR #251 |
 | [Diseno RH-W-0057](rh-w-0057-design.md) | Diseno completado de comandos canonicos y cobertura de wrappers; se conserva el cuerpo historico |
 | [Diseno RH-W-0013](rh-w-0013-design.md) | Par humano completo del diseno minimo para retirar dos bloqueos de presupuesto en ejecucion |
-| [Plan de implementacion RH-W-0013](rh-w-0013-implementation-plan.md) | Par humano completo del plan canonico de dos tareas para RH-W-0013 |
+| [Plan de implementacion RH-W-0013](rh-w-0013-implementation-plan.md) | Par humano del plan completado de dos tareas para RH-W-0013; instrucciones historicas conservadas |
 | [Diseno RH-W-0073](rh-w-0073-design.md) | Diseno completado de control del presupuesto del rulebook; se conserva el cuerpo historico del diseno |
 | [Plan de implementacion RH-W-0073](rh-w-0073-implementation-plan.md) | Plan de implementacion RH-W-0073 completado; se conserva la evidencia historica de ejecucion |
 | [Alcance RH-W-0076](rh-w-0076-scope.md) | Propuesta historica de tres cortes: corte 1 entregado; retiro de planes y techo/compresion del builder esperan aprobacion del alcance residual |

@@ -1,5 +1,7 @@
 # Plan de implementación RH-W-0060
 
+> **Estado: RH-W-0060 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0060) posee su resultado y evidencia de entrega; el plan siguiente se conserva como evidencia histórica de ejecución, no como instrucciones a seguir.
+
 **Estado: plan aprobado por el propietario.** El 2026-09-30 el propietario aprobó este plan y delegó la implementación. El [diseño aprobado](rh-w-0060-design.md) posee el contrato; el [roadmap](roadmap.md#rh-w-0060) posee el ciclo de vida y la evidencia de verificación.
 
 **Premisa verificada.** En un repositorio temporal con `core.autocrlf=true` y `eol=lf`, reescribir un archivo commiteado solo con CRLF hizo que `git status --porcelain` informara ` M`, mientras `git diff --quiet HEAD -- <ruta>` salió con 0. Un cambio sustantivo salió con 1, y un blob del índice diferente hizo salir con 1 a `git diff --cached --quiet HEAD -- <ruta>`. Git ya aplica el filtro de limpieza por ruta, así que la cláusula reutiliza esos dos comandos y no necesita herramienta nueva.

@@ -1,6 +1,8 @@
 # RH-W-0048 Runtime Projection Recovery Implementation Plan
 
-> **Status: proposed (reopened); historical plan owner-approved.** The owner explicitly approved this bilingual plan, and its implementation was separately owner-authorized, completed locally, and verified. The only remaining work is mutability-contract reconciliation and independent re-verification. Native review is unavailable because the package-local binary is missing, so no lineage exists; that is not a verdict. Delivery—including Git delivery, network, commit, push, PR, release, and publication—remains separate and unperformed.
+> **Status: RH-W-0048 is `completed`.** The [roadmap record](roadmap.md#rh-w-0048) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
+> **Historical status before completion: proposed (reopened); plan owner-approved.** The owner explicitly approved this bilingual plan, and its implementation was separately owner-authorized, completed locally, and verified. The only remaining work is mutability-contract reconciliation and independent re-verification. Native review is unavailable because the package-local binary is missing, so no lineage exists; that is not a verdict. Delivery—including Git delivery, network, commit, push, PR, release, and publication—remains separate and unperformed.
 
 Derived from the owner-approved [recovery design](rh-w-0048-design.md). Spanish peer: [rh-w-0048-implementation-plan.md](../es/repo-harness/rh-w-0048-implementation-plan.md). The [roadmap record](roadmap.md#rh-w-0048) remains the lifecycle owner.
 

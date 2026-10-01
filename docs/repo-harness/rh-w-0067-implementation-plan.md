@@ -1,5 +1,7 @@
 # RH-W-0067 Response Contract Implementation Plan
 
+> **Status: RH-W-0067 is `completed`.** The [roadmap record](roadmap.md#rh-w-0067) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
 > **For agentic workers:** REQUIRED SUB-SKILLS: use `test-driven-development` for every behavior change and `verification-before-completion` before delivery. Execute the checkboxes in order. This plan authorizes no implementation, lifecycle transition, commit, push, publication, or external access.
 
 **Goal:** Generate one conditional response contract, route all six response triggers to it, and reduce the three daily contracts to one exact shared reference without changing existing authority boundaries.

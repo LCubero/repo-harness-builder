@@ -18,7 +18,7 @@
 | [contribution-workflow-research.md](contribution-workflow-research.md) | Primary-source comparison and recommendation for contribution policy |
 | [integration-research.md](integration-research.md) | Canonical primary-source research owner for generic Gentle AI and Engram integration |
 | [agent-continuity-research.md](agent-continuity-research.md) | Primary-source comparison of Hermes Agent, OpenClaw, and Pi continuity, learning, trust, and recovery patterns |
-| [rh-w-0025-implementation-plan.md](rh-w-0025-implementation-plan.md) | Canonical executable implementation plan for capability-aware Gentle AI and Engram coordination |
+| [rh-w-0025-implementation-plan.md](rh-w-0025-implementation-plan.md) | Completed capability-aware Gentle AI and Engram coordination plan; historical task instructions retained |
 | [rh-w-0031-research.md](rh-w-0031-research.md) | Canonical primary-source evidence owner for conversation-language boundaries |
 | [rh-w-0031-implementation-plan.md](rh-w-0031-implementation-plan.md) | Completed minimal session-start correction plan; historical task instructions retained |
 | [rh-w-0034-implementation-plan.md](rh-w-0034-implementation-plan.md) | Completed consumer recovery and Spanish-only correctness plan; historical task instructions retained |
@@ -36,7 +36,7 @@
 | [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved suggestion design; implementation technically complete on the published feature branch under the conservative ambiguity decision, with delivery pending under issue #228 |
 | [rh-w-0044-implementation-plan.md](rh-w-0044-implementation-plan.md) | Corrected test-first plan delivered through PR #226; local implementation completed and verified separately from product delivery |
 | [rh-w-0022-design.md](rh-w-0022-design.md) | Owner-approved minimal declared documentation relationship design; historical approval boundary retained |
-| [rh-w-0022-implementation-plan.md](rh-w-0022-implementation-plan.md) | Owner-approved bilingual implementation plan delivered to main; product implementation unauthorized |
+| [rh-w-0022-implementation-plan.md](rh-w-0022-implementation-plan.md) | Completed declared documentation relationships plan; historical execution evidence retained |
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Delivered local memory backup and cross-source continuity design |
 | [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Delivered owner-approved native continuity implementation plan |
 | [rh-w-0068-documentation-closure-design.md](rh-w-0068-documentation-closure-design.md) | Earlier verified documentation closure gate and active owner-delegated RH-W-0068 remainder; successful verification, scenario-contract coverage or authoritative terminal disposition, and delivery pending |
@@ -55,7 +55,7 @@
 | [rh-w-0060-implementation-plan.md](rh-w-0060-implementation-plan.md) | Completed short C11 session-stop clause plan; delivered through PR #251 |
 | [rh-w-0057-design.md](rh-w-0057-design.md) | Completed owner-approved canonical command and wrapper coverage design; historical design body retained |
 | [rh-w-0013-design.md](rh-w-0013-design.md) | Canonical minimal design for removing two runtime context-budget blockers |
-| [rh-w-0013-implementation-plan.md](rh-w-0013-implementation-plan.md) | Canonical two-task implementation plan for the RH-W-0013 blockers |
+| [rh-w-0013-implementation-plan.md](rh-w-0013-implementation-plan.md) | Completed two-task RH-W-0013 blocker plan; historical task instructions retained |
 | [rh-w-0073-design.md](rh-w-0073-design.md) | Completed rulebook budget enforcement design; historical design body retained |
 | [rh-w-0073-implementation-plan.md](rh-w-0073-implementation-plan.md) | Completed RH-W-0073 implementation plan; historical execution evidence retained |
 | [rh-w-0076-scope.md](rh-w-0076-scope.md) | Historical three-slice proposal: slice 1 delivered; residual plan retirement and builder ceiling/compression await owner scope approval |

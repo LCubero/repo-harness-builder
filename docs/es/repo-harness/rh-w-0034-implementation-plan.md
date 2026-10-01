@@ -1,5 +1,7 @@
 # Plan de implementacion RH-W-0034 para recuperacion de consumidores y correccion del modo solo en espanol
 
+> **Estado: RH-W-0034 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0034) posee su resultado y evidencia de entrega; el plan siguiente se conserva como evidencia histórica de ejecución, no como instrucciones a seguir.
+
 > **Aviso de ciclo de vida completado:** RH-W-0034 se completo el 2026-08-17. El [registro canonico de la hoja de ruta](roadmap.md#rh-w-0034) posee la evidencia de cierre y entrega. Las instrucciones historicas y las casillas sin marcar que siguen se conservan como evidencia de ejecucion, no como trabajo pendiente.
 
 > **Para agentes de implementacion:** HABILIDADES REQUERIDAS: use `systematic-debugging`, `test-driven-development` y `verification-before-completion`. Marque cada casilla. Implemente solo despues de mover el registro del ciclo de vida a `active`.
