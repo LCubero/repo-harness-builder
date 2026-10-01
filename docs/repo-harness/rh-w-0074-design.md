@@ -1,6 +1,6 @@
 # RH-W-0074 Accepted Omission And Completion Design
 
-> **Status: owner-approved design, implemented in its minimal form on 2026-10-01 (see below).**
+> **Status: owner-approved design, implemented in its minimal form on 2026-10-01 (see below) and delivered through PR #259.**
 
 Canonical owner: this document. [Spanish peer](../es/repo-harness/rh-w-0074-design.md). Lifecycle: [RH-W-0074](roadmap.md#rh-w-0074).
 

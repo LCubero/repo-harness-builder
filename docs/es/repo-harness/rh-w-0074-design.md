@@ -1,6 +1,6 @@
 # Diseño RH-W-0074 de omisión aceptada y finalización
 
-> **Estado: diseño aprobado por el propietario, implementado en su forma mínima el 2026-10-01 (ver abajo).**
+> **Estado: diseño aprobado por el propietario, implementado en su forma mínima el 2026-10-01 (ver abajo) y entregado mediante el PR #259.**
 
 Propietario canónico: [documento en inglés](../../repo-harness/rh-w-0074-design.md). Este es su par completo en español. Ciclo: [RH-W-0074](roadmap.md#rh-w-0074).
 
