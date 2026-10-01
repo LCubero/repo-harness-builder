@@ -1,5 +1,7 @@
 # RH-W-0034 Consumer Recovery And Spanish-Only Correctness Plan
 
+> **Status: RH-W-0034 is `completed`.** The [roadmap record](roadmap.md#rh-w-0034) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
 > **Completed lifecycle notice:** RH-W-0034 completed on 2026-08-17. The canonical [roadmap record](roadmap.md#rh-w-0034) owns completion and delivery evidence. The historical task instructions and unchecked boxes below are retained as execution evidence, not pending work.
 
 > **For agentic workers:** REQUIRED SUB-SKILLS: use `systematic-debugging`, `test-driven-development`, and `verification-before-completion`. Track each checkbox. Implement only after moving the lifecycle record to `active`.

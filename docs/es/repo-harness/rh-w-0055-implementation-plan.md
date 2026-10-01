@@ -1,5 +1,7 @@
 # Plan de implementación RH-W-0055
 
+> **Estado: RH-W-0055 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0055) posee su resultado y evidencia de entrega; el plan siguiente se conserva como evidencia histórica de ejecución, no como instrucciones a seguir.
+
 **Estado: plan aprobado por el propietario.** El 2026-09-30 el propietario aprobó este plan y delegó la implementación. El [diseño aprobado](rh-w-0055-design.md) posee el contrato; el [roadmap](roadmap.md#rh-w-0055) posee el ciclo de vida y la evidencia de verificación.
 
 Es un cambio solo de documentación. No toca código, pruebas, comportamiento generado, checker ni proyecciones de runtime.

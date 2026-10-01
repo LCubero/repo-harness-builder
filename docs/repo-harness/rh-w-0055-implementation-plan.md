@@ -1,5 +1,7 @@
 # RH-W-0055 implementation plan
 
+> **Status: RH-W-0055 is `completed`.** The [roadmap record](roadmap.md#rh-w-0055) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
 **Status: owner-approved plan.** On 2026-09-30 the owner approved this plan and delegated implementation. The [approved design](rh-w-0055-design.md) owns the contract; the [roadmap](roadmap.md#rh-w-0055) owns lifecycle and verification evidence.
 
 This is a documentation-only change. It touches no source, test, generated behavior, checker, or runtime projection.

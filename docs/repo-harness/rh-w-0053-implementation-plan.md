@@ -1,5 +1,7 @@
 # RH-W-0053 Interrupted-Operation Checkpoint Implementation Plan
 
+> **Status: RH-W-0053 is `completed`.** The [roadmap record](roadmap.md#rh-w-0053) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
 > **Status: completed execution record; RH-W-0053 is completed.** The plan was owner-approved on 2026-09-07 and later executed under separate implementation and lifecycle authority. At the implementation-record stage, no Git delivery, staging, commit, push, publication, network access, or runtime registered-name freshness was claimed. The later delivery through issue #170 and PR #171 was squash-merged as `c7290fcf6c703df0839699a9cb8b77686bf18e74`.
 
 **Recorded execution evidence:** control gate 4 passed. RED A recorded 27 failures; RED B recorded 9 failures plus 1 error; RED C recorded 12 failures; each focused GREEN group passed. `GeneratedCoreTests` passed 142 tests with 5 skipped, the final canonical suite passed 523 tests with 9 skipped, and the checker reported `current`, exit 0, and 0 writes. The Pi ownership regression went RED then GREEN: acceptance required eight generated projections but preview offered six until Pi generated-skill ownership was corrected. Digest-bound maintenance apply `15d2f3fcfe3beead92559bf8dd57e55291967d178a8d5a55994fcdd62d91c683` applied all eight projections. The task checklist remains the approved historical instruction record; rollback steps were not executed.

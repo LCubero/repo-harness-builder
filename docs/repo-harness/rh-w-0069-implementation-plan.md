@@ -1,5 +1,7 @@
 # RH-W-0069 Native Session Continuity Implementation Plan
 
+> **Status: RH-W-0069 is `completed`.** The [roadmap record](roadmap.md#rh-w-0069) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
 > **Status: delivered.** The owner authorized bounded direct implementation on 2026-09-07; no Git delivery, publication, or network action was authorized or performed.
 
 Implementation followed the three focused RED/GREEN groups, synchronized canonical and runtime projections, and reconciled the bilingual lifecycle owners after verification. Command receipts remain in the implementing session report; this plan remains the historical execution contract.

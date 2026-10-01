@@ -1,5 +1,7 @@
 # RH-W-0013 Minimal Context Budget Implementation Plan
 
+> **Status: RH-W-0013 is `completed`.** The [roadmap record](roadmap.md#rh-w-0013) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: use `test-driven-development` for behavior changes and `verification-before-completion` before delivery. This plan authorizes no implementation or lifecycle change.
 
 **Goal:** Remove two runtime budget blockers while preserving development-time template budgets.

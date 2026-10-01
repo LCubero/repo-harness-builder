@@ -1,6 +1,8 @@
 # Plan de implementación RH-W-0048 de recuperación de proyecciones de runtime
 
-> **Estado: propuesto (reabierto); plan histórico aprobado por el propietario.** El propietario aprobó explícitamente este plan bilingüe, y su implementación fue autorizada por separado por el propietario, completada localmente y verificada. El único trabajo restante es reconciliar el contrato de mutabilidad y volver a verificar de forma independiente. La revisión nativa no está disponible porque falta el binario local del paquete, por lo que no existe linaje; eso no es un veredicto. La entrega—incluso entrega Git, red, commit, push, PR, release y publicación—permanece separada y sin realizar.
+> **Estado: RH-W-0048 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0048) posee su resultado y evidencia de entrega; el plan siguiente se conserva como evidencia histórica de ejecución, no como instrucciones a seguir.
+
+> **Estado histórico antes de completarse: propuesto (reabierto); plan aprobado por el propietario.** El propietario aprobó explícitamente este plan bilingüe, y su implementación fue autorizada por separado por el propietario, completada localmente y verificada. El único trabajo restante es reconciliar el contrato de mutabilidad y volver a verificar de forma independiente. La revisión nativa no está disponible porque falta el binario local del paquete, por lo que no existe linaje; eso no es un veredicto. La entrega—incluso entrega Git, red, commit, push, PR, release y publicación—permanece separada y sin realizar.
 
 Derivado del [diseño](rh-w-0048-design.md) aprobado por el propietario. Par canónico: [rh-w-0048-implementation-plan.md](../../repo-harness/rh-w-0048-implementation-plan.md). El [registro del roadmap](../../repo-harness/roadmap.md#rh-w-0048) conserva la propiedad del ciclo de vida.
 

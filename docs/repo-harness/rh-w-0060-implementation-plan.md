@@ -1,5 +1,7 @@
 # RH-W-0060 implementation plan
 
+> **Status: RH-W-0060 is `completed`.** The [roadmap record](roadmap.md#rh-w-0060) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
 **Status: owner-approved plan.** On 2026-09-30 the owner approved this plan and delegated implementation. The [approved design](rh-w-0060-design.md) owns the contract; the [roadmap](roadmap.md#rh-w-0060) owns lifecycle and verification evidence.
 
 **Verified premise.** In a scratch repository with `core.autocrlf=true` and `eol=lf`, rewriting a committed file with CRLF only made `git status --porcelain` report ` M`, while `git diff --quiet HEAD -- <path>` exited 0. A substantive edit exited 1, and a differing staged blob made `git diff --cached --quiet HEAD -- <path>` exit 1. Git already applies the path-aware clean filter, so the clause reuses these two commands and needs no new tool.

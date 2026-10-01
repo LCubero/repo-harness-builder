@@ -1,5 +1,7 @@
 # RH-W-0075 External Necessity And Justification Implementation Plan
 
+> **Status: RH-W-0075 is `completed`.** The [roadmap record](roadmap.md#rh-w-0075) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
 > **Status: superseded on 2026-10-01** by the minimal implementation recorded in the [design](rh-w-0075-design.md#minimal-implementation-2026-10-01). Retained as history.
 
 Derived from the owner-approved [design](rh-w-0075-design.md). Spanish peer: [rh-w-0075-implementation-plan.md](../es/repo-harness/rh-w-0075-implementation-plan.md).

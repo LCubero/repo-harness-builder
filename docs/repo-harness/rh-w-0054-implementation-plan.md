@@ -1,5 +1,7 @@
 # RH-W-0054 Stateless Correction Authority Implementation Plan
 
+> **Status: RH-W-0054 is `completed`.** The [roadmap record](roadmap.md#rh-w-0054) owns its outcome and delivery evidence; the plan below is retained as historical execution evidence, not as instructions to follow.
+
 > **Completed lifecycle notice:** RH-W-0054 completed all eight tasks and delivery on 2026-08-23. The canonical [roadmap record](roadmap.md#rh-w-0054) owns delivery evidence. The historical task instructions and checkboxes below are retained as execution evidence, not pending work.
 
 **Goal:** Bind builder preview approval across separate CLI processes to one reviewable canonical authority context, current repository evidence, complete output-affecting configuration, exact plan identity, and opaque target identity.
