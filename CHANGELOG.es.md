@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-01
+
+- Se entregó RH-W-0066 mediante el [PR #255](https://github.com/LCubero/repo-harness-builder/pull/255), fusionado por squash a `main` como `e3cb7fc`; se cerró el [issue #254](https://github.com/LCubero/repo-harness-builder/issues/254). Los acuerdos de trabajo generados enrutan ahora un pedido explícito de recordar o anotar a su propietario existente (decisiones, hoja de ruta, acuerdos de trabajo o Engram cuando esté disponible), prohíben duplicados y un archivo genérico de notas, y preguntan una vez cuando el propietario no es claro; los harness standalone omiten la cláusula de Engram. El propietario delegó la decisión entre comportamiento generado y convención solo del proyecto. Los acuerdos de trabajo de este repositorio guardan además los archivos temporales en `.repo-harness/tmp/`. Suite completa de 609 pruebas OK (11 omitidas); checker `current`; revisión nativa `review-54b905e42d5abb09` aprobada.
+
 ## 2026-09-30
 
 - Se entregó RH-W-0065 mediante el [PR #253](https://github.com/LCubero/repo-harness-builder/pull/253), fusionado por squash a `main` como `7419eae`; se cerró el [issue #252](https://github.com/LCubero/repo-harness-builder/issues/252). Los acuerdos de trabajo generados exigen ahora listar las fuentes de investigación localizadas pero no leídas con un motivo corto, no presentarlas nunca como evidencia y guardar los enlaces útiles en el documento que posee su tema en vez de una lista de referencias separada. El diseño mínimo aprobado reemplazó el esquema de referencias de nueve campos registrado. Suite completa de 608 pruebas OK (11 omitidas); checker `current`; revisión nativa `review-9a91d8824fda1012` aprobada.

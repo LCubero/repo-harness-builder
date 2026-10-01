@@ -49,7 +49,7 @@
 | [Diseno RH-W-0059](rh-w-0059-design.md) | Diseno completado de transporte no interactivo aprobado por el propietario; entregado con pruebas primero y con el cuerpo historico conservado |
 | [Diseño RH-W-0060](rh-w-0060-design.md) | Diseño propuesto de clasificación de contenido rastreado C11 aprobado por el propietario; C12 está cerrado sin residuo generado; entregado mediante el PR #251 |
 | [Diseño RH-W-0065](rh-w-0065-design.md) | Diseño mínimo completado de reglas de evidencia de investigación y enlaces; entregado mediante el PR #253 |
-| [Diseño RH-W-0066](rh-w-0066-design.md) | Diseño mínimo delegado por el propietario de la regla de enrutamiento de recordar y anotar; implementado localmente, entrega pendiente |
+| [Diseño RH-W-0066](rh-w-0066-design.md) | Diseño mínimo completado, delegado por el propietario, de la regla de enrutamiento de recordar y anotar; entregado mediante el PR #255 |
 | [Plan de implementación RH-W-0060](rh-w-0060-implementation-plan.md) | Plan corto completado de la cláusula C11 de session-stop; entregado mediante el PR #251 |
 | [Diseno RH-W-0057](rh-w-0057-design.md) | Diseno completado de comandos canonicos y cobertura de wrappers; se conserva el cuerpo historico |
 | [Diseno RH-W-0013](rh-w-0013-design.md) | Par humano completo del diseno minimo para retirar dos bloqueos de presupuesto en ejecucion |

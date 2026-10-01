@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-01
+
+- Delivered RH-W-0066 through [PR #255](https://github.com/LCubero/repo-harness-builder/pull/255), squash-merged to `main` as `e3cb7fc`; [issue #254](https://github.com/LCubero/repo-harness-builder/issues/254) closed. Generated working agreements now route an explicit remember or note request to its existing owner (decisions, roadmap, working agreements, or Engram when available), forbid duplicates and a generic notes file, and ask once when the owner is unclear; standalone harnesses omit the Engram clause. The owner delegated the generated-versus-project-only decision. This repository's working agreements also keep temporary files in `.repo-harness/tmp/`. Full suite 609 tests OK (11 skipped); checker `current`; native review `review-54b905e42d5abb09` approved.
+
 ## 2026-09-30
 
 - Delivered RH-W-0065 through [PR #253](https://github.com/LCubero/repo-harness-builder/pull/253), squash-merged to `main` as `7419eae`; [issue #252](https://github.com/LCubero/repo-harness-builder/issues/252) closed. Generated working agreements now require listing located-but-unread research sources with a short reason, never presenting them as evidence, and keeping useful links in the document that owns their subject instead of a separate reference list. The owner-approved minimal design replaced the registered nine-field reference schema. Full suite 608 tests OK (11 skipped); checker `current`; native review `review-9a91d8824fda1012` approved.

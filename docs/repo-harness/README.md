@@ -51,7 +51,7 @@
 | [rh-w-0059-design.md](rh-w-0059-design.md) | Completed owner-approved non-interactive transport design; delivered test-first with historical design body retained |
 | [rh-w-0060-design.md](rh-w-0060-design.md) | Owner-approved proposed C11 tracked-content classification design; C12 is closed with no generated residue; delivered through PR #251 |
 | [rh-w-0065-design.md](rh-w-0065-design.md) | Completed minimal research-evidence and link rules design; delivered through PR #253 |
-| [rh-w-0066-design.md](rh-w-0066-design.md) | Owner-delegated minimal remember and note routing rule design; implemented locally, delivery pending |
+| [rh-w-0066-design.md](rh-w-0066-design.md) | Completed owner-delegated minimal remember and note routing rule design; delivered through PR #255 |
 | [rh-w-0060-implementation-plan.md](rh-w-0060-implementation-plan.md) | Completed short C11 session-stop clause plan; delivered through PR #251 |
 | [rh-w-0057-design.md](rh-w-0057-design.md) | Completed owner-approved canonical command and wrapper coverage design; historical design body retained |
 | [rh-w-0013-design.md](rh-w-0013-design.md) | Canonical minimal design for removing two runtime context-budget blockers |
