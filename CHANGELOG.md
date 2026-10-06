@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-06
 
+- Recorded RH-W-0078 post-merge delivery through [PR #267](https://github.com/LCubero/repo-harness-builder/pull/267), squash-merged as `814f44f376e9546f6441b7060958857e43a8c5ad`; the post-merge tree was verified as `798bc79a46326bc4dc113fd714c8b1b00b1881ec`. Existing 625-test/11-skip and checker-current/zero-write receipts stand; GitHub CI is not configured and no package release is claimed. Native review was declined for this candidate only, with no approval and no global RDD disable. RH-W-0078 remains active `P2`, issue #266 remains open, and runtime effectiveness/savings are unmeasured; this does not claim feature completion or lifecycle closure.
 - Reconciled RH-W-0078 authority across bilingual lifecycle, current-state, design, plan, scope and standing decisions. The owner explicitly authorized implementation and issue #266 is confirmed; the former current-runtime baseline-before-start gate is removed. Runtime savings remain unknown and require measurement before any effectiveness claim. No product behavior, runtime experiment, external tool, or delivery change is claimed.
 - Recorded the verified RH-W-0078 safety correction: backup guards precede reads and the existing checkpoint oracle is scoped to `NativeContinuityRecovery` in `.index`. Independent verification passed 625 tests in 334.094 seconds (`OK (skipped=11)`, zero failures/errors); native approval remains pending and runtime effectiveness/savings remain unknown.
 

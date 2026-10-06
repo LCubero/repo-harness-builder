@@ -19,7 +19,9 @@ Latest independent technical verification observed:
 - Checker remained `current` with 0 writes; global diff check clean. Six runtime tool/test pairs and four startup-own-render/UTF-8-LF checks passed. Five known anchors and aggregate file/index/status hash were unchanged during verification.
 - The ten-path maintenance receipt returned `VALIDATED`. A later three-test-copy receipt also returned `VALIDATED`, but its returned digest extraction and pre-apply hash were not retained; complete pre-apply preservation cannot be claimed or reconstructed.
 - The safety correction adds backup guards before read and reuses the existing checkpoint oracle scoped to `NativeContinuityRecovery` in `.index`; controls were not weakened. The earlier 623- and 624-test suite receipts remain historical.
-- Native approval remains unresolved. RH-W-0078 remains `active`, `P2`; no feature closure or delivery is claimed. Runtime effectiveness and savings remain unknown.
+- At this pre-delivery verification snapshot, native approval was unresolved and delivery had not occurred; the post-merge receipt below is the current delivery record. RH-W-0078 remains `active`, `P2`; runtime effectiveness and savings remain unknown.
+
+**Post-merge delivery receipt (2026-10-06; current status supersedes pre-delivery wording above):** implementation was delivered through [PR #267](https://github.com/LCubero/repo-harness-builder/pull/267), squash-merged as `814f44f376e9546f6441b7060958857e43a8c5ad`; the post-merge tree was verified as `798bc79a46326bc4dc113fd714c8b1b00b1881ec`. The existing 625-test/11-skip and checker-current/zero-write receipts stand; GitHub CI is not configured and no package release is claimed. The owner declined native review for this candidate only; there is no approval and no global RDD disable. RH-W-0078 remains active `P2`, issue #266 remains open, and runtime effectiveness/savings remain unmeasured; no feature completion or lifecycle closure is claimed.
 
 ## Future Owners and Ordering
 
