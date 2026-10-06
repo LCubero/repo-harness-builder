@@ -1,6 +1,6 @@
 # RH-W-0078 Proposed Scope
 
-**Status: proposed; the owner approved the corrected bilingual scope.** This artifact records scope only. Approval does not authorize design or implementation, and this document does not approve itself. The [roadmap record](roadmap.md#rh-w-0078) owns lifecycle.
+**Status: proposed; the owner approved the corrected bilingual scope.** This artifact records scope only. Scope approval alone did not authorize design or implementation, and this document does not approve itself. The [roadmap record](roadmap.md#rh-w-0078) owns lifecycle.
 
 ## Verified Baseline
 
@@ -21,4 +21,4 @@ A later design must require reproducible per-runtime baselines and explicit pass
 
 ## Next Decision
 
-The next gate is a separately authorized design that selects exact mechanics and reproducible measurements. Implementation remains separately unauthorized.
+On 2026-10-04 the owner separately authorized bounded bilingual design preparation and a reproducible measurement procedure, then approved the [design](rh-w-0078-design.md) and procedure. The owner separately authorized preparing the bilingual [implementation plan](rh-w-0078-implementation-plan.md) and approved it on 2026-10-05 for documentation recording only. Under current authority, the owner explicitly authorized RH-W-0078 implementation and issue #266 is confirmed; the record is `active`, `P2`. The previous current-runtime baseline-before-start gate is removed. Runtime results and savings remain unknown; actual measurement is still required before claiming savings or accepting effectiveness. External tool changes, runtime experiments and delivery are not authorized by this task.

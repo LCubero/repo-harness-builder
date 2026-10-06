@@ -20,9 +20,9 @@ import sys
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
-MANIFEST_SHA256 = "dedcc2aae37d7a0ddc941d5dab3eecab635488fd24430f652d9d2321e7b2e3ec"
+MANIFEST_SHA256 = "d91e03893719c3e7f0434ef8c4c678d66b63a4afbb2e307a34769414551f940f"
 MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState", "skillLicense"}
-OPTIONAL_MANIFEST_FIELDS = {"canonicalProjections"}
+OPTIONAL_MANIFEST_FIELDS = {"canonicalProjections", "canonicalReferences"}
 LOCAL_STATE = {'tmp': {'path': '.repo-harness/tmp/', 'class': 'disposable'}, 'archive': {'path': '.repo-harness/archive/', 'class': 'recoverable'}, 'state': {'path': '.repo-harness/state/', 'class': 'operational'}, 'memory-bk': {'path': '.repo-harness/memory-bk/', 'class': 'continuity-backup'}}
 LOCAL_STATE_IGNORE_DIRECTIVES = ('/.repo-harness/tmp/', '/.repo-harness/archive/', '/.repo-harness/state/', '/.repo-harness/memory-bk/')
 REPORT_LANGUAGES = {"english", "espanol"}
@@ -195,6 +195,18 @@ def parse_manifest(raw: bytes, expected_sha256: str) -> dict:
         if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
             raise ValueError("invalid canonical skill name")
         safe_relative(relative)
+    if "canonicalReferences" in manifest:
+        references = manifest["canonicalReferences"]
+        expected_references = sorted(
+            f".repo-harness/skills/{name}/references/{filename}"
+            for name, filenames in {'repo-harness-session-start': ('reconciliation.md', 'checkpoint.md', 'synchronization.md'), 'repo-harness-session-stop': ('checkpoint.md', 'git-commit.md', 'git-transport.md')}.items()
+            if name in skills
+            for filename in filenames
+        )
+        if not isinstance(references, list) or references != expected_references:
+            raise ValueError("unexpected canonical skill references")
+        for relative in references:
+            safe_relative(relative)
     commands = manifest["canonicalCommands"]
     if not isinstance(commands, dict) or not commands:
         raise ValueError("unexpected canonical commands")
@@ -252,6 +264,27 @@ def check_projections(root: Path) -> dict:
             if not target.is_file():
                 state = "missing"
             elif comparable(target.read_bytes().decode("utf-8")) != expected:
+                state = "stale"
+            else:
+                state = "current"
+            entries.append({"skill": name, "runtime": runtime, "path": relative, "state": state})
+    for canonical_relative in manifest.get("canonicalReferences", []):
+        canonical = guarded_path(root, canonical_relative)
+        if not canonical.is_file():
+            state = "canonical-missing" if not canonical.exists() and not canonical.is_symlink() else "damaged"
+            entries.append({"path": canonical_relative, "state": state})
+            continue
+        expected = canonical.read_bytes()
+        parts = PurePosixPath(canonical_relative).parts
+        name = parts[2]
+        filename = parts[-1]
+        for runtime in manifest["runtimes"]:
+            base = {"claude-code": ".claude", "opencode": ".opencode", "pi": ".pi"}[runtime]
+            relative = f"{base}/skills/{name}/references/{filename}"
+            target = guarded_path(root, relative)
+            if not target.is_file():
+                state = "missing"
+            elif target.read_bytes() != expected:
                 state = "stale"
             else:
                 state = "current"

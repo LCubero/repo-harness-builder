@@ -53,6 +53,11 @@
       "opencode": ".opencode/skills/repo-harness-builder/references/audit-and-interview.md",
       "pi": ".pi/skills/repo-harness-builder/references/audit-and-interview.md"
     },
+    "skill/repo-harness-builder/references/authority-correction.md": {
+      "claude-code": ".claude/skills/repo-harness-builder/references/authority-correction.md",
+      "opencode": ".opencode/skills/repo-harness-builder/references/authority-correction.md",
+      "pi": ".pi/skills/repo-harness-builder/references/authority-correction.md"
+    },
     "skill/repo-harness-builder/references/gentle-ai-style-guide.md": {
       "claude-code": ".claude/skills/repo-harness-builder/references/gentle-ai-style-guide.md",
       "opencode": ".opencode/skills/repo-harness-builder/references/gentle-ai-style-guide.md",
@@ -89,6 +94,14 @@
       "pi": ".pi/skills/repo-harness-builder/tests/test_harness_tool.py"
     }
   },
+  "canonicalReferences": [
+    ".repo-harness/skills/repo-harness-session-start/references/checkpoint.md",
+    ".repo-harness/skills/repo-harness-session-start/references/reconciliation.md",
+    ".repo-harness/skills/repo-harness-session-start/references/synchronization.md",
+    ".repo-harness/skills/repo-harness-session-stop/references/checkpoint.md",
+    ".repo-harness/skills/repo-harness-session-stop/references/git-commit.md",
+    ".repo-harness/skills/repo-harness-session-stop/references/git-transport.md"
+  ],
   "canonicalSkills": {
     "repo-harness-documentation": ".repo-harness/skills/repo-harness-documentation/SKILL.md",
     "repo-harness-session-start": ".repo-harness/skills/repo-harness-session-start/SKILL.md",

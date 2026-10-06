@@ -2,6 +2,19 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-06
+
+- Se reconcilió la autoridad RH-W-0078 en los propietarios bilingües de ciclo de vida, estado actual, diseño, plan, alcance y decisiones permanentes. El propietario autorizó explícitamente implementar y se confirmó el issue #266; se elimina la antigua compuerta que exigía base del runtime antes de empezar. Los ahorros siguen desconocidos y requieren medición antes de afirmar efectividad. No se afirman cambios de comportamiento de producto, experimentos de runtime, herramientas externas ni entrega.
+- Se registró la corrección de seguridad RH-W-0078 verificada: las guardas de backup preceden las lecturas y el oráculo de checkpoint existente queda acotado a `NativeContinuityRecovery` en `.index`. La verificación independiente pasó 625 pruebas en 334.094 segundos (`OK (skipped=11)`, cero fallos/errores); la aprobación nativa sigue pendiente y la efectividad/ahorros de runtime siguen desconocidos.
+
+## 2026-10-05
+
+- Se preparó la [propuesta bilingüe acotada de plan de implementación RH-W-0078](docs/es/repo-harness/rh-w-0078-implementation-plan.md) bajo autoridad separada del propietario solo de planificación («si dale») y se reconciliaron mapa documental y compuertas vigentes. Se registró la aprobación explícita del propietario del plan bilingüe el 2026-10-05 («si dale») solo para registro documental; autorizar por separado la base/viabilidad del runtime actual es la próxima compuerta. Aprobar el plan no es evidencia de runtime; RH-W-0078 sigue `proposed`, `P2`. La base de contexto efectivo/referencias requerida antes de decidir implementar sigue sin satisfacerse; no se afirman implementación, experimento de runtime, ahorro ni entrega Git. Los cambios del diseño en esta unidad de registro de aprobación se limitan a los metadatos iniciales de aprobación y la compuerta final; no se afirma preservación histórica de bytes.
+
+## 2026-10-04
+
+- Se prepararon el [borrador bilingüe acotado de diseño RH-W-0078](docs/es/repo-harness/rh-w-0078-design.md) y el procedimiento de medición reproducible, con su par completo en español y la reconciliación pertinente de mapas documentales, proyección de ciclo de vida y próxima compuerta del alcance. Se registró la aprobación explícita del propietario de este diseño acotado y del procedimiento de medición el 2026-10-04; autorizar por separado la planificación de implementación es la próxima compuerta humana. Aprobar el método no es evidencia de runtime ni de seguridad; RH-W-0078 sigue `proposed`, `P2`. En esa etapa de preparación/aprobación del diseño no se afirmaban plan de implementación, cambio de producto, experimento de runtime, resultado de ahorro ni entrega Git.
+
 ## 2026-10-01
 
 - Se completó RH-W-0076. La compresión del builder del corte 3 se traspasó a RH-W-0078 en lugar de implementarse: el cuerpo de `SKILL.md` del builder mide 3042 frente al máximo de 1000, pero el builder lee todas las referencias en cada ejecución, así que reubicar texto del cuerpo en `references/` cumpliría el número sin reducir el contexto que carga el agente. RH-W-0078 posee ahora la compresión del builder y la redacción del alcance del techo en la guía junto con las skills generadas, bajo la misma medición de contexto efectivo cargado.

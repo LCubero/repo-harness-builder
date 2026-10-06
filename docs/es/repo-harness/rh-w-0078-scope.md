@@ -1,6 +1,6 @@
 # Alcance propuesto RH-W-0078
 
-**Estado: propuesto; el propietario aprobó el alcance bilingüe corregido.** Este artefacto registra solo el alcance. La aprobación no autoriza diseño ni implementación, y este documento no se aprueba a sí mismo. El [registro de la hoja de ruta](roadmap.md#rh-w-0078) posee el ciclo de vida.
+**Estado: propuesto; el propietario aprobó el alcance bilingüe corregido.** Este artefacto registra solo el alcance. La aprobación del alcance por sí sola no autorizaba diseño ni implementación, y este documento no se aprueba a sí mismo. El [registro de la hoja de ruta](roadmap.md#rh-w-0078) posee el ciclo de vida.
 
 ## Base verificada
 
@@ -21,4 +21,4 @@ Un diseño posterior debe exigir líneas de base reproducibles por runtime y cri
 
 ## Próxima decisión
 
-La siguiente compuerta es un diseño autorizado por separado que seleccione mecánica exacta y mediciones reproducibles. La implementación sigue sin autorización separada.
+El 2026-10-04 el propietario autorizó por separado preparar el diseño bilingüe acotado y el procedimiento reproducible de medición, y después aprobó ambos. El propietario autorizó por separado preparar el [plan de implementación](rh-w-0078-implementation-plan.md) bilingüe y lo aprobó el 2026-10-05 solo para registro documental. Bajo la autoridad vigente, el propietario autorizó explícitamente implementar RH-W-0078 y se confirmó el issue #266; el registro está `active`, `P2`. Se elimina la antigua compuerta de base del runtime antes de empezar. Los resultados y ahorros siguen desconocidos; la medición real sigue siendo necesaria antes de afirmar ahorros o aceptar efectividad. Esta tarea no autoriza cambios de herramientas externas, experimentos de runtime ni entrega.
