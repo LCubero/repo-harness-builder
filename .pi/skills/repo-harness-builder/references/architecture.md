@@ -91,3 +91,7 @@ how a corrected identical plan is caught: same `planSha256`, different `generati
 
 Nothing is persisted. There is no session, receipt, ledger, cache, or reset call, and preview and
 apply run as separate CLI processes that share only these bytes.
+
+## Runtime Cache
+
+Distinguish on-disk canonical/projection parity, active-process registered-skill freshness, and runtime reload/restart capability. Verify on-disk parity through the applicable checker; that cannot prove what a prior process cached. If registered-name lookup returns older content in the process that changed a skill, treat it as an expected process-cache limitation, not repository failure. Defer registered-name validation to a fresh process or use a supported explicit registry reload. Never invent a reload command or require restart unless live validation is requested.

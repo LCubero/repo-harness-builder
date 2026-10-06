@@ -4,6 +4,19 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-06
+
+- Reconciled RH-W-0078 authority across bilingual lifecycle, current-state, design, plan, scope and standing decisions. The owner explicitly authorized implementation and issue #266 is confirmed; the former current-runtime baseline-before-start gate is removed. Runtime savings remain unknown and require measurement before any effectiveness claim. No product behavior, runtime experiment, external tool, or delivery change is claimed.
+- Recorded the verified RH-W-0078 safety correction: backup guards precede reads and the existing checkpoint oracle is scoped to `NativeContinuityRecovery` in `.index`. Independent verification passed 625 tests in 334.094 seconds (`OK (skipped=11)`, zero failures/errors); native approval remains pending and runtime effectiveness/savings remain unknown.
+
+## 2026-10-05
+
+- Prepared the bounded bilingual [RH-W-0078 implementation plan proposal](docs/repo-harness/rh-w-0078-implementation-plan.md) under separate owner planning-only authority ("si dale") and reconciled its documentation map and current gates. Recorded explicit owner approval of the bilingual plan on 2026-10-05 ("si dale") for documentation recording only; separate current-runtime baseline/feasibility authority is the next gate. Plan approval is not runtime evidence; RH-W-0078 remains `proposed`, `P2`. The effective-context/reference baseline required before an implementation decision remains unsatisfied; no implementation, runtime experiment, savings result or Git delivery is claimed. Design edits in this approval-recording unit are limited to opening approval metadata and the closing next gate; no historical byte-preservation claim is made.
+
+## 2026-10-04
+
+- Prepared the bounded bilingual [RH-W-0078 design draft](docs/repo-harness/rh-w-0078-design.md) and reproducible measurement procedure, with its complete Spanish peer and pertinent documentation maps, lifecycle projection and scope next gate reconciled. Recorded explicit owner approval of this bounded design and measurement procedure on 2026-10-04; separate implementation-planning authorization is the next human gate. Method approval is not runtime or safety evidence; RH-W-0078 remains `proposed`, `P2`. At that design-preparation/approval stage, no implementation plan, product change, runtime experiment, savings result or Git delivery was claimed.
+
 ## 2026-10-01
 
 - Completed RH-W-0076. Slice 3 builder compression was transferred to RH-W-0078 instead of implemented: the builder `SKILL.md` body measures 3042 against the 1000 maximum, but the builder reads every reference during a run, so relocating body text into `references/` would meet the number without reducing the context the agent loads. RH-W-0078 now owns builder compression and the guide's ceiling-scope wording alongside the generated skills, under the same effective loaded-context measurement.
