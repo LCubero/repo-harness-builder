@@ -802,14 +802,14 @@ Historical review-correction verification: 23 directly relevant tests and the se
 | Dependencies | None. Coordinate separate owners RH-W-0075 for external necessity, RH-W-0074 for warn-once compliance, RH-W-0069 for continuity, RH-W-0068 for changelog disposition, and RH-W-0081 for host-local chronology. |
 | Status | proposed |
 | Completed work | Recorded the owner-approved bilingual [design](rh-w-0080-design.md) and implementation plan; separately authorized and locally implemented the bounded contract. Final canonical verification: 629 tests, 11 skipped, zero failures/errors in 290.914 seconds; focused 12 passed; each of three runtime copies passed 12 focused tests (36 total); checker exit 0, current, 0 writes. Maintenance applied exactly 14 authorized replacements. Independent native review approved and acknowledged the 18-file implementation candidate; it did not include this documentation slice. Detailed receipts: [task record](../../odd/tasks/rh-w-0080-bounded-intake.md). |
-| Remaining work | No implementation commit or publication yet. Delivery and lifecycle acceptance remain separate decisions; RH-W-0080 stays `proposed`. |
+| Remaining work | The implementation is committed locally as `09e3e68`; publication and lifecycle acceptance remain separate decisions, and RH-W-0080 stays `proposed`. |
 | Additions | Explicit one-objective activation, narrow inspect-first grouping of non-authorizing requirement clarification, uninterrupted authorized repository execution, bounded stop conditions, and non-persistent authority. |
-| Exclusions | No YOLO integration or activation, authority persistence, automatic reuse, or grouping of approval gates. No commit, publication, or lifecycle completion is claimed. |
+| Exclusions | No YOLO integration or activation, authority persistence, automatic reuse, or grouping of approval gates. No publication or lifecycle completion is claimed. |
 | Deferrals | Delivery and lifecycle acceptance remain separate; live-agent conformance and interruption/review savings are unmeasured and unclaimed. |
 | Rejections | Rejected grouping, normalizing, supplying, inferring, persisting, broadening, or replacing authority; grouping approval gates; or using batch activation and answers as builder preview, apply, token, digest, refreshed-evidence, or approval-domain authority. |
 | Evidence | Verified fact: roadmap headings ended at RH-W-0079 when RH-W-0080 was registered. Human decision: the corrected batch interaction contract. |
 | Decision history | 2026-08-29: registered `proposed` with owner-approved bilingual design. 2026-10-06: owner approved the bilingual implementation plan ("si") for documentation recording only; this historical event did not authorize implementation. Separately, the owner authorized and resumed implementation; the local implementation and verification are recorded above. |
-| Next advancement condition | Keep status `proposed` until separate lifecycle acceptance. Delivery remains pending and requires its own authorized route; no implementation commit or publication is recorded. |
+| Next advancement condition | Keep status `proposed` until separate lifecycle acceptance. The local implementation commit `09e3e68` is recorded; publication remains pending and requires its own authorized route. |
 
 ### RH-W-0081
 | Field | Value |

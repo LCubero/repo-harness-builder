@@ -1,6 +1,6 @@
 # RH-W-0080 Ephemeral Batch Interaction Implementation Plan
 
-> **Plan status: owner-approved on 2026-10-06 ("si") for documentation recording only. Separate implementation authority was later granted; the bounded implementation and listed checks are verified in the [task record](../../odd/tasks/rh-w-0080-bounded-intake.md). The checklist below is historical plan content, not the current remaining-work list. No implementation commit or publication is recorded; lifecycle remains `proposed` pending separate acceptance.**
+> **Plan status: owner-approved on 2026-10-06 ("si") for documentation recording only. Separate implementation authority was later granted; the bounded implementation and listed checks are verified in the [task record](../../odd/tasks/rh-w-0080-bounded-intake.md). The checklist below is historical plan content, not the current remaining-work list. The implementation is committed locally as `09e3e68`; no publication is claimed, and lifecycle remains `proposed` pending separate acceptance.**
 
 Derived from the owner-approved [design](rh-w-0080-design.md). Spanish peer: [rh-w-0080-implementation-plan.md](../es/repo-harness/rh-w-0080-implementation-plan.md).
 

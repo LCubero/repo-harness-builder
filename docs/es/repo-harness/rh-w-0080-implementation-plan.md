@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0080 de interaccion efimera por lotes
 
-> **Estado del plan: aprobado por el propietario el 2026-10-06 ("si") solo para registro documental. Despues se otorgo autoridad separada de implementacion; la implementacion acotada y las comprobaciones listadas estan verificadas en el [registro de tarea](../../../odd/tasks/rh-w-0080-bounded-intake.md). La lista siguiente es contenido historico del plan, no la lista vigente de trabajo restante. No consta commit de implementacion ni publicacion; el ciclo sigue `proposed` a la espera de aceptacion separada.**
+> **Estado del plan: aprobado por el propietario el 2026-10-06 ("si") solo para registro documental. Despues se otorgo autoridad separada de implementacion; la implementacion acotada y las comprobaciones listadas estan verificadas en el [registro de tarea](../../../odd/tasks/rh-w-0080-bounded-intake.md). La lista siguiente es contenido historico del plan, no la lista vigente de trabajo restante. La implementacion esta confirmada localmente como `09e3e68`; no se afirma publicacion y el ciclo sigue `proposed` a la espera de aceptacion separada.**
 
 Derivado del [diseno](rh-w-0080-design.md) aprobado. Par canonico: [rh-w-0080-implementation-plan.md](../../repo-harness/rh-w-0080-implementation-plan.md).
 
