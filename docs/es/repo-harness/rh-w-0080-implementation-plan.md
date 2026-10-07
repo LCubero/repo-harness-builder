@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0080 de interaccion efimera por lotes
 
-> **Estado: propuesto.** El propietario aprobo este plan bilingue el 2026-10-06 ("si"), solo para registro documental. La autorizacion de implementacion sigue separada y el ciclo queda `proposed`.
+> **Estado del plan: aprobado por el propietario el 2026-10-06 ("si") solo para registro documental. Despues se otorgo autoridad separada de implementacion; la implementacion acotada y las comprobaciones listadas estan verificadas en el [registro de tarea](../../../odd/tasks/rh-w-0080-bounded-intake.md). La lista siguiente es contenido historico del plan, no la lista vigente de trabajo restante. El commit de implementacion `09e3e68` esta incluido en la cabeza publicada inicial `6d7159a98c1fdcf680b4e8be2b274bfcda79345b` del [PR #269 abierto](https://github.com/LCubero/repo-harness-builder/pull/269). La entrega/merge del producto y la aceptacion separada del ciclo siguen pendientes; el ciclo permanece `proposed`. No se informa decision de revision del PR ni checks.**
 
 Derivado del [diseno](rh-w-0080-design.md) aprobado. Par canonico: [rh-w-0080-implementation-plan.md](../../repo-harness/rh-w-0080-implementation-plan.md).
 
@@ -62,4 +62,4 @@ Cambio autoral: 150 a 230 lineas. Proyecciones mecanicas: 90 a 180. Riesgo alto 
 - [ ] Ninguna autoridad persiste ni afecta aprobacion por digest.
 - [ ] No se fusiona propietario ni se agrega estado, dependencia, daemon, store, servicio o framework.
 
-Decisiones pendientes: ninguna de planificacion. La aprobacion del plan queda registrada; la autorizacion separada de implementacion es la siguiente compuerta.
+Decision historica de planificacion: no quedaban decisiones pendientes para el plan. La aprobacion del 2026-10-06 por si sola no autorizo implementar; la autoridad separada se otorgo despues. Entrega y aceptacion del ciclo siguen como compuertas separadas pendientes.

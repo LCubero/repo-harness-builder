@@ -4894,6 +4894,67 @@ class GeneratedSkillLicenseTests(unittest.TestCase):
 class GeneratedCoreTests(unittest.TestCase):
     """The generated harness keeps its operational contract."""
 
+    def test_batch_interaction_requires_explicit_one_objective_activation(self):
+        start = TOOL.session_start_skill("example", "REPO-HARNESS.md", "MIT", False)
+        stop = TOOL.session_stop_skill("example", "REPO-HARNESS.md", "MIT", False, "english")
+        self.assertIn("Batch interaction is active only when the user explicitly names batch mode and one bounded objective", start)
+        self.assertIn("Inspect repository evidence first", start)
+        self.assertIn("continue the authorized objective without per-file confirmation", start)
+        self.assertIn(
+            "Batch activation and answers are session-only: expire on pause, close, completion, abandonment, or objective replacement",
+            start,
+        )
+        self.assertIn(
+            "Batch activation and grouped answers expire with their objective on pause, close, completion, abandonment, or replacement",
+            stop,
+        )
+        self.assertIn("Never reuse them automatically", stop)
+        self.assertNotIn("Batch interaction", stop)
+
+    def test_batch_intake_groups_only_non_authorizing_clarifications(self):
+        start = TOOL.session_start_skill("example", "REPO-HARNESS.md", "MIT", False)
+        for phrase in (
+            "group only non-authorizing requirement clarifications discovered by inspection",
+            "Resolve ordinary in-repository evidence gaps without asking",
+            "continue the authorized objective without per-file confirmation",
+            "Batch activation and answers are session-only",
+            "never reuse automatically or store them in a manifest, local state, backup, external continuity, checkpoint, receipt, or other store",
+        ):
+            self.assertIn(phrase, start)
+        self.assertIn("response-contract.md", start)
+
+    def test_batch_interaction_keeps_authority_gates_separate_and_resumable(self):
+        start = TOOL.session_start_skill("example", "REPO-HARNESS.md", "MIT", False)
+        agreements = TOOL.rule_outputs("REPO-HARNESS.md", False)[".repo-harness/rules/working-agreements.md"]
+        self.assertIn("Keep approval and authority gates separate, resumable, and one-question", start)
+        for phrase in (
+            "never groups approvals or authority decisions",
+            "External access, Git delivery, publication",
+            "destructive action, secrets, preview/apply",
+            "exact digest/token approval",
+            "material product decisions remain separate gates",
+        ):
+            self.assertIn(phrase, agreements)
+
+    def test_batch_answers_never_satisfy_builder_digest_bound_authority(self):
+        agreements = TOOL.rule_outputs("REPO-HARNESS.md", False)[".repo-harness/rules/working-agreements.md"]
+        for phrase in (
+            "Batch activation and answers are session-only clarification, not authority",
+            "cannot persist, broaden, normalize, supply, infer, or replace",
+            "`APPROVE`",
+            "`DENY`",
+            "`APROBAR`",
+            "`DENEGAR`",
+            "`planSha256`",
+            "a generation digest",
+            "refreshed evidence",
+            "previewed-byte approval",
+            "apply authority",
+            "the active approval domain",
+        ):
+            self.assertIn(phrase, agreements)
+        self.assertIn("builder digest-bound approval is unchanged", agreements)
+
     @staticmethod
     def indexed_closure(outputs, skill, references):
         base = f".repo-harness/skills/repo-harness-{skill}"

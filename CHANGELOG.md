@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-07
+
+- Implemented and locally verified the separately authorized RH-W-0080 bounded intake contract: explicit one-objective activation, inspect-first non-authorizing clarification, objective expiry, separate authority gates, and unchanged digest-bound builder approval. The final canonical suite passed 629 tests (11 skipped, zero failures/errors); focused tests passed 12, each of three runtime copies passed 12, and the checker independently reported `current`, exit 0, and 0 writes. The 14 authorized maintenance replacements passed projection verification. Implementation commit `09e3e68` is included in initial published PR head `6d7159a98c1fdcf680b4e8be2b274bfcda79345b`. [PR #269](https://github.com/LCubero/repo-harness-builder/pull/269) is OPEN against `main` from `feat/rh-w-0080-bounded-intake`, with exactly `type:feature`; issue #268 is OPEN with `status:approved` and `type:feature`. Product delivery/merge and separate lifecycle acceptance remain pending; RH-W-0080 remains `proposed`. No PR review decision or checks are reported. No YOLO integration, live-agent conformance, or measured savings are claimed.
+
 ## 2026-10-06
 
 - Recorded owner approval of the bilingual RH-W-0080 implementation plan ("si") for documentation only. RH-W-0080 remains `proposed`; implementation requires separate authorization. No implementation or Git delivery is claimed.

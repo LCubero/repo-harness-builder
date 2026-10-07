@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-07
+
+- Se implemento y verifico localmente el contrato de intake acotado RH-W-0080 bajo autorizacion separada: activacion explicita para un objetivo, aclaraciones no autorizantes tras inspeccionar, vencimiento del objetivo, compuertas de autoridad separadas y aprobacion del builder ligada a digest sin cambios. La suite canonica final paso 629 pruebas (11 omitidas, cero fallos/errores); pasaron 12 enfocadas, cada una de tres copias runtime paso 12 y el checker informo independientemente `current`, salida 0 y 0 escrituras. Los 14 reemplazos de mantenimiento autorizados pasaron verificacion de proyecciones. El commit de implementacion `09e3e68` esta incluido en la cabeza publicada inicial del PR `6d7159a98c1fdcf680b4e8be2b274bfcda79345b`. El [PR #269](https://github.com/LCubero/repo-harness-builder/pull/269) esta OPEN contra `main` desde `feat/rh-w-0080-bounded-intake` y tiene exactamente `type:feature`; el issue #268 esta OPEN con `status:approved` y `type:feature`. La entrega/merge del producto y la aceptacion separada del ciclo siguen pendientes; RH-W-0080 sigue `proposed`. No se informa decision de revision del PR ni checks. No se afirma integracion YOLO, cumplimiento de agentes en vivo ni ahorro medido.
+
 ## 2026-10-06
 
 - Se registro la aprobacion del propietario del plan bilingue de implementacion RH-W-0080 ("si"), solo para documentacion. RH-W-0080 sigue `proposed`; implementar requiere autorizacion separada. No se afirma implementacion ni entrega Git.

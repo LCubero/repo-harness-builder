@@ -1,6 +1,6 @@
 # RH-W-0080 Ephemeral Batch Interaction Design
 
-> **Status: OWNER-APPROVED DESIGN. A proposed implementation plan exists; implementation remains separately unauthorized.**
+> **Design status: owner-approved. Historical design/plan approval did not authorize implementation; separate implementation authority has since been granted and the bounded implementation verified locally. Delivery and lifecycle acceptance remain pending; see the [roadmap](roadmap.md#rh-w-0080).**
 
 ## Decision
 
@@ -28,11 +28,11 @@ Batch activation and grouped answers do not authorize previewed bytes or apply. 
 - RH-W-0068 remains the owner of changelog disposition during documentation closure.
 - RH-W-0081 solely owns host-local human-facing changelog date derivation. Its chronology cannot be inferred from or control RH-W-0069 UTC backup identity.
 
-No implementation, test, generated projection, changelog correction, Git action, network access, provider action, or publication is authorized by this design or the proposed plan.
+Historical authority boundary: this design and the proposed plan did not authorize implementation when approved. Separate implementation authority was granted later; no commit, publication, or lifecycle completion is implied.
 
 ## Verification Targets In The Proposed Plan
 
-The proposed [implementation plan](rh-w-0080-implementation-plan.md) covers explicit activation, non-persistence, the narrow inspect-first clarification exception, uninterrupted in-scope execution, separate resumable authority gates, unchanged builder digest-bound authority, and every stop condition. It awaits owner approval.
+The approved [implementation plan](rh-w-0080-implementation-plan.md) records the bounded contract and execution history. Detailed implementation and verification evidence is in the [task record](../../odd/tasks/rh-w-0080-bounded-intake.md); it does not claim live-agent compliance or measured savings.
 
 ## Done Conditions
 
