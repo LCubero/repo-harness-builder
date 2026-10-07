@@ -1,6 +1,6 @@
 # Diseno RH-W-0080 de interaccion efimera por lotes
 
-> **Estado: DISENO APROBADO POR EL PROPIETARIO. Existe un plan propuesto; la implementacion sigue sin autorizacion separada.**
+> **Estado del diseño: aprobado por el propietario. La aprobación histórica del diseño/plan no autorizó implementar; después se otorgó autoridad separada y la implementación acotada se verificó localmente. Entrega y aceptación del ciclo siguen pendientes; véase la [hoja de ruta](roadmap.md#rh-w-0080).**
 
 ## Decision
 
@@ -28,11 +28,11 @@ La activacion del modo y las respuestas agrupadas no autorizan bytes del preview
 - RH-W-0068 conserva la disposicion del changelog durante el cierre documental.
 - RH-W-0081 posee en exclusiva la derivacion de fecha local del host para la cronologia humana del changelog. Esa cronologia no se infiere de la identidad UTC de RH-W-0069 ni la controla.
 
-Este diseno y el plan propuesto no autorizan implementacion, pruebas, proyecciones, correccion, Git, red, proveedor ni publicacion.
+Limite historico de autoridad: este diseno y el plan propuesto no autorizaban implementar cuando se aprobaron. La autoridad separada se otorgo despues; no implica commit, publicacion ni finalizacion del ciclo.
 
 ## Objetivos de verificacion del plan propuesto
 
-El [plan de implementacion](rh-w-0080-implementation-plan.md) propuesto cubre activacion explicita, no persistencia, aclaracion estrecha despues de inspeccionar, ejecucion acotada, compuertas separadas y autoridad por digest intacta. Espera aprobacion.
+El [plan de implementacion](rh-w-0080-implementation-plan.md) aprobado conserva el contrato acotado y el historial de ejecucion. La evidencia detallada de implementacion y verificacion esta en el [registro de tarea](../../../odd/tasks/rh-w-0080-bounded-intake.md); no afirma cumplimiento de agentes en vivo ni ahorros medidos.
 
 ## Condiciones de finalizacion
 

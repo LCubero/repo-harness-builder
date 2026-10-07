@@ -426,7 +426,7 @@ Historical decisions: the owner approved the bilingual design and separate imple
 
 ### Plan 29: RH-W-0080 ephemeral batch interaction
 
-Readiness `owner-approved plan; implementation unauthorized`. Priority `P2`, dependencies none. The owner-approved [design](rh-w-0080-design.md) and bilingual [implementation plan](rh-w-0080-implementation-plan.md) are complete. Implementation remains separately unauthorized.
+Readiness `implementation verified locally; delivery and lifecycle acceptance pending`. Priority `P2`, dependencies none. The owner-approved [design](rh-w-0080-design.md) and bilingual [implementation plan](rh-w-0080-implementation-plan.md) remain the scope owners. Separate owner authority has since authorized implementation; the verified local implementation is recorded below. The plan-approval event and its original implementation-unauthorized statement are historical, not current authority.
 
 1. Preserve explicit activation for one bounded objective and never persist or reuse its authority.
 2. Inspect first, then group only non-authorizing requirement clarifications discoverable from that analysis.
@@ -435,7 +435,7 @@ Readiness `owner-approved plan; implementation unauthorized`. Priority `P2`, dep
 5. Preserve digest-bound builder authority: grouped answers cannot supply or replace approval tokens, plan or generation digests, refreshed evidence, previewed-byte approval, apply authority, or the active approval domain.
 6. Preserve RH-W-0075, RH-W-0074, RH-W-0069, RH-W-0068, and RH-W-0081 as separate owners.
 
-Human decision: separately authorize implementation. Plan approval is recorded; implementation remains unauthorized.
+Historical human decision: the 2026-10-06 plan approval was for documentation recording only and did not authorize implementation. Separate implementation authorization was subsequently given and reaffirmed; no delivery or lifecycle acceptance is implied.
 
 ### Plan 30: RH-W-0081 host-local changelog chronology
 
@@ -801,15 +801,15 @@ Historical review-correction verification: 23 directly relevant tests and the se
 | Priority | P2: repeated file-level interruption wastes review effort, while authority must remain exact and resumable. |
 | Dependencies | None. Coordinate separate owners RH-W-0075 for external necessity, RH-W-0074 for warn-once compliance, RH-W-0069 for continuity, RH-W-0068 for changelog disposition, and RH-W-0081 for host-local chronology. |
 | Status | proposed |
-| Completed work | Verified RH-W-0080 as the next immutable ID, recorded the owner-approved bilingual [design](rh-w-0080-design.md), wrote the bilingual [implementation plan](rh-w-0080-implementation-plan.md), and recorded owner approval of that plan on 2026-10-06 ("si") for documentation only. |
-| Remaining work | Separate owner authorization of implementation. |
+| Completed work | Recorded the owner-approved bilingual [design](rh-w-0080-design.md) and implementation plan; separately authorized and locally implemented the bounded contract. Final canonical verification: 629 tests, 11 skipped, zero failures/errors in 290.914 seconds; focused 12 passed; each of three runtime copies passed 12 focused tests (36 total); checker exit 0, current, 0 writes. Maintenance applied exactly 14 authorized replacements. Independent native review approved and acknowledged the 18-file implementation candidate; it did not include this documentation slice. Detailed receipts: [task record](../../odd/tasks/rh-w-0080-bounded-intake.md). |
+| Remaining work | No implementation commit or publication yet. Delivery and lifecycle acceptance remain separate decisions; RH-W-0080 stays `proposed`. |
 | Additions | Explicit one-objective activation, narrow inspect-first grouping of non-authorizing requirement clarification, uninterrupted authorized repository execution, bounded stop conditions, and non-persistent authority. |
-| Exclusions | No implementation, tests, generated projections, changelog correction, Git or GitHub mutation, network, provider action, publication, destructive action, secret handling, or authority persistence. |
-| Deferrals | Implementation waits for separate owner authorization; plan approval does not authorize implementation. |
+| Exclusions | No YOLO integration or activation, authority persistence, automatic reuse, or grouping of approval gates. No commit, publication, or lifecycle completion is claimed. |
+| Deferrals | Delivery and lifecycle acceptance remain separate; live-agent conformance and interruption/review savings are unmeasured and unclaimed. |
 | Rejections | Rejected grouping, normalizing, supplying, inferring, persisting, broadening, or replacing authority; grouping approval gates; or using batch activation and answers as builder preview, apply, token, digest, refreshed-evidence, or approval-domain authority. |
 | Evidence | Verified fact: roadmap headings ended at RH-W-0079 when RH-W-0080 was registered. Human decision: the corrected batch interaction contract. |
-| Decision history | 2026-08-29: registered `proposed` with owner-approved bilingual design. 2026-10-06: owner approved the bilingual implementation plan ("si") for documentation recording only. Implementation, correction, delivery, and publication remain unauthorized. |
-| Next advancement condition | Advance only after separate owner authorization of implementation. |
+| Decision history | 2026-08-29: registered `proposed` with owner-approved bilingual design. 2026-10-06: owner approved the bilingual implementation plan ("si") for documentation recording only; this historical event did not authorize implementation. Separately, the owner authorized and resumed implementation; the local implementation and verification are recorded above. |
+| Next advancement condition | Keep status `proposed` until separate lifecycle acceptance. Delivery remains pending and requires its own authorized route; no implementation commit or publication is recorded. |
 
 ### RH-W-0081
 | Field | Value |
