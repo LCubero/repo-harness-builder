@@ -1,19 +1,21 @@
 # RH-W-0080 Ephemeral Batch Interaction Implementation Plan
 
-> **Status: proposed.** Plan approval and implementation authorization remain separate. The lifecycle stays `proposed`.
+> **Status: proposed.** The owner approved this bilingual plan on 2026-10-06 ("si") for documentation recording only. Implementation authorization remains separate, and the lifecycle stays `proposed`.
 
 Derived from the owner-approved [design](rh-w-0080-design.md). Spanish peer: [rh-w-0080-implementation-plan.md](../es/repo-harness/rh-w-0080-implementation-plan.md).
 
 ## Proven Surface And Authority Boundaries
 
-Ownership is resolved, not optional. `skill/repo-harness-builder/scripts/harness_tool.py::session_start_skill()` owns activation, inspect-first intake, grouped non-authorizing clarification, and continuation for one objective. `::session_stop_skill()` owns expiry on pause, close, completion, abandonment, or replacement of that objective. `::rule_outputs()` owns shared authority exclusions in working agreements. `skill/repo-harness-builder/tests/test_harness_tool.py::GeneratedCoreTests` owns generated-contract assertions. `render_with_skill_mapping()` renders all three owners. RH-W-0067 owns response syntax, RH-W-0075 external necessity, RH-W-0074 post-answer compliance, RH-W-0069 continuity, RH-W-0068 changelog disposition, RH-W-0081 chronology, and RH-W-0053 executable checkpoints. Builder preview and apply retain exact digest and token authority without modification.
+Ownership is resolved, not optional. `skill/repo-harness-builder/scripts/harness_tool.py::session_start_skill()` owns activation, inspect-first intake, grouped non-authorizing clarification, and continuation for one objective. `::session_stop_skill()` owns expiry on pause, close, completion, abandonment, or replacement of that objective. `::rule_outputs()` owns shared authority exclusions in working agreements. `skill/repo-harness-builder/tests/test_harness_tool.py::GeneratedCoreTests` owns generated-contract assertions. `render_with_skill_mapping()` renders all three owners. RH-W-0067 owns response syntax, RH-W-0075 external necessity, RH-W-0074 post-answer compliance, RH-W-0069 continuity, RH-W-0068 changelog disposition, RH-W-0081 chronology, and RH-W-0053 executable checkpoints. RH-W-0074 and RH-W-0075 are references to completed behavior, not unfinished dependencies. Builder preview and apply retain exact digest and token authority without modification.
+
+Group only non-authorizing requirement questions; exclude human/material decisions and every approval. Preserve evidence, safety, and authority pauses, asking one blocking decision at a time. Activation and answers are session-only, expire on pause or objective replacement (as well as the other stop conditions above), confer no authority, and are never reused automatically. Generated-contract tests verify structure, not live-agent compliance.
 
 ## Task 1: RED For Activation, Intake, And Expiry
 
 - [ ] Add `GeneratedCoreTests.test_batch_interaction_requires_explicit_one_objective_activation` and `test_batch_intake_groups_only_non_authorizing_clarifications`.
 - [ ] Assert explicit activation names one bounded selected-repository objective, inspect-first analysis precedes intake, and only newly discoverable non-authorizing requirement clarifications may be grouped.
 - [ ] Assert ordinary repository-resolvable evidence gaps are resolved without asking and authorized in-scope work proceeds without file-by-file confirmation.
-- [ ] Assert mode and grouped answers expire with the objective and are never written to manifest, local state, backups, Engram, checkpoints, receipts, or another store.
+- [ ] Assert activation and grouped answers are session-only; expire on pause or objective replacement and all other objective stop conditions; are never reused automatically or written to manifest, local state, backups, Engram, checkpoints, receipts, or another store.
 - [ ] Run `python -B skill/repo-harness-builder/tests/test_harness_tool.py GeneratedCoreTests.test_batch_interaction_requires_explicit_one_objective_activation GeneratedCoreTests.test_batch_intake_groups_only_non_authorizing_clarifications -v`. Expected RED: missing contract clauses only.
 
 ## Task 2: RED For Separate Resumable Authority Gates
@@ -60,4 +62,4 @@ Authored change: 150 to 230 lines. Mechanical projection change: 90 to 180 lines
 - [ ] No batch authority persists or affects builder digest-bound approval.
 - [ ] No owner is merged and no new state, dependency, daemon, store, service, or framework appears.
 
-Unresolved decisions: none for planning. Owner review of this plan and separate implementation authority remain required.
+Unresolved decisions: none for planning. Plan approval is recorded; separate implementation authorization remains the next gate.

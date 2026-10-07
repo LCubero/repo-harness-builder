@@ -82,7 +82,7 @@
 | [rh-w-0079-design.md](rh-w-0079-design.md) | Completed optional-capability and self-hosting release-boundary design; all five slices delivered without claiming an actual release |
 | [rh-w-0079-implementation-plan.md](rh-w-0079-implementation-plan.md) | Completed five-slice test-first plan; Slice 4 and Slice 5 delivery evidence is recorded |
 | [rh-w-0080-design.md](rh-w-0080-design.md) | Owner-approved ephemeral batch-interaction design; implementation remains unauthorized |
-| [rh-w-0080-implementation-plan.md](rh-w-0080-implementation-plan.md) | Proposed ephemeral batch-interaction implementation plan awaiting owner approval |
+| [rh-w-0080-implementation-plan.md](rh-w-0080-implementation-plan.md) | Owner-approved ephemeral batch-interaction implementation plan; implementation remains unauthorized |
 | [rh-w-0081-design.md](rh-w-0081-design.md) | Owner-approved host-local changelog chronology design; implementation remains unauthorized |
 | [rh-w-0081-implementation-plan.md](rh-w-0081-implementation-plan.md) | Proposed host-local chronology implementation plan awaiting owner approval |
 | [rh-w-0075-design.md](rh-w-0075-design.md) | Completed owner-approved external access design with its minimal implementation; delivered through PR #257 |

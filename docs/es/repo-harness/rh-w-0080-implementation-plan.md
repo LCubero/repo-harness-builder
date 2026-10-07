@@ -1,19 +1,21 @@
 # Plan de implementacion RH-W-0080 de interaccion efimera por lotes
 
-> **Estado: propuesto.** Aprobar el plan y autorizar implementacion siguen separados. El ciclo queda `proposed`.
+> **Estado: propuesto.** El propietario aprobo este plan bilingue el 2026-10-06 ("si"), solo para registro documental. La autorizacion de implementacion sigue separada y el ciclo queda `proposed`.
 
 Derivado del [diseno](rh-w-0080-design.md) aprobado. Par canonico: [rh-w-0080-implementation-plan.md](../../repo-harness/rh-w-0080-implementation-plan.md).
 
 ## Superficie y limites de autoridad
 
-La propiedad esta resuelta. `skill/repo-harness-builder/scripts/harness_tool.py::session_start_skill()` posee activacion, intake despues de inspeccionar, aclaracion no autorizante agrupada y continuacion de un objetivo. `::session_stop_skill()` posee vencimiento al pausar, cerrar, completar, abandonar o reemplazarlo. `::rule_outputs()` posee exclusiones compartidas en working agreements. `skill/repo-harness-builder/tests/test_harness_tool.py::GeneratedCoreTests` posee aserciones. `render_with_skill_mapping()` renderiza los tres propietarios. Los demas propietarios y la autoridad por digest no cambian.
+La propiedad esta resuelta. `skill/repo-harness-builder/scripts/harness_tool.py::session_start_skill()` posee activacion, intake despues de inspeccionar, aclaracion no autorizante agrupada y continuacion de un objetivo. `::session_stop_skill()` posee vencimiento al pausar, cerrar, completar, abandonar o reemplazarlo. `::rule_outputs()` posee exclusiones compartidas en working agreements. `skill/repo-harness-builder/tests/test_harness_tool.py::GeneratedCoreTests` posee aserciones del contrato generado. `render_with_skill_mapping()` renderiza los tres propietarios. RH-W-0074 y RH-W-0075 son referencias a conductas ya completadas, no dependencias inconclusas. Los demas propietarios y la autoridad por digest no cambian.
+
+Agrupar solo preguntas de requisitos no autorizantes; excluir decisiones humanas/materiales y toda aprobacion. Mantener pausas por evidencia, seguridad y autoridad; hacer una pregunta de decision bloqueante a la vez. La activacion y las respuestas son solo de sesion, vencen al pausar o reemplazar el objetivo (ademas de las otras condiciones de cierre anteriores), no confieren autoridad y nunca se reutilizan automaticamente. Las pruebas del contrato generado verifican estructura, no cumplimiento de agentes en vivo.
 
 ## Tarea 1: RED de activacion, consulta y expiracion
 
 - [ ] Agregar `GeneratedCoreTests.test_batch_interaction_requires_explicit_one_objective_activation` y `test_batch_intake_groups_only_non_authorizing_clarifications`.
 - [ ] Exigir activacion explicita para un objetivo acotado, inspeccion antes de consultar y agrupacion solo de aclaraciones no autorizantes descubiertas por esa inspeccion.
 - [ ] Resolver sin preguntar huecos de evidencia internos y ejecutar sin confirmacion archivo por archivo solo el trabajo ya autorizado.
-- [ ] Exigir expiracion con el objetivo y cero escritura en manifest, estado local, backups, Engram, checkpoints, recibos o stores.
+- [ ] Exigir que activacion y respuestas agrupadas sean solo de sesion; venzan al pausar, reemplazar el objetivo y en las demas condiciones de cierre; nunca se reutilicen automaticamente ni se escriban en manifest, estado local, backups, Engram, checkpoints, recibos o stores.
 - [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py GeneratedCoreTests.test_batch_interaction_requires_explicit_one_objective_activation GeneratedCoreTests.test_batch_intake_groups_only_non_authorizing_clarifications -v`. RED esperado: faltan solo clausulas de contrato.
 
 ## Tarea 2: RED de compuertas separadas
@@ -60,4 +62,4 @@ Cambio autoral: 150 a 230 lineas. Proyecciones mecanicas: 90 a 180. Riesgo alto 
 - [ ] Ninguna autoridad persiste ni afecta aprobacion por digest.
 - [ ] No se fusiona propietario ni se agrega estado, dependencia, daemon, store, servicio o framework.
 
-Decisiones pendientes: ninguna de planificacion. Revision y autoridad de implementacion siguen requeridas.
+Decisiones pendientes: ninguna de planificacion. La aprobacion del plan queda registrada; la autorizacion separada de implementacion es la siguiente compuerta.

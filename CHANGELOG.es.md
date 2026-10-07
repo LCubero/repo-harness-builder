@@ -4,6 +4,8 @@
 
 ## 2026-10-06
 
+- Se registro la aprobacion del propietario del plan bilingue de implementacion RH-W-0080 ("si"), solo para documentacion. RH-W-0080 sigue `proposed`; implementar requiere autorizacion separada. No se afirma implementacion ni entrega Git.
+
 - Se reconciliaron las decisiones bilingües: la política de contribución ahora incluye la excepción aprobada por el propietario para cambios pequeños de documentación directamente a `main` con entrada en el changelog, e I1 de RH-W-0078 queda marcado como histórico frente a su finalización aceptada por el propietario; la efectividad y los ahorros de runtime siguen sin medir y no se afirman, y el issue #266 está cerrado.
 
 - Se registró la recurrencia del idioma de conversación RH-W-0031 después de reportarse una preferencia persistida válida en español; la causa raíz sigue sin verificarse y no se afirma ninguna corrección del producto.

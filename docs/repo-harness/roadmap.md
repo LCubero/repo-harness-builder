@@ -426,7 +426,7 @@ Historical decisions: the owner approved the bilingual design and separate imple
 
 ### Plan 29: RH-W-0080 ephemeral batch interaction
 
-Readiness `plan written; awaiting owner approval`. Priority `P2`, dependencies none. The owner-approved [design](rh-w-0080-design.md) and proposed bilingual [implementation plan](rh-w-0080-implementation-plan.md) are complete. Implementation remains separately unauthorized.
+Readiness `owner-approved plan; implementation unauthorized`. Priority `P2`, dependencies none. The owner-approved [design](rh-w-0080-design.md) and bilingual [implementation plan](rh-w-0080-implementation-plan.md) are complete. Implementation remains separately unauthorized.
 
 1. Preserve explicit activation for one bounded objective and never persist or reuse its authority.
 2. Inspect first, then group only non-authorizing requirement clarifications discoverable from that analysis.
@@ -435,7 +435,7 @@ Readiness `plan written; awaiting owner approval`. Priority `P2`, dependencies n
 5. Preserve digest-bound builder authority: grouped answers cannot supply or replace approval tokens, plan or generation digests, refreshed evidence, previewed-byte approval, apply authority, or the active approval domain.
 6. Preserve RH-W-0075, RH-W-0074, RH-W-0069, RH-W-0068, and RH-W-0081 as separate owners.
 
-Human decision: approve or correct the implementation plan. Implementation requires separate authorization.
+Human decision: separately authorize implementation. Plan approval is recorded; implementation remains unauthorized.
 
 ### Plan 30: RH-W-0081 host-local changelog chronology
 
@@ -801,15 +801,15 @@ Historical review-correction verification: 23 directly relevant tests and the se
 | Priority | P2: repeated file-level interruption wastes review effort, while authority must remain exact and resumable. |
 | Dependencies | None. Coordinate separate owners RH-W-0075 for external necessity, RH-W-0074 for warn-once compliance, RH-W-0069 for continuity, RH-W-0068 for changelog disposition, and RH-W-0081 for host-local chronology. |
 | Status | proposed |
-| Completed work | Verified RH-W-0080 as the next immutable ID, recorded the owner-approved bilingual [design](rh-w-0080-design.md), and wrote the bilingual [implementation plan](rh-w-0080-implementation-plan.md). |
-| Remaining work | Owner review of the plan. Implementation requires separate authorization. |
+| Completed work | Verified RH-W-0080 as the next immutable ID, recorded the owner-approved bilingual [design](rh-w-0080-design.md), wrote the bilingual [implementation plan](rh-w-0080-implementation-plan.md), and recorded owner approval of that plan on 2026-10-06 ("si") for documentation only. |
+| Remaining work | Separate owner authorization of implementation. |
 | Additions | Explicit one-objective activation, narrow inspect-first grouping of non-authorizing requirement clarification, uninterrupted authorized repository execution, bounded stop conditions, and non-persistent authority. |
 | Exclusions | No implementation, tests, generated projections, changelog correction, Git or GitHub mutation, network, provider action, publication, destructive action, secret handling, or authority persistence. |
-| Deferrals | Implementation waits for owner approval of the written plan and separate implementation authorization. |
+| Deferrals | Implementation waits for separate owner authorization; plan approval does not authorize implementation. |
 | Rejections | Rejected grouping, normalizing, supplying, inferring, persisting, broadening, or replacing authority; grouping approval gates; or using batch activation and answers as builder preview, apply, token, digest, refreshed-evidence, or approval-domain authority. |
 | Evidence | Verified fact: roadmap headings ended at RH-W-0079 when RH-W-0080 was registered. Human decision: the corrected batch interaction contract. |
-| Decision history | 2026-08-29: registered `proposed` with owner-approved bilingual design. A proposed bilingual implementation plan now exists and awaits owner approval; implementation, correction, delivery, and publication remain unauthorized. |
-| Next advancement condition | Advance only after owner approval of the implementation plan; implementation still requires separate authorization. |
+| Decision history | 2026-08-29: registered `proposed` with owner-approved bilingual design. 2026-10-06: owner approved the bilingual implementation plan ("si") for documentation recording only. Implementation, correction, delivery, and publication remain unauthorized. |
+| Next advancement condition | Advance only after separate owner authorization of implementation. |
 
 ### RH-W-0081
 | Field | Value |

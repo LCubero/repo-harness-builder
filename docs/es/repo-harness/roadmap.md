@@ -433,7 +433,7 @@ Decisiones historicas: el propietario aprobo el diseno bilingue y el plan separa
 
 ### Plan 29: interaccion efimera por lotes RH-W-0080
 
-Preparacion `plan escrito; espera aprobacion`. Prioridad `P2`, sin dependencias. El [diseno](rh-w-0080-design.md) aprobado y el [plan bilingue](rh-w-0080-implementation-plan.md) propuesto estan completos. Implementacion sigue sin autorizar.
+Preparacion `plan aprobado; implementacion sin autorizar`. Prioridad `P2`, sin dependencias. El [diseno](rh-w-0080-design.md) aprobado y el [plan bilingue](rh-w-0080-implementation-plan.md) estan completos. Implementacion sigue sin autorizar.
 
 1. Conservar activacion explicita para un objetivo acotado, sin persistir ni reutilizar autoridad.
 2. Inspeccionar primero y agrupar solo aclaraciones no autorizantes de requisitos detectables desde ese analisis.
@@ -442,7 +442,7 @@ Preparacion `plan escrito; espera aprobacion`. Prioridad `P2`, sin dependencias.
 5. Conservar autoridad del builder ligada a digest: respuestas agrupadas no suministran ni reemplazan tokens, digests de plan o generacion, evidencia refrescada, aprobacion de bytes del preview, autoridad de apply ni dominio activo de aprobacion.
 6. Conservar separados RH-W-0075, RH-W-0074, RH-W-0069, RH-W-0068 y RH-W-0081.
 
-Decision humana: aprobar o corregir el plan. Implementar requiere autoridad separada.
+Decision humana: autorizar implementacion por separado. La aprobacion del plan queda registrada; implementar sigue sin autorizar.
 
 ### Plan 30: cronologia local del host para el changelog RH-W-0081
 
@@ -709,7 +709,7 @@ Origen: la arquitectura LLM-first de preferencias aprobada por el propietario ag
 
 ### RH-W-0080
 
-Origen: direccion aprobada para un modo efimero de interaccion por lotes activado explicitamente. Prioridad: `P2`. Dependencias: ninguna; coordina sin fusionar RH-W-0075, RH-W-0074, RH-W-0069, RH-W-0068 y RH-W-0081. Estado: `proposed`. Trabajo completado: se registraron el [diseno](rh-w-0080-design.md) aprobado y el [plan bilingue](rh-w-0080-implementation-plan.md) propuesto. Trabajo restante: aprobacion del plan; implementacion requiere autoridad separada. Adiciones: activacion por un objetivo, inspeccion previa, aclaraciones no autorizantes, ejecucion acotada y autoridad no persistente. Exclusiones: sin implementacion, pruebas, proyecciones, Git, red, proveedor, publicacion, destruccion, secretos ni persistencia. Rechazos: nunca persistir, ampliar, agrupar, normalizar, suministrar, inferir ni reemplazar autoridad o aprobacion exacta del builder. Historial de decision: el plan bilingue propuesto existe y espera aprobacion del propietario; la implementacion sigue sin autorizar. Siguiente condicion: aprobacion del plan; implementar sigue separado.
+Origen: direccion aprobada para un modo efimero de interaccion por lotes activado explicitamente. Prioridad: `P2`. Dependencias: ninguna; coordina sin fusionar RH-W-0075, RH-W-0074, RH-W-0069, RH-W-0068 y RH-W-0081. Estado: `proposed`. Trabajo completado: se registraron el [diseno](rh-w-0080-design.md) aprobado, el [plan bilingue](rh-w-0080-implementation-plan.md) y la aprobacion del propietario del 2026-10-06 ("si"), solo para registro documental. Trabajo restante: autorizacion separada del propietario para implementar. Adiciones: activacion por un objetivo, inspeccion previa, aclaraciones no autorizantes, ejecucion acotada y autoridad no persistente. Exclusiones: sin implementacion, pruebas, proyecciones, Git, red, proveedor, publicacion, destruccion, secretos ni persistencia. Rechazos: nunca persistir, ampliar, agrupar, normalizar, suministrar, inferir ni reemplazar autoridad o aprobacion exacta del builder. Historial de decision: 2026-10-06, el propietario aprobo el plan bilingue ("si") solo para registro; la implementacion sigue sin autorizar. Siguiente condicion: autorizacion separada del propietario para implementar.
 
 ### RH-W-0081
 
