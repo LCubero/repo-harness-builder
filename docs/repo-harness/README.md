@@ -81,8 +81,8 @@
 | [rh-w-0082-design.md](rh-w-0082-design.md) | Owner-approved plain-language explanation-style design; implementation remains unauthorized |
 | [rh-w-0079-design.md](rh-w-0079-design.md) | Completed optional-capability and self-hosting release-boundary design; all five slices delivered without claiming an actual release |
 | [rh-w-0079-implementation-plan.md](rh-w-0079-implementation-plan.md) | Completed five-slice test-first plan; Slice 4 and Slice 5 delivery evidence is recorded |
-| [rh-w-0080-design.md](rh-w-0080-design.md) | Owner-approved ephemeral batch-interaction design; implementation is separately authorized and locally verified, while delivery and lifecycle acceptance remain pending |
-| [rh-w-0080-implementation-plan.md](rh-w-0080-implementation-plan.md) | Approved execution plan with historical approval-only context; implementation is locally verified, while delivery and lifecycle acceptance remain pending |
+| [rh-w-0080-design.md](rh-w-0080-design.md) | Owner-approved ephemeral batch-interaction design; implementation delivered through PR #269; separate lifecycle acceptance pending |
+| [rh-w-0080-implementation-plan.md](rh-w-0080-implementation-plan.md) | Approved execution plan with historical approval-only context; implementation delivered through PR #269; separate lifecycle acceptance pending |
 | [rh-w-0081-design.md](rh-w-0081-design.md) | Owner-approved host-local changelog chronology design; implementation remains unauthorized |
 | [rh-w-0081-implementation-plan.md](rh-w-0081-implementation-plan.md) | Proposed host-local chronology implementation plan awaiting owner approval |
 | [rh-w-0075-design.md](rh-w-0075-design.md) | Completed owner-approved external access design with its minimal implementation; delivered through PR #257 |
