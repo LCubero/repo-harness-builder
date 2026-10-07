@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0080 de interaccion efimera por lotes
 
-> **Estado del plan: aprobado por el propietario el 2026-10-06 ("si") solo para registro documental. Despues se otorgo autoridad separada de implementacion; la implementacion acotada y las comprobaciones listadas estan verificadas en el [registro de tarea](../../../odd/tasks/rh-w-0080-bounded-intake.md). La lista siguiente es contenido historico del plan, no la lista vigente de trabajo restante. La implementacion esta confirmada localmente como `09e3e68`; no se afirma publicacion y el ciclo sigue `proposed` a la espera de aceptacion separada.**
+> **Estado del plan: aprobado por el propietario el 2026-10-06 ("si") solo para registro documental. Despues se otorgo autoridad separada de implementacion; la implementacion acotada y las comprobaciones listadas estan verificadas en el [registro de tarea](../../../odd/tasks/rh-w-0080-bounded-intake.md). La lista siguiente es contenido historico del plan, no la lista vigente de trabajo restante. El commit de implementacion `09e3e68` esta incluido en la cabeza publicada inicial `6d7159a98c1fdcf680b4e8be2b274bfcda79345b` del [PR #269 abierto](https://github.com/LCubero/repo-harness-builder/pull/269). La entrega/merge del producto y la aceptacion separada del ciclo siguen pendientes; el ciclo permanece `proposed`. No se informa decision de revision del PR ni checks.**
 
 Derivado del [diseno](rh-w-0080-design.md) aprobado. Par canonico: [rh-w-0080-implementation-plan.md](../../repo-harness/rh-w-0080-implementation-plan.md).
 
