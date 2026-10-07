@@ -1,6 +1,6 @@
 # Diseno RH-W-0080 de interaccion efimera por lotes
 
-> **Estado del diseño: aprobado por el propietario. La aprobación histórica del diseño/plan no autorizó implementar; después se otorgó autoridad separada y la implementación acotada se verificó localmente. Entrega completada mediante PR #269 (4dc5cf3); la aceptación del ciclo sigue pendiente; véase la [hoja de ruta](roadmap.md#rh-w-0080).**
+> **Estado del diseño: completado por aceptación condicional del propietario el 2026-10-07, tras pasar todos los criterios; véase la [hoja de ruta canónica](roadmap.md#rh-w-0080). La aprobación histórica del diseño/plan no autorizó implementar; después se otorgó autoridad separada. La entrega del producto mediante el PR #269 (4dc5cf3) está completa.**
 
 ## Decision
 
@@ -34,7 +34,7 @@ Limite historico de autoridad: este diseno y el plan propuesto no autorizaban im
 
 El [plan de implementacion](rh-w-0080-implementation-plan.md) aprobado conserva el contrato acotado y el historial de ejecucion. La evidencia detallada de implementacion y verificacion esta en el [registro de tarea](../../../odd/tasks/rh-w-0080-bounded-intake.md); no afirma cumplimiento de agentes en vivo ni ahorros medidos.
 
-## Condiciones de finalizacion
+## Condiciones historicas del diseño (reemplazadas por la aceptacion del ciclo)
 
 - El diseno bilingue y las proyecciones del ciclo coinciden.
 - RH-W-0080 permanece `proposed` con diseno aprobado.
