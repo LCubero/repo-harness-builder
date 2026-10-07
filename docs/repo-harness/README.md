@@ -71,7 +71,7 @@
 | [rh-w-0078-gentle-ai-binary-research.md](rh-w-0078-gentle-ai-binary-research.md) | Canonical Gentle AI source research informing RH-W-0078 progressive disclosure and deterministic machine ownership without authorizing a new binary or implementation |
 | [rh-w-0078-scope.md](rh-w-0078-scope.md) | Owner-approved scope for multi-file generated skills, reachable references, and selective existing-Python mechanics; implementation is now separately authorized |
 | [rh-w-0078-design.md](rh-w-0078-design.md) | Owner-approved bounded bilingual thin-entry design and reproducible measurement procedure; runtime results remain unknown, and measurement is required before effectiveness claims, not before implementation |
-| [rh-w-0078-implementation-plan.md](rh-w-0078-implementation-plan.md) | Owner-approved bilingual implementation plan; local implementation/synchronization are verified, while runtime effectiveness and formal delivery remain unclaimed |
+| [rh-w-0078-implementation-plan.md](rh-w-0078-implementation-plan.md) | Bilingual implementation delivered and completed by owner acceptance; runtime measurement waived, with no measured-savings claim |
 | [rh-w-0092-scope.md](rh-w-0092-scope.md) | Proposed scope for conditional Windows long-path guidance; global Git remediation remains human-run only |
 | [rh-w-0095-design.md](rh-w-0095-design.md) | Delivered contextual-acknowledgement design; historical implementation evidence retained and PR #213 merge recorded |
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |

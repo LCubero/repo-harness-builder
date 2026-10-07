@@ -5,6 +5,7 @@
 ## 2026-10-06
 
 - Se registró la recurrencia del idioma de conversación RH-W-0031 después de reportarse una preferencia persistida válida en español; la causa raíz sigue sin verificarse y no se afirma ninguna corrección del producto.
+- Se corrigieron en ambos mapas documentales las descripciones del plan de implementación RH-W-0078 para reflejar la finalización ya aceptada por el propietario y la dispensa de medición de runtime; no se afirman ahorros medidos.
 
 - Se registró la finalización del ciclo RH-W-0078 por aceptación explícita del propietario tras la entrega del PR #267. La medición de efectividad de runtime se dispensó como condición de finalización; la efectividad y los ahorros siguen sin medir y no se afirman. El issue #266 se verificó recién OPEN; su cierre real y recibo siguen pendientes.
 
