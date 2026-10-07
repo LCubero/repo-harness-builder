@@ -4,6 +4,8 @@
 
 ## 2026-10-06
 
+- Se registró la recurrencia del idioma de conversación RH-W-0031 después de reportarse una preferencia persistida válida en español; la causa raíz sigue sin verificarse y no se afirma ninguna corrección del producto.
+
 - Se registró la finalización del ciclo RH-W-0078 por aceptación explícita del propietario tras la entrega del PR #267. La medición de efectividad de runtime se dispensó como condición de finalización; la efectividad y los ahorros siguen sin medir y no se afirman. El issue #266 se verificó recién OPEN; su cierre real y recibo siguen pendientes.
 
 - Se registró la entrega posterior al merge de RH-W-0078 mediante el [PR #267](https://github.com/LCubero/repo-harness-builder/pull/267), fusionado por squash como `814f44f376e9546f6441b7060958857e43a8c5ad`; se verificó el árbol posterior al merge `798bc79a46326bc4dc113fd714c8b1b00b1881ec`. Se mantienen los recibos existentes de 625 pruebas/11 omitidas y checker `current`/cero escrituras; GitHub CI no está configurado y no se afirma release de paquete. La revisión nativa se declinó solo para este candidato, sin aprobación ni desactivación global de RDD. RH-W-0078 sigue activa `P2`, el issue #266 sigue abierto y la efectividad/los ahorros de runtime siguen sin medir; esto no afirma completar la funcionalidad ni cerrar el ciclo de vida.

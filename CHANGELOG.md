@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-06
 
+- Recorded RH-W-0031 conversation-language recurrence after a reported valid persisted Spanish preference; root cause remains unverified and no product correction is claimed.
+
 - Recorded RH-W-0078 lifecycle completion by explicit owner acceptance after PR #267 delivery. Runtime-effectiveness measurement was waived as a completion condition; effectiveness and savings remain unmeasured and unclaimed. Issue #266 was freshly verified OPEN; its actual closure and receipt remain pending.
 
 - Recorded RH-W-0078 post-merge delivery through [PR #267](https://github.com/LCubero/repo-harness-builder/pull/267), squash-merged as `814f44f376e9546f6441b7060958857e43a8c5ad`; the post-merge tree was verified as `798bc79a46326bc4dc113fd714c8b1b00b1881ec`. Existing 625-test/11-skip and checker-current/zero-write receipts stand; GitHub CI is not configured and no package release is claimed. Native review was declined for this candidate only, with no approval and no global RDD disable. RH-W-0078 remains active `P2`, issue #266 remains open, and runtime effectiveness/savings are unmeasured; this does not claim feature completion or lifecycle closure.
