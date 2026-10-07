@@ -1,6 +1,6 @@
 # RH-W-0080 Ephemeral Batch Interaction Design
 
-> **Design status: owner-approved. Historical design/plan approval did not authorize implementation; separate implementation authority has since been granted and the bounded implementation verified locally. Delivered through PR #269 (4dc5cf3); lifecycle acceptance remains pending; see the [roadmap](roadmap.md#rh-w-0080).**
+> **Design status: completed by conditional owner lifecycle acceptance on 2026-10-07 after all stated criteria passed; see the canonical [roadmap](roadmap.md#rh-w-0080). Historical design/plan approval did not authorize implementation; separate implementation authority was granted later. Product delivery through PR #269 (4dc5cf3) is complete.**
 
 ## Decision
 
@@ -34,7 +34,7 @@ Historical authority boundary: this design and the proposed plan did not authori
 
 The approved [implementation plan](rh-w-0080-implementation-plan.md) records the bounded contract and execution history. Detailed implementation and verification evidence is in the [task record](../../odd/tasks/rh-w-0080-bounded-intake.md); it does not claim live-agent compliance or measured savings.
 
-## Done Conditions
+## Historical Design-Time Done Conditions (superseded by lifecycle acceptance)
 
 - The bilingual design and lifecycle projections agree.
 - RH-W-0080 remains `proposed` with an owner-approved design.
