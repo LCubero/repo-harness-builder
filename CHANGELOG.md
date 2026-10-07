@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-06
 
+- Reconciled the bilingual decisions: contribution policy now includes the owner-approved small-documentation direct-to-`main` exception with a changelog, and RH-W-0078 I1 is marked historical against its owner-accepted completion; runtime effectiveness and savings remain unmeasured and unclaimed, and issue #266 is closed.
+
 - Recorded RH-W-0031 conversation-language recurrence after a reported valid persisted Spanish preference; root cause remains unverified and no product correction is claimed.
 - Corrected the RH-W-0078 implementation-plan descriptions in both documentation maps to reflect existing owner-accepted completion and waived runtime measurement; no measured savings are claimed.
 
