@@ -1,6 +1,6 @@
 # RH-W-0080 Ephemeral Batch Interaction Design
 
-> **Design status: owner-approved. Historical design/plan approval did not authorize implementation; separate implementation authority has since been granted and the bounded implementation verified locally. Delivery and lifecycle acceptance remain pending; see the [roadmap](roadmap.md#rh-w-0080).**
+> **Design status: owner-approved. Historical design/plan approval did not authorize implementation; separate implementation authority has since been granted and the bounded implementation verified locally. Delivered through PR #269 (4dc5cf3); lifecycle acceptance remains pending; see the [roadmap](roadmap.md#rh-w-0080).**
 
 ## Decision
 

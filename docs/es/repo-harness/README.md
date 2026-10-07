@@ -79,8 +79,8 @@
 | [Diseno RH-W-0082](rh-w-0082-design.md) | Diseno aprobado del estilo de explicacion plain-language; implementacion sin autorizar |
 | [Diseno RH-W-0079](rh-w-0079-design.md) | Diseno completado de capacidades opcionales y limite autoalojado; los cinco Cortes estan entregados sin afirmar un release real |
 | [Plan de implementacion RH-W-0079](rh-w-0079-implementation-plan.md) | Plan completado de cinco Cortes con pruebas primero; registra la evidencia de entrega de los Cortes 4 y 5 |
-| [Diseno RH-W-0080](rh-w-0080-design.md) | Diseno aprobado de interaccion efimera por lotes; implementacion autorizada por separado y verificada localmente, con entrega y aceptacion del ciclo pendientes |
-| [Plan RH-W-0080](rh-w-0080-implementation-plan.md) | Plan aprobado con contexto historico de autorizacion; implementacion verificada localmente, con entrega y aceptacion del ciclo pendientes |
+| [Diseno RH-W-0080](rh-w-0080-design.md) | Diseno aprobado de interaccion efimera por lotes; implementacion entregada mediante el PR #269; aceptacion separada del ciclo de vida pendiente |
+| [Plan RH-W-0080](rh-w-0080-implementation-plan.md) | Plan aprobado con contexto historico de autorizacion; implementacion entregada mediante el PR #269; aceptacion separada del ciclo de vida pendiente |
 | [Diseno RH-W-0081](rh-w-0081-design.md) | Diseno aprobado de cronologia local del host para el changelog; implementacion sigue sin autorizacion |
 | [Plan RH-W-0081](rh-w-0081-implementation-plan.md) | Plan propuesto de cronologia local a la espera de aprobacion |
 | [Diseno RH-W-0075](rh-w-0075-design.md) | Diseño completado de acceso externo con su implementación mínima; entregado mediante el PR #257 |

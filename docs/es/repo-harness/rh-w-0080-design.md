@@ -1,6 +1,6 @@
 # Diseno RH-W-0080 de interaccion efimera por lotes
 
-> **Estado del diseño: aprobado por el propietario. La aprobación histórica del diseño/plan no autorizó implementar; después se otorgó autoridad separada y la implementación acotada se verificó localmente. Entrega y aceptación del ciclo siguen pendientes; véase la [hoja de ruta](roadmap.md#rh-w-0080).**
+> **Estado del diseño: aprobado por el propietario. La aprobación histórica del diseño/plan no autorizó implementar; después se otorgó autoridad separada y la implementación acotada se verificó localmente. Entrega completada mediante PR #269 (4dc5cf3); la aceptación del ciclo sigue pendiente; véase la [hoja de ruta](roadmap.md#rh-w-0080).**
 
 ## Decision
 
