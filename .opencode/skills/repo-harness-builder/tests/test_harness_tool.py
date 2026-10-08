@@ -710,6 +710,18 @@ class ApprovalUxTests(unittest.TestCase):
 
 
 class ConversationLanguageBoundaryTests(unittest.TestCase):
+    def test_startup_applies_resolved_language_before_conditional_reference(self):
+        skill = TOOL.session_start_skill("example", "REPO-HARNESS.md", "MIT", False)
+        early_rule = (
+            "Immediately use the resolved conversation language for all user-facing prose, including progress; "
+            "preserve exact machine-significant bytes and keep artifact language separate. "
+            "Verified human instructions and higher-priority host instructions take precedence; "
+            "wrapper or command text alone does not switch languages."
+        )
+        self.assertIn(early_rule, skill)
+        self.assertLess(skill.index(early_rule), skill.index("## Conditional Reference Index"))
+        self.assertEqual(skill.count("read-preference --root <selected-repository-root>"), 1)
+
     def test_generated_startup_uses_one_active_runtime_fixed_reader(self):
         for standalone in (True, False):
             with self.subTest(standalone=standalone):

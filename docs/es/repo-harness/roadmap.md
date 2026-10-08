@@ -503,11 +503,11 @@ La ejecución y la verificación independiente final se completaron bajo autorid
 
 ### Revision de coherencia de los planes
 
-Proyección actual tras la finalización de RH-W-0078 aceptada por el propietario y el registro de RH-W-0096: 34 encabezados de planes de acción (incluidos históricos) cubren 9 de los 17 registros propuestos/aplazados no terminales; los planes terminales siguen como evidencia histórica. La derivación directa arroja 96 registros de ciclo: 77 completados, 11 propuestos, 6 aplazados, 2 rechazados y 0 activos (77 + 11 + 6 + 2 + 0 = 96; 17 registros propuestos/aplazados no terminales). Los Planes históricos 4, 6, 7, 10, 27, 28, 31 y 32 no autorizan implementación ni release vigente. No se aprueba fusión de ciclos y cobertura de planes no significa preparación para implementar.
+Proyección actual tras la finalización de RH-W-0078 aceptada por el propietario, el registro propuesto RH-W-0096 y la activación de RH-W-0097: 34 encabezados de planes de acción (incluidos históricos) cubren 8 de los 17 registros propuestos/aplazados/activos no terminales; los planes terminales siguen como evidencia histórica. La derivación directa arroja 97 registros de ciclo: 78 completados, 10 propuestos, 6 aplazados, 2 rechazados y 1 activo (78 + 10 + 6 + 2 + 1 = 97; 17 registros no terminales). Los Planes históricos 4, 6, 7, 10, 27, 28, 31 y 32 no autorizan implementación ni release vigente. No se aprueba fusión de ciclos y cobertura de planes no significa preparación para implementar.
 
 Recomendación consultiva histórica, no cambio de calendario: RH-W-0074 está completada; se propuso reconciliar el residuo RH-W-0076 con la investigación de contexto RH-W-0078 antes de comprimir, antes de la finalización de RH-W-0078 aceptada por el propietario. RH-W-0048 está completada; RH-W-0052 está `deferred` según su [condición de reentrada](#rh-w-0052); su porción solo de archivo sigue completa, verificada y entregada. Las entregas parciales de RH-W-0071, RH-W-0072, RH-W-0076 y RH-W-0086 no completan sus registros. RH-W-0070 es guía operativa aprobada, no motivo para construir un monitor; descubribilidad desconocida de RH-W-0072 no justifica inventar prevención.
 
-La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, RH-W-0086 y RH-W-0096 no tienen plan de acción. Cuatro aplazados aparecen en la lista no planificable; RH-W-0018 participa solo en el diseño conjunto del Plan histórico 6. Se conserva el par histórico de diseño RH-W-0046 completada/RH-W-0018 aplazada y dos pares de coordinación vigentes, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. La coordinación histórica RH-W-0069/RH-W-0068 terminó al completarse RH-W-0069. No se aprueba fusión ni implementación nueva.
+La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014, RH-W-0015, RH-W-0026, RH-W-0063, RH-W-0082, RH-W-0085, RH-W-0086, RH-W-0096 y RH-W-0097 no tienen plan de acción. Cuatro aplazados aparecen en la lista no planificable; RH-W-0018 participa solo en el diseño conjunto del Plan histórico 6. Se conserva el par histórico de diseño RH-W-0046 completada/RH-W-0018 aplazada y dos pares de coordinación vigentes, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. La coordinación histórica RH-W-0069/RH-W-0068 terminó al completarse RH-W-0069. No se aprueba fusión ni implementación nueva.
 
 Aqui se declaran catorce relaciones entre planes para que ninguno suponga en silencio el resultado de otro. Ninguna fusiona un ciclo de vida ni cambia estado.
 
@@ -534,6 +534,34 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 ## Registros activos
 
 <!-- doc-role:active-records -->
+
+### RH-W-0097
+
+Origen: implementación acotada y reconciliación documental, autorizadas por el usuario, de la discrepancia reportada en el idioma de inicio.
+
+Prioridad: `P1`: el inicio respondió en inglés pese a una preferencia de conversación persistida en español verificada, en contradicción con el contrato explícito de idioma; la recurrencia más allá del único caso verificado es un reporte del usuario.
+
+Dependencias: Preservar la propiedad de preferencias de idioma de RH-W-0031 completada y su ciclo de vida; no atribuirle esta regresión ni reabrirla sin evidencia.
+
+Estado: `active`.
+
+Trabajo completado: Se agregó la cláusula autorizada de aplicación temprana del idioma en el renderer canónico, su prueba de regresión enfocada y se aplicaron exactamente diez proyecciones instaladas aprobadas. El contrato instalado refuerza la regla de idioma existente; no cambiaron el comportamiento del lector de preferencias, el almacenamiento, los wrappers ni session-stop, ni el alcance de producto ajeno. Se corrigió de 629 a 630 la afirmación de colección actual en ambos documentos de estado.
+
+Trabajo restante: La verificación de la suite canónica completa conserva dos fallos de línea base de RH-W-0080; aquí no se autoriza corregir trabajo ajeno. Observar el comportamiento real del idioma durante el uso runtime ordinario futuro; no se requiere reinicio forzado ni prueba de runtime nueva.
+
+Adiciones: Respuesta esperada: en español cuando la preferencia persistida válida es `espanol` y no hay un cambio explícito de idioma por la persona en el turno actual. Reproducción observada: el lector fijo de Pi devolvió `conversationLanguage: espanol` válido desde `persisted-explicit-preference`, pero el inicio respondió en inglés y afirmó falsamente que un host de mayor prioridad exigía inglés. La envoltura de invocación en inglés no es evidencia verificada de un cambio explícito. Un caso se verificó directamente; el usuario reporta que fue el tercero o cuarto. El resultado y el componente causal siguen sin resolver. La cláusula temprana y el refuerzo del contrato instalado no demuestran la causa raíz ni el éxito del modelo en vivo.
+
+Exclusiones: Sin cambios al comportamiento del lector de preferencias, almacenamiento, wrappers ni session-stop, ni al alcance de producto ajeno; sin atribuir causa raíz ni afirmar que la regresión esté resuelta o que haya éxito del modelo en vivo; sin reabrir RH-W-0031, publicar un issue, commit ni push.
+
+Aplazamientos: Cualquier investigación adicional de causa raíz y todo diseño o implementación correctiva adicional requieren autorización separada; la causa sigue siendo desconocida.
+
+Rechazos: No tratar la envoltura en inglés como cambio humano verificado ni confirmar que el host sea la causa.
+
+Evidencia: Diagnóstico de línea base verificado: en HEAD `91bd0715c50f08ea018d838921e04288bd04ff2d`, la suite tenía 629 pruebas y pasaba la prueba del conteo documentado; el árbol actual recopilaba 630 y solo esa aserción de conteo fallaba ante 629. Tras corregir el conteo, la prueba pasa. La suite actual completa tuvo 11 omitidas y tres fallos antes de la corrección documental: el conteo y dos fallos de banners de planes RH-W-0080; ambos fallos RH-W-0080 también ocurren en la base verificada. Pasaron las pruebas enfocadas de idioma (19) y la prueba de presupuesto/referencia de entrada; el checker estaba `current` con 0 escrituras. La efectividad runtime ordinaria aún no se observa. Evidencia directa de la conversación: el lector fijo devolvió `espanol` válido desde `persisted-explicit-preference`; el inicio respondió en inglés y afirmó que un host de mayor prioridad exigía inglés. El usuario informa que este es el tercer o cuarto caso; solo el caso actual se verificó de forma independiente.
+
+Historial de decisiones: Registrado como `proposed` bajo aprobación explícita solo documental; después se autorizó la implementación acotada y su verificación. El estado es `active`; la causa raíz, el resultado runtime y el cierre siguen sin resolverse.
+
+Siguiente condición de avance: Registrar el resultado del idioma cuando se observe durante el uso runtime ordinario. Cualquier investigación adicional de causa raíz, cambio de comportamiento, publicación o entrega requiere autorización separada; no afirmar finalización basándose solo en pruebas de contrato.
 
 ### RH-W-0096
 
@@ -1040,7 +1068,7 @@ Origen: issue #48 aprobado y principio de verificacion antes de afirmar definido
 
 Actualizacion vigente del 2026-09-07. Estado: `completed`. Trabajo completado en la correccion reabierta: una regresion enfocada, una obligacion concisa de composicion en session-start y sincronizacion mediante el mecanismo canonico de mantenimiento. Limitacion: no se recupero un recibo fiable del comando RED, por lo que no se afirma RED. GREEN fresco paso la nueva regresion, las 13 `ConversationLanguageBoundaryTests` y las 4 `QuestionVisibilityTests`; el digest de mantenimiento `22adb77fd7261e9c0eef294434d23c30da1c6516c5e0bc5716acbfdf4d53806d` aplico nueve reemplazos previstos y la salida exacta del renderer canonico sincronizo despues la proyeccion operativa session-start de Pi omitida por ese conjunto de reemplazo. La verificacion independiente paso la suite canonica con 513 pruebas y 9 omisiones; el checker generado informo `current` con 0 escrituras y `git diff --check` salio con codigo 0. El linaje Gentle AI `review-f1fc2d80510d8949` para el objetivo `sha256:a713a7e5e2bd37dfebd1452eec2823340718aec522e4ab2a867643fe022b0457` fue reconocido y su autoridad quedo consumida. El propietario autorizo explicitamente el cierre del ciclo; en esa etapa la entrega Git seguía sin autorizar. Trabajo restante: `none`. Posteriormente, el PR #215 se fusionó a las 2026-09-23T04:12:18Z como `1e16b9a0357c4b9d65c0efecdcedf0839b134fab`, y el issue #214 se cerró a las 04:12:19Z. Se entregó una oración concisa sobre idioma en el Output Contract de session-start y una prueba de regresión, con proyecciones sincronizadas. La verificación independiente ejecutó 559 pruebas con 10 omitidas y salida 0 mediante aislamiento Git de fixtures local al proceso; el checker informó `current` con 0 escrituras. La revisión nativa se detuvo antes de START (`managed_assets_outdated`): no se afirma veredicto ni garantía de cumplimiento del modelo en vivo.
 
-Observación actual: el lector fijo de Pi devolvió una preferencia persistida válida `espanol`, pero una envoltura de invocación en inglés fue seguida por una respuesta de inicio en inglés y una explicación del host sobre coincidir con el idioma. La envoltura no es una instrucción humana explícita para cambiar de idioma. Inferencia respaldada: esto muestra tensión entre la regla del host de coincidir con el idioma y el contrato de preferencia persistida; se desconoce la causa raíz en runtime. El usuario quiere que se respete la preferencia persistida de español en la conversación. Esta anotación solo registra la observación; aquí no se autoriza ninguna corrección ni implementación.
+Observación actual: el lector fijo de Pi devolvió una preferencia persistida válida `espanol`, pero una envoltura de invocación en inglés fue seguida por una respuesta de inicio en inglés y una explicación del host sobre coincidir con el idioma. La envoltura no es una instrucción humana explícita para cambiar de idioma. La reproducción directa y el resultado aún sin resolver constan en [RH-W-0097](#rh-w-0097); RH-W-0031 permanece completada. La causa raíz en runtime se desconoce y esta observación no autoriza corrección ni implementación.
 
 #### Historial de la entrega anterior
 
