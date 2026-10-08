@@ -27,7 +27,7 @@ The directory name is `memory-bk`, not `memory`, to keep the boundary explicit: 
 - RH-W-0046 and deferred RH-W-0018 retain consent or preference semantics. Their reserved location is `.repo-harness/state/preferences/`.
 - RH-W-0040 retains violation-record semantics. Its reserved location is `.repo-harness/state/violations/`.
 - RH-W-0052 retains archive, uninstall, reinstall, and deletion approval behavior.
-- Personal storage, `.ld9/`, `.atl/`, `.codegraph/`, and `.engram/` remain outside harness ownership.
+- The owner's personal storage, `.atl/`, `.codegraph/`, and `.engram/` remain outside harness ownership.
 
 No namespace owns documentation, approvals, lifecycle, conflicts, receipts, delivery, or canonical project truth.
 
@@ -49,7 +49,7 @@ The checker validates exact declared paths, classes, root containment, and ignor
 
 - Existing installations without `localState` continue through the established one-pass authenticated manifest/checker replacement path.
 - Migration adds no directories and moves no existing files.
-- Personal `.ld9/` content is never discovered, copied, migrated, renamed, or deleted automatically.
+- The owner's personal storage is never discovered, copied, migrated, renamed, or deleted automatically.
 - Existing `.repo-harness/` generated and human-owned content remains untouched except for the separately authorized manifest/checker pair and bounded `.gitignore` integration.
 - A future explicit migration from personal or legacy storage requires its own approved design.
 
@@ -64,7 +64,7 @@ The approved pre-implementation test requirements were:
 5. Drift when required ignore or manifest taxonomy differs.
 6. Atomic replacement of a changed authenticated manifest/checker pair.
 7. No automatic directory creation or migration during render preview, check, or upgrade.
-8. No read, write, move, or delete under `.ld9/` or other tool-owned paths.
+8. No read, write, move, or delete under the owner's personal storage or other tool-owned paths.
 9. Non-Git and multi-root behavior remaining repository-scoped.
 10. English and Spanish design parity, valid links, and forbidden Unicode rejection.
 
