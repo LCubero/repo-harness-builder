@@ -90,7 +90,7 @@ Detengase e inspeccione en vez de forzar cuando el artefacto sea invalido, un de
 - Documentacion durable completa en ingles bajo `docs/repo-harness/`.
 - Habilidades neutrales bajo `.repo-harness/skills/`, pares canonicos de comandos bajo `.repo-harness/commands/` y `.repo-harness/prompts/`, y proyecciones para Claude Code, OpenCode o Pi.
 - `.repo-harness/check.py` para comprobaciones de congruencia sin escritura.
-- Una unica directiva `.codegraph/` en `.gitignore` raiz, salvo opt-out explicito.
+- Directivas en `.gitignore` raiz: `.codegraph/` salvo opt-out explicito, mas las cuatro directivas de estado local del harness (`/.repo-harness/tmp/`, `/.repo-harness/archive/`, `/.repo-harness/state/`, `/.repo-harness/memory-bk/`).
 - `.gitattributes` raiz con proteccion LF exacta para cada ruta generada comparada byte a byte.
 
 Un harness es solo en ingles salvo que se declaren mas locales de documentacion. Consulte [Idioma de la documentacion](#idioma-de-la-documentacion).
