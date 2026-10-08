@@ -91,7 +91,7 @@ Stop and inspect instead of forcing when the artifact is invalid, a destination 
 - Runtime-neutral session and documentation skills under `.repo-harness/skills/`, plus canonical command peers under `.repo-harness/commands/` and `.repo-harness/prompts/` for emitted surface families.
 - Selected Claude Code, OpenCode, or Pi runtime projections.
 - `.repo-harness/check.py` for ordinary read-only projection drift checks (`writes: 0`); only explicit `repair --apply --approved-plan-sha256 <digest>` may create missing-local projections.
-- One exact root `.gitignore` directive, `.codegraph/`, unless explicitly disabled.
+- Root `.gitignore` directives: `.codegraph/` unless explicitly disabled, plus the four harness local-state directives (`/.repo-harness/tmp/`, `/.repo-harness/archive/`, `/.repo-harness/state/`, `/.repo-harness/memory-bk/`).
 - Root `.gitattributes` with exact LF protection for every byte-compared generated path.
 
 A harness is English-only unless you declare more documentation locales. See [Documentation Language](#documentation-language).
