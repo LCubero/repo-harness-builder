@@ -195,6 +195,6 @@ Open findings raised and deliberately not fixed inside the units that found them
 
 Owner answers remain pending for the containment boundary and delivery policy or practice (`RH-W-0077`). RH-W-0074 was implemented and delivered on 2026-10-01. RH-W-0078 is `completed`, `P2`, by explicit owner acceptance; issue #266 is verified `CLOSED` (GitHub `closedAt` 2026-10-06T23:10:19Z). Runtime-effectiveness measurement was waived as a completion condition; effectiveness and savings remain unmeasured and are not claimed. Native review was declined for this candidate only, without approval or global RDD disable. See the [roadmap](roadmap.md#rh-w-0078) for lifecycle detail. RH-W-0075 is completed. RH-W-0080 is completed; see the [roadmap](roadmap.md#rh-w-0080) for lifecycle evidence. RH-W-0081 awaits owner plan approval; product implementation remains separately unauthorized.
 
-`RH-W-0072` is completed after PR #277 fixed the final measured README drift and merged on 2026-10-08. `RH-W-0075` and `RH-W-0077` remain `P2`, outside the approved order. RH-W-0078 is completed by explicit owner acceptance; this does not imply a priority reorder for other work.
+`RH-W-0072` is completed after PR #277 fixed the final measured README drift and merged on 2026-10-08. `RH-W-0077` remains `P2`, outside the approved order; `RH-W-0075` is completed. RH-W-0078 is completed by explicit owner acceptance; this does not imply a priority reorder for other work.
 
 This projection authorizes none of these actions.
