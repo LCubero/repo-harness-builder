@@ -4,7 +4,7 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
-## 2026-10-09
+## 2026-10-08
 
 - Completed RH-W-0072 after a read-only recheck found no remaining measured documentation drift. Issue #276 / PR #277 fixed the last live README claim about a single `.codegraph/` directive and squash-merged to `main` as `cc50ab8f4d2737cea859bd5a05b55912b7dab4b3`; low-tier native review approved and acknowledged. No preventive control was added; future drift is new work, not a reopening.
 

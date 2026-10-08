@@ -2,7 +2,7 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
-## 2026-10-09
+## 2026-10-08
 
 - Se completo RH-W-0072 tras una revision de solo lectura que no encontro deriva documental medida restante. El issue #276 / PR #277 corrigio la ultima afirmacion vigente de los README sobre una sola directiva `.codegraph/` y se fusiono por squash a `main` como `cc50ab8f4d2737cea859bd5a05b55912b7dab4b3`; la revision nativa de nivel bajo aprobo y reconocio. No se agrego control preventivo; deriva futura es trabajo nuevo, no reapertura.
 
