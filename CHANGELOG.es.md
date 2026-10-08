@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-09
+
+- Se completo RH-W-0072 tras una revision de solo lectura que no encontro deriva documental medida restante. El issue #276 / PR #277 corrigio la ultima afirmacion vigente de los README sobre una sola directiva `.codegraph/` y se fusiono por squash a `main` como `cc50ab8f4d2737cea859bd5a05b55912b7dab4b3`; la revision nativa de nivel bajo aprobo y reconocio. No se agrego control preventivo; deriva futura es trabajo nuevo, no reapertura.
+
 ## 2026-10-07
 
 - Se corrigieron los dos banners de planes RH-W-0080 para incluir el token literal `completed` requerido, preservando la redaccion localizada. La suite canonica paso 630 pruebas con 11 omitidas y cero fallos/errores; despues, la verificacion posterior paso el oraculo sin cambios de planes terminales y siete comprobaciones de ciclo/proyeccion/enlaces localizados. El checker informo `current` con 0 escrituras. Fue solo una correccion de token del contrato documental: no se cambiaron ni debilitaron pruebas, ni cambio codigo de producto. RH-W-0097 sigue activa y pendiente de observacion del idioma durante uso runtime ordinario; no se afirma resolver causa raiz ni resultado de idioma.

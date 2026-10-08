@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-09
+
+- Completed RH-W-0072 after a read-only recheck found no remaining measured documentation drift. Issue #276 / PR #277 fixed the last live README claim about a single `.codegraph/` directive and squash-merged to `main` as `cc50ab8f4d2737cea859bd5a05b55912b7dab4b3`; low-tier native review approved and acknowledged. No preventive control was added; future drift is new work, not a reopening.
+
 ## 2026-10-07
 
 - Corrected the two RH-W-0080 implementation-plan banners to include the required literal `completed` lifecycle token while preserving their localized wording. The canonical suite passed 630 tests with 11 skips and zero failures/errors; subsequent verification passed the unchanged terminal-plan oracle and seven lifecycle/projection/localized-link checks. The checker reported `current` with 0 writes. This was a documentation-contract token correction only: no tests were changed or weakened, and no product code changed. RH-W-0097 remains active with ordinary runtime language observation pending; no root-cause or language-outcome resolution is claimed.
