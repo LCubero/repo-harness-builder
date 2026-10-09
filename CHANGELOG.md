@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-09
 
+- RH-W-0097 (still active): the startup entry now clarifies that a generic host same-language rule does not turn the English wrapper into a language requirement. One regression test observed RED then GREEN; ten projections validated. Cause and live-model compliance remain unknown. Refs #273.
+
 - Completed RH-W-0085 under owner delegation: one roadmap-derived assertion checks thematic opening-line own-status claims. RED found ten stale EN/ES openings; closure-update banners made GREEN while preserving historical bodies. Three test projections validated; checker current/0 writes. Delivered through issue #288 and PR #289.
 
 - Completed RH-W-0081 under owner delegation: session-stop changelog guidance now uses the completed change's host-local date, prefers exact local Git evidence, rejects UTC substitution and continuity-backup timestamp derivation, and asks one question when evidence is absent or ambiguous. One regression test observed RED then GREEN; ten projections were validated. Historical date correction and RH-W-0068/RH-W-0069 ownership remain unchanged. Delivered through issue #286 and PR #287.
