@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-09
 
+- RH-W-0070 (still proposed): added one owner-authorized project-local working-agreements pointer to the preventive resource-safety design and reconciled EN/ES lifecycle projections. Documentation only; no product implementation or lifecycle closure. Refs #294.
+
 - RH-W-0097 (still active): the startup entry now clarifies that a generic host same-language rule does not turn the English wrapper into a language requirement. One regression test observed RED then GREEN; ten projections validated. Cause and live-model compliance remain unknown. Refs #273.
 
 - Completed RH-W-0085 under owner delegation: one roadmap-derived assertion checks thematic opening-line own-status claims. RED found ten stale EN/ES openings; closure-update banners made GREEN while preserving historical bodies. Three test projections validated; checker current/0 writes. Delivered through issue #288 and PR #289.

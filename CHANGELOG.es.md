@@ -4,6 +4,8 @@
 
 ## 2026-10-09
 
+- RH-W-0070 (sigue proposed): se agrego un enlace local autorizado por el propietario en working-agreements al diseno preventivo de seguridad de recursos y se reconciliaron las proyecciones de ciclo de vida EN/ES. Solo documentacion; sin implementacion de producto ni cierre del ciclo de vida. Refs #294.
+
 - RH-W-0097 (sigue activo): la entrada de inicio aclara que una regla generica del host de mismo idioma no convierte el wrapper en ingles en un requisito de idioma. Una prueba de regresion observo RED y luego GREEN; diez proyecciones validadas. Causa y cumplimiento del modelo en vivo siguen desconocidos. Refs #273.
 
 - Se completo RH-W-0085 bajo delegacion del propietario: una asercion derivada del roadmap comprueba el estado propio en aperturas tematicas. RED hallo diez aperturas obsoletas EN/ES; banners de cierre lograron GREEN conservando cuerpos historicos. Tres proyecciones de pruebas validadas; checker current/0 escrituras. Entregado mediante el issue #288 y el PR #289.

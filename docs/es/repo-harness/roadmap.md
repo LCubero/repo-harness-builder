@@ -288,7 +288,7 @@ Decision humana: los defectos de disposicion del changelog, politica Git y activ
 
 ### Plan 19: limites de seguridad de recursos para agentes RH-W-0070
 
-Preparacion `design completed`. Prioridad `P1`. El [diseno](rh-w-0070-design.md) bilingue aprobado define la politica preventiva. No se autoriza ni se requiere actualmente plan de implementacion o implementacion.
+Preparacion `design completed`. Prioridad `P1`. El [diseno](rh-w-0070-design.md) bilingue aprobado define la politica preventiva. La porcion documental autorizada por el propietario bajo el issue #294 agrega un enlace local en working-agreements; RH-W-0070 sigue `proposed`. No se autoriza ni se requiere actualmente plan de implementacion o implementacion de producto.
 
 1. Inventariar acciones potencialmente costosas, incluidos scripts, herramientas, pruebas, builds, cargas de modelos, revisores, verificacion delegada y trabajo similar de subprocess o administrado por proveedores, sobre CPU, GPU y RAM.
 2. Tratar 90 por ciento de utilizacion como techo operativo a considerar al disenar o ejecutar trabajo, no como promesa de medicion continua precisa ni de control duro universal.
@@ -843,7 +843,7 @@ Evidencia: Git local confirma el squash y arbol exacto `4604bed2289eeb6b25e79500
 
 ### RH-W-0070
 
-Estado activo vigente de `RH-W-0070`: `proposed`, con [diseno bilingue preventivo](rh-w-0070-design.md) aprobado. La politica cubre CPU, GPU y RAM cuando sean observables o aplicables, busca operar por debajo de 90 por ciento sin prometer control exacto, exige limites preventivos y fallback conservador sin telemetria, y requiere pronosticos antes de trabajo largo o muy largo. El trabajo restante es aplicar esta guia transversal. No se exige plan de implementacion y no ha comenzado ninguna implementacion. Un plan o implementacion solo procede si evidencia posterior demuestra que la documentacion y la politica operativa no bastan y el propietario lo autoriza. Nunca terminar, limitar ni interferir con procesos ajenos.
+Estado activo vigente de `RH-W-0070`: `proposed`, con [diseno bilingue preventivo](rh-w-0070-design.md) aprobado. La politica cubre CPU, GPU y RAM cuando sean observables o aplicables, busca operar por debajo de 90 por ciento sin prometer control exacto, exige limites preventivos y fallback conservador sin telemetria, y requiere pronosticos antes de trabajo largo o muy largo. Se agrego un enlace local autorizado por el propietario bajo Project Agreements en `.repo-harness/rules/working-agreements.md` (issue #294), conservando procedencia y acuerdos existentes. El trabajo restante es aplicar esta guia transversal; revision y entrega de la porcion documental siguen pendientes y colocar el enlace no cierra RH-W-0070. No se exige plan de implementacion y no ha comenzado ninguna implementacion de producto. Un plan o implementacion solo procede si evidencia posterior demuestra que la documentacion y la politica operativa no bastan y el propietario lo autoriza. Nunca terminar, limitar ni interferir con procesos ajenos.
 
 <!-- Prosa de registro reemplazada por el estado activo vigente anterior.
 
