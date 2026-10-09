@@ -1,5 +1,7 @@
 # Diseño RH-W-0060 de reporte del estado del repositorio
 
+> **Estado: RH-W-0060 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0060) posee su resultado; el texto siguiente se conserva como evidencia histórica.
+
 Estado: `proposed`; diseño limitado a C11 aprobado por el propietario. La planificación de implementación y la implementación no están autorizadas por separado.
 
 ## Decisión

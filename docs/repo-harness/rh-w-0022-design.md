@@ -1,5 +1,7 @@
 # RH-W-0022 Declared Documentation Relationships Design
 
+> **Status: RH-W-0022 is `completed`.** The [roadmap record](roadmap.md#rh-w-0022) owns its outcome; the text below is retained as historical evidence.
+
 > **Status: OWNER-APPROVED DESIGN. RH-W-0022 remains proposed; a bilingual implementation plan was drafted under later planning-only authorization and is now owner-approved. Implementation was subsequently authorized; R22-1 is in progress, not delivered.**
 
 ## Decision

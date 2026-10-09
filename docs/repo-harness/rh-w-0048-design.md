@@ -1,5 +1,7 @@
 # RH-W-0048 Runtime Projection Recovery Design
 
+> **Status: RH-W-0048 is `completed`.** The [roadmap record](roadmap.md#rh-w-0048) owns its outcome; the text below is retained as historical evidence.
+
 > **Status: PROPOSED (reopened).** The owner-approved design and separately authorized implementation remain historical evidence. The only remaining work is mutability-contract reconciliation and independent re-verification. Native review is unavailable because the package-local binary is missing, so no lineage exists; that is not a verdict. Delivery remains separate and unperformed.
 
 ## Decision

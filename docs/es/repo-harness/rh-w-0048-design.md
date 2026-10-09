@@ -1,5 +1,7 @@
 # Diseño RH-W-0048 de recuperación de proyecciones de runtime
 
+> **Estado: RH-W-0048 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0048) posee su resultado; el texto siguiente se conserva como evidencia histórica.
+
 > **Estado: PROPUESTO (reabierto).** El diseño aprobado y la implementación autorizada por separado permanecen como evidencia histórica. El único trabajo restante es reconciliar el contrato de mutabilidad y volver a verificar de forma independiente. La revisión nativa no está disponible porque falta el binario local del paquete, por lo que no existe linaje; eso no es un veredicto. La entrega permanece separada y sin realizar.
 
 ## Decisión

@@ -1,5 +1,7 @@
 # Diseño RH-W-0022 de relaciones documentales declaradas
 
+> **Estado: RH-W-0022 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0022) posee su resultado; el texto siguiente se conserva como evidencia histórica.
+
 > **Estado: DISEÑO APROBADO POR EL PROPIETARIO. RH-W-0022 permanece `proposed`; un plan bilingüe de implementación se redactó con autorización posterior solo de planificación y ahora está aprobado por el propietario. La implementación recibió autorización posterior; R22-1 está en curso, no entregado.**
 
 ## Decisión
