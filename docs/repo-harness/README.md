@@ -83,8 +83,8 @@
 | [rh-w-0079-implementation-plan.md](rh-w-0079-implementation-plan.md) | Completed five-slice test-first plan; Slice 4 and Slice 5 delivery evidence is recorded |
 | [rh-w-0080-design.md](rh-w-0080-design.md) | Completed owner-approved ephemeral batch-interaction design; product delivered through PR #269 and lifecycle accepted conditionally; see [canonical roadmap record](roadmap.md#rh-w-0080) |
 | [rh-w-0080-implementation-plan.md](rh-w-0080-implementation-plan.md) | Completed implementation plan; historical approval and execution checklist retained; product delivered through PR #269 and lifecycle accepted conditionally; see [roadmap](roadmap.md#rh-w-0080) |
-| [rh-w-0081-design.md](rh-w-0081-design.md) | Owner-approved host-local changelog chronology design; implemented 2026-10-09, delivery pending |
-| [rh-w-0081-implementation-plan.md](rh-w-0081-implementation-plan.md) | Completed host-local chronology implementation plan; implemented 2026-10-09, delivery pending |
+| [rh-w-0081-design.md](rh-w-0081-design.md) | Owner-approved host-local changelog chronology design; implemented 2026-10-09, delivered through PR #287 |
+| [rh-w-0081-implementation-plan.md](rh-w-0081-implementation-plan.md) | Completed host-local chronology implementation plan; implemented 2026-10-09, delivered through PR #287 |
 | [rh-w-0075-design.md](rh-w-0075-design.md) | Completed owner-approved external access design with its minimal implementation; delivered through PR #257 |
 | [rh-w-0075-implementation-plan.md](rh-w-0075-implementation-plan.md) | Superseded external necessity implementation plan; retained as history |
 | [rh-w-0056-findings.md](rh-w-0056-findings.md) | Canonical findings and completed 64-recommendation disposition owner for the external harness review |

@@ -1,6 +1,6 @@
 # RH-W-0081 Host-Local Changelog Chronology Implementation Plan
 
-> **Status: `completed`.** Owner-delegated minimal implementation completed 2026-10-09; delivery pending. Historical instructions below are not an execution queue.
+> **Status: `completed`.** Owner-delegated minimal implementation completed 2026-10-09; delivered through issue #286 and PR #287. Historical instructions below are not an execution queue.
 
 Derived from the owner-approved [design](rh-w-0081-design.md). Spanish peer: [rh-w-0081-implementation-plan.md](../es/repo-harness/rh-w-0081-implementation-plan.md).
 

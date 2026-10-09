@@ -435,7 +435,7 @@ Historical human decision: the 2026-10-06 plan approval was for documentation re
 
 ### Plan 30: RH-W-0081 host-local changelog chronology
 
-Historical plan; lifecycle `completed`, priority `P2`, dependencies none. Owner delegation approved the refreshed minimal [implementation plan](rh-w-0081-implementation-plan.md) and implementation on 2026-10-09; [design](rh-w-0081-design.md) rationale and historical correction are retained. Delivery pending.
+Historical plan; lifecycle `completed`, priority `P2`, dependencies none. Owner delegation approved the refreshed minimal [implementation plan](rh-w-0081-implementation-plan.md) and implementation on 2026-10-09; [design](rh-w-0081-design.md) rationale and historical correction are retained. Delivered through issue #286 and PR #287.
 
 1. Derive human-facing changelog dates from verified host-local evidence, preserving exact timestamps or local date and offset without inventing a minute.
 2. Keep RH-W-0068 as changelog-disposition owner and RH-W-0081 as date-derivation owner.
@@ -834,12 +834,12 @@ Historical review-correction verification: 23 directly relevant tests and the se
 | Completed work | Recorded the owner-approved bilingual [design](rh-w-0081-design.md) and refreshed [implementation plan](rh-w-0081-implementation-plan.md). Implemented one session-stop host-local changelog clause and one regression test on 2026-10-09 with observed RED then GREEN; validated ten projections. Historical bilingual date correction `fac022c6` remains unchanged. |
 | Remaining work | none |
 | Additions | Host-local human-facing date derivation, exact timestamp or local-date-plus-offset evidence, bounded ambiguity question, and one heading per local date. |
-| Exclusions | No clock service, timezone logic, state or manifest change; no change to RH-W-0068 disposition or RH-W-0069 backup identity. No push, PR, issue or publication yet. |
-| Deferrals | Delivery (push/PR) pending; no further implementation. |
+| Exclusions | No clock service, timezone logic, state or manifest change; no change to RH-W-0068 disposition or RH-W-0069 backup identity. |
+| Deferrals | None; delivered through issue #286 and PR #287. |
 | Rejections | Rejected silently using UTC, inventing a rounded minute, deriving changelog chronology from RH-W-0069 UTC identity, or letting changelog chronology control backup identity. |
 | Evidence | Verified fact: exact historical local Git timestamps remain `2026-08-28T22:33:40-06:00` and `2026-08-28T22:40:57-06:00`. `GeneratedCoreTests.test_session_stop_dates_changelog_by_host_local_evidence` observed RED then GREEN. Maintenance digest `2bbfb37f21057506c420a2786b4da3c3d37025885363484d75f27c4de63f425a` replaced exactly ten paths; apply VALIDATED, second preview empty, checker current/0 writes and four-root script/test byte parity. Full suite: 631 tests, 11 skipped; only the stale documented-count assertion failed, corrected in this documentation update. |
-| Decision history | 2026-08-29: registered `proposed` as the next immutable ID with owner-approved bilingual design. A proposed bilingual implementation plan exists and awaits owner approval. Commit `fac022c6` completed the separately authorized changelog correction; commit `b39e1ba` updated only the Plan 30 projection. Product implementation, delivery, and publication were then unauthorized. 2026-10-09: the owner delegated the next-objective decision ("decide it yourself, without overengineering"); the agent selected RH-W-0081, refreshed the minimal plan and implemented it. This delegation constitutes owner approval of the refreshed plan and implementation. No delivery is claimed. |
-| Next advancement condition | None beyond separately authorized delivery. |
+| Decision history | 2026-08-29: registered `proposed` as the next immutable ID with owner-approved bilingual design. A proposed bilingual implementation plan exists and awaits owner approval. Commit `fac022c6` completed the separately authorized changelog correction; commit `b39e1ba` updated only the Plan 30 projection. Product implementation, delivery, and publication were then unauthorized. 2026-10-09: the owner delegated the next-objective decision ("decide it yourself, without overengineering"); the agent selected RH-W-0081, refreshed the minimal plan and implemented it. This delegation constitutes owner approval of the refreshed plan and implementation. The same delegation later authorized delivery through issue #286 and PR #287. |
+| Next advancement condition | None. |
 
 ### RH-W-0079
 | Field | Value |

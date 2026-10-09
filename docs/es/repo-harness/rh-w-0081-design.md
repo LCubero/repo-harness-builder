@@ -1,6 +1,6 @@
 # Diseno RH-W-0081 de cronologia local del host para el changelog
 
-> **Estado: DISENO APROBADO POR EL PROPIETARIO. Implementado 2026-10-09 (alcance minimo); entrega pendiente.**
+> **Estado: DISENO APROBADO POR EL PROPIETARIO. Implementado 2026-10-09 (alcance minimo); entregado mediante el issue #286 y el PR #287.**
 
 ## Decision
 

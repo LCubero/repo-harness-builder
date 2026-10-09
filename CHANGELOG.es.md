@@ -4,7 +4,7 @@
 
 ## 2026-10-09
 
-- Se completo RH-W-0081 bajo delegacion del propietario: la guia del changelog de session-stop usa la fecha local del host del cambio completado, prefiere evidencia Git local exacta, rechaza sustitucion UTC y derivacion desde timestamp del backup de continuidad y pregunta una vez si falta evidencia o es ambigua. Una prueba observo RED y GREEN; se validaron diez proyecciones. Correccion historica y propiedad RH-W-0068/RH-W-0069 intactas. Entrega (push/PR) pendiente.
+- Se completo RH-W-0081 bajo delegacion del propietario: la guia del changelog de session-stop usa la fecha local del host del cambio completado, prefiere evidencia Git local exacta, rechaza sustitucion UTC y derivacion desde timestamp del backup de continuidad y pregunta una vez si falta evidencia o es ambigua. Una prueba observo RED y GREEN; se validaron diez proyecciones. Correccion historica y propiedad RH-W-0068/RH-W-0069 intactas. Entregado mediante el issue #286 y el PR #287.
 
 ## 2026-10-08
 

@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0081 de cronologia local del changelog
 
-> **Estado: `completed`.** Implementacion minima completada 2026-10-09 bajo delegacion del propietario; entrega pendiente. Las instrucciones historicas siguientes no son una cola de ejecucion.
+> **Estado: `completed`.** Implementacion minima completada 2026-10-09 bajo delegacion del propietario; entregado mediante el issue #286 y el PR #287. Las instrucciones historicas siguientes no son una cola de ejecucion.
 
 Derivado del [diseno](rh-w-0081-design.md) aprobado. Par canonico: [rh-w-0081-implementation-plan.md](../../repo-harness/rh-w-0081-implementation-plan.md).
 

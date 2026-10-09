@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-09
 
-- Completed RH-W-0081 under owner delegation: session-stop changelog guidance now uses the completed change's host-local date, prefers exact local Git evidence, rejects UTC substitution and continuity-backup timestamp derivation, and asks one question when evidence is absent or ambiguous. One regression test observed RED then GREEN; ten projections were validated. Historical date correction and RH-W-0068/RH-W-0069 ownership remain unchanged. Delivery (push/PR) pending.
+- Completed RH-W-0081 under owner delegation: session-stop changelog guidance now uses the completed change's host-local date, prefers exact local Git evidence, rejects UTC substitution and continuity-backup timestamp derivation, and asks one question when evidence is absent or ambiguous. One regression test observed RED then GREEN; ten projections were validated. Historical date correction and RH-W-0068/RH-W-0069 ownership remain unchanged. Delivered through issue #286 and PR #287.
 
 ## 2026-10-08
 

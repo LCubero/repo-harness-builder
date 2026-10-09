@@ -1,6 +1,6 @@
 # RH-W-0081 Host-Local Changelog Chronology Design
 
-> **Status: OWNER-APPROVED DESIGN. Implemented 2026-10-09 (minimal scope); delivery pending.**
+> **Status: OWNER-APPROVED DESIGN. Implemented 2026-10-09 (minimal scope); delivered through issue #286 and PR #287.**
 
 ## Decision
 
