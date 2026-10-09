@@ -1,8 +1,16 @@
 # Plan de implementacion RH-W-0081 de cronologia local del changelog
 
-> **Estado: propuesto.** Requiere aprobacion del propietario y autorizacion separada para implementar el producto. La correccion documental se completo por separado y se conserva abajo como trabajo historico.
+> **Estado: `completed`.** Implementacion minima completada 2026-10-09 bajo delegacion del propietario; entrega pendiente. Las instrucciones historicas siguientes no son una cola de ejecucion.
 
 Derivado del [diseno](rh-w-0081-design.md) aprobado. Par canonico: [rh-w-0081-implementation-plan.md](../../repo-harness/rh-w-0081-implementation-plan.md).
+
+## Alcance actualizado (2026-10-09)
+
+El propietario delego la decision del siguiente objetivo (decidir sin sobreingenieria); seleccionar RH-W-0081 y actualizar el plan minimo bajo esa delegacion aprobo el plan y la implementacion. Una clausula renderizada en session-stop `references/git-commit.md` exige fechar cada entrada por el dia calendario local del host del cambio completado, preferir la fecha Git local del cambio exacto, no sustituir UTC ni derivar la fecha del timestamp UTC del backup de continuidad y preguntar una vez si la evidencia falta o es ambigua.
+
+Una prueba, `GeneratedCoreTests.test_session_stop_dates_changelog_by_host_local_evidence`, observo RED y GREEN. La prueba UTC separada y los cortes mas pesados del plan del 2026-08-30 quedaron sustituidos por esta clausula y prueba; se incluye `.pi`. Sin servicio de reloj, logica timezone, estado ni cambio de manifiesto. Corte 2 (`fac022c6`), disposicion RH-W-0068 e identidad RH-W-0069 intactos.
+
+Digest de mantenimiento `2bbfb37f21057506c420a2786b4da3c3d37025885363484d75f27c4de63f425a`: diez reemplazos exactos, copias script/prueba en `.claude`, `.opencode`, `.pi` y cuatro referencias session-stop incluida `.repo-harness`. Apply VALIDATED; segundo preview vacio; checker current/0 escrituras; paridad script/prueba en cuatro raices. Suite completa: 631 pruebas, 11 omitidas; solo fallo el conteo documental obsoleto, corregido en esta actualizacion. No se afirma repeticion de suite completa aqui. Sin push, PR, issue ni publicacion hasta ahora; entrega pendiente.
 
 ## Superficie y propiedad
 
@@ -11,6 +19,12 @@ Derivado del [diseno](rh-w-0081-design.md) aprobado. Par canonico: [rh-w-0081-im
 La evidencia exacta para la correccion completada es `1e5759e0` a `2026-08-28T22:33:40-06:00` y `c892cfb` a `2026-08-28T22:40:57-06:00`. El commit `fac022c6` movio ambas entradas a las secciones existentes `2026-08-28`. El commit `b39e1ba` actualizo solo la proyeccion del Plan 30.
 
 ## Corte 1: RED enfocado y contrato minimo
+
+- [x] Se agrego la unica prueba actualizada y se observaron RED y GREEN.
+- [x] Se extendio minimamente la guia: fecha local del cambio completado, preferencia Git local exacta, sin UTC ni derivacion desde backup y una pregunta ante ambiguedad.
+- [x] Se preservo propiedad RH-W-0068 y RH-W-0069 sin mecanicas nuevas.
+
+Los items originales siguientes quedan sustituidos, no son afirmaciones de completitud; no se ejecutaron tal como estaban escritos las pruebas distintas, las aserciones de precision ni los comandos antiguos.
 
 - [ ] Agregar `GeneratedCoreTests.test_session_stop_derives_changelog_date_from_exact_host_local_evidence` y `test_changelog_chronology_is_independent_from_continuity_utc_identity`.
 - [ ] Usar el reloj local observado del host para trabajo completado sin Git. Para trabajo Git completado, preferir evidencia Git local verificada ligada al cambio exacto; conservar segundos y offset al mostrar timestamp, o fecha local con offset.
@@ -31,12 +45,16 @@ La evidencia exacta para la correccion completada es `1e5759e0` a `2026-08-28T22
 
 ## Corte 3: proyecciones, ciclo y entrega
 
+Las instrucciones historicas siguientes quedan sustituidas por la evidencia actualizada anterior y esta reconciliacion bilingue acotada. La entrega sigue pendiente.
+
 - [ ] Ejecutar suite canonica completa tras GREEN del Corte 1. Esperado: exit 0.
 - [ ] Sincronizar script y prueba de paquetes y usar renderer normal para session-stop. Revisar preview y digest antes de apply autorizado. Segundo preview esperado: sin acciones.
 - [ ] Tras implementacion verificada y autoridad separada, reconciliar exactamente `docs/repo-harness/roadmap.md`, `docs/es/repo-harness/roadmap.md`, `docs/repo-harness/current-state.md`, `docs/es/repo-harness/current-state.md`, `docs/repo-harness/README.md`, `docs/es/repo-harness/README.md`, `docs/repo-harness/rh-w-0081-design.md`, `docs/es/repo-harness/rh-w-0081-design.md`, `docs/repo-harness/rh-w-0081-implementation-plan.md`, `docs/es/repo-harness/rh-w-0081-implementation-plan.md`, `CHANGELOG.md`, `CHANGELOG.es.md`, disposicion RH-W-0068 y Engram `work/RH-W-0081`.
 - [ ] Mantener Corte 2 como correccion documental revisable por separado. Mantener issue, commits, revision, rollback y entrega separados de RH-W-0068 y RH-W-0069. No se autoriza Git ahora.
 
 ## Verificacion
+
+Los comandos historicos se conservan, no son cola actual ni afirmaciones de ejecucion exacta. La evidencia actualizada anterior registra la implementacion; las comprobaciones documentales enfocadas se reportan por separado.
 
 - [ ] Ejecutar `python -B skill/repo-harness-builder/tests/test_harness_tool.py GeneratedCoreTests.test_session_stop_derives_changelog_date_from_exact_host_local_evidence GeneratedCoreTests.test_changelog_chronology_is_independent_from_continuity_utc_identity GeneratedCoreTests.test_changelog_is_simple_completed_history GeneratedCoreTests.test_session_skills_treat_changelog_as_completed_history_only -v` y repetir con las rutas OpenCode y Claude. Esperado: cuatro pases iguales por paquete.
 - [ ] Ejecutar `python -B -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py" -v`. Esperado: exit 0. Ejecutar `python -c "from pathlib import Path; import hashlib; rel=['scripts/harness_tool.py','tests/test_harness_tool.py']; roots=[Path('skill/repo-harness-builder'),Path('.opencode/skills/repo-harness-builder'),Path('.claude/skills/repo-harness-builder')]; bad=[p for p in rel if len({hashlib.sha256((r/p).read_bytes()).hexdigest() for r in roots}) != 1]; assert not bad,bad"`. Esperado: exit 0 sin salida.
@@ -58,4 +76,4 @@ Cambio autoral: 90 a 150 lineas, incluidos movimientos de encabezado. Proyeccion
 - [ ] Disposicion RH-W-0068 e identidad UTC RH-W-0069 quedan intactas.
 - [ ] Correccion inglesa y espanola es exacta, ligada a evidencia y reversible.
 
-Decisiones pendientes: ninguna de planificacion. Aprobar plan, implementar y entregar siguen separados.
+Decisiones pendientes de implementacion: ninguna. Plan actualizado e implementacion aprobados por delegacion del 2026-10-09; entrega requiere autoridad separada.

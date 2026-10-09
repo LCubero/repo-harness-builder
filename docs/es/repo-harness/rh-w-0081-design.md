@@ -1,6 +1,6 @@
 # Diseno RH-W-0081 de cronologia local del host para el changelog
 
-> **Estado: DISENO APROBADO POR EL PROPIETARIO. Existe un plan propuesto; la implementacion sigue sin autorizacion separada.**
+> **Estado: DISENO APROBADO POR EL PROPIETARIO. Implementado 2026-10-09 (alcance minimo); entrega pendiente.**
 
 ## Decision
 
@@ -24,8 +24,8 @@ La correccion autorizada por separado fusiono ambas secciones `2026-08-29` de lo
 
 ## Exclusiones
 
-Este diseno y el plan propuesto no autorizan comportamiento de producto, prueba, proyeccion, correccion adicional, Git, red, proveedor, publicacion ni cambio de identidad RH-W-0069.
+No se agregaron servicio de reloj, logica timezone, estado ni cambio de manifiesto. Disposicion RH-W-0068 e identidad RH-W-0069 intactas. La entrega requiere autoridad separada; no se afirman push, PR, issue ni publicacion.
 
 ## Objetivos de verificacion posteriores
 
-El [plan de implementacion](rh-w-0081-implementation-plan.md) propuesto cubre derivacion local, timestamps exactos, ambiguedad, un encabezado por fecha, independencia UTC, paridad y correccion registrada. Espera aprobacion.
+El propietario delego la decision del siguiente objetivo el 2026-10-09, aprobando el plan minimo actualizado y la implementacion. El [plan de implementacion](rh-w-0081-implementation-plan.md) registra una clausula, una prueba y evidencia verificada de proyecciones. El contrato mas amplio anterior queda como razonamiento de diseno, no como afirmacion de mecanicas de timestamp probadas por separado.

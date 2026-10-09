@@ -1,6 +1,6 @@
 # RH-W-0081 Host-Local Changelog Chronology Design
 
-> **Status: OWNER-APPROVED DESIGN. A proposed implementation plan exists; implementation remains separately unauthorized.**
+> **Status: OWNER-APPROVED DESIGN. Implemented 2026-10-09 (minimal scope); delivery pending.**
 
 ## Decision
 
@@ -24,8 +24,8 @@ The separately authorized correction merged both `2026-08-29` changelog sections
 
 ## Exclusions
 
-No product behavior, test, generated projection, further changelog correction, Git action, network access, provider action, publication, or change to RH-W-0069 backup identity is authorized by this design or the proposed plan.
+No clock service, timezone logic, state or manifest change was added. RH-W-0068 disposition and RH-W-0069 backup identity remain untouched. Delivery requires separate authority; no push, PR, issue or publication is claimed.
 
 ## Later Verification Targets
 
-The proposed [implementation plan](rh-w-0081-implementation-plan.md) covers host-local derivation, exact timestamp handling, ambiguity behavior, one-heading-per-local-date reconciliation, UTC backup independence, bilingual parity, and the recorded changelog correction. It awaits owner approval.
+The owner delegated the next-objective decision on 2026-10-09, approving the refreshed minimal plan and implementation. The [implementation plan](rh-w-0081-implementation-plan.md) records the one-clause, one-test scope and verified projection evidence. The broader derivation contract above remains design rationale, not a claim of separately tested timestamp mechanics.

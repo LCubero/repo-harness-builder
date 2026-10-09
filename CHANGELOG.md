@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-09
+
+- Completed RH-W-0081 under owner delegation: session-stop changelog guidance now uses the completed change's host-local date, prefers exact local Git evidence, rejects UTC substitution and continuity-backup timestamp derivation, and asks one question when evidence is absent or ambiguous. One regression test observed RED then GREEN; ten projections were validated. Historical date correction and RH-W-0068/RH-W-0069 ownership remain unchanged. Delivery (push/PR) pending.
+
 ## 2026-10-08
 
 - Completed RH-W-0077 (issue #281) under the owner's decisions: personal storage remains unrelated to the harness and ignored locally; the stale undocumented plan folder was removed; and direct commits to `main` are exceptions only the owner or an explicitly authorized delegate may grant, with each exception requested or stated explicitly at the time. Direct-main documentation corrections still require a changelog entry. Updated the bilingual roadmap, current-state projection, design references, and contribution policy.
