@@ -710,6 +710,22 @@ class ApprovalUxTests(unittest.TestCase):
 
 
 class ConversationLanguageBoundaryTests(unittest.TestCase):
+    def test_startup_generic_host_language_rule_does_not_promote_wrapper_text(self):
+        clarification = (
+            "A generic host rule to answer in the user's language does not make generated wrapper or command text "
+            "a language requirement; apply the resolved conversation language unless a higher-priority host "
+            "instruction names a specific language."
+        )
+        for standalone in (True, False):
+            with self.subTest(standalone=standalone):
+                skill = TOOL.session_start_skill("example", "REPO-HARNESS.md", "MIT", standalone)
+                self.assertIn(
+                    "wrapper or command text alone does not switch languages. " + clarification,
+                    skill,
+                )
+                self.assertEqual(skill.count(clarification), 1)
+                self.assertLess(skill.index(clarification), skill.index("## Conditional Reference Index"))
+
     def test_startup_applies_resolved_language_before_conditional_reference(self):
         skill = TOOL.session_start_skill("example", "REPO-HARNESS.md", "MIT", False)
         early_rule = (
