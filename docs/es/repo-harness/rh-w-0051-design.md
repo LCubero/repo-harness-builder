@@ -27,7 +27,7 @@ El nombre es `memory-bk`, no `memory`, para mantener explicito el limite: es un 
 - RH-W-0046 y la aplazada RH-W-0018 conservan consentimiento o preferencias. Su ubicacion reservada es `.repo-harness/state/preferences/`.
 - RH-W-0040 conserva el registro de violaciones. Su ubicacion reservada es `.repo-harness/state/violations/`.
 - RH-W-0052 conserva archivo, desinstalacion, reinstalacion y aprobacion de borrado.
-- El almacenamiento personal, `.ld9/`, `.atl/`, `.codegraph/` y `.engram/` quedan fuera de la propiedad del harness.
+- El almacenamiento personal del propietario, `.atl/`, `.codegraph/` y `.engram/` queda fuera de la propiedad del harness.
 
 Ningun namespace posee documentacion, aprobaciones, ciclo de vida, conflictos, recibos, entrega ni verdad canonica del proyecto.
 
@@ -49,7 +49,7 @@ El checker valida rutas, clases, contencion e ignore. No enumera ni analiza arch
 
 - Las instalaciones sin `localState` usan la ruta existente de reemplazo autenticado en una pasada del par manifest/checker.
 - La migracion no crea directorios ni mueve archivos.
-- El contenido personal `.ld9/` nunca se descubre, copia, migra, renombra ni elimina automaticamente.
+- El almacenamiento personal del propietario nunca se descubre, copia, migra, renombra ni elimina automaticamente.
 - El contenido existente bajo `.repo-harness/` queda intacto salvo el par manifest/checker autorizado por separado y la integracion acotada de `.gitignore`.
 - Una futura migracion explicita desde almacenamiento personal o heredado requiere otro diseno aprobado.
 
@@ -64,7 +64,7 @@ Los requisitos aprobados antes de implementar fueron:
 5. Deriva cuando difiere el ignore obligatorio o la taxonomia.
 6. Reemplazo atomico del par manifest/checker autenticado.
 7. Ausencia de creacion o migracion automatica durante preview, check o upgrade.
-8. Cero lectura, escritura, movimiento o borrado bajo `.ld9/` y rutas de otras herramientas.
+8. Cero lectura, escritura, movimiento o borrado bajo el almacenamiento personal del propietario y rutas de otras herramientas.
 9. Comportamiento acotado por repositorio sin Git y multiraiz.
 10. Paridad bilingue, enlaces validos y rechazo de Unicode prohibido.
 
