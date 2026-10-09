@@ -1,5 +1,7 @@
 # RH-W-0078 Proposed Scope
 
+> **Status: RH-W-0078 is `completed`.** The [roadmap record](roadmap.md#rh-w-0078) owns its outcome; the text below is retained as historical evidence.
+
 **Status: proposed; the owner approved the corrected bilingual scope.** This artifact records scope only. Scope approval alone did not authorize design or implementation, and this document does not approve itself. The [roadmap record](roadmap.md#rh-w-0078) owns lifecycle.
 
 ## Verified Baseline

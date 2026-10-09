@@ -1,5 +1,7 @@
 # Alcance propuesto RH-W-0078
 
+> **Estado: RH-W-0078 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0078) posee su resultado; el texto siguiente se conserva como evidencia histórica.
+
 **Estado: propuesto; el propietario aprobó el alcance bilingüe corregido.** Este artefacto registra solo el alcance. La aprobación del alcance por sí sola no autorizaba diseño ni implementación, y este documento no se aprueba a sí mismo. El [registro de la hoja de ruta](roadmap.md#rh-w-0078) posee el ciclo de vida.
 
 ## Base verificada

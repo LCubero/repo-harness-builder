@@ -1,5 +1,7 @@
 # RH-W-0055 Installation And Onboarding Design
 
+> **Status: RH-W-0055 is `completed`.** The [roadmap record](roadmap.md#rh-w-0055) owns its outcome; the text below is retained as historical evidence.
+
 Status: `proposed`; design owner-approved on 2026-09-06. This approval does not authorize implementation planning, implementation, publication, or network access.
 
 ## Problem And Boundary

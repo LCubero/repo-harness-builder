@@ -1,5 +1,7 @@
 # RH-W-0060 Repository State Reporting Design
 
+> **Status: RH-W-0060 is `completed`.** The [roadmap record](roadmap.md#rh-w-0060) owns its outcome; the text below is retained as historical evidence.
+
 Status: `proposed`; C11-only design approved by the owner. Implementation planning and implementation are separately unauthorized.
 
 ## Decision

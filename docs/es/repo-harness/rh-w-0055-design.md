@@ -1,5 +1,7 @@
 # Diseño RH-W-0055 de instalación e incorporación
 
+> **Estado: RH-W-0055 está `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0055) posee su resultado; el texto siguiente se conserva como evidencia histórica.
+
 Estado: `proposed`; diseño aprobado por el propietario el 2026-09-06. Esta aprobación no autoriza planificación de implementación, implementación, publicación ni acceso de red.
 
 ## Problema y límite

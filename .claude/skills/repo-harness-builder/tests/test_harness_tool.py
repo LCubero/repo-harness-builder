@@ -6122,6 +6122,43 @@ resume_authority: required
                     )
         self.assertGreater(checked, 0, "no terminal-unit plan was found; the roadmap may not have parsed")
 
+    def test_thematic_documents_do_not_open_with_a_stale_status(self):
+        """Opening lifecycle claims must agree with the unit's roadmap owner."""
+        repository = ROOT.parents[1]
+        _, records = self._roadmap_records()
+        words = {
+            word: status
+            for status, aliases in (
+                ("proposed", "proposed propuesto propuesta"),
+                ("ready", "ready listo lista"),
+                ("active", "active activo activa"),
+                ("deferred", "deferred aplazado aplazada"),
+                ("completed", "completed completado completada"),
+                ("rejected", "rejected rechazado rechazada"),
+            )
+            for word in aliases.split()
+        }
+        checked = 0
+        for directory in ("docs/repo-harness", "docs/es/repo-harness"):
+            for path in sorted((repository / directory).glob("rh-w-*.md")):
+                record_id = "RH-W-" + re.search(r"rh-w-(\d{4})", path.name).group(1)
+                if record_id not in records:
+                    continue
+                lines = [line for line in path.read_text(encoding="utf-8").splitlines()[1:] if line.strip()]
+                opening = lines[0] if lines else ""
+                pattern = (
+                    r"\b(?:Status|Estado)[*>` ]*:[*>` ]*(\w+)"
+                    rf"|\b{record_id}`?\s+(?:is|remains|stays|está|esta|permanece|sigue)\s+`?(\w+)"
+                )
+                checked += 1
+                with self.subTest(document=f"{directory}/{path.name}"):
+                    for match in re.finditer(pattern, opening, re.I):
+                        claimed = words.get((match.group(1) or match.group(2)).lower())
+                        if claimed:
+                            self.assertEqual(claimed, records[record_id],
+                                             f"opening status for {record_id} disagrees with its roadmap owner")
+        self.assertGreater(checked, 0, "no thematic document with a roadmap record was checked")
+
     def test_current_state_action_plan_coverage_is_derived_from_the_roadmap(self):
         """The uncovered set is the fact; a stale count hides records nobody planned."""
         repository = ROOT.parents[1]
