@@ -4,6 +4,8 @@
 
 ## 2026-10-09
 
+- Se completo RH-W-0085 bajo delegacion del propietario: una asercion derivada del roadmap comprueba el estado propio en aperturas tematicas. RED hallo diez aperturas obsoletas EN/ES; banners de cierre lograron GREEN conservando cuerpos historicos. Tres proyecciones de pruebas validadas; checker current/0 escrituras. Entregado mediante el issue #288 y el PR #289.
+
 - Se completo RH-W-0081 bajo delegacion del propietario: la guia del changelog de session-stop usa la fecha local del host del cambio completado, prefiere evidencia Git local exacta, rechaza sustitucion UTC y derivacion desde timestamp del backup de continuidad y pregunta una vez si falta evidencia o es ambigua. Una prueba observo RED y GREEN; se validaron diez proyecciones. Correccion historica y propiedad RH-W-0068/RH-W-0069 intactas. Entregado mediante el issue #286 y el PR #287.
 
 ## 2026-10-08
