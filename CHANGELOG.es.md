@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-09
+
+- Se completo RH-W-0081 bajo delegacion del propietario: la guia del changelog de session-stop usa la fecha local del host del cambio completado, prefiere evidencia Git local exacta, rechaza sustitucion UTC y derivacion desde timestamp del backup de continuidad y pregunta una vez si falta evidencia o es ambigua. Una prueba observo RED y GREEN; se validaron diez proyecciones. Correccion historica y propiedad RH-W-0068/RH-W-0069 intactas. Entregado mediante el issue #286 y el PR #287.
+
 ## 2026-10-08
 
 - Se completo RH-W-0077 (issue #281) segun las decisiones del propietario: el almacenamiento personal no esta relacionado con el harness y se ignora localmente; se retiro el plan obsoleto sin documentar; y los commits directos a `main` son excepciones que solo puede conceder el propietario o una persona delegada explicitamente, con cada excepcion solicitada o declarada explicitamente en el momento. Las correcciones documentales directas a `main` aun requieren una entrada en el changelog. Se actualizaron la hoja de ruta bilingue, la proyeccion de estado actual, las referencias de diseno y la politica de contribucion.

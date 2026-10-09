@@ -1,8 +1,16 @@
 # RH-W-0081 Host-Local Changelog Chronology Implementation Plan
 
-> **Status: proposed.** Owner approval and separate product implementation authorization are required. The documentation correction was completed separately and is retained below as historical work.
+> **Status: `completed`.** Owner-delegated minimal implementation completed 2026-10-09; delivered through issue #286 and PR #287. Historical instructions below are not an execution queue.
 
 Derived from the owner-approved [design](rh-w-0081-design.md). Spanish peer: [rh-w-0081-implementation-plan.md](../es/repo-harness/rh-w-0081-implementation-plan.md).
+
+## Refreshed Scope (2026-10-09)
+
+The owner delegated the next-objective decision ("decide it yourself, without overengineering"); selecting RH-W-0081 and refreshing its minimal plan under that delegation approved the plan and implementation. One clause rendered into session-stop `references/git-commit.md` now says: "Date each entry by the host-local calendar date of the completed change, preferring the exact change's local Git commit date; never substitute UTC, and never derive it from the UTC continuity backup timestamp. If that evidence is unavailable or ambiguous, ask one question."
+
+One regression test, `GeneratedCoreTests.test_session_stop_dates_changelog_by_host_local_evidence`, observed RED then GREEN. The 2026-08-30 plan's separate UTC-independence test and heavier slices were superseded by this one clause and one test; `.pi` is included. No clock service, timezone logic, state or manifest change. Slice 2 (`fac022c6`), RH-W-0068 disposition and RH-W-0069 backup identity are unchanged.
+
+Maintenance digest `2bbfb37f21057506c420a2786b4da3c3d37025885363484d75f27c4de63f425a` replaced exactly ten paths: script/test copies in `.claude`, `.opencode`, `.pi`, and four session-stop references including `.repo-harness`. Apply VALIDATED; second preview empty; checker current/0 writes; four-root script/test byte parity. Full suite: 631 tests, 11 skipped; only the stale documented-count assertion failed, corrected by this documentation update. No full-suite rerun is claimed here. No push, PR, issue or publication yet; delivery remains pending.
 
 ## Proven Surface And Ownership
 
@@ -11,6 +19,12 @@ Derived from the owner-approved [design](rh-w-0081-design.md). Spanish peer: [rh
 Exact evidence for the completed correction is local Git commit `1e5759e0` at `2026-08-28T22:33:40-06:00` and `c892cfb` at `2026-08-28T22:40:57-06:00`. Commit `fac022c6` moved both English and Spanish entries to the existing `2026-08-28` sections. Commit `b39e1ba` updated only the Plan 30 projection.
 
 ## Slice 1: Focused RED And Minimal Generated Contract
+
+- [x] Added the single refreshed regression test and observed RED then GREEN.
+- [x] Extended session-stop guidance minimally: host-local completed-change date, exact local Git preference, no UTC substitution or backup-timestamp derivation, one ambiguity question.
+- [x] Preserved RH-W-0068 and RH-W-0069 ownership without new mechanics.
+
+The original Slice 1 items below are superseded, not completed claims; distinct tests, timestamp precision assertions and old commands were not executed as written.
 
 - [ ] Add `GeneratedCoreTests.test_session_stop_derives_changelog_date_from_exact_host_local_evidence` and `test_changelog_chronology_is_independent_from_continuity_utc_identity`.
 - [ ] Assert the observed host-local system clock supplies chronology for completed non-Git work. For completed Git work, verified local Git evidence tied to the exact change is preferred. Preserve exact seconds and offset when a timestamp is shown, otherwise use local date plus offset.
@@ -31,12 +45,16 @@ Exact evidence for the completed correction is local Git commit `1e5759e0` at `2
 
 ## Slice 3: Projections, Lifecycle, And Delivery Boundary
 
+Historical instructions below are superseded by the refreshed receipt above and this bounded bilingual reconciliation. Delivery remains pending.
+
 - [ ] Run the canonical full suite after Slice 1 GREEN. Expected: exit 0.
 - [ ] Synchronize canonical script and test package projections, then use the normal maintenance renderer for generated session-stop outputs. Review exact preview and digest before separately authorized apply. Expected second preview: no actions.
 - [ ] After verified implementation and separate lifecycle authority, reconcile exactly `docs/repo-harness/roadmap.md`, `docs/es/repo-harness/roadmap.md`, `docs/repo-harness/current-state.md`, `docs/es/repo-harness/current-state.md`, `docs/repo-harness/README.md`, `docs/es/repo-harness/README.md`, `docs/repo-harness/rh-w-0081-design.md`, `docs/es/repo-harness/rh-w-0081-design.md`, `docs/repo-harness/rh-w-0081-implementation-plan.md`, `docs/es/repo-harness/rh-w-0081-implementation-plan.md`, `CHANGELOG.md`, `CHANGELOG.es.md`, RH-W-0068 disposition, and Engram `work/RH-W-0081`.
 - [ ] Keep Slice 2 as an independently reviewable documentation correction inside this owner. Keep RH-W-0081 issue, commits, review, rollback, and delivery separate from RH-W-0068 and RH-W-0069. This plan authorizes no Git action now.
 
 ## Verification
+
+Historical commands below are retained, not a current verification queue or claims of exact execution. The refreshed evidence above is authoritative for implementation; focused documentation checks are reported separately.
 
 - [ ] Run `python -B skill/repo-harness-builder/tests/test_harness_tool.py GeneratedCoreTests.test_session_stop_derives_changelog_date_from_exact_host_local_evidence GeneratedCoreTests.test_changelog_chronology_is_independent_from_continuity_utc_identity GeneratedCoreTests.test_changelog_is_simple_completed_history GeneratedCoreTests.test_session_skills_treat_changelog_as_completed_history_only -v`, then repeat against `.opencode/skills/repo-harness-builder/tests/test_harness_tool.py` and `.claude/skills/repo-harness-builder/tests/test_harness_tool.py`. Expected: four equal passes per package.
 - [ ] Run `python -B -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py" -v`. Expected: exit 0. Run `python -c "from pathlib import Path; import hashlib; rel=['scripts/harness_tool.py','tests/test_harness_tool.py']; roots=[Path('skill/repo-harness-builder'),Path('.opencode/skills/repo-harness-builder'),Path('.claude/skills/repo-harness-builder')]; bad=[p for p in rel if len({hashlib.sha256((r/p).read_bytes()).hexdigest() for r in roots}) != 1]; assert not bad,bad"`. Expected: exit 0 and no output.
@@ -58,4 +76,4 @@ Authored change: 90 to 150 lines, including the two changelog heading moves. Mec
 - [ ] RH-W-0068 disposition and RH-W-0069 UTC identity remain untouched.
 - [ ] English and Spanish heading correction is exact, evidence-bound, and independently reversible.
 
-Unresolved decisions: none for planning. Plan approval, implementation authorization, and delivery remain separate.
+Unresolved implementation decisions: none. Refreshed plan and implementation approved by owner delegation on 2026-10-09; delivery requires separate authority.

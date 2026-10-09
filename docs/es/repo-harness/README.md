@@ -81,8 +81,8 @@
 | [Plan de implementacion RH-W-0079](rh-w-0079-implementation-plan.md) | Plan completado de cinco Cortes con pruebas primero; registra la evidencia de entrega de los Cortes 4 y 5 |
 | [Diseno RH-W-0080](rh-w-0080-design.md) | Diseno completado y aprobado por el propietario; producto entregado mediante el PR #269 y ciclo aceptado condicionalmente; vease el [registro canonico](roadmap.md#rh-w-0080) |
 | [Plan RH-W-0080](rh-w-0080-implementation-plan.md) | Plan de implementacion completado; se conserva el contexto historico de aprobacion y la lista de ejecucion; producto entregado mediante el PR #269 y ciclo aceptado condicionalmente; vease la [hoja de ruta](roadmap.md#rh-w-0080) |
-| [Diseno RH-W-0081](rh-w-0081-design.md) | Diseno aprobado de cronologia local del host para el changelog; implementacion sigue sin autorizacion |
-| [Plan RH-W-0081](rh-w-0081-implementation-plan.md) | Plan propuesto de cronologia local a la espera de aprobacion |
+| [Diseno RH-W-0081](rh-w-0081-design.md) | Diseno aprobado de cronologia local del host para el changelog; implementado 2026-10-09, entregado mediante el PR #287 |
+| [Plan RH-W-0081](rh-w-0081-implementation-plan.md) | Plan completado de cronologia local; implementado 2026-10-09, entregado mediante el PR #287 |
 | [Diseno RH-W-0075](rh-w-0075-design.md) | Diseño completado de acceso externo con su implementación mínima; entregado mediante el PR #257 |
 | [Plan RH-W-0075](rh-w-0075-implementation-plan.md) | Plan de necesidad externa reemplazado; se conserva como historia |
 | [Hallazgos RH-W-0056](rh-w-0056-findings.md) | Propietario canonico de hallazgos y de la disposicion completada de 64 recomendaciones |

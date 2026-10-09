@@ -6408,6 +6408,15 @@ resume_authority: required
         self.assertIn("Avoid an entry for a trivial or no-op session", stop)
         self.assertIn("completed changes, not future plans", docs)
 
+    def test_session_stop_dates_changelog_by_host_local_evidence(self):
+        outputs = TOOL.render("Example", [])
+        stop = self.indexed_closure(outputs, "session-stop", ("git-commit.md",))
+        self.assertIn("host-local calendar date of the completed change", stop)
+        self.assertIn("preferring the exact change's local Git commit date", stop)
+        self.assertIn("never substitute UTC", stop)
+        self.assertIn("never derive it from the UTC continuity backup timestamp", stop)
+        self.assertIn("If that evidence is unavailable or ambiguous, ask one question", stop)
+
     def test_session_start_runs_projection_checker_only_when_its_rulebook_gate_applies(self):
         start = self.indexed_closure(
             TOOL.render("Example", ["opencode", "claude-code"]), "session-start", ("reconciliation.md",)
