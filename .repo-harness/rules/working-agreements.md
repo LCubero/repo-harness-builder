@@ -31,7 +31,8 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 
 ## Project Agreements
 
-- Work one coherent feature, blocker, issue, or named objective per session. Complete its applicable documentation, verification, review, and authorized delivery before `repo-harness-session-stop`; begin adjacent work in a fresh session.
+- For expensive or cost-unknown work, apply [resource-safety](../../docs/repo-harness/rh-w-0070-design.md).
+- One coherent objective per session; complete applicable documentation, verification, review, and authorized delivery before `repo-harness-session-stop`. Begin adjacent work in a fresh session.
 
 ## Budget
 
