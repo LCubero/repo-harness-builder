@@ -7,6 +7,7 @@ import inspect
 import hashlib
 import json
 import os
+import posixpath
 import re
 import shutil
 import subprocess
@@ -1251,6 +1252,26 @@ class ProductWorkflowTests(unittest.TestCase):
                     if resolved not in outputs and token not in outputs:
                         offenders.append(f"documentation={languages} {path} advertises {token!r} -> {resolved!r}")
         self.assertEqual(offenders, [], chr(10).join(offenders))
+
+    def test_generated_usage_includes_response_preferences_with_resolving_rule_links(self):
+        for languages, path in (
+            (["en"], "docs/repo-harness/usage.md"),
+            (["en", "es"], "docs/es/repo-harness/usage.md"),
+            (["es"], "docs/repo-harness/usage.md"),
+        ):
+            with self.subTest(languages=languages, path=path):
+                outputs = TOOL.render("Example", [], documentation_languages=languages)
+                text = outputs[path]
+                self.assertIn(".repo-harness/state/preferences/user-preferences.json", text)
+                self.assertNotIn("## Response Preferences", text)
+                self.assertNotIn("## Preferencias de respuesta", text)
+                self.assertNotIn("<!-- doc-role:response-preferences -->", text)
+                for name in ("response-contract",):
+                    links = re.findall(r"\]\(([^)]+/" + name + r"\.md)\)", text)
+                    self.assertEqual(len(links), 1)
+                    resolved = posixpath.normpath(posixpath.join(posixpath.dirname(path), links[0]))
+                    self.assertEqual(resolved, f".repo-harness/rules/{name}.md")
+                    self.assertIn(resolved, outputs)
 
     def test_readmes_have_one_reciprocal_language_selector(self):
         outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])

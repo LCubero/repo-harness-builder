@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
+- Added a preference pointer sentence to the generated EN/ES usage guide, linking the local preference file to the response contract as the single owner of keys and precedence; Spanish links resolve from each emitted location without increasing the guide's line budget. One regression test covers all three output locations; six builder-package projections synchronized.
+
 - Documented the local preference file and response modes in the EN/ES usage guide with README pointers; documentation only, no behavior change.
 
 - Scoped the session-start reconciliation precedence sentence to conversation language ("Resolve conversation-language precedence as"), so the session, manifest, and English fallbacks no longer read as applying to response axes, which resolve through the response contract. Resolves the non-blocking review advisory left by the response-mode delivery. One regression test observed RED then GREEN; ten projections synchronized; no behavior change.
