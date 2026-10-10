@@ -8729,6 +8729,9 @@ class PreferenceResponseAxesTests(unittest.TestCase):
             self.assertEqual(text.count('read-preference --root <selected-repository-root>'), 1)
             for phrase in ('`responseStructure`', '`explanationStyle`', 'Pass response axes to the response contract as persisted explicit preferences'):
                 self.assertIn(phrase, text)
+        reconciliation = outputs['.repo-harness/skills/repo-harness-session-start/references/reconciliation.md']
+        self.assertIn('Resolve conversation-language precedence as verified current human instruction', reconciliation)
+        self.assertNotIn('Resolve precedence as', reconciliation)
 
     def test_modules_route_combine_and_preserve_single_syntax_owner(self):
         outputs = TOOL.render("Example", [])

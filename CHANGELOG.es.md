@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-10
+
+- Se acoto la frase de precedencia de la reconciliacion de inicio de sesion al idioma de conversacion ("Resolve conversation-language precedence as"), para que los respaldos de idioma de sesion, manifiesto e ingles ya no parezcan aplicar a los ejes de respuesta, que se resuelven mediante el contrato de respuesta. Resuelve la observacion de revision no bloqueante que dejo la entrega de los modos de respuesta. Una prueba de regresion observo RED y luego GREEN; diez proyecciones sincronizadas; sin cambio de comportamiento.
+
 ## 2026-10-09
 
 - Se completaron los modos de respuesta por preferencias RH-W-0071/RH-W-0082: se ampliaron el lector existente de preferencias de solo lectura y el transporte de una lectura al inicio, se enrutaron modulos combinables ADHD-friendly y plain-language, se sincronizaron las proyecciones runtime y se reconciliaron los registros bilingues de ciclo de vida.
