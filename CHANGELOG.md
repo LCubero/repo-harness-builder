@@ -4,13 +4,11 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
-## 2026-10-11
+## 2026-10-10
 
 - Reconciled the EN/ES current state with published pre-release `v3.1-rc.7`, which had still been reported as `v3.1-rc.6`. Documentation only, no behavior change.
 
 - Aligned the builder command's no-argument behavior with the builder skill: a bare invocation follows the installation, update, or correction flow, which audits read-only and writes nothing before plan approval; read-only inspection runs only on an explicit inspect/check request. Synchronized the Claude Code, OpenCode, and Pi command projections and added one contract test.
-
-## 2026-10-10
 
 - Published GitHub pre-release [`v3.1-rc.7`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.7) from tag commit `d245450` with the 15-file asset `repo-harness-builder-v3.1-rc.7.zip` (SHA-256 `06b8a300098112f79ab46dde6d3f0d6f3b9a0a92b21b8648a2cb27c09a0ccc3b`).
 
