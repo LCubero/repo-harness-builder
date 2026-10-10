@@ -31,7 +31,7 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 
 ## Project Agreements
 
-- For expensive or cost-unknown work, apply [resource-safety](../../docs/repo-harness/rh-w-0070-design.md).
+- Expensive or cost-unknown work follows [resource-safety](../../docs/repo-harness/rh-w-0070-design.md).
 - One coherent objective per session; complete applicable documentation, verification, review, and authorized delivery before `repo-harness-session-stop`. Begin adjacent work in a fresh session.
 
 ## Budget
