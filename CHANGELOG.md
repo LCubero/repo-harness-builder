@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
+- Recorded the owner-delegated preference-driven response-mode design: reopened RH-W-0071 shared persistence with RH-W-0082, reusing the existing JSON store and reader, manual explicit-preference editing, and conditional rendered rule modules in one later test-first implementation unit. Reconciled bilingual lifecycle projections; RH-W-0018 stays deferred. No product behavior changed.
+
 - Completed RH-W-0098: one file-only roadmap-derived assertion rejects stale phrases in completed-record EN/ES opening lines and documentation-map rows, with narrow historical/negated/contextual exclusions. Both injected regressions failed RED; restored fixtures passed GREEN. Synchronized three test projections and reconciled bilingual lifecycle counts; no product or generated-contract change.
 
 - Restored the green canonical suite: the RH-W-0086 closure mistakenly relabeled the current-state suite-count line as historical; restored it and corrected RH-W-0086 wording because the suite count was already derived. Trimmed working-agreements.md by one word, from a rounded 700 proxy tokens to under its 700 budget; the overrun predated this session since PR #295. No product, test, or projection change.

@@ -1,6 +1,6 @@
 # Plan de implementacion RH-W-0071
 
-> **Estado: subconjunto solo de sesion verificado, revisado y entregado mediante PR #161 el 2026-09-05 bajo issue #160. El [registro](roadmap.md#rh-w-0071) posee la evidencia de entrega. RH-W-0071 sigue `proposed`: persistencia compartida aplazada y requisito original integro sin satisfacer.**
+> **Estado: subconjunto solo de sesion verificado, revisado y entregado mediante PR #161 el 2026-09-05 bajo issue #160. El [registro](roadmap.md#rh-w-0071) posee la evidencia de entrega. RH-W-0071 esta `active`: la persistencia compartida se reabrio el 2026-10-10 bajo el [diseno de modos de respuesta por preferencia](rh-w-0071-design.md), y su implementacion es una unidad separada.**
 
 Derivado del [diseno RH-W-0071](rh-w-0071-design.md) aprobado por el propietario y del Plan 20 de la hoja de ruta. Su par en ingles es [rh-w-0071-implementation-plan.md](../../repo-harness/rh-w-0071-implementation-plan.md).
 
