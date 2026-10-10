@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-10
+
+- Scoped the session-start reconciliation precedence sentence to conversation language ("Resolve conversation-language precedence as"), so the session, manifest, and English fallbacks no longer read as applying to response axes, which resolve through the response contract. Resolves the non-blocking review advisory left by the response-mode delivery. One regression test observed RED then GREEN; ten projections synchronized; no behavior change.
+
 ## 2026-10-09
 
 - Complete RH-W-0071/RH-W-0082 preference-driven response modes: extend the existing read-only preference reader and one-read startup transport, route combinable ADHD-friendly and plain-language modules, synchronize runtime projections, and reconcile bilingual lifecycle records.
