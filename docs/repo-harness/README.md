@@ -7,7 +7,8 @@
 
 | Document | Ownership |
 | --- | --- |
-| [README.md](../../README.md) | Product guide, development entry point, and self-hosting source model |
+| [README.md](../../README.md) | Short product introduction and repository-local installation |
+| [builder-guide.md](builder-guide.md) | Detailed builder behavior, generated files, integrations, languages, upgrades, and development |
 | [CONTRIBUTING.md](../../CONTRIBUTING.md) | Issue-first contribution workflow, verification, review, and merge rules |
 | [usage.md](usage.md) | Human workflow, integration availability checks, and approval boundaries |
 | [current-state.md](current-state.md) | Concise active projection, blockers, recently completed IDs, and next actionable condition |

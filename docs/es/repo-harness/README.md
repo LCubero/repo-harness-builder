@@ -5,7 +5,8 @@
 
 | Documento | Propiedad |
 | --- | --- |
-| [README.es.md](../../../README.es.md) | Guia del producto en espanol |
+| [README.es.md](../../../README.es.md) | Introduccion breve al producto e instalacion local al repositorio |
+| [builder-guide.md](builder-guide.md) | Comportamiento detallado del constructor, archivos generados, integraciones, idiomas, actualizaciones y desarrollo |
 | [CONTRIBUTING.es.md](../../../CONTRIBUTING.es.md) | Flujo de contribucion, verificacion, revision y merge |
 | [usage.md](usage.md) | Flujo humano y limites de aprobacion |
 | [current-state.md](current-state.md) | Proyeccion concisa de actividad, bloqueos, IDs completados y siguiente condicion |

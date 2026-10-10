@@ -4,6 +4,8 @@
 
 ## 2026-10-10
 
+- Se simplificaron los README EN/ES con instalacion local al repositorio en tres pasos y enlaces de uso diario; se traslado la guia detallada a guias bilingues del constructor registradas y se quitaron los bloques de instalacion por shell. Solo documentacion, sin cambio de comportamiento.
+
 - Se agrego una frase de referencia a preferencias en la guia de uso generada EN/ES, enlazando el archivo local de preferencias al contrato de respuesta como unico propietario de claves y precedencia; los enlaces en espanol se resuelven desde cada ubicacion emitida sin aumentar el presupuesto de lineas de la guia. Una prueba de regresion cubre las tres ubicaciones de salida; seis proyecciones del paquete del builder sincronizadas.
 
 - Se documentaron el archivo local de preferencias y los modos de respuesta en la guia de uso EN/ES con enlaces desde README; solo documentacion, sin cambio de comportamiento.
