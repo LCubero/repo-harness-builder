@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
+- Corrected stale RH-W-0071 wording in the EN/ES decisions, design, and implementation-plan documents: the fixed-path conversation-language reader is delivered, as the roadmap record already shows, instead of local or pending. No lifecycle, product, or projection change.
 - Completed RH-W-0086 under explicit owner delegation with owner-approved recording: `.gitattributes` remains product-owned and test-asserted, the checker retains runtime-projection parity scope, historical commit anchors stay immutable, and subprocess-dependent counts remain historical receipts outside the file-only derived set. The delivered first slice completes the record; reconciled bilingual portfolio projections without further implementation.
 
 ## 2026-10-09
