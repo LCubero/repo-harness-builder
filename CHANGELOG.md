@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
+- Restored decision-gate parity in `REPO-HARNESS.es.md`: added the five missing rows (working agreements, memory, documentation map, roadmap, stable-prefix rule) and linked the Spanish changelog, within the 700-token budget. Documentation only.
+
 - Recorded the owner's standing decision to publish no further release-candidate pre-releases; `v3.1-rc.7` remains the last published candidate. Documentation only.
 
 - Reconciled the EN/ES current state with published pre-release `v3.1-rc.7`, which had still been reported as `v3.1-rc.6`. Documentation only, no behavior change.

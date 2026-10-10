@@ -187,7 +187,7 @@ Cualquier release, tag, publicacion de paquete o cambio de version real sigue si
 
 Hallazgos abiertos levantados y deliberadamente no arreglados dentro de las unidades que los encontraron:
 
-- El reglamento espanol no lleva fila de compuerta hacia `.repo-harness/rules/working-agreements.md` y tiene 9 lineas de tabla de compuertas contra las 13 inglesas. Eso es paridad documental y no presupuesto, asi que `RH-W-0073` lo dejo.
+- Resuelto el 2026-10-10: el reglamento espanol ya lleva todas las filas de compuertas del ingles, incluida `.repo-harness/rules/working-agreements.md`, dentro de su presupuesto de 700 tokens.
 - La plantilla del generador sigue renderizando ambos bloques comprimidos en linea en cada reglamento generado. Un reglamento generado mide 650 contra 700, asi que no hay incumplimiento de consumidor por delante; si la compresion cambia tambien la plantilla sigue sin respuesta.
 - El 2026-09-01 se midieron diecisiete ramas locales totalmente fusionadas en `main`, frente a once en la medicion anterior; es evidencia historica del repositorio, no trabajo pendiente de RH-W-0077.
 

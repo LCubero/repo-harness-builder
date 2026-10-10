@@ -4,6 +4,8 @@
 
 ## 2026-10-10
 
+- Se restauro la paridad de compuertas en `REPO-HARNESS.es.md`: se agregaron las cinco filas faltantes (acuerdos de trabajo, memoria, mapa de documentacion, hoja de ruta, regla de prefijos estables) y se enlazo el historial en espanol, dentro del presupuesto de 700 tokens. Solo documentacion.
+
 - Se registro la decision permanente del propietario de no publicar mas pre-releases candidatos; `v3.1-rc.7` sigue siendo el ultimo candidato publicado. Solo documentacion.
 
 - Se reconcilio el estado actual EN/ES con el pre-release publicado `v3.1-rc.7`, que seguia informandose como `v3.1-rc.6`. Solo documentacion, sin cambio de comportamiento.
