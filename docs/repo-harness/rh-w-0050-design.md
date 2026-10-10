@@ -1,6 +1,6 @@
 # RH-W-0050 Bounded Reconciliation Design
 
-> **Status: OWNER-APPROVED DESIGN. Implementation is pending.**
+> **Status: OWNER-APPROVED DESIGN; implemented and delivered (`completed`). The historical design body below is retained.**
 >
 > External review completed and the owner approved this corrected design at commit `38cbedc` on 2026-08-21. Design approval advances RH-W-0050 to `ready`; it does not authorize or claim implementation or delivery.
 

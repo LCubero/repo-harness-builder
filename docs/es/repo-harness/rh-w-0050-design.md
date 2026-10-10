@@ -1,6 +1,6 @@
 # Diseno de reconciliacion acotada RH-W-0050
 
-> **Estado: DISENO APROBADO POR EL PROPIETARIO. La implementacion esta pendiente.**
+> **Estado: DISENO APROBADO POR EL PROPIETARIO; implementado y entregado (`completed`). El cuerpo historico del diseno se conserva abajo.**
 >
 > La revision externa termino y el propietario aprobo este diseno corregido en el commit `38cbedc` el 2026-08-21. La aprobacion del diseno avanza RH-W-0050 a `ready`; no autoriza ni afirma implementacion o entrega.
 
