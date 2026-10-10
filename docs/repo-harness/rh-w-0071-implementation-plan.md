@@ -1,10 +1,10 @@
 # RH-W-0071 Implementation Plan
 
-> **Status: `completed`. Shared preference contract implemented with RH-W-0082 on 2026-10-10. The [roadmap](roadmap.md#rh-w-0071) owns lifecycle; the subset delivered through PR #161 retains its historical evidence.**
+> **Status: `completed`. Shared preference contract implemented with RH-W-0082 on 2026-10-09. The [roadmap](roadmap.md#rh-w-0071) owns lifecycle; the subset delivered through PR #161 retains its historical evidence.**
 
 Derived from the owner-approved [RH-W-0071 design](rh-w-0071-design.md) and roadmap Plan 20. Its Spanish peer is [rh-w-0071-implementation-plan.md](../es/repo-harness/rh-w-0071-implementation-plan.md).
 
-## Implemented Boundary (2026-10-10)
+## Implemented Boundary (2026-10-09)
 
 The existing reader accepts optional `conversationLanguage`, `responseStructure` and `explanationStyle`, requiring at least one field with fail-closed validation. Session-start transports explicit values in one read. Each response axis uses current human instruction > persisted explicit preference > `standard`, loading combinable modules. Only the human edits the JSON; no writer exists. RH-W-0018 stays deferred.
 

@@ -4,7 +4,7 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
-## 2026-10-10
+## 2026-10-09
 
 - Complete RH-W-0071/RH-W-0082 preference-driven response modes: extend the existing read-only preference reader and one-read startup transport, route combinable ADHD-friendly and plain-language modules, synchronize runtime projections, and reconcile bilingual lifecycle records.
 
@@ -17,9 +17,8 @@ This file records meaningful completed changes in chronological order, newest fi
 - Corrected stale current-status claims in EN/ES: the RH-W-0050 banner, RH-W-0048/RH-W-0044/RH-W-0068 map entries, RH-W-0048 decision entry, and remaining RH-W-0071 plan boundary sentence. No lifecycle, product, or projection change.
 
 - Corrected stale RH-W-0071 wording in the EN/ES decisions, design, and implementation-plan documents: the fixed-path conversation-language reader is delivered, as the roadmap record already shows, instead of local or pending. No lifecycle, product, or projection change.
-- Completed RH-W-0086 under explicit owner delegation with owner-approved recording: `.gitattributes` remains product-owned and test-asserted, the checker retains runtime-projection parity scope, historical commit anchors stay immutable, and the suite count was already derived by an existing in-process assertion, and only the subprocess-dependent runtime-projection count remains a labeled historical receipt outside the file-only derived set. The delivered first slice completes the record; reconciled bilingual portfolio projections without further implementation.
 
-## 2026-10-09
+- Completed RH-W-0086 under explicit owner delegation with owner-approved recording: `.gitattributes` remains product-owned and test-asserted, the checker retains runtime-projection parity scope, historical commit anchors stay immutable; the suite count was already derived by an existing in-process assertion, and only the subprocess-dependent runtime-projection count remains a labeled historical receipt outside the file-only derived set. The delivered first slice completes the record; reconciled bilingual portfolio projections without further implementation.
 
 - RH-W-0070 (still proposed): added one owner-authorized project-local working-agreements pointer to the preventive resource-safety design and reconciled EN/ES lifecycle projections. Documentation only; no product implementation or lifecycle closure. Refs #294.
 

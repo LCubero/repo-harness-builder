@@ -4,6 +4,20 @@
 
 ## 2026-10-09
 
+- Se completaron los modos de respuesta por preferencias RH-W-0071/RH-W-0082: se ampliaron el lector existente de preferencias de solo lectura y el transporte de una lectura al inicio, se enrutaron modulos combinables ADHD-friendly y plain-language, se sincronizaron las proyecciones runtime y se reconciliaron los registros bilingues de ciclo de vida.
+
+- Se registro el diseno de modos de respuesta por preferencias delegado por el propietario: se reabrio la persistencia compartida RH-W-0071 con RH-W-0082, reutilizando el almacenamiento JSON y el lector existentes, la edicion manual de preferencias explicitas y modulos condicionales de reglas renderizadas en una unidad posterior de implementacion con pruebas primero. Se reconciliaron las proyecciones bilingues de ciclo de vida; RH-W-0018 sigue aplazada. Sin cambio de comportamiento del producto.
+
+- Se completo RH-W-0098: una asercion derivada de la hoja de ruta y de solo archivos rechaza frases obsoletas en las aperturas EN/ES de registros completados y en las filas del mapa documental, con exclusiones acotadas historicas, negadas y contextuales. Ambas regresiones inyectadas fallaron en RED; los fixtures restaurados pasaron GREEN. Se sincronizaron tres proyecciones de pruebas y se reconciliaron los conteos bilingues de ciclo de vida; sin cambio de producto ni contrato generado.
+
+- Se restauro la suite canonica verde: el cierre RH-W-0086 habia etiquetado por error como historica la linea de conteo de suite en estado actual; se restauro y se corrigio la redaccion RH-W-0086 porque el conteo de suite ya se derivaba. Se recorto working-agreements.md en una palabra, de 700 tokens proxy redondeados a menos de su presupuesto de 700; el exceso precedia esta sesion desde el PR #295. Sin cambio de producto, pruebas ni proyecciones.
+
+- Se corrigieron afirmaciones obsoletas de estado actual en EN/ES: el banner RH-W-0050, las entradas RH-W-0048/RH-W-0044/RH-W-0068 del mapa, la entrada RH-W-0048 de decisiones y la frase restante del limite del plan RH-W-0071. Sin cambio de ciclo de vida, producto ni proyecciones.
+
+- Se corrigio la redaccion obsoleta RH-W-0071 en los documentos EN/ES de decisiones, diseno y plan de implementacion: el lector de idioma de conversacion de ruta fija esta entregado, como ya muestra el registro de la hoja de ruta, no local ni pendiente. Sin cambio de ciclo de vida, producto ni proyecciones.
+
+- Se completo RH-W-0086 bajo delegacion explicita del propietario con registro aprobado por el propietario: `.gitattributes` conserva autoridad de producto y aserciones de pruebas, el checker conserva su alcance de paridad de proyecciones runtime y las anclas historicas de commits siguen inmutables; el conteo de suite ya se derivaba mediante una asercion existente en proceso, y solo el conteo de proyecciones runtime dependiente de subproceso queda como recibo historico etiquetado fuera del conjunto derivado de solo archivos. El primer corte entregado completa el registro; se reconciliaron las proyecciones bilingues de cartera sin implementacion adicional.
+
 - RH-W-0070 (sigue proposed): se agrego un enlace local autorizado por el propietario en working-agreements al diseno preventivo de seguridad de recursos y se reconciliaron las proyecciones de ciclo de vida EN/ES. Solo documentacion; sin implementacion de producto ni cierre del ciclo de vida. Refs #294.
 
 - RH-W-0097 (sigue activo): la entrada de inicio aclara que una regla generica del host de mismo idioma no convierte el wrapper en ingles en un requisito de idioma. Una prueba de regresion observo RED y luego GREEN; diez proyecciones validadas. Causa y cumplimiento del modelo en vivo siguen desconocidos. Refs #273.

@@ -1,10 +1,10 @@
 # Plan de implementacion RH-W-0071
 
-> **Estado: `completed`. Contrato compartido de preferencias implementado con RH-W-0082 el 2026-10-10. La [hoja de ruta](roadmap.md#rh-w-0071) posee el ciclo; el subconjunto entregado por PR #161 conserva su evidencia historica.**
+> **Estado: `completed`. Contrato compartido de preferencias implementado con RH-W-0082 el 2026-10-09. La [hoja de ruta](roadmap.md#rh-w-0071) posee el ciclo; el subconjunto entregado por PR #161 conserva su evidencia historica.**
 
 Derivado del [diseno RH-W-0071](rh-w-0071-design.md) aprobado por el propietario y del Plan 20 de la hoja de ruta. Su par en ingles es [rh-w-0071-implementation-plan.md](../../repo-harness/rh-w-0071-implementation-plan.md).
 
-## Limite implementado (2026-10-10)
+## Limite implementado (2026-10-09)
 
 El lector existente acepta `conversationLanguage`, `responseStructure` y `explanationStyle` opcionales, con al menos un campo y validacion cerrada. Session-start pasa los valores explicitos mediante una lectura. Cada eje usa instruccion humana actual > preferencia persistida explicita > `standard`; carga los modulos correspondientes, combinables. Solo el humano edita el JSON; no existe escritor. RH-W-0018 sigue aplazada.
 

@@ -1,10 +1,10 @@
 # Diseno RH-W-0071 de estructura de respuesta ADHD-friendly
 
-> **Estado: `completed`. Implementado el 2026-10-10 con RH-W-0071/RH-W-0082; la [hoja de ruta](roadmap.md) posee el ciclo y la evidencia.**
+> **Estado: `completed`. Implementado el 2026-10-09 con RH-W-0071/RH-W-0082; la [hoja de ruta](roadmap.md) posee el ciclo y la evidencia.**
 
 **Limite vigente:** lector JSON existente con tres campos opcionales, una lectura en session-start y modulos de respuesta por preferencias implementados. Solo el humano edita preferencias; RH-W-0018 sigue aplazada.
 
-## Modos de respuesta por preferencias (2026-10-10)
+## Modos de respuesta por preferencias (2026-10-09)
 
 1. **Reutilizar:** el `.repo-harness/state/preferences/user-preferences.json` existente e ignorado y el lector fijo `read-preference` en `skill/repo-harness-builder/scripts/harness_tool.py` (`read_conversation_preference`); leer una vez al inicio mediante el lector existente del runtime activo. Sin almacen nuevo.
 2. **Schema:** claves opcionales `conversationLanguage: english | espanol` (sin cambio), `responseStructure: standard | adhd-friendly` (RH-W-0071) y `explanationStyle: standard | plain-language` (RH-W-0082); al menos una clave. Claves desconocidas o duplicadas, tipos incorrectos o valores invalidos invalidan todo el archivo, conservando validacion fail-closed. Devolver valor tipado y fuente de cada eje; clave ausente no aporta valor persistido.
@@ -21,7 +21,7 @@ El diseno amplio siguiente conserva aprobaciones originales y acuerdo de persist
 
 ## Contrato de revision
 
-Revise este diseno contra el [registro canonico RH-W-0071](roadmap.md#rh-w-0071), la [precedencia de idioma RH-W-0031](../../repo-harness/rh-w-0031-research.md), la [taxonomia de estado local RH-W-0051](rh-w-0051-design.md), el [contrato de respuesta RH-W-0067](rh-w-0067-design.md) y el [propietario en ingles](../../repo-harness/rh-w-0071-design.md). La evidencia del repositorio posee el comportamiento actual. El contrato del 2026-10-10 esta implementado; las secciones historicas conservan decisiones anteriores.
+Revise este diseno contra el [registro canonico RH-W-0071](roadmap.md#rh-w-0071), la [precedencia de idioma RH-W-0031](../../repo-harness/rh-w-0031-research.md), la [taxonomia de estado local RH-W-0051](rh-w-0051-design.md), el [contrato de respuesta RH-W-0067](rh-w-0067-design.md) y el [propietario en ingles](../../repo-harness/rh-w-0071-design.md). La evidencia del repositorio posee el comportamiento actual. El contrato del 2026-10-09 esta implementado; las secciones historicas conservan decisiones anteriores.
 
 ## Decision
 
