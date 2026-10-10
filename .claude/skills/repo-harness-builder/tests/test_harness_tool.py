@@ -6473,6 +6473,16 @@ resume_authority: required
         self.assertNotIn("skill/repo-harness-builder", outputs[".pi/prompts/repo-harness-builder.md"])
 
     @unittest.skipIf(os.environ.get(CHILD_SUITE_ENV), "requires the reciprocal source repository")
+    def test_builder_command_bare_invocation_matches_skill_dispatch(self):
+        command = (ROOT.parents[1] / "command/repo-harness-builder.md").read_text(encoding="utf-8")
+        self.assertNotIn("With no arguments, check the current working directory read-only", command)
+        self.assertIn(
+            "With no arguments, use the current working directory and follow the skill's installation, update, or correction flow; "
+            "it audits read-only and writes nothing before plan approval. Take the read-only inspection branch only when the user explicitly requests inspect/check.",
+            command,
+        )
+
+    @unittest.skipIf(os.environ.get(CHILD_SUITE_ENV), "requires the reciprocal source repository")
     def test_self_hosted_manifest_declares_every_builder_projection(self):
         repository = ROOT.parents[1]
         render_repository = getattr(TOOL, "render_repository", None)

@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-11
+
+- Aligned the builder command's no-argument behavior with the builder skill: a bare invocation follows the installation, update, or correction flow, which audits read-only and writes nothing before plan approval; read-only inspection runs only on an explicit inspect/check request. Synchronized the Claude Code, OpenCode, and Pi command projections and added one contract test.
+
 ## 2026-10-10
 
 - Corrected the EN/ES README flow: separated initial builder setup from four plain-language daily steps, with optional later audit or update outside daily use. Documentation only, no behavior change.

@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-11
+
+- Se alineo el comportamiento sin argumentos del comando del constructor con su skill: una invocacion sin argumentos sigue el flujo de instalacion, actualizacion o correccion, que audita en solo lectura y no escribe nada antes de aprobar el plan; la inspeccion de solo lectura se ejecuta solo con una solicitud explicita de inspect/check. Se sincronizaron las proyecciones del comando para Claude Code, OpenCode y Pi y se agrego una prueba de contrato.
+
 ## 2026-10-10
 
 - Se corrigió el flujo de los README EN/ES: se separó la preparación inicial con el constructor de cuatro pasos diarios en lenguaje sencillo, con revisión o actualización posterior opcional fuera del uso diario. Solo documentación, sin cambio de comportamiento.
