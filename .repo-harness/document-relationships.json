@@ -27,6 +27,11 @@
     },
     {
       "relation": "localized-peer",
+      "source": "docs/repo-harness/builder-guide.md",
+      "target": "docs/es/repo-harness/builder-guide.md"
+    },
+    {
+      "relation": "localized-peer",
       "source": "docs/repo-harness/usage.md",
       "target": "docs/es/repo-harness/usage.md"
     },

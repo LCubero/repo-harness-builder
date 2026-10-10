@@ -7,220 +7,44 @@
 
 <!-- README-I18N:END -->
 
-`repo-harness` is a repository-scoped system of prompts, guardrails, harness rules, durable documentation, skills, and commands that strengthens and assists AI coding agents such as OpenCode, Claude Code, and Pi. It keeps working rules visible, project state current, runtime instructions portable, and handoffs verifiable without taking ownership away from maintainers.
+`repo-harness` is a repository-scoped set of prompts, rules, documentation, skills, and commands for AI coding agents such as Claude Code, OpenCode, and Pi. It keeps project guidance and handoffs in the repository, where maintainers can inspect them. `repo-harness-builder` creates, audits, and safely evolves that harness.
 
-`repo-harness-builder` is the skill and tool that creates, audits, installs, and safely evolves `repo-harness` inside a selected repository.
-
-## Product Positioning
-<!-- doc-role:positioning -->
-
-The harness remains useful on its own. Default integrated mode composes available Gentle AI and Engram capabilities independently, while CodeGraph remains optional. An unavailable capability degrades only its owned behavior unless the selected operation or repository policy explicitly requires it. Explicit `--standalone` mode uses repository-only continuity.
-
-| Component | Boundary |
-|---|---|
-| `repo-harness` | Repository-scoped operating guidance and durable project truth for supported AI coding agents. |
-| Gentle AI | A broader AI-agent ecosystem that may provide routing, exact-candidate review, receipts, and bounded review correction; repository policy owns commit, push, PR, and release. |
-| Engram | Cross-session semantic memory and continuity. It never replaces repository truth. |
-| CodeGraph | The most optional component: a repository-local aid for locating files, symbols, relationships, and impact. It is not an authority store. |
-
-Hermes Agent, OpenClaw, and Pi may inform research, but recreating or copying them is not a product goal. `repo-harness` has different repository-scoped boundaries.
-
-## Quick Start
-<!-- doc-role:quick-start -->
-
-1. Install the builder skill and command into a supported runtime; see [Install The Builder](#install-the-builder).
-2. Open the target repository and invoke `/repo-harness-builder`.
-3. Answer the interview: runtime projections, license, conversation language, and documentation locales. Documentation stays English-only unless you declare another locale.
-4. Keep the default root `.codegraph/` ignore, or pass `--no-codegraph-ignore` to persistently opt out.
-5. Review the exact plan and use its language-scoped digest-bound approval: `APPROVE` or `DENY` in English, `APROBAR` or `DENEGAR` in Spanish.
-6. Start normal work with the generated `repo-harness-session-start` skill.
-
-With no operation, the builder performs a read-only audit. It does not initialize Git, mutate remotes, commit, push, or publish unless those separate actions are later requested and approved.
-
-### Install The Builder
-
-Start from a trusted source checkout or an already-extracted release package; this guide never downloads anything. Prerequisites: Python 3.10+ and the chosen runtime, already installed. Set two paths and confirm the artifact shape:
-
-```sh
-ARTIFACT_ROOT=/path/to/builder-artifact   # source checkout or extracted package root
-TARGET=/path/to/target-repository
-test -d "$ARTIFACT_ROOT/skill/repo-harness-builder" && test -f "$ARTIFACT_ROOT/command/repo-harness-builder.md" && echo "artifact ok" || echo "stop: not a builder artifact"
-```
-
-Every runtime receives the same two items in its own place:
-
-| Runtime | Builder package | Entry |
-|---|---|---|
-| Claude Code | `.claude/skills/repo-harness-builder/` | `.claude/commands/repo-harness-builder.md` |
-| OpenCode | `.opencode/skills/repo-harness-builder/` | `.opencode/commands/repo-harness-builder.md` |
-| Pi | `.pi/skills/repo-harness-builder/` | `.pi/prompts/repo-harness-builder.md` |
-
-Run the block for each runtime you want, in a POSIX shell (Git Bash on Windows). It copies only into free destinations and never overwrites:
-
-```sh
-# Claude Code
-D="$TARGET/.claude"
-if [ -e "$D/skills/repo-harness-builder" ] || [ -e "$D/commands/repo-harness-builder.md" ]; then echo "stop: destination exists, inspect it first"
-else mkdir -p "$D/skills" "$D/commands" && cp -R "$ARTIFACT_ROOT/skill/repo-harness-builder" "$D/skills/" && cp "$ARTIFACT_ROOT/command/repo-harness-builder.md" "$D/commands/"; fi
-```
-
-```sh
-# OpenCode
-D="$TARGET/.opencode"
-if [ -e "$D/skills/repo-harness-builder" ] || [ -e "$D/commands/repo-harness-builder.md" ]; then echo "stop: destination exists, inspect it first"
-else mkdir -p "$D/skills" "$D/commands" && cp -R "$ARTIFACT_ROOT/skill/repo-harness-builder" "$D/skills/" && cp "$ARTIFACT_ROOT/command/repo-harness-builder.md" "$D/commands/"; fi
-```
-
-```sh
-# Pi
-D="$TARGET/.pi"
-if [ -e "$D/skills/repo-harness-builder" ] || [ -e "$D/prompts/repo-harness-builder.md" ]; then echo "stop: destination exists, inspect it first"
-else mkdir -p "$D/skills" "$D/prompts" && cp -R "$ARTIFACT_ROOT/skill/repo-harness-builder" "$D/skills/" && cp "$ARTIFACT_ROOT/command/repo-harness-builder.md" "$D/prompts/"; fi
-```
-
-Then open the target repository in that runtime and invoke `repo-harness-builder`; it owns the audit, preview, approval, and apply described in [Builder And Generated Skills](#builder-and-generated-skills). If the runtime does not list the new skill, start a fresh runtime session. After apply, run `python3 .repo-harness/check.py` (`python` on Windows) in the target: only exit 0 with `"status": "current"` and `"writes": 0` means the harness is congruent. Daily work then follows the [Daily Workflow](docs/repo-harness/usage.md#daily-workflow).
-
-Stop and inspect instead of forcing when the artifact is invalid, a destination is occupied, the runtime does not list the skill, the builder refuses, or the checker reports drift. Once the artifact and prerequisites are local, no network access is needed.
-
-## What It Builds
+## What It Generates
 <!-- doc-role:outputs -->
 
-- Root `REPO-HARNESS.md` as the concise working entry point.
-- Root `README.md` when absent, with a bounded builder-managed section.
-- Complete English durable documentation under `docs/repo-harness/`.
-- Runtime-neutral session and documentation skills under `.repo-harness/skills/`, plus canonical command peers under `.repo-harness/commands/` and `.repo-harness/prompts/` for emitted surface families.
-- Selected Claude Code, OpenCode, or Pi runtime projections.
-- `.repo-harness/check.py` for ordinary read-only projection drift checks (`writes: 0`); only explicit `repair --apply --approved-plan-sha256 <digest>` may create missing-local projections.
-- Root `.gitignore` directives: `.codegraph/` unless explicitly disabled, plus the four harness local-state directives (`/.repo-harness/tmp/`, `/.repo-harness/archive/`, `/.repo-harness/state/`, `/.repo-harness/memory-bk/`).
-- Root `.gitattributes` with exact LF protection for every byte-compared generated path.
+- A concise `REPO-HARNESS.md` rulebook and a README when one is missing.
+- Project documentation for usage, current state, decisions, and completed changes.
+- Session and documentation skills, with commands for your chosen runtimes.
+- A checker for keeping runtime copies consistent, plus repository file settings.
 
-A harness is English-only unless you declare more documentation locales. See [Documentation Language](#documentation-language).
+The harness works on its own. Integrated mode composes available Gentle AI and Engram capabilities independently; CodeGraph is optional. See the [builder guide](docs/repo-harness/builder-guide.md) for integration boundaries and the complete list of generated files.
 
-| Part | What it contributes |
-|---|---|
-| `REPO-HARNESS.md` | The concise, always-read rulebook: purpose, hard rules, and routing to deeper guidance. |
-| `docs/repo-harness/` | Durable owners for usage, current state, and decisions, so facts have one home. |
-| `CHANGELOG.md` | A dated record of meaningful completed changes, separate from current and future work. |
-| Session continuity | Required structured local backups under `.repo-harness/memory-bk/`, plus optional Engram continuity when available; repository evidence remains authoritative. |
-| Runtime projections | Thin Claude Code, OpenCode, or Pi surfaces generated from canonical skills and family-specific command peers. |
-| `.repo-harness/check.py` | An ordinary read-only congruence check that reports `writes: 0`; only explicit `repair --apply --approved-plan-sha256 <digest>` may create missing-local projections. |
+## Install
+<!-- doc-role:quick-start -->
 
-## Builder And Generated Skills
+1. Download and extract the zip of the [latest release](https://github.com/LCubero/repo-harness-builder/releases).
+2. Copy the skill folder (`skill/repo-harness-builder/`) and command file (`command/repo-harness-builder.md`) into the repository where you will use them, using the destinations below. Keep both inside that repository, never in a global or user-level configuration folder.
+
+   | Runtime | Skill folder | Command file |
+   |---|---|---|
+   | Claude Code | `.claude/skills/repo-harness-builder/` | `.claude/commands/repo-harness-builder.md` |
+   | OpenCode | `.opencode/skills/repo-harness-builder/` | `.opencode/commands/repo-harness-builder.md` |
+   | Pi | `.pi/skills/repo-harness-builder/` | `.pi/prompts/repo-harness-builder.md` |
+
+3. Open that repository in your runtime, run `/repo-harness-builder`, and follow its steps.
+
+Requires Python 3.10+ and your runtime already installed; if a destination already exists, inspect it before copying.
+
+## Daily Use
 <!-- doc-role:skills -->
 
-The builder is the installer and upgrader. The three repository skills are the daily operating workflow after installation.
+Use `/repo-harness-builder` to create, audit, or update the harness. Once installed, use `repo-harness-session-start` to begin or resume work, `repo-harness-documentation` when durable project facts change, and `repo-harness-session-stop` to pause or finish with a handoff. Invoke these skills through your runtime's skill mechanism. The [usage guide](docs/repo-harness/usage.md) explains the daily workflow and approval boundaries.
 
-| Skill | Use it when | Outcome |
-|---|---|---|
-| `repo-harness-builder` | Creating, auditing, or safely upgrading a harness | A planned, approved, verified repository harness |
-| `repo-harness-session-start` | Starting or resuming work | Repository-first evidence, the newest valid local backup, optional scoped Engram context, and visible reconciliation |
-| `repo-harness-documentation` | Durable facts or visible state changed | Canonical docs updated without duplication or stale ownership |
-| `repo-harness-session-stop` | Pausing or ending work | An exclusive verified local backup, independent Engram outcome, screened work units, and any required Git question |
-
-## Lifecycle
-<!-- doc-role:lifecycle -->
-
-```text
-First builder run
-  -> read-only repository audit
-  -> runtime, integration, and license choices
-  -> exact plan plus digest
-  -> explicit apply approval
-  -> generated harness plus verification
-
-Normal session
-  -> session-start reads repository evidence, then local backup, then optional Engram context
-  -> project work happens under REPO-HARNESS.md rules
-  -> documentation skill updates durable owners when needed
-  -> session-stop verifies evidence and writes the local-first handoff
-  -> next session-start continues from current files and reconciled continuity
-```
-
-Both modes use the native local backup. Integrated mode composes available Gentle AI and Engram capabilities independently. Engram can bridge sessions when available, but it never overrides current repository files; standalone uses no external continuity component.
-
-## Example Workflow
-<!-- doc-role:example -->
-
-```text
-/repo-harness-builder
-# Review the audit, answer one choice at a time, inspect the plan, then approve.
-
-Load repo-harness-session-start and continue the API migration.
-# Work, test, and verify.
-
-Load repo-harness-documentation and update current state and the changelog.
-
-Load repo-harness-session-stop and prepare the handoff.
-```
-
-The builder command remains `/repo-harness-builder`; the daily skills have the fixed registered names shown above. Runtime command syntax varies, so invoke skills through the runtime's skill mechanism. The generated help command reads `docs/repo-harness/usage.md` for concise repository-specific guidance.
-
-Generated session outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, and `degraded`. They are scoped: optional Git failure can degrade a successful local session without falsely failing continuity. Explicit `commit and push` consent covers the unchanged safe sequence through one push; commit-only never implies push, and material changes pause for renewed consent.
-
-## Repository Behavior
-<!-- doc-role:repository-behavior -->
-
-### New Repositories
-
-A new or effectively empty repository receives a complete useful baseline after approval, including a root README, rulebook, durable docs, daily skills, selected projections, manifest, and checker.
-
-### Existing Repositories
-
-The builder analyzes relevant existing content and proposes informed integration. It preserves unknown bytes and never treats preservation as freezing the repository. If content is obsolete or structurally incompatible, archive and clean-baseline work is a distinct choice that still requires explicit approval.
-
-An existing repository is never given a documentation locale it does not already have. A legacy harness whose manifest predates language metadata keeps the locale trees it actually has installed, so an older bilingual repository does not silently lose its Spanish checks and an English-only repository does not silently gain Spanish files.
-
-### Documentation Language
-
-Human repository documentation may be English-only, Spanish-only, or bilingual. Omit `--documentation-language` for English-only, pass `--documentation-language es` for Spanish-only, or repeat `en` then `es` for bilingual output.
-
-English-only and Spanish-only use canonical paths such as `README.md`, `CHANGELOG.md`, and `docs/repo-harness/`. Bilingual output keeps English at canonical paths and adds complete Spanish peers. Skills, contracts, wrappers, checker machinery, manifest instructions and schema, code, comments, runtime instructions, and technical artifacts stay in English in every mode.
-
-When a second locale is declared, it is generated complete, not partially. Its documents are full human mirrors that present the same facts and link back to the English owners. They never become independent factual owners.
-
-The conversation language is a separate choice. It sets the language the generated session skills speak to you in. It does not add or remove documentation locales.
-
-You can persist the conversation language and ADHD-friendly or plain-language response modes by hand in a [local preference file](docs/repo-harness/usage.md#response-preferences).
-
-Reciprocal README selectors are one atomic integration. If a repository already has `README.md` and the exact executable plan cannot update it, `README.es.md` is classified as blocked rather than created. A one-way selector that claims a bilingual repository is never produced.
-
-### Safe Upgrades
-
-Older harnesses are audited rather than blindly replaced. Managed paths are classified as `current`, `stale`, `missing`, `human-evolved`, or `legacy`. Replacement, integration, archive, and deletion remain proposal-only until explicitly approved.
-
-The README is human-owned after creation. Its bounded builder section identifies the initial harness entry points, while maintainers may evolve the full product guide. Existing `CLAUDE.md` and `AGENTS.md` files are byte-preserved: the builder appends only an exact missing pointer line, and repeated runs are idempotent.
-
-Root `.gitignore` is also human-owned. The approved plan creates it when absent or appends missing exact directives, preserving BOM, existing bytes, comments, blank lines, line endings, and unrelated rules. It includes `.codegraph/` by default and always includes `/.repo-harness/tmp/`, `/.repo-harness/archive/`, `/.repo-harness/state/`, and `/.repo-harness/memory-bk/`. `--no-codegraph-ignore` records the opt-out in the manifest and suppresses only the `.codegraph/` directive; the four local-state directives remain, and existing ignore lines are never removed.
-
-Root `.gitattributes` remains human-owned. The builder creates or appends one exact `<path> text eol=lf` rule for every byte-compared generated path, preserving unrelated rules and existing line endings. A matching rule that assigns incompatible text or EOL behavior blocks the plan instead of creating ambiguous checkout semantics.
-
-Operational facts remain single-owned. `REPO-HARNESS.md`, `CHANGELOG.md`, and the English durable state owners are canonical. When another locale is declared, its peers are complete localized presentations that link back to those owners. See the [bilingual maintenance contract](docs/repo-harness/i18n-maintenance.md), which applies only to a repository that declared more than one locale.
-
-## Development
-<!-- doc-role:development -->
-
-Editable product sources are:
-
-- `skill/repo-harness-builder/`
-- `command/repo-harness-builder.md`
-
-`.opencode/`, `.claude/`, and `.pi/` contain runtime projections used for execution and testing. Do not edit them as canonical sources. This repository self-hosts recursively: its generated repository harness is used to improve the builder that generates repository harnesses.
-
-For self-hosting changes, edit the canonical source, synchronize affected managed outputs in `.repo-harness/`, `.claude/`, `.opencode/`, and `.pi/` through maintenance preview and current-digest apply, then verify parity on disk. If registered-name validation is needed, run it in a fresh runtime process or use a supported explicit registry reload when the runtime provides one. The process that performed the edit may retain older registered content; that expected cache does not invalidate verified files, and no reload command should be assumed.
-
-Run the canonical suite:
-
-```powershell
-python -B -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"
-```
-
-Check this repository's runtime projections:
-
-```powershell
-python .repo-harness/check.py
-```
-
-## License
+## Learn More
 <!-- doc-role:license -->
 
-Licensed under the [MIT License](LICENSE).
+- [Builder guide](docs/repo-harness/builder-guide.md): generated files, language choices, safe upgrades, and development.
+- [Usage guide](docs/repo-harness/usage.md): working with the installed harness.
+- [CONTRIBUTING.md](CONTRIBUTING.md): contributing to this project.
+- [Changelog](CHANGELOG.md): completed changes.
+- [MIT License](LICENSE).
