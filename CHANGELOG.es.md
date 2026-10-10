@@ -2,13 +2,11 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
-## 2026-10-11
+## 2026-10-10
 
 - Se reconcilio el estado actual EN/ES con el pre-release publicado `v3.1-rc.7`, que seguia informandose como `v3.1-rc.6`. Solo documentacion, sin cambio de comportamiento.
 
 - Se alineo el comportamiento sin argumentos del comando del constructor con su skill: una invocacion sin argumentos sigue el flujo de instalacion, actualizacion o correccion, que audita en solo lectura y no escribe nada antes de aprobar el plan; la inspeccion de solo lectura se ejecuta solo con una solicitud explicita de inspect/check. Se sincronizaron las proyecciones del comando para Claude Code, OpenCode y Pi y se agrego una prueba de contrato.
-
-## 2026-10-10
 
 - Se publico el pre-release de GitHub [`v3.1-rc.7`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.7) desde el commit etiquetado `d245450` con el asset de 15 archivos `repo-harness-builder-v3.1-rc.7.zip` (SHA-256 `06b8a300098112f79ab46dde6d3f0d6f3b9a0a92b21b8648a2cb27c09a0ccc3b`).
 
