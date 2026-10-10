@@ -29,17 +29,17 @@
 | [rh-w-0052-implementation-plan.md](rh-w-0052-implementation-plan.md) | Verified strict-TDD archive-only execution record; implementation is complete for the slice, while RH-W-0052 is `deferred` for residual lifecycle work requiring separate future authority |
 | [rh-w-0053-design.md](rh-w-0053-design.md) | Delivered interrupted-session checkpoint design; the historical design body and its pre-delivery context are retained |
 | [rh-w-0053-implementation-plan.md](rh-w-0053-implementation-plan.md) | Delivered test-first RH-W-0053 interrupted-operation checkpoint execution record; verified evidence is retained |
-| [rh-w-0048-design.md](rh-w-0048-design.md) | Reopened proposed recovery design; the roadmap owns mutability-contract reconciliation and independent re-verification |
+| [rh-w-0048-design.md](rh-w-0048-design.md) | Completed and delivered recovery design; the [roadmap record](roadmap.md#rh-w-0048) owns reconciliation and re-verification evidence |
 | [rh-w-0048-implementation-plan.md](rh-w-0048-implementation-plan.md) | Historical strict-TDD recovery execution record; the roadmap owns remaining lifecycle work |
 | [rh-w-0046-rh-w-0018-design.md](rh-w-0046-rh-w-0018-design.md) | Owner-delegated approved joint repository fetch-consent and low-question preference-boundary design; completed RH-W-0046 remains separate from deferred RH-W-0018 |
 | [rh-w-0046-implementation-plan.md](rh-w-0046-implementation-plan.md) | Completed historical RH-W-0046 repository fetch-consent execution record; the exact consent boundary may reopen only on regression |
-| [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved suggestion design; implementation technically complete on the published feature branch under the conservative ambiguity decision, with delivery pending under issue #228 |
+| [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved suggestion design; implementation completed and delivered under the conservative ambiguity decision through PR #236 |
 | [rh-w-0044-implementation-plan.md](rh-w-0044-implementation-plan.md) | Corrected test-first plan delivered through PR #226; local implementation completed and verified separately from product delivery |
 | [rh-w-0022-design.md](rh-w-0022-design.md) | Owner-approved minimal declared documentation relationship design; historical approval boundary retained |
 | [rh-w-0022-implementation-plan.md](rh-w-0022-implementation-plan.md) | Completed declared documentation relationships plan; historical execution evidence retained |
 | [rh-w-0069-design.md](rh-w-0069-design.md) | Delivered local memory backup and cross-source continuity design |
 | [rh-w-0069-implementation-plan.md](rh-w-0069-implementation-plan.md) | Delivered owner-approved native continuity implementation plan |
-| [rh-w-0068-documentation-closure-design.md](rh-w-0068-documentation-closure-design.md) | Earlier verified documentation closure gate and active owner-delegated RH-W-0068 remainder; successful verification, scenario-contract coverage or authoritative terminal disposition, and delivery pending |
+| [rh-w-0068-documentation-closure-design.md](rh-w-0068-documentation-closure-design.md) | Completed documentation closure gate and owner-delegated RH-W-0068 remainder; delivered through PR #261 |
 | [rh-w-0074-design.md](rh-w-0074-design.md) | Completed owner-approved accepted-omission design with its minimal implementation; delivered through PR #259 |
 | [rh-w-0070-design.md](rh-w-0070-design.md) | Owner-approved proportional preventive resource-safety design for agent and harness operations |
 | [rh-w-0011-design.md](rh-w-0011-design.md) | Completed owner-approved reconciliation scope; historical design body retained |

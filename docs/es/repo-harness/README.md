@@ -27,17 +27,17 @@
 | [Plan de implementación RH-W-0052](rh-w-0052-implementation-plan.md) | Registro de ejecución solo de archivo con TDD estricto verificado; la implementación está completa para la porción, mientras RH-W-0052 está `deferred` para trabajo residual de ciclo que requiere autoridad futura separada |
 | [Diseño RH-W-0053](rh-w-0053-design.md) | Diseño entregado de checkpoint para sesión interrumpida; se conservan el cuerpo histórico y el contexto previo a la entrega |
 | [Plan de implementación RH-W-0053](rh-w-0053-implementation-plan.md) | Registro de ejecución RH-W-0053 entregado y completado con pruebas primero; se conserva la evidencia verificada |
-| [Diseño RH-W-0048](rh-w-0048-design.md) | Diseño propuesto de recuperación reabierto; el roadmap posee la reconciliación de mutabilidad y la verificación independiente restante |
+| [Diseño RH-W-0048](rh-w-0048-design.md) | Diseño de recuperación completado y entregado; el [registro del roadmap](roadmap.md#rh-w-0048) posee la evidencia de reconciliación y verificación independiente |
 | [Plan de implementación RH-W-0048](rh-w-0048-implementation-plan.md) | Registro histórico de ejecución con TDD estricto; el roadmap posee el trabajo restante del ciclo |
 | [Diseño RH-W-0046/RH-W-0018](rh-w-0046-rh-w-0018-design.md) | Diseño conjunto aprobado por delegación del propietario sobre consentimiento de fetch y preferencias de menos preguntas; RH-W-0046 completada sigue separada de RH-W-0018 aplazada |
 | [Plan RH-W-0046](rh-w-0046-implementation-plan.md) | Registro histórico de ejecución RH-W-0046 completada; el límite exacto de consentimiento solo puede reabrirse por regresión |
-| [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado; implementación técnicamente completada en la rama de producto publicada por la decisión conservadora; entrega pendiente bajo el issue #228 |
+| [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado; implementación completada y entregada bajo la decisión conservadora mediante el PR #236 |
 | [Plan de implementación RH-W-0044](rh-w-0044-implementation-plan.md) | Plan corregido con pruebas primero entregado mediante PR #226; implementación local completada y verificada por separado de la entrega |
 | [Diseño RH-W-0022](rh-w-0022-design.md) | Diseño mínimo aprobado por el propietario; se conserva su límite histórico de aprobación |
 | [Plan de implementación RH-W-0022](rh-w-0022-implementation-plan.md) | Plan completado de relaciones documentales declaradas; evidencia histórica de ejecución conservada |
 | [Diseno RH-W-0069](rh-w-0069-design.md) | Diseno entregado de backup local de memoria y continuidad entre fuentes |
 | [Plan de implementacion RH-W-0069](rh-w-0069-implementation-plan.md) | Plan aprobado y entregado de implementacion de continuidad nativa |
-| [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Par de la compuerta documental anterior verificada y del resto activo RH-W-0068 delegado por el propietario; verificacion exitosa, cobertura de escenarios del contrato o disposicion terminal autoritativa, y entrega pendientes |
+| [Diseno RH-W-0068 de cierre documental](rh-w-0068-documentation-closure-design.md) | Compuerta documental y resto RH-W-0068 delegado por el propietario completados; entregados mediante el PR #261 |
 | [Diseño RH-W-0074](rh-w-0074-design.md) | Diseño completado de omisión aceptada aprobado por el propietario, con su implementación mínima; entregado mediante el PR #259 |
 | [Diseno RH-W-0070](rh-w-0070-design.md) | Par profesional del diseno aprobado de seguridad preventiva y proporcional de recursos |
 | [Diseno RH-W-0011](rh-w-0011-design.md) | Alcance de reconciliacion completado y aprobado por el propietario; se conserva el cuerpo historico |
