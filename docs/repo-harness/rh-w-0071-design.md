@@ -1,10 +1,10 @@
 # RH-W-0071 ADHD-Friendly Response Structure Design
 
-> **Status: `completed`. Implemented on 2026-10-10 with RH-W-0071/RH-W-0082; the [roadmap](roadmap.md) owns lifecycle and evidence.**
+> **Status: `completed`. Implemented on 2026-10-09 with RH-W-0071/RH-W-0082; the [roadmap](roadmap.md) owns lifecycle and evidence.**
 
 **Current boundary:** the existing JSON reader accepts three optional fields; session-start reads once and passes explicit preferences to modular response rules. Only the human edits preferences; RH-W-0018 stays deferred.
 
-## Preference-Driven Response Modes (2026-10-10)
+## Preference-Driven Response Modes (2026-10-09)
 
 1. **Reuse:** the existing ignored `.repo-harness/state/preferences/user-preferences.json` and fixed `read-preference` reader in `skill/repo-harness-builder/scripts/harness_tool.py` (`read_conversation_preference`); read once at session start through the active runtime's existing reader. No new store.
 2. **Schema:** optional `conversationLanguage: english | espanol` (unchanged), `responseStructure: standard | adhd-friendly` (RH-W-0071), and `explanationStyle: standard | plain-language` (RH-W-0082); at least one key. Unknown or duplicate keys, wrong types or invalid values invalidate the whole file, retaining fail-closed validation. Return each axis's typed value and source; an absent key supplies no persisted value.
@@ -21,7 +21,7 @@ The broader design below preserves the original approvals and deferred shared-pe
 
 ## Review Contract
 
-Review this design against the canonical [RH-W-0071 roadmap record](roadmap.md#rh-w-0071), [RH-W-0031 language precedence](rh-w-0031-research.md), [RH-W-0051 local-state taxonomy](rh-w-0051-design.md), [RH-W-0067 response contract](rh-w-0067-design.md), and the [Spanish peer](../es/repo-harness/rh-w-0071-design.md). Repository evidence owns current behavior. The 2026-10-10 contract is implemented; historical sections retain earlier design evidence.
+Review this design against the canonical [RH-W-0071 roadmap record](roadmap.md#rh-w-0071), [RH-W-0031 language precedence](rh-w-0031-research.md), [RH-W-0051 local-state taxonomy](rh-w-0051-design.md), [RH-W-0067 response contract](rh-w-0067-design.md), and the [Spanish peer](../es/repo-harness/rh-w-0071-design.md). Repository evidence owns current behavior. The 2026-10-09 contract is implemented; historical sections retain earlier design evidence.
 
 ## Decision
 
