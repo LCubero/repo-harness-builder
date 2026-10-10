@@ -4,6 +4,8 @@
 
 ## 2026-10-10
 
+- Se registro la decision permanente del propietario de no publicar mas pre-releases candidatos; `v3.1-rc.7` sigue siendo el ultimo candidato publicado. Solo documentacion.
+
 - Se reconcilio el estado actual EN/ES con el pre-release publicado `v3.1-rc.7`, que seguia informandose como `v3.1-rc.6`. Solo documentacion, sin cambio de comportamiento.
 
 - Se alineo el comportamiento sin argumentos del comando del constructor con su skill: una invocacion sin argumentos sigue el flujo de instalacion, actualizacion o correccion, que audita en solo lectura y no escribe nada antes de aprobar el plan; la inspeccion de solo lectura se ejecuta solo con una solicitud explicita de inspect/check. Se sincronizaron las proyecciones del comando para Claude Code, OpenCode y Pi y se agrego una prueba de contrato.
