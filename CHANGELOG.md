@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
+- Complete RH-W-0071/RH-W-0082 preference-driven response modes: extend the existing read-only preference reader and one-read startup transport, route combinable ADHD-friendly and plain-language modules, synchronize runtime projections, and reconcile bilingual lifecycle records.
+
 - Recorded the owner-delegated preference-driven response-mode design: reopened RH-W-0071 shared persistence with RH-W-0082, reusing the existing JSON store and reader, manual explicit-preference editing, and conditional rendered rule modules in one later test-first implementation unit. Reconciled bilingual lifecycle projections; RH-W-0018 stays deferred. No product behavior changed.
 
 - Completed RH-W-0098: one file-only roadmap-derived assertion rejects stale phrases in completed-record EN/ES opening lines and documentation-map rows, with narrow historical/negated/contextual exclusions. Both injected regressions failed RED; restored fixtures passed GREEN. Synchronized three test projections and reconciled bilingual lifecycle counts; no product or generated-contract change.

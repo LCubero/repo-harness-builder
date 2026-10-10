@@ -1,10 +1,18 @@
 # RH-W-0071 Implementation Plan
 
-> **Status: session-only subset verified, reviewed and delivered through PR #161 on 2026-09-05 under issue #160. The [roadmap record](roadmap.md#rh-w-0071) owns delivery evidence. RH-W-0071 is `active`: shared persistence was reopened on 2026-10-10 under the [preference-driven response modes design](rh-w-0071-design.md), and its implementation is a separate unit.**
+> **Status: `completed`. Shared preference contract implemented with RH-W-0082 on 2026-10-10. The [roadmap](roadmap.md#rh-w-0071) owns lifecycle; the subset delivered through PR #161 retains its historical evidence.**
 
 Derived from the owner-approved [RH-W-0071 design](rh-w-0071-design.md) and roadmap Plan 20. Its Spanish peer is [rh-w-0071-implementation-plan.md](../es/repo-harness/rh-w-0071-implementation-plan.md).
 
-## Current Immediate Scope: Session-Only Presentation
+## Implemented Boundary (2026-10-10)
+
+The existing reader accepts optional `conversationLanguage`, `responseStructure` and `explanationStyle`, requiring at least one field with fail-closed validation. Session-start transports explicit values in one read. Each response axis uses current human instruction > persisted explicit preference > `standard`, loading combinable modules. Only the human edits the JSON; no writer exists. RH-W-0018 stays deferred.
+
+Evidence: `PreferenceResponseAxesTests`, RED 3 tests with 9 failures and 1 error; GREEN 3 passing, plus 3 contract and 2 reader tests. Canonical suite: 637 tests. The following sections preserve history, not current execution instructions.
+
+Full suite: `python -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"`, 637 tests in 336.207s, `OK (skipped=11)`, zero failures/errors. Checker: `python .repo-harness/check.py`, `current`, exit 0, 0 writes. Maintenance digest `16e3b2c0d5edf77f8cb22c54d94643bca44fd23e0393ed82155e145fe1a0c2dc` applied 16 files; second preview has no actions. Mock-fixture CLI smoke: `valid`, both modes and conversationLanguage null, exit 0, no writes. Base/ADHD/plain-language proxy tokens: 577/218/148.
+
+## Historical Immediate Scope: Session-Only Presentation
 
 The immediate scope is explicit `adhd-friendly` or `standard` presentation within the existing RH-W-0067 response-contract owner. `standard` is the default; only a verified explicit current-session instruction activates ADHD-friendly presentation or resets it to standard. No diagnosis, writing style, behavior, memory, repository prose, tool output, or runtime state may infer activation. A new session starts at standard, without reading or writing a preference.
 
@@ -20,7 +28,7 @@ The owner delegated the scope decision after read-only source-backed verificatio
 
 Final implementation handoff receipts, after normalization: `python -B -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"` ran 503 tests in 154.714s, OK (skipped=9), exit 0; focused regression run passed 20 tests in 0.763s, exit 0; `python .repo-harness/check.py` reported `current`, 63 projections, 0 writes, exit 0; `git diff --check` exited 0. These receipts belong to the delivered implementation, not a rerun for this documentation-only follow-up. Contract tests do not prove live-model transitions or compliance. The roadmap records the parent's exact-tree native review and delivery evidence; that approval does not cover subsequent documentation edits.
 
-## Deferred Shared Persistence: Current Design Boundary
+## Historical Shared Persistence Boundary
 
 The owner-delegated decision supersedes the unimplemented structured Markdown proposal below: one small ignored `.repo-harness/state/preferences/user-preferences.json` is the only shared preference file. V1 is limited to explicit conversation language; no unused response-structure, explanation-style or interaction-behavior fields are specified. RH-W-0031 precedence remains verified current human > persisted explicit > eligible verified session (only without persisted preference) > validated manifest fallback > English. The [RH-W-0071 design](rh-w-0071-design.md#current-shared-preference-decision-supersedes-historical-markdown-proposal) owns the exact JSON example, validation failures and fallback behavior; this plan adds no schema. After design PR #221, the owner separately authorized local implementation of the fixed-path CLI reader and generated session-start one-read contract, passing only validated value and source, never arbitrary file text; independent full-suite verification is recorded in [current state](current-state.md); the reader is delivered, with its receipt in the [RH-W-0071 record](roadmap.md#rh-w-0071). Manifest/checker installation bytes and the separate fetch-consent approval store remain outside preferences; no other configuration, consent or continuity moves.
 

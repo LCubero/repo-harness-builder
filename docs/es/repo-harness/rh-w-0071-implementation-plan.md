@@ -1,10 +1,18 @@
 # Plan de implementacion RH-W-0071
 
-> **Estado: subconjunto solo de sesion verificado, revisado y entregado mediante PR #161 el 2026-09-05 bajo issue #160. El [registro](roadmap.md#rh-w-0071) posee la evidencia de entrega. RH-W-0071 esta `active`: la persistencia compartida se reabrio el 2026-10-10 bajo el [diseno de modos de respuesta por preferencia](rh-w-0071-design.md), y su implementacion es una unidad separada.**
+> **Estado: `completed`. Contrato compartido de preferencias implementado con RH-W-0082 el 2026-10-10. La [hoja de ruta](roadmap.md#rh-w-0071) posee el ciclo; el subconjunto entregado por PR #161 conserva su evidencia historica.**
 
 Derivado del [diseno RH-W-0071](rh-w-0071-design.md) aprobado por el propietario y del Plan 20 de la hoja de ruta. Su par en ingles es [rh-w-0071-implementation-plan.md](../../repo-harness/rh-w-0071-implementation-plan.md).
 
-## Alcance inmediato vigente: presentacion solo de sesion
+## Limite implementado (2026-10-10)
+
+El lector existente acepta `conversationLanguage`, `responseStructure` y `explanationStyle` opcionales, con al menos un campo y validacion cerrada. Session-start pasa los valores explicitos mediante una lectura. Cada eje usa instruccion humana actual > preferencia persistida explicita > `standard`; carga los modulos correspondientes, combinables. Solo el humano edita el JSON; no existe escritor. RH-W-0018 sigue aplazada.
+
+Evidencia: `PreferenceResponseAxesTests`, RED 3 pruebas con 9 fallos y 1 error; GREEN 3 aprobadas, mas 3 de contrato y 2 del lector. Suite canonica: 637 pruebas. Las secciones siguientes preservan historia; no son instrucciones de ejecucion actuales.
+
+Suite completa: `python -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"`, 637 pruebas en 336.207s, `OK (skipped=11)`, cero fallos/errores. Checker: `python .repo-harness/check.py`, `current`, salida 0, 0 escrituras. Mantenimiento: digest `16e3b2c0d5edf77f8cb22c54d94643bca44fd23e0393ed82155e145fe1a0c2dc`, 16 archivos aplicados; segundo preview sin acciones. Smoke CLI con fixture simulado: `valid`, ambos modos y conversationLanguage null, salida 0, sin escrituras. Tokens proxy base/ADHD/plain-language: 577/218/148.
+
+## Alcance inmediato historico: presentacion solo de sesion
 
 El alcance inmediato es presentacion explicita `adhd-friendly` o `standard` dentro del propietario existente del contrato de respuesta RH-W-0067. `standard` es el valor predeterminado; solo una instruccion explicita verificada de la sesion actual activa la presentacion ADHD-friendly o la restablece a standard. No se puede inferir activacion de diagnostico, estilo de escritura, conducta, memoria, prosa del repositorio, salida de herramientas ni estado de runtime. Una sesion nueva comienza en standard, sin leer ni escribir preferencias.
 
@@ -20,7 +28,7 @@ El propietario delego la decision de alcance despues de una verificacion de solo
 
 Recibos finales del informe de implementacion, despues de normalizar: `python -B -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"` ejecuto 503 pruebas en 154.714s, OK (skipped=9), salida 0; regresion enfocada de 20 pruebas en 0.763s, salida 0; `python .repo-harness/check.py`: `current`, 63 proyecciones, 0 escrituras, salida 0; `git diff --check`: salida 0. Corresponden a la implementacion entregada, no a una repeticion para este seguimiento documental. Las pruebas contractuales no demuestran transiciones ni cumplimiento del modelo en vivo. El roadmap registra revision nativa del arbol exacto y entrega del agente padre; esa aprobacion no cubre ediciones documentales posteriores.
 
-## Persistencia compartida aplazada: limite vigente de diseno
+## Limite historico de persistencia compartida
 
 La decision delegada por el propietario reemplaza la propuesta Markdown no implementada que aparece abajo: un unico archivo pequeno e ignorado `.repo-harness/state/preferences/user-preferences.json` sera la unica preferencia compartida. V1 se limita al idioma explicito de conversacion; no se especifican campos sin uso de estructura de respuesta, estilo de explicacion ni comportamiento de interaccion. Se conserva la precedencia RH-W-0031: instruccion humana actual verificada > preferencia explicita persistida > sesion verificada elegible (solo sin preferencia persistida) > fallback validado del manifiesto > ingles. El [diseno RH-W-0071](rh-w-0071-design.md#decision-vigente-de-preferencias-compartidas-reemplaza-la-propuesta-historica-markdown) posee el ejemplo JSON exacto, los fallos de validacion y el comportamiento de fallback; este plan no agrega schema. Tras el PR de diseño #221, el propietario autorizó por separado la implementación local del lector CLI de ruta fija y el contrato generado de una lectura en session-start que pasa solo valor y fuente validados, nunca texto arbitrario; la verificación independiente de la suite completa consta en [estado actual](current-state.md); el lector está entregado, con su recibo en el [registro RH-W-0071](roadmap.md#rh-w-0071). Los bytes de instalacion del manifiesto/checker y el almacen separado de consentimiento fetch quedan fuera de preferencias; no se traslada otra configuracion, consentimiento ni continuidad.
 

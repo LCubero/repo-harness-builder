@@ -76,9 +76,9 @@
 | [rh-w-0095-design.md](rh-w-0095-design.md) | Delivered contextual-acknowledgement design; historical implementation evidence retained and PR #213 merge recorded |
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |
-| [rh-w-0071-design.md](rh-w-0071-design.md) | Delivered session-only design history and current single-JSON shared-preference decision; implementation remains deferred |
-| [rh-w-0071-implementation-plan.md](rh-w-0071-implementation-plan.md) | Delivered session-only subset and final verification; current JSON preference design and runtime gates remain deferred |
-| [rh-w-0082-design.md](rh-w-0082-design.md) | Owner-approved plain-language explanation-style design; implementation remains unauthorized |
+| [rh-w-0071-design.md](rh-w-0071-design.md) | Implemented preference contract, boundaries and historical evidence; lifecycle completed |
+| [rh-w-0071-implementation-plan.md](rh-w-0071-implementation-plan.md) | Implemented preference contract, boundaries and historical evidence; lifecycle completed |
+| [rh-w-0082-design.md](rh-w-0082-design.md) | Implemented preference contract, boundaries and historical evidence; lifecycle completed |
 | [rh-w-0079-design.md](rh-w-0079-design.md) | Completed optional-capability and self-hosting release-boundary design; all five slices delivered without claiming an actual release |
 | [rh-w-0079-implementation-plan.md](rh-w-0079-implementation-plan.md) | Completed five-slice test-first plan; Slice 4 and Slice 5 delivery evidence is recorded |
 | [rh-w-0080-design.md](rh-w-0080-design.md) | Completed owner-approved ephemeral batch-interaction design; product delivered through PR #269 and lifecycle accepted conditionally; see [canonical roadmap record](roadmap.md#rh-w-0080) |

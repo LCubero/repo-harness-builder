@@ -1,6 +1,6 @@
 # RH-W-0082 Plain-Language Explanation Style Design
 
-> **Status: active. Owner-delegated design of 2026-10-10 groups delivery with RH-W-0071; implementation is a separate later unit.**
+> **Status: `completed`. Implemented on 2026-10-10 with RH-W-0071/RH-W-0082; the [roadmap](roadmap.md) owns lifecycle and evidence.**
 
 ## Decision
 
@@ -16,7 +16,7 @@ The [2026-10-10 preference-driven response modes contract](rh-w-0071-design.md#p
 
 ## Lifecycle And Non-Authority
 
-RH-W-0082 is `active` by owner-delegated decision on 2026-10-10. Shared transport and delivery grouping are resolved in the linked RH-W-0071 contract. Next comes separately authorized test-first implementation with RH-W-0071, followed by delivery; this documentation unit changes no product behavior.
+RH-W-0082 is `completed` on 2026-10-10. The shared reader, one-read startup transport, base routing and plain-language module are implemented with RH-W-0071. Contract tests verify generated instructions, not live-model compliance. RH-W-0018 stays deferred.
 
 ## Done Conditions
 
@@ -24,4 +24,4 @@ RH-W-0082 is `active` by owner-delegated decision on 2026-10-10. Shared transpor
 - `plain-language` remains neutral, simple, accurate, and non-regional by default.
 - Artifact language remains independent.
 - Existing owners keep their boundaries.
-- Implement the linked shared contract test-first in one separately authorized unit with RH-W-0071, then deliver.
+- The linked shared contract is implemented test-first with RH-W-0071.
