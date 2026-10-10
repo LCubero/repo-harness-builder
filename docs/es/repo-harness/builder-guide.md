@@ -19,7 +19,7 @@ Hermes Agent, OpenClaw y Pi pueden aportar a la investigacion, pero recrearlos o
 ## Inicio rapido
 <!-- doc-role:quick-start -->
 
-Despues de [instalar el constructor](../../../README.es.md#instalacion):
+Despues de [instalar el constructor](../../../README.es.md#instalación):
 
 1. Abra el repositorio objetivo e invoque `/repo-harness-builder`.
 2. Responda la entrevista: proyecciones de entorno, licencia, idioma de conversacion y locales de documentacion. La documentacion queda solo en ingles salvo que declare otro locale.
