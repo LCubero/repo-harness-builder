@@ -6175,6 +6175,49 @@ resume_authority: required
                                              f"opening status for {record_id} disagrees with its roadmap owner")
         self.assertGreater(checked, 0, "no thematic document with a roadmap record was checked")
 
+    def test_completed_records_carry_no_stale_status_phrases(self):
+        """Completed records must not claim unfinished delivery in banners or map rows."""
+        repository = ROOT.parents[1]
+        _, records = self._roadmap_records()
+        phrases = (
+            "pending", "not delivered", "implemented locally", "locally implemented", "reopened",
+            "pendiente", "no entregado", "implementado localmente", "reabierto", "reabierta",
+        )
+        pattern = re.compile(r"\b(?:" + "|".join(map(re.escape, phrases)) + r")\b", re.I)
+        # Historical snapshots and dated reopening events are not current claims;
+        # pending human gates and negated pending work are not unfinished delivery.
+        context = re.compile(
+            r"^> \*\*(?:Historical status snapshot|Instantánea histórica del estado):.*"
+            r"|\breopened on \d{4}-\d{2}-\d{2}\b"
+            r"|\bnot pending work\b|\bpending human gates\b", re.I,
+        )
+        checked = 0
+        for directory in ("docs/repo-harness", "docs/es/repo-harness"):
+            for path in sorted((repository / directory).glob("rh-w-[0-9][0-9][0-9][0-9]-*.md")):
+                record_id = "RH-W-" + re.search(r"rh-w-(\d{4})", path.name).group(1)
+                if records.get(record_id) != "completed":
+                    continue
+                lines = [line for line in path.read_text(encoding="utf-8").splitlines()[1:] if line.strip()]
+                checked += 1
+                with self.subTest(document=f"{directory}/{path.name}"):
+                    match = pattern.search(context.sub("", lines[0] if lines else ""))
+                    self.assertIsNone(match, f"{record_id}: stale phrase {match.group(0)!r}" if match else "")
+            readme = repository / directory / "README.md"
+            if not readme.is_file():
+                self.skipTest("repository documentation map fixture is outside the portable package")
+            for number, row in enumerate(readme.read_text(encoding="utf-8").splitlines(), 1):
+                if not row.lstrip().startswith("|"):
+                    continue
+                for digits in re.findall(r"\]\(rh-w-(\d{4})-[^)]+\.md\)", row):
+                    record_id = "RH-W-" + digits
+                    if records.get(record_id) != "completed":
+                        continue
+                    checked += 1
+                    with self.subTest(row=f"{directory}/README.md:{number}", record_id=record_id):
+                        match = pattern.search(context.sub("", row))
+                        self.assertIsNone(match, f"{record_id}: stale phrase {match.group(0)!r}" if match else "")
+        self.assertGreater(checked, 0, "no completed-record banner or documentation-map row was checked")
+
     def test_current_state_action_plan_coverage_is_derived_from_the_roadmap(self):
         """The uncovered set is the fact; a stale count hides records nobody planned."""
         repository = ROOT.parents[1]

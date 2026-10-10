@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
+- Completed RH-W-0098: one file-only roadmap-derived assertion rejects stale phrases in completed-record EN/ES opening lines and documentation-map rows, with narrow historical/negated/contextual exclusions. Both injected regressions failed RED; restored fixtures passed GREEN. Synchronized three test projections and reconciled bilingual lifecycle counts; no product or generated-contract change.
+
 - Restored the green canonical suite: the RH-W-0086 closure mistakenly relabeled the current-state suite-count line as historical; restored it and corrected RH-W-0086 wording because the suite count was already derived. Trimmed working-agreements.md by one word, from a rounded 700 proxy tokens to under its 700 budget; the overrun predated this session since PR #295. No product, test, or projection change.
 
 - Corrected stale current-status claims in EN/ES: the RH-W-0050 banner, RH-W-0048/RH-W-0044/RH-W-0068 map entries, RH-W-0048 decision entry, and remaining RH-W-0071 plan boundary sentence. No lifecycle, product, or projection change.
