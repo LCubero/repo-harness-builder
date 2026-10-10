@@ -13,6 +13,27 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 2. Use `repo-harness-documentation` cuando cambien hechos durables o el estado visible. Complete la documentacion, verificacion, revision y entrega autorizada aplicables al objetivo antes de cerrarlo.
 3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia y documentacion requeridas, escribe y reabre un backup Markdown estructurado y exclusivo bajo `.repo-harness/memory-bk/`, luego escribe en Engram cuando esta disponible e informa cada resultado por separado. Solo el trabajo Git solicitado activa revision de rutas y propuestas exactas. Inicie el trabajo adyacente en una sesion nueva de Pi mediante `repo-harness-session-start`.
 
+## Preferencias de respuesta
+<!-- doc-role:response-preferences -->
+
+Para conservar sus elecciones, cree o edite `.repo-harness/state/preferences/user-preferences.json` a mano. Este archivo local queda ignorado por Git mediante `/.repo-harness/state/`; ninguna herramienta lo escribe. Use un objeto JSON con al menos una de estas claves opcionales:
+
+- `conversationLanguage`: `english` o `espanol`
+- `responseStructure`: `standard` o `adhd-friendly`
+- `explanationStyle`: `standard` o `plain-language`
+
+Ejemplo:
+
+```json
+{"conversationLanguage": "espanol", "responseStructure": "adhd-friendly"}
+```
+
+`repo-harness-session-start` lo lee una vez al iniciar mediante el lector fijo (`harness_tool.py read-preference`). Una clave o valor desconocido, clave duplicada o JSON ilegible invalida el archivo. El inicio informa un diagnostico breve y continua sin preferencias (modos standard); nunca bloquea.
+
+Para cada eje de respuesta, prevalece una instruccion explicita de la sesion actual, luego el archivo y luego `standard`. Nunca se infieren modos del estilo de escritura o comportamiento. Ambos modos pueden combinarse; solo moldean respuestas y no hacen afirmaciones clinicas.
+
+Propietarios de las reglas: [contrato de respuesta](../../../.repo-harness/rules/response-contract.md), [ADHD-friendly](../../../.repo-harness/rules/response-adhd-friendly.md) y [plain-language](../../../.repo-harness/rules/response-plain-language.md).
+
 ## Disponibilidad integrada
 <!-- doc-role:availability -->
 

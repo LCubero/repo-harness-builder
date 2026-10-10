@@ -12,6 +12,27 @@ Use the three generated skills as a loop: recover context, keep durable document
 2. Use `repo-harness-documentation` when durable documentation or visible project state needs updating. Complete the objective's applicable documentation, verification, review, and authorized delivery before closing it.
 3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation, writes and reopens one exclusive structured Markdown backup under `.repo-harness/memory-bk/`, then writes Engram when available and reports each outcome independently. Only requested Git work triggers path screening and exact work-unit proposals under repository policy. Start adjacent work in a fresh Pi session through `repo-harness-session-start`.
 
+## Response Preferences
+<!-- doc-role:response-preferences -->
+
+To persist your choices, create or edit `.repo-harness/state/preferences/user-preferences.json` by hand. This local file is Git-ignored through `/.repo-harness/state/`; no tool writes it. Use a JSON object with at least one of these optional keys:
+
+- `conversationLanguage`: `english` or `espanol`
+- `responseStructure`: `standard` or `adhd-friendly`
+- `explanationStyle`: `standard` or `plain-language`
+
+Example:
+
+```json
+{"conversationLanguage": "espanol", "responseStructure": "adhd-friendly"}
+```
+
+`repo-harness-session-start` reads it once at startup through the fixed reader (`harness_tool.py read-preference`). An unknown key or value, duplicate key, or unreadable JSON makes the file invalid. Startup reports a short diagnostic and continues without preferences (standard modes); it never blocks.
+
+For each response axis, an explicit current-session instruction wins, then the file, then `standard`. Modes are never inferred from writing style or behavior. Both modes may combine; they shape replies only and make no clinical claim.
+
+Rule owners: [response contract](../../.repo-harness/rules/response-contract.md), [ADHD-friendly](../../.repo-harness/rules/response-adhd-friendly.md), and [plain-language](../../.repo-harness/rules/response-plain-language.md).
+
 ## Integrated Availability
 <!-- doc-role:availability -->
 
