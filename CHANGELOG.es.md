@@ -6,6 +6,8 @@
 
 - Se simplificaron los README EN/ES con instalacion local al repositorio en tres pasos y enlaces de uso diario; se traslado la guia detallada a guias bilingues del constructor registradas y se quitaron los bloques de instalacion por shell. Solo documentacion, sin cambio de comportamiento.
 
+- Se agrego una frase de referencia a preferencias en la guia de uso generada EN/ES, enlazando el archivo local de preferencias al contrato de respuesta como unico propietario de claves y precedencia; los enlaces en espanol se resuelven desde cada ubicacion emitida sin aumentar el presupuesto de lineas de la guia. Una prueba de regresion cubre las tres ubicaciones de salida; seis proyecciones del paquete del builder sincronizadas.
+
 - Se documentaron el archivo local de preferencias y los modos de respuesta en la guia de uso EN/ES con enlaces desde README; solo documentacion, sin cambio de comportamiento.
 
 - Se acoto la frase de precedencia de la reconciliacion de inicio de sesion al idioma de conversacion ("Resolve conversation-language precedence as"), para que los respaldos de idioma de sesion, manifiesto e ingles ya no parezcan aplicar a los ejes de respuesta, que se resuelven mediante el contrato de respuesta. Resuelve la observacion de revision no bloqueante que dejo la entrega de los modos de respuesta. Una prueba de regresion observo RED y luego GREEN; diez proyecciones sincronizadas; sin cambio de comportamiento.
