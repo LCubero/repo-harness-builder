@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-10
+
+- Completed RH-W-0086 under explicit owner delegation with owner-approved recording: `.gitattributes` remains product-owned and test-asserted, the checker retains runtime-projection parity scope, historical commit anchors stay immutable, and subprocess-dependent counts remain historical receipts outside the file-only derived set. The delivered first slice completes the record; reconciled bilingual portfolio projections without further implementation.
+
 ## 2026-10-09
 
 - RH-W-0070 (still proposed): added one owner-authorized project-local working-agreements pointer to the preventive resource-safety design and reconciled EN/ES lifecycle projections. Documentation only; no product implementation or lifecycle closure. Refs #294.
