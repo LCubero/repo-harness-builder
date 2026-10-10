@@ -1,6 +1,6 @@
 # RH-W-0071 Implementation Plan
 
-> **Status: session-only subset verified, reviewed and delivered through PR #161 on 2026-09-05 under issue #160. The [roadmap record](roadmap.md#rh-w-0071) owns delivery evidence. RH-W-0071 remains `proposed`: shared persistence is deferred and the original full requirement is not satisfied.**
+> **Status: session-only subset verified, reviewed and delivered through PR #161 on 2026-09-05 under issue #160. The [roadmap record](roadmap.md#rh-w-0071) owns delivery evidence. RH-W-0071 is `active`: shared persistence was reopened on 2026-10-10 under the [preference-driven response modes design](rh-w-0071-design.md), and its implementation is a separate unit.**
 
 Derived from the owner-approved [RH-W-0071 design](rh-w-0071-design.md) and roadmap Plan 20. Its Spanish peer is [rh-w-0071-implementation-plan.md](../es/repo-harness/rh-w-0071-implementation-plan.md).
 

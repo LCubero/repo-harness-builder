@@ -1,6 +1,6 @@
 # Diseno RH-W-0082 de estilo de explicacion plain-language
 
-> **Estado: DISENO APROBADO POR EL PROPIETARIO. La implementacion no esta autorizada por separado.**
+> **Estado: active. El diseno delegado del 2026-10-10 agrupa entrega con RH-W-0071; implementacion en unidad posterior separada.**
 
 ## Decision
 
@@ -10,13 +10,13 @@ Este eje se combina con `response-structure: standard | adhd-friendly` de RH-W-0
 
 ## Contrato compartido de preferencias
 
-La decision delegada del archivo compartido reemplaza la propuesta Markdown estructurada no implementada: un unico `.repo-harness/state/preferences/user-preferences.json` pequeno e ignorado contiene inicialmente solo idioma explicito de conversacion. El estilo de explicacion RH-W-0082 sigue aplazado; agregarlo al mismo archivo exige autoridad de ciclo de vida separada, sin predefinir su campo sin uso. RH-W-0071 conserva propiedad del diseno compartido; el transporte/API real de runtime sigue sin resolver. Esta unidad posee solo semantica de estilo y no puede crear otro archivo, registro, framework de parser, propietario de respuesta, store de consentimiento ni store de ciclo de vida. Los bytes de instalacion del manifiesto/checker y la aprobacion de consentimiento fetch siguen separados.
+El [contrato de modos por preferencias del 2026-10-10](rh-w-0071-design.md#modos-de-respuesta-por-preferencias-2026-10-10) posee schema JSON compartido, transporte existente de una lectura, limite de escritura manual, precedencia, modulos, fallo y entrega conjunta. Esta unidad solo posee semantica del estilo. Los bytes de instalacion del manifiesto/checker y consentimiento fetch siguen separados; RH-W-0018 sigue excluida y aplazada.
 
 `plain-language` nunca elimina terminos tecnicos necesarios, clases de evidencia, contradicciones, contexto de seguridad, limites de autoridad ni compuertas obligatorias. Los explica con palabras directas, frases cortas y definiciones cuando hagan falta. No simplifica por omision.
 
 ## Ciclo de vida y falta de autoridad
 
-RH-W-0082 esta `proposed`. Este diseno solo registra la decision del propietario y el siguiente ID inmutable verificado. No autoriza fuente de producto, pruebas, proyecciones generadas, lector de runtime, creacion del archivo de estado, migracion, accion Git, accion de red, avance de ciclo ni implementacion.
+RH-W-0082 esta `active` por decision delegada del propietario el 2026-10-10. Transporte y agrupacion de entrega quedan resueltos en el contrato RH-W-0071 enlazado. Sigue implementacion con pruebas primero autorizada por separado junto con RH-W-0071, y luego entrega; esta unidad documental no cambia comportamiento del producto.
 
 ## Condiciones de finalizacion
 
@@ -24,4 +24,4 @@ RH-W-0082 esta `proposed`. Este diseno solo registra la decision del propietario
 - `plain-language` sigue neutral, simple, exacto y no regional por defecto.
 - El idioma del artefacto sigue independiente.
 - Los propietarios existentes conservan sus limites.
-- La implementacion exige transporte de runtime reconciliado y autorizacion explicita separada.
+- Implementar el contrato compartido enlazado con pruebas primero en una unidad autorizada por separado junto con RH-W-0071, y luego entregar.
