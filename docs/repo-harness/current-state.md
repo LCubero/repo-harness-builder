@@ -192,7 +192,7 @@ Any actual release, tag, package publication, or version change remains a separa
 
 Open findings raised and deliberately not fixed inside the units that found them:
 
-- The Spanish rulebook carries no gate row to `.repo-harness/rules/working-agreements.md` and has 9 gate-table lines against the English 13. That is documentation parity, not budget, so `RH-W-0073` left it.
+- Resolved on 2026-10-10: the Spanish rulebook now carries every English decision-gate row, including `.repo-harness/rules/working-agreements.md`, within its 700-token budget.
 - The generator template still renders both compressed blocks inline into every generated rulebook. A generated rulebook measures 650 against 700, so no consumer breach is in front of us; whether the compression also changes the template is unanswered.
 - Seventeen local branches were measured as fully merged into `main` on 2026-09-01, up from eleven; this is historical repository evidence, not pending RH-W-0077 work.
 

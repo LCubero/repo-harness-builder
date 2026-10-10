@@ -6,6 +6,10 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
+- Restored decision-gate parity in `REPO-HARNESS.es.md`: added the five missing rows (working agreements, memory, documentation map, roadmap, stable-prefix rule) and linked the Spanish changelog, within the 700-token budget. Documentation only.
+
+- Recorded the owner's standing decision to publish no further release-candidate pre-releases; `v3.1-rc.7` remains the last published candidate. Documentation only.
+
 - Reconciled the EN/ES current state with published pre-release `v3.1-rc.7`, which had still been reported as `v3.1-rc.6`. Documentation only, no behavior change.
 
 - Aligned the builder command's no-argument behavior with the builder skill: a bare invocation follows the installation, update, or correction flow, which audits read-only and writes nothing before plan approval; read-only inspection runs only on an explicit inspect/check request. Synchronized the Claude Code, OpenCode, and Pi command projections and added one contract test.
