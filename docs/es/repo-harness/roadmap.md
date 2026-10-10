@@ -531,6 +531,32 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0098
+
+Origen: Solicitud del propietario el 2026-10-10 después de que los PR #298/#299 encontraran frases obsoletas fuera de la comprobación de la primera palabra de estado de RH-W-0085.
+
+Prioridad: `P2`: evitar que registros completados impliquen entrega sin terminar.
+
+Dependencias: Amplía la cobertura de RH-W-0085 sin absorberlo; RH-W-0086 no cambia.
+
+Estado: `completed`.
+
+Trabajo completado: Una aserción derivada de la hoja de ruta, solo de lectura de archivos, comprueba las líneas iniciales de registros completados y las filas bilingües del mapa documental; tres proyecciones de pruebas sincronizadas.
+
+Trabajo restante: `none`. Adiciones: Una aserción con frases sin distinción de mayúsculas, límites de palabra y diagnósticos por documento o fila.
+
+Exclusiones: Prosa de decisions.md, registros no terminales, comportamiento de producto y contratos generados.
+
+Aplazamientos: Ninguno.
+
+Rechazos: Sin auditoría general de prosa ni herramientas nuevas.
+
+Evidencia: RED: regresiones inyectadas en el banner RH-W-0050 y la fila RH-W-0044 produjeron dos fallos de subpruebas que nombran `pending`; ambos archivos restaurados byte por byte, confirmado con git diff --quiet. GREEN: pasó una prueba enfocada. Se excluyen contextualmente instantáneas históricas legítimas, reapertura fechada, trabajo pendiente negado y compuertas humanas pendientes.
+
+Historial de decisiones: El propietario autorizó esta aserción acotada con pruebas primero y su registro terminal el 2026-10-10.
+
+Siguiente condición de avance: Ninguna (terminal); reabrir si escapa una frase obsoleta en una ubicación cubierta.
+
 ### RH-W-0097
 
 Origen: implementación acotada y reconciliación documental, autorizadas por el usuario, de la discrepancia reportada en el idioma de inicio.

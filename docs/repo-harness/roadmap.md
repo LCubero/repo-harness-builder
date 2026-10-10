@@ -533,6 +533,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0098
+| Field | Value |
+|---|---|
+| Origin | Owner request on 2026-10-10 after PRs #298/#299 found stale phrases beyond RH-W-0085's first-status-word check. |
+| Priority | P2: prevent completed records from implying unfinished delivery. |
+| Dependencies | Extends RH-W-0085 coverage without absorbing it; RH-W-0086 unchanged. |
+| Status | completed |
+| Completed work | Added one file-only roadmap-derived assertion for completed-record opening lines and bilingual documentation-map rows; synchronized three test projections. |
+| Remaining work | none |
+| Additions | One assertion with case-insensitive word-boundary phrases and per-document or row diagnostics. |
+| Exclusions | decisions.md prose, non-terminal records, product behavior, generated contracts. |
+| Deferrals | none |
+| Rejections | No broader prose audit or new tooling. |
+| Evidence | RED: injected RH-W-0050 banner and RH-W-0044 map-row regressions produced two subtest failures naming `pending`; both fixtures restored byte-exactly, confirmed by git diff --quiet. GREEN: one focused test passed. Legitimate historical snapshots, dated reopening, negated pending work and pending human gates are excluded contextually. |
+| Decision history | Owner authorized this bounded test-first assertion and terminal registration on 2026-10-10. |
+| Next advancement condition | none (terminal); reopen if a stale phrase escapes in a covered location. |
+
 ### RH-W-0097
 | Field | Value |
 |---|---|
