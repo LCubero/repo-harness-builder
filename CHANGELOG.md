@@ -6,10 +6,12 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
+- Restored the green canonical suite: the RH-W-0086 closure mistakenly relabeled the current-state suite-count line as historical; restored it and corrected RH-W-0086 wording because the suite count was already derived. Trimmed working-agreements.md by one word, from a rounded 700 proxy tokens to under its 700 budget; the overrun predated this session since PR #295. No product, test, or projection change.
+
 - Corrected stale current-status claims in EN/ES: the RH-W-0050 banner, RH-W-0048/RH-W-0044/RH-W-0068 map entries, RH-W-0048 decision entry, and remaining RH-W-0071 plan boundary sentence. No lifecycle, product, or projection change.
 
 - Corrected stale RH-W-0071 wording in the EN/ES decisions, design, and implementation-plan documents: the fixed-path conversation-language reader is delivered, as the roadmap record already shows, instead of local or pending. No lifecycle, product, or projection change.
-- Completed RH-W-0086 under explicit owner delegation with owner-approved recording: `.gitattributes` remains product-owned and test-asserted, the checker retains runtime-projection parity scope, historical commit anchors stay immutable, and subprocess-dependent counts remain historical receipts outside the file-only derived set. The delivered first slice completes the record; reconciled bilingual portfolio projections without further implementation.
+- Completed RH-W-0086 under explicit owner delegation with owner-approved recording: `.gitattributes` remains product-owned and test-asserted, the checker retains runtime-projection parity scope, historical commit anchors stay immutable, and the suite count was already derived by an existing in-process assertion, and only the subprocess-dependent runtime-projection count remains a labeled historical receipt outside the file-only derived set. The delivered first slice completes the record; reconciled bilingual portfolio projections without further implementation.
 
 ## 2026-10-09
 
