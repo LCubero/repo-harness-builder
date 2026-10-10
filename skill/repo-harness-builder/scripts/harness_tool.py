@@ -2486,7 +2486,7 @@ Use the three generated skills as a loop: recover context, keep durable document
 
 <!-- doc-role:daily-workflow -->
 
-1. Start or resume with `repo-harness-session-start` and state the objective. It {recovery}, reports a scoped outcome, and inspects local Git state read-only. A remote-check question applies only when synchronization is relevant and safe.
+1. Start or resume with `repo-harness-session-start` and state the objective. It {recovery}, reports a scoped outcome, and inspects local Git state read-only. A remote-check question applies only when synchronization is relevant and safe. To persist reply language or response modes, edit `.repo-harness/state/preferences/user-preferences.json` by hand; the [response contract](../../.repo-harness/rules/response-contract.md) owns keys and precedence.
 2. Use `repo-harness-documentation` when durable documentation or visible project state needs updating.
 3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation and continuity. Only requested Git work triggers path screening and exact work-unit proposals under repository policy; unchanged authorization is not requested again.
 
@@ -2714,7 +2714,7 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 
 <!-- doc-role:daily-workflow -->
 
-1. Inicie o reanude con `repo-harness-session-start` e indique el objetivo. Recupera contexto pertinente, lo reconcilia con evidencia actual e inspecciona Git en solo lectura. Una pregunta de comprobacion remota aplica solo cuando sincronizar es pertinente y seguro.
+1. Inicie o reanude con `repo-harness-session-start` e indique el objetivo. Recupera contexto pertinente, lo reconcilia con evidencia actual e inspecciona Git en solo lectura. Una pregunta de comprobacion remota aplica solo cuando sincronizar es pertinente y seguro. Para conservar el idioma o los modos de respuesta, edite `.repo-harness/state/preferences/user-preferences.json` a mano; el [contrato de respuesta]({'../../' if spanish_only else '../../../'}.repo-harness/rules/response-contract.md) es propietario de las claves y la precedencia.
 2. Use `repo-harness-documentation` cuando sea necesario actualizar documentacion durable o el estado visible del proyecto.
 3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia, documentacion y continuidad requeridas. Solo el trabajo Git solicitado activa revision de rutas y propuestas exactas bajo la politica del repositorio; no se repite una autorizacion sin cambios.
 
