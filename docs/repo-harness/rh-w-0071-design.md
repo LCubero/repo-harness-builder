@@ -1,18 +1,18 @@
 # RH-W-0071 ADHD-Friendly Response Structure Design
 
-> **Status: active. Shared persistence reopened by owner-delegated design on 2026-10-10 with RH-W-0082; implementation is a separate later unit. The session-only subset was delivered through PR #161; the [roadmap](roadmap.md#rh-w-0071) owns lifecycle and delivery.**
+> **Status: `completed`. Implemented on 2026-10-10 with RH-W-0071/RH-W-0082; the [roadmap](roadmap.md) owns lifecycle and evidence.**
 
-**Current boundary:** the [revised implementation plan](rh-w-0071-implementation-plan.md) retains delivered session-only verification. The fixed-path conversation-language reader is delivered; response-mode persistence remains implementation work. The section below supersedes historical persistence, transport and grouping requirements. RH-W-0018 stays excluded and deferred.
+**Current boundary:** the existing JSON reader accepts three optional fields; session-start reads once and passes explicit preferences to modular response rules. Only the human edits preferences; RH-W-0018 stays deferred.
 
 ## Preference-Driven Response Modes (2026-10-10)
 
-1. **Reuse:** the existing ignored `.repo-harness/state/preferences/user-preferences.json` and fixed `read-preference` reader in `skill/repo-harness-builder/scripts/harness_tool.py:5554-5588`; read once at session start through the active runtime's existing reader. No new store.
+1. **Reuse:** the existing ignored `.repo-harness/state/preferences/user-preferences.json` and fixed `read-preference` reader in `skill/repo-harness-builder/scripts/harness_tool.py` (`read_conversation_preference`); read once at session start through the active runtime's existing reader. No new store.
 2. **Schema:** optional `conversationLanguage: english | espanol` (unchanged), `responseStructure: standard | adhd-friendly` (RH-W-0071), and `explanationStyle: standard | plain-language` (RH-W-0082); at least one key. Unknown or duplicate keys, wrong types or invalid values invalidate the whole file, retaining fail-closed validation. Return each axis's typed value and source; an absent key supplies no persisted value.
-3. **Writing:** no implemented preference writer exists. The human edits the file manually only for an explicit instruction to remember a repository-scoped preference; session-only instructions never write. Evidence: the reader only opens `rb` (:5572), the CLI exposes only `read-preference` (:5619-5620), and session-start forbids writing (`.repo-harness/skills/repo-harness-session-start/SKILL.md:23`). The atomic Markdown update below is unimplemented historical design, not today's mechanism. Do not design a writer command.
+3. **Writing:** no implemented preference writer exists. The human edits the file manually only for an explicit instruction to remember a repository-scoped preference; session-only instructions never write. Evidence: the reader only opens `rb` in `read_conversation_preference`, the CLI exposes only `read-preference` in `main`, and session-start forbids writing (`.repo-harness/skills/repo-harness-session-start/SKILL.md:23`). The atomic Markdown update below is unimplemented historical design, not today's mechanism. Do not design a writer command.
 4. **Resolution:** each response axis uses explicit current-session human instruction > persisted explicit preference > `standard`. Persisted modes apply only when explicitly requested to be remembered. Never infer from writing style, diagnosis, behavior, memory or repository prose. Conversation language retains RH-W-0031 precedence and fallback.
 5. **Rules:** `.repo-harness/rules/response-contract.md` becomes a short base without growing its nearly full 700-token budget. Move ADHD-friendly shaping to `.repo-harness/rules/response-adhd-friendly.md`; add `.repo-harness/rules/response-plain-language.md` from [RH-W-0082](rh-w-0082-design.md): neutral simple wording, definitions of unavoidable terms, no removal of evidence, authority, safety or gates. The base loads each module only when its axis resolves to the non-standard value; both may compose. These rules are product-rendered: change the renderer and its tests, not only generated files.
 6. **Failure:** absent or invalid preference evidence supplies no persisted values: response axes default to `standard`, language uses its existing fallback. Invalid evidence retains the bounded diagnostic; work never blocks. An explicit current-session instruction still wins.
-7. **Delivery:** one test-first implementation unit covers reader schema, session-start contract, rule modules and renderer, and all three runtime projections. This resolves shared runtime transport and delivery grouping; design does not implement it.
+7. **Delivery:** one test-first implementation unit covers reader schema, session-start contract, rule modules and renderer, and all three runtime projections. This resolves shared runtime transport and delivery grouping; implemented and verified in this unit.
 8. **Excluded:** RH-W-0018 interaction behavior (still deferred), regional dialect by default, inference, new stores, new CLI tools and cross-repository preferences.
 
 ## Historical Approved Design (Not Current Execution Instructions)
@@ -21,7 +21,7 @@ The broader design below preserves the original approvals and deferred shared-pe
 
 ## Review Contract
 
-Review this design against the canonical [RH-W-0071 roadmap record](roadmap.md#rh-w-0071), [RH-W-0031 language precedence](rh-w-0031-research.md), [RH-W-0051 local-state taxonomy](rh-w-0051-design.md), [RH-W-0067 response contract](rh-w-0067-design.md), and the [Spanish peer](../es/repo-harness/rh-w-0071-design.md). Repository evidence owns current behavior. This work registers design and lifecycle only.
+Review this design against the canonical [RH-W-0071 roadmap record](roadmap.md#rh-w-0071), [RH-W-0031 language precedence](rh-w-0031-research.md), [RH-W-0051 local-state taxonomy](rh-w-0051-design.md), [RH-W-0067 response contract](rh-w-0067-design.md), and the [Spanish peer](../es/repo-harness/rh-w-0071-design.md). Repository evidence owns current behavior. The 2026-10-10 contract is implemented; historical sections retain earlier design evidence.
 
 ## Decision
 

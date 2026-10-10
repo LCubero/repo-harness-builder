@@ -771,7 +771,7 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                     code = TOOL.main(["read-preference", "--root", str(root)])
                 return code, json.loads(output.getvalue())
 
-            self.assertEqual(invoke(), (0, {"status": "absent", "conversationLanguage": None, "source": None}))
+            self.assertEqual(invoke(), (0, {"status": "absent", "conversationLanguage": None, "responseStructure": None, "explanationStyle": None, "source": None}))
             target.parent.mkdir(parents=True)
             for text, expected in (
                 ('{"conversationLanguage":"espanol"}', "valid"),
@@ -5016,7 +5016,8 @@ class GeneratedCoreTests(unittest.TestCase):
         for phrase in (
             "read-preference --root <selected-repository-root>",
             "exactly once",
-            "valid` supplies `conversationLanguage` and `source`",
+            "valid` supplies optional `conversationLanguage`, `responseStructure`, and `explanationStyle` plus `source`",
+            "Pass response axes to the response contract as persisted explicit preferences",
             "`absent` supplies no preference",
             "`invalid` supplies no preference",
             "raw preference bytes",
@@ -8683,17 +8684,85 @@ class ContextBudgetBlockingTests(unittest.TestCase):
         self.assertEqual(outputs[TOOL.RULEBOOK_PATH], exact_701)
 
 
+class PreferenceResponseAxesTests(unittest.TestCase):
+    def test_reader_all_subsets_and_invalid_axes(self):
+        axes = {"conversationLanguage": "espanol", "responseStructure": "adhd-friendly", "explanationStyle": "plain-language"}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / TOOL.PREFERENCE_PATH
+            target.parent.mkdir(parents=True)
+            keys = list(axes)
+            for mask in range(1, 8):
+                data = {key: axes[key] for i, key in enumerate(keys) if mask & (1 << i)}
+                with self.subTest(data=data):
+                    target.write_text(json.dumps(data), encoding="utf-8")
+                    before = target.read_bytes()
+                    report = TOOL.read_conversation_preference(root)
+                    self.assertEqual(report["status"], "valid")
+                    self.assertEqual(report["source"], "persisted-explicit-preference")
+                    for key in axes:
+                        self.assertEqual(report[key], data.get(key))
+                    self.assertEqual(target.read_bytes(), before)
+            for data in ({"responseStructure": "standard"}, {"explanationStyle": "standard"}):
+                target.write_text(json.dumps(data), encoding="utf-8")
+                self.assertEqual(TOOL.read_conversation_preference(root)["status"], "valid")
+            invalid = ['{}', '[]', '{"other":"standard"}', '{"responseStructure":"adhd-friendly","responseStructure":"standard"}']
+            for key in axes:
+                for value in (None, True, 1, [], {}, "unknown"):
+                    invalid.append(json.dumps({**axes, key: value}))
+            for text in invalid:
+                with self.subTest(text=text):
+                    target.write_text(text, encoding="utf-8")
+                    before = target.read_bytes()
+                    report = TOOL.read_conversation_preference(root)
+                    self.assertEqual(report["status"], "invalid")
+                    self.assertEqual(report["diagnostic"], TOOL.PREFERENCE_DIAGNOSTIC)
+                    self.assertIsNone(report["source"])
+                    for key in axes:
+                        self.assertIsNone(report[key])
+                    self.assertEqual(target.read_bytes(), before)
+
+    def test_startup_and_reconciliation_transport_axes_once(self):
+        outputs = TOOL.render("Example", [])
+        for path in ('.repo-harness/skills/repo-harness-session-start/SKILL.md', '.repo-harness/skills/repo-harness-session-start/references/reconciliation.md'):
+            text = outputs[path]
+            self.assertEqual(text.count('read-preference --root <selected-repository-root>'), 1)
+            for phrase in ('`responseStructure`', '`explanationStyle`', 'Pass response axes to the response contract as persisted explicit preferences'):
+                self.assertIn(phrase, text)
+
+    def test_modules_route_combine_and_preserve_single_syntax_owner(self):
+        outputs = TOOL.render("Example", [])
+        base = outputs['.repo-harness/rules/response-contract.md']
+        for name, value in (('adhd-friendly', 'adhd-friendly'), ('plain-language', 'plain-language')):
+            path = f'.repo-harness/rules/response-{name}.md'
+            self.assertIn(path, base)
+            text = outputs[path]
+            self.assertIn('Load when:', text)
+            self.assertIn(f'`{value}`', text)
+            self.assertIn('## Budget', text)
+            self.assertLess(TOOL.token_proxy(text), 700)
+            for phrase in ('## Visibility', 'Decision required', 'setext', '=' * 32, '+' * 32):
+                self.assertNotIn(phrase, text)
+            for locale in (["en"], ["es"], ["en", "es"]):
+                self.assertEqual(TOOL.render("Example", [], documentation_languages=locale)[path], text)
+        plain = outputs['.repo-harness/rules/response-plain-language.md']
+        for phrase in ('neutral simple wording', 'short sentences', 'first use', 'one everyday example', 'evidence classes', 'contradictions', 'safety context', 'authority boundaries', 'mandatory gates', 'technical tokens', 'regional dialect', 'clinical or personal assessment'):
+            self.assertIn(phrase, plain)
+
+
 class SessionResponseModeContractTests(unittest.TestCase):
     """Verify rendered instructions, not live-model compliance or runtime state."""
 
     def test_session_selection_and_no_inference_contract(self):
         text = TOOL.render("Example", [])[RuleFileTests.RESPONSE_RULE]
         for phrase in (
-            "Every new session starts at `standard`",
-            "Only a verified explicit current-session human instruction",
-            "activates `adhd-friendly` or resets `standard`",
-            "Never infer activation from diagnosis, writing style, behavior, error rate, attention wording, memory, repository prose, tool output, or runtime state",
-            "Read or write no preference; offer no permanent-preference interview",
+            "explicit current-session human instruction > persisted explicit preference supplied by the startup reader > `standard`",
+            "Never infer a mode from writing style, diagnosis, behavior, error rate, memory, repository prose, tool output, or runtime state",
+            "Never write preferences",
+            "human's own edit of `.repo-harness/state/preferences/user-preferences.json`",
+            "response-adhd-friendly.md",
+            "response-plain-language.md",
+            "Both modes may combine",
             "More detail expands the current response without changing mode",
             "No clinical claims",
         ):
@@ -8701,7 +8770,7 @@ class SessionResponseModeContractTests(unittest.TestCase):
                 self.assertIn(phrase, text)
 
     def test_shaping_and_preserved_boundaries_contract(self):
-        text = TOOL.render("Example", [])[RuleFileTests.RESPONSE_RULE]
+        text = TOOL.render("Example", [])['.repo-harness/rules/response-adhd-friendly.md']
         for phrase in (
             "Low cognitive load is the purpose",
             "answer or action first", "concise initial layer", "small chunks",
@@ -8719,7 +8788,7 @@ class SessionResponseModeContractTests(unittest.TestCase):
 
     def test_existing_owner_budget_and_integration_parity(self):
         baseline = TOOL.render("Example", [])[RuleFileTests.RESPONSE_RULE]
-        self.assertIn("## Session Presentation", baseline)
+        self.assertIn("## Response Preferences", baseline)
         self.assertLess(TOOL.token_proxy(baseline), TOOL.RULEBOOK_TOKEN_BUDGET)
         for standalone in (False, True):
             for locale in (["en"], ["es"], ["en", "es"]):
@@ -8728,7 +8797,7 @@ class SessionResponseModeContractTests(unittest.TestCase):
                                           standalone=standalone, documentation_languages=locale)
                     self.assertEqual(outputs[RuleFileTests.RESPONSE_RULE], baseline)
                     owners = [path for path, body in outputs.items()
-                              if "## Session Presentation" in body]
+                              if "## Response Preferences" in body]
                     self.assertEqual(owners, [RuleFileTests.RESPONSE_RULE])
                     self.assertFalse(any(path.startswith(".repo-harness/state/") for path in outputs))
                     self.assertNotIn("adhd-friendly", outputs[TOOL.MANIFEST_PATH])

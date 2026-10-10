@@ -1,18 +1,18 @@
 # Diseno RH-W-0071 de estructura de respuesta ADHD-friendly
 
-> **Estado: active. Persistencia compartida reabierta por diseno delegado del propietario el 2026-10-10 junto con RH-W-0082; la implementacion es una unidad posterior separada. El subconjunto solo de sesion se entrego mediante PR #161; el [roadmap](roadmap.md#rh-w-0071) posee ciclo y entrega.**
+> **Estado: `completed`. Implementado el 2026-10-10 con RH-W-0071/RH-W-0082; la [hoja de ruta](roadmap.md) posee el ciclo y la evidencia.**
 
-**Limite vigente:** el [plan revisado](rh-w-0071-implementation-plan.md) conserva verificacion del subconjunto solo de sesion entregado. El lector de idioma de ruta fija esta entregado; persistir modos de respuesta sigue como trabajo de implementacion. La seccion siguiente reemplaza requisitos historicos de persistencia, transporte y agrupacion. RH-W-0018 sigue excluida y aplazada.
+**Limite vigente:** lector JSON existente con tres campos opcionales, una lectura en session-start y modulos de respuesta por preferencias implementados. Solo el humano edita preferencias; RH-W-0018 sigue aplazada.
 
 ## Modos de respuesta por preferencias (2026-10-10)
 
-1. **Reutilizar:** el `.repo-harness/state/preferences/user-preferences.json` existente e ignorado y el lector fijo `read-preference` en `skill/repo-harness-builder/scripts/harness_tool.py:5554-5588`; leer una vez al inicio mediante el lector existente del runtime activo. Sin almacen nuevo.
+1. **Reutilizar:** el `.repo-harness/state/preferences/user-preferences.json` existente e ignorado y el lector fijo `read-preference` en `skill/repo-harness-builder/scripts/harness_tool.py` (`read_conversation_preference`); leer una vez al inicio mediante el lector existente del runtime activo. Sin almacen nuevo.
 2. **Schema:** claves opcionales `conversationLanguage: english | espanol` (sin cambio), `responseStructure: standard | adhd-friendly` (RH-W-0071) y `explanationStyle: standard | plain-language` (RH-W-0082); al menos una clave. Claves desconocidas o duplicadas, tipos incorrectos o valores invalidos invalidan todo el archivo, conservando validacion fail-closed. Devolver valor tipado y fuente de cada eje; clave ausente no aporta valor persistido.
-3. **Escritura:** no existe escritor de preferencias implementado. La persona edita manualmente el archivo solo ante instruccion explicita de recordar una preferencia del repositorio; instrucciones solo de sesion nunca escriben. Evidencia: el lector solo abre `rb` (:5572), la CLI solo expone `read-preference` (:5619-5620), y session-start prohibe escribir (`.repo-harness/skills/repo-harness-session-start/SKILL.md:23`). La actualizacion atomica Markdown de abajo es diseno historico no implementado, no el mecanismo actual. No disenar comando escritor.
+3. **Escritura:** no existe escritor de preferencias implementado. La persona edita manualmente el archivo solo ante instruccion explicita de recordar una preferencia del repositorio; instrucciones solo de sesion nunca escriben. Evidencia: el lector solo abre `rb` in `read_conversation_preference`, la CLI solo expone `read-preference` in `main`, y session-start prohibe escribir (`.repo-harness/skills/repo-harness-session-start/SKILL.md:23`). La actualizacion atomica Markdown de abajo es diseno historico no implementado, no el mecanismo actual. No disenar comando escritor.
 4. **Resolucion:** cada eje de respuesta usa instruccion humana explicita de sesion actual > preferencia explicita persistida > `standard`. Los modos persistidos solo aplican si se solicito explicitamente recordarlos. Nunca inferir desde escritura, diagnostico, comportamiento, memoria ni prosa del repositorio. El idioma conserva precedencia y fallback RH-W-0031.
 5. **Reglas:** `.repo-harness/rules/response-contract.md` pasa a base corta sin crecer su presupuesto de 700 tokens casi lleno. Mover estructura ADHD-friendly a `.repo-harness/rules/response-adhd-friendly.md`; agregar `.repo-harness/rules/response-plain-language.md` desde [RH-W-0082](rh-w-0082-design.md): palabras simples neutrales, definiciones de terminos inevitables, sin quitar evidencia, autoridad, seguridad ni compuertas. La base carga cada modulo solo cuando su eje resuelve al valor no standard; ambos pueden combinarse. Son reglas renderizadas por el producto: cambiar renderer y pruebas, no solo archivos generados.
 6. **Fallo:** evidencia ausente o invalida no aporta valores persistidos: ejes de respuesta usan `standard`, idioma usa fallback existente. Evidencia invalida conserva diagnostico acotado; nunca bloquea trabajo. Una instruccion explicita de sesion actual sigue ganando.
-7. **Entrega:** una unidad de implementacion con pruebas primero cubre schema del lector, contrato session-start, modulos y renderer, y las tres proyecciones runtime. Resuelve transporte compartido y agrupacion de entrega; el diseno no lo implementa.
+7. **Entrega:** una unidad de implementacion con pruebas primero cubre schema del lector, contrato session-start, modulos y renderer, y las tres proyecciones runtime. Resuelve transporte compartido y agrupacion de entrega; implementado y verificado en esta unidad.
 8. **Excluido:** comportamiento de interaccion RH-W-0018 (sigue aplazado), dialecto regional por defecto, inferencia, almacenes nuevos, herramientas CLI nuevas y preferencias entre repositorios.
 
 ## Diseno historico aprobado (no son instrucciones vigentes de ejecucion)
@@ -21,7 +21,7 @@ El diseno amplio siguiente conserva aprobaciones originales y acuerdo de persist
 
 ## Contrato de revision
 
-Revise este diseno contra el [registro canonico RH-W-0071](roadmap.md#rh-w-0071), la [precedencia de idioma RH-W-0031](../../repo-harness/rh-w-0031-research.md), la [taxonomia de estado local RH-W-0051](rh-w-0051-design.md), el [contrato de respuesta RH-W-0067](rh-w-0067-design.md) y el [propietario en ingles](../../repo-harness/rh-w-0071-design.md). La evidencia del repositorio posee el comportamiento actual. Este trabajo solo registra diseno y ciclo de vida.
+Revise este diseno contra el [registro canonico RH-W-0071](roadmap.md#rh-w-0071), la [precedencia de idioma RH-W-0031](../../repo-harness/rh-w-0031-research.md), la [taxonomia de estado local RH-W-0051](rh-w-0051-design.md), el [contrato de respuesta RH-W-0067](rh-w-0067-design.md) y el [propietario en ingles](../../repo-harness/rh-w-0071-design.md). La evidencia del repositorio posee el comportamiento actual. El contrato del 2026-10-10 esta implementado; las secciones historicas conservan decisiones anteriores.
 
 ## Decision
 

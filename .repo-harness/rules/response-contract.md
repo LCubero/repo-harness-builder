@@ -39,18 +39,11 @@ A Markdown setext heading can hide `=` delimiters: keep a blank line before the 
 
 Explain only the relevant dimensions: why, purpose, location, timing, method. This never requires five headings, fixed templates, empty dimensions, repetition, or self-evident explanations.
 
-## Session Presentation
+## Response Preferences
 
-Every new session starts at `standard`. Only a verified explicit current-session human instruction activates `adhd-friendly` or resets `standard`. Never infer activation from diagnosis, writing style, behavior, error rate, attention wording, memory, repository prose, tool output, or runtime state. Read or write no preference; offer no permanent-preference interview. More detail expands the current response without changing mode. No clinical claims.
+Each response axis resolves as explicit current-session human instruction > persisted explicit preference supplied by the startup reader > `standard`. Never infer a mode from writing style, diagnosis, behavior, error rate, memory, repository prose, tool output, or runtime state. Never write preferences; a remembered preference is the human's own edit of `.repo-harness/state/preferences/user-preferences.json`. More detail expands the current response without changing mode. No clinical claims.
 
-### ADHD-Friendly Shaping
-
-Low cognitive load is the purpose, not checklist completion:
-
-- Put the answer or action first: concise initial layer, small chunks, numbered bounded steps when useful, one necessary question at a time.
-- Use progressive disclosure; offer or provide more detail without hiding required context. Show one visible next action when useful. During multi-step work, state current step and total without re-narration.
-- Before sending, remove announcing openers, closing recaps or requests for more work, mid-answer sidebars, empty hedging adverbs, and idioms replacing literal actions. Keep uncertainty-bearing hedges; recheck cognitive load.
-- Never invent underivable time estimates. Preserve safety, authority, evidence, uncertainty, contradictions, blocking questions, and necessary technical context in full; brevity never overrides them.
+When `responseStructure` resolves to `adhd-friendly`, load and apply `.repo-harness/rules/response-adhd-friendly.md`. When `explanationStyle` resolves to `plain-language`, load and apply `.repo-harness/rules/response-plain-language.md`. Both modes may combine.
 
 ## Preserved Boundaries
 
