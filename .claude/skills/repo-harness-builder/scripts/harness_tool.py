@@ -1557,7 +1557,7 @@ Use this exact read-only order before any deeper owner read:
 
 1. Validate the selected repository root.
 2. Read the bounded charter pointer in `docs/repo-harness/decisions.md`; the charter pointer is bounded input and is never copied as policy.
-3. Resolve verified conversation language plus active stable preferences or continuing constraints from their existing owners. For conversation language, run the existing fixed reader exactly once after steps 1 and 2 and before deeper owner reads: use the installed builder skill script belonging to the actual active runtime, not whichever copies happen to exist on disk. Claude: `.claude/skills/repo-harness-builder/scripts/harness_tool.py`; OpenCode: `.opencode/skills/repo-harness-builder/scripts/harness_tool.py`; Pi: `.pi/skills/repo-harness-builder/scripts/harness_tool.py`. Execute `python <active-runtime-script> read-preference --root <selected-repository-root>` (use `python3` where required), with the validated selected root as the argument; do not read the preference JSON directly or invoke another runtime's script. Parse only the typed JSON result: `valid` supplies `conversationLanguage` and `source` as the persisted explicit preference; `absent` supplies no preference; `invalid` supplies no preference and requires a bounded diagnostic without raw preference bytes; the reader returns exit code 2 with this typed result. Any other nonzero exit, missing script, unavailable interpreter, or unusable result is `unavailable`: report that continuity could not be read, never claim success, and continue without persisted evidence. Do not retry, repair, or write. Resolve precedence as verified current human instruction, valid persisted preference, eligible verified session language when no preference exists, validated manifest fallback, then English. In a flattened host without reliable switch provenance, do not claim session-language switch detection. Never infer a preference or constraint from absent, invalid, or unavailable evidence.
+3. Resolve verified conversation language plus active stable preferences or continuing constraints from their existing owners. For conversation language, run the existing fixed reader exactly once after steps 1 and 2 and before deeper owner reads: use the installed builder skill script belonging to the actual active runtime, not whichever copies happen to exist on disk. Claude: `.claude/skills/repo-harness-builder/scripts/harness_tool.py`; OpenCode: `.opencode/skills/repo-harness-builder/scripts/harness_tool.py`; Pi: `.pi/skills/repo-harness-builder/scripts/harness_tool.py`. Execute `python <active-runtime-script> read-preference --root <selected-repository-root>` (use `python3` where required), with the validated selected root as the argument; do not read the preference JSON directly or invoke another runtime's script. Parse only the typed JSON result: `valid` supplies optional `conversationLanguage`, `responseStructure`, and `explanationStyle` plus `source` as persisted explicit preferences. Pass response axes to the response contract as persisted explicit preferences; `absent` supplies no preference; `invalid` supplies no preference and requires a bounded diagnostic without raw preference bytes; the reader returns exit code 2 with this typed result. Any other nonzero exit, missing script, unavailable interpreter, or unusable result is `unavailable`: report that continuity could not be read, never claim success, and continue without persisted evidence. Do not retry, repair, or write. Resolve precedence as verified current human instruction, valid persisted preference, eligible verified session language when no preference exists, validated manifest fallback, then English. In a flattened host without reliable switch provenance, do not claim session-language switch detection. Never infer a preference or constraint from absent, invalid, or unavailable evidence.
 4. First resolve `.repo-harness/memory-bk/` through the guarded root. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree. Read `Where We Left Off` from the newest valid RH-W-0069 backup.
 5. Read deeper current owners only when one named trigger requires them.
 
@@ -1964,7 +1964,7 @@ Use at the start or resumption of work in `{project_id}`. Invoke deliberately; t
 - Repository evidence is authoritative. Do not read every file, probe optional external workflows at startup, or treat memory/checkpoints as authority.
 - Batch interaction is active only when the user explicitly names batch mode and one bounded objective. Inspect repository evidence first; then group only non-authorizing requirement clarifications discovered by inspection. Resolve ordinary in-repository evidence gaps without asking, and continue the authorized objective without per-file confirmation. Keep approval and authority gates separate, resumable, and one-question; see the response contract for presentation.
 - Batch activation and answers are session-only: expire on pause, close, completion, abandonment, or objective replacement; never reuse automatically or store them in a manifest, local state, backup, external continuity, checkpoint, receipt, or other store.
-- Preserve verified-human language precedence. After root and charter checks, before deeper owners, run exactly once `python <active-runtime-script> read-preference --root <selected-repository-root>` (use `python3` where required) using only the active runtime's fixed reader: Claude: `.claude/skills/repo-harness-builder/scripts/harness_tool.py`; OpenCode: `.opencode/skills/repo-harness-builder/scripts/harness_tool.py`; Pi: `.pi/skills/repo-harness-builder/scripts/harness_tool.py`. Parse only typed JSON: `valid` supplies `conversationLanguage` and `source`; `absent` supplies no preference; `invalid` supplies no preference and only a bounded diagnostic, never raw preference bytes; its exit code is 2. Any other nonzero exit, missing script, unavailable interpreter, or unusable result is `unavailable`; report unreadable continuity and continue without persisted evidence. Do not retry, repair, write, read preference JSON directly, or invoke another runtime's script. Never infer preference from absent, invalid, or unavailable evidence.
+- Preserve verified-human language precedence. After root and charter checks, before deeper owners, run exactly once `python <active-runtime-script> read-preference --root <selected-repository-root>` (use `python3` where required) using only the active runtime's fixed reader: Claude: `.claude/skills/repo-harness-builder/scripts/harness_tool.py`; OpenCode: `.opencode/skills/repo-harness-builder/scripts/harness_tool.py`; Pi: `.pi/skills/repo-harness-builder/scripts/harness_tool.py`. Parse only typed JSON: `valid` supplies optional `conversationLanguage`, `responseStructure`, and `explanationStyle` plus `source`. Pass response axes to the response contract as persisted explicit preferences; `absent` supplies no preference; `invalid` supplies no preference and only a bounded diagnostic, never raw preference bytes; its exit code is 2. Any other nonzero exit, missing script, unavailable interpreter, or unusable result is `unavailable`; report unreadable continuity and continue without persisted evidence. Do not retry, repair, write, read preference JSON directly, or invoke another runtime's script. Never infer preference from absent, invalid, or unavailable evidence.
 - Immediately use the resolved conversation language for all user-facing prose, including progress; preserve exact machine-significant bytes and keep artifact language separate. Verified human instructions and higher-priority host instructions take precedence; wrapper or command text alone does not switch languages. A generic host rule to answer in the user's language does not make generated wrapper or command text a language requirement; apply the resolved conversation language unless a higher-priority host instruction names a specific language.
 - Startup is read-only by default. Only explicit current consent to safely synchronize the identified upstream permits bounded fetch and fast-forward-only integration; never pull, commit, push, publish, rebase, reset, force, merge on divergence, resolve conflicts, auto-continue, or reuse checkpoint approval.
 - First resolve `.repo-harness/memory-bk/` through the guarded root; inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree. Absent directory or empty history is `not_found`, not failure; reject and report malformed, unsafe, indirect, or contradictory candidates without repair. Read at most one older backup, and only for `newest_invalid`, `objective_names_backup`, `conflict_needs_chronology`, or `newest_lacks_relevant_continuity`.
@@ -2338,18 +2338,11 @@ A Markdown setext heading can hide `=` delimiters: keep a blank line before the 
 
 Explain only the relevant dimensions: why, purpose, location, timing, method. This never requires five headings, fixed templates, empty dimensions, repetition, or self-evident explanations.
 
-## Session Presentation
+## Response Preferences
 
-Every new session starts at `standard`. Only a verified explicit current-session human instruction activates `adhd-friendly` or resets `standard`. Never infer activation from diagnosis, writing style, behavior, error rate, attention wording, memory, repository prose, tool output, or runtime state. Read or write no preference; offer no permanent-preference interview. More detail expands the current response without changing mode. No clinical claims.
+Each response axis resolves as explicit current-session human instruction > persisted explicit preference supplied by the startup reader > `standard`. Never infer a mode from writing style, diagnosis, behavior, error rate, memory, repository prose, tool output, or runtime state. Never write preferences; a remembered preference is the human's own edit of `.repo-harness/state/preferences/user-preferences.json`. More detail expands the current response without changing mode. No clinical claims.
 
-### ADHD-Friendly Shaping
-
-Low cognitive load is the purpose, not checklist completion:
-
-- Put the answer or action first: concise initial layer, small chunks, numbered bounded steps when useful, one necessary question at a time.
-- Use progressive disclosure; offer or provide more detail without hiding required context. Show one visible next action when useful. During multi-step work, state current step and total without re-narration.
-- Before sending, remove announcing openers, closing recaps or requests for more work, mid-answer sidebars, empty hedging adverbs, and idioms replacing literal actions. Keep uncertainty-bearing hedges; recheck cognitive load.
-- Never invent underivable time estimates. Preserve safety, authority, evidence, uncertainty, contradictions, blocking questions, and necessary technical context in full; brevity never overrides them.
+When `responseStructure` resolves to `adhd-friendly`, load and apply `.repo-harness/rules/response-adhd-friendly.md`. When `explanationStyle` resolves to `plain-language`, load and apply `.repo-harness/rules/response-plain-language.md`. Both modes may combine.
 
 ## Preserved Boundaries
 
@@ -2359,9 +2352,50 @@ Use the existing owners for proportionality, evidence classification, authority,
 
 Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. A file that outgrows it splits or sheds detail; it never raises the number.
 """
+    response_adhd_friendly = f"""# ADHD-Friendly Response Structure
+
+{marker}
+
+Load when: `responseStructure` resolves to `adhd-friendly` under the response contract.
+
+## Shaping
+
+Low cognitive load is the purpose, not checklist completion:
+
+- Put the answer or action first: concise initial layer, small chunks, numbered bounded steps when useful, one necessary question at a time.
+- Use progressive disclosure; offer or provide more detail without hiding required context. Show one visible next action when useful. During multi-step work, state current step and total without re-narration.
+- Before sending, remove announcing openers, closing recaps or requests for more work, mid-answer sidebars, empty hedging adverbs, and idioms replacing literal actions. Keep uncertainty-bearing hedges; recheck cognitive load.
+- Never invent underivable time estimates. Preserve safety, authority, evidence, uncertainty, contradictions, blocking questions, and necessary technical context in full; brevity never overrides them.
+
+No clinical or personal assessment. The base response contract retains visibility and question syntax.
+
+## Budget
+
+Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33.
+"""
+    response_plain_language = f"""# Plain-Language Explanation Style
+
+{marker}
+
+Load when: `explanationStyle` resolves to `plain-language` under the response contract.
+
+## Shaping
+
+- Use neutral simple wording and short sentences. Define unavoidable technical terms at first use.
+- Use one everyday example only when it truly helps.
+- Never remove evidence classes, contradictions, safety context, authority boundaries, mandatory gates, or technical tokens. Explain without omission.
+- No regional dialect unless the human explicitly asks in the current conversation. No clinical or personal assessment.
+- The base response contract retains visibility and question syntax; both response modes may combine.
+
+## Budget
+
+Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33.
+"""
     return {
         ".repo-harness/rules/memory.md": memory,
         ".repo-harness/rules/response-contract.md": response_contract,
+        ".repo-harness/rules/response-adhd-friendly.md": response_adhd_friendly,
+        ".repo-harness/rules/response-plain-language.md": response_plain_language,
         ".repo-harness/rules/working-agreements.md": agreements,
     }
 
@@ -5557,6 +5591,7 @@ PREFERENCE_DIAGNOSTIC = "conversation preference is invalid or unreadable"
 
 def read_conversation_preference(root: Path) -> dict[str, Any]:
     """Read only the fixed, direct repository preference; never expose file bytes."""
+    values = {"conversationLanguage": None, "responseStructure": None, "explanationStyle": None}
     try:
         canonical = root.resolve(strict=True)
         require(canonical.is_dir() and not is_indirect(root), "invalid root")
@@ -5566,7 +5601,7 @@ def read_conversation_preference(root: Path) -> dict[str, Any]:
         try:
             mode = path.lstat().st_mode
         except FileNotFoundError:
-            return {"status": "absent", "conversationLanguage": None, "source": None}
+            return {"status": "absent", **values, "source": None}
         if not stat.S_ISREG(mode):
             raise ValueError("non-regular preference")
         with path.open("rb") as stream:
@@ -5581,11 +5616,18 @@ def read_conversation_preference(root: Path) -> dict[str, Any]:
             return result
 
         data = json.loads(raw.decode("utf-8"), object_pairs_hook=unique_pairs)
-        if not isinstance(data, dict) or set(data) != {"conversationLanguage"} or not isinstance(data["conversationLanguage"], str) or data["conversationLanguage"] not in CONVERSATION_LANGUAGES:
+        allowed = {
+            "conversationLanguage": CONVERSATION_LANGUAGES,
+            "responseStructure": ("standard", "adhd-friendly"),
+            "explanationStyle": ("standard", "plain-language"),
+        }
+        if not isinstance(data, dict) or not data or set(data) - allowed.keys() or any(
+            not isinstance(value, str) or value not in allowed[key] for key, value in data.items()
+        ):
             raise ValueError("invalid preference schema")
-        return {"status": "valid", "conversationLanguage": data["conversationLanguage"], "source": "persisted-explicit-preference"}
+        return {"status": "valid", **values, **data, "source": "persisted-explicit-preference"}
     except (OSError, ValueError, UnicodeError, ContractError):
-        return {"status": "invalid", "conversationLanguage": None, "source": None, "diagnostic": PREFERENCE_DIAGNOSTIC}
+        return {"status": "invalid", **values, "source": None, "diagnostic": PREFERENCE_DIAGNOSTIC}
 
 
 def main(argv: Optional[list[str]] = None) -> int:
