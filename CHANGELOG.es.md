@@ -4,6 +4,8 @@
 
 ## 2026-10-10
 
+- Se documentaron el archivo local de preferencias y los modos de respuesta en la guia de uso EN/ES con enlaces desde README; solo documentacion, sin cambio de comportamiento.
+
 - Se acoto la frase de precedencia de la reconciliacion de inicio de sesion al idioma de conversacion ("Resolve conversation-language precedence as"), para que los respaldos de idioma de sesion, manifiesto e ingles ya no parezcan aplicar a los ejes de respuesta, que se resuelven mediante el contrato de respuesta. Resuelve la observacion de revision no bloqueante que dejo la entrega de los modos de respuesta. Una prueba de regresion observo RED y luego GREEN; diez proyecciones sincronizadas; sin cambio de comportamiento.
 
 ## 2026-10-09

@@ -176,6 +176,8 @@ Cuando se declara un segundo locale, se genera completo, no parcial. Sus documen
 
 El idioma de conversacion es una eleccion aparte. Define el idioma en que las habilidades de sesion generadas le hablan a usted. No agrega ni quita locales de documentacion.
 
+Puede conservar a mano el idioma de conversacion y los modos de respuesta ADHD-friendly o plain-language en un [archivo local de preferencias](docs/es/repo-harness/usage.md#preferencias-de-respuesta).
+
 Los selectores reciprocos de README son una sola integracion atomica. Si el repositorio ya tiene `README.md` y el plan ejecutable exacto no puede actualizarlo, `README.es.md` se clasifica como bloqueado en vez de crearse. Nunca se produce un selector unilateral que afirme un repositorio bilingue.
 
 ### Actualizaciones seguras
