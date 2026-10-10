@@ -7,23 +7,23 @@
 
 <!-- README-I18N:END -->
 
-`repo-harness` es un conjunto de prompts, reglas, documentacion, habilidades y comandos acotado al repositorio para agentes de programacion con IA como Claude Code, OpenCode y Pi. Mantiene las guias del proyecto y las transferencias de sesion en el repositorio, donde quienes lo mantienen pueden revisarlas. `repo-harness-builder` crea, audita y evoluciona ese harness con seguridad.
+`repo-harness` es un conjunto de instrucciones, reglas, documentación, habilidades y comandos para agentes de programación con IA como Claude Code, OpenCode y Pi. Guarda las guías y notas de sesión en el repositorio para poder revisarlas. `repo-harness-builder` crea, revisa y actualiza ese harness con seguridad.
 
-## Que genera
+## Qué genera
 <!-- doc-role:outputs -->
 
 - Un libro de reglas conciso en `REPO-HARNESS.md` y un README cuando falta.
-- Documentacion del proyecto sobre uso, estado actual, decisiones y cambios completados.
-- Habilidades de sesion y documentacion, con comandos para los entornos elegidos.
+- Documentación del proyecto sobre uso, estado actual, decisiones y cambios completados.
+- Habilidades de sesión y documentación, con comandos para los entornos elegidos.
 - Un verificador para mantener coherentes las copias de cada entorno y ajustes de archivos del repositorio.
 
 El harness funciona por si solo. El modo integrado compone de forma independiente las capacidades disponibles de Gentle AI y Engram; CodeGraph es opcional. Consulte la [guia del constructor](docs/es/repo-harness/builder-guide.md) para conocer los limites de integracion y la lista completa de archivos generados.
 
-## Instalacion
+## Instalación
 <!-- doc-role:quick-start -->
 
-1. Descargue y extraiga el zip de la [ultima release](https://github.com/LCubero/repo-harness-builder/releases).
-2. Copie la carpeta de la habilidad (`skill/repo-harness-builder/`) y el archivo de comando (`command/repo-harness-builder.md`) al repositorio donde los usara, en los destinos siguientes. Mantenga ambos dentro de ese repositorio, nunca en una carpeta de configuracion global o de usuario.
+1. Descargue y extraiga el zip de la [última versión](https://github.com/LCubero/repo-harness-builder/releases).
+2. Copie la habilidad (`skill/repo-harness-builder/`) y el comando (`command/repo-harness-builder.md`) dentro del repositorio de destino, según esta tabla. Nunca los instale en una carpeta global o de usuario.
 
    | Entorno | Carpeta de la habilidad | Archivo de comando |
    |---|---|---|
@@ -31,20 +31,27 @@ El harness funciona por si solo. El modo integrado compone de forma independient
    | OpenCode | `.opencode/skills/repo-harness-builder/` | `.opencode/commands/repo-harness-builder.md` |
    | Pi | `.pi/skills/repo-harness-builder/` | `.pi/prompts/repo-harness-builder.md` |
 
-3. Abra ese repositorio en su entorno, ejecute `/repo-harness-builder` y siga sus pasos.
+3. Abra ese repositorio en su entorno y ejecute `/repo-harness-builder` una vez para preparar el harness. Responda sus preguntas y apruebe el plan antes de que haga cambios.
 
-Requiere Python 3.10+ y su entorno ya instalado; si un destino ya existe, inspeccionelo antes de copiar.
+Requiere Python 3.10+ y su entorno ya instalado; si un destino ya existe, revíselo antes de copiar.
 
 ## Uso diario
 <!-- doc-role:skills -->
 
-Use `/repo-harness-builder` para crear, auditar o actualizar el harness. Una vez instalado, use `repo-harness-session-start` para iniciar o reanudar trabajo, `repo-harness-documentation` cuando cambien hechos durables del proyecto y `repo-harness-session-stop` para pausar o terminar con una transferencia. Invoque estas habilidades mediante el mecanismo de habilidades de su entorno. La [guia de uso](docs/es/repo-harness/usage.md) explica el flujo diario y los limites de aprobacion.
+1. Inicie o reanude con `repo-harness-session-start`.
+2. Trabaje normalmente: pida al agente que haga su tarea.
+3. Cuando cambie información importante del proyecto, use `repo-harness-documentation` para mantener la documentación al día.
+4. Al pausar o terminar, use `repo-harness-session-stop` para dejar contexto para la próxima sesión.
 
-## Mas informacion
+Pida al agente que use cada habilidad cuando la necesite. Consulte la [guía de uso](docs/es/repo-harness/usage.md) para más detalles.
+
+## Más información
 <!-- doc-role:license -->
 
-- [Guia del constructor](docs/es/repo-harness/builder-guide.md): archivos generados, idiomas, actualizaciones seguras y desarrollo.
-- [Guia de uso](docs/es/repo-harness/usage.md): trabajo con el harness instalado.
+Puede ejecutar el constructor de nuevo para una revisión o actualización opcional; consulte su guía.
+
+- [Guía del constructor](docs/es/repo-harness/builder-guide.md): archivos generados, idiomas, actualizaciones seguras y desarrollo.
+- [Guía de uso](docs/es/repo-harness/usage.md): trabajo con el harness instalado.
 - [CONTRIBUTING.es.md](CONTRIBUTING.es.md): contribuciones a este proyecto.
 - [Historial de cambios](CHANGELOG.es.md): cambios completados.
 - [Licencia MIT](LICENSE).

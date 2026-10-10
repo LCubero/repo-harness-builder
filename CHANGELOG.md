@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
+- Corrected the EN/ES README flow: separated initial builder setup from four plain-language daily steps, with optional later audit or update outside daily use. Documentation only, no behavior change.
+
 - Simplified the EN/ES READMEs with three-step repository-local installation and daily-use links; moved detailed guidance into registered bilingual builder guides and removed shell installation blocks. Documentation only, no behavior change.
 
 - Added a preference pointer sentence to the generated EN/ES usage guide, linking the local preference file to the response contract as the single owner of keys and precedence; Spanish links resolve from each emitted location without increasing the guide's line budget. One regression test covers all three output locations; six builder-package projections synchronized.
