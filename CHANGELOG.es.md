@@ -4,6 +4,8 @@
 
 ## 2026-10-10
 
+- Se registro la segunda observacion favorable verificada de idioma de RH-W-0097 despues del PR #292; RH-W-0097 sigue activo. Solo documentacion.
+
 - Se registro la primera observacion favorable verificada de idioma de RH-W-0097 despues del PR #292; se reviso el cierre y RH-W-0097 sigue activo. Solo documentacion.
 
 - Se restauro la paridad de compuertas en `REPO-HARNESS.es.md`: se agregaron las cinco filas faltantes (acuerdos de trabajo, memoria, mapa de documentacion, hoja de ruta, regla de prefijos estables) y se enlazo el historial en espanol, dentro del presupuesto de 700 tokens. Solo documentacion.
