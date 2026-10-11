@@ -4,6 +4,8 @@
 
 ## 2026-10-12
 
+- Se corrigió el resumen desactualizado de RH-W-0014 en la hoja de ruta EN/ES: ahora registra la entrega mediante el issue #343 y el PR #344 en lugar de afirmar que no hubo entrega Git. Solo documentación.
+
 - Se corrigió el conteo desactualizado de registros aplazados (3 → 2) en el estado actual EN/ES; la hoja de ruta ya registra dos registros aplazados. Solo documentación.
 
 ## 2026-10-11
