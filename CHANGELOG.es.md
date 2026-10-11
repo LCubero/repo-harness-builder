@@ -2,13 +2,11 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
-## 2026-10-12
+## 2026-10-11
 
 - Se corrigió el resumen desactualizado de RH-W-0014 en la hoja de ruta EN/ES: ahora registra la entrega mediante el issue #343 y el PR #344 en lugar de afirmar que no hubo entrega Git. Solo documentación.
 
 - Se corrigió el conteo desactualizado de registros aplazados (3 → 2) en el estado actual EN/ES; la hoja de ruta ya registra dos registros aplazados. Solo documentación.
-
-## 2026-10-11
 
 - Se registró la entrega de RH-W-0014 (issue #343, PR #344, `c2f46c6`) en la hoja de ruta y el estado actual EN/ES. Solo documentación.
 
