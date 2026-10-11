@@ -4,6 +4,8 @@
 
 ## 2026-10-11
 
+- Se publico [`v3.1-rc.9`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.9) desde el commit etiquetado `bd0acd718ee3abb380e3afcd4e17547215900d13`, siguiendo la decision explicita del propietario de publicar para pruebas: asset `repo-harness-builder-v3.1-rc.9.zip`, SHA-256 `0e1aa42655d08b87eb70fa2595baa09508a2de5addfe1b79a0a7e7af756d5080` (issue #353).
+
 - Se corrigió el resumen desactualizado de RH-W-0014 en la hoja de ruta EN/ES: ahora registra la entrega mediante el issue #343 y el PR #344 en lugar de afirmar que no hubo entrega Git. Solo documentación.
 
 - Se corrigió el conteo desactualizado de registros aplazados (3 → 2) en el estado actual EN/ES; la hoja de ruta ya registra dos registros aplazados. Solo documentación.

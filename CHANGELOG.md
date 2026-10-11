@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-11
 
+- Published [`v3.1-rc.9`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.9) from tag commit `bd0acd718ee3abb380e3afcd4e17547215900d13`, following the owner's explicit testing-release decision: asset `repo-harness-builder-v3.1-rc.9.zip`, SHA-256 `0e1aa42655d08b87eb70fa2595baa09508a2de5addfe1b79a0a7e7af756d5080` (issue #353).
+
 - Corrected the stale RH-W-0014 roadmap summary in EN/ES: it now records delivery through issue #343 and PR #344 instead of claiming no Git delivery. Documentation only.
 
 - Corrected the stale deferred-record count (3 → 2) in EN/ES current state; the roadmap already records two deferred records. Documentation only.
