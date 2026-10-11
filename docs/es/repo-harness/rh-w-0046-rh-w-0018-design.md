@@ -1,6 +1,6 @@
 # Diseño RH-W-0046 / RH-W-0018 de consentimiento por repositorio
 
-**Estado:** diseño conjunto aprobado por delegación del propietario con implementación RH-W-0046 completada. RH-W-0046 está `completed`; RH-W-0018 permanece `deferred`. Es un diseño para dos unidades con seguimiento independiente; no fusiona sus ciclos de vida, implementaciones, pruebas ni entrega. La porción RH-W-0046 completada conserva el límite histórico de este diseño; la implementación RH-W-0018 sigue separada y sin seleccionar.
+**Estado:** diseño conjunto aprobado por delegación del propietario con implementación RH-W-0046 completada. RH-W-0046 está `completed`; RH-W-0018 se rechazó (`rejected`) el 2026-10-11 sin implementación. Es un diseño para dos unidades con seguimiento independiente; no fusiona sus ciclos de vida, implementaciones, pruebas ni entrega. La porción RH-W-0046 completada conserva el límite histórico de este diseño; RH-W-0018 nunca se implementó.
 
 Revise este diseño contra [RH-W-0046](roadmap.md#rh-w-0046), [RH-W-0018](roadmap.md#rh-w-0018), la [taxonomía de estado local](rh-w-0051-design.md), las [decisiones permanentes](decisions.md) y el [propietario canónico en inglés](../../repo-harness/rh-w-0046-rh-w-0018-design.md).
 

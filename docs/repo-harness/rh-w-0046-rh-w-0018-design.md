@@ -1,6 +1,6 @@
 # RH-W-0046 / RH-W-0018 Repository Consent Design
 
-**Status:** owner-delegated approved joint design with completed RH-W-0046 implementation. RH-W-0046 is `completed`; RH-W-0018 remains `deferred`. This is one design for two independently tracked work items; it does not merge their lifecycles, implementations, tests, or delivery. The completed RH-W-0046 slice preserves this design's historical boundary; RH-W-0018 implementation remains separate and unselected.
+**Status:** owner-delegated approved joint design with completed RH-W-0046 implementation. RH-W-0046 is `completed`; RH-W-0018 was `rejected` on 2026-10-11 without implementation. This is one design for two independently tracked work items; it does not merge their lifecycles, implementations, tests, or delivery. The completed RH-W-0046 slice preserves this design's historical boundary; RH-W-0018 was never implemented.
 
 Review this design against [RH-W-0046](roadmap.md#rh-w-0046), [RH-W-0018](roadmap.md#rh-w-0018), the [local-state taxonomy](rh-w-0051-design.md), [standing decisions](decisions.md), and the [Spanish peer](../es/repo-harness/rh-w-0046-rh-w-0018-design.md).
 
