@@ -3952,7 +3952,7 @@ def human_owned(relative: str, rulebook_path: str) -> bool:
     Structural checking allows informed project-specific evolution. It does not
     classify the file as immutable or exempt it from future content analysis.
     """
-    if relative in (rulebook_path, "REPO-HARNESS.es.md", "CHANGELOG.md", "CHANGELOG.es.md", "README.md", "README.es.md"):
+    if relative in (rulebook_path, "REPO-HARNESS.es.md", "CHANGELOG.md", "CHANGELOG.es.md", "README.md", "README.es.md", "CONTRIBUTING.md", "CONTRIBUTING.es.md"):
         return True
     return relative.startswith("docs/repo-harness/") or relative.startswith("docs/es/repo-harness/") or relative.startswith(".repo-harness/rules/")
 
@@ -4007,6 +4007,43 @@ def product_package_files(root: Path) -> list[str]:
     return sorted(files)
 
 
+def existing_contribution_guide(root: Path) -> Optional[str]:
+    """Recognize a guide by safe file presence only, never provider evidence."""
+    for relative in ("CONTRIBUTING.md", "docs/CONTRIBUTING.md", ".github/CONTRIBUTING.md"):
+        if guarded_target(root, relative).is_file():
+            return relative
+    return None
+
+
+def contribution_guide_report(root: Path) -> dict[str, str]:
+    guide = existing_contribution_guide(root)
+    if not guide:
+        return {}
+    return {"reviewSuggestion": f"Consider reviewing {guide} together with the consumer; it may be outdated or incorrect. No assessment or edit was made."}
+
+
+def contribution_guide_content(spanish: bool = False) -> str:
+    if spanish:
+        return """# Como contribuir
+
+1. Lea primero [REPO-HARNESS.md](REPO-HARNESS.md).
+2. Mantenga los cambios pequenos y enfocados.
+3. Actualice la documentacion y el changelog junto con el cambio.
+4. Ejecute `python .repo-harness/check.py` para comprobar el harness.
+
+Esta guia pertenece a las personas responsables del proyecto; adaptenla a sus necesidades.
+"""
+    return """# Contributing
+
+1. Read [REPO-HARNESS.md](REPO-HARNESS.md) first.
+2. Keep changes small and focused.
+3. Update documentation and the changelog with the change.
+4. Run `python .repo-harness/check.py` to check the harness.
+
+This guide is human-owned; adapt it to the project's needs.
+"""
+
+
 def render_repository(
     root: Path,
     project_name: str,
@@ -4017,6 +4054,7 @@ def render_repository(
     documentation_languages: list[str] | None = None,
     conversation_language: str | None = None,
     ignore_codegraph: bool = True,
+    contribution_guide: bool = False,
 ) -> dict[str, str]:
     """Render a harness and, when present, its reciprocal builder projections."""
     outputs = render(
@@ -4029,9 +4067,28 @@ def render_repository(
         conversation_language,
         ignore_codegraph,
     )
+    guide = existing_contribution_guide(root)
+    languages = normalize_documentation_languages(documentation_languages)
+    if not guide and contribution_guide:
+        guide = "CONTRIBUTING.md"
+        outputs[guide] = contribution_guide_content(languages == ("es",))
+        if "en" in languages and "es" in languages:
+            peer = "CONTRIBUTING.es.md"
+            if not guarded_target(root, peer).exists():
+                outputs[peer] = contribution_guide_content(True) + "\n[Fuente canonica](CONTRIBUTING.md).\n"
+    if guide:
+        row = f"| Proposing changes to this project | [{guide}]({guide}) |"
+        outputs[RULEBOOK_PATH] = outputs[RULEBOOK_PATH].replace(
+            "\n\n## Updating This File", f"\n{row}\n\n## Updating This File", 1)
+        if "REPO-HARNESS.es.md" in outputs:
+            peer = guide.removesuffix(".md") + ".es.md"
+            localized = peer if peer in outputs or guarded_target(root, peer).is_file() else guide
+            outputs["REPO-HARNESS.es.md"] = outputs["REPO-HARNESS.es.md"].replace(
+                "\n## Actualizacion de este archivo",
+                f"\n- Para proponer cambios, consulte [{localized}]({localized}).\n\n## Actualizacion de este archivo", 1)
     # CONTRIBUTING is repository-specific; declare its peer only when both are present.
-    if (guarded_target(root, "CONTRIBUTING.md").is_file()
-            and guarded_target(root, "CONTRIBUTING.es.md").is_file()
+    if (("CONTRIBUTING.md" in outputs or guarded_target(root, "CONTRIBUTING.md").is_file())
+            and ("CONTRIBUTING.es.md" in outputs or guarded_target(root, "CONTRIBUTING.es.md").is_file())
             and "docs/es/repo-harness/roadmap.md" in outputs):
         owner = json.loads(outputs[RELATIONSHIP_OWNER])
         owner["edges"].insert(3, {"source": "CONTRIBUTING.md", "relation": "localized-peer", "target": "CONTRIBUTING.es.md"})
@@ -5644,6 +5701,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         child.add_argument("--standalone", action="store_true", help="generate repository-only continuity without Gentle AI or Engram")
         if name == "render":
             child.add_argument("--license", dest="license_id", help="SPDX identifier for generated skills; defaults to MIT for a new installation")
+            child.add_argument("--contribution-guide", action="store_true", help="Propose a brief human-owned guide only when no recognized guide exists")
             child.add_argument("--report-language", choices=sorted(APPROVAL_DOMAINS), default=DEFAULT_REPORT_LANGUAGE, help="language for builder approval output; defaults to english")
             child.add_argument("--documentation-language", action="append", dest="documentation_languages", choices=sorted(DOCUMENTATION_LANGUAGES), help="human documentation locale; use es alone for Spanish-only, repeat en then es for bilingual, omit for English-only")
             child.add_argument("--conversation-language", choices=sorted(APPROVAL_DOMAINS), help="language the generated sessions converse in; ask the human, defaults to english")
@@ -5724,7 +5782,9 @@ def main(argv: Optional[list[str]] = None) -> int:
             args.documentation_languages,
             args.conversation_language,
             args.ignore_codegraph,
+            args.contribution_guide,
         )
+        contribution_report = contribution_guide_report(root)
         selection = (args.suggestion_choice, args.suggestion_id, args.suggestion_evidence_sha256)
         require(not any(selection) or (all(selection) and (not args.apply or selection[0] in ("accept", "declare-intentional-divergence"))),
                 "suggestion selection requires choice, ID and evidence; only accept or declaration permits --apply")
@@ -5783,7 +5843,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), **({"suggestionSelection": selected_choice} if all(selection) else {}), "gitState": git_state, "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, **contribution_report, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), **({"suggestionSelection": selected_choice} if all(selection) else {}), "gitState": git_state, "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")
@@ -5808,7 +5868,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 except ContractError as error:
                     raise ContractError(FRESH_PREVIEW_REQUIRED) from error
             changed = write_outputs(root, outputs, plan, trusted_skill_license)
-            print(dump_json({"status": "VALIDATED", "changed": changed, "planSha256": digest, "reportLanguage": args.report_language, "plan": plan, "gitState": git_state}), end="")
+            print(dump_json({"status": "VALIDATED", **contribution_report, "changed": changed, "planSha256": digest, "reportLanguage": args.report_language, "plan": plan, "gitState": git_state}), end="")
         return 0
     except (ContractError, OSError, json.JSONDecodeError) as error:
         print(dump_json({"status": "FAILED_CLOSED", "error": str(error)}), end="", file=sys.stderr)

@@ -4,6 +4,8 @@
 
 ## 2026-10-11
 
+- Completada RH-W-0014: descubrir guías de contribución sin inferir proveedor, preservarlas y sugerir revisión conjunta; `--contribution-guide` opcional propone guía breve de propiedad humana y par bilingüe. RED/GREEN enfocado verificado; doce proyecciones sincronizadas; checker `current`, 0 escrituras. Se corrigieron fixtures sensibles a la raíz sin debilitar aserciones; suite completa: 647 pruebas, `OK (skipped=11)`. No se afirma entrega Git.
+
 - Se registraron el diseño CONTRIBUTING opcional aprobado y el plan breve de RH-W-0014, se avanzó a `ready`, se corrigió evidencia previa sin sustento y se reconciliaron proyecciones bilingües; implementar requiere autorización separada.
 
 - Se completó RH-W-0097 por aceptación explícita del propietario, sin afirmar causa raíz conocida ni estabilidad demostrada; se reconciliaron proyecciones bilingües y RH-W-0015 sigue aplazado con un candidato preferido de binario independiente solo después de completar el resto del harness.

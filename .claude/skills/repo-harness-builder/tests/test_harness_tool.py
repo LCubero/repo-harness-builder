@@ -45,6 +45,86 @@ DISCIPLINE = (
 )
 
 
+class ContributionGuideTests(unittest.TestCase):
+    def test_contribution_existing_locations_preserved(self):
+        for path in ("CONTRIBUTING.md", "docs/CONTRIBUTING.md", ".github/CONTRIBUTING.md"):
+            with self.subTest(path=path), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text("Human policy, never replace.\n", encoding="utf-8")
+                outputs = TOOL.render_repository(root, "Example", [], contribution_guide=True)
+                self.assertIn(f"[{path}]({path})", outputs["REPO-HARNESS.md"])
+                self.assertNotIn(path, outputs)
+                self.assertNotIn("CONTRIBUTING.md", outputs)
+                plan = TOOL.plan_changes(root, outputs)
+                changed = TOOL.write_outputs(root, outputs, plan)
+                self.assertNotIn(path, changed)
+                self.assertEqual(target.read_text(encoding="utf-8"), "Human policy, never replace.\n")
+                report = TOOL.contribution_guide_report(root)
+                self.assertIn(path, report["reviewSuggestion"])
+                self.assertIn("together", report["reviewSuggestion"])
+
+    def test_contribution_absent_no_unchanged(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.assertEqual(TOOL.render_repository(root, "Example", []),
+                             TOOL.render_repository(root, "Example", [], contribution_guide=False))
+            self.assertEqual(TOOL.contribution_guide_report(root), {})
+
+    def test_contribution_yes_generic_bilingual_plan(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = TOOL.render_repository(root, "Example", [],
+                                             documentation_languages=["en", "es"], contribution_guide=True)
+            for path in ("CONTRIBUTING.md", "CONTRIBUTING.es.md"):
+                self.assertIn(path, outputs)
+                self.assertTrue(TOOL.human_owned(path, "REPO-HARNESS.md"))
+                self.assertFalse((root / path).exists())
+            guide = outputs["CONTRIBUTING.md"]
+            for phrase in ("REPO-HARNESS.md", "small", "documentation", "changelog", ".repo-harness/check.py"):
+                self.assertIn(phrase, guide)
+            for forbidden in ("GitHub", "issue-first", "branch", "pull request", "review", "label", "template"):
+                self.assertNotIn(forbidden, guide)
+            plan = TOOL.plan_changes(root, outputs)
+            self.assertIn("CONTRIBUTING.md", [item["path"] for item in plan["create"]])
+            self.assertIn("[CONTRIBUTING.md](CONTRIBUTING.md)", outputs["REPO-HARNESS.md"])
+            TOOL.write_outputs(root, outputs, plan)
+            checked = subprocess.run([sys.executable, "-B", str(root / ".repo-harness/check.py")], capture_output=True, text=True)
+            self.assertEqual(checked.returncode, 0, checked.stdout + checked.stderr)
+
+    def test_contribution_cli_digest_and_post_installation_report(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            arguments = ["render", "--root", str(root), "--project-name", "Example", "--runtime", "pi", "--standalone", "--contribution-guide"]
+            with contextlib.redirect_stdout(io.StringIO()) as preview:
+                self.assertEqual(TOOL.main(arguments), 0)
+            report = json.loads(preview.getvalue())
+            self.assertIn("CONTRIBUTING.md", [item["path"] for item in report["create"]])
+            with contextlib.redirect_stdout(io.StringIO()) as applied:
+                self.assertEqual(TOOL.main(arguments + ["--apply", "--approved-plan-sha256", report["planSha256"]]), 0)
+            self.assertIn("CONTRIBUTING.md", json.loads(applied.getvalue())["changed"])
+            (root / "CONTRIBUTING.md").write_text("Owner policy\n", encoding="utf-8")
+            with contextlib.redirect_stdout(io.StringIO()) as preview:
+                self.assertEqual(TOOL.main(arguments), 0)
+            report = json.loads(preview.getvalue())
+            with contextlib.redirect_stdout(io.StringIO()) as applied:
+                self.assertEqual(TOOL.main(arguments + ["--apply", "--approved-plan-sha256", report["planSha256"]]), 0)
+            self.assertIn("together", json.loads(applied.getvalue())["reviewSuggestion"])
+            self.assertEqual((root / "CONTRIBUTING.md").read_text(encoding="utf-8"), "Owner policy\n")
+
+    def test_contribution_existing_bilingual_peer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "docs").mkdir()
+            for name in ("CONTRIBUTING.md", "CONTRIBUTING.es.md"):
+                (root / "docs" / name).write_text("Human guide\n", encoding="utf-8")
+            outputs = TOOL.render_repository(root, "Example", [], documentation_languages=["en", "es"], contribution_guide=True)
+            self.assertIn("docs/CONTRIBUTING.es.md", outputs["REPO-HARNESS.es.md"])
+            self.assertNotIn("CONTRIBUTING.es.md", outputs)
+            self.assertNotIn("docs/CONTRIBUTING.es.md", outputs)
+
+
 class RelationshipSeedTests(unittest.TestCase):
     def test_relationship_seed_bilingual_and_monolingual(self):
         bilingual = TOOL.render("example", [], documentation_languages=["en", "es"])
@@ -9756,11 +9836,11 @@ class GeneratedCheckScriptTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            outputs = render_repository(repository, "repo-harness-builder", list(self.RUNTIMES))
-            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
             shutil.copytree(repository / "skill/repo-harness-builder", root / "skill/repo-harness-builder")
             (root / "command").mkdir()
             shutil.copy2(repository / "command/repo-harness-builder.md", root / "command/repo-harness-builder.md")
+            outputs = render_repository(root, "repo-harness-builder", list(self.RUNTIMES))
+            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
             (root / ".pi/skills/repo-harness-builder/LICENSE").unlink()
             prompt = root / ".pi/prompts/repo-harness-builder.md"
             prompt.write_text(prompt.read_text(encoding="utf-8") + "stale\n", encoding="utf-8")
@@ -11004,6 +11084,8 @@ class SurvivingLegacyReferenceTests(unittest.TestCase):
                 f"`{project_id}-session-stop`\n", encoding="utf-8", newline="\n"
             )
             self.track_everything(root)
+            # The CLI renders against this root, including its human-owned guide.
+            desired = TOOL.render_repository(root, "Acme API", list(self.RUNTIMES), standalone=True)
             expected_digest = TOOL.plan_digest(TOOL.plan_changes(root, desired))
             completed = subprocess.run(
                 [

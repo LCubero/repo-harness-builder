@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-11
 
+- Completed RH-W-0014: discover existing contribution guides without provider inference, preserve them and suggest joint review; optional `--contribution-guide` plans a brief human-owned guide and bilingual peer. Focused RED/GREEN verified; twelve package projections synchronized; checker `current`, 0 writes. Corrected root-aware test fixtures without weakening assertions; full suite: 647 tests, `OK (skipped=11)`. No Git delivery is claimed.
+
 - Recorded the owner-approved optional CONTRIBUTING design and compact action plan for RH-W-0014, advanced it to `ready`, corrected unsupported prior evidence, and reconciled bilingual projections; implementation requires separate authorization.
 
 - Completed RH-W-0097 by explicit owner acceptance, without claiming known root cause or proven stability; reconciled bilingual projections and retained RH-W-0015 as deferred with a preferred standalone-binary candidate only after the rest of the harness is complete.

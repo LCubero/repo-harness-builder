@@ -10,6 +10,16 @@ Resolve integration before planning or approval. Default to integrated mode and 
 
 While auditing, resolve the license the generated skills will carry: read a root `LICENSE` or `LICENSE.md`, then a `license` field in `package.json`, `pyproject.toml`, or `Cargo.toml`. Use the first non-empty, single-line SPDX expression found. Reject values containing characters outside letters, digits, spaces, `.`, `+`, `-`, `:`, and parentheses. Pass the exact accepted value to the renderer, which encodes it as a quoted YAML string rather than interpolating it as a plain scalar. When nothing declares one, read `license-selection.md` and ask the user to choose; do not choose on the project's behalf. If the user declines to choose, generate `UNLICENSED` and say so.
 
+## Optional Contribution Guide
+
+Check before asking: recognize `CONTRIBUTING.md` by safe file presence only in the repository root, `docs/`, then `.github/`; when bilingual, check the `CONTRIBUTING.es.md` peer beside the found guide. Never infer a provider from Git, remotes, URLs, or guide content.
+
+If a guide exists, ask nothing and never modify it. The renderer adds one rulebook decision-gate row pointing to its actual path. After installation, suggest reviewing the guide together with the consumer because it may be outdated or incorrect; do not assess or edit it.
+
+Only when absent, ask one short conversational question in the conversation language and stop: "`CONTRIBUTING.md` explains how to propose changes to this project. Will more people work on this repository? Do you want a brief `CONTRIBUTING.md`?" In Spanish: "`CONTRIBUTING.md` explica como proponer cambios a este proyecto. ¿Trabajaran mas personas en este repositorio? ¿Quiere un `CONTRIBUTING.md` breve?"
+
+No: omit `--contribution-guide`, generating nothing extra. Yes: pass `--contribution-guide` to both render preview and current-digest apply. It proposes an additive, human-owned brief guide (plus Spanish peer when bilingual): read the rulebook first, keep changes small, update documentation and changelog with the change, run the checker. No provider, issue-first, branch, PR, review, label, template, or check policy is imposed. Existing guides and peers remain untouched. These optional artifacts belong to the same content-bound plan, not separate write approval.
+
 ## Decisions
 
 Ask one blocking decision per turn and stop for the answer. Keep questions clear and localized without forcing ceremonial labels on trivial exchanges. Explain the immediate consequence when it is not obvious.
