@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
-- Allow the agent to save preferences only on an explicit human request in the current conversation; inference and automatic persistence remain prohibited.
+- Allow the agent to save preferences only on an explicit human request in the current conversation; inference and automatic persistence remain prohibited. Delivered through PR #328 (issue #327).
 
 - Recorded the second verified favorable RH-W-0097 language observation after PR #292; RH-W-0097 stays active. Documentation only.
 
