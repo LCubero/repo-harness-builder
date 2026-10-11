@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-11
+
+- Se implementaron tres reglas simples de trabajo en la rama local: trabajo pesado acotado con límites de tiempo y paralelismo acotado (RH-W-0070), remediación humana de rutas largas Windows sin cambiar configuración global (RH-W-0092) y corrección por significado de errores repetidos con consentimiento antes de conservar entre sesiones (RH-W-0096). No se afirma entrega mediante PR.
+
 ## 2026-10-10
 
 - Se permite al agente guardar preferencias solo ante una solicitud humana explícita en la conversación actual; la inferencia y la persistencia automática siguen prohibidas. Entregado mediante el PR #328 (issue #327).

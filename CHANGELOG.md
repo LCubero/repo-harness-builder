@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-11
+
+- Implemented three simple working-agreement rules on the local branch: bounded heavy work with time limits and bounded parallelism (RH-W-0070), human-run Windows long-path remediation without global configuration changes (RH-W-0092), and meaning-based correction of repeated mistakes with consent before cross-session preservation (RH-W-0096). No PR delivery is claimed.
+
 ## 2026-10-10
 
 - Allow the agent to save preferences only on an explicit human request in the current conversation; inference and automatic persistence remain prohibited. Delivered through PR #328 (issue #327).

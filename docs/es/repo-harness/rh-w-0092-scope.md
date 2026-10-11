@@ -1,6 +1,6 @@
 # Alcance propuesto RH-W-0092
 
-**Estado: propuesto; el propietario aprobó el alcance bilingüe corregido.** Este artefacto propone solo guía de rutas largas en Windows. La aprobación del alcance, el diseño, la implementación y la entrega permanecen separados, y este documento no se aprueba a sí mismo. El [registro de la hoja de ruta](roadmap.md#rh-w-0092) posee el ciclo de vida.
+**Estado: `completed`; el propietario autorizó la regla simple de trabajo el 2026-10-11 en vez de otro diseño o mecanismo.** El alcance siguiente es histórico; la implementación está en la rama local y la entrega sigue sin autorización separada. El [registro de la hoja de ruta](roadmap.md#rh-w-0092) posee el ciclo de vida.
 
 ## Base verificada
 

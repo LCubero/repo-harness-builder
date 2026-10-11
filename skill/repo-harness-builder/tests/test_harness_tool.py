@@ -5932,6 +5932,15 @@ resume_authority: required
                     f"mixed line endings: {crlf} CRLF and {stray_lf} bare LF",
                 )
 
+    def test_self_hosted_simple_working_rules(self):
+        path = ROOT.parents[1] / ".repo-harness/rules/working-agreements.md"
+        if not path.is_file():
+            self.skipTest("repository rule fixture is outside the portable package")
+        text = path.read_text(encoding="utf-8")
+        for phrase in RuleFileTests.SIMPLE_RULE_PHRASES:
+            self.assertIn(phrase, text)
+        self.assertLess(TOOL.token_proxy(text), TOOL.RULEBOOK_TOKEN_BUDGET)
+
     def test_self_hosted_budgeted_surfaces_stay_under_the_budget_they_declare(self):
         """A budget nobody measures on disk decays. This repository's rulebook went from 699 to 763
         proxy tokens in two days after the runtime refusal was removed, with nothing able to notice."""
@@ -8852,6 +8861,25 @@ class RuleFileTests(unittest.TestCase):
         RESPONSE_RULE,
         ".repo-harness/rules/working-agreements.md",
     )
+
+    SIMPLE_RULE_PHRASES = (
+        "Before heavy work", "set a time limit", "bounded", "warn and ask",
+        "Windows", "path is too long", "git config --global core.longpaths true",
+        "Never change global configuration", "judged by meaning", "stop, find that instruction",
+        "correct course, and continue", "Ask before preserving", "Never assess the person",
+    )
+
+    def test_simple_working_rules_integrated(self):
+        text = TOOL.render("Example", [], standalone=False)[self.SEEDS[2]]
+        for phrase in self.SIMPLE_RULE_PHRASES:
+            self.assertIn(phrase, text)
+        self.assertLess(TOOL.token_proxy(text), TOOL.RULEBOOK_TOKEN_BUDGET)
+
+    def test_simple_working_rules_standalone(self):
+        text = TOOL.render("Example", [], standalone=True)[self.SEEDS[2]]
+        for phrase in self.SIMPLE_RULE_PHRASES:
+            self.assertIn(phrase, text)
+        self.assertLess(TOOL.token_proxy(text), TOOL.RULEBOOK_TOKEN_BUDGET)
 
     def test_rules_directory_is_seeded(self):
         outputs = TOOL.render("Example", [])
