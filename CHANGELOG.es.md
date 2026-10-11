@@ -4,7 +4,7 @@
 
 ## 2026-10-11
 
-- Se implementaron tres reglas simples de trabajo en la rama local: trabajo pesado acotado con límites de tiempo y paralelismo acotado (RH-W-0070), remediación humana de rutas largas Windows sin cambiar configuración global (RH-W-0092) y corrección por significado de errores repetidos con consentimiento antes de conservar entre sesiones (RH-W-0096). No se afirma entrega mediante PR.
+- Se implementaron tres reglas simples de trabajo: trabajo pesado acotado con límites de tiempo y paralelismo acotado (RH-W-0070), remediación humana de rutas largas Windows sin cambiar configuración global (RH-W-0092) y corrección por significado de errores repetidos con consentimiento antes de conservar entre sesiones (RH-W-0096). Entregado mediante el PR #331 (issue #330).
 
 ## 2026-10-10
 

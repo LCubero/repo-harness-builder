@@ -1,6 +1,6 @@
 # RH-W-0092 Proposed Scope
 
-**Status: `completed`; the owner authorized the simple working-agreement rule on 2026-10-11 instead of another design or mechanism.** The scope below is historical; implementation is on the local branch and delivery remains separately unauthorized. The [roadmap record](roadmap.md#rh-w-0092) owns lifecycle.
+**Status: `completed`; the owner authorized the simple working-agreement rule on 2026-10-11 instead of another design or mechanism.** The scope below is historical. Delivered through PR #331 (issue #330). The [roadmap record](roadmap.md#rh-w-0092) owns lifecycle.
 
 ## Verified Baseline
 

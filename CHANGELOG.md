@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-11
 
-- Implemented three simple working-agreement rules on the local branch: bounded heavy work with time limits and bounded parallelism (RH-W-0070), human-run Windows long-path remediation without global configuration changes (RH-W-0092), and meaning-based correction of repeated mistakes with consent before cross-session preservation (RH-W-0096). No PR delivery is claimed.
+- Implemented three simple working-agreement rules: bounded heavy work with time limits and bounded parallelism (RH-W-0070), human-run Windows long-path remediation without global configuration changes (RH-W-0092), and meaning-based correction of repeated mistakes with consent before cross-session preservation (RH-W-0096). Delivered through PR #331 (issue #330).
 
 ## 2026-10-10
 
