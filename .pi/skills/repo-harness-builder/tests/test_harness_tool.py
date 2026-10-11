@@ -110,8 +110,37 @@ class ContributionGuideTests(unittest.TestCase):
             report = json.loads(preview.getvalue())
             with contextlib.redirect_stdout(io.StringIO()) as applied:
                 self.assertEqual(TOOL.main(arguments + ["--apply", "--approved-plan-sha256", report["planSha256"]]), 0)
-            self.assertIn("together", json.loads(applied.getvalue())["reviewSuggestion"])
+            self.assertNotIn("reviewSuggestion", report)
+            self.assertEqual(json.loads(applied.getvalue())["reviewSuggestion"],
+                             "Consider reviewing CONTRIBUTING.md together with the consumer after this installation; it may be outdated or incorrect. No assessment or edit was made.")
             self.assertEqual((root / "CONTRIBUTING.md").read_text(encoding="utf-8"), "Owner policy\n")
+
+    def test_contribution_spanish_report_after_installation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "CONTRIBUTING.md").write_text("Owner policy\n", encoding="utf-8")
+            arguments = ["render", "--root", str(root), "--project-name", "Example", "--runtime", "pi", "--standalone", "--report-language", "espanol"]
+            with contextlib.redirect_stdout(io.StringIO()) as preview:
+                self.assertEqual(TOOL.main(arguments), 0)
+            report = json.loads(preview.getvalue())
+            with contextlib.redirect_stdout(io.StringIO()) as applied:
+                self.assertEqual(TOOL.main(arguments + ["--apply", "--approved-plan-sha256", report["planSha256"]]), 0)
+            self.assertEqual(json.loads(applied.getvalue())["reviewSuggestion"],
+                             "Se sugiere revisar CONTRIBUTING.md junto con el consumidor después de esta instalación; puede estar desactualizado o ser incorrecto. No se evaluó ni se editó.")
+            self.assertNotIn("reviewSuggestion", report)
+
+    def test_contribution_spanish_only_documentation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            arguments = ["render", "--root", str(root), "--project-name", "Example", "--runtime", "pi", "--standalone", "--contribution-guide", "--documentation-language", "es"]
+            with contextlib.redirect_stdout(io.StringIO()) as preview:
+                self.assertEqual(TOOL.main(arguments), 0)
+            report = json.loads(preview.getvalue())
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(TOOL.main(arguments + ["--apply", "--approved-plan-sha256", report["planSha256"]]), 0)
+            self.assertIn("contrib", (root / "CONTRIBUTING.md").read_text(encoding="utf-8").lower())
+            self.assertNotIn("# Contributing", (root / "CONTRIBUTING.md").read_text(encoding="utf-8"))
+            self.assertFalse((root / "CONTRIBUTING.es.md").exists())
 
     def test_contribution_existing_bilingual_peer(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -4015,11 +4015,16 @@ def existing_contribution_guide(root: Path) -> Optional[str]:
     return None
 
 
-def contribution_guide_report(root: Path) -> dict[str, str]:
+def contribution_guide_report(root: Path, report_language: str = DEFAULT_REPORT_LANGUAGE) -> dict[str, str]:
     guide = existing_contribution_guide(root)
     if not guide:
         return {}
-    return {"reviewSuggestion": f"Consider reviewing {guide} together with the consumer; it may be outdated or incorrect. No assessment or edit was made."}
+    suggestion = (
+        f"Se sugiere revisar {guide} junto con el consumidor después de esta instalación; puede estar desactualizado o ser incorrecto. No se evaluó ni se editó."
+        if report_language == "espanol" else
+        f"Consider reviewing {guide} together with the consumer after this installation; it may be outdated or incorrect. No assessment or edit was made."
+    )
+    return {"reviewSuggestion": suggestion}
 
 
 def contribution_guide_content(spanish: bool = False) -> str:
@@ -5784,7 +5789,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             args.ignore_codegraph,
             args.contribution_guide,
         )
-        contribution_report = contribution_guide_report(root)
+        contribution_report = contribution_guide_report(root, args.report_language)
         selection = (args.suggestion_choice, args.suggestion_id, args.suggestion_evidence_sha256)
         require(not any(selection) or (all(selection) and (not args.apply or selection[0] in ("accept", "declare-intentional-divergence"))),
                 "suggestion selection requires choice, ID and evidence; only accept or declaration permits --apply")
@@ -5843,7 +5848,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, **contribution_report, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), **({"suggestionSelection": selected_choice} if all(selection) else {}), "gitState": git_state, "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), **({"suggestionSelection": selected_choice} if all(selection) else {}), "gitState": git_state, "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")
