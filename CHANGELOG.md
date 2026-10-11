@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-11
 
+- Closed RH-W-0063, RH-W-0018, and RH-W-0026 as `rejected` by owner decision, without claiming their optional capabilities implemented; reconciled bilingual lifecycle and portfolio projections. A future need opens a new record, not a reopen.
+
 - Clarified the RH-W-0070 action-plan status paragraph in both roadmaps: earlier issue #294 and `proposed` statements are now explicitly historical. Documentation only.
 
 - Published [`v3.1-rc.8`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.8) from tag commit `f7ebd2b597b56d2d440fdb442bcff39f4d8339c4`, superseding the owner's no-more-RC decision: asset `repo-harness-builder-v3.1-rc.8.zip`, SHA-256 `d1a80d0546415543050e3c7ddd95fdc4d8e4b0aca11826aba4c77b807a6139f3`.

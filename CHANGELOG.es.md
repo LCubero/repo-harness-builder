@@ -4,6 +4,8 @@
 
 ## 2026-10-11
 
+- Se cerraron RH-W-0063, RH-W-0018 y RH-W-0026 como `rejected` por decisión del propietario, sin afirmar implementadas sus capacidades opcionales; se reconciliaron ciclos y proyecciones del portafolio en ambos idiomas. Una necesidad futura abre un registro nuevo, no reabre estos.
+
 - Se aclaró el párrafo de estado del plan de acción de RH-W-0070 en ambas hojas de ruta: las menciones anteriores al issue #294 y al estado `proposed` quedan explícitamente como históricas. Solo documentación.
 
 - Se publico [`v3.1-rc.8`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.8) desde el commit etiquetado `f7ebd2b597b56d2d440fdb442bcff39f4d8339c4`, reemplazando la decision del propietario de no publicar mas RC: asset `repo-harness-builder-v3.1-rc.8.zip`, SHA-256 `d1a80d0546415543050e3c7ddd95fdc4d8e4b0aca11826aba4c77b807a6139f3`.
