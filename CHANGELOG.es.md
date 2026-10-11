@@ -4,6 +4,8 @@
 
 ## 2026-10-11
 
+- Se publico [`v3.1-rc.8`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.8) desde el commit etiquetado `f7ebd2b597b56d2d440fdb442bcff39f4d8339c4`, reemplazando la decision del propietario de no publicar mas RC: asset `repo-harness-builder-v3.1-rc.8.zip`, SHA-256 `d1a80d0546415543050e3c7ddd95fdc4d8e4b0aca11826aba4c77b807a6139f3`.
+
 - Se implementaron tres reglas simples de trabajo: trabajo pesado acotado con límites de tiempo y paralelismo acotado (RH-W-0070), remediación humana de rutas largas Windows sin cambiar configuración global (RH-W-0092) y corrección por significado de errores repetidos con consentimiento antes de conservar entre sesiones (RH-W-0096). Entregado mediante el PR #331 (issue #330).
 
 ## 2026-10-10
