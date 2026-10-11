@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
+- Recorded the second verified favorable RH-W-0097 language observation after PR #292; RH-W-0097 stays active. Documentation only.
+
 - Recorded the first verified favorable RH-W-0097 language observation after PR #292; closure was reviewed and RH-W-0097 stays active. Documentation only.
 
 - Restored decision-gate parity in `REPO-HARNESS.es.md`: added the five missing rows (working agreements, memory, documentation map, roadmap, stable-prefix rule) and linked the Spanish changelog, within the 700-token budget. Documentation only.
