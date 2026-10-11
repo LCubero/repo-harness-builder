@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-11
 
+- Recorded RH-W-0014 delivery (issue #343, PR #344, `c2f46c6`) in EN/ES roadmap and current state. Documentation only.
+
 - RH-W-0014 clarification: existing-guide review suggestions appear only after installation in the selected report language; added Spanish-only contribution-guide coverage.
 
 - Completed RH-W-0014: discover existing contribution guides without provider inference, preserve them and suggest joint review; optional `--contribution-guide` plans a brief human-owned guide and bilingual peer. Focused RED/GREEN verified; twelve package projections synchronized; checker `current`, 0 writes. Corrected root-aware test fixtures without weakening assertions; full suite: 647 tests, `OK (skipped=11)`. No Git delivery is claimed.
