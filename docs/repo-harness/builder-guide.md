@@ -131,7 +131,7 @@ When a second locale is declared, it is generated complete, not partially. Its d
 
 The conversation language is a separate choice. It sets the language the generated session skills speak to you in. It does not add or remove documentation locales.
 
-You can persist the conversation language and ADHD-friendly or plain-language response modes by hand in a [local preference file](usage.md#response-preferences).
+You can persist the conversation language and ADHD-friendly or plain-language response modes by hand in a [local preference file](usage.md#response-preferences), or explicitly ask the agent to save them; it never saves preferences on its own.
 
 Reciprocal README selectors are one atomic integration. If a repository already has `README.md` and the exact executable plan cannot update it, `README.es.md` is classified as blocked rather than created. A one-way selector that claims a bilingual repository is never produced.
 

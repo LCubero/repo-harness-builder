@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-10
 
+- Allow the agent to save preferences only on an explicit human request in the current conversation; inference and automatic persistence remain prohibited.
+
 - Recorded the second verified favorable RH-W-0097 language observation after PR #292; RH-W-0097 stays active. Documentation only.
 
 - Recorded the first verified favorable RH-W-0097 language observation after PR #292; closure was reviewed and RH-W-0097 stays active. Documentation only.

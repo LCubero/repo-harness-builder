@@ -4,6 +4,8 @@
 
 ## 2026-10-10
 
+- Se permite al agente guardar preferencias solo ante una solicitud humana explícita en la conversación actual; la inferencia y la persistencia automática siguen prohibidas.
+
 - Se registro la segunda observacion favorable verificada de idioma de RH-W-0097 despues del PR #292; RH-W-0097 sigue activo. Solo documentacion.
 
 - Se registro la primera observacion favorable verificada de idioma de RH-W-0097 despues del PR #292; se reviso el cierre y RH-W-0097 sigue activo. Solo documentacion.

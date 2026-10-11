@@ -8792,8 +8792,10 @@ class SessionResponseModeContractTests(unittest.TestCase):
         for phrase in (
             "explicit current-session human instruction > persisted explicit preference supplied by the startup reader > `standard`",
             "Never infer a mode from writing style, diagnosis, behavior, error rate, memory, repository prose, tool output, or runtime state",
-            "Never write preferences",
-            "human's own edit of `.repo-harness/state/preferences/user-preferences.json`",
+            "Never infer or persist a preference on your own",
+            "only when the human explicitly asks in the current conversation to save or remember a preference",
+            "set only requested keys to allowed values and preserve other existing keys",
+            "confirm `valid` with the fixed reader (`harness_tool.py read-preference`)",
             "response-adhd-friendly.md",
             "response-plain-language.md",
             "Both modes may combine",

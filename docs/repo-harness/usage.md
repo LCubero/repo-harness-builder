@@ -15,7 +15,7 @@ Use the three generated skills as a loop: recover context, keep durable document
 ## Response Preferences
 <!-- doc-role:response-preferences -->
 
-To persist your choices, create or edit `.repo-harness/state/preferences/user-preferences.json` by hand. This local file is Git-ignored through `/.repo-harness/state/`; no tool writes it. Use a JSON object with at least one of these optional keys:
+To persist your choices, create or edit `.repo-harness/state/preferences/user-preferences.json` by hand, or explicitly ask the agent to save them. The agent never saves preferences on its own. This local file is Git-ignored through `/.repo-harness/state/`. Use a JSON object with at least one of these optional keys:
 
 - `conversationLanguage`: `english` or `espanol`
 - `responseStructure`: `standard` or `adhd-friendly`
