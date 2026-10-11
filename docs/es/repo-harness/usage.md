@@ -16,7 +16,7 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 ## Preferencias de respuesta
 <!-- doc-role:response-preferences -->
 
-Para conservar sus elecciones, cree o edite `.repo-harness/state/preferences/user-preferences.json` a mano. Este archivo local queda ignorado por Git mediante `/.repo-harness/state/`; ninguna herramienta lo escribe. Use un objeto JSON con al menos una de estas claves opcionales:
+Para conservar sus elecciones, cree o edite `.repo-harness/state/preferences/user-preferences.json` a mano, o pida explicitamente al agente que las guarde. El agente nunca guarda preferencias por iniciativa propia. Este archivo local queda ignorado por Git mediante `/.repo-harness/state/`. Use un objeto JSON con al menos una de estas claves opcionales:
 
 - `conversationLanguage`: `english` o `espanol`
 - `responseStructure`: `standard` o `adhd-friendly`

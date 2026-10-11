@@ -861,6 +861,8 @@ Origen: revision de solo lectura del repositorio el 2026-08-25 que encontro docu
 
 ### RH-W-0071
 
+Historial de decisiones: 2026-10-10, el propietario decidio que el agente puede guardar el archivo de preferencias cuando el humano lo pide explicitamente en la conversacion actual; la inferencia y la persistencia automatica siguen rechazadas. Exclusiones actuales: ninguna herramienta CLI de escritura de preferencias ni persistencia automatica.
+
 Estado: `completed` (2026-10-09). Trabajo completado: contrato compartido implementado junto con RH-W-0071/RH-W-0082: lector de tres campos opcionales, transporte de una lectura, precedencia explicita y modulos combinables con proyecciones de los tres runtimes. Trabajo restante: `none`. Evidencia: RED de `PreferenceResponseAxesTests`, 3 pruebas con 9 fallos y 1 error; GREEN 3 aprobadas, mas 3 de contrato y 2 del lector. Coleccion canonica: 637 pruebas. No se infiere cumplimiento del modelo en vivo. Historial de decisiones: 2026-10-09, el propietario autorizo la implementacion conjunta con pruebas primero y su cierre como `completed`. RH-W-0018 sigue aplazada. Siguiente condicion de avance: ninguna; terminal, reabrir solo ante regresion.
 
 Suite completa: `python -m unittest discover -s skill/repo-harness-builder/tests -p "test_*.py"`, 637 pruebas en 336.207s, `OK (skipped=11)`, cero fallos/errores. Checker: `python .repo-harness/check.py`, `current`, salida 0, 0 escrituras. Mantenimiento: digest `16e3b2c0d5edf77f8cb22c54d94643bca44fd23e0393ed82155e145fe1a0c2dc`, 16 archivos aplicados; segundo preview sin acciones. Smoke CLI con fixture simulado: `valid`, ambos modos y conversationLanguage null, salida 0, sin escrituras. Tokens proxy base/ADHD/plain-language: 577/218/148.
