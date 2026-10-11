@@ -50,7 +50,7 @@ Onboarding closes the approved path:
 14. `RH-W-0065` is completed and delivered through PR #253, squash-merged as `7419eae`.
 15. `RH-W-0066` is completed and delivered through PR #255, squash-merged as `e3cb7fc`.
 
-The 3 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052), `RH-W-0014`, and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence.
+`RH-W-0014` is `ready` under the owner-approved design of 2026-10-11; implementation requires separate owner authorization. The 2 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052) and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence.
 
 Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. Completed `RH-W-0050` remains the independent baseline for the architecture bundle.
 
@@ -494,14 +494,23 @@ Execution and final independent verification completed under separate authority.
 
 These records have an unmet advancement condition, so no artifact can be produced without inventing the evidence the condition requires.
 
-- `RH-W-0014` consumer contribution capability, `P3`, `deferred`. It requires a real consumer case and verified provider capabilities, neither of which is recorded.
-- `RH-W-0015` integration forms, `P3`, `deferred`. RH-W-0010, RH-W-0012, and RH-W-0013 are completed antecedents; RH-W-0014 remains deferred. Completion alone does not supply the measured cross-unit evidence this record requires.
+- `RH-W-0015` integration forms, `P3`, `deferred`. RH-W-0010, RH-W-0012, and RH-W-0013 are completed antecedents; RH-W-0014 is ready for separately authorized implementation. Completion alone does not supply the measured cross-unit evidence this record requires.
+
+### Plan 35: RH-W-0014 optional contribution guide implementation
+
+Readiness `plannable now`. Priority `P3`; completed RH-W-0012 and RH-W-0079 retain research safety and provider-neutral boundaries. The [record](#rh-w-0014) owns the approved design.
+
+1. Under separate owner authorization, write RED cases for recognized file presence, bilingual peers, existing-guide preservation, and absent-guide yes/no choices in the conversation language.
+2. Implement the smallest audit/interview and content-bound plan change; preserve existing files and impose no contribution policy.
+3. Verify GREEN and negative cases, synchronize required projections, and reconcile bilingual lifecycle evidence without claiming delivery.
+
+Human decision: explicit authorization to implement this design test-first. This plan authorizes nothing.
 
 ### Plan Coherence Review
 
-Current projection after owner-authorized rejection of RH-W-0063, RH-W-0018, and RH-W-0026 and owner-accepted completion of RH-W-0097 on 2026-10-11: 34 action-plan headings (including historical plans) cover 1 of 3 non-terminal records; terminal plans remain historical evidence. Direct lifecycle-record derivation yields 98 records: 90 completed, 0 proposed, 3 deferred, 5 rejected, and 0 active (90 + 0 + 3 + 5 + 0 = 98; 3 non-terminal records). Historical Plans 4, 6, 7, 10, 27, 28, 31, and 32 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
+Current projection after owner-authorized rejection of RH-W-0063, RH-W-0018, and RH-W-0026 and owner-accepted completion of RH-W-0097 on 2026-10-11: 35 action-plan headings (including historical plans) cover 2 of 3 non-terminal records; terminal plans remain historical evidence. Direct lifecycle-record derivation yields 98 records: 90 completed, 0 proposed, 1 ready, 2 deferred, 5 rejected, and 0 active (90 + 0 + 1 + 2 + 5 + 0 = 98; 3 non-terminal records). Historical Plans 4, 6, 7, 10, 27, 28, 31, and 32 authorize no current implementation or release. No true lifecycle merge is approved, and plan coverage is not implementation readiness.
 
-Lifecycle coverage is complete; action-plan coverage is not. RH-W-0014 and RH-W-0015 have no action plan. Two deferred records appear in the not-plannable list; rejected RH-W-0018 remains only in Historical Plan 6 joint design. The portfolio retains one historical joint-design pair, completed RH-W-0046/rejected RH-W-0018, and two current coordination pairs with separate lifecycles: RH-W-0065/RH-W-0022 and RH-W-0066/RH-W-0044. Historical RH-W-0069/RH-W-0068 coordination ended when RH-W-0069 completed. No merger or new implementation authority follows.
+Lifecycle coverage is complete; action-plan coverage is not. RH-W-0015 has no action plan. One deferred record appears in the not-plannable list; rejected RH-W-0018 remains only in Historical Plan 6 joint design. The portfolio retains one historical joint-design pair, completed RH-W-0046/rejected RH-W-0018, and two current coordination pairs with separate lifecycles: RH-W-0065/RH-W-0022 and RH-W-0066/RH-W-0044. Historical RH-W-0069/RH-W-0068 coordination ended when RH-W-0069 completed. No merger or new implementation authority follows.
 
 Historical consultative recommendation, not a schedule change: RH-W-0074 is completed; reconciling RH-W-0076's residual scope with RH-W-0078's loaded-context research before compression was proposed before RH-W-0078 owner-accepted completion. RH-W-0048 is completed; RH-W-0052 is `deferred` under its [re-entry condition](#rh-w-0052); its archive-only slice remains complete, verified, and delivered. Partial delivery under RH-W-0071 and RH-W-0076 does not complete their full records; RH-W-0072 and RH-W-0086 are completed. RH-W-0070 is approved operating guidance, not a reason to build a monitor; unknown RH-W-0072 discoverability is not a reason to invent preventive work.
 
@@ -2140,18 +2149,18 @@ Current observation: the fixed Pi reader returned a valid persisted `espanol` pr
 | Field | Value |
 |---|---|
 | Origin | Roadmap unit 14; consumer contribution capability wish |
-| Priority | P3: useful future support lacks consumer and provider evidence |
-| Dependencies | RH-W-0012 safe research and real consumer evidence |
-| Status | deferred |
-| Completed work | Capability-aware, provider-neutral discovery scenarios and acceptance criteria are scoped. |
-| Remaining work | Design discovery before proposing contribution files, issues, branches, PRs, templates, labels, or checks. |
-| Additions | none |
-| Exclusions | No provider mutation or implementation. |
-| Deferrals | Deferred until a consumer repository demonstrates the need and available provider capabilities. |
+| Priority | P3: optional brief contribution guidance, not imposed policy. |
+| Dependencies | Completed RH-W-0012 research safety and RH-W-0079 provider-neutral boundary. |
+| Status | ready |
+| Completed work | Owner approved the minimal design on 2026-10-11; no implementation is claimed. |
+| Remaining work | Implement this design test-first under separate owner authorization. |
+| Additions | Check before asking during the existing read-only audit in `skill/repo-harness-builder/references/audit-and-interview.md`: file presence only for `CONTRIBUTING.md` in the root, `docs/`, or `.github/`, and its `CONTRIBUTING.es.md` peer when bilingual; never infer a provider from Git, remotes, or URLs. If present, ask nothing: the plan adds one generated rulebook decision-gate row pointing to the guide and never modifies it; because an existing guide may be outdated or incorrect, the post-installation report suggests reviewing it together with the consumer, without judging or editing it. If absent, ask one short blocking conversational question in the conversation language, like the license question: “`CONTRIBUTING.md` explains how to propose changes to this project. Will more people work on this repository? Do you want a brief `CONTRIBUTING.md`?” No: generate nothing, behavior unchanged. Yes: the content-bound plan proposes a brief generic human-owned guide plus Spanish peer when bilingual: read the rulebook first, keep changes small, update documentation and changelog with the change, run the checker. |
+| Exclusions | No provider detection or mutation, templates, labels, automated checks, or imposed provider, issue-first, branch, PR, review, label, template, or check policy (RH-W-0079). No implementation authorization. |
+| Deferrals | none for design; implementation requires separate authorization. |
 | Rejections | none |
-| Evidence | Current repository has its own contribution workflow but no consumer capability discovery. |
-| Decision history | 2026-08-13: design before implementation remains mandatory. |
-| Next advancement condition | Advance with a real consumer case and verified repository/provider capabilities. |
+| Evidence | Before 2026-10-11 only the high-level boundary in [contribution-workflow-research.md](contribution-workflow-research.md) existed, not scoped scenarios or acceptance criteria. RH-W-0079 already forbids imposing contribution policy (`harness_tool.py:1640–1641`); the builder generated no contribution artifacts. Primary source read on 2026-10-11 via web search: GitHub Docs, [Setting guidelines for repository contributors](https://docs.github.com/articles/setting-guidelines-for-repository-contributors), undated; read 2026-10-11 (review anchor), recognizes root, `docs`, and `.github` locations. Refresh when GitHub changes recognized CONTRIBUTING locations. |
+| Decision history | 2026-08-13: design before implementation remains mandatory. 2026-10-11: owner approved this provider-neutral design, superseding the real-consumer/provider advancement condition and advancing `deferred` to `ready`; implementation remains separately unauthorized. |
+| Next advancement condition | Separate owner authorization to implement the approved design test-first. |
 
 ### RH-W-0015
 | Field | Value |

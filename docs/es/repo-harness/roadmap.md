@@ -48,7 +48,7 @@ Onboarding y el residuo restante cierran la ruta:
 14. `RH-W-0065` está `completed` y entregado mediante el PR #253, fusionado por squash como `7419eae`.
 15. `RH-W-0066` está completada y entregada mediante el PR #255, fusionado por squash como `e3cb7fc`.
 
-Los 3 registros aplazados conservan condiciones explícitas: RH-W-0052 bajo su [condición de reentrada residual](#rh-w-0052) basada en evidencia, `RH-W-0014` y `RH-W-0015`. La decisión del propietario del 2026-10-11 rechaza `RH-W-0018`, `RH-W-0026` y `RH-W-0063`; una necesidad futura abre un registro nuevo, no reabre estos. El diseño conjunto de RH-W-0018 con RH-W-0046 sigue como evidencia histórica.
+`RH-W-0014` está `ready` según el diseño aprobado el 2026-10-11; implementar exige autorización separada. Los 2 registros aplazados conservan condiciones explícitas: RH-W-0052 bajo su [condición de reentrada residual](#rh-w-0052) basada en evidencia y `RH-W-0015`. La decisión del propietario del 2026-10-11 rechaza `RH-W-0018`, `RH-W-0026` y `RH-W-0063`; una necesidad futura abre un registro nuevo, no reabre estos. El diseño conjunto de RH-W-0018 con RH-W-0046 sigue como evidencia histórica.
 
 El diseno conjunto no fusiona las unidades de implementacion. Cada implementacion conserva pruebas, commit, issue, pull request, evidencia de ciclo de vida, limite de rollback y condicion de avance propios. `RH-W-0050`, ya completada, sigue como base independiente del paquete de arquitectura.
 
@@ -372,8 +372,7 @@ Decisión humana resuelta (2026-10-01, delegada por el propietario): implementac
 
 Estos registros tienen una condicion de avance no cumplida, asi que ningun artefacto puede producirse sin inventar la evidencia que esa condicion exige.
 
-- `RH-W-0014` capacidad de contribucion del consumidor, `P3`, `deferred`. Requiere un caso real de consumidor y capacidades de proveedor verificadas, y ninguna esta registrada.
-- `RH-W-0015` formas de integracion, `P3`, `deferred`. RH-W-0010, RH-W-0012 y RH-W-0013 son antecedentes completados; RH-W-0014 sigue aplazado. Completar antecedentes no aporta por si solo la evidencia medida entre unidades que exige este registro.
+- `RH-W-0015` formas de integracion, `P3`, `deferred`. RH-W-0010, RH-W-0012 y RH-W-0013 son antecedentes completados; RH-W-0014 está ready para implementación autorizada por separado. Completar antecedentes no aporta por si solo la evidencia medida entre unidades que exige este registro.
 
 ### Plan histórico 25: limites declarados sin control en superficies de producto RH-W-0076
 
@@ -495,13 +494,23 @@ Preparación `completada con TDD estricto, sincronización de proyecciones, veri
 
 La ejecución y la verificación independiente final se completaron bajo autoridad separada. El registro conserva TDD estricto con 2 + 3 + 2 pruebas RED/GREEN enfocadas; el digest `5077cc89efdd1032a7dcd4e8374eb84bcd8925cee7110e4f8276a536aa5ca59e` que aplicó exactamente ocho contratos de sesión generados; corrección 879, 697 intermedio que perdió dos frases exactas y 697 final que conserva `repository evidence remains authoritative` y `never claim successful continuity`; suite final 554 pruebas/10 omitidas/salida 0; checker `current` con cero escrituras; cuatro pruebas de ciclo/enlaces; SHA exacto de script `b08fa14b2e11e7b050371279c6837165112c07ce40374da38e35d7777dab0ac0` y de pruebas `f1119d226386d5ac3144e34f515fd2038697b0d6fcd19691f56f0de982b94f1b`; ocho contratos generados que coinciden con bytes del render vigente; `.repo-harness/rules/memory.md` humano idéntico a HEAD y no reemplazable; preview sin mutaciones; y `git diff --check` limpio. En esa etapa histórica previa a la entrega, el issue #190 estaba aprobado/abierto en la rama local `feat/rh-w-0091-resume-first`; entonces no se afirmaban commit, push, PR, merge, release ni publicación. La evidencia vigente de entrega se conserva en el registro activo inferior.
 
+### Plan 35: RH-W-0014 implementación de guía de contribución opcional
+
+Preparación `planificable ahora`. Prioridad `P3`; RH-W-0012 y RH-W-0079 completadas conservan seguridad de investigación y neutralidad de proveedor. El [registro](#rh-w-0014) posee el diseño aprobado.
+
+1. Bajo autorización separada, escribir casos RED de presencia en ubicaciones reconocidas, pares bilingües, preservación de guía existente y elecciones sí/no sin guía en el idioma de conversación.
+2. Implementar el cambio mínimo de auditoría/entrevista y plan ligado al contenido; preservar archivos existentes sin imponer política de contribución.
+3. Verificar GREEN y casos negativos, sincronizar proyecciones requeridas y reconciliar evidencia bilingüe sin afirmar entrega.
+
+Decisión humana: autorización explícita para implementar este diseño con pruebas primero. El plan no autoriza nada.
+
 ### Revision de coherencia de los planes
 
-Proyección actual tras rechazar RH-W-0063, RH-W-0018 y RH-W-0026 y completar RH-W-0097 por aceptación del propietario el 2026-10-11: 34 encabezados de planes de acción (incluidos históricos) cubren 1 de los 3 registros no terminales; los planes terminales siguen como evidencia histórica. La derivación directa arroja 98 registros de ciclo: 90 completados, 0 propuestos, 3 aplazados, 5 rechazados y 0 activos (90 + 0 + 3 + 5 + 0 = 98; 3 registros no terminales). Los Planes históricos 4, 6, 7, 10, 27, 28, 31 y 32 no autorizan implementación ni release vigente. No se aprueba fusión de ciclos y cobertura de planes no significa preparación para implementar.
+Proyección actual tras rechazar RH-W-0063, RH-W-0018 y RH-W-0026 y completar RH-W-0097 por aceptación del propietario el 2026-10-11: 35 encabezados de planes de acción (incluidos históricos) cubren 2 de los 3 registros no terminales; los planes terminales siguen como evidencia histórica. La derivación directa arroja 98 registros de ciclo: 90 completados, 0 propuestos, 1 listo, 2 aplazados, 5 rechazados y 0 activos (90 + 0 + 1 + 2 + 5 + 0 = 98; 3 registros no terminales). Los Planes históricos 4, 6, 7, 10, 27, 28, 31 y 32 no autorizan implementación ni release vigente. No se aprueba fusión de ciclos y cobertura de planes no significa preparación para implementar.
 
 Recomendación consultiva histórica, no cambio de calendario: RH-W-0074 está completada; se propuso reconciliar el residuo RH-W-0076 con la investigación de contexto RH-W-0078 antes de comprimir, antes de la finalización de RH-W-0078 aceptada por el propietario. RH-W-0048 está completada; RH-W-0052 está `deferred` según su [condición de reentrada](#rh-w-0052); su porción solo de archivo sigue completa, verificada y entregada. RH-W-0086 esta completada. Las entregas parciales de RH-W-0071 y RH-W-0076 no completan sus registros; RH-W-0072 esta completada. RH-W-0070 es guía operativa aprobada, no motivo para construir un monitor; RH-W-0072 está completada sin deriva medida, y cualquier deriva nueva es trabajo nuevo, no reapertura.
 
-La cobertura de ciclo de vida es completa; la de planes no. RH-W-0014 y RH-W-0015 no tienen plan de acción. Dos aplazados aparecen en la lista no planificable; RH-W-0018 rechazada permanece solo en el diseño conjunto del Plan histórico 6. Se conserva el par histórico de diseño RH-W-0046 completada/RH-W-0018 rechazada y dos pares de coordinación vigentes, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. La coordinación histórica RH-W-0069/RH-W-0068 terminó al completarse RH-W-0069. No se aprueba fusión ni implementación nueva.
+La cobertura de ciclo de vida es completa; la de planes no. RH-W-0015 no tiene plan de acción. Un aplazado aparece en la lista no planificable; RH-W-0018 rechazada permanece solo en el diseño conjunto del Plan histórico 6. Se conserva el par histórico de diseño RH-W-0046 completada/RH-W-0018 rechazada y dos pares de coordinación vigentes, RH-W-0065/RH-W-0022 y RH-W-0066/RH-W-0044, con ciclos separados. La coordinación histórica RH-W-0069/RH-W-0068 terminó al completarse RH-W-0069. No se aprueba fusión ni implementación nueva.
 
 Aqui se declaran catorce relaciones entre planes para que ninguno suponga en silencio el resultado de otro. Ninguna fusiona un ciclo de vida ni cambia estado.
 
@@ -1230,7 +1239,15 @@ Origen: unidad 13, presupuesto de contexto. Prioridad: `P2`, los controles actua
 
 ### RH-W-0014
 
-Origen: unidad 14, contribucion en consumidores. Prioridad: `P3`, falta evidencia de consumidores y proveedor. Dependencia: RH-W-0012. Estado: `deferred`. Trabajo restante: disenar el descubrimiento antes de proponer archivos de contribucion, issues, ramas, PRs, plantillas, etiquetas o comprobaciones. Completado: escenarios neutrales y conscientes de capacidades. Restante: disenar descubrimiento antes de proponer archivos, issues, ramas, PR, templates, labels o checks. Adiciones: ninguna. Exclusion: sin mutacion ni implementacion del proveedor. Aplazamiento: hasta un consumidor real. Rechazos: ninguno. Evidencia: este repo tiene flujo propio, no descubrimiento. Historial: disenar antes de implementar. Siguiente condicion: caso real y capacidades verificadas.
+Origen: unidad 14, contribución en consumidores. Prioridad: `P3`, guía breve opcional, no política impuesta. Dependencias: RH-W-0012 y RH-W-0079 completadas, seguridad de investigación y neutralidad de proveedor. Estado: `ready`. Trabajo completado: diseño mínimo aprobado por el propietario el 2026-10-11; no se afirma implementación. Trabajo restante: implementar este diseño con pruebas primero bajo autorización separada.
+
+Adiciones: comprobar antes de preguntar durante la auditoría existente de solo lectura en `skill/repo-harness-builder/references/audit-and-interview.md`: solo presencia de `CONTRIBUTING.md` en la raíz, `docs/` o `.github/`, y su par `CONTRIBUTING.es.md` cuando sea bilingüe; nunca inferir proveedor de Git, remotos o URLs. Si existe, no preguntar: el plan agrega una fila de compuerta al rulebook generado que apunta a la guía, sin modificarla; como una guía existente puede estar desactualizada o ser incorrecta, el informe posterior a la instalación sugiere revisarla junto con el consumidor, sin juzgarla ni editarla. Si no existe, hacer una pregunta conversacional breve y bloqueante en el idioma de conversación, igual que la licencia: “`CONTRIBUTING.md` explica cómo proponer cambios en el proyecto. ¿Más personas trabajarán en este repositorio? ¿Quieres que cree un `CONTRIBUTING.md` breve?” No: no generar nada, comportamiento sin cambios. Sí: el plan ligado al contenido propone una guía genérica breve de propiedad humana y par español cuando sea bilingüe: leer primero el rulebook, mantener cambios pequeños, actualizar documentación y changelog con el cambio, ejecutar el checker.
+
+Exclusiones: detección o mutación del proveedor, plantillas, etiquetas, checks automatizados y políticas impuestas de proveedor, issue primero, rama, PR, revisión, etiqueta, plantilla o check (RH-W-0079). Sin autorización de implementación. Aplazamiento: ninguno para diseño; implementación requiere autorización separada. Rechazos: ninguno.
+
+Evidencia: antes del 2026-10-11 solo existía el límite general de [contribution-workflow-research.md](contribution-workflow-research.md), no escenarios ni criterios de aceptación acotados. RH-W-0079 ya prohíbe imponer política de contribución (`harness_tool.py:1640–1641`); el builder no generaba artefactos de contribución. Fuente primaria leída el 2026-10-11 mediante búsqueda web: GitHub Docs, [Setting guidelines for repository contributors](https://docs.github.com/articles/setting-guidelines-for-repository-contributors), sin fecha; leída el 2026-10-11 (ancla de revisión), reconoce raíz, `docs` y `.github`. Actualizar cuando GitHub cambie las ubicaciones reconocidas de CONTRIBUTING.
+
+Historial: 2026-08-13, diseñar antes de implementar sigue obligatorio. 2026-10-11, el propietario aprobó este diseño neutral, sustituyó la condición de consumidor real/capacidades de proveedor y avanzó `deferred` a `ready`; implementar sigue sin autorización separada. Siguiente condición: autorización separada del propietario para implementar el diseño aprobado con pruebas primero.
 
 ### RH-W-0015
 

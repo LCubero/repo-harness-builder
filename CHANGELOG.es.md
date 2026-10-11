@@ -4,6 +4,8 @@
 
 ## 2026-10-11
 
+- Se registraron el diseño CONTRIBUTING opcional aprobado y el plan breve de RH-W-0014, se avanzó a `ready`, se corrigió evidencia previa sin sustento y se reconciliaron proyecciones bilingües; implementar requiere autorización separada.
+
 - Se completó RH-W-0097 por aceptación explícita del propietario, sin afirmar causa raíz conocida ni estabilidad demostrada; se reconciliaron proyecciones bilingües y RH-W-0015 sigue aplazado con un candidato preferido de binario independiente solo después de completar el resto del harness.
 
 - Se corrigió el estado desactualizado del diseño conjunto RH-W-0046/RH-W-0018 en las decisiones EN/ES y en la cabecera del diseño: RH-W-0046 implementó su límite de fetch y RH-W-0018 se rechazó sin implementación. Solo documentación.

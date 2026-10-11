@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-11
 
+- Recorded the owner-approved optional CONTRIBUTING design and compact action plan for RH-W-0014, advanced it to `ready`, corrected unsupported prior evidence, and reconciled bilingual projections; implementation requires separate authorization.
+
 - Completed RH-W-0097 by explicit owner acceptance, without claiming known root cause or proven stability; reconciled bilingual projections and retained RH-W-0015 as deferred with a preferred standalone-binary candidate only after the rest of the harness is complete.
 
 - Corrected the stale RH-W-0046/RH-W-0018 joint-design status in EN/ES decisions and the design header: RH-W-0046 implemented its fetch boundary and RH-W-0018 was rejected without implementation. Documentation only.
