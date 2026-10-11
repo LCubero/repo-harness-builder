@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-11
 
+- Corrected the stale RH-W-0046/RH-W-0018 joint-design status in EN/ES decisions and the design header: RH-W-0046 implemented its fetch boundary and RH-W-0018 was rejected without implementation. Documentation only.
+
 - Closed RH-W-0063, RH-W-0018, and RH-W-0026 as `rejected` by owner decision, without claiming their optional capabilities implemented; reconciled bilingual lifecycle and portfolio projections. A future need opens a new record, not a reopen.
 
 - Clarified the RH-W-0070 action-plan status paragraph in both roadmaps: earlier issue #294 and `proposed` statements are now explicitly historical. Documentation only.
