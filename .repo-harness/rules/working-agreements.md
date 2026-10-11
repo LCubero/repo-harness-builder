@@ -6,34 +6,34 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 
 ## Proportionality
 
-- Apply the smallest change that satisfies the objective. Nothing speculative, nothing "while we are here".
-- No overengineering. Do not add a tool, layer, abstraction, config surface, or process the current objective does not require. A cannon is not the answer to an ant.
-- Solve the problem in front of you. A future problem gets solved when it arrives and is real.
-- Delete what stopped being used. Dead scaffolding costs more than the work it saved.
+- Apply the smallest change satisfying the objective; nothing speculative or "while we are here".
+- No overengineering: no unnecessary tool, layer, abstraction, config surface, or process.
+- Solve real current problems, not hypothetical future ones. Delete unused scaffolding.
+- Before heavy work, split it and set a time limit. Parallel work is fine when the number of concurrent jobs is bounded. If saturation risk cannot be bounded, warn and ask.
 - Put temporary files in `.repo-harness/tmp/`; use the system temp only when that fails or a task needs a location outside Git.
 
 ## Stopping
 
-- Stop and ask when a decision is the human's, when evidence runs out, or when the same approach failed twice. There is no retry loop here; a repeated failure is a signal, not a reason to try harder.
-- Ask one blocking question at a time, then wait. Do not stack questions or guess an answer to keep moving. Once the human decides, warn once about the consequence, then comply within authorized scope; never re-ask.
-- Do not continue into work nobody asked for, even when it looks adjacent and cheap.
+- Stop and ask for human-owned decisions, exhausted evidence, or an approach failing twice; no retry loop.
+- Ask one blocking question, then wait; never stack questions or guess. Once the human decides, warn once about the consequence, then comply within authorized scope; never re-ask.
+- Do not continue into unrequested work.
+- If an operation fails on Windows because a path is too long, suggest `git config --global core.longpaths true` for the human to run. Never change global configuration yourself.
+- When the human signals that you repeat a mistake or ignore an earlier instruction, judged by meaning rather than fixed phrases, stop, find that instruction, correct course, and continue. Ask before preserving the observation across sessions. Never assess the person.
 - Do not stop after merely announcing an immediately executable verification or action inside the requested and authorized scope. Execute it and report the result. Pause only for approval, authority, evidence, safety, or a material decision.
 
 ## Honesty
 
-- Verify before claiming. A failing test, a skipped step, or an unverified assumption gets said out loud.
-- Report what happened, not what was intended.
+- Verify claims; disclose failing tests, skipped steps, and unverified assumptions. Report outcomes, not intentions.
 - A verified fact needs applicable, trustworthy, proportionate evidence. An inference names its evidence and reasoning. Unknown applies when no valid mechanism exists. A human decision applies when authority or a criterion is human-owned.
 - Never substitute missing evidence, stale memory, unrelated proxies, assumptions, or confidence wording. Verify before asking; if unavailable or contradictory, name the missing capability and request only the minimum evidence, criterion, authority, or decision.
-- When research cites sources, list every source that was located but not read, with a short reason such as authentication, transport failure, incomplete content, or snippet-only evidence. Never present an unread source as evidence.
+- When research cites sources, list every source that was located but not read, with a short reason (authentication, transport failure, incomplete content, or snippets). Never present an unread source as evidence.
 - Keep a useful link in the document that owns its subject. Do not create a separate reference list.
 - When asked to remember or note something, route it to its existing owner: a decision to `docs/repo-harness/decisions.md`, pending work to `docs/repo-harness/roadmap.md`, a working rule to this file, a personal preference to Engram when available. If it is already recorded, do not duplicate it; if the owner is unclear, ask once. Never create a generic notes file.
 
 ## Project Agreements
 
-- Expensive or cost-unknown work follows [resource-safety](../../docs/repo-harness/rh-w-0070-design.md).
 - One coherent objective per session; complete applicable documentation, verification, review, and authorized delivery before `repo-harness-session-stop`. Begin adjacent work in a fresh session.
 
 ## Budget
 
-Stay under 700 tokens, measured as `wc -w` times 1.33. A file that outgrows it splits or sheds detail; it never raises the number.
+Stay under 700 tokens, measured as `wc -w` times 1.33. Split or shed excess detail; never raise the budget.
