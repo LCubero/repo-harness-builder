@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-11
 
+- Clarified the RH-W-0070 action-plan status paragraph in both roadmaps: earlier issue #294 and `proposed` statements are now explicitly historical. Documentation only.
+
 - Published [`v3.1-rc.8`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.8) from tag commit `f7ebd2b597b56d2d440fdb442bcff39f4d8339c4`, superseding the owner's no-more-RC decision: asset `repo-harness-builder-v3.1-rc.8.zip`, SHA-256 `d1a80d0546415543050e3c7ddd95fdc4d8e4b0aca11826aba4c77b807a6139f3`.
 
 - Implemented three simple working-agreement rules: bounded heavy work with time limits and bounded parallelism (RH-W-0070), human-run Windows long-path remediation without global configuration changes (RH-W-0092), and meaning-based correction of repeated mistakes with consent before cross-session preservation (RH-W-0096). Delivered through PR #331 (issue #330).

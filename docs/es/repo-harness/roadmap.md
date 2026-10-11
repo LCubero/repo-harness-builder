@@ -288,7 +288,7 @@ Decision humana: los defectos de disposicion del changelog, politica Git y activ
 
 ### Plan 19: limites de seguridad de recursos para agentes RH-W-0070
 
-Preparacion `completed`. La regla simple autorizada el 2026-10-11 sustituye los pasos historicos siguientes; no autorizan trabajo adicional. Prioridad `P1`. El [diseno](rh-w-0070-design.md) bilingue aprobado define la politica preventiva. La porcion documental autorizada por el propietario bajo el issue #294 agrego un enlace local en working-agreements, entregado a `main` mediante [PR #295](https://github.com/LCubero/repo-harness-builder/pull/295); el issue #294 sigue OPEN (`Refs #294`) y RH-W-0070 sigue `proposed`. No se autoriza ni se requiere actualmente plan de implementacion o implementacion de producto.
+Preparación `completed`. La regla simple autorizada el 2026-10-11 sustituye los pasos históricos siguientes, que no autorizan trabajo adicional. Prioridad `P1`. El [diseño](rh-w-0070-design.md) bilingüe aprobado define la política preventiva. Históricamente, la porción documental autorizada por el propietario bajo el issue #294 agregó un enlace local en working-agreements, entregado a `main` mediante [PR #295](https://github.com/LCubero/repo-harness-builder/pull/295); en ese momento el issue #294 quedó abierto (`Refs #294`) y RH-W-0070 seguía `proposed`. No se autoriza ni se requiere un plan de implementación ni implementación de producto adicional.
 
 1. Inventariar acciones potencialmente costosas, incluidos scripts, herramientas, pruebas, builds, cargas de modelos, revisores, verificacion delegada y trabajo similar de subprocess o administrado por proveedores, sobre CPU, GPU y RAM.
 2. Tratar 90 por ciento de utilizacion como techo operativo a considerar al disenar o ejecutar trabajo, no como promesa de medicion continua precisa ni de control duro universal.
@@ -297,7 +297,7 @@ Preparacion `completed`. La regla simple autorizada el 2026-10-11 sustituye los 
 5. Mantener intactos los procesos ajenos de la persona usuaria. Nunca terminarlos ni limitarlos, y no disenar daemon de monitoreo, telemetria, monitor de memoria, vigilante de GPU, planificador, terminador de procesos ni mecanismo universal de control.
 6. Nombrar pruebas RED enfocadas y evidencia de verificacion liviana y acotada por clausula preventiva, incluido el reporte honesto de limitaciones cuando la accion disponible no permita acotar el riesgo de saturacion.
 
-Decision humana: cualquier plan de implementacion o implementacion futura exige evidencia separada de que la documentacion y la politica operativa no bastan, mas autorizacion explicita. La medicion continua precisa y el control duro universal quedan fuera.
+Decisión humana histórica (reemplazada por la autorización de la regla simple del 2026-10-11): cualquier plan de implementación o implementación futura exigía evidencia separada de que la documentacion y la politica operativa no bastan, mas autorizacion explicita. La medicion continua precisa y el control duro universal quedan fuera.
 
 ### Plan 20: implementacion del modo de respuesta ADHD-friendly RH-W-0071
 
