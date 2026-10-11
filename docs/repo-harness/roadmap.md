@@ -50,7 +50,7 @@ Onboarding closes the approved path:
 14. `RH-W-0065` is completed and delivered through PR #253, squash-merged as `7419eae`.
 15. `RH-W-0066` is completed and delivered through PR #255, squash-merged as `e3cb7fc`.
 
-`RH-W-0014` is `completed` after owner-authorized test-first implementation on 2026-10-11; no Git delivery is claimed. The 2 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052) and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence.
+`RH-W-0014` is `completed` after owner-authorized test-first implementation on 2026-10-11 and delivered through issue #343 and PR #344 (`c2f46c6`). The 2 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052) and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence.
 
 Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. Completed `RH-W-0050` remains the independent baseline for the architecture bundle.
 

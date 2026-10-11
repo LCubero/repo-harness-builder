@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-12
 
+- Corrected the stale RH-W-0014 roadmap summary in EN/ES: it now records delivery through issue #343 and PR #344 instead of claiming no Git delivery. Documentation only.
+
 - Corrected the stale deferred-record count (3 → 2) in EN/ES current state; the roadmap already records two deferred records. Documentation only.
 
 ## 2026-10-11

@@ -48,7 +48,7 @@ Onboarding y el residuo restante cierran la ruta:
 14. `RH-W-0065` está `completed` y entregado mediante el PR #253, fusionado por squash como `7419eae`.
 15. `RH-W-0066` está completada y entregada mediante el PR #255, fusionado por squash como `e3cb7fc`.
 
-`RH-W-0014` está `completed` tras implementar con pruebas primero bajo autorización separada el 2026-10-11; no se afirma entrega Git. Los 2 registros aplazados conservan condiciones explícitas: RH-W-0052 bajo su [condición de reentrada residual](#rh-w-0052) basada en evidencia y `RH-W-0015`. La decisión del propietario del 2026-10-11 rechaza `RH-W-0018`, `RH-W-0026` y `RH-W-0063`; una necesidad futura abre un registro nuevo, no reabre estos. El diseño conjunto de RH-W-0018 con RH-W-0046 sigue como evidencia histórica.
+`RH-W-0014` está `completed` tras implementar con pruebas primero bajo autorización separada el 2026-10-11, y se entregó mediante el issue #343 y el PR #344 (`c2f46c6`). Los 2 registros aplazados conservan condiciones explícitas: RH-W-0052 bajo su [condición de reentrada residual](#rh-w-0052) basada en evidencia y `RH-W-0015`. La decisión del propietario del 2026-10-11 rechaza `RH-W-0018`, `RH-W-0026` y `RH-W-0063`; una necesidad futura abre un registro nuevo, no reabre estos. El diseño conjunto de RH-W-0018 con RH-W-0046 sigue como evidencia histórica.
 
 El diseno conjunto no fusiona las unidades de implementacion. Cada implementacion conserva pruebas, commit, issue, pull request, evidencia de ciclo de vida, limite de rollback y condicion de avance propios. `RH-W-0050`, ya completada, sigue como base independiente del paquete de arquitectura.
 
