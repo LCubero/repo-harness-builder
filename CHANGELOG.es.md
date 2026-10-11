@@ -4,6 +4,8 @@
 
 ## 2026-10-11
 
+- Se registró la entrega de RH-W-0014 (issue #343, PR #344, `c2f46c6`) en la hoja de ruta y el estado actual EN/ES. Solo documentación.
+
 - Aclaración RH-W-0014: la sugerencia de revisar guías existentes aparece solo después de instalar y en el idioma del informe seleccionado; se agregó cobertura de la guía de contribución solo en español.
 
 - Completada RH-W-0014: descubrir guías de contribución sin inferir proveedor, preservarlas y sugerir revisión conjunta; `--contribution-guide` opcional propone guía breve de propiedad humana y par bilingüe. RED/GREEN enfocado verificado; doce proyecciones sincronizadas; checker `current`, 0 escrituras. Se corrigieron fixtures sensibles a la raíz sin debilitar aserciones; suite completa: 647 pruebas, `OK (skipped=11)`. No se afirma entrega Git.
