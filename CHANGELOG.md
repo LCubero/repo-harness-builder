@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-12
+
+- Corrected the stale deferred-record count (3 → 2) in EN/ES current state; the roadmap already records two deferred records. Documentation only.
+
 ## 2026-10-11
 
 - Recorded RH-W-0014 delivery (issue #343, PR #344, `c2f46c6`) in EN/ES roadmap and current state. Documentation only.
