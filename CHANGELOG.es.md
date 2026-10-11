@@ -4,6 +4,8 @@
 
 ## 2026-10-11
 
+- Se completó RH-W-0097 por aceptación explícita del propietario, sin afirmar causa raíz conocida ni estabilidad demostrada; se reconciliaron proyecciones bilingües y RH-W-0015 sigue aplazado con un candidato preferido de binario independiente solo después de completar el resto del harness.
+
 - Se corrigió el estado desactualizado del diseño conjunto RH-W-0046/RH-W-0018 en las decisiones EN/ES y en la cabecera del diseño: RH-W-0046 implementó su límite de fetch y RH-W-0018 se rechazó sin implementación. Solo documentación.
 
 - Se cerraron RH-W-0063, RH-W-0018 y RH-W-0026 como `rejected` por decisión del propietario, sin afirmar implementadas sus capacidades opcionales; se reconciliaron ciclos y proyecciones del portafolio en ambos idiomas. Una necesidad futura abre un registro nuevo, no reabre estos.
