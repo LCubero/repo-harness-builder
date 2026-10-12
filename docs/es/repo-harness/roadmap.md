@@ -554,7 +554,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Exclusiones | Sin editar líneas del consumidor; checker renderizado y manifiesto sin cambios. |
 | Aplazamientos | ninguno |
 | Rechazos | No bloquear líneas inofensivas que las reglas LF exactas prevalecientes anulan. |
-| Evidencia | TDD comunicado por el propietario: RED con 7 fallos en 3 pruebas, incluidos 5 subcasos no LF; GREEN con 9 pruebas focalizadas de atributos aprobadas. Comprobaciones limpias de Git (`GIT_ATTR_NOSYSTEM=1`, `core.attributesFile` vacío) muestran `eol: lf` para `.repo-harness/check.py` con `* text=auto` antes o después de la regla exacta. Los diffs de código y pruebas confirman evaluación ordenada, reparación solo por adición y explicaciones del checker. |
+| Evidencia | Pruebas primero: RED con 7 fallos en 3 pruebas, incluidos 5 subcasos no LF; GREEN con 9 pruebas focalizadas de atributos aprobadas; suite completa con 651 pruebas aprobadas (11 omitidas). Comprobaciones limpias de Git (`GIT_ATTR_NOSYSTEM=1`, `core.attributesFile` vacío) muestran `eol: lf` para `.repo-harness/check.py` con `* text=auto` antes o después de la regla exacta. Los diffs de código y pruebas confirman evaluación ordenada, reparación solo por adición y explicaciones del checker. |
 | Historial de decisiones | 2026-10-11: el propietario aprobó no bloquear cuando las rutas protegidas terminan en LF; si una línea posterior las perjudica, sugerir volver a agregar las reglas al final con una razón breve para aceptación del consumidor. |
 | Siguiente condición de avance | ninguna (terminal); reabrir si se acepta una configuración que realmente deje una ruta protegida sin LF, o si una inofensiva bloquea. |
 
