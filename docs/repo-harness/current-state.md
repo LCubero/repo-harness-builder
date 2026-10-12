@@ -189,6 +189,8 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
+**Current next step (2026-10-11):** `v3.1-rc.11` is the published testing candidate and its consumer install and update tests passed. The recommended next unit is proposed `RH-W-0104` (update-flow friction), then `RH-W-0103` (Spanish diacritics and the term `skills`); each needs owner prioritization. The superseded local and remote branch `fix/gitattributes-text-auto-order` awaits an owner deletion decision. The paragraphs below are history.
+
 Six units were delivered on 2026-08-27, each through its own issue and pull request with no direct commit to `main`: PRs #115, #117, #119, #121, #123, and #125. The next three documentation corrections arrived through PRs #126, #127, and #128. On 2026-08-28, PR #130 delivered the RH-W-0079 documentation contribution and closed issue #129. PRs #134, #138, #142, #146, and #148 then delivered all five RH-W-0079 slices. Live branch and revision evidence belongs to Git and session-start and is not pinned in this current-state projection. The previously recorded `1df5f6e60a3fa095bd011ea32921c70218865fa5` was formerly current and is retained only as historical context. The still-earlier `fac022c6bd070079fa0aaa54a19b5e6757172059` had been retained here as a present-tense claim after it stopped being true; it was verified as 15 commits behind `feb8db4d3fb5f41529166dd110885587f2e0c7af` during the earlier correction.
 
 The RH-W-0071/RH-W-0082 shared preference contract is completed and verified. RH-W-0018 is rejected; any actual release remains separate.
