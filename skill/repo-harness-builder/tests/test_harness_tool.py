@@ -772,7 +772,7 @@ class ApprovalUxTests(unittest.TestCase):
     def test_invalid_answers_are_rejected_with_the_localized_error(self):
         cases = {
             "english": (("approve", "Approve", "yes", "APPROVE please", "APROBAR", "DENEGAR"), "Invalid answer. Write exactly APPROVE or DENY in uppercase."),
-            "espanol": (("aprobar", "Aprobar", "si", "APROBAR por favor", "APPROVE", "DENY"), "Respuesta no valida. Escriba exactamente APROBAR o DENEGAR en mayusculas."),
+            "espanol": (("aprobar", "Aprobar", "si", "APROBAR por favor", "APPROVE", "DENY"), "Respuesta no válida. Escriba exactamente APROBAR o DENEGAR en mayúsculas."),
         }
         for language, (answers, error) in cases.items():
             for answer in answers:
@@ -781,7 +781,7 @@ class ApprovalUxTests(unittest.TestCase):
 
     def test_prompts_are_fully_localized(self):
         self.assertEqual(TOOL.approval_prompt("english"), "Builder content-bound approval\nAnswers are case-sensitive and must be written exactly in uppercase.\nAllowed answers:\n- APPROVE\n- DENY\nDo you approve this exact plan?")
-        self.assertEqual(TOOL.approval_prompt("espanol"), "Aprobacion de contenido del constructor\nLas respuestas distinguen mayusculas y minusculas y deben escribirse exactamente en mayusculas.\nRespuestas permitidas:\n- APROBAR\n- DENEGAR\nAprueba este plan exacto?")
+        self.assertEqual(TOOL.approval_prompt("espanol"), "Aprobación de contenido del constructor\nLas respuestas distinguen mayúsculas y minúsculas y deben escribirse exactamente en mayúsculas.\nRespuestas permitidas:\n- APROBAR\n- DENEGAR\n¿Aprueba este plan exacto?")
 
     def test_preview_exposes_the_localized_approval_domain(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -1257,9 +1257,9 @@ class ProductWorkflowTests(unittest.TestCase):
     def test_generated_spanish_docs_are_complete_localized_baselines(self):
         outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
         expectations = {
-            "docs/es/repo-harness/usage.md": (("Use las tres habilidades generadas", "Limites de aprobacion", "repositorio permanece como fuente autoritativa"), ("The daily skills inspect",)),
-            "docs/es/repo-harness/current-state.md": (("El harness minimo", "hechos verificados del proyecto", "Revise `REPO-HARNESS.md`"), ("The minimal repository", "Replace placeholders")),
-            "docs/es/repo-harness/decisions.md": (("La documentacion del repositorio", "archivos ausentes", "operaciones de Git"), ("Repository documentation remains", "The harness creates absent files")),
+            "docs/es/repo-harness/usage.md": (("Use las tres skills generadas", "Límites de aprobación", "repositorio permanece como fuente autoritativa"), ("The daily skills inspect",)),
+            "docs/es/repo-harness/current-state.md": (("El harness mínimo", "hechos verificados del proyecto", "Revise `REPO-HARNESS.md`"), ("The minimal repository", "Replace placeholders")),
+            "docs/es/repo-harness/decisions.md": (("La documentación del repositorio", "archivos ausentes", "operaciones de Git"), ("Repository documentation remains", "The harness creates absent files")),
         }
         for path, (required, forbidden) in expectations.items():
             with self.subTest(path=path):
@@ -1303,8 +1303,8 @@ class ProductWorkflowTests(unittest.TestCase):
         )
         self.assertIn("Este repositorio usa un harness", outputs["README.md"])
         self.assertIn("# Historial de cambios", outputs["CHANGELOG.md"])
-        self.assertIn("Use las tres habilidades generadas", outputs["docs/repo-harness/usage.md"])
-        self.assertIn("Este directorio posee la documentacion durable", outputs["docs/repo-harness/README.md"])
+        self.assertIn("Use las tres skills generadas", outputs["docs/repo-harness/usage.md"])
+        self.assertIn("Este directorio posee la documentación durable", outputs["docs/repo-harness/README.md"])
         self.assertNotIn("pares completos", outputs["docs/repo-harness/README.md"])
         self.assertIn("docs/repo-harness/usage.md", outputs[".opencode/commands/repo-harness-help.md"])
         self.assertEqual(json.loads(outputs[TOOL.MANIFEST_PATH])["language"]["documentation"], ["es"])
@@ -1318,7 +1318,7 @@ class ProductWorkflowTests(unittest.TestCase):
             usage = root / "docs/repo-harness/usage.md"
             usage.write_text(
                 usage.read_text(encoding="utf-8").replace(
-                    "Las habilidades diarias inspeccionan", "The daily skills inspect"
+                    "Las skills diarias inspeccionan", "The daily skills inspect"
                 ),
                 encoding="utf-8",
             )
@@ -4483,8 +4483,8 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
             relative = "docs/es/repo-harness/usage.md"
             english = "docs/repo-harness/usage.md"
             subprocess.run(("git", "-C", str(root), "add", "--", relative, english), check=True)
-            literal = ("Use las tres habilidades generadas como un ciclo: recupere contexto, "
-                       "mantenga vigente la documentacion durable y deje una transferencia verificada.\n")
+            literal = ("Use las tres skills generadas como un ciclo: recupere contexto, "
+                       "mantenga vigente la documentación durable y deje una transferencia verificada.\n")
             rendered = outputs[relative]
             self.assertEqual(rendered.count(literal), 1)
             path = root / relative
@@ -4505,7 +4505,7 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
                     self.assertNotEqual(item["path"], english)
                     self.assertEqual(item["sourceSha256"], hashlib.sha256(before).hexdigest())
                     self.assertEqual(path.read_bytes(), before)
-                    for changed in (text.replace(line, "Use las habilidades como un ciclo de trabajo." + newline),
+                    for changed in (text.replace(line, "Use las skills como un ciclo de trabajo." + newline),
                                     text.replace(line, "").replace("<!-- doc-role:overview -->", "<!-- doc-role:other -->")):
                         path.write_bytes(changed.encode("utf-8"))
                         uncertain = self.preview(root, outputs)
@@ -4519,8 +4519,8 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
              "Update the factual owner first, then update its Spanish peer in the same work unit. Equivalent meaning is required; literal heading or sentence equality is not. Locale-specific phrasing is allowed when facts, commands, paths, constraints, and outcomes remain equivalent.",
              "## Translation Sync"),
             ("es", "docs/es/repo-harness/i18n-maintenance.md",
-             "Actualice primero el propietario factual y luego su par en espanol dentro de la misma unidad de trabajo. Se exige significado equivalente, no igualdad literal de encabezados u oraciones. Se permite redaccion propia de cada idioma si los hechos, comandos, rutas, restricciones y resultados permanecen equivalentes.",
-             "## Sincronizacion de traducciones"),
+             "Actualice primero el propietario factual y luego su par en español dentro de la misma unidad de trabajo. Se exige significado equivalente, no igualdad literal de encabezados u oraciones. Se permite redacción propia de cada idioma si los hechos, comandos, rutas, restricciones y resultados permanecen equivalentes.",
+             "## Sincronización de traducciones"),
         ):
             with self.subTest(locale=locale), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
@@ -5341,7 +5341,7 @@ class GeneratedCoreTests(unittest.TestCase):
                     TOOL.semantic_sections(spanish, outputs[spanish]),
                 )
         self.assertIn("canonical lifecycle owner", outputs["docs/repo-harness/roadmap.md"])
-        self.assertIn("propietario canonico del ciclo de vida", outputs["docs/es/repo-harness/roadmap.md"])
+        self.assertIn("propietario canónico del ciclo de vida", outputs["docs/es/repo-harness/roadmap.md"])
 
     def test_lifecycle_guidance_requires_same_work_unit_reconciliation(self):
         outputs = TOOL.render("Example", [])
@@ -10817,6 +10817,76 @@ class RecordedLanguageTests(unittest.TestCase):
             del manifest["language"]
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
             self.assertIsNone(TOOL.check(root, "Example", ["pi"])["recordedLanguage"])
+
+
+class SpanishOrthographyTests(unittest.TestCase):
+    """RH-W-0103: generated Spanish prose keeps its diacritics and calls skills `skills`."""
+
+    UNACCENTED = (
+        "documentacion", "espanol", "minimo", "condicion", "sesion", "aprobacion", "canonica",
+        "canonico", "canonicas", "ingles", "despues", "guia", "unico", "unica", "cronologico",
+        "bilingue", "politica", "operacion", "ejecucion", "validacion", "sincronizacion", "raiz",
+        "limites", "aqui", "presentacion", "proyeccion", "publicacion", "redaccion", "pequenos",
+    )
+
+    def spanish_documents(self):
+        for languages in (["en", "es"], ["es"]):
+            for standalone in (False, True):
+                outputs = TOOL.render("Example", ["pi", "claude-code"], standalone=standalone,
+                                      documentation_languages=languages, conversation_language="espanol")
+                for path, text in outputs.items():
+                    if path.startswith("docs/es/") or path.endswith(".es.md") or (
+                        languages == ["es"] and (path.startswith("docs/repo-harness/") or path in ("README.md", "CHANGELOG.md"))
+                    ):
+                        yield f"{languages}/{standalone}/{path}", text
+        yield "CONTRIBUTING.es.md", TOOL.contribution_guide_content(spanish=True)
+
+    @staticmethod
+    def prose(text: str) -> str:
+        """Drop code, link targets, and comments: tokens such as `espanol` stay byte-stable."""
+        text = re.sub(r"```.*?```|<!--.*?-->", "", text, flags=re.S)
+        return re.sub(r"`[^`]*`|\]\([^)]*\)", "", text)
+
+    def test_generated_spanish_documents_keep_diacritics(self):
+        for name, text in self.spanish_documents():
+            words = {word.lower() for word in re.findall(r"[A-Za-z]+", self.prose(text))}
+            with self.subTest(document=name):
+                self.assertEqual(sorted(words & set(self.UNACCENTED)), [])
+
+    def test_generated_spanish_documents_say_skills(self):
+        for name, text in self.spanish_documents():
+            with self.subTest(document=name):
+                self.assertNotIn("habilidad", text.lower())
+
+    def test_existing_unaccented_spanish_documents_still_check_clean(self):
+        """Documents generated before RH-W-0103 are human-owned; updating the builder must not flag them."""
+        old_wording = {
+            "Use las tres skills generadas": "Use las tres habilidades generadas",
+            "Límites de aprobación": "Limites de aprobacion",
+            "El harness mínimo": "El harness minimo",
+            "La documentación del repositorio": "La documentacion del repositorio",
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("pi",), documentation_languages=["es"], conversation_language="espanol")
+            for name in ("usage.md", "current-state.md", "decisions.md"):
+                path = root / "docs/repo-harness" / name
+                text = path.read_text(encoding="utf-8")
+                for new, old in old_wording.items():
+                    text = text.replace(new, old)
+                path.write_text(text, encoding="utf-8")
+            report = TOOL.check(root, "Example", ["pi"])
+            self.assertEqual(report["status"], "current")
+            states = {item["path"]: item["state"] for item in report["files"]}
+            for name in ("usage.md", "current-state.md", "decisions.md"):
+                self.assertEqual(states[f"docs/repo-harness/{name}"], "human-evolved")
+
+    def test_spanish_approval_keeps_tokens_and_diacritics(self):
+        domain = TOOL.APPROVAL_DOMAINS["espanol"]
+        self.assertEqual((domain["approve"], domain["deny"]), ("APROBAR", "DENEGAR"))
+        self.assertIn("Aprobación", domain["prompt"])
+        self.assertIn("¿Aprueba este plan exacto?", domain["prompt"])
+        self.assertEqual(domain["invalid"], "Respuesta no válida. Escriba exactamente APROBAR o DENEGAR en mayúsculas.")
 
 
 class UpdateFlowContractTests(unittest.TestCase):

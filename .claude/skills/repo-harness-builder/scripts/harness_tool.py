@@ -118,14 +118,14 @@ APPROVAL_DOMAINS = {
         "approve": "APROBAR",
         "deny": "DENEGAR",
         "prompt": (
-            "Aprobacion de contenido del constructor\n"
-            "Las respuestas distinguen mayusculas y minusculas y deben escribirse exactamente en mayusculas.\n"
+            "Aprobación de contenido del constructor\n"
+            "Las respuestas distinguen mayúsculas y minúsculas y deben escribirse exactamente en mayúsculas.\n"
             "Respuestas permitidas:\n"
             "- APROBAR\n"
             "- DENEGAR\n"
-            "Aprueba este plan exacto?"
+            "¿Aprueba este plan exacto?"
         ),
-        "invalid": "Respuesta no valida. Escriba exactamente APROBAR o DENEGAR en mayusculas.",
+        "invalid": "Respuesta no válida. Escriba exactamente APROBAR o DENEGAR en mayúsculas.",
     },
 }
 
@@ -1397,15 +1397,15 @@ def missing_sections(promised: str, actual: str) -> list[str]:
 
 LOCALE_CONTENT_BASELINES = {
     "docs/es/repo-harness/usage.md": {
-        "required": ("Use las tres habilidades generadas", "Limites de aprobacion", "repositorio permanece como fuente autoritativa"),
+        "required": ("Use las tres skills generadas", "Límites de aprobación", "repositorio permanece como fuente autoritativa"),
         "forbidden": ("The daily skills inspect", "Explicit combined commit-and-push consent"),
     },
     "docs/es/repo-harness/current-state.md": {
-        "required": ("El harness minimo", "hechos verificados del proyecto", "Revise `REPO-HARNESS.md`"),
+        "required": ("El harness mínimo", "hechos verificados del proyecto", "Revise `REPO-HARNESS.md`"),
         "forbidden": ("The minimal repository", "Replace placeholders", "Review `REPO-HARNESS.md`"),
     },
     "docs/es/repo-harness/decisions.md": {
-        "required": ("La documentacion del repositorio", "archivos ausentes", "operaciones de Git"),
+        "required": ("La documentación del repositorio", "archivos ausentes", "operaciones de Git"),
         "forbidden": ("Repository documentation remains", "The harness creates absent files"),
     },
 }
@@ -2616,31 +2616,31 @@ Keep one reciprocal language selector in each root README. Validate every relati
 """
     def canonical_source_es(name: str) -> str:
         """Link a Spanish peer to its English owner so declared localized-peer edges hold."""
-        return "" if spanish_only else f"\nLa fuente canonica es [`../../repo-harness/{name}`](../../repo-harness/{name}).\n"
+        return "" if spanish_only else f"\nLa fuente canónica es [`../../repo-harness/{name}`](../../repo-harness/{name}).\n"
 
-    maintenance_es = f"""# Mantenimiento de la documentacion bilingue
+    maintenance_es = f"""# Mantenimiento de la documentación bilingüe
 
 {marker}
 {canonical_source_es("i18n-maintenance.md")}
 <!-- doc-role:canonical-ownership -->
-## Propiedad canonica
+## Propiedad canónica
 
-`{rulebook_path}`, `CHANGELOG.md` y los archivos en ingles bajo `docs/repo-harness/` son propietarios de los hechos operativos. Los pares en espanol son proyecciones completas para lectura y enlazan a sus fuentes factuales.
+`{rulebook_path}`, `CHANGELOG.md` y los archivos en inglés bajo `docs/repo-harness/` son propietarios de los hechos operativos. Los pares en español son proyecciones completas para lectura y enlazan a sus fuentes factuales.
 
 <!-- doc-role:translation-sync -->
-## Sincronizacion de traducciones
+## Sincronización de traducciones
 
-Actualice primero el propietario factual y luego su par en espanol dentro de la misma unidad de trabajo. Se exige significado equivalente, no igualdad literal de encabezados u oraciones. Se permite redaccion propia de cada idioma si los hechos, comandos, rutas, restricciones y resultados permanecen equivalentes.
+Actualice primero el propietario factual y luego su par en español dentro de la misma unidad de trabajo. Se exige significado equivalente, no igualdad literal de encabezados u oraciones. Se permite redacción propia de cada idioma si los hechos, comandos, rutas, restricciones y resultados permanecen equivalentes.
 
 <!-- doc-role:link-validation -->
-## Validacion de enlaces
+## Validación de enlaces
 
-Mantenga un selector reciproco de idioma en cada README raiz. Valide cada enlace relativo desde el archivo que lo contiene y ejecute `python3 .repo-harness/check.py` (`python` en Windows) despues de cambiar la documentacion.
+Mantenga un selector recíproco de idioma en cada README raíz. Valide cada enlace relativo desde el archivo que lo contiene y ejecute `python3 .repo-harness/check.py` (`python` en Windows) después de cambiar la documentación.
 
 <!-- doc-role:freshness -->
 ## Vigencia
 
-`CHANGELOG.md` es el unico propietario cronologico y `docs/repo-harness/current-state.md` es el unico propietario del estado actual. Los pares localizados presentan esos hechos e identifican la fuente canonica, para que las fechas y el estado no se conviertan en verdades independientes.
+`CHANGELOG.md` es el único propietario cronológico y `docs/repo-harness/current-state.md` es el único propietario del estado actual. Los pares localizados presentan esos hechos e identifican la fuente canónica, para que las fechas y el estado no se conviertan en verdades independientes.
 """
     readme = f"""# {project_id}
 
@@ -2664,69 +2664,69 @@ The content between the `repo-harness-builder` markers is the builder-managed se
 <!-- doc-role:repository-harness -->
 ## Harness del repositorio
 
-Este repositorio usa un harness generado de documentacion y continuidad. Comience con [`{rulebook_path}`]({rulebook_path}) para las reglas operativas y con [`{spanish_usage_path}`]({spanish_usage_path}) para el flujo humano en espanol.
+Este repositorio usa un harness generado de documentación y continuidad. Comience con [`{rulebook_path}`]({rulebook_path}) para las reglas operativas y con [`{spanish_usage_path}`]({spanish_usage_path}) para el flujo humano en español.
 
 El contenido entre los marcadores `repo-harness-builder` es administrado por el constructor. El contenido fuera de los marcadores pertenece a quienes mantienen el repositorio.
 <!-- repo-harness-builder:end -->
 """
     spanish_index_intro = (
-        "Este directorio posee la documentacion durable en espanol."
+        "Este directorio posee la documentación durable en español."
         if spanish_only
-        else "Este arbol contiene pares completos en espanol de la documentacion durable."
+        else "Este árbol contiene pares completos en español de la documentación durable."
     )
     spanish_index_state_row = (
         "| `current-state.md` | Estado verificado, trabajo reciente y siguiente paso |"
         if spanish_only
-        else "| `current-state.md` | Presentacion en espanol del estado canonico en `../../repo-harness/current-state.md` |"
+        else "| `current-state.md` | Presentación en español del estado canónico en `../../repo-harness/current-state.md` |"
     )
     spanish_index_maintenance_row = (
-        "" if spanish_only else "\n| `i18n-maintenance.md` | Contrato de mantenimiento bilingue |"
+        "" if spanish_only else "\n| `i18n-maintenance.md` | Contrato de mantenimiento bilingüe |"
     )
     spanish_index_owner_rows = (
         ""
         if spanish_only
-        else "| `../../repo-harness/README.md` | Mapa canonico en ingles |\n| `../../../CHANGELOG.md` | Historial cronologico canonico |"
+        else "| `../../repo-harness/README.md` | Mapa canónico en inglés |\n| `../../../CHANGELOG.md` | Historial cronológico canónico |"
     )
-    index_es = f"""# Documentacion del harness de IA
+    index_es = f"""# Documentación del harness de IA
 
 {marker}
 {canonical_source_es("README.md")}
 <!-- doc-role:documentation-map -->
 
-`{rulebook_path}` es la entrada operativa canonica. {spanish_index_intro}
+`{rulebook_path}` es la entrada operativa canónica. {spanish_index_intro}
 
 | Documento | Propiedad |
 |---|---|
-| `usage.md` | Flujo humano, disponibilidad y limites de aprobacion |
+| `usage.md` | Flujo humano, disponibilidad y límites de aprobación |
 {spanish_index_state_row}
-| `roadmap.md` | Espejo humano del propietario canonico del ciclo de vida |
-| `decisions.md` | Presentacion en espanol de decisiones y restricciones |{spanish_index_maintenance_row}
+| `roadmap.md` | Espejo humano del propietario canónico del ciclo de vida |
+| `decisions.md` | Presentación en español de decisiones y restricciones |{spanish_index_maintenance_row}
 {spanish_index_owner_rows}
 """
     availability_es = (
-        "Gentle AI y Engram son capacidades opcionales independientes. Use cada una en su limite de operacion; bloquee solo cuando la operacion o la politica del repositorio la exija. Informe fallos sin prometer garantias ausentes ni omitir el informe del repositorio."
+        "Gentle AI y Engram son capacidades opcionales independientes. Use cada una en su limite de operación; bloquee solo cuando la operación o la política del repositorio la exija. Informe fallos sin prometer garantias ausentes ni omitir el informe del repositorio."
         if not standalone
-        else "Confirme que las habilidades generadas esten disponibles en el entorno seleccionado. La continuidad permanece en archivos del repositorio y no depende de un servicio externo de memoria."
+        else "Confirme que las skills generadas estén disponibles en el entorno seleccionado. La continuidad permanece en archivos del repositorio y no depende de un servicio externo de memoria."
     )
     ownership_es = (
-        "Engram conserva contexto temporal entre sesiones; el repositorio permanece como fuente autoritativa. Promueva hechos durables verificados mediante la habilidad de documentacion."
+        "Engram conserva contexto temporal entre sesiones; el repositorio permanece como fuente autoritativa. Promueva hechos durables verificados mediante la skill de documentación."
         if not standalone
-        else "La salida de sesion conserva contexto temporal; el repositorio permanece como fuente autoritativa. Promueva hechos durables verificados mediante la habilidad de documentacion."
+        else "La salida de sesión conserva contexto temporal; el repositorio permanece como fuente autoritativa. Promueva hechos durables verificados mediante la skill de documentación."
     )
     usage_es = f"""# Uso del harness del repositorio
 
 {marker}
 {canonical_source_es("usage.md")}<!-- doc-role:overview -->
 
-Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vigente la documentacion durable y deje una transferencia verificada.
+Use las tres skills generadas como un ciclo: recupere contexto, mantenga vigente la documentación durable y deje una transferencia verificada.
 
 ## Flujo diario
 
 <!-- doc-role:daily-workflow -->
 
-1. Inicie o reanude con `repo-harness-session-start` e indique el objetivo. Recupera contexto pertinente, lo reconcilia con evidencia actual e inspecciona Git en solo lectura. Una pregunta de comprobacion remota aplica solo cuando sincronizar es pertinente y seguro. Para conservar el idioma o los modos de respuesta, edite `.repo-harness/state/preferences/user-preferences.json` a mano; el [contrato de respuesta]({'../../' if spanish_only else '../../../'}.repo-harness/rules/response-contract.md) es propietario de las claves y la precedencia.
-2. Use `repo-harness-documentation` cuando sea necesario actualizar documentacion durable o el estado visible del proyecto.
-3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia, documentacion y continuidad requeridas. Solo el trabajo Git solicitado activa revision de rutas y propuestas exactas bajo la politica del repositorio; no se repite una autorizacion sin cambios.
+1. Inicie o reanude con `repo-harness-session-start` e indique el objetivo. Recupera contexto pertinente, lo reconcilia con evidencia actual e inspecciona Git en solo lectura. Una pregunta de comprobación remota aplica solo cuando sincronizar es pertinente y seguro. Para conservar el idioma o los modos de respuesta, edite `.repo-harness/state/preferences/user-preferences.json` a mano; el [contrato de respuesta]({'../../' if spanish_only else '../../../'}.repo-harness/rules/response-contract.md) es propietario de las claves y la precedencia.
+2. Use `repo-harness-documentation` cuando sea necesario actualizar documentación durable o el estado visible del proyecto.
+3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia, documentación y continuidad requeridas. Solo el trabajo Git solicitado activa revisión de rutas y propuestas exactas bajo la política del repositorio; no se repite una autorización sin cambios.
 
 ## Disponibilidad integrada
 
@@ -2738,13 +2738,13 @@ Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vi
 
 <!-- doc-role:ownership -->
 
-Ejecute `python3 .repo-harness/check.py` (`python` en Windows) despues de cambiar habilidades canonicas o proyecciones de ejecucion. El verificador es de solo lectura e informa si las copias generadas coinciden con sus habilidades canonicas. El archivo raiz `.gitattributes` debe preservar bytes LF al hacer checkout mediante una regla exacta `text eol=lf` por cada ruta generada comparada byte a byte, incluidos el verificador, el manifest, las habilidades canonicas y las proyecciones de ejecucion. Sin ellas, un checkout CRLF informa una deriva que el verificador no puede resolver. {ownership_es}
+Ejecute `python3 .repo-harness/check.py` (`python` en Windows) después de cambiar skills canónicas o proyecciones de ejecución. El verificador es de solo lectura e informa si las copias generadas coinciden con sus skills canónicas. El archivo raíz `.gitattributes` debe preservar bytes LF al hacer checkout mediante una regla exacta `text eol=lf` por cada ruta generada comparada byte a byte, incluidos el verificador, el manifest, las skills canónicas y las proyecciones de ejecución. Sin ellas, un checkout CRLF informa una deriva que el verificador no puede resolver. {ownership_es}
 
-## Limites de aprobacion
+## Límites de aprobación
 
 <!-- doc-role:approval-boundaries -->
 
-Las habilidades diarias inspeccionan en modo de solo lectura por defecto. Los resultados son `ready`, `paused`, `blocked`, `failed`, `completed` o `degraded`; el alcance evita que un fallo opcional de Git invalide una continuidad exitosa. Las escrituras documentales requieren aprobacion conversacional explicita. El consentimiento para sincronizacion segura cubre un fetch acotado y una integracion solo por avance rapido. El consentimiento combinado para commit y push cubre las rutas exactas, el commit, las comprobaciones, un fetch previo y un push al upstream identificado. Los consentimientos solo para commit o solo para push permanecen limitados, y cualquier cambio material los invalida. Los repositorios sucios o divergentes permanecen locales para resolucion humana; la continuidad no exige ninguna operacion de Git.
+Las skills diarias inspeccionan en modo de solo lectura por defecto. Los resultados son `ready`, `paused`, `blocked`, `failed`, `completed` o `degraded`; el alcance evita que un fallo opcional de Git invalide una continuidad exitosa. Las escrituras documentales requieren aprobación conversacional explícita. El consentimiento para sincronización segura cubre un fetch acotado y una integración solo por avance rápido. El consentimiento combinado para commit y push cubre las rutas exactas, el commit, las comprobaciones, un fetch previo y un push al upstream identificado. Los consentimientos solo para commit o solo para push permanecen limitados, y cualquier cambio material los inválida. Los repositorios sucios o divergentes permanecen locales para resolución humana; la continuidad no exige ninguna operación de Git.
 """
     state_es = f"""# Estado actual
 
@@ -2754,19 +2754,19 @@ Las habilidades diarias inspeccionan en modo de solo lectura por defecto. Los re
 
 <!-- doc-role:verified-state -->
 
-El harness minimo de IA del repositorio existe. Este archivo proyecta solo hechos verificados del proyecto: registros activos, bloqueos, IDs completados recientemente y la siguiente condicion accionable. El propietario canonico es [roadmap.md](roadmap.md).
+El harness mínimo de IA del repositorio existe. Este archivo proyecta solo hechos verificados del proyecto: registros activos, bloqueos, IDs completados recientemente y la siguiente condición accionable. El propietario canónico es [roadmap.md](roadmap.md).
 
 ## Trabajo reciente completado
 
 <!-- doc-role:recent-work -->
 
-- `RH-W-0001`: se crearon la documentacion canonica del proyecto y las habilidades operativas de sesion.
+- `RH-W-0001`: se crearon la documentación canónica del proyecto y las skills operativas de sesión.
 
 ## Trabajo pendiente
 
 <!-- doc-role:pending-work -->
 
-- Registrar todo pendiente no trivial en [roadmap.md](roadmap.md), sin mantener un segundo backlog aqui.
+- Registrar todo pendiente no trivial en [roadmap.md](roadmap.md), sin mantener un segundo backlog aquí.
 
 ## Siguiente paso
 
@@ -2780,27 +2780,27 @@ Revise `REPO-HARNESS.md` junto con este documento y actualice solo afirmaciones 
 {canonical_source_es("roadmap.md")}
 <!-- doc-role:lifecycle-owner -->
 
-Esta hoja de ruta es el propietario canonico del ciclo de vida. Registre solo trabajo no trivial con IDs inmutables `RH-W-####`. Cada registro conserva origen, prioridad justificada de `P0` a `P3`, dependencias, estado, trabajo completado y restante, adiciones, exclusiones, aplazamientos, rechazos, evidencia, historial de decisiones y una Condicion del siguiente avance observable.
+Esta hoja de ruta es el propietario canónico del ciclo de vida. Registre solo trabajo no trivial con IDs inmutables `RH-W-####`. Cada registro conserva origen, prioridad justificada de `P0` a `P3`, dependencias, estado, trabajo completado y restante, adiciones, exclusiones, aplazamientos, rechazos, evidencia, historial de decisiones y una Condición del siguiente avance observable.
 
 ## Reglas del ciclo de vida
 <!-- doc-role:lifecycle-rules -->
 
 - El estado es `proposed`, `ready`, `active`, `blocked`, `deferred`, `completed`, `excluded` o `rejected`.
-- `blocked` nombra su bloqueo, `deferred` su condicion de avance y los registros terminales usan trabajo restante `none`.
-- `excluded` puede reconsiderarse fuera del alcance actual. `rejected` se declina intencionalmente hasta que una decision posterior explicita lo reemplace.
-- Actualice este propietario, la proyeccion de estado actual, los pares localizados y el tema de Engram `work/RH-W-####` en la misma unidad de trabajo cuando cambie la realidad.
+- `blocked` nombra su bloqueo, `deferred` su condición de avance y los registros terminales usan trabajo restante `none`.
+- `excluded` puede reconsiderarse fuera del alcance actual. `rejected` se declina intencionalmente hasta que una decisión posterior explícita lo reemplace.
+- Actualice este propietario, la proyección de estado actual, los pares localizados y el tema de Engram `work/RH-W-####` en la misma unidad de trabajo cuando cambie la realidad.
 
 ## Registros activos
 <!-- doc-role:active-records -->
 
-No se han agregado registros especificos del proyecto.
+No se han agregado registros específicos del proyecto.
 
 ## Registros resueltos
 <!-- doc-role:resolved-records -->
 
-No se han resuelto registros especificos del proyecto.
+No se han resuelto registros específicos del proyecto.
 """
-    continuity_decision_es = "- La continuidad usa solo archivos del repositorio." if standalone else "- Gentle AI y Engram son capacidades opcionales independientes; solo bloquean fallos requeridos por la operacion y nunca reemplazan la evidencia actual del repositorio."
+    continuity_decision_es = "- La continuidad usa solo archivos del repositorio." if standalone else "- Gentle AI y Engram son capacidades opcionales independientes; solo bloquean fallos requeridos por la operación y nunca reemplazan la evidencia actual del repositorio."
     decisions_es = f"""# Decisiones y restricciones
 
 {marker}
@@ -2809,47 +2809,47 @@ No se han resuelto registros especificos del proyecto.
 
 <!-- doc-role:standing-decisions -->
 
-- La documentacion del repositorio permanece como fuente visible del estado del proyecto.
+- La documentación del repositorio permanece como fuente visible del estado del proyecto.
 {continuity_decision_es}
-- Las operaciones de Git, proveedor, respaldo y publicacion quedan fuera del nucleo del harness.
-- El harness crea archivos ausentes. Solo los punteros raiz seleccionados pueden recibir su directiva exacta faltante; cualquier otro archivo existente permanece sin cambios.
+- Las operaciones de Git, proveedor, respaldo y publicación quedan fuera del núcleo del harness.
+- El harness crea archivos ausentes. Solo los punteros raíz seleccionados pueden recibir su directiva exacta faltante; cualquier otro archivo existente permanece sin cambios.
 """
-    rulebook_es = f"""# {project_id}: guia operativa en espanol
+    rulebook_es = f"""# {project_id}: guía operativa en español
 
 {marker}
 
-Esta es una presentacion completa en espanol. [`{rulebook_path}`]({rulebook_path}) es la unica fuente operativa canonica y prevalece si existe una discrepancia.
+Esta es una presentación completa en español. [`{rulebook_path}`]({rulebook_path}) es la única fuente operativa canónica y prevalece si existe una discrepancia.
 
-## Proposito
+## Propósito
 <!-- doc-role:purpose -->
 
-El harness mantiene visibles las reglas de trabajo, el estado durable y las rutas hacia las habilidades generadas.
+El harness mantiene visibles las reglas de trabajo, el estado durable y las rutas hacia las skills generadas.
 
 ## Reglas obligatorias
 <!-- doc-role:hard-rules -->
 
 - Trabaje solo dentro del repositorio seleccionado y preserve archivos desconocidos.
 - Verifique la evidencia actual antes de confiar en memoria previa.
-- Use [la guia de uso](docs/es/repo-harness/usage.md), [el estado actual](docs/es/repo-harness/current-state.md) y [las decisiones](docs/es/repo-harness/decisions.md).
+- Use [la guía de uso](docs/es/repo-harness/usage.md), [el estado actual](docs/es/repo-harness/current-state.md) y [las decisiones](docs/es/repo-harness/decisions.md).
 - Ejecute `python3 .repo-harness/check.py` (`python` en Windows) para comprobar las proyecciones.
 
-## Compuertas de decision
+## Compuertas de decisión
 <!-- doc-role:decision-gates -->
 
 - Para iniciar o reanudar, use `.repo-harness/skills/repo-harness-session-start/SKILL.md`.
 - Para pausar o cerrar, use `.repo-harness/skills/repo-harness-session-stop/SKILL.md`.
-- Para el flujo humano, consulte [la guia de uso](docs/es/repo-harness/usage.md).
+- Para el flujo humano, consulte [la guía de uso](docs/es/repo-harness/usage.md).
 - Para estado, entregas y razones, consulte [el estado actual](docs/es/repo-harness/current-state.md), [CHANGELOG.md](CHANGELOG.md) y [las decisiones](docs/es/repo-harness/decisions.md).
 
-## Actualizacion de este archivo
+## Actualización de este archivo
 <!-- doc-role:maintenance -->
 
-Actualice este par cuando cambie una regla o ruta en `{rulebook_path}`. El archivo canonico en ingles conserva la propiedad operativa. No coloque estado fechado aqui; mantenga el detalle en sus documentos propietarios.
+Actualice este par cuando cambie una regla o ruta en `{rulebook_path}`. El archivo canónico en inglés conserva la propiedad operativa. No coloque estado fechado aquí; mantenga el detalle en sus documentos propietarios.
 """
     spanish_changelog_intro = (
-        "Este archivo registra los cambios completados en orden cronologico."
+        "Este archivo registra los cambios completados en orden cronológico."
         if spanish_only
-        else "[`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este par ofrece la presentacion en espanol y debe actualizarse en la misma unidad de trabajo, sin crear una segunda fuente de verdad."
+        else "[`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este par ofrece la presentación en español y debe actualizarse en la misma unidad de trabajo, sin crear una segunda fuente de verdad."
     )
     changelog_es = f"""# Historial de cambios
 
@@ -2859,7 +2859,7 @@ Actualice este par cuando cambie una regla o ruta en `{rulebook_path}`. El archi
 
 ## {date.today().isoformat()}
 
-- Se creo el harness minimo de IA del repositorio y su documentacion visible de continuidad.
+- Se creó el harness mínimo de IA del repositorio y su documentación visible de continuidad.
 """
     outputs = {
         "README.md": readme,
@@ -3717,13 +3717,13 @@ SUGGESTION_UNITS = {
         ("overview/generated-skills-loop", "Use the three generated skills as a loop: recover context, keep durable documentation current, then leave a verified handoff."),
     ),
     "docs/es/repo-harness/usage.md": (
-        ("overview/three-generated-skills-loop", "Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vigente la documentacion durable y deje una transferencia verificada."),
+        ("overview/three-generated-skills-loop", "Use las tres skills generadas como un ciclo: recupere contexto, mantenga vigente la documentación durable y deje una transferencia verificada."),
     ),
     "docs/repo-harness/i18n-maintenance.md": (
         ("translation-sync/factual-owner-peer", "Update the factual owner first, then update its Spanish peer in the same work unit. Equivalent meaning is required; literal heading or sentence equality is not. Locale-specific phrasing is allowed when facts, commands, paths, constraints, and outcomes remain equivalent."),
     ),
     "docs/es/repo-harness/i18n-maintenance.md": (
-        ("translation-sync/factual-owner-peer", "Actualice primero el propietario factual y luego su par en espanol dentro de la misma unidad de trabajo. Se exige significado equivalente, no igualdad literal de encabezados u oraciones. Se permite redaccion propia de cada idioma si los hechos, comandos, rutas, restricciones y resultados permanecen equivalentes."),
+        ("translation-sync/factual-owner-peer", "Actualice primero el propietario factual y luego su par en español dentro de la misma unidad de trabajo. Se exige significado equivalente, no igualdad literal de encabezados u oraciones. Se permite redacción propia de cada idioma si los hechos, comandos, rutas, restricciones y resultados permanecen equivalentes."),
     ),
 }
 
@@ -3733,7 +3733,7 @@ SUGGESTION_OWNER_BOUNDS = {
     "docs/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Daily Workflow", "overview"),
     "docs/es/repo-harness/usage.md": ("<!-- doc-role:overview -->\n", "\n## Flujo diario", "overview"),
     "docs/repo-harness/i18n-maintenance.md": ("<!-- doc-role:translation-sync -->\n## Translation Sync\n", "\n<!-- doc-role:link-validation -->", "translation-sync"),
-    "docs/es/repo-harness/i18n-maintenance.md": ("<!-- doc-role:translation-sync -->\n## Sincronizacion de traducciones\n", "\n<!-- doc-role:link-validation -->", "translation-sync"),
+    "docs/es/repo-harness/i18n-maintenance.md": ("<!-- doc-role:translation-sync -->\n## Sincronización de traducciones\n", "\n<!-- doc-role:link-validation -->", "translation-sync"),
 }
 
 SUGGESTION_ELIGIBLE = frozenset({
@@ -4036,14 +4036,14 @@ def contribution_guide_report(root: Path, report_language: str = DEFAULT_REPORT_
 
 def contribution_guide_content(spanish: bool = False) -> str:
     if spanish:
-        return """# Como contribuir
+        return """# Cómo contribuir
 
 1. Lea primero [REPO-HARNESS.md](REPO-HARNESS.md).
-2. Mantenga los cambios pequenos y enfocados.
-3. Actualice la documentacion y el changelog junto con el cambio.
+2. Mantenga los cambios pequeños y enfocados.
+3. Actualice la documentación y el changelog junto con el cambio.
 4. Ejecute `python .repo-harness/check.py` para comprobar el harness.
 
-Esta guia pertenece a las personas responsables del proyecto; adaptenla a sus necesidades.
+Esta guía pertenece a las personas responsables del proyecto; adáptenla a sus necesidades.
 """
     return """# Contributing
 
@@ -4096,8 +4096,8 @@ def render_repository(
             peer = guide.removesuffix(".md") + ".es.md"
             localized = peer if peer in outputs or guarded_target(root, peer).is_file() else guide
             outputs["REPO-HARNESS.es.md"] = outputs["REPO-HARNESS.es.md"].replace(
-                "\n## Actualizacion de este archivo",
-                f"\n- Para proponer cambios, consulte [{localized}]({localized}).\n\n## Actualizacion de este archivo", 1)
+                "\n## Actualización de este archivo",
+                f"\n- Para proponer cambios, consulte [{localized}]({localized}).\n\n## Actualización de este archivo", 1)
     # CONTRIBUTING is repository-specific; declare its peer only when both are present.
     if (("CONTRIBUTING.md" in outputs or guarded_target(root, "CONTRIBUTING.md").is_file())
             and ("CONTRIBUTING.es.md" in outputs or guarded_target(root, "CONTRIBUTING.es.md").is_file())

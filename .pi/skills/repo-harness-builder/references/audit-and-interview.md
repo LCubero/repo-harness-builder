@@ -18,7 +18,7 @@ Check before asking: recognize `CONTRIBUTING.md` by safe file presence only in t
 
 If a guide exists, ask nothing and never modify it. The renderer adds one rulebook decision-gate row pointing to its actual path. After installation, suggest reviewing the guide together with the consumer because it may be outdated or incorrect; do not assess or edit it.
 
-Only when absent, ask one short conversational question in the conversation language and stop: "`CONTRIBUTING.md` explains how to propose changes to this project. Will more people work on this repository? Do you want a brief `CONTRIBUTING.md`?" In Spanish: "`CONTRIBUTING.md` explica como proponer cambios a este proyecto. ¿Trabajaran mas personas en este repositorio? ¿Quiere un `CONTRIBUTING.md` breve?"
+Only when absent, ask one short conversational question in the conversation language and stop: "`CONTRIBUTING.md` explains how to propose changes to this project. Will more people work on this repository? Do you want a brief `CONTRIBUTING.md`?" In Spanish: "`CONTRIBUTING.md` explica cómo proponer cambios a este proyecto. ¿Trabajarán más personas en este repositorio? ¿Quiere un `CONTRIBUTING.md` breve?"
 
 No: omit `--contribution-guide`, generating nothing extra. Yes: pass `--contribution-guide` to both render preview and current-digest apply. It proposes an additive, human-owned brief guide (plus Spanish peer when bilingual): read the rulebook first, keep changes small, update documentation and changelog with the change, run the checker. No provider, issue-first, branch, PR, review, label, template, or check policy is imposed. Existing guides and peers remain untouched. These optional artifacts belong to the same content-bound plan, not separate write approval.
 

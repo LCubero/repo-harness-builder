@@ -22,7 +22,7 @@ Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 
 
 ## Orden de ejecucion aprobado restante
 
-RH-W-0099 se completó mediante el issue #364. RH-W-0100 se completó mediante el issue #366. RH-W-0104 se registró como `proposed` el 2026-10-11 mediante el issue #370 y se completó el 2026-10-13 mediante el mismo issue; la prueba de actualización de `v3.1-rc.11` confirmó RH-W-0099 y RH-W-0100 en un consumidor Pi real.
+RH-W-0099 se completó mediante el issue #364. RH-W-0100 se completó mediante el issue #366. RH-W-0104 se registró como `proposed` el 2026-10-11 mediante el issue #370 y se completó el 2026-10-13 mediante el mismo issue. RH-W-0103 se completó el 2026-10-13 mediante el issue #375; la prueba de actualización de `v3.1-rc.11` confirmó RH-W-0099 y RH-W-0100 en un consumidor Pi real.
 
 Reconciliado el 2026-08-25 sobre los 26 registros no terminales de entonces y extendido a 28 con `RH-W-0076` y `RH-W-0077`. `RH-W-0078` lo elevo a 29; completar `RH-W-0073` lo redujo a 28; `RH-W-0079` lo devolvio temporalmente a 29 y su finalizacion lo redujo a 28. Las aprobadas RH-W-0080 y RH-W-0081 lo elevan a 30. Los siguientes IDs inmutables verificados, `RH-W-0082`, `RH-W-0083` y `RH-W-0084`, elevaron el portafolio autoritativo a 33. El 2026-08-31 `RH-W-0012` se completo, lo que lo redujo a 32, y se registro `RH-W-0085` desde un barrido de revision manual, lo que lo devolvio a 33. `RH-W-0086` se registro el 2026-09-01, lo que lo elevo a 34. El 2026-09-04 el propietario acepto el hallazgo de refuerzo de `RH-W-0084` como control bajo `RH-W-0083`, completo `RH-W-0084` y redujo el portafolio a 33; la implementacion autorizada por separado completo despues `RH-W-0083` y lo redujo a 32. Registrar `RH-W-0087` como `proposed` lo elevo a 33 y su implementacion autorizada por separado lo redujo a 32. Registrar `RH-W-0088`, priorizado por el propietario, como `proposed` lo elevo a 33. Después de las finalizaciones posteriores registradas abajo, de reabrir RH-W-0048 solo para reconciliar el contrato de mutabilidad y volver a verificar de forma independiente, y de completar ese alcance reabierto, la derivación vigente daba 27 registros no terminales. El registro autorizado por el propietario de RH-W-0089 elevó la derivación vigente a 28; su cierre de ciclo completado la devolvió a 27. El registro autorizado por el propietario de RH-W-0090 la elevó a 28 y RH-W-0091 la elevó a 29; su cierre de ciclo completado deja la derivación vigente de las filas del propietario en 27. El rechazo de RH-W-0090 y el registro de RH-W-0092 mantuvieron ese total; registrar RH-W-0093 lo elevó a 28; completar sus dos aclaraciones locales lo devuelve a 27 registros no terminales sin cambiar el orden aprobado. La entrega RH-W-0093 se completó mediante PR #201. Registrar RH-W-0094 elevó el total a 28; su cierre aprobado después de la fusión lo devolvió a 27. Registrar RH-W-0095 elevó el total vigente a 28; completarla tras verificación lo devolvió a 27 sin reprogramar trabajo ajeno. La cronología anterior es histórica. Los otros registros nuevos siguen sin programar. Estos registros se derivan de evidencia completa de la hoja de ruta, revision de solo lectura o una decision directa del propietario y quedan fuera del orden aprobado hasta ser programados.
 
@@ -563,22 +563,22 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 
 ### RH-W-0103
 
-Estado: `proposed`. Trabajo restante: Restaurar los signos diacríticos en la documentación humana generada en español y las cadenas en español del constructor, y usar `skills` en lugar de `habilidades`; mantener `APROBAR`/`DENEGAR` estables a nivel de bytes y actualizar las pruebas afectadas. La tabla siguiente conserva el detalle del registro.
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
 
 | Campo | Valor |
 |---|---|
 | Origen | Prueba de consumidor de `v3.1-rc.10` por el propietario el 2026-10-11; issue #362. |
 | Prioridad | P2: calidad de la documentación en español para personas; sin riesgo de comportamiento. |
 | Dependencias | ninguna |
-| Trabajo completado | Registrado como hallazgo de prueba de consumidor; sin implementación. |
-| Trabajo restante | Restaurar los signos diacríticos en la documentación humana generada en español y las cadenas en español del constructor, y usar el término `skills` en lugar de `habilidades`; mantener estables a nivel de bytes los tokens de máquina como `APROBAR`/`DENEGAR` y actualizar las pruebas afectadas. |
+| Trabajo completado | Se restauraron los signos diacríticos en todas las semillas de documentación generada en español (bilingüe y solo en español, integrada y autónoma), en el aviso de aprobación en español y su mensaje de respuesta no válida, y en la pregunta y la guía de contribución en español; se reemplazó `habilidades` por `skills`. Los tokens de máquina `APROBAR`, `DENEGAR` y `espanol` no cambian. Se sincronizaron las tres proyecciones del constructor y el checker instalado, cuyas líneas base de idioma español incrustadas cambiaron. |
+| Trabajo restante | ninguno |
 | Adiciones | ninguna |
 | Exclusiones | Artefactos en inglés y tokens significativos para máquinas. |
 | Aplazamientos | ninguno |
 | Rechazos | ninguno |
-| Evidencia | El propietario instaló `v3.1-rc.10` en otro repositorio con Pi, documentación solo en español y tres entornos. README.md, docs/repo-harness/README.md y current-state.md generados carecen de signos diacríticos (por ejemplo `documentacion`, `espanol`, `minimo`, `condicion`) y usan `habilidades`. El archivo canónico `skill/repo-harness-builder/scripts/harness_tool.py` contiene 16 apariciones de `documentacion` y 8 de `habilidades`. |
-| Historial de decisiones | 2026-10-11: el propietario prefiere `skills`; registrado como proposed mediante el issue #362. |
-| Siguiente condición de avance | Priorización del propietario. |
+| Evidencia | El propietario instaló `v3.1-rc.10` en otro repositorio con Pi, documentación solo en español y tres entornos. README.md, docs/repo-harness/README.md y current-state.md generados carecen de signos diacríticos (por ejemplo `documentacion`, `espanol`, `minimo`, `condicion`) y usan `habilidades`. El archivo canónico `skill/repo-harness-builder/scripts/harness_tool.py` contiene 16 apariciones de `documentacion` y 8 de `habilidades`. Implementación (issue #375) con pruebas primero: RED 3 pruebas nuevas `SpanishOrthographyTests` fallaron en `main` (44 fallos de subpruebas); GREEN pasan; suite completa 662 pruebas OK (11 omitidas); checker `current`, 0 escrituras. Una actualización simulada de un harness Pi solo en español instalado con `main` solo propone reemplazar `.repo-harness/check.py`; los documentos en español existentes son de propiedad humana y conservan su redacción anterior hasta que se editen a mano. |
+| Historial de decisiones | 2026-10-11: el propietario prefiere `skills`; registrado como proposed mediante el issue #362. 2026-10-13: el propietario lo priorizó antes del siguiente pre-release; completado mediante el issue #375. |
+| Siguiente condición de avance | ninguna (terminal); reabrir si la prosa generada en español pierde los signos diacríticos o dice `habilidades`. |
 
 ### RH-W-0102
 

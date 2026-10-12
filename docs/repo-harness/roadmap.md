@@ -22,7 +22,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-RH-W-0099 was completed through issue #364. RH-W-0100 was completed through issue #366. RH-W-0104 was registered as `proposed` on 2026-10-11 through issue #370 and completed on 2026-10-13 through the same issue; the `v3.1-rc.11` update test confirmed RH-W-0099 and RH-W-0100 in a live Pi consumer.
+RH-W-0099 was completed through issue #364. RH-W-0100 was completed through issue #366. RH-W-0104 was registered as `proposed` on 2026-10-11 through issue #370 and completed on 2026-10-13 through the same issue. RH-W-0103 was completed on 2026-10-13 through issue #375; the `v3.1-rc.11` update test confirmed RH-W-0099 and RH-W-0100 in a live Pi consumer.
 
 Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33, and its separately authorized implementation reduced it to 32. Registering owner-prioritized `RH-W-0088` as `proposed` raised it to 33. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
@@ -567,16 +567,16 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Origin | Owner `v3.1-rc.10` consumer test on 2026-10-11; issue #362. |
 | Priority | P2: human-facing Spanish documentation quality; no behavior risk. |
 | Dependencies | none |
-| Status | proposed |
-| Completed work | Recorded as a consumer-test finding; no implementation. |
-| Remaining work | Restore Spanish diacritics in generated Spanish human documentation and builder Spanish strings, and use the term `skills` instead of `habilidades`; keep machine tokens such as `APROBAR`/`DENEGAR` byte-stable and update affected tests. |
+| Status | completed |
+| Completed work | Restored diacritics in every generated Spanish document seed (bilingual and Spanish-only, integrated and standalone), the Spanish approval prompt and invalid-answer message, and the Spanish contribution question and guide; replaced `habilidades` with `skills`. Machine tokens `APROBAR`, `DENEGAR`, and `espanol` are unchanged. Synchronized three builder projections and the installed checker, whose embedded Spanish locale baselines changed. |
+| Remaining work | none |
 | Additions | none |
 | Exclusions | English artifacts and machine-significant tokens. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | The owner installed `v3.1-rc.10` in another repository using Pi, Spanish-only documentation and three runtimes. Generated README.md, docs/repo-harness/README.md and current-state.md lack Spanish diacritics (for example `documentacion`, `espanol`, `minimo`, `condicion`) and use `habilidades`. Canonical `skill/repo-harness-builder/scripts/harness_tool.py` contains 16 `documentacion` and 8 `habilidades` occurrences. |
-| Decision history | 2026-10-11: owner prefers `skills`; registered as proposed through issue #362. |
-| Next advancement condition | Owner prioritization. |
+| Evidence | The owner installed `v3.1-rc.10` in another repository using Pi, Spanish-only documentation and three runtimes. Generated README.md, docs/repo-harness/README.md and current-state.md lack Spanish diacritics (for example `documentacion`, `espanol`, `minimo`, `condicion`) and use `habilidades`. Canonical `skill/repo-harness-builder/scripts/harness_tool.py` contains 16 `documentacion` and 8 `habilidades` occurrences. Implementation (issue #375), test-first: RED 3 new `SpanishOrthographyTests` failed on `main` (44 subtest failures); GREEN they pass; full suite 662 tests OK (11 skipped); checker `current`, 0 writes. A simulated update of a `main`-installed Spanish-only Pi harness proposes only replacing `.repo-harness/check.py`; existing Spanish documents are human-owned and keep their old wording until edited by hand. |
+| Decision history | 2026-10-11: owner prefers `skills`; registered as proposed through issue #362. 2026-10-13: owner prioritized it before the next pre-release; completed through issue #375. |
+| Next advancement condition | none (terminal); reopen if generated Spanish prose loses diacritics or says `habilidades`. |
 
 ### RH-W-0102
 | Field | Value |
