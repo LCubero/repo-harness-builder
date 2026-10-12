@@ -10858,6 +10858,29 @@ class SpanishOrthographyTests(unittest.TestCase):
             with self.subTest(document=name):
                 self.assertNotIn("habilidad", text.lower())
 
+    def test_existing_unaccented_spanish_documents_still_check_clean(self):
+        """Documents generated before RH-W-0103 are human-owned; updating the builder must not flag them."""
+        old_wording = {
+            "Use las tres skills generadas": "Use las tres habilidades generadas",
+            "Límites de aprobación": "Limites de aprobacion",
+            "El harness mínimo": "El harness minimo",
+            "La documentación del repositorio": "La documentacion del repositorio",
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("pi",), documentation_languages=["es"], conversation_language="espanol")
+            for name in ("usage.md", "current-state.md", "decisions.md"):
+                path = root / "docs/repo-harness" / name
+                text = path.read_text(encoding="utf-8")
+                for new, old in old_wording.items():
+                    text = text.replace(new, old)
+                path.write_text(text, encoding="utf-8")
+            report = TOOL.check(root, "Example", ["pi"])
+            self.assertEqual(report["status"], "current")
+            states = {item["path"]: item["state"] for item in report["files"]}
+            for name in ("usage.md", "current-state.md", "decisions.md"):
+                self.assertEqual(states[f"docs/repo-harness/{name}"], "human-evolved")
+
     def test_spanish_approval_keeps_tokens_and_diacritics(self):
         domain = TOOL.APPROVAL_DOMAINS["espanol"]
         self.assertEqual((domain["approve"], domain["deny"]), ("APROBAR", "DENEGAR"))
