@@ -4,6 +4,8 @@
 
 ## 2026-10-13
 
+- Se publicó [`v3.1-rc.12`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.12) desde el commit de la etiqueta `88e34b360a06a90210ee71477e7785f0f4399c6a`, por decisión explícita del propietario de publicar para pruebas: `repo-harness-builder-v3.1-rc.12-claude-code.zip`, SHA-256 `7f4b5c70b597f962a6f5b8ad6fa328fda97156a74f7d18823b2ff75e66dd1c70`; `repo-harness-builder-v3.1-rc.12-opencode.zip`, SHA-256 `50c6c20e905b43c23e69426bd5e35c897d15ddef058147e87b09697e2a161f00`; y `repo-harness-builder-v3.1-rc.12-pi.zip`, SHA-256 `e7d62121d1db5a8daa810db9743b95397d973bd9d392a82471463719188c4210`.
+
 - Se completó RH-W-0103 (issue #375): la documentación generada en español, el aviso de aprobación en español y la pregunta y la guía de contribución en español conservan sus signos diacríticos y usan `skills` en lugar de `habilidades`; los tokens de máquina no cambian. Los documentos en español existentes de un consumidor son de propiedad humana y no se reescriben. Se sincronizaron las proyecciones del constructor y el checker instalado.
 
 - Se completó RH-W-0104 (fricción del flujo de actualización, issue #370): `check` informa `recordedLanguage` desde el manifiesto instalado; al actualizar, el constructor lo usa como idioma predeterminado de conversación, documentación e informe en lugar de volver a preguntarlo (lo que corrige la primera pregunta en inglés); un plan sin acciones create, append, replace ni migrate termina sin solicitar aprobación y solo informa que el harness está actualizado si nada queda bloqueado; el contrato de auditoría declara que sus consultas Git de solo lectura no requieren permiso aparte. Se sincronizaron las tres proyecciones del constructor.

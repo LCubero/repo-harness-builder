@@ -79,5 +79,6 @@
 - **Historical owner release decision (2026-10-11; superseded on 2026-10-11):** explicitly publish `v3.1-rc.8`, superseding the 2026-10-10 no-more-RC decision; `v3.1-rc.8` was then the last published candidate.
 - **Owner release decision (2026-10-11):** explicitly publish `v3.1-rc.9` for testing. Any later release, tag, version change, or publication remains a separate owner decision.
 - **Owner release decision (2026-10-11):** explicitly publish `v3.1-rc.10` for testing. Any later release, tag, version change, or publication remains a separate owner decision.
+- **Owner release decision (2026-10-13):** explicitly publish `v3.1-rc.12` for testing. Any later release, tag, version change, or publication remains a separate owner decision.
 - **Owner release decision (2026-10-11):** explicitly publish `v3.1-rc.11` for testing. Any later release, tag, version change, or publication remains a separate owner decision.
 - 2026-10-11: RH-W-0099 removed the builder command entry; the skill is invoked directly.
