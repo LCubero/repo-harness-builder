@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-11
 
+- Published [`v3.1-rc.10`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.10) from tag commit `2673e9f3ffa9ffdb4c25221699729da2905efbae`, following the owner's explicit testing-release decision: asset `repo-harness-builder-v3.1-rc.10.zip`, SHA-256 `d28727895d9f012ab461c1e04bf3d989cde9a85c10c5a7543767c27dceba79a8` (issue #360).
+
 - Completed RH-W-0102: the builder no longer blocks on `.gitattributes` lines its own exact LF rules override, such as a bare `* text=auto`; it evaluates each harness file's effective attributes in Git order, re-appends its LF rules with a brief reason only when a later line would force non-LF, and the checker explains such conflicts. Supersedes the RH-W-0042 bare `text=auto` block.
 
 - Registered owner proposals RH-W-0099 (invoke the builder skill directly instead of a command), RH-W-0100 (one release zip per runtime), and RH-W-0101 (builder removable after installation) as `proposed` roadmap records through issue #355. Documentation only.
