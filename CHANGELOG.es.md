@@ -4,6 +4,8 @@
 
 ## 2026-10-11
 
+- Completada RH-W-0099: el constructor se invoca directamente como skill (Claude Code `/repo-harness-builder`, Pi `/skill:repo-harness-builder`, herramienta `skill` de OpenCode); se retiraron la entrada separada de comando o prompt y sus proyecciones, y sus reglas se trasladaron a SKILL.md. Las entradas generadas para consumidores no cambiaron.
+
 - Se registraron los hallazgos de las pruebas de consumidor de `v3.1-rc.10`: RH-W-0102 se confirmó en una instalación real, se añadió evidencia a RH-W-0099 y RH-W-0100 y se registró la propuesta RH-W-0103 (signos diacríticos en español y el término `skills` en la documentación generada en español) mediante el issue #362. Solo documentación.
 
 - Se publico [`v3.1-rc.10`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.10) desde el commit etiquetado `2673e9f3ffa9ffdb4c25221699729da2905efbae`, siguiendo la decision explicita del propietario de publicar para pruebas: asset `repo-harness-builder-v3.1-rc.10.zip`, SHA-256 `d28727895d9f012ab461c1e04bf3d989cde9a85c10c5a7543767c27dceba79a8` (issue #360).

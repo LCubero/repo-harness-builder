@@ -22,6 +22,8 @@ Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 
 
 ## Orden de ejecucion aprobado restante
 
+RH-W-0099 se completó mediante el issue #364.
+
 Reconciliado el 2026-08-25 sobre los 26 registros no terminales de entonces y extendido a 28 con `RH-W-0076` y `RH-W-0077`. `RH-W-0078` lo elevo a 29; completar `RH-W-0073` lo redujo a 28; `RH-W-0079` lo devolvio temporalmente a 29 y su finalizacion lo redujo a 28. Las aprobadas RH-W-0080 y RH-W-0081 lo elevan a 30. Los siguientes IDs inmutables verificados, `RH-W-0082`, `RH-W-0083` y `RH-W-0084`, elevaron el portafolio autoritativo a 33. El 2026-08-31 `RH-W-0012` se completo, lo que lo redujo a 32, y se registro `RH-W-0085` desde un barrido de revision manual, lo que lo devolvio a 33. `RH-W-0086` se registro el 2026-09-01, lo que lo elevo a 34. El 2026-09-04 el propietario acepto el hallazgo de refuerzo de `RH-W-0084` como control bajo `RH-W-0083`, completo `RH-W-0084` y redujo el portafolio a 33; la implementacion autorizada por separado completo despues `RH-W-0083` y lo redujo a 32. Registrar `RH-W-0087` como `proposed` lo elevo a 33 y su implementacion autorizada por separado lo redujo a 32. Registrar `RH-W-0088`, priorizado por el propietario, como `proposed` lo elevo a 33. Después de las finalizaciones posteriores registradas abajo, de reabrir RH-W-0048 solo para reconciliar el contrato de mutabilidad y volver a verificar de forma independiente, y de completar ese alcance reabierto, la derivación vigente daba 27 registros no terminales. El registro autorizado por el propietario de RH-W-0089 elevó la derivación vigente a 28; su cierre de ciclo completado la devolvió a 27. El registro autorizado por el propietario de RH-W-0090 la elevó a 28 y RH-W-0091 la elevó a 29; su cierre de ciclo completado deja la derivación vigente de las filas del propietario en 27. El rechazo de RH-W-0090 y el registro de RH-W-0092 mantuvieron ese total; registrar RH-W-0093 lo elevó a 28; completar sus dos aclaraciones locales lo devuelve a 27 registros no terminales sin cambiar el orden aprobado. La entrega RH-W-0093 se completó mediante PR #201. Registrar RH-W-0094 elevó el total a 28; su cierre aprobado después de la fusión lo devolvió a 27. Registrar RH-W-0095 elevó el total vigente a 28; completarla tras verificación lo devolvió a 27 sin reprogramar trabajo ajeno. La cronología anterior es histórica. Los otros registros nuevos siguen sin programar. Estos registros se derivan de evidencia completa de la hoja de ruta, revision de solo lectura o una decision directa del propietario y quedan fuera del orden aprobado hasta ser programados.
 
 El diseno preventivo precede la arquitectura de estado local:
@@ -611,7 +613,7 @@ Origen: Propuesta del propietario del 2026-10-11 mediante el issue #355: publica
 
 Prioridad: `P2`: eliminar el paso de copia manual que causó un error real de instalación.
 
-Dependencias: Interactúa con RH-W-0099: si el zip incluye una entrada de comando o prompt.
+Dependencias: RH-W-0099 está completada: el constructor se invoca directamente como skill.
 
 Estado: `proposed`.
 
@@ -641,11 +643,11 @@ Prioridad: `P2`: reducir la superficie de instalación; un archivo menos que cop
 
 Dependencias: ninguna.
 
-Estado: `proposed`.
+Estado: `completed`.
 
-Trabajo completado: Registrado como propuesta del propietario; sin implementación.
+Trabajo completado: Se retiraron el comando del constructor, sus tres proyecciones de entrada y su renderizado; se trasladaron a SKILL.md las reglas exclusivas del wrapper (argumentos opcionales, directorio actual predeterminado, los tres idiomas para preview y apply, nunca anunciar una entrada bloqueada); las entradas de consumidores no cambiaron; proyecciones y manifiesto sincronizados.
 
-Trabajo restante: Confirmar que SKILL.md cubre las reglas de argumentos y orden de idioma del wrapper o trasladarlas allí; verificar la invocación directa con argumentos en Claude Code y OpenCode; decidir si también afecta a los prompts o comandos generados de session-start/stop/documentation/help (pregunta abierta, sin decisión).
+Trabajo restante: `none`. Estado terminal.
 
 Adiciones: `none`.
 
@@ -655,11 +657,11 @@ Aplazamientos: `none`.
 
 Rechazos: `none`.
 
-Evidencia: `command/repo-harness-builder.md` es un wrapper de 7 líneas que carga la skill y pasa `$ARGUMENTS` (idioma del informe, destino, restricciones). La documentación de Pi (`skills.md`) admite `/skill:name` con argumentos añadidos y denomina estas entradas prompts (`.pi/prompts/`), no comandos. En la prueba de consumidor de `v3.1-rc.10` del 2026-10-11 (issue #362), el prompt del constructor ("Load the skill by name ... Do not locate it by path") se detuvo porque Pi no expone un cargador por nombre; `/skill:repo-harness-builder` funcionó.
+Evidencia: Históricamente, `command/repo-harness-builder.md` era un wrapper de 7 líneas que carga la skill y pasa `$ARGUMENTS` (idioma del informe, destino, restricciones). La documentación de Pi (`skills.md`) admite `/skill:name` con argumentos añadidos y denomina estas entradas prompts (`.pi/prompts/`), no comandos. En la prueba de consumidor de `v3.1-rc.10` del 2026-10-11 (issue #362), el prompt del constructor ("Load the skill by name ... Do not locate it by path") se detuvo porque Pi no expone un cargador por nombre; `/skill:repo-harness-builder` funcionó.
 
-Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355. 2026-10-11: la prueba de consumidor de v3.1-rc.10 repitió el hallazgo (issue #362).
+Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355. 2026-10-11: la prueba de consumidor de v3.1-rc.10 repitió el hallazgo (issue #362). 2026-10-11: el propietario aprobó la implementación junto con RH-W-0100; completada mediante el issue #364.
 
-Siguiente condición: Priorización del propietario tras obtener evidencia de las pruebas de consumidor de `v3.1-rc.9`.
+Siguiente condición: ninguna (terminal); reabrir si un entorno no puede invocar la skill directamente.
 
 ### RH-W-0098
 

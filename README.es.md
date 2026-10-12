@@ -23,15 +23,15 @@ El harness funciona por si solo. El modo integrado compone de forma independient
 <!-- doc-role:quick-start -->
 
 1. Descargue y extraiga el zip de la [última versión](https://github.com/LCubero/repo-harness-builder/releases).
-2. Copie la habilidad (`skill/repo-harness-builder/`) y el comando (`command/repo-harness-builder.md`) dentro del repositorio de destino, según esta tabla. Nunca los instale en una carpeta global o de usuario.
+2. Hasta que se complete RH-W-0100, el zip de release contiene solo `skill/repo-harness-builder/`. Copie esa carpeta a la carpeta de skills del entorno (`skills` en plural), según esta tabla. Manténgala dentro del repositorio; nunca la instale en una carpeta global o de usuario.
 
-   | Entorno | Carpeta de la habilidad | Archivo de comando |
+   | Entorno | Carpeta de la habilidad | Invocación |
    |---|---|---|
-   | Claude Code | `.claude/skills/repo-harness-builder/` | `.claude/commands/repo-harness-builder.md` |
-   | OpenCode | `.opencode/skills/repo-harness-builder/` | `.opencode/commands/repo-harness-builder.md` |
-   | Pi | `.pi/skills/repo-harness-builder/` | `.pi/prompts/repo-harness-builder.md` |
+   | Claude Code | `.claude/skills/repo-harness-builder/` | `/repo-harness-builder` |
+   | OpenCode | `.opencode/skills/repo-harness-builder/` | Pida al agente que use la skill `repo-harness-builder` |
+   | Pi | `.pi/skills/repo-harness-builder/` | `/skill:repo-harness-builder` |
 
-3. Abra ese repositorio en su entorno y ejecute `/repo-harness-builder` una vez para preparar el harness. Responda sus preguntas y apruebe el plan antes de que haga cambios.
+3. Abra ese repositorio en su entorno e invoque la skill una vez para preparar el harness. Responda sus preguntas y apruebe el plan antes de que haga cambios.
 
 Requiere Python 3.10+ y su entorno ya instalado; si un destino ya existe, revíselo antes de copiar.
 

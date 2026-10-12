@@ -22,6 +22,8 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
+RH-W-0099 was completed through issue #364.
+
 Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33, and its separately authorized implementation reduced it to 32. Registering owner-prioritized `RH-W-0088` as `proposed` raised it to 33. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
 Completion of RH-W-0088 returned the portfolio to 32 non-terminal records. Owner-authorized no-residue closure of RH-W-0062 subsequently reduced it to 31, and owner-authorized rejection of RH-W-0040 reduced it to 30. After later completions recorded below, reopening RH-W-0048 only for mutability-contract reconciliation and independent re-verification, and completing that reopened scope, direct current derivation yielded 27 non-terminal records. Owner-authorized registration of RH-W-0089 raised the current derivation to 28; its completed lifecycle closure returned it to 27. Owner-authorized registrations of RH-W-0090 and RH-W-0091 later raised it to 29; RH-W-0091 closure left the recorded current derivation at 27. The owner rejection of RH-W-0090 and registration of RH-W-0092 replace one non-terminal record with another, so that derivation remained 27. Registration of RH-W-0093 raised the count to 28; completing its two local clarifications returns it to 27 non-terminal records without changing the approved order. RH-W-0093 delivery completed through PR #201. Registration of RH-W-0094 raised the count to 28; its approved post-merge closure returned the count to 27. Registration of RH-W-0095 raised the current count to 28; its verified completion returned the count to 27 without rescheduling unrelated work. The prior chronology is historical.
@@ -598,7 +600,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 |---|---|
 | Origin | Owner proposal on 2026-10-11 through issue #355: publish one release zip per runtime (Pi, OpenCode, Claude Code), ready to extract at the repository root, for example `.pi/skills/repo-harness-builder/`. |
 | Priority | P2: remove the manual copy step that caused a real install mistake. |
-| Dependencies | Interacts with RH-W-0099: whether the zip carries a command/prompt entry. |
+| Dependencies | RH-W-0099 is completed: the builder is invoked directly as a skill. |
 | Status | proposed |
 | Completed work | Recorded as an owner proposal; no implementation. |
 | Remaining work | Define per-runtime zip layout and release procedure; update README install steps. |
@@ -616,16 +618,16 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Origin | Owner proposal on 2026-10-11 through issue #355: drop the builder command/prompt entry and invoke the `repo-harness-builder` skill directly. |
 | Priority | P2: reduce install surface; one less file to copy. |
 | Dependencies | none |
-| Status | proposed |
-| Completed work | Recorded as an owner proposal; no implementation. |
-| Remaining work | Confirm that SKILL.md covers the wrapper's argument and language-order rules or move them there; verify direct skill invocation with arguments in Claude Code and OpenCode; decide whether generated consumer session-start/stop/documentation/help prompts/commands are also affected (open question, not decided). |
+| Status | completed |
+| Completed work | Removed the builder command and its three builder-entry projections and rendering; moved the wrapper-only rules (optional arguments, current-directory default, all three languages to preview and apply, never advertise a blocked entry point) into SKILL.md; consumer entries unchanged; projections and manifest synchronized. |
+| Remaining work | none |
 | Additions | none |
 | Exclusions | No change to generated consumer entries without a separate decision. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | `command/repo-harness-builder.md` is a 7-line wrapper loading the skill and passing `$ARGUMENTS` (report language, target, constraints). Pi docs (`skills.md`) support `/skill:name` with appended arguments and call these entries prompts (`.pi/prompts/`), not commands. In the 2026-10-11 `v3.1-rc.10` consumer test (issue #362), the builder prompt ("Load the skill by name ... Do not locate it by path") stopped because Pi exposes no by-name loader; `/skill:repo-harness-builder` worked. |
-| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. 2026-10-11: v3.1-rc.10 consumer test repeated the finding (issue #362). |
-| Next advancement condition | Owner prioritization after evidence from consumer testing of `v3.1-rc.9`. |
+| Evidence | Historically, `command/repo-harness-builder.md` was a 7-line wrapper loading the skill and passing `$ARGUMENTS` (report language, target, constraints). Pi docs (`skills.md`) support `/skill:name` with appended arguments and call these entries prompts (`.pi/prompts/`), not commands. In the 2026-10-11 `v3.1-rc.10` consumer test (issue #362), the builder prompt ("Load the skill by name ... Do not locate it by path") stopped because Pi exposes no by-name loader; `/skill:repo-harness-builder` worked. |
+| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. 2026-10-11: v3.1-rc.10 consumer test repeated the finding (issue #362). 2026-10-11: owner approved implementation with RH-W-0100; completed through issue #364. |
+| Next advancement condition | none (terminal); reopen if a runtime cannot invoke the skill directly. |
 
 ### RH-W-0098
 | Field | Value |

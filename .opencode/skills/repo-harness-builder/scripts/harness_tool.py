@@ -3993,11 +3993,9 @@ def render(
 def product_package_files(root: Path) -> list[str]:
     """Return safe text files from this repository's canonical builder package."""
     package = guarded_target(root, "skill/repo-harness-builder")
-    command = guarded_target(root, "command/repo-harness-builder.md")
-    if not package.exists() and not command.exists():
+    if not package.exists():
         return []
     require(package.is_dir() and not is_indirect(package), "self-hosted builder package must be a direct directory")
-    require(command.is_file() and not is_indirect(command), "self-hosted builder command must be a direct file")
     files: list[str] = []
     for current, directories, names in os.walk(package, followlinks=False):
         current_path = Path(current)
@@ -4124,19 +4122,6 @@ def render_repository(
         for target in targets.values():
             outputs[target] = content
         projections[canonical] = targets
-    command = "command/repo-harness-builder.md"
-    command_targets = {
-        runtime: (
-            ".pi/prompts/repo-harness-builder.md"
-            if runtime == "pi"
-            else f"{'.claude' if runtime == 'claude-code' else '.opencode'}/commands/repo-harness-builder.md"
-        )
-        for runtime in selected
-    }
-    command_content = guarded_target(root, command).read_text(encoding="utf-8")
-    for target in command_targets.values():
-        outputs[target] = command_content
-    projections[command] = command_targets
     manifest = json.loads(outputs[MANIFEST_PATH])
     manifest["canonicalProjections"] = projections
     outputs[MANIFEST_PATH] = dump_json(manifest)

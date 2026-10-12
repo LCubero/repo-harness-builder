@@ -658,7 +658,7 @@ class ApprovalUxTests(unittest.TestCase):
         _, body = text.split("---\n", 2)[1:]
         self.assertLess(TOOL.token_proxy(body), 1000)
         for phrase in (
-            "Invoke deliberately through `/repo-harness-builder`",
+            "Invoke the skill deliberately: Claude Code `/repo-harness-builder`",
             "strict rules apply only during an explicitly active builder execution",
             "show all four action sets",
             "approve only the current content-bound plan digest",
@@ -2314,8 +2314,6 @@ class AdditiveWriteTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             shutil.copytree(repository / "skill/repo-harness-builder", root / "skill/repo-harness-builder")
-            (root / "command").mkdir()
-            shutil.copy2(repository / "command/repo-harness-builder.md", root / "command/repo-harness-builder.md")
             stale = root / ".claude/skills/repo-harness-builder/scripts/harness_tool.py"
             stale.parent.mkdir(parents=True)
             stale.write_text("stale\n", encoding="utf-8")
@@ -6580,25 +6578,28 @@ resume_authority: required
         self.assertIsNotNone(render_repository, "self-hosted builder entries need a root-aware renderer")
 
         outputs = render_repository(repository, "repo-harness-builder", ["claude-code", "opencode", "pi"])
-        canonical = (repository / "command/repo-harness-builder.md").read_text(encoding="utf-8")
+        self.assertTrue(TOOL.product_package_files(repository))
         for path in (
             ".claude/commands/repo-harness-builder.md",
             ".opencode/commands/repo-harness-builder.md",
             ".pi/prompts/repo-harness-builder.md",
         ):
-            self.assertEqual(outputs[path], canonical)
-        self.assertIn("Load the `repo-harness-builder` skill by name", outputs[".pi/prompts/repo-harness-builder.md"])
-        self.assertNotIn("skill/repo-harness-builder", outputs[".pi/prompts/repo-harness-builder.md"])
+            self.assertNotIn(path, outputs)
 
     @unittest.skipIf(os.environ.get(CHILD_SUITE_ENV), "requires the reciprocal source repository")
     def test_builder_command_bare_invocation_matches_skill_dispatch(self):
-        command = (ROOT.parents[1] / "command/repo-harness-builder.md").read_text(encoding="utf-8")
-        self.assertNotIn("With no arguments, check the current working directory read-only", command)
-        self.assertIn(
-            "With no arguments, use the current working directory and follow the skill's installation, update, or correction flow; "
-            "it audits read-only and writes nothing before plan approval. Take the read-only inspection branch only when the user explicitly requests inspect/check.",
-            command,
-        )
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        for rule in (
+            "Claude Code `/repo-harness-builder`",
+            "Pi `/skill:repo-harness-builder`",
+            "OpenCode's `skill` tool",
+            "Optional arguments may name a report language, target repository, or constraints",
+            "With no arguments, use the current working directory",
+            "Pass conversation, documentation, and report languages explicitly to both preview and apply",
+            "Never advertise an entry point blocked by the plan",
+            "otherwise continue the existing installation, update, or correction flow unchanged",
+        ):
+            self.assertIn(rule, skill)
 
     @unittest.skipIf(os.environ.get(CHILD_SUITE_ENV), "requires the reciprocal source repository")
     def test_self_hosted_manifest_declares_every_builder_projection(self):
@@ -6611,18 +6612,23 @@ resume_authority: required
         consumer_manifest = json.loads(TOOL.render("Example", ["pi"])[TOOL.MANIFEST_PATH])
         self.assertNotIn("canonicalProjections", consumer_manifest)
         projections = manifest["canonicalProjections"]
-        self.assertEqual(
-            projections["command/repo-harness-builder.md"],
-            {
-                "claude-code": ".claude/commands/repo-harness-builder.md",
-                "opencode": ".opencode/commands/repo-harness-builder.md",
-                "pi": ".pi/prompts/repo-harness-builder.md",
-            },
-        )
+        self.assertNotIn("command/repo-harness-builder.md", projections)
+        self.assertTrue(all(path.startswith("skill/repo-harness-builder/") for path in projections))
         self.assertEqual(
             projections["skill/repo-harness-builder/LICENSE"]["pi"],
             ".pi/skills/repo-harness-builder/LICENSE",
         )
+
+    def test_product_package_without_builder_command(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = root / "skill/repo-harness-builder"
+            package.mkdir(parents=True)
+            (package / "SKILL.md").write_text("skill\n", encoding="utf-8")
+            self.assertEqual(TOOL.product_package_files(root), ["skill/repo-harness-builder/SKILL.md"])
+            outputs = TOOL.render_repository(root, "Example", ["pi"])
+            self.assertEqual(outputs[".pi/skills/repo-harness-builder/SKILL.md"], "skill\n")
+            self.assertNotIn(".pi/prompts/repo-harness-builder.md", outputs)
 
     def test_adding_pi_does_not_change_existing_builder_projection_bytes(self):
         repository = ROOT.parents[1]
@@ -6632,10 +6638,7 @@ resume_authority: required
         combined = render_repository(repository, "repo-harness-builder", ["claude-code", "opencode", "pi"])
         without_pi = render_repository(repository, "repo-harness-builder", ["claude-code", "opencode"])
         for path, content in without_pi.items():
-            if path.startswith((".claude/skills/repo-harness-builder/", ".opencode/skills/repo-harness-builder/")) or path in {
-                ".claude/commands/repo-harness-builder.md",
-                ".opencode/commands/repo-harness-builder.md",
-            }:
+            if path.startswith((".claude/skills/repo-harness-builder/", ".opencode/skills/repo-harness-builder/")):
                 self.assertEqual(combined[path], content)
 
     def test_changelog_is_simple_completed_history(self):
@@ -9883,13 +9886,12 @@ class GeneratedCheckScriptTests(unittest.TestCase):
             self.assertEqual(states[".pi/skills/repo-harness-session-start/SKILL.md"], "stale")
 
     @unittest.skipIf(os.environ.get(CHILD_SUITE_ENV), "requires the reciprocal source repository")
-    def test_detects_missing_builder_package_file_and_stale_pi_builder_prompt(self):
+    def test_detects_missing_builder_package_file_and_stale_pi_builder_skill(self):
         repository = next(
             (
                 candidate
                 for candidate in (ROOT, *ROOT.parents)
                 if (candidate / "skill/repo-harness-builder").is_dir()
-                and (candidate / "command/repo-harness-builder.md").is_file()
             ),
             None,
         )
@@ -9901,18 +9903,16 @@ class GeneratedCheckScriptTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             shutil.copytree(repository / "skill/repo-harness-builder", root / "skill/repo-harness-builder")
-            (root / "command").mkdir()
-            shutil.copy2(repository / "command/repo-harness-builder.md", root / "command/repo-harness-builder.md")
             outputs = render_repository(root, "repo-harness-builder", list(self.RUNTIMES))
             TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
             (root / ".pi/skills/repo-harness-builder/LICENSE").unlink()
-            prompt = root / ".pi/prompts/repo-harness-builder.md"
+            prompt = root / ".pi/skills/repo-harness-builder/SKILL.md"
             prompt.write_text(prompt.read_text(encoding="utf-8") + "stale\n", encoding="utf-8")
 
             report = self.loaded(root).check_projections(root)
             states = {item["path"]: item["state"] for item in report["files"]}
             self.assertEqual(states[".pi/skills/repo-harness-builder/LICENSE"], "missing")
-            self.assertEqual(states[".pi/prompts/repo-harness-builder.md"], "stale")
+            self.assertEqual(states[".pi/skills/repo-harness-builder/SKILL.md"], "stale")
 
     def test_provenance_rewrite_alone_is_not_drift(self):
         """A projection legitimately differs from its canonical only in the canonical-source line."""

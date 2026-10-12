@@ -8,7 +8,7 @@ Toda contribucion comienza con un issue y termina con revision del maintainer. M
 
 1. Abra o elija un [issue de GitHub](https://github.com/LCubero/repo-harness-builder/issues). Acuerde el alcance con un maintainer antes de implementar.
 2. Cree una rama corta y enfocada, como `docs/contribution-workflow` o `fix/projection-drift`.
-3. Cambie primero las fuentes canonicas. Para comportamiento del producto, edite `skill/repo-harness-builder/` o `command/repo-harness-builder.md`; trate `.claude/`, `.opencode/` y `.pi/` como proyecciones de entorno.
+3. Cambie primero las fuentes canonicas. Para comportamiento del producto, edite `skill/repo-harness-builder/`; trate `.claude/`, `.opencode/` y `.pi/` como proyecciones de entorno.
 4. Mantenga implementacion, pruebas y documentacion cercana en la misma unidad de trabajo.
 5. Ejecute las comprobaciones pertinentes y revise el diff completo.
 6. Abra un PR enfocado que enlace el issue con `Closes #<numero>` e indique alcance, verificacion y riesgos.

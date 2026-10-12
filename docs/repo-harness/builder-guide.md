@@ -21,7 +21,7 @@ Hermes Agent, OpenClaw, and Pi may inform research, but recreating or copying th
 
 After [installing the builder](../../README.md#install):
 
-1. Open the target repository and invoke `/repo-harness-builder`.
+1. Open the target repository and invoke the skill: Claude Code `/repo-harness-builder`, Pi `/skill:repo-harness-builder`, or ask OpenCode to use the `repo-harness-builder` skill through its `skill` tool.
 2. Answer the interview: runtime projections, license, conversation language, and documentation locales. Documentation stays English-only unless you declare another locale.
 3. Keep the default root `.codegraph/` ignore, or pass `--no-codegraph-ignore` to persistently opt out.
 4. Review the exact plan and use its language-scoped digest-bound approval: `APPROVE` or `DENY` in English, `APROBAR` or `DENEGAR` in Spanish.
@@ -93,7 +93,8 @@ Both modes use the native local backup. Integrated mode composes available Gentl
 <!-- doc-role:example -->
 
 ```text
-/repo-harness-builder
+# Claude Code: /repo-harness-builder; Pi: /skill:repo-harness-builder
+# OpenCode: ask the agent to use the repo-harness-builder skill.
 # Review the audit, answer one choice at a time, inspect the plan, then approve.
 
 Load repo-harness-session-start and continue the API migration.
@@ -104,7 +105,7 @@ Load repo-harness-documentation and update current state and the changelog.
 Load repo-harness-session-stop and prepare the handoff.
 ```
 
-The builder command remains `/repo-harness-builder`; the daily skills have the fixed registered names shown above. Runtime command syntax varies, so invoke skills through the runtime's skill mechanism. The generated help command reads `docs/repo-harness/usage.md` for concise repository-specific guidance. It reads `docs/es/repo-harness/usage.md` only when Spanish is a declared documentation locale and the conversation language is Spanish; it never names a guide that the same render did not create.
+The builder is invoked directly as a skill, without a separate command/prompt wrapper; the daily skills retain their generated entries and fixed registered names shown above. Runtime command syntax varies, so invoke skills through the runtime's skill mechanism. The generated help command reads `docs/repo-harness/usage.md` for concise repository-specific guidance. It reads `docs/es/repo-harness/usage.md` only when Spanish is a declared documentation locale and the conversation language is Spanish; it never names a guide that the same render did not create.
 
 Generated session outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, and `degraded`. They are scoped: optional Git failure can degrade a successful local session without falsely failing continuity. Explicit `commit and push` consent covers the unchanged safe sequence through one push; commit-only never implies push, and material changes pause for renewed consent.
 
@@ -153,7 +154,6 @@ Operational facts remain single-owned. `REPO-HARNESS.md`, `CHANGELOG.md`, and th
 Editable product sources are:
 
 - `skill/repo-harness-builder/`
-- `command/repo-harness-builder.md`
 
 `.opencode/`, `.claude/`, and `.pi/` contain runtime projections used for execution and testing. Do not edit them as canonical sources. This repository self-hosts recursively: its generated repository harness is used to improve the builder that generates repository harnesses. See [CONTRIBUTING.md](../../CONTRIBUTING.md) for the contribution workflow.
 

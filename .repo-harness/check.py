@@ -20,7 +20,7 @@ import sys
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 HARNESS = Path(__file__).resolve().parent
-MANIFEST_SHA256 = "d91e03893719c3e7f0434ef8c4c678d66b63a4afbb2e307a34769414551f940f"
+MANIFEST_SHA256 = "455a75cb848b668f15f5ce2521f2a804dce89ed93df735f5e25467307d098737"
 MANIFEST_FIELDS = {"schemaVersion", "generator", "project", "runtimes", "canonicalSkills", "canonicalCommands", "writeSemantics", "integrationMode", "language", "localState", "skillLicense"}
 OPTIONAL_MANIFEST_FIELDS = {"canonicalProjections", "canonicalReferences"}
 LOCAL_STATE = {'tmp': {'path': '.repo-harness/tmp/', 'class': 'disposable'}, 'archive': {'path': '.repo-harness/archive/', 'class': 'recoverable'}, 'state': {'path': '.repo-harness/state/', 'class': 'operational'}, 'memory-bk': {'path': '.repo-harness/memory-bk/', 'class': 'continuity-backup'}}

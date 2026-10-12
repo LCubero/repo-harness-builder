@@ -6,7 +6,7 @@ Contributions start with an issue and end with maintainer review. Keep each chan
 
 1. Open or choose a [GitHub issue](https://github.com/LCubero/repo-harness-builder/issues). Agree on scope with a maintainer before implementation.
 2. Create a short, focused branch such as `docs/contribution-workflow` or `fix/projection-drift`.
-3. Change canonical sources first. For product behavior, edit `skill/repo-harness-builder/` or `command/repo-harness-builder.md`; treat `.claude/`, `.opencode/`, and `.pi/` as runtime projections.
+3. Change canonical sources first. For product behavior, edit `skill/repo-harness-builder/`; treat `.claude/`, `.opencode/`, and `.pi/` as runtime projections.
 4. Keep implementation, tests, and nearby documentation in the same work unit.
 5. Run the relevant checks and inspect the complete diff.
 6. Open a focused PR that links the issue with `Closes #<number>` and states scope, verification, and risks.
