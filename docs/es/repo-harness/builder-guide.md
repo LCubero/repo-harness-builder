@@ -21,7 +21,7 @@ Hermes Agent, OpenClaw y Pi pueden aportar a la investigacion, pero recrearlos o
 
 Despues de [instalar el constructor](../../../README.es.md#instalación):
 
-1. Abra el repositorio objetivo e invoque `/repo-harness-builder`.
+1. Abra el repositorio objetivo e invoque la skill: Claude Code `/repo-harness-builder`, Pi `/skill:repo-harness-builder`, o pida a OpenCode que use la skill `repo-harness-builder` mediante su herramienta `skill`.
 2. Responda la entrevista: proyecciones de entorno, licencia, idioma de conversacion y locales de documentacion. La documentacion queda solo en ingles salvo que declare otro locale.
 3. Mantenga el ignore predeterminado de `.codegraph/` en la raiz o use `--no-codegraph-ignore` para registrar el opt-out.
 4. Revise el plan exacto y use la aprobacion vinculada al digest y al idioma: `APPROVE` o `DENY` en ingles, `APROBAR` o `DENEGAR` en espanol.
@@ -93,7 +93,8 @@ Ambos modos usan el backup local nativo. El modo integrado compone de forma inde
 <!-- doc-role:example -->
 
 ```text
-/repo-harness-builder
+# Claude Code: /repo-harness-builder; Pi: /skill:repo-harness-builder
+# OpenCode: pida al agente que use la skill repo-harness-builder.
 # Revise la auditoria, responda una eleccion a la vez, inspeccione el plan y apruebe.
 
 Cargue repo-harness-session-start y continue la migracion de API.
@@ -104,7 +105,7 @@ Cargue repo-harness-documentation y actualice el estado y el historial.
 Cargue repo-harness-session-stop y prepare la transferencia.
 ```
 
-El comando del constructor sigue siendo `/repo-harness-builder`; las habilidades diarias usan los nombres registrados fijos mostrados arriba. La sintaxis de comandos depende del entorno, asi que las habilidades se invocan mediante el mecanismo de habilidades del entorno. La ayuda generada lee `docs/repo-harness/usage.md`, y lee `docs/es/repo-harness/usage.md` solo cuando el espanol es un locale de documentacion declarado y el idioma de conversacion es espanol. Nunca nombra una guia que ese mismo render no creo.
+El constructor se invoca directamente como skill, sin un wrapper separado de comando o prompt; las habilidades diarias conservan sus entradas generadas y los nombres registrados fijos mostrados arriba. La sintaxis de comandos depende del entorno, asi que las habilidades se invocan mediante el mecanismo de habilidades del entorno. La ayuda generada lee `docs/repo-harness/usage.md`, y lee `docs/es/repo-harness/usage.md` solo cuando el espanol es un locale de documentacion declarado y el idioma de conversacion es espanol. Nunca nombra una guia que ese mismo render no creo.
 
 Los resultados de sesion son `ready`, `paused`, `blocked`, `failed`, `completed` y `degraded`. Tienen alcance acotado: un fallo Git opcional puede degradar una sesion local exitosa sin declarar falsamente fallida la continuidad. El consentimiento explicito `commit and push` cubre la secuencia segura sin cambios hasta un push; consentir solo commit nunca implica push, y los cambios materiales requieren renovar el consentimiento.
 
@@ -153,7 +154,6 @@ Los hechos operativos tienen un solo propietario. `REPO-HARNESS.md`, `CHANGELOG.
 Las fuentes editables son:
 
 - `skill/repo-harness-builder/`
-- `command/repo-harness-builder.md`
 
 `.claude/`, `.opencode/` y `.pi/` son proyecciones de ejecucion y prueba, no fuentes canonicas. Este repositorio usa su propio harness para mejorar el constructor que genera harness de repositorio. Consulte [CONTRIBUTING.es.md](../../../CONTRIBUTING.es.md) para el flujo de contribucion.
 

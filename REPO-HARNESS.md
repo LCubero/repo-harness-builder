@@ -7,7 +7,7 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 ## Purpose
 <!-- doc-role:purpose -->
 
-`repo-harness-builder` creates, audits, installs, and safely evolves repository-scoped systems of prompts, guardrails, rules, durable documentation, skills, and commands that assist AI coding agents. Product sources are `skill/repo-harness-builder/` and `command/repo-harness-builder.md`; `.claude/`, `.opencode/`, and `.pi/` are selected-runtime projections. This repository self-hosts: it uses the harness generated here to improve the builder itself. Consumer harnesses remain repository-scoped systems and do not inherit builder identity.
+`repo-harness-builder` creates, audits, installs, and safely evolves repository-scoped systems of prompts, guardrails, rules, durable documentation, skills, and commands that assist AI coding agents. Product sources are `skill/repo-harness-builder/`; `.claude/`, `.opencode/`, and `.pi/` are selected-runtime projections. This repository self-hosts: it uses the harness generated here to improve the builder itself. Consumer harnesses remain repository-scoped systems and do not inherit builder identity.
 
 ## Hard Rules
 <!-- doc-role:hard-rules -->
