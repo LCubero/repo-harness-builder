@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-11
 
+- Stated the current next step in EN/ES current state: `v3.1-rc.11` passed consumer install and update tests; recommended next unit is RH-W-0104, then RH-W-0103. Documentation only.
+
 - Recorded the `v3.1-rc.11` consumer update test: direct skill invocation (RH-W-0099) and the per-runtime zip (RH-W-0100) worked in a live Pi consumer and the update preview proposed no changes; registered proposed RH-W-0104 for update-flow friction (re-asked languages, approval request for an empty plan, unstated read-only Git audit) through issue #370. Documentation only.
 
 - Published [`v3.1-rc.11`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.11) from tag commit `ad1dcd7885f5271042a693cee3dc5bdd6f68fa9d`, following the owner's explicit testing-release decision: assets `repo-harness-builder-v3.1-rc.11-claude-code.zip`, SHA-256 `6f79659aaa9531285df42d18044b3877135003cc6d75d3895f2548937eef1eb5`; `repo-harness-builder-v3.1-rc.11-opencode.zip`, SHA-256 `e04d3132c24c45917de9044098bd9c5fa02caa892ac4d4def107d969315059bb`; and `repo-harness-builder-v3.1-rc.11-pi.zip`, SHA-256 `7fa27727d466be973e56e775986679d2777f1a6c9e288b89fb2b40fbe1ee87e4` (issue #368).

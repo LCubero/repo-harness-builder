@@ -184,6 +184,8 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
+**Siguiente paso vigente (2026-10-11):** `v3.1-rc.11` es el candidato de prueba publicado y sus pruebas de instalación y actualización en un consumidor pasaron. La siguiente unidad recomendada es la propuesta `RH-W-0104` (fricción del flujo de actualización) y después `RH-W-0103` (tildes del español y el término `skills`); cada una requiere priorización del propietario. La rama reemplazada `fix/gitattributes-text-auto-order`, local y remota, espera la decisión del propietario sobre su borrado. Los párrafos siguientes son historia.
+
 El 2026-08-27 se entregaron seis unidades, cada una por su propio issue y pull request y sin ningun commit directo a `main`: PRs #115, #117, #119, #121, #123 y #125. Las tres correcciones documentales siguientes llegaron mediante los PRs #126, #127 y #128. El 2026-08-28, el PR #130 entrego la contribucion documental RH-W-0079 y cerro el issue #129. Los PRs #134, #138, #142, #146 y #148 entregaron despues los cinco Cortes de RH-W-0079. La evidencia viva de rama y revision pertenece a Git y a session-start, y no se fija en esta proyeccion de estado actual. El commit `1df5f6e60a3fa095bd011ea32921c70218865fa5` registrado antes estuvo vigente y se conserva solo como contexto historico. El commit aun anterior `fac022c6bd070079fa0aaa54a19b5e6757172059` se habia conservado aqui como afirmacion en presente despues de dejar de ser cierta; durante la correccion anterior se verifico que estaba 15 commits por detras de `feb8db4d3fb5f41529166dd110885587f2e0c7af`.
 
 El contrato compartido RH-W-0071/RH-W-0082 esta completado y verificado. RH-W-0018 esta rechazada; todo release real sigue separado.
