@@ -555,7 +555,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | No consumer-line edits; rendered checker and manifest unchanged. |
 | Deferrals | none |
 | Rejections | No blocking on harmless lines overridden by exact LF rules. |
-| Evidence | Owner-forwarded TDD: RED 7 failures across 3 tests, including 5 non-LF subcases; GREEN 9 focused attribute tests pass. Clean Git attribute checks (`GIT_ATTR_NOSYSTEM=1`, empty `core.attributesFile`) show `.repo-harness/check.py` ends `eol: lf` with `* text=auto` before or after the exact rule. Source/test diffs confirm ordered evaluation, append-only repair and checker explanations. |
+| Evidence | Test-first: RED 7 failures across 3 tests, including 5 non-LF subcases; GREEN 9 focused attribute tests pass; full suite 651 tests OK (11 skipped). Clean Git attribute checks (`GIT_ATTR_NOSYSTEM=1`, empty `core.attributesFile`) show `.repo-harness/check.py` ends `eol: lf` with `* text=auto` before or after the exact rule. Source/test diffs confirm ordered evaluation, append-only repair and checker explanations. |
 | Decision history | 2026-10-11: owner approved not blocking when protected paths end LF; when a later line damages them, suggest an append-only re-append with a brief reason for consumer acceptance. |
 | Next advancement condition | none (terminal); reopen if a configuration that genuinely leaves a protected path non-LF is accepted, or if a harmless one blocks. |
 
