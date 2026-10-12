@@ -740,7 +740,7 @@ class ApprovalUxTests(unittest.TestCase):
                 self.assertIn(phrase.casefold(), branch)
         self.assertIn("direct cli `check` remains a separate read-only rendered comparison", branch)
         self.assertIn("existing installation, update, or correction flow unchanged", dispatch)
-        self.assertIn("Ask for conversation language and stop; after its answer ask documentation languages and stop.", steps)
+        self.assertIn("Ask for conversation language and stop; after its answer ask documentation languages and stop, unless `recordedLanguage` supplies them.", steps)
         self.assertIn("Report absent runtime surfaces and ask which profiles to include; stop. Do not infer profiles.", steps)
         self.assertIn("default `--activation maintenance`", skill)
         self.assertIn("--activation builder", steps)
@@ -10788,6 +10788,69 @@ class PackageFreshnessTests(unittest.TestCase):
             self.assertEqual(report["packageFreshness"]["state"], "fresh")
             self.assertEqual(report["writes"], 0)
             self.assertNotIn("packageFreshness", {key for entry in report["files"] for key in entry})
+
+
+class RecordedLanguageTests(unittest.TestCase):
+    """An update must offer the languages the installed manifest recorded instead of re-asking (RH-W-0104)."""
+
+    def test_check_reports_the_recorded_languages(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("pi",), documentation_languages=["es"], conversation_language="espanol")
+            report = TOOL.check(root, "Example", ["pi"])
+            self.assertEqual(report["status"], "current")
+            self.assertEqual(report["recordedLanguage"], {"conversation": "espanol", "documentation": ["es"]})
+            self.assertEqual(report["writes"], 0)
+
+    def test_an_absent_manifest_records_no_language(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report = TOOL.check(Path(directory), "Example", ["pi"])
+            self.assertIsNone(report["recordedLanguage"])
+
+    def test_a_manifest_without_a_language_record_reports_none(self):
+        """Older manifests never recorded a language; inferring one would be a guess."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(root, "Example", ("pi",))
+            manifest_path = root / TOOL.MANIFEST_PATH
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            del manifest["language"]
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            self.assertIsNone(TOOL.check(root, "Example", ["pi"])["recordedLanguage"])
+
+
+class UpdateFlowContractTests(unittest.TestCase):
+    """RH-W-0104: an update re-uses recorded choices, ends on an empty plan, and owns its Git reads."""
+
+    def audit(self) -> str:
+        return (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")
+
+    def test_language_questions_default_to_the_recorded_languages(self):
+        decisions = self.audit().split("## Decisions", 1)[1].split("## ", 1)[0]
+        self.assertIn("`recordedLanguage`", decisions)
+        self.assertIn("instead of asking", decisions)
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("unless `recordedLanguage` supplies them", skill)
+
+    def test_report_language_uses_the_recorded_conversation_language_before_asking(self):
+        section = self.audit().split("## Report Language", 1)[1].split("\n## ", 1)[0]
+        recorded = section.index("`recordedLanguage`")
+        ask = section.index("ask one localized report-language question and stop")
+        self.assertLess(recorded, ask)
+
+    def test_an_empty_plan_ends_without_an_approval_request(self):
+        safety = (ROOT / "references" / "preservation-and-safety.md").read_text(encoding="utf-8")
+        approval = safety.split("## Approval", 1)[1].split("\n## ", 1)[0]
+        self.assertIn("When `create`, `append`, `replace`, and `migrate` are all empty", approval)
+        self.assertIn("end without an approval request", approval)
+        # An empty executable plan with blocked entries is incomplete, never current.
+        self.assertIn("Report the harness current only when `blocked` is also empty and `check` reports `current`", approval)
+        self.assertIn("say the harness is not complete", approval)
+
+    def test_the_audit_states_it_runs_read_only_git_queries(self):
+        audit = self.audit().split("## Read-Only Audit", 1)[1].split("\n## ", 1)[0]
+        self.assertIn("read-only Git queries", audit)
+        self.assertIn("no separate permission", audit)
 
 
 class RecordedRuntimeSetTests(unittest.TestCase):

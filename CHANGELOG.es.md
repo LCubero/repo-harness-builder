@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-13
+
+- Se completó RH-W-0104 (fricción del flujo de actualización, issue #370): `check` informa `recordedLanguage` desde el manifiesto instalado; al actualizar, el constructor lo usa como idioma predeterminado de conversación, documentación e informe en lugar de volver a preguntarlo (lo que corrige la primera pregunta en inglés); un plan sin acciones create, append, replace ni migrate termina sin solicitar aprobación y solo informa que el harness está actualizado si nada queda bloqueado; el contrato de auditoría declara que sus consultas Git de solo lectura no requieren permiso aparte. Se sincronizaron las tres proyecciones del constructor.
+
 ## 2026-10-11
 
 - Se indicó el siguiente paso vigente en el estado actual EN/ES: `v3.1-rc.11` pasó las pruebas de instalación y actualización en un consumidor; la siguiente unidad recomendada es RH-W-0104 y después RH-W-0103. Solo documentación.

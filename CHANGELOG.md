@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-13
+
+- Completed RH-W-0104 (update-flow friction, issue #370): `check` reports `recordedLanguage` from the installed manifest; on update the builder uses it as the conversation, documentation, and report-language defaults instead of re-asking (fixing the English first question); a plan with no create, append, replace, or migrate action ends without an approval request and reports the harness current only when nothing is blocked; the audit contract states its read-only Git queries need no separate permission. Synchronized the three builder projections.
+
 ## 2026-10-11
 
 - Stated the current next step in EN/ES current state: `v3.1-rc.11` passed consumer install and update tests; recommended next unit is RH-W-0104, then RH-W-0103. Documentation only.
