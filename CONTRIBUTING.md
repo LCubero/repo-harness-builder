@@ -40,6 +40,14 @@ python .repo-harness/check.py
 
 The checker must report `current`, exit 0, and report 0 writes. If canonical product sources changed, synchronize affected managed outputs through maintenance preview and current-digest apply, then confirm the corresponding `.claude/`, `.opencode/`, and `.pi/` projections contain the same intended bytes. Documentation-only changes that do not alter generated contracts must not rewrite those projections.
 
+## Release packaging
+
+For each runtime, run `git archive --format=zip --prefix=<runtime>/skills/ -o repo-harness-builder-<version>-<name>.zip <commit>:skill`:
+- `.claude` → `claude-code`; `.opencode` → `opencode`; `.pi` → `pi`.
+- List archive members and confirm all are under `<runtime>/skills/repo-harness-builder/`.
+- Extract at a repository root and run `<runtime>/skills/repo-harness-builder/scripts/harness_tool.py --help` with Python; record each zip's SHA-256.
+Publishing a release remains an owner decision.
+
 ## PR Checklist
 
 - [ ] An issue exists and the PR links it.

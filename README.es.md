@@ -22,8 +22,8 @@ El harness funciona por si solo. El modo integrado compone de forma independient
 ## Instalación
 <!-- doc-role:quick-start -->
 
-1. Descargue y extraiga el zip de la [última versión](https://github.com/LCubero/repo-harness-builder/releases).
-2. Hasta que se complete RH-W-0100, el zip de release contiene solo `skill/repo-harness-builder/`. Copie esa carpeta a la carpeta de skills del entorno (`skills` en plural), según esta tabla. Manténgala dentro del repositorio; nunca la instale en una carpeta global o de usuario.
+1. Descargue el zip de su entorno de la [última versión](https://github.com/LCubero/repo-harness-builder/releases): `repo-harness-builder-<version>-claude-code.zip`, `repo-harness-builder-<version>-opencode.zip` o `repo-harness-builder-<version>-pi.zip`.
+2. Extráigalo en la raíz del repositorio donde lo utilizará. Crea la carpeta de skills de su entorno indicada en la tabla (`skills` en plural). Manténgala dentro del repositorio; nunca la instale en una carpeta global o de usuario.
 
    | Entorno | Carpeta de la habilidad | Invocación |
    |---|---|---|
@@ -33,7 +33,9 @@ El harness funciona por si solo. El modo integrado compone de forma independient
 
 3. Abra ese repositorio en su entorno e invoque la skill una vez para preparar el harness. Responda sus preguntas y apruebe el plan antes de que haga cambios.
 
-Requiere Python 3.10+ y su entorno ya instalado; si un destino ya existe, revíselo antes de copiar.
+Requiere Python 3.10+ y su entorno ya instalado; si un destino ya existe, revíselo antes de extraer o sobrescribir.
+
+Las versiones hasta `v3.1-rc.10` usaban un solo zip con `skill/` que debía copiarse manualmente.
 
 ## Uso diario
 <!-- doc-role:skills -->
