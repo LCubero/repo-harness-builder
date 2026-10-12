@@ -78,3 +78,4 @@
 - **Historical owner release decision (2026-10-10; superseded on 2026-10-11):** publish no further release-candidate pre-releases; `v3.1-rc.7` was then the last published candidate.
 - **Historical owner release decision (2026-10-11; superseded on 2026-10-11):** explicitly publish `v3.1-rc.8`, superseding the 2026-10-10 no-more-RC decision; `v3.1-rc.8` was then the last published candidate.
 - **Owner release decision (2026-10-11):** explicitly publish `v3.1-rc.9` for testing. Any later release, tag, version change, or publication remains a separate owner decision.
+- **Owner release decision (2026-10-11):** explicitly publish `v3.1-rc.10` for testing. Any later release, tag, version change, or publication remains a separate owner decision.

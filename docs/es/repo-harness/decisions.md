@@ -79,3 +79,4 @@ La fuente canonica es [`../../repo-harness/decisions.md`](../../repo-harness/dec
 - **Decisión histórica de release del propietario (2026-10-10; reemplazada el 2026-10-11):** no publicar más pre-releases candidatos; `v3.1-rc.7` era entonces el último candidato publicado.
 - **Decisión histórica de release del propietario (2026-10-11; reemplazada el 2026-10-11):** publicar explícitamente `v3.1-rc.8`, reemplazando la decisión del 2026-10-10 de no publicar más RC; `v3.1-rc.8` era entonces el último candidato publicado.
 - **Decisión de release del propietario (2026-10-11):** publicar explícitamente `v3.1-rc.9` para pruebas. Cualquier release, etiqueta, cambio de versión o publicación posterior sigue siendo una decisión aparte del propietario.
+- **Decisión de release del propietario (2026-10-11):** publicar explícitamente `v3.1-rc.10` para pruebas. Cualquier release, etiqueta, cambio de versión o publicación posterior sigue siendo una decisión aparte del propietario.
