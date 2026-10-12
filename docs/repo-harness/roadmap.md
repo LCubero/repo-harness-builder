@@ -50,7 +50,7 @@ Onboarding closes the approved path:
 14. `RH-W-0065` is completed and delivered through PR #253, squash-merged as `7419eae`.
 15. `RH-W-0066` is completed and delivered through PR #255, squash-merged as `e3cb7fc`.
 
-`RH-W-0014` is `completed` after owner-authorized test-first implementation on 2026-10-11 and delivered through issue #343 and PR #344 (`c2f46c6`). The 2 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052) and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence. Owner proposals `RH-W-0099`, `RH-W-0100`, and `RH-W-0101` were registered as `proposed` on 2026-10-11 through issue #355 and await prioritization after `v3.1-rc.9` consumer testing.
+`RH-W-0014` is `completed` after owner-authorized test-first implementation on 2026-10-11 and delivered through issue #343 and PR #344 (`c2f46c6`). The 2 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052) and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence. Owner proposals `RH-W-0099`, `RH-W-0100`, and `RH-W-0101` were registered as `proposed` on 2026-10-11 through issue #355 and await prioritization after `v3.1-rc.9` consumer testing. RH-W-0102 was completed on 2026-10-11 through issue #357.
 
 Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. Completed `RH-W-0050` remains the independent baseline for the architecture bundle.
 
@@ -541,6 +541,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0102
+| Field | Value |
+|---|---|
+| Origin | Owner test install of `v3.1-rc.9` in another repository on 2026-10-11, blocked by a bare `* text=auto`; issue #357. |
+| Priority | P1: a common `.gitattributes` default blocked installation. |
+| Dependencies | Supersedes the RH-W-0042 bare `text=auto` block. |
+| Status | completed |
+| Completed work | Implemented ordered effective `text`/`eol` evaluation per protected path, planning after the proposed append, and append-only LF-rule repair with a brief reason for normal consumer plan approval; checker conflicts now include `reason` and `suggestion`. Updated architecture, preservation-and-safety and validation references; synchronized three builder projections. |
+| Remaining work | none |
+| Additions | Re-append exact LF rules at the end only when a later consumer line would force non-LF. |
+| Exclusions | No consumer-line edits; rendered checker and manifest unchanged. |
+| Deferrals | none |
+| Rejections | No blocking on harmless lines overridden by exact LF rules. |
+| Evidence | Test-first: RED 7 failures across 3 tests, including 5 non-LF subcases; GREEN 9 focused attribute tests pass; full suite 651 tests OK (11 skipped). Clean Git attribute checks (`GIT_ATTR_NOSYSTEM=1`, empty `core.attributesFile`) show `.repo-harness/check.py` ends `eol: lf` with `* text=auto` before or after the exact rule. Source/test diffs confirm ordered evaluation, append-only repair and checker explanations. |
+| Decision history | 2026-10-11: owner approved not blocking when protected paths end LF; when a later line damages them, suggest an append-only re-append with a brief reason for consumer acceptance. |
+| Next advancement condition | none (terminal); reopen if a configuration that genuinely leaves a protected path non-LF is accepted, or if a harmless one blocks. |
 
 ### RH-W-0101
 | Field | Value |
@@ -1598,8 +1615,8 @@ Delivery clarification: PR #162, local commit `43e12cb`, reconciled the session-
 | Deferrals | none |
 | Rejections | Rejected asking the consumer to edit its `.gitattributes`, because the file is correct and documented and the builder is the side that is wrong. |
 | Evidence | The consumer's `.gitattributes` line 4 is `* text=auto eol=lf`, and that single wildcard reaches all 24 byte-compared protected paths. Its remaining rules use bare `text` and pass cleanly; `*.bat` and `*.cmd` carry `text eol=crlf` but match no protected path. `text=auto eol=lf` normalizes text files and pins the working tree to LF, so it is compatible with the exact `text eol=lf` rule the builder requires. No test covered the combination before this unit. Completion evidence: the RED run failed on `assertFalse` with the blocked entry naming 5 conflicting paths; after the change the canonical, Claude and OpenCode suites each pass 304 tests, the bare `* text=auto` block stays green in `test_matching_non_lf_attributes_block_without_writes`, and `conflicting_attribute_paths()` returns 0 conflicts over 31 protected paths against the consumer's real `.gitattributes`. Both checkers report `current` with 0 writes and 0 stale. |
-| Decision history | 2026-08-18: registered `ready` at P1 alongside `RH-W-0041` from the same consumer run, and completed the same day. The owner's instruction to keep the work small and organic applied directly: the fix is one added condition, not a new abstraction. |
-| Next advancement condition | Reopen only if a combination that genuinely forces non-LF is accepted, or if bare `text=auto` stops blocking. |
+| Decision history | 2026-08-18: registered `ready` at P1 alongside `RH-W-0041` from the same consumer run, and completed the same day. The owner's instruction to keep the work small and organic applied directly: the fix is one added condition, not a new abstraction. 2026-10-11: the bare `text=auto` block is superseded by RH-W-0102; its premise held only for paths without an explicit `eol=lf` rule, while the builder always appends one per protected path and Git's last match wins. |
+| Next advancement condition | Reopen only if a combination that genuinely forces non-LF is accepted, or if bare `text=auto` stops blocking (superseded by RH-W-0102). |
 
 ### RH-W-0040
 | Field | Value |

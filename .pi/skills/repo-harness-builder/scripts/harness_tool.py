@@ -1249,7 +1249,7 @@ def attribute_pattern_matches(pattern: str, path: str) -> bool:
 
 
 def conflicting_attribute_paths(current: bytes, protected: Sequence[str]) -> set[str]:
-    """Return protected paths touched by a text or eol assignment incompatible with LF."""
+    """Return protected paths whose ordered effective attributes conflict with LF."""
     conflicts: set[str] = set()
     lines = current.decode("utf-8", errors="replace").splitlines()
     macros = {
@@ -1268,23 +1268,32 @@ def conflicting_attribute_paths(current: bytes, protected: Sequence[str]) -> set
                 expanded.append(assignment)
         return expanded
 
-    for raw_line in lines:
-        fields = raw_line.split()
-        if len(fields) < 2:
-            continue
-        pattern, assignments = fields[0], expand(fields[1:])
-        lf_pinned = "eol=lf" in assignments
-        incompatible = any(
-            assignment == "binary"
-            or assignment == "eol"
-            or assignment.startswith(("-text", "!text", "-eol", "!eol"))
-            or (assignment.startswith("text=") and not (assignment == "text=auto" and lf_pinned))
-            or (assignment.startswith("eol=") and assignment != "eol=lf")
-            for assignment in assignments
-        )
-        if not incompatible:
-            continue
-        conflicts.update(path for path in protected if attribute_pattern_matches(pattern, path))
+    for path in protected:
+        text, eol = "unspecified", "unspecified"
+        incompatible_seen = False
+        for raw_line in lines:
+            fields = raw_line.split()
+            if len(fields) < 2 or not attribute_pattern_matches(fields[0], path):
+                continue
+            for assignment in expand(fields[1:]):
+                if assignment == "binary":
+                    assignment = "-text"
+                if assignment == "text":
+                    text = "set"
+                elif assignment in ("-text", "!text"):
+                    text = "unset" if assignment == "-text" else "unspecified"
+                    incompatible_seen = True
+                elif assignment.startswith("text="):
+                    text = assignment.removeprefix("text=")
+                    incompatible_seen = True
+                elif assignment.startswith("eol="):
+                    eol = assignment.removeprefix("eol=")
+                    incompatible_seen |= eol != "lf"
+                elif assignment in ("eol", "-eol", "!eol"):
+                    eol = "unspecified"
+                    incompatible_seen = True
+        if text == "unset" or (eol != "lf" and incompatible_seen):
+            conflicts.add(path)
     return conflicts
 
 
@@ -4661,22 +4670,22 @@ def plan_changes(root: Path, outputs: dict[str, str], trusted_skill_license: boo
         elif relative == GITATTRIBUTES_PATH and target.is_file() and not target.is_symlink():
             current = target.read_bytes()
             protected = byte_compared_paths(outputs, RULEBOOK_PATH)
-            conflicts = sorted(conflicting_attribute_paths(current, protected))
-            missing = missing_attribute_rules(current, git_attribute_rules(outputs, RULEBOOK_PATH))
+            rules = git_attribute_rules(outputs, RULEBOOK_PATH)
+            missing = missing_attribute_rules(current, rules)
+            addition = pointer_additions(current, missing)
+            conflicts = sorted(conflicting_attribute_paths(current + addition, protected))
             if conflicts:
-                blocked.append({
-                    "path": relative,
-                    "reason": "existing attributes conflict with required LF protection",
-                    "conflicts": conflicts,
-                })
-            elif missing:
-                addition = pointer_additions(current, missing)
+                addition += pointer_additions(
+                    current + addition, [f"{path} text eol=lf" for path in conflicts]
+                )
+            if addition:
                 append.append({
                     "path": relative,
                     "action": "append",
                     "sha256": digest_bytes(current),
                     "resultSha256": digest_bytes(current + addition),
                     "content": addition.decode("utf-8"),
+                    **({"reason": "A later line forces non-LF line endings on harness files; re-appending the exact LF rules at the end keeps them LF so the checker does not report false drift."} if conflicts else {}),
                 })
             else:
                 existing.append({
@@ -5550,6 +5559,8 @@ def check(
             if conflicts:
                 entry["state"] = "attribute-conflict"
                 entry["conflicts"] = conflicts
+                entry["reason"] = "Effective attributes force non-LF line endings on harness files."
+                entry["suggestion"] = "Re-run the builder to re-append the exact LF rules at the end, or remove the overriding line."
             elif missing:
                 entry["state"] = "directive-missing"
                 entry["missing"] = list(missing)
