@@ -48,7 +48,7 @@ Onboarding y el residuo restante cierran la ruta:
 14. `RH-W-0065` está `completed` y entregado mediante el PR #253, fusionado por squash como `7419eae`.
 15. `RH-W-0066` está completada y entregada mediante el PR #255, fusionado por squash como `e3cb7fc`.
 
-`RH-W-0014` está `completed` tras implementar con pruebas primero bajo autorización separada el 2026-10-11, y se entregó mediante el issue #343 y el PR #344 (`c2f46c6`). Los 2 registros aplazados conservan condiciones explícitas: RH-W-0052 bajo su [condición de reentrada residual](#rh-w-0052) basada en evidencia y `RH-W-0015`. La decisión del propietario del 2026-10-11 rechaza `RH-W-0018`, `RH-W-0026` y `RH-W-0063`; una necesidad futura abre un registro nuevo, no reabre estos. El diseño conjunto de RH-W-0018 con RH-W-0046 sigue como evidencia histórica. Las propuestas del propietario `RH-W-0099`, `RH-W-0100` y `RH-W-0101` se registraron como `proposed` el 2026-10-11 mediante el issue #355 y esperan priorización tras las pruebas de consumidor de `v3.1-rc.9`. RH-W-0102 se completó el 2026-10-11 mediante el issue #357.
+`RH-W-0014` está `completed` tras implementar con pruebas primero bajo autorización separada el 2026-10-11, y se entregó mediante el issue #343 y el PR #344 (`c2f46c6`). Los 2 registros aplazados conservan condiciones explícitas: RH-W-0052 bajo su [condición de reentrada residual](#rh-w-0052) basada en evidencia y `RH-W-0015`. La decisión del propietario del 2026-10-11 rechaza `RH-W-0018`, `RH-W-0026` y `RH-W-0063`; una necesidad futura abre un registro nuevo, no reabre estos. El diseño conjunto de RH-W-0018 con RH-W-0046 sigue como evidencia histórica. Las propuestas del propietario `RH-W-0099`, `RH-W-0100` y `RH-W-0101` se registraron como `proposed` el 2026-10-11 mediante el issue #355 y esperan priorización tras las pruebas de consumidor de `v3.1-rc.9`. RH-W-0102 se completó el 2026-10-11 mediante el issue #357. RH-W-0103 se registró como `proposed` el 2026-10-11 mediante el issue #362.
 
 El diseno conjunto no fusiona las unidades de implementacion. Cada implementacion conserva pruebas, commit, issue, pull request, evidencia de ciclo de vida, limite de rollback y condicion de avance propios. `RH-W-0050`, ya completada, sigue como base independiente del paquete de arquitectura.
 
@@ -540,6 +540,25 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0103
+
+Estado: `proposed`. Trabajo restante: Restaurar los signos diacríticos en la documentación humana generada en español y las cadenas en español del constructor, y usar `skills` en lugar de `habilidades`; mantener `APROBAR`/`DENEGAR` estables a nivel de bytes y actualizar las pruebas afectadas. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Prueba de consumidor de `v3.1-rc.10` por el propietario el 2026-10-11; issue #362. |
+| Prioridad | P2: calidad de la documentación en español para personas; sin riesgo de comportamiento. |
+| Dependencias | ninguna |
+| Trabajo completado | Registrado como hallazgo de prueba de consumidor; sin implementación. |
+| Trabajo restante | Restaurar los signos diacríticos en la documentación humana generada en español y las cadenas en español del constructor, y usar el término `skills` en lugar de `habilidades`; mantener estables a nivel de bytes los tokens de máquina como `APROBAR`/`DENEGAR` y actualizar las pruebas afectadas. |
+| Adiciones | ninguna |
+| Exclusiones | Artefactos en inglés y tokens significativos para máquinas. |
+| Aplazamientos | ninguno |
+| Rechazos | ninguno |
+| Evidencia | El propietario instaló `v3.1-rc.10` en otro repositorio con Pi, documentación solo en español y tres entornos. README.md, docs/repo-harness/README.md y current-state.md generados carecen de signos diacríticos (por ejemplo `documentacion`, `espanol`, `minimo`, `condicion`) y usan `habilidades`. El archivo canónico `skill/repo-harness-builder/scripts/harness_tool.py` contiene 16 apariciones de `documentacion` y 8 de `habilidades`. |
+| Historial de decisiones | 2026-10-11: el propietario prefiere `skills`; registrado como proposed mediante el issue #362. |
+| Siguiente condición de avance | Priorización del propietario. |
+
 ### RH-W-0102
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
@@ -608,9 +627,9 @@ Aplazamientos: `none`.
 
 Rechazos: `none`.
 
-Evidencia: El 2026-10-11 una instalación de prueba de `v3.1-rc.9` realizada por el propietario en otro repositorio colocó la skill bajo `.pi/skill/` (singular) en lugar de `.pi/skills/`; el archivo de prompt quedó en el lugar correcto.
+Evidencia: El 2026-10-11 una instalación de prueba de `v3.1-rc.9` realizada por el propietario en otro repositorio colocó la skill bajo `.pi/skill/` (singular) en lugar de `.pi/skills/`; el archivo de prompt quedó en el lugar correcto. El zip de `v3.1-rc.10` aún contiene `skill/` (singular) y `command/`; el propietario volvió a corregir manualmente el destino en la prueba de consumidor del 2026-10-11 (issue #362).
 
-Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355.
+Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355. 2026-10-11: la prueba de consumidor de v3.1-rc.10 repitió el hallazgo (issue #362).
 
 Siguiente condición: Priorización del propietario tras obtener evidencia de las pruebas de consumidor de `v3.1-rc.9`.
 
@@ -636,9 +655,9 @@ Aplazamientos: `none`.
 
 Rechazos: `none`.
 
-Evidencia: `command/repo-harness-builder.md` es un wrapper de 7 líneas que carga la skill y pasa `$ARGUMENTS` (idioma del informe, destino, restricciones). La documentación de Pi (`skills.md`) admite `/skill:name` con argumentos añadidos y denomina estas entradas prompts (`.pi/prompts/`), no comandos.
+Evidencia: `command/repo-harness-builder.md` es un wrapper de 7 líneas que carga la skill y pasa `$ARGUMENTS` (idioma del informe, destino, restricciones). La documentación de Pi (`skills.md`) admite `/skill:name` con argumentos añadidos y denomina estas entradas prompts (`.pi/prompts/`), no comandos. En la prueba de consumidor de `v3.1-rc.10` del 2026-10-11 (issue #362), el prompt del constructor ("Load the skill by name ... Do not locate it by path") se detuvo porque Pi no expone un cargador por nombre; `/skill:repo-harness-builder` funcionó.
 
-Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355.
+Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355. 2026-10-11: la prueba de consumidor de v3.1-rc.10 repitió el hallazgo (issue #362).
 
 Siguiente condición: Priorización del propietario tras obtener evidencia de las pruebas de consumidor de `v3.1-rc.9`.
 

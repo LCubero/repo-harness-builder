@@ -50,7 +50,7 @@ Onboarding closes the approved path:
 14. `RH-W-0065` is completed and delivered through PR #253, squash-merged as `7419eae`.
 15. `RH-W-0066` is completed and delivered through PR #255, squash-merged as `e3cb7fc`.
 
-`RH-W-0014` is `completed` after owner-authorized test-first implementation on 2026-10-11 and delivered through issue #343 and PR #344 (`c2f46c6`). The 2 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052) and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence. Owner proposals `RH-W-0099`, `RH-W-0100`, and `RH-W-0101` were registered as `proposed` on 2026-10-11 through issue #355 and await prioritization after `v3.1-rc.9` consumer testing. RH-W-0102 was completed on 2026-10-11 through issue #357.
+`RH-W-0014` is `completed` after owner-authorized test-first implementation on 2026-10-11 and delivered through issue #343 and PR #344 (`c2f46c6`). The 2 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052) and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence. Owner proposals `RH-W-0099`, `RH-W-0100`, and `RH-W-0101` were registered as `proposed` on 2026-10-11 through issue #355 and await prioritization after `v3.1-rc.9` consumer testing. RH-W-0102 was completed on 2026-10-11 through issue #357. RH-W-0103 was registered as `proposed` on 2026-10-11 through issue #362.
 
 Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. Completed `RH-W-0050` remains the independent baseline for the architecture bundle.
 
@@ -542,6 +542,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0103
+| Field | Value |
+|---|---|
+| Origin | Owner `v3.1-rc.10` consumer test on 2026-10-11; issue #362. |
+| Priority | P2: human-facing Spanish documentation quality; no behavior risk. |
+| Dependencies | none |
+| Status | proposed |
+| Completed work | Recorded as a consumer-test finding; no implementation. |
+| Remaining work | Restore Spanish diacritics in generated Spanish human documentation and builder Spanish strings, and use the term `skills` instead of `habilidades`; keep machine tokens such as `APROBAR`/`DENEGAR` byte-stable and update affected tests. |
+| Additions | none |
+| Exclusions | English artifacts and machine-significant tokens. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | The owner installed `v3.1-rc.10` in another repository using Pi, Spanish-only documentation and three runtimes. Generated README.md, docs/repo-harness/README.md and current-state.md lack Spanish diacritics (for example `documentacion`, `espanol`, `minimo`, `condicion`) and use `habilidades`. Canonical `skill/repo-harness-builder/scripts/harness_tool.py` contains 16 `documentacion` and 8 `habilidades` occurrences. |
+| Decision history | 2026-10-11: owner prefers `skills`; registered as proposed through issue #362. |
+| Next advancement condition | Owner prioritization. |
+
 ### RH-W-0102
 | Field | Value |
 |---|---|
@@ -589,8 +606,8 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | No release packaging implementation in this registration. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | On 2026-10-11 an owner test install of `v3.1-rc.9` in another repository placed the skill under `.pi/skill/` (singular) instead of `.pi/skills/`; the prompt file landed correctly. |
-| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. |
+| Evidence | On 2026-10-11 an owner test install of `v3.1-rc.9` in another repository placed the skill under `.pi/skill/` (singular) instead of `.pi/skills/`; the prompt file landed correctly. The `v3.1-rc.10` zip still contains `skill/` (singular) and `command/`; the owner corrected the destination manually again in the 2026-10-11 consumer test (issue #362). |
+| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. 2026-10-11: v3.1-rc.10 consumer test repeated the finding (issue #362). |
 | Next advancement condition | Owner prioritization after evidence from consumer testing of `v3.1-rc.9`. |
 
 ### RH-W-0099
@@ -606,8 +623,8 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | No change to generated consumer entries without a separate decision. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | `command/repo-harness-builder.md` is a 7-line wrapper loading the skill and passing `$ARGUMENTS` (report language, target, constraints). Pi docs (`skills.md`) support `/skill:name` with appended arguments and call these entries prompts (`.pi/prompts/`), not commands. |
-| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. |
+| Evidence | `command/repo-harness-builder.md` is a 7-line wrapper loading the skill and passing `$ARGUMENTS` (report language, target, constraints). Pi docs (`skills.md`) support `/skill:name` with appended arguments and call these entries prompts (`.pi/prompts/`), not commands. In the 2026-10-11 `v3.1-rc.10` consumer test (issue #362), the builder prompt ("Load the skill by name ... Do not locate it by path") stopped because Pi exposes no by-name loader; `/skill:repo-harness-builder` worked. |
+| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. 2026-10-11: v3.1-rc.10 consumer test repeated the finding (issue #362). |
 | Next advancement condition | Owner prioritization after evidence from consumer testing of `v3.1-rc.9`. |
 
 ### RH-W-0098

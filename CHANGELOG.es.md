@@ -4,6 +4,8 @@
 
 ## 2026-10-11
 
+- Se registraron los hallazgos de las pruebas de consumidor de `v3.1-rc.10`: RH-W-0102 se confirmó en una instalación real, se añadió evidencia a RH-W-0099 y RH-W-0100 y se registró la propuesta RH-W-0103 (signos diacríticos en español y el término `skills` en la documentación generada en español) mediante el issue #362. Solo documentación.
+
 - Se publico [`v3.1-rc.10`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.10) desde el commit etiquetado `2673e9f3ffa9ffdb4c25221699729da2905efbae`, siguiendo la decision explicita del propietario de publicar para pruebas: asset `repo-harness-builder-v3.1-rc.10.zip`, SHA-256 `d28727895d9f012ab461c1e04bf3d989cde9a85c10c5a7543767c27dceba79a8` (issue #360).
 
 - Completado RH-W-0102: el constructor ya no bloquea por líneas de `.gitattributes` que sus propias reglas LF exactas anulan, como un `* text=auto` sin más atributos; evalúa los atributos efectivos de cada archivo del harness en orden Git, vuelve a agregar sus reglas LF con una razón breve solo cuando una línea posterior fuerza finales distintos de LF y el checker explica esos conflictos. Reemplaza el bloqueo de `text=auto` sin más atributos de RH-W-0042.
