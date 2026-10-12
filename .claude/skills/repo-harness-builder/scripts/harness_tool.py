@@ -5585,6 +5585,12 @@ def check(
         "files": entries,
         "skillLicense": selected_license or "unknown",
         "runtimeSet": runtime_set_report(root, runtimes),
+        # Only a manifest `language` record counts; an older manifest's inferred value is a guess.
+        "recordedLanguage": (
+            {"conversation": conversation_language, "documentation": list(documentation_languages or [])}
+            if conversation_language is not None
+            else None
+        ),
         "packageFreshness": package_freshness(root),
         "writes": 0,
     }

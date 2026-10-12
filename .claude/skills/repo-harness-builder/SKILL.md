@@ -40,7 +40,7 @@ Before step 1, if the user explicitly requests inspect/check, take the read-only
 
 First read `references/validation.md`; if it is missing, unsafe, unreadable, or untrusted, stop without running the checker and report that limitation after evaluating the reference. Then validate the selected root. Require directly contained `.repo-harness/check.py` and `.repo-harness/manifest.json` files: both must be readable regular files with safe direct ancestors. Missing, unsafe, unreadable, or untrusted evidence is a reported limitation and stops. From the selected root run exactly `python -B .repo-harness/check.py` with no arguments. Use authenticated declared configuration only: the installed checker must authenticate the exact manifest bytes and recognized schema. Never infer runtimes, profiles, languages, or capabilities from raw manifest fields. Report exact current/drift/errors/limitations from the checker. Stop without installation interview, fallback, repair, apply, synchronization, Git, or mutation. Direct CLI `check` remains a separate read-only rendered comparison, not this active-builder inspection branch.
 
-1. Read `references/audit-and-interview.md`; inspect read-only and resolve report language. Ask for conversation language and stop; after its answer ask documentation languages and stop.
+1. Read `references/audit-and-interview.md`; inspect read-only and resolve report language. Ask for conversation language and stop; after its answer ask documentation languages and stop, unless `recordedLanguage` supplies them.
 2. Report absent runtime surfaces and ask which profiles to include; stop. Do not infer profiles.
 3. Read `references/architecture.md`. For integrated mode, gather independent Gentle AI and Engram evidence; skip detection for `--standalone`.
 4. Resolve a missing license using `references/license-selection.md`; resolve the optional contribution guide under `references/audit-and-interview.md` (check before asking; preserve existing guides); read `references/preservation-and-safety.md`, audit existing content, and resolve integration versus archive/start clean before planning.
@@ -54,4 +54,4 @@ For installation/update, report status, readiness, four action sets, generated t
 
 ## References
 
-Load only the owner each gate above names, when its trigger occurs.
+Load only the owner a gate names, when triggered.

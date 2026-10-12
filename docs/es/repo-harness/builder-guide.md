@@ -27,6 +27,8 @@ Despues de [instalar el constructor](../../../README.es.md#instalación):
 4. Revise el plan exacto y use la aprobacion vinculada al digest y al idioma: `APPROVE` o `DENY` en ingles, `APROBAR` o `DENEGAR` en espanol.
 5. Inicie el trabajo normal con la habilidad generada `repo-harness-session-start`.
 
+Al actualizar, el constructor reutiliza los idiomas registrados en el manifiesto instalado en lugar de volver a preguntarlos, y cuando el plan no tiene nada que crear, anexar, reemplazar ni migrar, no pide aprobacion, y solo informa que el harness esta actualizado si nada queda bloqueado. Sus consultas Git de solo lectura forman parte de la auditoria y no requieren permiso aparte.
+
 Sin operacion explicita, el constructor realiza una auditoria de solo lectura. No inicializa Git ni modifica remotos, crea commits, envia cambios o publica, salvo que esas acciones separadas se soliciten y aprueben despues.
 
 El constructor posee la auditoria, vista previa, aprobacion y aplicacion. Si el entorno no lista la habilidad nueva, inicie una sesion nueva del entorno. Despues de aplicar, ejecute `python3 .repo-harness/check.py` (`python` en Windows) en el objetivo: solo la salida 0 con `"status": "current"` y `"writes": 0` indica que el harness es congruente. El trabajo diario sigue el [Flujo diario](usage.md#flujo-diario).

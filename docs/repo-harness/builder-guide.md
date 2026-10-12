@@ -27,6 +27,8 @@ After [installing the builder](../../README.md#install):
 4. Review the exact plan and use its language-scoped digest-bound approval: `APPROVE` or `DENY` in English, `APROBAR` or `DENEGAR` in Spanish.
 5. Start normal work with the generated `repo-harness-session-start` skill.
 
+On an update, the builder reuses the languages the installed manifest recorded instead of asking again, and when the plan has nothing to create, append, replace, or migrate it asks for no approval, and reports the harness current only when nothing is blocked. Its read-only Git queries are part of the audit and need no separate permission.
+
 With no operation, the builder performs a read-only audit. It does not initialize Git, mutate remotes, commit, push, or publish unless those separate actions are later requested and approved.
 
 The builder owns audit, preview, approval, and apply. If the runtime does not list the new skill, start a fresh runtime session. After apply, run `python3 .repo-harness/check.py` (`python` on Windows) in the target: only exit 0 with `"status": "current"` and `"writes": 0` means the harness is congruent. Daily work follows the [Daily Workflow](usage.md#daily-workflow).
