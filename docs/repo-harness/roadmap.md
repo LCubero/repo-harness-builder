@@ -22,7 +22,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-RH-W-0099 was completed through issue #364. RH-W-0100 was completed through issue #366.
+RH-W-0099 was completed through issue #364. RH-W-0100 was completed through issue #366. RH-W-0104 was registered as `proposed` on 2026-10-11 through issue #370; the `v3.1-rc.11` update test confirmed RH-W-0099 and RH-W-0100 in a live Pi consumer.
 
 Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33, and its separately authorized implementation reduced it to 32. Registering owner-prioritized `RH-W-0088` as `proposed` raised it to 33. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
@@ -543,6 +543,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0104
+| Field | Value |
+|---|---|
+| Origin | Owner `v3.1-rc.11` consumer update test on 2026-10-11; issue #370. |
+| Priority | P2: update friction; no data risk. |
+| Dependencies | none |
+| Status | proposed |
+| Completed work | Recorded as consumer-test findings; no implementation. |
+| Remaining work | On update, offer the manifest-recorded conversation and documentation languages as defaults instead of re-asking; when the plan proposes no changes, report the harness is current and end without an approval request; state in the audit contract that the builder runs read-only Git queries as audit evidence. |
+| Additions | none |
+| Exclusions | Fresh installs keep the full interview; no change to approval tokens or digest binding. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Owner update test in another repository using Pi, an existing rc.10 harness, Spanish documentation and three runtimes: `/skill:repo-harness-builder` loaded the builder without a command (RH-W-0099); the `-pi.zip` extracted directly into `.pi/skills/repo-harness-builder/` (RH-W-0100). Installed checker and builder check reported `current`, 0 writes. Update preview: no create/append/replace actions, 74 identical and 2 preserved, no blocks, 0 writes; the owner answered `DENEGAR` to the empty plan. The builder re-asked both languages despite `.repo-harness/manifest.json` recording `conversation: espanol`, `documentation: [es]`; the first question was in English. `skill/repo-harness-builder/references/audit-and-interview.md:49` defaults runtimes to the manifest set but has no equivalent language rule. No rule covers an empty plan. The consumer agent requested separate human permission for internal read-only Git queries because the audit contract does not state that the audit runs them. |
+| Decision history | 2026-10-11: registered as proposed through issue #370. |
+| Next advancement condition | Owner prioritization. |
 
 ### RH-W-0103
 | Field | Value |
