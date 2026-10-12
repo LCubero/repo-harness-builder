@@ -4,6 +4,8 @@
 
 ## 2026-10-11
 
+- Se publico [`v3.1-rc.11`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.11) desde el commit etiquetado `ad1dcd7885f5271042a693cee3dc5bdd6f68fa9d`, siguiendo la decision explicita del propietario de publicar para pruebas: assets `repo-harness-builder-v3.1-rc.11-claude-code.zip`, SHA-256 `6f79659aaa9531285df42d18044b3877135003cc6d75d3895f2548937eef1eb5`; `repo-harness-builder-v3.1-rc.11-opencode.zip`, SHA-256 `e04d3132c24c45917de9044098bd9c5fa02caa892ac4d4def107d969315059bb`; y `repo-harness-builder-v3.1-rc.11-pi.zip`, SHA-256 `7fa27727d466be973e56e775986679d2777f1a6c9e288b89fb2b40fbe1ee87e4` (issue #368).
+
 - Completada RH-W-0100: las releases publican un zip por entorno (`-claude-code`, `-opencode`, `-pi`) que se extrae directamente en la carpeta de skills del entorno en la raiz del repositorio; CONTRIBUTING documenta el procedimiento de empaquetado con `git archive`. Sin herramientas nuevas.
 
 - Completada RH-W-0099: el constructor se invoca directamente como skill (Claude Code `/repo-harness-builder`, Pi `/skill:repo-harness-builder`, herramienta `skill` de OpenCode); se retiraron la entrada separada de comando o prompt y sus proyecciones, y sus reglas se trasladaron a SKILL.md. Las entradas generadas para consumidores no cambiaron.
