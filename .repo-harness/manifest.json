@@ -18,11 +18,6 @@
     }
   },
   "canonicalProjections": {
-    "command/repo-harness-builder.md": {
-      "claude-code": ".claude/commands/repo-harness-builder.md",
-      "opencode": ".opencode/commands/repo-harness-builder.md",
-      "pi": ".pi/prompts/repo-harness-builder.md"
-    },
     "skill/repo-harness-builder/LICENSE": {
       "claude-code": ".claude/skills/repo-harness-builder/LICENSE",
       "opencode": ".opencode/skills/repo-harness-builder/LICENSE",

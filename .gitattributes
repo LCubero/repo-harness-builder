@@ -36,7 +36,6 @@
 .pi/skills/repo-harness-documentation/SKILL.md text eol=lf
 .pi/skills/repo-harness-session-start/SKILL.md text eol=lf
 .pi/skills/repo-harness-session-stop/SKILL.md text eol=lf
-.claude/commands/repo-harness-builder.md text eol=lf
 .claude/skills/repo-harness-builder/LICENSE text eol=lf
 .claude/skills/repo-harness-builder/SKILL.md text eol=lf
 .claude/skills/repo-harness-builder/assets/audit-report.template.md text eol=lf
@@ -50,7 +49,6 @@
 .claude/skills/repo-harness-builder/scripts/harness_tool.py text eol=lf
 .claude/skills/repo-harness-builder/tests/fixtures/rh_w_0079_changed_behavior_inventory.json text eol=lf
 .claude/skills/repo-harness-builder/tests/test_harness_tool.py text eol=lf
-.opencode/commands/repo-harness-builder.md text eol=lf
 .opencode/skills/repo-harness-builder/LICENSE text eol=lf
 .opencode/skills/repo-harness-builder/SKILL.md text eol=lf
 .opencode/skills/repo-harness-builder/assets/audit-report.template.md text eol=lf
@@ -64,7 +62,6 @@
 .opencode/skills/repo-harness-builder/scripts/harness_tool.py text eol=lf
 .opencode/skills/repo-harness-builder/tests/fixtures/rh_w_0079_changed_behavior_inventory.json text eol=lf
 .opencode/skills/repo-harness-builder/tests/test_harness_tool.py text eol=lf
-.pi/prompts/repo-harness-builder.md text eol=lf
 .pi/skills/repo-harness-builder/LICENSE text eol=lf
 .pi/skills/repo-harness-builder/SKILL.md text eol=lf
 .pi/skills/repo-harness-builder/assets/audit-report.template.md text eol=lf

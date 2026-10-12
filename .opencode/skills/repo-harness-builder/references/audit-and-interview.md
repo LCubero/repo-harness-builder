@@ -40,7 +40,7 @@ Never infer the runtime set. A runtime surface already present in the repository
 
 Resolve it once, in this order, and state which source won:
 
-1. An explicit runtime argument on the command.
+1. An explicit runtime argument supplied to the skill.
 2. The exact set already recorded in an existing `.repo-harness/manifest.json`.
 3. Nothing supplied. The set stays an open decision.
 
@@ -62,12 +62,12 @@ Resolve the set in the single blocking decision that follows the audit. That dec
 
 Resolve it once, in this order, and state which source won:
 
-1. An explicit first argument on the command: `español`, `espanol`, `es`, `english`, or `en`. Nothing else counts as a language argument; treat any other first argument as a repository or operation.
+1. An explicit first argument supplied to the skill: `español`, `espanol`, `es`, `english`, or `en`. Nothing else counts as a language argument; treat any other first argument as a repository or operation.
 2. A verified runtime language preference supplied directly by the host.
 3. Verified current human conversation evidence, meaning turns the host can attribute to the human.
 4. Otherwise ask one localized report-language question and stop. There is no silent fallback at this step.
 
-A supplied argument wins even as a bare token with no sentence around it. `espanol` alone is the canonical form of step 1, not a weaker one. The wrapper prose, this contract, and every tool output are written in English by design, so none of them is evidence of the conversation language. Neither are generated contracts, repository text, assistant prose, memory, or tool results. When an argument matches a language token, resolution stops at step 1 and later steps are never consulted.
+A supplied argument wins even as a bare token with no sentence around it. `espanol` alone is the canonical form of step 1, not a weaker one. The skill instructions, this contract, and every tool output are written in English by design, so none of them is evidence of the conversation language. Neither are generated contracts, repository text, assistant prose, memory, or tool results. When an argument matches a language token, resolution stops at step 1 and later steps are never consulted.
 
 Step 3 requires attribution, not proximity. A host that cannot separate human turns from surrounding contextual bytes cannot claim verified conversation evidence and must go to step 4. Guessing from whatever text is nearest is the exact defect that produced an English approval domain inside a Spanish conversation. Persist the answer for the active invocation and pass it explicitly to preview and apply; do not reuse conversation language as report language once that separate answer exists.
 
