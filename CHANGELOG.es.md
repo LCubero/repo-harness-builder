@@ -4,6 +4,8 @@
 
 ## 2026-10-13
 
+- Se completó RH-W-0103 (issue #375): la documentación generada en español, el aviso de aprobación en español y la pregunta y la guía de contribución en español conservan sus signos diacríticos y usan `skills` en lugar de `habilidades`; los tokens de máquina no cambian. Los documentos en español existentes de un consumidor son de propiedad humana y no se reescriben. Se sincronizaron las proyecciones del constructor y el checker instalado.
+
 - Se completó RH-W-0104 (fricción del flujo de actualización, issue #370): `check` informa `recordedLanguage` desde el manifiesto instalado; al actualizar, el constructor lo usa como idioma predeterminado de conversación, documentación e informe en lugar de volver a preguntarlo (lo que corrige la primera pregunta en inglés); un plan sin acciones create, append, replace ni migrate termina sin solicitar aprobación y solo informa que el harness está actualizado si nada queda bloqueado; el contrato de auditoría declara que sus consultas Git de solo lectura no requieren permiso aparte. Se sincronizaron las tres proyecciones del constructor.
 
 ## 2026-10-11

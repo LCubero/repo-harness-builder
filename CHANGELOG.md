@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-13
 
+- Completed RH-W-0103 (issue #375): generated Spanish documentation, the Spanish approval prompt, and the Spanish contribution question and guide keep their diacritics and use `skills` instead of `habilidades`; machine tokens are unchanged. Existing consumer Spanish documents are human-owned and are not rewritten. Synchronized the builder projections and the installed checker.
+
 - Completed RH-W-0104 (update-flow friction, issue #370): `check` reports `recordedLanguage` from the installed manifest; on update the builder uses it as the conversation, documentation, and report-language defaults instead of re-asking (fixing the English first question); a plan with no create, append, replace, or migrate action ends without an approval request and reports the harness current only when nothing is blocked; the audit contract states its read-only Git queries need no separate permission. Synchronized the three builder projections.
 
 ## 2026-10-11
