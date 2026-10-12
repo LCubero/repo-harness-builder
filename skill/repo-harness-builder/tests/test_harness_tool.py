@@ -9376,7 +9376,7 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
             self.assertEqual(TOOL.write_outputs(root, outputs, plan), sorted(set(outputs) - {".gitattributes"}))
             self.assertEqual(target.read_bytes(), original)
 
-    def test_matching_non_lf_attributes_block_without_writes(self):
+    def test_matching_non_lf_attributes_append_without_blocking(self):
         cases = (
             b".repo-harness/check.py text eol=crlf\n",
             b".repo-harness/* text eol=crlf\n",
@@ -9392,13 +9392,33 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
                 outputs = TOOL.render("Example", [])
                 plan = TOOL.plan_changes(root, outputs)
 
-                blocked = [item for item in plan["blocked"] if item["path"] == ".gitattributes"]
-                self.assertEqual(len(blocked), 1)
-                self.assertNotIn(".gitattributes", [item["path"] for item in plan["append"]])
-                with self.assertRaises(TOOL.ContractError):
-                    TOOL.write_outputs(root, outputs, plan)
-                self.assertEqual(target.read_bytes(), original)
-                self.assertFalse((root / RULEBOOK).exists())
+                self.assertFalse([item for item in plan["blocked"] if item["path"] == ".gitattributes"])
+                entry = next(item for item in plan["append"] if item["path"] == ".gitattributes")
+                if b"eol=lf\n.repo-harness/**" in original:
+                    self.assertIn("reason", entry)
+                TOOL.write_outputs(root, outputs, plan)
+                self.assertTrue(target.read_bytes().startswith(original))
+                self.assertFalse(TOOL.conflicting_attribute_paths(
+                    target.read_bytes(), TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH)))
+
+    def test_attribute_text_auto_append_git_effective_lf(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            (root / ".gitattributes").write_bytes(b"* text=auto\n")
+            outputs = TOOL.render("Example", [])
+            plan = TOOL.plan_changes(root, outputs)
+            self.assertFalse(plan["blocked"])
+            self.assertIn(".gitattributes", [item["path"] for item in plan["append"]])
+            TOOL.write_outputs(root, outputs, plan)
+            empty = root / "empty-attributes"
+            empty.write_bytes(b"")
+            result = subprocess.run(
+                ["git", "-c", f"core.attributesFile={empty.as_posix()}", "check-attr", "text", "eol", "--", ".repo-harness/check.py"],
+                cwd=root, env={**os.environ, "GIT_ATTR_NOSYSTEM": "1"},
+                capture_output=True, text=True, check=True)
+            self.assertIn("text: set", result.stdout)
+            self.assertIn("eol: lf", result.stdout)
 
     def test_compatible_broader_attributes_do_not_block_exact_rule_append(self):
         for original in (b"* text eol=lf\n", b"* text=auto eol=lf\n"):
@@ -9416,6 +9436,7 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
     def test_check_reports_only_bounded_attribute_protection(self):
         cases = (
             (b"# human\n" + self.EXPECTED.encode(), "present"),
+            (b"* text=auto\n" + self.EXPECTED.encode(), "present"),
             (b".repo-harness/check.py text eol=lf\n", "directive-missing"),
             (b".repo-harness/* text eol=crlf\n", "attribute-conflict"),
         )
@@ -9429,10 +9450,14 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
                 entry = next(item for item in report["files"] if item["path"] == ".gitattributes")
 
                 self.assertEqual(entry["state"], expected_state)
+                if expected_state == "attribute-conflict":
+                    self.assertIn("reason", entry)
+                    self.assertIn("suggestion", entry)
+                self.assertEqual(report["writes"], 0)
                 self.assertEqual(report["status"], "current" if expected_state == "present" else "drift")
 
     def test_autocrlf_checkout_preserves_generated_manifest_checker_contract(self):
-        attributes = TOOL.render("Example", [])[".gitattributes"]
+        attributes = "* text=auto\n" + TOOL.render("Example", [])[".gitattributes"]
 
         with tempfile.TemporaryDirectory() as directory:
             checkout = Path(directory)
@@ -9460,6 +9485,16 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
                 text=True,
             )
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_attribute_ordered_effective_assignments(self):
+        path = ".repo-harness/check.py"
+        exact = f"{path} text eol=lf\n".encode()
+        for assignment in ("binary", "-text", "eol=crlf", "eol", "-eol", "!eol"):
+            override = f"* {assignment}\n".encode()
+            with self.subTest(assignment=assignment):
+                self.assertEqual(TOOL.conflicting_attribute_paths(exact + override, [path]), {path})
+                self.assertFalse(TOOL.conflicting_attribute_paths(override + exact, [path]))
+        self.assertFalse(TOOL.conflicting_attribute_paths(exact + b"* text=auto\n", [path]))
 
     def test_attribute_evaluation_uses_posix_paths_on_every_platform(self):
         current = b".repo-harness/** text eol=crlf\n"
