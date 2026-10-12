@@ -42,6 +42,14 @@ python .repo-harness/check.py
 
 El checker debe informar `current`, terminar con codigo 0 e informar 0 escrituras. Si cambiaron fuentes canonicas del producto, sincronice las salidas administradas afectadas mediante la vista previa de mantenimiento y el apply con el digest actual, y luego confirme que las proyecciones correspondientes en `.claude/`, `.opencode/` y `.pi/` contienen los mismos bytes previstos. Los cambios solo documentales que no alteran contratos generados no deben reescribir esas proyecciones.
 
+## Empaquetado de release
+
+Para cada entorno, ejecute `git archive --format=zip --prefix=<runtime>/skills/ -o repo-harness-builder-<version>-<name>.zip <commit>:skill`:
+- `.claude` → `claude-code`; `.opencode` → `opencode`; `.pi` → `pi`.
+- Liste los miembros del archivo y confirme que todos estan bajo `<runtime>/skills/repo-harness-builder/`.
+- Extraiga en la raiz de un repositorio y ejecute `<runtime>/skills/repo-harness-builder/scripts/harness_tool.py --help` con Python; registre el SHA-256 de cada zip.
+Publicar una release sigue siendo una decision del propietario.
+
 ## Lista para el PR
 
 - [ ] Existe un issue y el PR lo enlaza.

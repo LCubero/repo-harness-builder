@@ -22,8 +22,8 @@ The harness works on its own. Integrated mode composes available Gentle AI and E
 ## Install
 <!-- doc-role:quick-start -->
 
-1. Download and extract the zip of the [latest release](https://github.com/LCubero/repo-harness-builder/releases).
-2. Until RH-W-0100 lands, the release zip contains only `skill/repo-harness-builder/`. Copy that folder to your runtime's skills folder (`skills` plural) using the destinations below. Keep it inside the repository, never in a global or user-level configuration folder.
+1. Download your runtime's zip from the [latest release](https://github.com/LCubero/repo-harness-builder/releases): `repo-harness-builder-<version>-claude-code.zip`, `repo-harness-builder-<version>-opencode.zip`, or `repo-harness-builder-<version>-pi.zip`.
+2. Extract it at the root of the repository where you will use it. It creates your runtime's skills folder shown below (`skills` plural). Keep it inside the repository, never in a global or user-level configuration folder.
 
    | Runtime | Skill folder | Invocation |
    |---|---|---|
@@ -33,7 +33,9 @@ The harness works on its own. Integrated mode composes available Gentle AI and E
 
 3. Open that repository in your runtime and invoke the skill once to set up the harness. Answer its questions and approve the plan before it makes changes.
 
-Requires Python 3.10+ and your runtime already installed; if a destination already exists, inspect it before copying.
+Requires Python 3.10+ and your runtime already installed; if a destination already exists, inspect it before extracting or overwriting.
+
+Releases up to `v3.1-rc.10` used a single zip containing `skill/` that had to be copied manually.
 
 ## Daily Use
 <!-- doc-role:skills -->

@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-11
 
+- Completed RH-W-0100: releases publish one zip per runtime (`-claude-code`, `-opencode`, `-pi`) that extracts directly into that runtime's skills folder at the repository root; CONTRIBUTING documents the `git archive` packaging procedure. No new tooling.
+
 - Completed RH-W-0099: the builder is invoked directly as a skill (Claude Code `/repo-harness-builder`, Pi `/skill:repo-harness-builder`, OpenCode `skill` tool); the separate builder command/prompt entry and its projections were removed and its rules moved into SKILL.md. Generated consumer entries are unchanged.
 
 - Recorded `v3.1-rc.10` consumer-test findings: confirmed RH-W-0102 in a real install, added evidence to RH-W-0099 and RH-W-0100, and registered proposed RH-W-0103 (Spanish diacritics and the term `skills` in generated Spanish documentation) through issue #362. Documentation only.

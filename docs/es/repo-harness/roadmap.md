@@ -22,7 +22,7 @@ Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 
 
 ## Orden de ejecucion aprobado restante
 
-RH-W-0099 se completó mediante el issue #364.
+RH-W-0099 se completó mediante el issue #364. RH-W-0100 se completó mediante el issue #366.
 
 Reconciliado el 2026-08-25 sobre los 26 registros no terminales de entonces y extendido a 28 con `RH-W-0076` y `RH-W-0077`. `RH-W-0078` lo elevo a 29; completar `RH-W-0073` lo redujo a 28; `RH-W-0079` lo devolvio temporalmente a 29 y su finalizacion lo redujo a 28. Las aprobadas RH-W-0080 y RH-W-0081 lo elevan a 30. Los siguientes IDs inmutables verificados, `RH-W-0082`, `RH-W-0083` y `RH-W-0084`, elevaron el portafolio autoritativo a 33. El 2026-08-31 `RH-W-0012` se completo, lo que lo redujo a 32, y se registro `RH-W-0085` desde un barrido de revision manual, lo que lo devolvio a 33. `RH-W-0086` se registro el 2026-09-01, lo que lo elevo a 34. El 2026-09-04 el propietario acepto el hallazgo de refuerzo de `RH-W-0084` como control bajo `RH-W-0083`, completo `RH-W-0084` y redujo el portafolio a 33; la implementacion autorizada por separado completo despues `RH-W-0083` y lo redujo a 32. Registrar `RH-W-0087` como `proposed` lo elevo a 33 y su implementacion autorizada por separado lo redujo a 32. Registrar `RH-W-0088`, priorizado por el propietario, como `proposed` lo elevo a 33. Después de las finalizaciones posteriores registradas abajo, de reabrir RH-W-0048 solo para reconciliar el contrato de mutabilidad y volver a verificar de forma independiente, y de completar ese alcance reabierto, la derivación vigente daba 27 registros no terminales. El registro autorizado por el propietario de RH-W-0089 elevó la derivación vigente a 28; su cierre de ciclo completado la devolvió a 27. El registro autorizado por el propietario de RH-W-0090 la elevó a 28 y RH-W-0091 la elevó a 29; su cierre de ciclo completado deja la derivación vigente de las filas del propietario en 27. El rechazo de RH-W-0090 y el registro de RH-W-0092 mantuvieron ese total; registrar RH-W-0093 lo elevó a 28; completar sus dos aclaraciones locales lo devuelve a 27 registros no terminales sin cambiar el orden aprobado. La entrega RH-W-0093 se completó mediante PR #201. Registrar RH-W-0094 elevó el total a 28; su cierre aprobado después de la fusión lo devolvió a 27. Registrar RH-W-0095 elevó el total vigente a 28; completarla tras verificación lo devolvió a 27 sin reprogramar trabajo ajeno. La cronología anterior es histórica. Los otros registros nuevos siguen sin programar. Estos registros se derivan de evidencia completa de la hoja de ruta, revision de solo lectura o una decision directa del propietario y quedan fuera del orden aprobado hasta ser programados.
 
@@ -615,15 +615,13 @@ Prioridad: `P2`: eliminar el paso de copia manual que causó un error real de in
 
 Dependencias: RH-W-0099 está completada: el constructor se invoca directamente como skill.
 
-Estado: `proposed`.
+Estado: `completed`.
 
-Trabajo completado: Registrado como propuesta del propietario; sin implementación.
+Trabajo completado: Documentados los zips de release por entorno creados con `git archive --prefix=<runtime>/skills/` desde `skill/`, listos para extraer en la raíz del repositorio; actualizadas la instalación del README y el procedimiento de empaquetado en CONTRIBUTING; sin herramientas nuevas.
 
-Trabajo restante: Definir la disposición del zip por entorno y el procedimiento de release; actualizar los pasos de instalación del README.
+Trabajo restante: `none`. Adiciones: `none`.
 
-Adiciones: `none`.
-
-Exclusiones: Sin implementación del empaquetado de release en este registro.
+Exclusiones: Sin herramientas nuevas; publicar una release sigue siendo una decisión del propietario.
 
 Aplazamientos: `none`.
 
@@ -631,9 +629,9 @@ Rechazos: `none`.
 
 Evidencia: El 2026-10-11 una instalación de prueba de `v3.1-rc.9` realizada por el propietario en otro repositorio colocó la skill bajo `.pi/skill/` (singular) en lugar de `.pi/skills/`; el archivo de prompt quedó en el lugar correcto. El zip de `v3.1-rc.10` aún contiene `skill/` (singular) y `command/`; el propietario volvió a corregir manualmente el destino en la prueba de consumidor del 2026-10-11 (issue #362).
 
-Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355. 2026-10-11: la prueba de consumidor de v3.1-rc.10 repitió el hallazgo (issue #362).
+Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355. 2026-10-11: la prueba de consumidor de v3.1-rc.10 repitió el hallazgo (issue #362). 2026-10-11: el propietario aprobó la implementación junto con RH-W-0099; completada mediante el issue #366 sin herramientas nuevas.
 
-Siguiente condición: Priorización del propietario tras obtener evidencia de las pruebas de consumidor de `v3.1-rc.9`.
+Siguiente condición: `none` (terminal); reabrir si un zip publicado no se extrae en la carpeta de skills de su entorno.
 
 ### RH-W-0099
 

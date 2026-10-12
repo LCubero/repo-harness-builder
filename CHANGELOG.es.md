@@ -4,6 +4,8 @@
 
 ## 2026-10-11
 
+- Completada RH-W-0100: las releases publican un zip por entorno (`-claude-code`, `-opencode`, `-pi`) que se extrae directamente en la carpeta de skills del entorno en la raiz del repositorio; CONTRIBUTING documenta el procedimiento de empaquetado con `git archive`. Sin herramientas nuevas.
+
 - Completada RH-W-0099: el constructor se invoca directamente como skill (Claude Code `/repo-harness-builder`, Pi `/skill:repo-harness-builder`, herramienta `skill` de OpenCode); se retiraron la entrada separada de comando o prompt y sus proyecciones, y sus reglas se trasladaron a SKILL.md. Las entradas generadas para consumidores no cambiaron.
 
 - Se registraron los hallazgos de las pruebas de consumidor de `v3.1-rc.10`: RH-W-0102 se confirmó en una instalación real, se añadió evidencia a RH-W-0099 y RH-W-0100 y se registró la propuesta RH-W-0103 (signos diacríticos en español y el término `skills` en la documentación generada en español) mediante el issue #362. Solo documentación.

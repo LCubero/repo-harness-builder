@@ -22,7 +22,7 @@ Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 
 
 ## Remaining Approved Execution Order
 
-RH-W-0099 was completed through issue #364.
+RH-W-0099 was completed through issue #364. RH-W-0100 was completed through issue #366.
 
 Reconciled on 2026-08-25 across the 26 non-terminal records then existing and extended on 2026-08-26 to 28 by `RH-W-0076` and `RH-W-0077`. `RH-W-0078` raised the portfolio to 29; completion of `RH-W-0073` reduced it to 28; `RH-W-0079` temporarily returned it to 29 and its completion reduced it to 28. Owner-approved `RH-W-0080` and `RH-W-0081` raised it to 30. Verified next immutable IDs `RH-W-0082`, `RH-W-0083`, and `RH-W-0084` raised the authoritative portfolio to 33. On 2026-08-31 `RH-W-0012` completed, which reduced it to 32, and `RH-W-0085` was registered from a manual review sweep, which returned it to 33. `RH-W-0086` was registered on 2026-09-01, which raised it to 34. On 2026-09-04 the owner accepted the `RH-W-0084` reinforcement finding as a control under `RH-W-0083`, completing `RH-W-0084` and reducing the portfolio to 33; owner-authorized implementation then completed `RH-W-0083` and reduced it to 32. Registering `RH-W-0087` as `proposed` raised it to 33, and its separately authorized implementation reduced it to 32. Registering owner-prioritized `RH-W-0088` as `proposed` raised it to 33. The other newly registered records remain unscheduled. These records were registered from complete roadmap evidence, full read-only review, or a direct owner answer and remain outside the approved order until scheduled.
 
@@ -601,16 +601,16 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Origin | Owner proposal on 2026-10-11 through issue #355: publish one release zip per runtime (Pi, OpenCode, Claude Code), ready to extract at the repository root, for example `.pi/skills/repo-harness-builder/`. |
 | Priority | P2: remove the manual copy step that caused a real install mistake. |
 | Dependencies | RH-W-0099 is completed: the builder is invoked directly as a skill. |
-| Status | proposed |
-| Completed work | Recorded as an owner proposal; no implementation. |
-| Remaining work | Define per-runtime zip layout and release procedure; update README install steps. |
+| Status | completed |
+| Completed work | Documented per-runtime release zips built with `git archive --prefix=<runtime>/skills/` from `skill/`, ready to extract at the repository root; README install and CONTRIBUTING packaging procedure updated; no new tooling. |
+| Remaining work | none |
 | Additions | none |
-| Exclusions | No release packaging implementation in this registration. |
+| Exclusions | No new tooling; release publication remains an owner decision. |
 | Deferrals | none |
 | Rejections | none |
 | Evidence | On 2026-10-11 an owner test install of `v3.1-rc.9` in another repository placed the skill under `.pi/skill/` (singular) instead of `.pi/skills/`; the prompt file landed correctly. The `v3.1-rc.10` zip still contains `skill/` (singular) and `command/`; the owner corrected the destination manually again in the 2026-10-11 consumer test (issue #362). |
-| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. 2026-10-11: v3.1-rc.10 consumer test repeated the finding (issue #362). |
-| Next advancement condition | Owner prioritization after evidence from consumer testing of `v3.1-rc.9`. |
+| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. 2026-10-11: v3.1-rc.10 consumer test repeated the finding (issue #362). 2026-10-11: owner approved implementation with RH-W-0099; completed through issue #366 without new tooling. |
+| Next advancement condition | none (terminal); reopen if a published runtime zip does not extract to its runtime skills folder. |
 
 ### RH-W-0099
 | Field | Value |
