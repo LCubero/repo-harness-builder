@@ -50,7 +50,7 @@ Onboarding closes the approved path:
 14. `RH-W-0065` is completed and delivered through PR #253, squash-merged as `7419eae`.
 15. `RH-W-0066` is completed and delivered through PR #255, squash-merged as `e3cb7fc`.
 
-`RH-W-0014` is `completed` after owner-authorized test-first implementation on 2026-10-11 and delivered through issue #343 and PR #344 (`c2f46c6`). The 2 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052) and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence.
+`RH-W-0014` is `completed` after owner-authorized test-first implementation on 2026-10-11 and delivered through issue #343 and PR #344 (`c2f46c6`). The 2 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052) and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence. Owner proposals `RH-W-0099`, `RH-W-0100`, and `RH-W-0101` were registered as `proposed` on 2026-10-11 through issue #355 and await prioritization after `v3.1-rc.9` consumer testing.
 
 Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. Completed `RH-W-0050` remains the independent baseline for the architecture bundle.
 
@@ -541,6 +541,57 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0101
+| Field | Value |
+|---|---|
+| Origin | Owner proposal on 2026-10-11 through issue #355: make the builder removable after installation without degrading the generated harness. |
+| Priority | P3: convenience; current behavior degrades gracefully. |
+| Dependencies | none |
+| Status | proposed |
+| Completed work | Recorded as an owner proposal; no implementation. |
+| Remaining work | Design where the preference reader lives inside the generated harness (for example under `.repo-harness/`) and what reinstall-for-update means; this is a design change, not a small fix. |
+| Additions | none |
+| Exclusions | No recommendation to delete the builder until this is resolved. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Generated `repo-harness-session-start` runs `<runtime>/skills/repo-harness-builder/scripts/harness_tool.py read-preference`; removing the builder makes preference reading `unavailable`, so persisted language and response preferences are ignored. Audit/update would also require reinstalling the builder. |
+| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. |
+| Next advancement condition | Owner prioritization after evidence from consumer testing of `v3.1-rc.9`. |
+
+### RH-W-0100
+| Field | Value |
+|---|---|
+| Origin | Owner proposal on 2026-10-11 through issue #355: publish one release zip per runtime (Pi, OpenCode, Claude Code), ready to extract at the repository root, for example `.pi/skills/repo-harness-builder/`. |
+| Priority | P2: remove the manual copy step that caused a real install mistake. |
+| Dependencies | Interacts with RH-W-0099: whether the zip carries a command/prompt entry. |
+| Status | proposed |
+| Completed work | Recorded as an owner proposal; no implementation. |
+| Remaining work | Define per-runtime zip layout and release procedure; update README install steps. |
+| Additions | none |
+| Exclusions | No release packaging implementation in this registration. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | On 2026-10-11 an owner test install of `v3.1-rc.9` in another repository placed the skill under `.pi/skill/` (singular) instead of `.pi/skills/`; the prompt file landed correctly. |
+| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. |
+| Next advancement condition | Owner prioritization after evidence from consumer testing of `v3.1-rc.9`. |
+
+### RH-W-0099
+| Field | Value |
+|---|---|
+| Origin | Owner proposal on 2026-10-11 through issue #355: drop the builder command/prompt entry and invoke the `repo-harness-builder` skill directly. |
+| Priority | P2: reduce install surface; one less file to copy. |
+| Dependencies | none |
+| Status | proposed |
+| Completed work | Recorded as an owner proposal; no implementation. |
+| Remaining work | Confirm that SKILL.md covers the wrapper's argument and language-order rules or move them there; verify direct skill invocation with arguments in Claude Code and OpenCode; decide whether generated consumer session-start/stop/documentation/help prompts/commands are also affected (open question, not decided). |
+| Additions | none |
+| Exclusions | No change to generated consumer entries without a separate decision. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | `command/repo-harness-builder.md` is a 7-line wrapper loading the skill and passing `$ARGUMENTS` (report language, target, constraints). Pi docs (`skills.md`) support `/skill:name` with appended arguments and call these entries prompts (`.pi/prompts/`), not commands. |
+| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. |
+| Next advancement condition | Owner prioritization after evidence from consumer testing of `v3.1-rc.9`. |
 
 ### RH-W-0098
 | Field | Value |

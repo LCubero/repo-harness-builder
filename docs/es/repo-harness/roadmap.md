@@ -48,7 +48,7 @@ Onboarding y el residuo restante cierran la ruta:
 14. `RH-W-0065` está `completed` y entregado mediante el PR #253, fusionado por squash como `7419eae`.
 15. `RH-W-0066` está completada y entregada mediante el PR #255, fusionado por squash como `e3cb7fc`.
 
-`RH-W-0014` está `completed` tras implementar con pruebas primero bajo autorización separada el 2026-10-11, y se entregó mediante el issue #343 y el PR #344 (`c2f46c6`). Los 2 registros aplazados conservan condiciones explícitas: RH-W-0052 bajo su [condición de reentrada residual](#rh-w-0052) basada en evidencia y `RH-W-0015`. La decisión del propietario del 2026-10-11 rechaza `RH-W-0018`, `RH-W-0026` y `RH-W-0063`; una necesidad futura abre un registro nuevo, no reabre estos. El diseño conjunto de RH-W-0018 con RH-W-0046 sigue como evidencia histórica.
+`RH-W-0014` está `completed` tras implementar con pruebas primero bajo autorización separada el 2026-10-11, y se entregó mediante el issue #343 y el PR #344 (`c2f46c6`). Los 2 registros aplazados conservan condiciones explícitas: RH-W-0052 bajo su [condición de reentrada residual](#rh-w-0052) basada en evidencia y `RH-W-0015`. La decisión del propietario del 2026-10-11 rechaza `RH-W-0018`, `RH-W-0026` y `RH-W-0063`; una necesidad futura abre un registro nuevo, no reabre estos. El diseño conjunto de RH-W-0018 con RH-W-0046 sigue como evidencia histórica. Las propuestas del propietario `RH-W-0099`, `RH-W-0100` y `RH-W-0101` se registraron como `proposed` el 2026-10-11 mediante el issue #355 y esperan priorización tras las pruebas de consumidor de `v3.1-rc.9`.
 
 El diseno conjunto no fusiona las unidades de implementacion. Cada implementacion conserva pruebas, commit, issue, pull request, evidencia de ciclo de vida, limite de rollback y condicion de avance propios. `RH-W-0050`, ya completada, sigue como base independiente del paquete de arquitectura.
 
@@ -539,6 +539,90 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 ## Registros activos
 
 <!-- doc-role:active-records -->
+
+### RH-W-0101
+
+Origen: Propuesta del propietario del 2026-10-11 mediante el issue #355: permitir retirar el constructor tras la instalación sin degradar el harness generado.
+
+Prioridad: `P3`: comodidad; el comportamiento actual se degrada de forma controlada.
+
+Dependencias: ninguna.
+
+Estado: `proposed`.
+
+Trabajo completado: Registrado como propuesta del propietario; sin implementación.
+
+Trabajo restante: Diseñar dónde reside el lector de preferencias dentro del harness generado (por ejemplo bajo `.repo-harness/`) y qué implica reinstalar para actualizar; es un cambio de diseño, no una corrección pequeña.
+
+Adiciones: `none`.
+
+Exclusiones: No recomendar eliminar el constructor hasta resolver este punto.
+
+Aplazamientos: `none`.
+
+Rechazos: `none`.
+
+Evidencia: `repo-harness-session-start` generado ejecuta `<runtime>/skills/repo-harness-builder/scripts/harness_tool.py read-preference`; retirar el constructor deja la lectura de preferencias como `unavailable`, por lo que se ignoran las preferencias persistidas de idioma y respuesta. Auditar o actualizar también requeriría reinstalar el constructor.
+
+Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355.
+
+Siguiente condición: Priorización del propietario tras obtener evidencia de las pruebas de consumidor de `v3.1-rc.9`.
+
+### RH-W-0100
+
+Origen: Propuesta del propietario del 2026-10-11 mediante el issue #355: publicar un zip de release por entorno (Pi, OpenCode, Claude Code), listo para extraer en la raíz del repositorio, por ejemplo `.pi/skills/repo-harness-builder/`.
+
+Prioridad: `P2`: eliminar el paso de copia manual que causó un error real de instalación.
+
+Dependencias: Interactúa con RH-W-0099: si el zip incluye una entrada de comando o prompt.
+
+Estado: `proposed`.
+
+Trabajo completado: Registrado como propuesta del propietario; sin implementación.
+
+Trabajo restante: Definir la disposición del zip por entorno y el procedimiento de release; actualizar los pasos de instalación del README.
+
+Adiciones: `none`.
+
+Exclusiones: Sin implementación del empaquetado de release en este registro.
+
+Aplazamientos: `none`.
+
+Rechazos: `none`.
+
+Evidencia: El 2026-10-11 una instalación de prueba de `v3.1-rc.9` realizada por el propietario en otro repositorio colocó la skill bajo `.pi/skill/` (singular) en lugar de `.pi/skills/`; el archivo de prompt quedó en el lugar correcto.
+
+Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355.
+
+Siguiente condición: Priorización del propietario tras obtener evidencia de las pruebas de consumidor de `v3.1-rc.9`.
+
+### RH-W-0099
+
+Origen: Propuesta del propietario del 2026-10-11 mediante el issue #355: retirar la entrada de comando o prompt del constructor e invocar directamente la skill `repo-harness-builder`.
+
+Prioridad: `P2`: reducir la superficie de instalación; un archivo menos que copiar.
+
+Dependencias: ninguna.
+
+Estado: `proposed`.
+
+Trabajo completado: Registrado como propuesta del propietario; sin implementación.
+
+Trabajo restante: Confirmar que SKILL.md cubre las reglas de argumentos y orden de idioma del wrapper o trasladarlas allí; verificar la invocación directa con argumentos en Claude Code y OpenCode; decidir si también afecta a los prompts o comandos generados de session-start/stop/documentation/help (pregunta abierta, sin decisión).
+
+Adiciones: `none`.
+
+Exclusiones: Sin cambios en entradas generadas para consumidores sin una decisión separada.
+
+Aplazamientos: `none`.
+
+Rechazos: `none`.
+
+Evidencia: `command/repo-harness-builder.md` es un wrapper de 7 líneas que carga la skill y pasa `$ARGUMENTS` (idioma del informe, destino, restricciones). La documentación de Pi (`skills.md`) admite `/skill:name` con argumentos añadidos y denomina estas entradas prompts (`.pi/prompts/`), no comandos.
+
+Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355.
+
+Siguiente condición: Priorización del propietario tras obtener evidencia de las pruebas de consumidor de `v3.1-rc.9`.
 
 ### RH-W-0098
 
