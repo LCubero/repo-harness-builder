@@ -11,13 +11,13 @@ metadata:
 
 Invoke the skill deliberately: Claude Code `/repo-harness-builder`, Pi `/skill:repo-harness-builder`, or OpenCode's `skill` tool. The exact approval UI and strict rules apply only during an explicitly active builder execution. Repository identity, self-hosting, maintenance, generated-file ownership, session skills, and direct questions do not activate it. Otherwise use ordinary conversational approval and the CLI's default `--activation maintenance`.
 
-Optional arguments may name a report language, target repository, or constraints; resolve language precedence under `references/audit-and-interview.md`. With no arguments, use the current working directory. Audit read-only and write nothing before plan approval.
+Optional arguments may name a report language, target repository, or constraints; resolve language precedence under `references/audit-and-interview.md`. With no arguments, use the current working directory.
 
 ## Hard Rules
 
 - Work only in the selected repository. Never follow links, aliases, siblings, or external references.
 - Preserve existing content through informed integration. Never overwrite or archive without explicit approval; version control is not a hostile-filesystem boundary.
-- For installation/update, show all four action sets and approve only the current content-bound plan digest; never reuse it. Inspection reports only observed checker status and limitations, without invented action sets, generated tree, or apply plan.
+- For installation/update, show all four action sets and approve only the current content-bound plan digest; never reuse it.
 - Strict answers belong only to active builder execution: English `APPROVE`/`DENY`; Spanish `APROBAR`/`DENEGAR`. Maintenance omits that domain. No runtime, profile, methodology, Git, provider, backup, publication, or release authority is implicit.
 - Keep repository evidence authoritative. Compose Gentle AI and Engram independently; use only when available or operation/policy-required. Standalone uses repository files only. Never invent workflows or claims.
 - Keep conversation, report, documentation, and artifact languages independent. Technical artifacts stay English. Ask one blocking question at a time.
@@ -38,7 +38,7 @@ Optional arguments may name a report language, target repository, or constraints
 
 Before step 1, if the user explicitly requests inspect/check, take the read-only inspection branch below and stop; otherwise continue the existing installation, update, or correction flow unchanged.
 
-Read `references/validation.md` first; if missing, unsafe, unreadable, or untrusted, report the limitation and stop without running the checker. Validate the selected root: require directly contained, readable regular `.repo-harness/check.py` and `.repo-harness/manifest.json` files with safe direct ancestors. Missing, unsafe, unreadable, or untrusted evidence stops with a reported limitation. From the selected root run exactly `python -B .repo-harness/check.py` with no arguments. Use authenticated declared configuration only: the installed checker must authenticate the exact manifest bytes and recognized schema. Never infer runtimes, profiles, languages, or capabilities from raw manifest fields. Report exact checker current/drift/errors/limitations. Stop without interview, fallback, repair, apply, synchronization, Git, or mutation. Direct CLI `check` is a separate read-only rendered comparison.
+First read `references/validation.md`; if it is missing, unsafe, unreadable, or untrusted, stop without running the checker and report that limitation after evaluating the reference. Then validate the selected root. Require directly contained `.repo-harness/check.py` and `.repo-harness/manifest.json` files: both must be readable regular files with safe direct ancestors. Missing, unsafe, unreadable, or untrusted evidence is a reported limitation and stops. From the selected root run exactly `python -B .repo-harness/check.py` with no arguments. Use authenticated declared configuration only: the installed checker must authenticate the exact manifest bytes and recognized schema. Never infer runtimes, profiles, languages, or capabilities from raw manifest fields. Report exact current/drift/errors/limitations from the checker. Stop without installation interview, fallback, repair, apply, synchronization, Git, or mutation. Direct CLI `check` remains a separate read-only rendered comparison, not this active-builder inspection branch.
 
 1. Read `references/audit-and-interview.md`; inspect read-only and resolve report language. Ask for conversation language and stop; after its answer ask documentation languages and stop.
 2. Report absent runtime surfaces and ask which profiles to include; stop. Do not infer profiles.
@@ -50,8 +50,8 @@ Read `references/validation.md` first; if missing, unsafe, unreadable, or untrus
 
 ## Output Contract
 
-For installation/update, report status, readiness, four action sets, generated tree, verification, exclusions, risks, and current plan digest. Inspection reports only checker outcomes and limitations, never invented action sets, tree, or apply plan. Distinguish evidence from unknowns; claim no runtime savings or live-agent guarantees without measurement.
+For installation/update, report status, readiness, four action sets, generated tree, verification outcomes, exclusions, residual risks, and the current plan digest. For inspection, report only the observed checker outcome and limitations; do not invent action sets, a generated tree, or an apply plan. Distinguish observed evidence from unknowns; do not claim runtime savings or live-agent guarantees without measurement.
 
 ## References
 
-Read only the phase-specific owners named by the gates above; do not load every reference by default.
+Load only the owner each gate above names, when its trigger occurs.
