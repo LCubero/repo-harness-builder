@@ -1,6 +1,7 @@
 ---
 name: repo-harness-builder
 description: "Build or check a minimal documentation and continuity harness in the selected repository with bounded root runtime pointers."
+disable-model-invocation: true
 license: MIT
 metadata:
   author: Luis Diego Cubero Chavarria

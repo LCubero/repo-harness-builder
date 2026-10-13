@@ -50,7 +50,7 @@ Onboarding y el residuo restante cierran la ruta:
 14. `RH-W-0065` está `completed` y entregado mediante el PR #253, fusionado por squash como `7419eae`.
 15. `RH-W-0066` está completada y entregada mediante el PR #255, fusionado por squash como `e3cb7fc`.
 
-`RH-W-0014` está `completed` tras implementar con pruebas primero bajo autorización separada el 2026-10-11, y se entregó mediante el issue #343 y el PR #344 (`c2f46c6`). Los 2 registros aplazados conservan condiciones explícitas: RH-W-0052 bajo su [condición de reentrada residual](#rh-w-0052) basada en evidencia y `RH-W-0015`. La decisión del propietario del 2026-10-11 rechaza `RH-W-0018`, `RH-W-0026` y `RH-W-0063`; una necesidad futura abre un registro nuevo, no reabre estos. El diseño conjunto de RH-W-0018 con RH-W-0046 sigue como evidencia histórica. Las propuestas del propietario `RH-W-0099`, `RH-W-0100` y `RH-W-0101` se registraron como `proposed` el 2026-10-11 mediante el issue #355 y esperan priorización tras las pruebas de consumidor de `v3.1-rc.9`. RH-W-0102 se completó el 2026-10-11 mediante el issue #357. RH-W-0103 se registró como `proposed` el 2026-10-11 mediante el issue #362.
+`RH-W-0014` está `completed` tras implementar con pruebas primero bajo autorización separada el 2026-10-11, y se entregó mediante el issue #343 y el PR #344 (`c2f46c6`). Los 2 registros aplazados conservan condiciones explícitas: RH-W-0052 bajo su [condición de reentrada residual](#rh-w-0052) basada en evidencia y `RH-W-0015`. La decisión del propietario del 2026-10-11 rechaza `RH-W-0018`, `RH-W-0026` y `RH-W-0063`; una necesidad futura abre un registro nuevo, no reabre estos. El diseño conjunto de RH-W-0018 con RH-W-0046 sigue como evidencia histórica. Las propuestas del propietario `RH-W-0099`, `RH-W-0100` y `RH-W-0101` se registraron como `proposed` el 2026-10-11 mediante el issue #355; RH-W-0099 y RH-W-0100 están completadas. La decisión del propietario del 2026-10-14 rechaza `RH-W-0101`; en su lugar, el constructor declara `disable-model-invocation: true`. RH-W-0102 se completó el 2026-10-11 mediante el issue #357. RH-W-0103 se registró como `proposed` el 2026-10-11 mediante el issue #362.
 
 El diseno conjunto no fusiona las unidades de implementacion. Cada implementacion conserva pruebas, commit, issue, pull request, evidencia de ciclo de vida, limite de rollback y condicion de avance propios. `RH-W-0050`, ya completada, sigue como base independiente del paquete de arquitectura.
 
@@ -606,11 +606,11 @@ Prioridad: `P3`: comodidad; el comportamiento actual se degrada de forma control
 
 Dependencias: ninguna.
 
-Estado: `proposed`.
+Estado: `rejected`.
 
 Trabajo completado: Registrado como propuesta del propietario; sin implementación.
 
-Trabajo restante: Diseñar dónde reside el lector de preferencias dentro del harness generado (por ejemplo bajo `.repo-harness/`) y qué implica reinstalar para actualizar; es un cambio de diseño, no una corrección pequeña.
+Trabajo restante: `none`.
 
 Adiciones: `none`.
 
@@ -618,13 +618,13 @@ Exclusiones: No recomendar eliminar el constructor hasta resolver este punto.
 
 Aplazamientos: `none`.
 
-Rechazos: `none`.
+Rechazos: Decisión del propietario del 2026-10-14: retirar el constructor ya es posible quitando la carpeta de su skill y no es necesario; sin el constructor solo la lectura de preferencias queda `unavailable`. En su lugar, el constructor declara `disable-model-invocation: true`, de modo que Pi y Claude Code solo lo cargan por invocación explícita.
 
 Evidencia: `repo-harness-session-start` generado ejecuta `<runtime>/skills/repo-harness-builder/scripts/harness_tool.py read-preference`; retirar el constructor deja la lectura de preferencias como `unavailable`, por lo que se ignoran las preferencias persistidas de idioma y respuesta. Auditar o actualizar también requeriría reinstalar el constructor.
 
-Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355.
+Historial: 2026-10-11: el propietario propuso esto antes de las pruebas de consumidor de v3.1-rc.9; registrado como proposed mediante el issue #355. 2026-10-14: la decisión del propietario cambia `proposed` a `rejected` mediante el issue #387.
 
-Siguiente condición: Priorización del propietario tras obtener evidencia de las pruebas de consumidor de `v3.1-rc.9`.
+Siguiente condición: Ninguna; terminal. Una necesidad concreta futura abre un registro nuevo en lugar de reabrir este.
 
 ### RH-W-0100
 
