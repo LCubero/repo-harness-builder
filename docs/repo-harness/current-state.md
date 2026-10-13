@@ -19,7 +19,9 @@
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
-- Added manual removal guidance in [usage](usage.md#removing-the-harness-manually), also in generated EN/ES guides. Existing help remains read-only. RH-W-0052 automatic uninstall/reinstall/deletion remains deferred; no removal was performed.
+- Verified the `v3.1-rc.12` update in the local consumer repository `E:\code\VPS` (a folder, not a server): the parent independently confirmed all 14 Pi builder files match release commit `88e34b3` and both checkers report `current`, 0 writes. The owner supplied live Pi output: `APROBAR` applied a plan replacing only `.repo-harness/check.py` (`VALIDATED`), preserving human docs. Re-invocation produced 0 create/append/replace/migrate/blocked entries, 66 identical and 9 preserved, and ended without approval or repeated language/runtime questions. Spanish approval retained diacritics. Claude Code/OpenCode live behavior and automatic rewriting of existing Spanish docs are not claimed.
+
+- Delivered manual removal guidance through PR #380, squash commit `6491f71`, in [usage](usage.md#removing-the-harness-manually) and new generated EN/ES guides. Existing help remains read-only. This is in `main`, not the published `v3.1-rc.12`; existing human-owned consumer usage guides are not automatically rewritten. RH-W-0052 automatic uninstall/reinstall/deletion remains deferred; no removal was performed.
 
 - Owner `v3.1-rc.11` update test confirmed direct skill invocation (RH-W-0099) and the per-runtime zip (RH-W-0100) in a live Pi consumer; the installed-harness update preview proposed no changes.
 - RH-W-0100 completed through issue #366: documented per-runtime release zips ready to extract at the repository root and the CONTRIBUTING packaging procedure; no new tooling.
@@ -192,7 +194,7 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-**Current next step (2026-10-13):** `RH-W-0104` (update-flow friction, PR #374) and `RH-W-0103` (Spanish diacritics and the term `skills`) are completed and published in `v3.1-rc.12`; the recommended next step is the owner's update retest of `v3.1-rc.12` in a consumer repository. The superseded local and remote branch `fix/gitattributes-text-auto-order` awaits an owner deletion decision. The paragraphs below are history.
+**Current next step (2026-10-13):** `RH-W-0104` (update-flow friction, PR #374) and `RH-W-0103` (Spanish diacritics and the term `skills`) are completed and published in `v3.1-rc.12`; the update and empty-plan retest in the local VPS repository have passed. No repeat is pending. The next owner decision is whether to publish a later testing release containing the manual-removal guide now in `main`; none has been authorized or published. The superseded local and remote branch `fix/gitattributes-text-auto-order` awaits an owner deletion decision. The paragraphs below are history.
 
 Six units were delivered on 2026-08-27, each through its own issue and pull request with no direct commit to `main`: PRs #115, #117, #119, #121, #123, and #125. The next three documentation corrections arrived through PRs #126, #127, and #128. On 2026-08-28, PR #130 delivered the RH-W-0079 documentation contribution and closed issue #129. PRs #134, #138, #142, #146, and #148 then delivered all five RH-W-0079 slices. Live branch and revision evidence belongs to Git and session-start and is not pinned in this current-state projection. The previously recorded `1df5f6e60a3fa095bd011ea32921c70218865fa5` was formerly current and is retained only as historical context. The still-earlier `fac022c6bd070079fa0aaa54a19b5e6757172059` had been retained here as a present-tense claim after it stopped being true; it was verified as 15 commits behind `feb8db4d3fb5f41529166dd110885587f2e0c7af` during the earlier correction.
 
