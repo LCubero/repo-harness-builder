@@ -4,11 +4,9 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
-## 2026-10-14
+## 2026-10-13
 
 - The builder skill declares `disable-model-invocation: true`: Pi (`/skill:repo-harness-builder`) and Claude Code (`/repo-harness-builder`) load it only on explicit invocation; OpenCode ignores the field. Owner decision rejects RH-W-0101 (removable builder, issue #387): removing the builder is already possible and not needed. Synchronized the three builder projections.
-
-## 2026-10-13
 
 - Published [`v3.1-rc.13`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.13) from `6965491e8820481773059f4b7ef0e90d1caed18f` on 2026-10-13T00:58:23Z, following the owner decision (issue #383), with the manual-removal guide and three verified per-runtime archives: `repo-harness-builder-v3.1-rc.13-claude-code.zip` (255195 bytes, SHA-256 `bb07370d101eab833d6b4121daf6c55793586b845184ee895f730cf737285339`); `repo-harness-builder-v3.1-rc.13-opencode.zip` (255279 bytes, SHA-256 `389fed4ae87b9b84f24e8029fb663947143b59b89f98edb8bb550b9e94f58691`); `repo-harness-builder-v3.1-rc.13-pi.zip` (255027 bytes, SHA-256 `3e41fa3a6a4f77d636c5d2092c50f8ed99084133de9961ad1ad880037a04a238`). Existing human-owned guides are not automatically replaced; no actual removal was performed. The publication record was delivered through PR #384 (`58ec86a`).
 

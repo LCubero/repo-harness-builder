@@ -52,7 +52,7 @@ Onboarding closes the approved path:
 14. `RH-W-0065` is completed and delivered through PR #253, squash-merged as `7419eae`.
 15. `RH-W-0066` is completed and delivered through PR #255, squash-merged as `e3cb7fc`.
 
-`RH-W-0014` is `completed` after owner-authorized test-first implementation on 2026-10-11 and delivered through issue #343 and PR #344 (`c2f46c6`). The 2 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052) and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence. Owner proposals `RH-W-0099`, `RH-W-0100`, and `RH-W-0101` were registered as `proposed` on 2026-10-11 through issue #355; RH-W-0099 and RH-W-0100 are completed. Owner decision on 2026-10-14 rejects `RH-W-0101`; the builder instead declares `disable-model-invocation: true`. RH-W-0102 was completed on 2026-10-11 through issue #357. RH-W-0103 was registered as `proposed` on 2026-10-11 through issue #362.
+`RH-W-0014` is `completed` after owner-authorized test-first implementation on 2026-10-11 and delivered through issue #343 and PR #344 (`c2f46c6`). The 2 deferred records retain explicit conditions: `RH-W-0052` under its evidence-based [residual re-entry condition](#rh-w-0052) and `RH-W-0015`. Owner decision on 2026-10-11 rejects `RH-W-0018`, `RH-W-0026`, and `RH-W-0063`; a future need opens a new record rather than reopening these. RH-W-0018's joint design with RH-W-0046 remains historical evidence. Owner proposals `RH-W-0099`, `RH-W-0100`, and `RH-W-0101` were registered as `proposed` on 2026-10-11 through issue #355; RH-W-0099 and RH-W-0100 are completed. Owner decision on 2026-10-13 rejects `RH-W-0101`; the builder instead declares `disable-model-invocation: true`. RH-W-0102 was completed on 2026-10-11 through issue #357. RH-W-0103 was registered as `proposed` on 2026-10-11 through issue #362.
 
 Joint design does not merge implementation units. Each implementation retains separate tests, commit, issue, pull request, lifecycle evidence, rollback boundary, and its own authoritative advancement condition. Completed `RH-W-0050` remains the independent baseline for the architecture bundle.
 
@@ -607,9 +607,9 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Additions | none |
 | Exclusions | No recommendation to delete the builder until this is resolved. |
 | Deferrals | none |
-| Rejections | Owner decision on 2026-10-14: removing the builder is already possible by removing its skill folder and is not needed; a missing builder only makes preference reading `unavailable`. Instead the builder declares `disable-model-invocation: true`, so Pi and Claude Code load it only on explicit invocation. |
+| Rejections | Owner decision on 2026-10-13: removing the builder is already possible by removing its skill folder and is not needed; a missing builder only makes preference reading `unavailable`. Instead the builder declares `disable-model-invocation: true`, so Pi and Claude Code load it only on explicit invocation. |
 | Evidence | Generated `repo-harness-session-start` runs `<runtime>/skills/repo-harness-builder/scripts/harness_tool.py read-preference`; removing the builder makes preference reading `unavailable`, so persisted language and response preferences are ignored. Audit/update would also require reinstalling the builder. |
-| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. 2026-10-14: owner decision changes `proposed` to `rejected` through issue #387. |
+| Decision history | 2026-10-11: owner proposed this before consumer testing of v3.1-rc.9; registered as proposed through issue #355. 2026-10-13: owner decision changes `proposed` to `rejected` through issue #387. |
 | Next advancement condition | None; terminal. A future concrete need opens a new record rather than reopening this one. |
 
 ### RH-W-0100
