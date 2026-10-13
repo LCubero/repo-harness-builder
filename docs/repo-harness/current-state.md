@@ -19,6 +19,8 @@
 ## Recent Completed Work
 <!-- doc-role:recent-work -->
 
+- Added manual removal guidance in [usage](usage.md#removing-the-harness-manually), also in generated EN/ES guides. Existing help remains read-only. RH-W-0052 automatic uninstall/reinstall/deletion remains deferred; no removal was performed.
+
 - Owner `v3.1-rc.11` update test confirmed direct skill invocation (RH-W-0099) and the per-runtime zip (RH-W-0100) in a live Pi consumer; the installed-harness update preview proposed no changes.
 - RH-W-0100 completed through issue #366: documented per-runtime release zips ready to extract at the repository root and the CONTRIBUTING packaging procedure; no new tooling.
 - RH-W-0099 completed through issue #364: direct builder skill invocation replaces its command and three entry projections; wrapper rules moved to SKILL.md, package projections and manifest synchronized, consumer entries unchanged.

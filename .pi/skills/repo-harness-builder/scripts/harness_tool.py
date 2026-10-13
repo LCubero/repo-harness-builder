@@ -2486,37 +2486,37 @@ def docs_outputs(
         else "Session output carries temporary context; repository files remain authoritative. Promote verified durable facts through the documentation skill."
     )
     usage = f"""# Using The Repository Harness
-
 {marker}
 <!-- doc-role:overview -->
 
 Use the three generated skills as a loop: recover context, keep durable documentation current, then leave a verified handoff.
 
 ## Daily Workflow
-
 <!-- doc-role:daily-workflow -->
-
 1. Start or resume with `repo-harness-session-start` and state the objective. It {recovery}, reports a scoped outcome, and inspects local Git state read-only. A remote-check question applies only when synchronization is relevant and safe. To persist reply language or response modes, edit `.repo-harness/state/preferences/user-preferences.json` by hand; the [response contract](../../.repo-harness/rules/response-contract.md) owns keys and precedence.
 2. Use `repo-harness-documentation` when durable documentation or visible project state needs updating.
 3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation and continuity. Only requested Git work triggers path screening and exact work-unit proposals under repository policy; unchanged authorization is not requested again.
 
 ## Integrated Availability
-
 <!-- doc-role:availability -->
-
 {availability}
 
 ## Congruence And Ownership
-
 <!-- doc-role:ownership -->
-
 Run `python3 .repo-harness/check.py` (`python` on Windows) after canonical skills or runtime projections change. The checker is read-only and reports whether generated runtime copies still match their canonical skills. Root `.gitattributes` must preserve LF checkout bytes with one exact `text eol=lf` rule for every byte-compared generated path, including the checker, the manifest, canonical skills, and runtime projections. Without them a CRLF checkout reports drift the checker cannot resolve. {continuity_owner}
 
 ## Approval Boundaries
-
 <!-- doc-role:approval-boundaries -->
-
 The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, or `degraded`, scoped so optional Git failure does not fail successful continuity. Documentation writes require explicit conversational approval. Explicit safe-sync consent covers bounded fetch plus fast-forward-only integration. Explicit combined commit-and-push consent covers exact staging, commit, checks, one fetch preflight, and one push to the identified upstream. Commit-only and push-only remain narrow, and material changes invalidate consent. Dirty or diverged repositories stay local for human resolution, and no Git action is required for continuity. A builder run carrying an authority context also prints digests you can review without reading anything private: `authorityContextSha256`, `targetBindingSha256`, `planSha256`, and `generationSha256` binding them together, with premise values and decision statements shown as explicit redaction markers and each evidence item as a repository-relative locator and a digest. Check those locators are the files you expect, then approve. If something was wrong the host must refresh the context with a new material revision and preview again, because a corrected answer with an identical plan keeps the same `planSha256` and gets a different `generationSha256`.
+
+## Removing The Harness Manually
+<!-- doc-role:manual-removal -->
+There is no automatic uninstaller. The help command explains this guide read-only; it never deletes files.
+1. Inspect `.repo-harness/manifest.json` and the actual files to list the installed harness skills, commands, and runtime copies. The manifest is an inventory, not permission to delete; preserve modified or unknown content. Inspect any separately installed builder folder too. Do not remove entire `.claude/`, `.opencode/`, or `.pi/` directories.
+2. Keep project documentation (README, CHANGELOG, and `docs/`) and useful continuity, preferences, and backups by default. Preserve what you need before removing harness storage.
+3. In shared `AGENTS.md`, `CLAUDE.md`, `.gitignore`, and `.gitattributes`, remove only confirmed harness references or rules that are no longer needed. Keep unrelated content, including ignore rules used by other tools. Review other retained documents for links to removed paths and update only those references.
+4. Show the exact proposed file deletions and edits, then obtain explicit approval. Remove only the approved harness-specific files; remove `.repo-harness/` last, and only after checking its contents for information to keep. Never delete the repository or other tools' files.
+5. Review the diff when Git is available and check for remaining harness entry points and broken links. Start a fresh agent session; an existing session can retain loaded instructions. Do not run the removed checker or reinstall the harness just to verify removal.
 """
     state = f"""# Current State
 
@@ -2714,37 +2714,37 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
         else "La salida de sesión conserva contexto temporal; el repositorio permanece como fuente autoritativa. Promueva hechos durables verificados mediante la skill de documentación."
     )
     usage_es = f"""# Uso del harness del repositorio
-
 {marker}
 {canonical_source_es("usage.md")}<!-- doc-role:overview -->
 
 Use las tres skills generadas como un ciclo: recupere contexto, mantenga vigente la documentación durable y deje una transferencia verificada.
 
 ## Flujo diario
-
 <!-- doc-role:daily-workflow -->
-
 1. Inicie o reanude con `repo-harness-session-start` e indique el objetivo. Recupera contexto pertinente, lo reconcilia con evidencia actual e inspecciona Git en solo lectura. Una pregunta de comprobación remota aplica solo cuando sincronizar es pertinente y seguro. Para conservar el idioma o los modos de respuesta, edite `.repo-harness/state/preferences/user-preferences.json` a mano; el [contrato de respuesta]({'../../' if spanish_only else '../../../'}.repo-harness/rules/response-contract.md) es propietario de las claves y la precedencia.
 2. Use `repo-harness-documentation` cuando sea necesario actualizar documentación durable o el estado visible del proyecto.
 3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia, documentación y continuidad requeridas. Solo el trabajo Git solicitado activa revisión de rutas y propuestas exactas bajo la política del repositorio; no se repite una autorización sin cambios.
 
 ## Disponibilidad integrada
-
 <!-- doc-role:availability -->
-
 {availability_es}
 
 ## Congruencia y propiedad
-
 <!-- doc-role:ownership -->
-
 Ejecute `python3 .repo-harness/check.py` (`python` en Windows) después de cambiar skills canónicas o proyecciones de ejecución. El verificador es de solo lectura e informa si las copias generadas coinciden con sus skills canónicas. El archivo raíz `.gitattributes` debe preservar bytes LF al hacer checkout mediante una regla exacta `text eol=lf` por cada ruta generada comparada byte a byte, incluidos el verificador, el manifest, las skills canónicas y las proyecciones de ejecución. Sin ellas, un checkout CRLF informa una deriva que el verificador no puede resolver. {ownership_es}
 
 ## Límites de aprobación
-
 <!-- doc-role:approval-boundaries -->
-
 Las skills diarias inspeccionan en modo de solo lectura por defecto. Los resultados son `ready`, `paused`, `blocked`, `failed`, `completed` o `degraded`; el alcance evita que un fallo opcional de Git invalide una continuidad exitosa. Las escrituras documentales requieren aprobación conversacional explícita. El consentimiento para sincronización segura cubre un fetch acotado y una integración solo por avance rápido. El consentimiento combinado para commit y push cubre las rutas exactas, el commit, las comprobaciones, un fetch previo y un push al upstream identificado. Los consentimientos solo para commit o solo para push permanecen limitados, y cualquier cambio material los inválida. Los repositorios sucios o divergentes permanecen locales para resolución humana; la continuidad no exige ninguna operación de Git.
+
+## Retirar el harness manualmente
+<!-- doc-role:manual-removal -->
+No existe un desinstalador automático. El comando de ayuda explica esta guía en modo de solo lectura; nunca elimina archivos.
+1. Revise `.repo-harness/manifest.json` y los archivos reales para listar las skills, comandos y copias de los entornos instalados. El manifiesto es un inventario, no permiso para borrar; preserve el contenido modificado o desconocido. Revise también la carpeta del builder si se instaló por separado. No elimine los directorios completos `.claude/`, `.opencode/` ni `.pi/`.
+2. Conserve la documentación del proyecto (README, CHANGELOG y `docs/`) y la continuidad, preferencias y respaldos útiles por defecto. Preserve lo necesario antes de retirar el almacenamiento del harness.
+3. En los archivos compartidos `AGENTS.md`, `CLAUDE.md`, `.gitignore` y `.gitattributes`, retire solo las referencias o reglas confirmadas del harness que ya no sean necesarias. Conserve el contenido ajeno, incluidas las reglas de exclusión usadas por otras herramientas. Revise los documentos conservados y actualice solo sus referencias a rutas retiradas.
+4. Muestre las eliminaciones y ediciones exactas propuestas y obtenga aprobación explícita. Retire solo los archivos exclusivos del harness aprobados; retire `.repo-harness/` al final y solo tras revisar si contiene información que conservar. Nunca elimine el repositorio ni archivos de otras herramientas.
+5. Revise el diff si hay Git y compruebe que no queden entradas del harness ni enlaces rotos. Inicie una sesión nueva del agente: una sesión existente puede conservar instrucciones cargadas. No ejecute el checker retirado ni reinstale el harness para comprobar su retirada.
 """
     state_es = f"""# Estado actual
 

@@ -172,3 +172,5 @@ Compruebe las proyecciones del repositorio desde su raiz:
 ```powershell
 python .repo-harness/check.py
 ```
+
+Para la retirada manual, consulte [Retirar el harness manualmente](usage.md#retirar-el-harness-manualmente). La ayuda existente lee esa guía sin eliminar nada. Las instalaciones nuevas reciben la sección; las guías de uso existentes de propiedad humana requieren una edición documental aprobada explícitamente, no un reemplazo automático.

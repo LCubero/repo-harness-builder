@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-13
 
+- Added a concise manual harness-removal guide to generated and self-hosted usage docs (EN/ES), reachable through existing read-only help. No uninstaller or deletion commands; shared files, human documentation and useful continuity remain protected.
+
 - Published [`v3.1-rc.12`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.12) from tag commit `88e34b360a06a90210ee71477e7785f0f4399c6a`, following the owner's explicit testing-release decision: `repo-harness-builder-v3.1-rc.12-claude-code.zip`, SHA-256 `7f4b5c70b597f962a6f5b8ad6fa328fda97156a74f7d18823b2ff75e66dd1c70`; `repo-harness-builder-v3.1-rc.12-opencode.zip`, SHA-256 `50c6c20e905b43c23e69426bd5e35c897d15ddef058147e87b09697e2a161f00`; and `repo-harness-builder-v3.1-rc.12-pi.zip`, SHA-256 `e7d62121d1db5a8daa810db9743b95397d973bd9d392a82471463719188c4210`.
 
 - Completed RH-W-0103 (issue #375): generated Spanish documentation, the Spanish approval prompt, and the Spanish contribution question and guide keep their diacritics and use `skills` instead of `habilidades`; machine tokens are unchanged. Existing consumer Spanish documents are human-owned and are not rewritten. Synchronized the builder projections and the installed checker.
