@@ -8794,6 +8794,19 @@ class RepoHarnessHelpWrapperTests(unittest.TestCase):
                 self.assertNotIn("repo-harness-builder` skill", text)
                 self.assertNotIn("Load the `repo-harness-builder", text)
 
+        for languages, path, heading, preserve in (
+            (["en"], "docs/repo-harness/usage.md", "## Removing The Harness Manually", "Keep project documentation"),
+            (["es"], "docs/repo-harness/usage.md", "## Retirar el harness manualmente", "Conserve la documentación del proyecto"),
+            (["en", "es"], "docs/es/repo-harness/usage.md", "## Retirar el harness manualmente", "Conserve la documentación del proyecto"),
+        ):
+            with self.subTest(languages=languages):
+                guide = TOOL.render("Example", ["pi"], documentation_languages=languages)[path]
+                self.assertIn(heading, guide)
+                self.assertIn(preserve, guide)
+                for shared in ("AGENTS.md", "CLAUDE.md", ".gitignore", ".gitattributes"):
+                    self.assertIn(f"`{shared}`", guide)
+                self.assertIn(".repo-harness/manifest.json", guide)
+
     def test_existing_help_wrapper_is_left_untouched(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

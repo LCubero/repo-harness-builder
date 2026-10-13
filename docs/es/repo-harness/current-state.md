@@ -19,6 +19,8 @@ La fuente canonica de estos hechos es [`../../repo-harness/current-state.md`](..
 ## Trabajo reciente completado
 <!-- doc-role:recent-work -->
 
+- Se añadió orientación de retirada manual en [uso](usage.md#retirar-el-harness-manualmente), también en las guías generadas EN/ES. La ayuda existente sigue en modo de solo lectura. La desinstalación/reinstalación/eliminación automática de RH-W-0052 sigue aplazada; no se realizó ninguna retirada.
+
 - La prueba de actualización de `v3.1-rc.11` del propietario confirmó la invocación directa de la skill (RH-W-0099) y el zip por entorno (RH-W-0100) en un consumidor Pi real; la vista previa de actualización del harness instalado no propuso cambios.
 - RH-W-0100 completada mediante el issue #366: documentados los zips de release por entorno listos para extraer en la raiz del repositorio y el procedimiento de empaquetado en CONTRIBUTING; sin herramientas nuevas.
 - RH-W-0099 completada mediante el issue #364: la invocacion directa de la skill reemplaza el comando del constructor y sus tres proyecciones de entrada; reglas del wrapper trasladadas a SKILL.md, proyecciones del paquete y manifiesto sincronizados, entradas de consumidores sin cambios.

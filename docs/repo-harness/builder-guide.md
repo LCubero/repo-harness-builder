@@ -172,3 +172,5 @@ Check this repository's runtime projections from the repository root:
 ```powershell
 python .repo-harness/check.py
 ```
+
+For manual removal, follow [Removing The Harness Manually](usage.md#removing-the-harness-manually). Existing help reads that guide without deleting anything. New installs receive the section; existing human-owned usage guides need an explicitly approved documentation edit, not automatic replacement.
