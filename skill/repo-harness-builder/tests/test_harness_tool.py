@@ -652,6 +652,11 @@ def external_command_text() -> str:
 
 
 class ApprovalUxTests(unittest.TestCase):
+    def test_builder_skill_frontmatter_disables_model_invocation(self):
+        text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        frontmatter = text.split("---\n", 2)[1]
+        self.assertIn("\ndisable-model-invocation: true\n", frontmatter)
+
     def test_builder_skill_is_concise_and_indexes_phase_owned_contracts(self):
         source = ROOT / "SKILL.md"
         text = source.read_text(encoding="utf-8")
