@@ -4,6 +4,8 @@
 
 ## 2026-10-13
 
+- Se publicó [`v3.1-rc.13`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.13) desde `6965491e8820481773059f4b7ef0e90d1caed18f` el 2026-10-13T00:58:23Z, por decisión del propietario (issue #383), con la guía de retirada manual y tres archivos verificados por entorno: `repo-harness-builder-v3.1-rc.13-claude-code.zip` (255195 bytes, SHA-256 `bb07370d101eab833d6b4121daf6c55793586b845184ee895f730cf737285339`); `repo-harness-builder-v3.1-rc.13-opencode.zip` (255279 bytes, SHA-256 `389fed4ae87b9b84f24e8029fb663947143b59b89f98edb8bb550b9e94f58691`); `repo-harness-builder-v3.1-rc.13-pi.zip` (255027 bytes, SHA-256 `3e41fa3a6a4f77d636c5d2092c50f8ed99084133de9961ad1ad880037a04a238`). Las guías existentes de propiedad humana no se reemplazan automáticamente; no se realizó ninguna retirada real.
+
 - Se registró la prueba real exitosa de Pi de actualización y plan vacío de `v3.1-rc.12` en el repositorio consumidor local VPS, incluida la paridad del paquete verificada independientemente. Se reconcilió el siguiente paso vigente y la entrega de la guía manual (PR #380); la guía está en `main`, no en rc.12. Solo documentación.
 
 - Se añadió una guía breve de retirada manual del harness a la documentación de uso generada y del propio repositorio (EN/ES), accesible desde la ayuda de solo lectura existente. Sin desinstalador ni comandos de borrado; se protegen los archivos compartidos, la documentación humana y la continuidad útil.
