@@ -10,6 +10,10 @@
 
 - Se añadió a los README (EN/ES) un diagrama Mermaid simple del ciclo de sesión del harness del repositorio (session-start, trabajo, documentación, session-stop) (issue #390). Solo documentación.
 
+## 2026-10-14
+
+- Se reconciliaron la orientación sobre preferencias ya completadas en la hoja de ruta, el estado histórico en español, las referencias a evidencia local de tareas y la guía EN/ES de entrega mediante PR por la protección de main (issue #396). Solo documentación.
+
 ## 2026-10-13
 
 - El skill del constructor declara `disable-model-invocation: true`: Pi (`/skill:repo-harness-builder`) y Claude Code (`/repo-harness-builder`) solo lo cargan por invocación explícita; OpenCode ignora el campo. La decisión del propietario rechaza RH-W-0101 (constructor removible, issue #387): retirar el constructor ya es posible y no es necesario. Se sincronizaron las tres proyecciones del constructor.

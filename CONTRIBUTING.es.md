@@ -14,7 +14,7 @@ Toda contribucion comienza con un issue y termina con revision del maintainer. M
 6. Abra un PR enfocado que enlace el issue con `Closes #<numero>` e indique alcance, verificacion y riesgos.
 7. Resuelva la revision y obtenga aprobacion del maintainer antes del merge.
 
-No haga commits directos a `main`. Las funcionalidades, los cambios de comportamiento y todo lo que toque pruebas o proyecciones de entorno siempre usan un issue y un PR. Los commits directos a `main` son excepciones que solo puede conceder el propietario o una persona que el propietario autorice; cada excepcion debe solicitarse o declararse explicitamente en el momento. Las correcciones documentales directas a `main` aun requieren una entrada en el changelog.
+No haga commits directos a `main`. Las funcionalidades, los cambios de comportamiento y todo lo que toque pruebas o proyecciones de entorno siempre usan un issue y un PR. Los commits directos a `main` son excepciones que solo puede conceder el propietario o una persona que el propietario autorice; cada excepcion debe solicitarse o declararse explicitamente en el momento. Las correcciones documentales directas a `main` aun requieren una entrada en el changelog. La protección vigente de `main` exige un PR incluso a los administradores; la autorización conversacional no evita esa protección. Use un PR con la configuración actual.
 
 ## Reglas de desarrollo
 
