@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0105
+| Field | Value |
+|---|---|
+| Origin | Owner `v3.1-rc.14` tests on Linux with Pi on 2026-10-16; issue #398. |
+| Priority | P2: interview and report friction; no data risk. |
+| Dependencies | none |
+| Status | active |
+| Completed work | An asked report language also sets the conversation language; a choice the human just answered is not restated, and the source is named only when it was not answered in this run; runtime surfaces are described as present in the repository, not on disk; `approvalPrompt` is relayed exactly as printed and every count comes from the tool output; a contribution guide with the builder's own brief bytes gets no review suggestion, and the skill relays `reviewSuggestion` only when apply prints it; an empty plan says there are no changes without empty action sets or a digest. Synchronized three builder projections. |
+| Remaining work | Local commit authorized; push and PR require a separate owner decision; live Pi retest on a fresh install with the next release candidate. |
+| Additions | none |
+| Exclusions | The duplicate-roadmap question seen when integrating into an existing repository with its own `docs/roadmap.md`; no new mode, state, or dependency. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Owner Linux tests: a fresh install in an existing repository (cancelled before approval) and in an empty non-Git folder (approved: `VALIDATED`, 77 created, builder and generated checkers `current`, 0 writes); re-invocation produced an empty plan without an approval request. Observed: the report-language and conversation-language questions were asked separately; the agent restated an explicit choice and its source; surfaces were described as "on disk"; one English approval line appeared inside a Spanish report although the CLI prompt is fully Spanish; a breakdown summed to 83 against a total of 77; re-invocation suggested reviewing the just-generated `CONTRIBUTING.md`; an empty plan printed an empty table and digest. Implementation, test-first: RED 1 new tool test (3 subtests) and 5 contract tests failed; GREEN 141 focused tests pass; maintenance preview replaced exactly 15 projection files, applied `VALIDATED`; checker `current`, 0 writes; byte parity for the three projections. Final suite: 670 tests in 63.738s, OK (7 skipped); checker `current`, 0 writes; diff check passed. Earlier runs failed on a stale documented suite count, portfolio/coverage projections, and an outdated interview-text assertion; corrected before the final run. Independent verification initially found three conflicting instructions (S1/S4/S7); after replacing them, the final verdict was S1–S7 met, no blocker, 15/15 projection parity. Live-agent adherence to the revised instructions remains unmeasured. Native review was unavailable; no native approval, commit, push, or PR is claimed. |
+| Decision history | 2026-10-16: the owner delegated scope and the issue decision, asking for no overengineering; registered and implemented through issue #398. |
+| Next advancement condition | Merge of the PR for issue #398 and a live retest that asks one language question and shows no restated choices. |
+
 ### RH-W-0104
 | Field | Value |
 |---|---|

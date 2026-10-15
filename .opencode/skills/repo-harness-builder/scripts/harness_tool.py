@@ -4026,6 +4026,10 @@ def contribution_guide_report(root: Path, report_language: str = DEFAULT_REPORT_
     guide = existing_contribution_guide(root)
     if not guide:
         return {}
+    # A guide with the builder's own brief bytes was generated here, not inherited.
+    if guarded_target(root, guide).read_bytes() in (
+            contribution_guide_content(False).encode("utf-8"), contribution_guide_content(True).encode("utf-8")):
+        return {}
     suggestion = (
         f"Se sugiere revisar {guide} junto con el consumidor después de esta instalación; puede estar desactualizado o ser incorrecto. No se evaluó ni se editó."
         if report_language == "espanol" else

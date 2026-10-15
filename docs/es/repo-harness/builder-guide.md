@@ -132,7 +132,9 @@ Los modos monolingues usan rutas canonicas como `README.md`, `CHANGELOG.md` y `d
 
 Cuando se declara un segundo locale, se genera completo, no parcial. Sus documentos son espejos humanos completos que presentan los mismos hechos y enlazan a los propietarios en ingles. Nunca se convierten en propietarios factuales independientes.
 
-El idioma de conversacion es una eleccion aparte. Define el idioma en que las habilidades de sesion generadas le hablan a usted. No agrega ni quita locales de documentacion.
+El idioma de conversación es independiente de los locales de documentación. Define el idioma en que las skills de sesión generadas le hablan a usted. Cuando el constructor pregunta el idioma del informe, esa respuesta también fija el idioma de conversación; no pregunta dos veces la misma elección. Al actualizar, reutiliza los idiomas registrados salvo que usted pida cambiarlos.
+
+El texto de aprobación se transmite exactamente desde el aviso localizado de la CLI y los conteos del plan salen de la herramienta. Un plan ejecutable vacío no necesita aprobación, tabla de acciones vacía ni digest; las entradas bloqueadas siguen impidiendo afirmar que el harness está actualizado. Una guía de contribución que coincide con la plantilla breve del constructor no recibe una sugerencia de revisión por posible desactualización.
 
 Puede conservar a mano el idioma de conversacion y los modos de respuesta ADHD-friendly o plain-language en un [archivo local de preferencias](usage.md#preferencias-de-respuesta), o pedir explicitamente al agente que los guarde; nunca guarda preferencias por iniciativa propia.
 
