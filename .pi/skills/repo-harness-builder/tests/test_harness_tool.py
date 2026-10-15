@@ -72,6 +72,17 @@ class ContributionGuideTests(unittest.TestCase):
                              TOOL.render_repository(root, "Example", [], contribution_guide=False))
             self.assertEqual(TOOL.contribution_guide_report(root), {})
 
+    def test_contribution_builder_generated_guide_gets_no_review_suggestion(self):
+        for languages in (None, ["es"], ["en", "es"]):
+            with self.subTest(languages=languages), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                outputs = TOOL.render_repository(root, "Example", [], documentation_languages=languages,
+                                                 contribution_guide=True)
+                TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+                self.assertEqual(TOOL.contribution_guide_report(root), {})
+                (root / "CONTRIBUTING.md").write_text("Owner policy\n", encoding="utf-8")
+                self.assertIn("CONTRIBUTING.md", TOOL.contribution_guide_report(root)["reviewSuggestion"])
+
     def test_contribution_yes_generic_bilingual_plan(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -745,7 +756,7 @@ class ApprovalUxTests(unittest.TestCase):
                 self.assertIn(phrase.casefold(), branch)
         self.assertIn("direct cli `check` remains a separate read-only rendered comparison", branch)
         self.assertIn("existing installation, update, or correction flow unchanged", dispatch)
-        self.assertIn("Ask for conversation language and stop; after its answer ask documentation languages and stop, unless `recordedLanguage` supplies them.", steps)
+        self.assertIn("Ask only unresolved conversation language, then documentation languages, one at a time; reuse the report-language answer and `recordedLanguage`.", steps)
         self.assertIn("Report absent runtime surfaces and ask which profiles to include; stop. Do not infer profiles.", steps)
         self.assertIn("default `--activation maintenance`", skill)
         self.assertIn("--activation builder", steps)
@@ -753,11 +764,11 @@ class ApprovalUxTests(unittest.TestCase):
 
         with self.subTest(contract="inspection does not require installation action sets"):
             self.assertIn(
-                "For installation/update, show all four action sets and approve only the current content-bound plan digest; never reuse it.",
+                "For nonempty installation/update plans, show all four action sets and approve only the current content-bound plan digest; never reuse it.",
                 skill,
             )
             output = skill.split("## Output Contract\n", 1)[1].split("\n## ", 1)[0]
-            self.assertIn("For installation/update, report status, readiness, four action sets", output)
+            self.assertIn("For nonempty installation/update plans, report status, readiness, four action sets", output)
             self.assertIn("For inspection, report only the observed checker outcome and limitations", output)
             self.assertNotIn("installation action sets, generated tree, or apply plan", output)
 
@@ -1649,7 +1660,7 @@ class ProductWorkflowTests(unittest.TestCase):
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn("`references/audit-and-interview.md`", skill)
         self.assertIn("resolve report language", skill)
-        self.assertIn("Ask for conversation language and stop; after its answer ask documentation languages and stop", skill)
+        self.assertIn("Ask only unresolved conversation language, then documentation languages", skill)
         self.assertIn("--report-language REPORT_LANGUAGE", skill)
         self.assertIn("--conversation-language CONVERSATION_LANGUAGE", skill)
         self.assertNotIn("--report-language LANGUAGE", skill)
@@ -1657,7 +1668,8 @@ class ProductWorkflowTests(unittest.TestCase):
     def test_builder_resumes_language_interview_with_the_next_question(self):
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         interview = (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")
-        self.assertIn("After the human answers, immediately emit the documentation-language question in the next turn", interview)
+        self.assertIn("reuse the explicit report-language answer as the conversation language", interview)
+        self.assertIn("Ask the conversation-language question only if still unresolved and stop; then ask the documentation-language question in the next turn", interview)
         self.assertIn("Do not wait for filler input", interview)
         self.assertIn("one blocking decision per turn", interview)
         self.assertLess(skill.index("`references/audit-and-interview.md`"), skill.index("## Execution Steps"))
@@ -10918,7 +10930,7 @@ class UpdateFlowContractTests(unittest.TestCase):
         self.assertIn("`recordedLanguage`", decisions)
         self.assertIn("instead of asking", decisions)
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("unless `recordedLanguage` supplies them", skill)
+        self.assertIn("reuse the report-language answer and `recordedLanguage`", skill)
 
     def test_report_language_uses_the_recorded_conversation_language_before_asking(self):
         section = self.audit().split("## Report Language", 1)[1].split("\n## ", 1)[0]
@@ -10939,6 +10951,52 @@ class UpdateFlowContractTests(unittest.TestCase):
         audit = self.audit().split("## Read-Only Audit", 1)[1].split("\n## ", 1)[0]
         self.assertIn("read-only Git queries", audit)
         self.assertIn("no separate permission", audit)
+
+
+class InterviewFrictionContractTests(unittest.TestCase):
+    """RH-W-0105: one language question, no restated choices, exact tool text and counts."""
+
+    def skill(self) -> str:
+        return (ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+    def audit(self) -> str:
+        return (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")
+
+    def test_an_asked_report_language_also_sets_the_conversation_language(self):
+        section = self.audit().split("## Report Language", 1)[1].split("\n## ", 1)[0]
+        self.assertIn("ask one localized report-language question and stop; its answer also sets the conversation language", section)
+        self.assertIn("Ask only unresolved conversation language", self.skill())
+        self.assertNotIn("resolve report language. Ask for conversation language and stop;", self.skill())
+        self.assertNotIn("Otherwise, for the language sequence, ask the conversation-language question and stop.", self.audit())
+
+    def test_a_choice_the_human_just_made_is_not_restated(self):
+        audit = self.audit()
+        self.assertEqual(audit.count("state which source won only when it was not answered in this run"), 2)
+        self.assertIn("Do not restate a choice the human just answered", audit)
+
+    def test_runtime_surfaces_are_described_as_repository_content(self):
+        audit = self.audit()
+        self.assertNotIn("on disk", audit)
+        self.assertIn("present in the repository", audit)
+
+    def test_tool_text_and_counts_are_relayed_exactly(self):
+        audit, skill = self.audit(), self.skill()
+        self.assertIn("Relay `approvalPrompt` exactly as printed", audit)
+        safety = (ROOT / "references" / "preservation-and-safety.md").read_text(encoding="utf-8")
+        self.assertIn("Relay `approvalPrompt` exactly as printed", safety)
+        self.assertNotIn("Before asking, state `Answers are case-sensitive", safety)
+        self.assertNotIn("Only exact `APROBAR` permits writing", safety)
+        self.assertIn("Take every count from the tool output", audit)
+        self.assertIn("Relay `reviewSuggestion` only when apply prints it.", skill)
+        self.assertNotIn("If an existing contribution guide was found, suggest reviewing it", skill)
+
+    def test_an_empty_plan_prints_no_empty_sets_or_digest(self):
+        safety = (ROOT / "references" / "preservation-and-safety.md").read_text(encoding="utf-8")
+        approval = safety.split("## Approval", 1)[1].split("\n## ", 1)[0]
+        self.assertIn("say there are no changes; omit empty action sets and the plan digest", approval)
+        self.assertIn("For nonempty installation/update plans, show all four action sets", self.skill())
+        self.assertIn("5. For nonempty plans, show the four action sets", self.skill())
+        self.assertIn("For nonempty installation/update plans, report status", self.skill())
 
 
 class RecordedRuntimeSetTests(unittest.TestCase):

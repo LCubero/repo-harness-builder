@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-16
+
+- RH-W-0105 (issue #398), a partir de las pruebas del propietario de `v3.1-rc.14` en Linux: un idioma del informe preguntado también fija el idioma de conversación; el constructor ya no repite una elección recién hecha, dice "repositorio" en lugar de "disco", transmite `approvalPrompt` y los conteos exactamente, no sugiere revisar su propio `CONTRIBUTING.md` generado e informa un plan vacío como sin cambios, sin conjuntos vacíos ni digest. Se sincronizaron las tres proyecciones del constructor y se actualizaron las guías EN/ES. Verificación: 670 pruebas OK (7 omitidas), checker `current`/0 escrituras, veredicto independiente S1–S7 cumplidas.
+
 ## 2026-10-15
 
 - Se dejaron de versionar los cuatro archivos locales de tareas de `odd/`, conservando las copias locales y la regla existente de exclusión; se aclararon las referencias históricas de investigación EN/ES (issue #394). No se reescribió el historial.

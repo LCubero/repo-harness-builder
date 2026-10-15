@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-16
+
+- RH-W-0105 (issue #398), from the owner's `v3.1-rc.14` Linux tests: an asked report language also sets the conversation language; the builder no longer restates a choice just made, says "repository" instead of "disk", relays `approvalPrompt` and counts exactly, gives no review suggestion for its own generated `CONTRIBUTING.md`, and reports an empty plan as no changes without empty sets or a digest. Synchronized the three builder projections and updated the EN/ES builder guides. Verification: 670 tests OK (7 skipped), checker `current`/0 writes, independent S1–S7 verdict met.
+
 ## 2026-10-15
 
 - Stopped tracking the four local `odd/` task files while preserving local copies and the existing ignore rule; clarified historical EN/ES research references (issue #394). No history rewrite.

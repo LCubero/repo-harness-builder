@@ -132,7 +132,9 @@ English-only and Spanish-only use canonical paths such as `README.md`, `CHANGELO
 
 When a second locale is declared, it is generated complete, not partially. Its documents are full human mirrors that present the same facts and link back to the English owners. They never become independent factual owners.
 
-The conversation language is a separate choice. It sets the language the generated session skills speak to you in. It does not add or remove documentation locales.
+Conversation language is independent of documentation locales. It sets the language the generated session skills speak to you in. When the builder asks for the report language, that answer also sets the conversation language; it does not ask the same choice twice. On update, recorded languages are reused unless you request a change.
+
+Approval text is relayed exactly from the localized CLI prompt, and plan counts come from the tool output. An empty executable plan needs no approval, empty action table, or digest; blocked entries still prevent a claim that the harness is current. A contribution guide matching the builder's own brief template receives no outdated-guide review suggestion.
 
 You can persist the conversation language and ADHD-friendly or plain-language response modes by hand in a [local preference file](usage.md#response-preferences), or explicitly ask the agent to save them; it never saves preferences on its own.
 

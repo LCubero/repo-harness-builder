@@ -542,6 +542,25 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0105
+
+Estado: `active`. Trabajo restante: decisión del propietario sobre push y PR; nueva prueba real con Pi en una instalación nueva con el próximo candidato. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Pruebas del propietario de `v3.1-rc.14` en Linux con Pi el 2026-10-16; issue #398. |
+| Prioridad | P2: fricción en la entrevista y el informe; sin riesgo para los datos. |
+| Dependencias | ninguna |
+| Trabajo completado | Un idioma del informe preguntado también fija el idioma de conversación; no se repite una elección que la persona acaba de responder y solo se nombra la fuente cuando no se respondió en esta ejecución; las superficies de runtime se describen como presentes en el repositorio, no "en el disco"; `approvalPrompt` se transmite exactamente como se imprimió y todo conteo sale de la salida de la herramienta; una guía de contribución con los bytes del constructor no recibe sugerencia de revisión, y la skill solo transmite `reviewSuggestion` cuando apply la imprime; un plan vacío dice que no hay cambios sin conjuntos vacíos ni digest. Se sincronizaron las tres proyecciones del constructor. |
+| Trabajo restante | Commit local autorizado; push y PR requieren una decisión aparte del propietario; nueva prueba real con Pi en una instalación nueva con el próximo candidato. |
+| Adiciones | ninguna |
+| Exclusiones | La duplicación de roadmap vista al integrar en un repositorio existente con su propio `docs/roadmap.md`; sin nuevo modo, estado ni dependencia. |
+| Aplazamientos | ninguno |
+| Rechazos | ninguno |
+| Evidencia | Pruebas del propietario en Linux: instalación nueva en un repositorio existente (cancelada antes de aprobar) y en una carpeta vacía sin Git (aprobada: `VALIDATED`, 77 creados, checkers del constructor y generado `current`, 0 escrituras); la nueva invocación produjo un plan vacío sin pedir aprobación. Observado: las preguntas de idioma del informe y de conversación se hicieron por separado; el agente repitió una elección explícita y su fuente; las superficies se describieron "en el disco"; una línea de aprobación en inglés apareció dentro de un informe en español aunque el aviso de la CLI está totalmente en español; un desglose sumó 83 frente a un total de 77; la nueva invocación sugirió revisar el `CONTRIBUTING.md` recién generado; un plan vacío imprimió una tabla vacía y el digest. Implementación con pruebas primero: RED 1 prueba nueva de la herramienta (3 subpruebas) y 5 pruebas de contrato fallaron; GREEN 141 pruebas enfocadas pasan; la vista previa de mantenimiento reemplazó exactamente 15 archivos de proyección, aplicada `VALIDATED`; checker `current`, 0 escrituras; paridad de bytes en las tres proyecciones. Suite final: 670 pruebas en 63.738s, OK (7 omitidas); checker `current`, 0 escrituras; diff check correcto. Las corridas anteriores fallaron por el conteo documentado de pruebas, las proyecciones del portafolio/cobertura y una aserción desactualizada del texto de entrevista; todo se corrigió antes de la corrida final. La verificación independiente encontró inicialmente tres instrucciones contradictorias (S1/S4/S7); después de reemplazarlas, el veredicto final fue S1–S7 cumplidas, sin bloqueos y paridad 15/15. El cumplimiento del agente real con las instrucciones nuevas sigue sin medirse. La revisión nativa no estuvo disponible; no se afirma aprobación nativa, commit, push ni PR. |
+| Historial de decisiones | 2026-10-16: el propietario delegó el alcance y la decisión del issue, pidiendo no sobrediseñar; registrado e implementado mediante el issue #398. |
+| Siguiente condición de avance | Fusión del PR del issue #398 y una prueba real que haga una sola pregunta de idioma y no repita elecciones. |
+
 ### RH-W-0104
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
