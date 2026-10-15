@@ -46,7 +46,7 @@ Repository evidence paths inspected:
 
 - `REPO-HARNESS.md`
 - `.pi/skills/repo-harness-documentation/SKILL.md`
-- `odd/tasks/gentle-ecosystem-reconciliation.md`
+- `odd/tasks/gentle-ecosystem-reconciliation.md` (historical local task record; no longer tracked in Git)
 - `docs/repo-harness/roadmap.md`
 - `docs/repo-harness/current-state.md`
 - `docs/repo-harness/decisions.md`
