@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-15
+
+- Se añadió a los README (EN/ES) un diagrama Mermaid simple del ciclo de sesión del harness del repositorio (session-start, trabajo, documentación, session-stop) (issue #390). Solo documentación.
+
 ## 2026-10-13
 
 - El skill del constructor declara `disable-model-invocation: true`: Pi (`/skill:repo-harness-builder`) y Claude Code (`/repo-harness-builder`) solo lo cargan por invocación explícita; OpenCode ignora el campo. La decisión del propietario rechaza RH-W-0101 (constructor removible, issue #387): retirar el constructor ya es posible y no es necesario. Se sincronizaron las tres proyecciones del constructor.

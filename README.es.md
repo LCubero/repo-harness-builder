@@ -40,6 +40,27 @@ Las versiones hasta `v3.1-rc.10` usaban un solo zip con `skill/` que debía copi
 ## Uso diario
 <!-- doc-role:skills -->
 
+El harness guarda el contexto en los archivos de su repositorio, así cada sesión puede retomar donde terminó la anterior:
+
+```mermaid
+flowchart LR
+    repo[("Su repositorio<br/>REPO-HARNESS.md, docs,<br/>notas de sesión")]
+    start["repo-harness-session-start<br/>lee reglas, docs y<br/>la última nota de sesión"]
+    work["Usted trabaja<br/>con el agente"]
+    docs["repo-harness-documentation<br/>actualiza la documentación<br/>cuando cambian datos del proyecto"]
+    stop["repo-harness-session-stop<br/>verifica el trabajo y<br/>guarda una nota de sesión"]
+
+    repo -->|lee| start
+    start --> work
+    work --> stop
+    work -.->|cuando haga falta| docs
+    docs -->|escribe| repo
+    stop -->|escribe| repo
+    stop -.->|próxima sesión| start
+```
+
+Las notas de sesión son respaldos locales en `.repo-harness/memory-bk/`. Cuando Engram está disponible, agrega memoria entre sesiones, pero los archivos del repositorio siguen siendo la fuente de verdad.
+
 1. Inicie o reanude con `repo-harness-session-start`.
 2. Trabaje normalmente: pida al agente que haga su tarea.
 3. Cuando cambie información importante del proyecto, use `repo-harness-documentation` para mantener la documentación al día.
