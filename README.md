@@ -40,6 +40,27 @@ Releases up to `v3.1-rc.10` used a single zip containing `skill/` that had to be
 ## Daily Use
 <!-- doc-role:skills -->
 
+The harness keeps context in your repository files, so each session can pick up where the last one stopped:
+
+```mermaid
+flowchart LR
+    repo[("Your repository<br/>REPO-HARNESS.md, docs,<br/>session notes")]
+    start["repo-harness-session-start<br/>reads rules, docs and<br/>the latest session note"]
+    work["You work<br/>with the agent"]
+    docs["repo-harness-documentation<br/>updates docs when<br/>project facts change"]
+    stop["repo-harness-session-stop<br/>verifies the work and<br/>saves a session note"]
+
+    repo -->|read| start
+    start --> work
+    work --> stop
+    work -.->|when needed| docs
+    docs -->|write| repo
+    stop -->|write| repo
+    stop -.->|next session| start
+```
+
+Session notes are local backups under `.repo-harness/memory-bk/`. When Engram is available it adds cross-session memory, but repository files remain the source of truth.
+
 1. Start or resume with `repo-harness-session-start`.
 2. Work normally: ask the agent to do your task.
 3. When important project facts change, use `repo-harness-documentation` to keep project docs current.

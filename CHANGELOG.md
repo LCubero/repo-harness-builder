@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-15
+
+- Added a simple Mermaid diagram of the repository harness session loop (session-start, work, documentation, session-stop) to the EN/ES READMEs (issue #390). Documentation only.
+
 ## 2026-10-13
 
 - The builder skill declares `disable-model-invocation: true`: Pi (`/skill:repo-harness-builder`) and Claude Code (`/repo-harness-builder`) load it only on explicit invocation; OpenCode ignores the field. Owner decision rejects RH-W-0101 (removable builder, issue #387): removing the builder is already possible and not needed. Synchronized the three builder projections.
