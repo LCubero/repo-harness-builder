@@ -12,7 +12,7 @@ Contributions start with an issue and end with maintainer review. Keep each chan
 6. Open a focused PR that links the issue with `Closes #<number>` and states scope, verification, and risks.
 7. Address review and obtain maintainer approval before merge.
 
-Do not commit directly to `main`. Features, behavior changes, and anything that touches tests or runtime projections always use an issue and a PR. Direct commits to `main` are exceptions only the owner or someone the owner authorizes may grant; each exception must be requested or stated explicitly at the time. Direct-main documentation corrections still need a changelog entry.
+Do not commit directly to `main`. Features, behavior changes, and anything that touches tests or runtime projections always use an issue and a PR. Direct commits to `main` are exceptions only the owner or someone the owner authorizes may grant; each exception must be requested or stated explicitly at the time. Direct-main documentation corrections still need a changelog entry. The current protection on `main` requires a PR even for administrators; conversational authorization does not bypass that protection. Use a PR under the current configuration.
 
 ## Development Rules
 
