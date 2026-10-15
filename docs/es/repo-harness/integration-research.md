@@ -46,7 +46,7 @@ Rutas de evidencia del repositorio inspeccionadas:
 
 - `REPO-HARNESS.md`
 - `.pi/skills/repo-harness-documentation/SKILL.md`
-- `odd/tasks/gentle-ecosystem-reconciliation.md`
+- `odd/tasks/gentle-ecosystem-reconciliation.md` (registro histórico local de tareas; ya no está versionado en Git)
 - `docs/repo-harness/roadmap.md`
 - `docs/repo-harness/current-state.md`
 - `docs/repo-harness/decisions.md`
