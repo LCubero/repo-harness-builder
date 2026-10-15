@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-15
 
+- Published [`v3.1-rc.14`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.14) from `6a0b48a59bcd268c432960a125cbdd5bc924e001` on 2026-10-15T04:08:26Z by owner decision (issue #392), before Linux validation, carrying `disable-model-invocation: true` (#388): `repo-harness-builder-v3.1-rc.14-claude-code.zip` (255269 bytes, SHA-256 `96b8b50283684a3d0e1bdb6f80d9689fe0c3c1c688eb4fbe24d1e5a119a8acde`); `repo-harness-builder-v3.1-rc.14-opencode.zip` (255353 bytes, SHA-256 `1665ed91bf51e0ef715392a3dc83c57aacae3b6fdfede561c387cd33fa455f62`); `repo-harness-builder-v3.1-rc.14-pi.zip` (255101 bytes, SHA-256 `f2e8f0369cc6892687267a9480f40bb1090354ead3001f7876936f1a3db8d787`). Made the GitHub repository public by owner decision.
+
 - Added a simple Mermaid diagram of the repository harness session loop (session-start, work, documentation, session-stop) to the EN/ES READMEs (issue #390). Documentation only.
 
 ## 2026-10-13
