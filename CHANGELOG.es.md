@@ -4,6 +4,8 @@
 
 ## 2026-10-16
 
+- Se cerraron por decisión del propietario los dos últimos registros aplazados de la hoja de ruta: RH-W-0052 queda `completed` porque la porción solo de archivo entregada y la guía de retirada manual (PR #380) cubren la retirada del harness, sin desinstalador automático; RH-W-0015 queda `rejected` porque cualquier herramienta integrada futura (MCP, CLI, binario) viviría en un repositorio separado. Se actualizaron EN/ES la hoja de ruta, el estado actual, el mapa de documentación y los encabezados de RH-W-0052. Solo documentación.
+
 - Se ignora el directorio `.engram/` de la raíz para que la configuración local de Engram (`config.json`) quede en disco pero nunca se versione (issue #405). Sin cambios de producto, pruebas ni proyecciones.
 
 - Se publicó [`v3.1-rc.15`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.15) desde `862815103bc2a75b9b9095dbfa1b73b973e3f907` el 2026-10-16T03:24:46Z por decisión del propietario, con RH-W-0105 y RH-W-0106: `repo-harness-builder-v3.1-rc.15-claude-code.zip` (257664 bytes, SHA-256 `9db6311cb2d26aa0834f2822517b1f6c76f69c28e3d3f3246c78eff57c4b7d05`); `repo-harness-builder-v3.1-rc.15-opencode.zip` (257748 bytes, SHA-256 `0153769e114bd7f94d68f744f45ca9a0af349182d417bac5629baca8630ebd55`); `repo-harness-builder-v3.1-rc.15-pi.zip` (257496 bytes, SHA-256 `c63a5a25f1fff89be64534bad6ea4f601c34dd5c45aed8a57664983a21fb57da`).

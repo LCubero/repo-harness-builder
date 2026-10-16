@@ -26,8 +26,8 @@
 | [rh-w-0050-design.md](rh-w-0050-design.md) | Completed owner-approved bounded reconciliation design; delivered with historical design body retained |
 | [rh-w-0051-design.md](rh-w-0051-design.md) | Completed owner-approved local-state taxonomy design; historical design body retained |
 | [rh-w-0051-implementation-plan.md](rh-w-0051-implementation-plan.md) | Completed local-state taxonomy implementation plan; historical execution instructions retained |
-| [rh-w-0052-design.md](rh-w-0052-design.md) | Owner-approved archive-only design and verified implementation boundary; destination parents must preexist as direct real directories, while residual uninstall, reinstall, and deletion are `deferred` under the roadmap re-entry condition |
-| [rh-w-0052-implementation-plan.md](rh-w-0052-implementation-plan.md) | Verified strict-TDD archive-only execution record; implementation is complete for the slice, while RH-W-0052 is `deferred` for residual lifecycle work requiring separate future authority |
+| [rh-w-0052-design.md](rh-w-0052-design.md) | Owner-approved archive-only design and verified implementation boundary; destination parents must preexist as direct real directories; RH-W-0052 is `completed` with manual removal guidance instead of an uninstaller |
+| [rh-w-0052-implementation-plan.md](rh-w-0052-implementation-plan.md) | Verified strict-TDD archive-only execution record; implementation is complete for the slice, and RH-W-0052 is `completed` |
 | [rh-w-0053-design.md](rh-w-0053-design.md) | Delivered interrupted-session checkpoint design; the historical design body and its pre-delivery context are retained |
 | [rh-w-0053-implementation-plan.md](rh-w-0053-implementation-plan.md) | Delivered test-first RH-W-0053 interrupted-operation checkpoint execution record; verified evidence is retained |
 | [rh-w-0048-design.md](rh-w-0048-design.md) | Completed and delivered recovery design; the [roadmap record](roadmap.md#rh-w-0048) owns reconciliation and re-verification evidence |
