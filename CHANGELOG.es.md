@@ -4,6 +4,8 @@
 
 ## 2026-10-16
 
+- Se publicó [`v3.1-rc.15`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.15) desde `862815103bc2a75b9b9095dbfa1b73b973e3f907` el 2026-10-16T03:24:46Z por decisión del propietario, con RH-W-0105 y RH-W-0106: `repo-harness-builder-v3.1-rc.15-claude-code.zip` (257664 bytes, SHA-256 `9db6311cb2d26aa0834f2822517b1f6c76f69c28e3d3f3246c78eff57c4b7d05`); `repo-harness-builder-v3.1-rc.15-opencode.zip` (257748 bytes, SHA-256 `0153769e114bd7f94d68f744f45ca9a0af349182d417bac5629baca8630ebd55`); `repo-harness-builder-v3.1-rc.15-pi.zip` (257496 bytes, SHA-256 `c63a5a25f1fff89be64534bad6ea4f601c34dd5c45aed8a57664983a21fb57da`).
+
 - Se cerraron RH-W-0105 y RH-W-0106 como `completed` tras el merge (PRs #399, #402) y la verificación real del propietario en Linux con Gentle Shell/Pi. Solo documentación.
 
 - Se reconoce evidencia observada de Engram nativo en Pi (`surface: "pi-tools"`), además de MCP/CLI, conservando el filtrado de evidencia y el carácter opcional. Se aclaró que no encontrar Gentle AI en PATH no demuestra su ausencia en el host y que el diagnóstico heredado `applyAllowed` no es una condición para instalar. Sin modo, estado, búsqueda de binarios ni requisito de instalación nuevos. Los informes ya no afirman que la revisión o coordinación de Gentle AI no están disponibles por no encontrarlo en PATH, porque hosts como Gentle Shell mantienen una copia privada fuera del PATH del shell del agente.
