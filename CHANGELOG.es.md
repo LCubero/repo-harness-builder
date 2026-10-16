@@ -4,6 +4,12 @@
 
 ## 2026-10-16
 
+- Se reconoce evidencia observada de Engram nativo en Pi (`surface: "pi-tools"`), además de MCP/CLI, conservando el filtrado de evidencia y el carácter opcional. Se aclaró que no encontrar Gentle AI en PATH no demuestra su ausencia en el host y que el diagnóstico heredado `applyAllowed` no es una condición para instalar. Sin modo, estado, búsqueda de binarios ni requisito de instalación nuevos. Los informes ya no afirman que la revisión o coordinación de Gentle AI no están disponibles por no encontrarlo en PATH, porque hosts como Gentle Shell mantienen una copia privada fuera del PATH del shell del agente.
+
+- Se aclaró la pregunta inicial de idioma del constructor: si no hay un idioma explícito o registrado que la resuelva, pregunta una sola vez en inglés y español y luego usa el elegido para conversación e informe. La precedencia del idioma y la elección separada de documentación no cambian.
+
+- RH-W-0106 (issue #400): el `check` del constructor ya no impone el contrato de sección de su plantilla a un README de producto preservado. Los README raíz que declaran un marcador del harness o el rol `repository-harness` conservan la validación de secciones. Sin cambios del contenido del consumidor, estado ni modo nuevos. Las regresiones mediante CLI pública cubren preservación en inglés, español y bilingüe y daños de secciones declaradas.
+
 - RH-W-0105 (issue #398), a partir de las pruebas del propietario de `v3.1-rc.14` en Linux: un idioma del informe preguntado también fija el idioma de conversación; el constructor ya no repite una elección recién hecha, dice "repositorio" en lugar de "disco", transmite `approvalPrompt` y los conteos exactamente, no sugiere revisar su propio `CONTRIBUTING.md` generado e informa un plan vacío como sin cambios, sin conjuntos vacíos ni digest. Se sincronizaron las tres proyecciones del constructor y se actualizaron las guías EN/ES. Verificación: 670 pruebas OK (7 omitidas), checker `current`/0 escrituras, veredicto independiente S1–S7 cumplidas.
 
 ## 2026-10-15

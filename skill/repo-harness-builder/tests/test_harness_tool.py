@@ -45,6 +45,59 @@ DISCIPLINE = (
 )
 
 
+class ConsumerReadmeContractTests(unittest.TestCase):
+    def cli(self, root, *args):
+        if args[0] == "check":
+            args = (*args, "--standalone")
+        result = subprocess.run([sys.executable, "-B", str(SCRIPT), *args, "--root", str(root),
+                                 "--project-name", "Example"], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(result.stderr, "")
+        return json.loads(result.stdout)
+
+    def install(self, root, languages):
+        args = ["--standalone"]
+        for language in languages:
+            args += ["--documentation-language", language]
+        preview = self.cli(root, "render", *args)
+        self.assertEqual(preview["blocked"], [])
+        self.cli(root, "render", *args, "--apply", "--approved-plan-sha256", preview["planSha256"])
+
+    def test_preserved_consumer_readme_has_no_seed_section_obligation(self):
+        for languages in (["en"], ["es"], ["en", "es"]):
+            with self.subTest(languages=languages), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                original = b"# Product\n\nA product README maintained by its authors.\n"
+                (root / "README.md").write_bytes(original)
+                self.install(root, languages)
+                installed = (root / "README.md").read_bytes()
+                self.assertTrue(installed.startswith(original))
+                if len(languages) == 1:
+                    self.assertEqual(installed, original)
+                report = self.cli(root, "check")
+                entry = next(f for f in report["files"] if f["path"] == "README.md")
+                self.assertEqual(entry, {"path": "README.md", "state": "human-evolved"})
+                self.assertEqual(report["status"], "current")
+                self.assertEqual(report["writes"], 0)
+                self.assertEqual((root / "README.md").read_bytes(), installed)
+
+    def test_declared_readme_still_detects_missing_harness_role(self):
+        for marker in ("<!-- repo-harness-builder:start -->", "<!-- repo-harness-builder:end -->"):
+            with self.subTest(marker=marker), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                self.install(root, ["en"])
+                self.assertEqual(self.cli(root, "check")["status"], "current")
+                damaged = "# Product\n\n" + marker + "\n"
+                (root / "README.md").write_text(damaged, encoding="utf-8")
+                report = self.cli(root, "check")
+                entry = next(f for f in report["files"] if f["path"] == "README.md")
+                self.assertEqual(entry, {"path": "README.md", "state": "sections-missing",
+                                         "missing": ["repository-harness"]})
+                self.assertEqual(report["status"], "drift")
+                self.assertEqual(report["writes"], 0)
+                self.assertEqual((root / "README.md").read_text(encoding="utf-8"), damaged)
+
+
 class ContributionGuideTests(unittest.TestCase):
     def test_contribution_existing_locations_preserved(self):
         for path in ("CONTRIBUTING.md", "docs/CONTRIBUTING.md", ".github/CONTRIBUTING.md"):
@@ -5255,6 +5308,12 @@ class GeneratedCoreTests(unittest.TestCase):
         self.assertLess(stop_commit.index("Request approval only for changes not already authorized"), stop_commit.index("Only for a requested Git outcome"))
 
     def test_integrated_contracts_do_not_require_paired_capabilities(self):
+        audit = (ROOT / "references/audit-and-interview.md").read_text(encoding="utf-8")
+        self.assertIn("not found on PATH; host integration was not checked", audit)
+        self.assertIn("A host such as Gentle Shell can use its own private Gentle AI copy that this check cannot see", audit)
+        self.assertIn("Do not report that Gentle AI review, routing, or coordination is unavailable from a PATH miss", audit)
+        self.assertIn("`applyAllowed` is a legacy capability diagnostic, not an installation gate", audit)
+        self.assertIn("never relabel native Pi tools as MCP or CLI", audit)
         outputs = TOOL.render("Consumer", [], documentation_languages=["en", "es"])
         paths = ["REPO-HARNESS.md", ".repo-harness/rules/memory.md",
                  "docs/repo-harness/decisions.md"] + [
@@ -8338,6 +8397,10 @@ class CapabilityAwareIntegrationContractTests(unittest.TestCase):
             ({"surface": "mcp", "status": "missing", "evidence": "tool unavailable"}, "not_found"),
             ({"surface": "cli", "status": "failed", "evidence": "exit 1"}, "found_on_path"),
             ({"surface": "mcp", "status": "verified", "evidence": "project detected"}, "verified"),
+            ({"surface": "cli", "status": "verified", "evidence": "project detected"}, "verified"),
+            ({"surface": "pi-tools", "status": "verified", "evidence": "mem_current_project responded"}, "verified"),
+            ({"surface": "pi-tools", "status": "missing"}, "not_found"),
+            ({"surface": "pi-tools", "status": "verified", "evidence": ""}, "found_on_path"),
             ({"surface": "unknown", "status": "verified", "evidence": "guess"}, "found_on_path"),
             ({"surface": "mcp", "status": "verified", "evidence": ""}, "found_on_path"),
         )
@@ -10314,7 +10377,7 @@ class ReportTemplateTests(unittest.TestCase):
         section = contract.split("## Report Language", 1)[1].split("##", 1)[0].lower()
         for phrase in (
             "verified current human conversation evidence",
-            "ask one localized report-language question and stop",
+            "ask one bilingual report-language question and stop",
             "cannot claim verified conversation evidence",
         ):
             with self.subTest(phrase=phrase):
@@ -10935,7 +10998,7 @@ class UpdateFlowContractTests(unittest.TestCase):
     def test_report_language_uses_the_recorded_conversation_language_before_asking(self):
         section = self.audit().split("## Report Language", 1)[1].split("\n## ", 1)[0]
         recorded = section.index("`recordedLanguage`")
-        ask = section.index("ask one localized report-language question and stop")
+        ask = section.index("ask one bilingual report-language question and stop")
         self.assertLess(recorded, ask)
 
     def test_an_empty_plan_ends_without_an_approval_request(self):
@@ -10964,7 +11027,10 @@ class InterviewFrictionContractTests(unittest.TestCase):
 
     def test_an_asked_report_language_also_sets_the_conversation_language(self):
         section = self.audit().split("## Report Language", 1)[1].split("\n## ", 1)[0]
-        self.assertIn("ask one localized report-language question and stop; its answer also sets the conversation language", section)
+        self.assertIn("ask one bilingual report-language question and stop; its answer also sets the conversation language", section)
+        self.assertIn("Which language should I use for this conversation and report? / ¿Qué idioma querés usar para esta conversación y el informe?", section)
+        self.assertIn("Offer `English` and `Español`", section)
+        self.assertIn("This bilingual opening is only for unresolved language", section)
         self.assertIn("Ask only unresolved conversation language", self.skill())
         self.assertNotIn("resolve report language. Ask for conversation language and stop;", self.skill())
         self.assertNotIn("Otherwise, for the language sequence, ask the conversation-language question and stop.", self.audit())
@@ -12333,10 +12399,24 @@ class StatelessBoundaryTests(unittest.TestCase):
 
     def test_detect_engram_keeps_the_whole_evidence_for_internal_verification(self):
         """The projection must narrow the output, never weaken the check behind it."""
-        host = {"surface": "mcp", "status": "verified", "evidence": self.HOST}
-        self.assertEqual(TOOL.detect_engram(host)["classification"], "verified")
-        self.assertEqual(TOOL.detect_engram(host)["evidence"], host)
-        self.assertEqual(TOOL.detect_engram({"surface": "mcp", "status": "missing"})["classification"], "not_found")
+        for surface in ("mcp", "cli", "pi-tools"):
+            with self.subTest(surface=surface), tempfile.TemporaryDirectory() as directory:
+                host = {"surface": surface, "status": "verified", "evidence": self.HOST}
+                self.assertEqual(TOOL.detect_engram(host)["classification"], "verified")
+                self.assertEqual(TOOL.detect_engram(host)["evidence"], host)
+                self.assertEqual(TOOL.detect_engram({"surface": surface, "status": "missing"})["classification"], "not_found")
+                result = subprocess.run(
+                    [sys.executable, "-B", str(SCRIPT), "render", "--root", directory,
+                     "--project-name", "Example", "--engram-evidence-json", TOOL.canonical_json(host)],
+                    capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(result.stderr, "")
+                report = json.loads(result.stdout)
+                self.assertEqual(report["writes"], 0)
+                self.assertEqual(report["capabilityPreflight"]["engram"]["classification"], "verified")
+                self.assertTrue(report["capabilityPreflight"]["allowed"])
+                self.assertNotIn(self.HOST, result.stdout)
+                self.assertEqual(list(Path(directory).iterdir()), [])
 
     def test_builder_preview_carries_no_absolute_path_and_no_raw_content(self):
         """A reviewer needs the bindings, never the bytes or where they live."""
