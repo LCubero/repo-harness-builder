@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-16
 
+- Closed RH-W-0105 and RH-W-0106 as `completed` after merge (PRs #399, #402) and owner live Linux verification with Gentle Shell/Pi. Documentation only.
+
 - Recognize observed native Pi Engram evidence (`surface: "pi-tools"`) alongside MCP/CLI, preserving evidence sanitization and optional integration behavior. Clarified that a PATH-only Gentle AI miss does not prove host absence and the legacy `applyAllowed` diagnostic is not an installation gate. No new mode, state, binary search or installation requirement. Reports no longer claim Gentle AI review or coordination is unavailable from a PATH miss, since hosts such as Gentle Shell keep a private copy off the agent shell PATH.
 
 - Clarified the initial builder language question: when no explicit or recorded language resolves it, ask once in English and Spanish, then use the chosen language for conversation and report. Existing language precedence and separate documentation locale remain unchanged.
