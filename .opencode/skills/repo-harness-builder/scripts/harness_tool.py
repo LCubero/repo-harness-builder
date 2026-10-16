@@ -186,16 +186,16 @@ def detect_gentle_ai(
 
 
 def detect_engram(host_evidence: Mapping[str, object] | None) -> dict[str, Any]:
-    """Validate Engram evidence supplied by the existing host MCP or CLI boundary."""
+    """Validate Engram evidence from the host's MCP, CLI or native Pi tools."""
     if host_evidence is None:
         return {"classification": "not_found", "evidence": "Engram capability was not exposed by the host"}
     evidence = dict(host_evidence)
     surface = evidence.get("surface")
     status = evidence.get("status")
     detail = evidence.get("evidence")
-    if surface in {"mcp", "cli"} and status == "missing":
+    if surface in {"mcp", "cli", "pi-tools"} and status == "missing":
         return {"classification": "not_found", "evidence": evidence}
-    if surface in {"mcp", "cli"} and status == "verified" and isinstance(detail, str) and bool(detail.strip()):
+    if surface in {"mcp", "cli", "pi-tools"} and status == "verified" and isinstance(detail, str) and bool(detail.strip()):
         return {"classification": "verified", "evidence": evidence}
     return {"classification": "found_on_path", "evidence": evidence}
 
@@ -5558,6 +5558,15 @@ def check(
         elif human_owned(relative, rulebook_path):
             current_bytes = target.read_bytes()
             current_text = current_bytes.decode("utf-8", errors="replace")
+            # A preserved product README does not promise the harness seed contract.
+            if relative in {"README.md", "README.es.md"} and not (
+                "repository-harness" in declared_roles(current_text)
+                or "<!-- repo-harness-builder:start -->" in current_text
+                or "<!-- repo-harness-builder:end -->" in current_text
+            ):
+                entry["state"] = "human-evolved"
+                entries.append(entry)
+                continue
             absent = missing_sections(content, current_text)
             locale_issues = locale_leakage_issues(
                 locale_contract_path(relative, documentation_languages or [PRIMARY_DOCUMENTATION_LANGUAGE]),
@@ -5724,7 +5733,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             child.add_argument("--apply", action="store_true", help="create the absent files listed in the plan")
             child.add_argument("--approved-plan-sha256", help="digest printed by the approved preview")
             child.add_argument("--approval", help="exact approval answer from the active report-language domain; builder activation only")
-            child.add_argument("--engram-evidence-json", help="exact JSON evidence from the host-supported Engram MCP or CLI boundary")
+            child.add_argument("--engram-evidence-json", help="exact JSON evidence from host-supported Engram MCP, CLI or native Pi tools (surface: pi-tools)")
             child.add_argument("--project-id", help="exact normalized project identifier the authority context declares; builder activation only")
             child.add_argument("--authority-context-file", help="path to the exact canonical authority context, or - to read it from stdin; builder activation only")
             child.add_argument("--approved-generation-sha256", help="generation digest printed by the approved builder preview; builder apply only")

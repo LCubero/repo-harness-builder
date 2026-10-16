@@ -6,6 +6,12 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-16
 
+- Recognize observed native Pi Engram evidence (`surface: "pi-tools"`) alongside MCP/CLI, preserving evidence sanitization and optional integration behavior. Clarified that a PATH-only Gentle AI miss does not prove host absence and the legacy `applyAllowed` diagnostic is not an installation gate. No new mode, state, binary search or installation requirement. Reports no longer claim Gentle AI review or coordination is unavailable from a PATH miss, since hosts such as Gentle Shell keep a private copy off the agent shell PATH.
+
+- Clarified the initial builder language question: when no explicit or recorded language resolves it, ask once in English and Spanish, then use the chosen language for conversation and report. Existing language precedence and separate documentation locale remain unchanged.
+
+- RH-W-0106 (issue #400): builder `check` no longer imposes its seed section contract on a preserved product README. Root READMEs declaring a harness boundary or `repository-harness` role still receive section validation. No consumer content changes, new state or mode. Public CLI regression tests cover English, Spanish and bilingual preservation and declared-section damage.
+
 - RH-W-0105 (issue #398), from the owner's `v3.1-rc.14` Linux tests: an asked report language also sets the conversation language; the builder no longer restates a choice just made, says "repository" instead of "disk", relays `approvalPrompt` and counts exactly, gives no review suggestion for its own generated `CONTRIBUTING.md`, and reports an empty plan as no changes without empty sets or a digest. Synchronized the three builder projections and updated the EN/ES builder guides. Verification: 670 tests OK (7 skipped), checker `current`/0 writes, independent S1–S7 verdict met.
 
 ## 2026-10-15

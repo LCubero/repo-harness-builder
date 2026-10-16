@@ -7,6 +7,8 @@ Presentacion completa en espanol de la [guia canonica del constructor](../../rep
 
 El harness conserva su utilidad por si solo. El modo integrado predeterminado compone de forma independiente las capacidades disponibles de Gentle AI y Engram, mientras CodeGraph sigue siendo opcional. Una capacidad no disponible degrada solo el comportamiento que posee, salvo que la operacion seleccionada o la politica del repositorio la exija. El modo `--standalone` explicito usa continuidad solo del repositorio.
 
+La detección no exige una instalación global: las herramientas nativas de Engram en Pi pueden aportar evidencia con `surface: "pi-tools"` después de una respuesta pertinente satisfactoria. La detección de Gentle AI solo consulta PATH; «no encontrado en PATH» no demuestra que falte la integración privada del host. Gentle Shell, por ejemplo, mantiene a propósito su copia privada de Gentle AI fuera del PATH del shell del agente; los informes no deben afirmar que su revisión o coordinación no están disponibles. No hace falta buscar carpetas privadas ni reparar instalaciones. El diagnóstico heredado `applyAllowed` no es una condición para instalar; los avisos de capacidades opcionales no invalidan una instalación correcta del harness.
+
 | Componente | Limite |
 |---|---|
 | `repo-harness` | Guia operativa acotada al repositorio y verdad durable del proyecto para agentes de programacion con IA compatibles. |
@@ -120,6 +122,8 @@ Un repositorio nuevo o practicamente vacio recibe una base util completa despues
 
 ### Repositorios existentes
 
+El `check` del constructor no exige que un README de producto preservado adopte la plantilla del harness. Los README raíz se validan contra ese contrato de sección solo cuando declaran el rol `repository-harness` o alguno de sus marcadores de inicio o fin; un selector de idioma bilingüe no cuenta. Las secciones declaradas del harness y los demás documentos siguen validándose. Si se eliminan todas las declaraciones, se pierde esa evidencia; no se infiere un historial de instalación.
+
 El constructor analiza el contenido existente relevante y propone una integracion informada. Preserva bytes desconocidos y nunca entiende la preservacion como congelar el repositorio. Si el contenido esta obsoleto o es estructuralmente incompatible, archivar y partir de una base limpia es una eleccion distinta que igual requiere aprobacion explicita.
 
 Un repositorio existente nunca recibe un locale de documentacion que no tenga ya. Un harness heredado cuyo manifiesto es anterior a los metadatos de idioma conserva los arboles de locale realmente instalados, de modo que un repositorio bilingue antiguo no pierde en silencio su comprobacion en espanol y un repositorio solo en ingles no gana en silencio archivos en espanol.
@@ -132,7 +136,7 @@ Los modos monolingues usan rutas canonicas como `README.md`, `CHANGELOG.md` y `d
 
 Cuando se declara un segundo locale, se genera completo, no parcial. Sus documentos son espejos humanos completos que presentan los mismos hechos y enlazan a los propietarios en ingles. Nunca se convierten en propietarios factuales independientes.
 
-El idioma de conversación es independiente de los locales de documentación. Define el idioma en que las skills de sesión generadas le hablan a usted. Cuando el constructor pregunta el idioma del informe, esa respuesta también fija el idioma de conversación; no pregunta dos veces la misma elección. Al actualizar, reutiliza los idiomas registrados salvo que usted pida cambiarlos.
+El idioma de conversación es independiente de los locales de documentación. Define el idioma en que las skills de sesión generadas le hablan a usted. Cuando no puede resolver el idioma mediante elecciones explícitas o registradas, el constructor pregunta una sola vez en inglés y español. Esa respuesta fija el idioma del informe y la conversación; toda interacción posterior usa el idioma elegido sin volver a preguntarlo. Al actualizar, reutiliza los idiomas registrados salvo que usted pida cambiarlos.
 
 El texto de aprobación se transmite exactamente desde el aviso localizado de la CLI y los conteos del plan salen de la herramienta. Un plan ejecutable vacío no necesita aprobación, tabla de acciones vacía ni digest; las entradas bloqueadas siguen impidiendo afirmar que el harness está actualizado. Una guía de contribución que coincide con la plantilla breve del constructor no recibe una sugerencia de revisión por posible desactualización.
 

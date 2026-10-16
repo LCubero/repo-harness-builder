@@ -7,6 +7,8 @@ Detailed product and maintenance guidance for `repo-harness-builder`. For instal
 
 The harness remains useful on its own. Default integrated mode composes available Gentle AI and Engram capabilities independently, while CodeGraph remains optional. An unavailable capability degrades only its owned behavior unless the selected operation or repository policy explicitly requires it. Explicit `--standalone` mode uses repository-only continuity.
 
+Detection does not require a global installation: native Pi Engram tools can supply `surface: "pi-tools"` evidence after a successful relevant tool response. Gentle AI detection checks PATH only, so "not found on PATH" does not mean a host's package-local integration is absent. Gentle Shell, for example, keeps a private Gentle AI copy off the agent shell's PATH by design; reports must not claim its review or coordination is unavailable. No private-folder search or installation repair is required. The legacy `applyAllowed` diagnostic is not an installation gate; optional capability warnings do not invalidate a successful harness install.
+
 | Component | Boundary |
 |---|---|
 | `repo-harness` | Repository-scoped operating guidance and durable project truth for supported AI coding agents. |
@@ -120,6 +122,8 @@ A new or effectively empty repository receives a complete useful baseline after 
 
 ### Existing Repositories
 
+Builder `check` does not require a preserved product README to adopt the harness template. Root READMEs are checked against the harness section contract only when they declare its `repository-harness` role or either harness boundary; a bilingual language selector alone does not count. Declared harness sections and other documentation remain validated. Removing every declaration loses that evidence; no installation history is inferred.
+
 The builder analyzes relevant existing content and proposes informed integration. It preserves unknown bytes and never treats preservation as freezing the repository. If content is obsolete or structurally incompatible, archive and clean-baseline work is a distinct choice that still requires explicit approval.
 
 An existing repository is never given a documentation locale it does not already have. A legacy harness whose manifest predates language metadata keeps the locale trees it actually has installed, so an older bilingual repository does not silently lose its Spanish checks and an English-only repository does not silently gain Spanish files.
@@ -132,7 +136,7 @@ English-only and Spanish-only use canonical paths such as `README.md`, `CHANGELO
 
 When a second locale is declared, it is generated complete, not partially. Its documents are full human mirrors that present the same facts and link back to the English owners. They never become independent factual owners.
 
-Conversation language is independent of documentation locales. It sets the language the generated session skills speak to you in. When the builder asks for the report language, that answer also sets the conversation language; it does not ask the same choice twice. On update, recorded languages are reused unless you request a change.
+Conversation language is independent of documentation locales. It sets the language the generated session skills speak to you in. When no language can be resolved from explicit or recorded choices, the builder asks once in both English and Spanish. That answer sets report and conversation language; all subsequent interaction uses the selected language without asking again. On update, recorded languages are reused unless you request a change.
 
 Approval text is relayed exactly from the localized CLI prompt, and plan counts come from the tool output. An empty executable plan needs no approval, empty action table, or digest; blocked entries still prevent a claim that the harness is current. A contribution guide matching the builder's own brief template receives no outdated-guide review suggestion.
 
