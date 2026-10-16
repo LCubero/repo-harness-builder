@@ -1,6 +1,6 @@
 # RH-W-0052 Minimal Archive-Only Design
 
-> **Design status: approved; archive-only slice complete, verified, and delivered through issue #177 and PR #178. Unit lifecycle: `deferred`.** The [roadmap record](roadmap.md#rh-w-0052) owns the owner-delegated residual deferral and evidence-based re-entry condition. Uninstall, reinstall, and deletion remain undesigned; future design and implementation require separate authority. The historical design body below grants no new authority.
+> **Design status: approved; archive-only slice complete, verified, and delivered through issue #177 and PR #178. Unit lifecycle: `completed`.** The [roadmap record](roadmap.md#rh-w-0052) owns the owner decision of 2026-10-15: manual removal guidance replaces any uninstaller, and automatic uninstall, reinstall, and deletion will not be built. The historical design body below grants no new authority.
 
 ## Review Contract
 

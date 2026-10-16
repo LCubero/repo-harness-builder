@@ -1,6 +1,6 @@
 # Plan de implementación RH-W-0052 solo de archivo
 
-> **Estado de ejecución: porción solo de archivo completa, verificada y entregada mediante issue #177 y PR #178. Ciclo de la unidad: `deferred`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0052) posee el aplazamiento residual y la reentrada. Las instrucciones históricas de las tareas ejecutadas permanecen intactas; este registro no concede autoridad nueva de implementación, entrega, red, limpieza ni operación destructiva.
+> **Estado de ejecución: porción solo de archivo completa, verificada y entregada mediante issue #177 y PR #178. Ciclo de la unidad: `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0052) posee la decisión del propietario del 2026-10-15 de usar la guía de retirada manual en lugar de un desinstalador. Las instrucciones históricas de las tareas ejecutadas permanecen intactas; este registro no concede autoridad nueva de implementación, entrega, red, limpieza ni operación destructiva.
 
 Derivado del [diseño solo de archivo](rh-w-0052-design.md) aprobado por el propietario. Propietario canónico en inglés: [rh-w-0052-implementation-plan.md](../../repo-harness/rh-w-0052-implementation-plan.md). El [registro de la hoja de ruta](roadmap.md#rh-w-0052) conserva la propiedad del ciclo de vida.
 

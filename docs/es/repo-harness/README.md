@@ -24,8 +24,8 @@
 | [Diseno RH-W-0050](rh-w-0050-design.md) | Diseno completado de reconciliacion acotada aprobado por el propietario; entregado con el cuerpo historico conservado |
 | [Diseno RH-W-0051](rh-w-0051-design.md) | Diseno aprobado y completado de taxonomia de estado local; cuerpo historico conservado |
 | [Plan de implementacion RH-W-0051](rh-w-0051-implementation-plan.md) | Plan completado de taxonomia de estado local; instrucciones historicas conservadas |
-| [Diseño RH-W-0052](rh-w-0052-design.md) | Diseño solo de archivo aprobado por el propietario y límite de implementación verificado; los padres de destino deben preexistir como directorios reales directos, mientras desinstalación, reinstalación y borrado residuales están `deferred` según la condición de reentrada de la hoja de ruta |
-| [Plan de implementación RH-W-0052](rh-w-0052-implementation-plan.md) | Registro de ejecución solo de archivo con TDD estricto verificado; la implementación está completa para la porción, mientras RH-W-0052 está `deferred` para trabajo residual de ciclo que requiere autoridad futura separada |
+| [Diseño RH-W-0052](rh-w-0052-design.md) | Diseño solo de archivo aprobado por el propietario y límite de implementación verificado; los padres de destino deben preexistir como directorios reales directos; RH-W-0052 está `completed` con la guía de retirada manual en lugar de un desinstalador |
+| [Plan de implementación RH-W-0052](rh-w-0052-implementation-plan.md) | Registro de ejecución solo de archivo con TDD estricto verificado; la implementación está completa para la porción, y RH-W-0052 está `completed` |
 | [Diseño RH-W-0053](rh-w-0053-design.md) | Diseño entregado de checkpoint para sesión interrumpida; se conservan el cuerpo histórico y el contexto previo a la entrega |
 | [Plan de implementación RH-W-0053](rh-w-0053-implementation-plan.md) | Registro de ejecución RH-W-0053 entregado y completado con pruebas primero; se conserva la evidencia verificada |
 | [Diseño RH-W-0048](rh-w-0048-design.md) | Diseño de recuperación completado y entregado; el [registro del roadmap](roadmap.md#rh-w-0048) posee la evidencia de reconciliación y verificación independiente |

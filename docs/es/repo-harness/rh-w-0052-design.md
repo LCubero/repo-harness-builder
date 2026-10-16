@@ -1,6 +1,6 @@
 # Diseño mínimo solo de archivo RH-W-0052
 
-> **Estado del diseño: aprobado; porción solo de archivo completa, verificada y entregada mediante issue #177 y PR #178. Ciclo de la unidad: `deferred`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0052) posee el aplazamiento residual delegado por el propietario y la condición de reentrada basada en evidencia. Desinstalación, reinstalación y borrado siguen sin diseño; el diseño y la implementación futuros requieren autoridad separada. El cuerpo histórico del diseño que sigue no concede autoridad nueva.
+> **Estado del diseño: aprobado; porción solo de archivo completa, verificada y entregada mediante issue #177 y PR #178. Ciclo de la unidad: `completed`.** El [registro de la hoja de ruta](roadmap.md#rh-w-0052) posee la decisión del propietario del 2026-10-15: la guía de retirada manual reemplaza cualquier desinstalador, y no se construirán desinstalación, reinstalación ni borrado automáticos. El cuerpo histórico del diseño que sigue no concede autoridad nueva.
 
 ## Contrato de revisión
 

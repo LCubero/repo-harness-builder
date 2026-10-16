@@ -1,6 +1,6 @@
 # RH-W-0052 Archive-Only Implementation Plan
 
-> **Execution status: archive-only slice complete, verified, and delivered through issue #177 and PR #178. Unit lifecycle: `deferred`.** The [roadmap record](roadmap.md#rh-w-0052) owns residual deferral and re-entry. Historical executed task instructions remain unchanged; this record grants no new implementation, delivery, network, cleanup, or destructive authority.
+> **Execution status: archive-only slice complete, verified, and delivered through issue #177 and PR #178. Unit lifecycle: `completed`.** The [roadmap record](roadmap.md#rh-w-0052) owns the owner decision of 2026-10-15 to rely on manual removal guidance instead of an uninstaller. Historical executed task instructions remain unchanged; this record grants no new implementation, delivery, network, cleanup, or destructive authority.
 
 Derived from the owner-approved [archive-only design](rh-w-0052-design.md). Spanish peer: [rh-w-0052-implementation-plan.md](../es/repo-harness/rh-w-0052-implementation-plan.md). The [roadmap record](roadmap.md#rh-w-0052) remains the lifecycle owner.
 
