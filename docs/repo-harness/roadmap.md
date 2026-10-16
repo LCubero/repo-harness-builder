@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0106
+| Field | Value |
+|---|---|
+| Origin | Owner Linux consumer test; issue #400. |
+| Priority | P2: preserved product README incorrectly reported as drift. |
+| Dependencies | none |
+| Status | active |
+| Completed work | Public CLI reproduction; root README validation now requires a declared harness boundary or repository-harness role before imposing the seed section contract. Unrelated preserved product READMEs are human-evolved; declared sections and other documents retain validation. No new mode or state. |
+| Remaining work | PR review and merge for issue #400. |
+| Additions | English-only, Spanish-only and bilingual preservation coverage; either surviving boundary still exposes a missing role. The owner also requested an explicitly English/Spanish first language question when language remains unresolved; its one answer sets conversation and report language, with existing precedence unchanged. Native Pi Engram tools are accepted as evidence (`surface: "pi-tools"`), and a Gentle AI PATH miss is reported without claiming host absence; Gentle Shell keeps a private copy off the agent PATH. Final suite 672 OK (7 skipped), checker current/0 writes; owner live clean installs (Spanish, English, English conversation with Spanish docs) VALIDATED with both checks current. |
+| Exclusions | No consumer README edits or inferred installation history. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Public CLI RED reproduced three locale cases; GREEN 17 focused tests passed. Owner-supplied Linux Pi retest: install VALIDATED, both checks current/0 writes, self-test pass, independent consumer verification PASS; re-invocation reused recorded settings, preserved README/CHANGELOG as human-evolved, requested no approval and made no writes or Git operations. Final full suite: 672 tests OK (7 skipped), 65.015s; checker current/0 writes and diff check passed. Independent public-CLI verification found no blockers, including README.es.md, declared-section damage, non-README locale checks, symlink rejection and exact runtime-package parity. |
+| Decision history | Owner authorized issue #400, bounded implementation, tests, documentation and local zip; no push or PR. |
+| Next advancement condition | Owner authorization for local commit and subsequent remote delivery; live install/re-invocation already passed. |
+
 ### RH-W-0105
 | Field | Value |
 |---|---|

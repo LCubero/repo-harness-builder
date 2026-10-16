@@ -542,6 +542,25 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0106
+
+Estado: `active`. Trabajo restante: verificación final y paquete local de prueba.
+
+| Campo | Valor |
+|---|---|
+| Origen | Prueba de consumidor del propietario en Linux; issue #400. |
+| Prioridad | P2: README de producto preservado informado incorrectamente como drift. |
+| Dependencias | ninguna |
+| Trabajo completado | Reproducción mediante CLI pública; la validación de los README raíz exige un marcador del harness o el rol repository-harness antes de imponer el contrato de sección de la plantilla. Los README de producto sin esas declaraciones son human-evolved; las secciones declaradas y los demás documentos siguen validándose. Sin modo ni estado nuevo. |
+| Trabajo restante | Revisión y merge del PR del issue #400. |
+| Adiciones | Cobertura de preservación en inglés, español y bilingüe; cualquiera de los dos marcadores supervivientes permite detectar un rol faltante. El propietario también pidió que la primera pregunta de idioma sea explícitamente en inglés y español cuando no esté resuelto; una respuesta fija conversación e informe, sin cambiar la precedencia existente. Se aceptan las herramientas nativas de Engram en Pi como evidencia (`surface: "pi-tools"`) y no encontrar Gentle AI en PATH ya no se informa como ausencia en el host; Gentle Shell mantiene una copia privada fuera del PATH del agente. Suite final 672 OK (7 omitidas), checker current/0 escrituras; instalaciones limpias reales del propietario (español, inglés, conversación en inglés con documentación en español) VALIDATED con ambos checks current. |
+| Exclusiones | Sin editar el README del consumidor ni inferir el historial de instalación. |
+| Aplazamientos | ninguno |
+| Rechazos | ninguno |
+| Evidencia | RED mediante CLI pública reprodujo tres casos de idioma; GREEN 17 pruebas enfocadas pasaron. Prueba real de Pi en Linux aportada por el propietario: instalación VALIDATED, ambos checkers current/0 escrituras, self-test pass, verificación independiente del consumidor PASS; la nueva invocación reutilizó la configuración, preservó README/CHANGELOG como human-evolved, no pidió aprobación ni escribió o ejecutó operaciones Git. Suite final: 672 pruebas OK (7 omitidas), 65.015s; checker current/0 escrituras y diff check correcto. Verificación independiente mediante CLI pública sin bloqueos, incluidos README.es.md, daños de secciones declaradas, validación de idioma en otros documentos, rechazo de enlaces simbólicos y paridad exacta de los paquetes. |
+| Historial de decisiones | El propietario autorizó issue #400, implementación acotada, pruebas, documentación y zip local; sin push ni PR. |
+| Siguiente condición de avance | Autorización del propietario para commit local y posterior entrega remota; instalación y nueva invocación reales ya pasaron. |
+
 ### RH-W-0105
 
 Estado: `active`. Trabajo restante: decisión del propietario sobre push y PR; nueva prueba real con Pi en una instalación nueva con el próximo candidato. La tabla siguiente conserva el detalle del registro.
