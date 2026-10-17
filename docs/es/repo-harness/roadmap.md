@@ -548,7 +548,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 
 | Campo | Valor |
 |---|---|
-| Origen | Decisión del propietario del 2026-10-18: meta flexible de 700 tokens con tolerancia de 50; el consumidor decide su presupuesto. Issue #416. |
+| Origen | Decisión del propietario del 2026-10-17: meta flexible de 700 tokens con tolerancia de 50; el consumidor decide su presupuesto. Issue #416. |
 | Prioridad | P2: aclarar ideales recomendados sin fricción de ejecución. |
 | Dependencias | RH-W-0073; se conserva el comportamiento no bloqueante de RH-W-0013 completada. |
 | Estado | completed |
@@ -559,7 +559,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | Sustituye el rechazo de RH-W-0073 a elevar 700; los presupuestos son recomendaciones, no restricciones del consumidor. |
 | Evidencia | RED y luego GREEN en 38 pruebas enfocadas; suite completa 675 pruebas, `OK (skipped=11)`; checker y CLI check `current`, 0 escrituras; `self-test` pasa; revisión nativa (riesgo, legibilidad, confiabilidad) aprobada y reconocida. Entregado mediante el PR #417 (squash). |
-| Historial de decisiones | 2026-10-18: el propietario autorizó meta 700, tolerancia 750, elección del consumidor y ausencia de fricción de ejecución; luego commit, PR y merge. 2026-10-18: completado. |
+| Historial de decisiones | 2026-10-17: el propietario autorizó meta 700, tolerancia 750, elección del consumidor y ausencia de fricción de ejecución; luego commit, PR y merge. 2026-10-17: completado. |
 | Siguiente condición de avance | none (terminal); reabrir ante regresión. |
 
 ### RH-W-0107
@@ -568,7 +568,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 
 | Campo | Valor |
 |---|---|
-| Origen | Revisión de alineación del propietario entre la skill del constructor y este harness el 2026-10-18; issue #409. |
+| Origen | Revisión de alineación del propietario entre la skill del constructor y este harness el 2026-10-17; issue #409. |
 | Prioridad | P2: separar límites condicionales sin aumentar el presupuesto. |
 | Dependencias | RH-W-0080 |
 | Trabajo completado | `rule_outputs()` genera `batch-interaction.md`; session-start lo carga al activar lotes. Proyecciones sincronizadas mediante mantenimiento. |
@@ -578,7 +578,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | RED: tres KeyError por archivo ausente; GREEN: cinco pruebas de lotes pasan. Suite completa 673 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; revisión nativa (riesgo, legibilidad, confiabilidad) aprobada y reconocida. Entregado: PR #410 integrado con squash como `6269856`; issue #409 cerrado. |
-| Historial de decisiones | Propietario autorizó implementación acotada y luego rama, commits, push, PR y merge. 2026-10-18: completado. |
+| Historial de decisiones | Propietario autorizó implementación acotada y luego rama, commits, push, PR y merge. 2026-10-17: completado. |
 | Próxima condición de avance | none (terminal); reabrir ante regresión. |
 
 ### RH-W-0106

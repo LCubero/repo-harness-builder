@@ -547,7 +547,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ### RH-W-0108
 | Field | Value |
 |---|---|
-| Origin | Owner decision on 2026-10-18: a flexible 700-token target with 50-token tolerance; consumers decide their budget. Issue #416. |
+| Origin | Owner decision on 2026-10-17: a flexible 700-token target with 50-token tolerance; consumers decide their budget. Issue #416. |
 | Priority | P2: clarify recommended ideals without runtime friction. |
 | Dependencies | RH-W-0073; completed RH-W-0013 non-blocking behavior remains. |
 | Status | completed |
@@ -558,13 +558,13 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | Supersedes RH-W-0073's rejection of raising 700; budgets are recommendations, not consumer restrictions. |
 | Evidence | RED then GREEN on 38 focused tests; full suite 675 tests, `OK (skipped=11)`; checker and CLI check `current`, 0 writes; `self-test` pass; native review (risk, readability, reliability) approved and acknowledged. Delivered through PR #417 (squash merge). |
-| Decision history | 2026-10-18: owner authorized target 700, tolerated 750, consumer choice and no runtime friction; then commit, PR, and merge. 2026-10-18: completed. |
+| Decision history | 2026-10-17: owner authorized target 700, tolerated 750, consumer choice and no runtime friction; then commit, PR, and merge. 2026-10-17: completed. |
 | Next advancement condition | none (terminal); reopen on regression. |
 
 ### RH-W-0107
 | Field | Value |
 |---|---|
-| Origin | Owner alignment review of the builder skill against this harness on 2026-10-18; issue #409. |
+| Origin | Owner alignment review of the builder skill against this harness on 2026-10-17; issue #409. |
 | Priority | P2: separate conditional limits without raising the budget. |
 | Dependencies | RH-W-0080 |
 | Status | completed |
@@ -575,7 +575,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED: three missing-file KeyErrors; GREEN: five batch tests pass. Full suite 673 tests, `OK (skipped=11)`; checker `current`, 0 writes; native review (risk, readability, reliability) approved and acknowledged. Delivered: PR #410 squash-merged as `6269856`; issue #409 closed. |
-| Decision history | Owner authorized bounded implementation, then branch, commits, push, PR, and merge. 2026-10-18: completed. |
+| Decision history | Owner authorized bounded implementation, then branch, commits, push, PR, and merge. 2026-10-17: completed. |
 | Next advancement condition | none (terminal); reopen on regression. |
 
 ### RH-W-0106
