@@ -36,4 +36,4 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 
 ## Budget
 
-Stay under 700 tokens, measured as `wc -w` times 1.33. Split or shed excess detail; never raise the budget.
+Target 700 tokens, measured as `wc -w` times 1.33; up to 750 tolerated. Beyond that, split or shed detail. These are the builder's recommended ideals; the repository owner may choose a different budget.

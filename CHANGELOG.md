@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- RH-W-0108: rulebooks and rule files now recommend a 700-token target with tolerance up to 750, explicitly leaving the budget to repository owners. Render/check stay non-blocking at any size. Updated tests, self-hosted rules, builder projections, and EN/ES docs; existing installations retain human-owned rule files without migration. The 1000-token skill-body ceiling is unchanged.
+
 - The generated response contract now defines how batch mode presents its grouped non-authorizing clarifications: one numbered list in one blocking block with one final question, the only exception to one question at a time; approval and authority gates stay single questions. Previously session-start pointed to the response contract for this presentation, but the contract had none and other rules forbid stacking questions. Test, projections, and EN/ES docs included. Rule files are created only when absent, so existing installations keep their human-owned response contract unchanged; no migration.
 
 - Restored English/Spanish parity: `REPO-HARNESS.es.md` now presents all eleven canonical hard rules (it carried an older six-rule list, including a stricter Git rule) and states that the 700-token budget applies to the English canonical file; the Spanish usage guide gains the missing outcomes and safe-sync/commit-and-push consent paragraph; the Spanish decisions entry on new and existing repositories regains its archive-approval detail. The RH-W-0080 design no longer links to the untracked local task record. Documentation only.

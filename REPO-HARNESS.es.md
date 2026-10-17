@@ -44,6 +44,6 @@ Este documento es la presentacion humana en espanol de [`REPO-HARNESS.md`](REPO-
 ## Actualizacion de este archivo
 <!-- doc-role:maintenance -->
 
-Actualice este par cuando cambie una regla, una ruta o una afirmacion en `REPO-HARNESS.md`. Las reglas operativas siguen siendo propiedad exclusiva del archivo canonico en ingles. El presupuesto de 700 tokens aplica al archivo canonico en ingles; esta presentacion puede excederlo para seguir completa, sin agregar detalle que pertenece a los documentos enlazados.
+Actualice este par cuando cambie una regla, una ruta o una afirmacion en `REPO-HARNESS.md`. Las reglas operativas siguen siendo propiedad exclusiva del archivo canonico en ingles. La meta de 700 tokens, con tolerancia hasta 750, aplica al archivo canónico en inglés, medido como `wc -w` por 1.33. Son ideales recomendados del builder; el propietario puede elegir otro presupuesto. Esta presentación puede excederlo para seguir completa, sin agregar detalle que pertenece a los documentos enlazados.
 
 No coloque estado fechado aqui. Los cambios completados pertenecen a `CHANGELOG.md`, el estado y siguiente paso a `docs/repo-harness/current-state.md`, y las razones durables a `docs/repo-harness/decisions.md`.

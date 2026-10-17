@@ -48,6 +48,6 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 
 1. Update when a rule or gate changes.
 2. Keep never-miss rules here; move detail to `.repo-harness/rules/` with at most one gate row.
-3. Stay under 700 tokens, measured as `wc -w` times 1.33. Growth moves down; the budget never rises.
+3. Target 700 tokens, measured as `wc -w` times 1.33; up to 750 tolerated. Beyond that, growth moves down. These are the builder's recommended ideals; the repository owner may choose a different budget.
 
 No dated status here. Completed changes go to `CHANGELOG.md`, current state to `docs/repo-harness/current-state.md`, and rationale to `docs/repo-harness/decisions.md`.
