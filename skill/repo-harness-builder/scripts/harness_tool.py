@@ -64,6 +64,7 @@ POINTER_DIRECTIVES = {
 }
 GENERATED_SKILL_LICENSE = "MIT"
 RULEBOOK_TOKEN_BUDGET = 700
+RULEBOOK_TOKEN_TOLERANCE = 750
 FORBIDDEN_METHODS = ("SDD", "TDD", "RDD", "Fabric", "Azure", "Brain_AI", "Panda")
 DATE_HEADING = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 SPDX_IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+-]*\Z")
@@ -2182,7 +2183,7 @@ Describe what this project does and who it serves.
 
 1. Update when a rule or gate changes.
 2. Keep never-miss rules here; move detail to `.repo-harness/rules/` with at most one gate row.
-3. Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. Growth moves down; the budget never rises.
+3. Target {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33; up to {RULEBOOK_TOKEN_TOLERANCE} tolerated. Beyond that, growth moves down. These are the builder's recommended ideals; the repository owner may choose a different budget.
 
 No dated status here. Completed changes go to `CHANGELOG.md`, current state and next step to `docs/repo-harness/current-state.md`, decisions and their reasons to `docs/repo-harness/decisions.md`.
 """
@@ -2243,7 +2244,7 @@ Load when: saving or recalling work across sessions.
 
 ## Budget
 
-Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. A file that outgrows it splits or sheds detail; it never raises the number.
+Target {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33; up to {RULEBOOK_TOKEN_TOLERANCE} tolerated. Beyond that, split or shed detail. These are the builder's recommended ideals; the repository owner may choose a different budget.
 """
     else:
         memory = f"""# Engram Memory And Continuity
@@ -2266,7 +2267,7 @@ Load when: saving or recalling across sessions with Engram.
 
 ## Budget
 
-Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. A file that outgrows it splits or sheds detail; it never raises the number.
+Target {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33; up to {RULEBOOK_TOKEN_TOLERANCE} tolerated. Beyond that, split or shed detail. These are the builder's recommended ideals; the repository owner may choose a different budget.
 """
     agreements = f"""# Working Agreements
 
@@ -2303,7 +2304,7 @@ Replace with actual project agreements; delete if none.
 
 ## Budget
 
-Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. Split or shed excess detail; never raise the budget.
+Target {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33; up to {RULEBOOK_TOKEN_TOLERANCE} tolerated. Beyond that, split or shed detail. These are the builder's recommended ideals; the repository owner may choose a different budget.
 """
     response_contract = f"""# Response Contract
 
@@ -2359,7 +2360,7 @@ Use the existing owners for proportionality, evidence classification, authority,
 
 ## Budget
 
-Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. A file that outgrows it splits or sheds detail; it never raises the number.
+Target {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33; up to {RULEBOOK_TOKEN_TOLERANCE} tolerated. Beyond that, split or shed detail. These are the builder's recommended ideals; the repository owner may choose a different budget.
 """
     batch_interaction = f"""# Batch Interaction
 
@@ -2374,7 +2375,7 @@ Load when: batch interaction is active under the session-start skill.
 
 ## Budget
 
-Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33.
+Target {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33; up to {RULEBOOK_TOKEN_TOLERANCE} tolerated. Beyond that, split or shed detail. These are the builder's recommended ideals; the repository owner may choose a different budget.
 """
     response_adhd_friendly = f"""# ADHD-Friendly Response Structure
 
@@ -2395,7 +2396,7 @@ No clinical or personal assessment. The base response contract retains visibilit
 
 ## Budget
 
-Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33.
+Target {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33; up to {RULEBOOK_TOKEN_TOLERANCE} tolerated. Beyond that, split or shed detail. These are the builder's recommended ideals; the repository owner may choose a different budget.
 """
     response_plain_language = f"""# Plain-Language Explanation Style
 
@@ -2413,7 +2414,7 @@ Load when: `explanationStyle` resolves to `plain-language` under the response co
 
 ## Budget
 
-Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33.
+Target {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33; up to {RULEBOOK_TOKEN_TOLERANCE} tolerated. Beyond that, split or shed detail. These are the builder's recommended ideals; the repository owner may choose a different budget.
 """
     return {
         ".repo-harness/rules/batch-interaction.md": batch_interaction,

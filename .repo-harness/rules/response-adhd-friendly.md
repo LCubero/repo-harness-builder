@@ -17,4 +17,4 @@ No clinical or personal assessment. The base response contract retains visibilit
 
 ## Budget
 
-Stay under 700 tokens, measured as `wc -w` times 1.33.
+Target 700 tokens, measured as `wc -w` times 1.33; up to 750 tolerated. Beyond that, split or shed detail. These are the builder's recommended ideals; the repository owner may choose a different budget.

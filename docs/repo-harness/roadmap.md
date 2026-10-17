@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0108
+| Field | Value |
+|---|---|
+| Origin | Owner decision on 2026-10-18: a flexible 700-token target with 50-token tolerance; consumers decide their budget. |
+| Priority | P2: clarify recommended ideals without runtime friction. |
+| Dependencies | RH-W-0073; completed RH-W-0013 non-blocking behavior remains. |
+| Status | completed |
+| Completed work | Added 750 tolerance alongside the 700 target, updated generated and self-hosted budget wording and development assertions, synchronized builder projections through maintenance, and reconciled EN/ES docs. |
+| Remaining work | none |
+| Additions | Owner-choice regression and render coverage at 700, 750, and 1000 tokens. |
+| Exclusions | Existing installations retain human-owned rule files; no migration. The 1000-token skill-body ceiling is unchanged. |
+| Deferrals | none |
+| Rejections | Supersedes RH-W-0073's rejection of raising 700; budgets are recommendations, not consumer restrictions. |
+| Evidence | Focused tests observed RED before implementation and GREEN afterward; see the work-unit verification handoff for final command results. No delivery is claimed. |
+| Decision history | 2026-10-18: owner authorized target 700, tolerated 750, consumer choice and no runtime friction; implementation only, with Git delivery parent-owned. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0107
 | Field | Value |
 |---|---|

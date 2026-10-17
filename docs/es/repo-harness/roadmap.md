@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0108
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Decisión del propietario del 2026-10-18: meta flexible de 700 tokens con tolerancia de 50; el consumidor decide su presupuesto. |
+| Prioridad | P2: aclarar ideales recomendados sin fricción de ejecución. |
+| Dependencias | RH-W-0073; se conserva el comportamiento no bloqueante de RH-W-0013 completada. |
+| Estado | completed |
+| Trabajo completado | Tolerancia de 750 junto a la meta de 700, texto de presupuestos generado y autoalojado y aserciones de desarrollo actualizados, proyecciones del builder sincronizadas mediante mantenimiento y documentación EN/ES reconciliada. |
+| Trabajo restante | none |
+| Adiciones | Regresión de elección del propietario y cobertura de render en 700, 750 y 1000 tokens. |
+| Exclusiones | Las instalaciones existentes conservan sus reglas humanas; sin migración. El techo de 1000 tokens del cuerpo de skills no cambia. |
+| Aplazamientos | none |
+| Rechazos | Sustituye el rechazo de RH-W-0073 a elevar 700; los presupuestos son recomendaciones, no restricciones del consumidor. |
+| Evidencia | Pruebas enfocadas observaron RED antes de implementar y GREEN después; el informe de verificación de la unidad conserva resultados finales. No se afirma entrega. |
+| Historial de decisiones | 2026-10-18: el propietario autorizó meta 700, tolerancia 750, elección del consumidor y ausencia de fricción de ejecución; solo implementación, con entrega Git a cargo del padre. |
+| Siguiente condición de avance | none (terminal); reabrir ante regresión. |
+
 ### RH-W-0107
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
