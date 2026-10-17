@@ -547,7 +547,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ### RH-W-0107
 | Field | Value |
 |---|---|
-| Origin | Owner request; task T1, S1-S6. |
+| Origin | Owner alignment review of the builder skill against this harness on 2026-10-18; issue #409. |
 | Priority | P2: separate conditional limits without raising the budget. |
 | Dependencies | RH-W-0080 |
 | Status | completed |
@@ -557,8 +557,8 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | Existing installations keep human-owned working agreements unchanged; updates create the new file only when absent, with no migration. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | RED: three missing-file KeyErrors; GREEN: five batch tests pass. |
-| Decision history | Owner authorized bounded implementation without commit, publication, or PR. |
+| Evidence | RED: three missing-file KeyErrors; GREEN: five batch tests pass. Full suite 673 tests, `OK (skipped=11)`; checker `current`, 0 writes; native review (risk, readability, reliability) approved and acknowledged. Delivered: PR #410 squash-merged as `6269856`; issue #409 closed. |
+| Decision history | Owner authorized bounded implementation, then branch, commits, push, PR, and merge. 2026-10-18: completed. |
 | Next advancement condition | none (terminal); reopen on regression. |
 
 ### RH-W-0106
