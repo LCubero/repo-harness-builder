@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- Recorded RH-W-0107 delivery evidence in the roadmap: PR #410 squash-merged as `6269856`, issue #409 closed. Documentation only.
+
 - Documented batch mode for humans in the usage guide (English and Spanish): what it does, how to request it, when it ends, and what it never replaces. The batch rule-file link moves from the response-preference owners to that paragraph.
 
 - RH-W-0107: split batch authority limits into `batch-interaction.md`, linked from session-start, with tests and synchronized projections. Existing installations keep human-owned working agreements unchanged; updates create the new file only when absent, with no migration.

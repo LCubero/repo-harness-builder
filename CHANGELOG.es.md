@@ -4,6 +4,8 @@
 
 ## 2026-10-18
 
+- Se registró en la hoja de ruta la evidencia de entrega de RH-W-0107: PR #410 integrado con squash como `6269856`, issue #409 cerrado. Solo documentación.
+
 - Se documentó el modo batch para personas en la guía de uso (inglés y español): qué hace, cómo pedirlo, cuándo termina y qué nunca reemplaza. El enlace al archivo de reglas de batch pasa de los propietarios de preferencias de respuesta a ese párrafo.
 
 - RH-W-0107: separa los límites de autoridad por lotes en `batch-interaction.md`, enlazado desde session-start, con pruebas y proyecciones sincronizadas. Las instalaciones existentes conservan sus working agreements humanos sin cambios; la actualización crea el archivo nuevo solo si falta, sin migración.

@@ -548,7 +548,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 
 | Campo | Valor |
 |---|---|
-| Origen | Solicitud del propietario; tarea T1, S1-S6. |
+| Origen | Revisión de alineación del propietario entre la skill del constructor y este harness el 2026-10-18; issue #409. |
 | Prioridad | P2: separar límites condicionales sin aumentar el presupuesto. |
 | Dependencias | RH-W-0080 |
 | Trabajo completado | `rule_outputs()` genera `batch-interaction.md`; session-start lo carga al activar lotes. Proyecciones sincronizadas mediante mantenimiento. |
@@ -557,8 +557,8 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Exclusiones | Las instalaciones existentes conservan sus working agreements humanos sin cambios; la actualización crea el archivo nuevo solo si falta, sin migración. |
 | Aplazamientos | none |
 | Rechazos | none |
-| Evidencia | RED: tres KeyError por archivo ausente; GREEN: cinco pruebas de lotes pasan. |
-| Historial de decisiones | Propietario autorizó implementación acotada, sin commit, publicación ni PR. |
+| Evidencia | RED: tres KeyError por archivo ausente; GREEN: cinco pruebas de lotes pasan. Suite completa 673 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; revisión nativa (riesgo, legibilidad, confiabilidad) aprobada y reconocida. Entregado: PR #410 integrado con squash como `6269856`; issue #409 cerrado. |
+| Historial de decisiones | Propietario autorizó implementación acotada y luego rama, commits, push, PR y merge. 2026-10-18: completado. |
 | Próxima condición de avance | none (terminal); reabrir ante regresión. |
 
 ### RH-W-0106
