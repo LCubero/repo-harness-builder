@@ -9146,6 +9146,16 @@ class RuleFileTests(unittest.TestCase):
         self.assertIn("setext heading", text)
         self.assertIn("blank line", text)
 
+    def test_response_contract_defines_the_batch_clarification_form(self):
+        text = TOOL.render("Example", [])[self.RESPONSE_RULE]
+        self.assertIn(
+            "Active batch mode only: grouped non-authorizing clarifications form one numbered list in one blocking block",
+            text,
+        )
+        self.assertIn("the only exception to one question at a time", text)
+        self.assertIn("approval and authority gates stay single questions", text)
+        self.assertLess(TOOL.token_proxy(text), TOOL.RULEBOOK_TOKEN_BUDGET)
+
     def test_contextual_acknowledgement_has_one_generated_response_contract_owner(self):
         outputs = TOOL.render("Example", ["claude-code", "opencode", "pi"])
         rule = (

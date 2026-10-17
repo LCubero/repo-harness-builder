@@ -8,7 +8,7 @@ An explicit user request may activate one ephemeral batch-interaction mode for o
 
 ## Activation And Intake
 
-Ownership is fixed by the current renderer architecture. `skill/repo-harness-builder/scripts/harness_tool.py::session_start_skill()` owns explicit activation, inspect-first intake, grouped non-authorizing clarifications, and objective-bounded continuation. `::session_stop_skill()` owns expiry at pause, close, completion, abandonment, or objective replacement. `::rule_outputs()` owns the shared authority exclusions in `.repo-harness/rules/batch-interaction.md` so neither session skill duplicates or weakens them.
+Ownership is fixed by the current renderer architecture. `skill/repo-harness-builder/scripts/harness_tool.py::session_start_skill()` owns explicit activation, inspect-first intake, grouped non-authorizing clarifications, and objective-bounded continuation. `::session_stop_skill()` owns expiry at pause, close, completion, abandonment, or objective replacement. `::rule_outputs()` owns the shared authority exclusions in `.repo-harness/rules/batch-interaction.md` so neither session skill duplicates or weakens them, and the same function owns the grouped-clarification form in `.repo-harness/rules/response-contract.md`: one numbered list in one blocking block, the only exception to one question at a time.
 
 1. The user explicitly names batch mode and one bounded objective.
 2. Inspect current repository evidence before asking questions.

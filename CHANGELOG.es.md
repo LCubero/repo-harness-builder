@@ -4,6 +4,8 @@
 
 ## 2026-10-18
 
+- El contrato de respuesta generado define ahora cómo presenta el modo batch sus aclaraciones agrupadas no autorizantes: una lista numerada en un solo bloque bloqueante con una pregunta final, la única excepción a una pregunta a la vez; las compuertas de aprobación y autoridad siguen siendo preguntas únicas. Antes session-start remitía al contrato de respuesta para esta presentación, pero el contrato no la tenía y otras reglas prohíben acumular preguntas. Incluye prueba, proyecciones y documentación EN/ES. Los archivos de reglas solo se crean si faltan, así que las instalaciones existentes conservan sin cambios su contrato de respuesta humano; sin migración.
+
 - Se restauró la paridad inglés/español: `REPO-HARNESS.es.md` presenta ahora las once reglas obligatorias canónicas (tenía una lista anterior de seis, con una regla Git más estricta) y aclara que el presupuesto de 700 tokens aplica al archivo canónico en inglés; la guía de uso en español recupera el párrafo de resultados y consentimiento de sincronización segura y de commit y push; la entrada de decisiones sobre repositorios nuevos y existentes recupera el detalle de aprobación para archivar. El diseño RH-W-0080 ya no enlaza al registro local de tarea no versionado. Solo documentación.
 
 - Se registró en la hoja de ruta la evidencia de entrega de RH-W-0107: PR #410 integrado con squash como `6269856`, issue #409 cerrado. Solo documentación.

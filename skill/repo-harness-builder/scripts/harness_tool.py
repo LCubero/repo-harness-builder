@@ -2315,6 +2315,7 @@ Load when: an answer requires a notice, pending action, question, approval, visi
 
 - Put skimmable notices, pending actions, and questions in separate blocks labeled in the reply language.
 - Blocking questions use exactly 32 ASCII `=` bytes above and below the label, necessary context, and single final question.
+- Active batch mode only: grouped non-authorizing clarifications form one numbered list in one blocking block with one final question. This is the only exception to one question at a time; approval and authority gates stay single questions.
 - A visible next action without a question uses exactly 32 ASCII `+` bytes above and below its label and action.
 - Never mix forms, use `=` for information or `+` for questions, or add side borders/corners.
 - With nothing pending, use plain status and one useful recommendation, not an empty block or redundant recap.
