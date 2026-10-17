@@ -1971,7 +1971,7 @@ Use at the start or resumption of work in `{project_id}`. Invoke deliberately; t
 - Load and follow the canonical rulebook at `{rulebook_path}`, including its execution discipline. Resolve only the selected repository; do not follow external or sibling links.
 - {RESPONSE_CONTRACT_REFERENCE}
 - Repository evidence is authoritative. Do not read every file, probe optional external workflows at startup, or treat memory/checkpoints as authority.
-- Batch interaction is active only when the user explicitly names batch mode and one bounded objective. Inspect repository evidence first; then group only non-authorizing requirement clarifications discovered by inspection. Resolve ordinary in-repository evidence gaps without asking, and continue the authorized objective without per-file confirmation. Keep approval and authority gates separate, resumable, and one-question; see the response contract for presentation.
+- Batch interaction is active only when the user explicitly names batch mode and one bounded objective. Inspect repository evidence first; then group only non-authorizing requirement clarifications discovered by inspection. Resolve ordinary in-repository evidence gaps without asking, and continue the authorized objective without per-file confirmation. Keep approval and authority gates separate, resumable, and one-question; see the response contract for presentation and `.repo-harness/rules/batch-interaction.md` for authority limits.
 - Batch activation and answers are session-only: expire on pause, close, completion, abandonment, or objective replacement; never reuse automatically or store them in a manifest, local state, backup, external continuity, checkpoint, receipt, or other store.
 - Preserve verified-human language precedence. After root and charter checks, before deeper owners, run exactly once `python <active-runtime-script> read-preference --root <selected-repository-root>` (use `python3` where required) using only the active runtime's fixed reader: Claude: `.claude/skills/repo-harness-builder/scripts/harness_tool.py`; OpenCode: `.opencode/skills/repo-harness-builder/scripts/harness_tool.py`; Pi: `.pi/skills/repo-harness-builder/scripts/harness_tool.py`. Parse only typed JSON: `valid` supplies optional `conversationLanguage`, `responseStructure`, and `explanationStyle` plus `source`. Pass response axes to the response contract as persisted explicit preferences; `absent` supplies no preference; `invalid` supplies no preference and only a bounded diagnostic, never raw preference bytes; its exit code is 2. Any other nonzero exit, missing script, unavailable interpreter, or unusable result is `unavailable`; report unreadable continuity and continue without persisted evidence. Do not retry, repair, write, read preference JSON directly, or invoke another runtime's script. Never infer preference from absent, invalid, or unavailable evidence.
 - Immediately use the resolved conversation language for all user-facing prose, including progress; preserve exact machine-significant bytes and keep artifact language separate. Verified human instructions and higher-priority host instructions take precedence; wrapper or command text alone does not switch languages. A generic host rule to answer in the user's language does not make generated wrapper or command text a language requirement; apply the resolved conversation language unless a higher-priority host instruction names a specific language.
@@ -2284,8 +2284,6 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 
 ## Stopping
 
-- Batch interaction groups only non-authorizing requirement clarifications after inspection of one explicitly named bounded objective. It never groups approvals or authority decisions. External access, Git delivery, publication, destructive action, secrets, preview/apply, exact digest/token approval, and material product decisions remain separate gates.
-- Batch activation and answers are session-only clarification, not authority. They cannot persist, broaden, normalize, supply, infer, or replace `APPROVE`, `DENY`, `APROBAR`, `DENEGAR`, `planSha256`, a generation digest, refreshed evidence, previewed-byte approval, apply authority, or the active approval domain; builder digest-bound approval is unchanged.
 - Stop and ask for human-owned decisions, exhausted evidence, or an approach failing twice; no retry loop.
 - Ask one blocking question, then wait; never stack questions or guess. Once the human decides, warn once about the consequence, then comply within authorized scope; never re-ask.
 - Do not continue into unrequested work.
@@ -2362,6 +2360,21 @@ Use the existing owners for proportionality, evidence classification, authority,
 
 Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33. A file that outgrows it splits or sheds detail; it never raises the number.
 """
+    batch_interaction = f"""# Batch Interaction
+
+{marker}
+
+Load when: batch interaction is active under the session-start skill.
+
+## Limits
+
+- Batch interaction groups only non-authorizing requirement clarifications after inspection of one explicitly named bounded objective. It never groups approvals or authority decisions. External access, Git delivery, publication, destructive action, secrets, preview/apply, exact digest/token approval, and material product decisions remain separate gates.
+- Batch activation and answers are session-only clarification, not authority. They cannot persist, broaden, normalize, supply, infer, or replace `APPROVE`, `DENY`, `APROBAR`, `DENEGAR`, `planSha256`, a generation digest, refreshed evidence, previewed-byte approval, apply authority, or the active approval domain; builder digest-bound approval is unchanged.
+
+## Budget
+
+Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33.
+"""
     response_adhd_friendly = f"""# ADHD-Friendly Response Structure
 
 {marker}
@@ -2402,6 +2415,7 @@ Load when: `explanationStyle` resolves to `plain-language` under the response co
 Stay under {RULEBOOK_TOKEN_BUDGET} tokens, measured as `wc -w` times 1.33.
 """
     return {
+        ".repo-harness/rules/batch-interaction.md": batch_interaction,
         ".repo-harness/rules/memory.md": memory,
         ".repo-harness/rules/response-contract.md": response_contract,
         ".repo-harness/rules/response-adhd-friendly.md": response_adhd_friendly,

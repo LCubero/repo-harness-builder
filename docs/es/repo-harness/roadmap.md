@@ -542,6 +542,25 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0107
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Solicitud del propietario; tarea T1, S1-S6. |
+| Prioridad | P2: separar límites condicionales sin aumentar el presupuesto. |
+| Dependencias | RH-W-0080 |
+| Trabajo completado | `rule_outputs()` genera `batch-interaction.md`; session-start lo carga al activar lotes. Proyecciones sincronizadas mediante mantenimiento. |
+| Trabajo restante | none |
+| Adiciones | Pruebas de límites, referencia, presupuesto y paridad entre modos. |
+| Exclusiones | Las instalaciones existentes conservan sus working agreements humanos sin cambios; la actualización crea el archivo nuevo solo si falta, sin migración. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | RED: tres KeyError por archivo ausente; GREEN: cinco pruebas de lotes pasan. |
+| Historial de decisiones | Propietario autorizó implementación acotada, sin commit, publicación ni PR. |
+| Próxima condición de avance | none (terminal); reabrir ante regresión. |
+
 ### RH-W-0106
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0107
+| Field | Value |
+|---|---|
+| Origin | Owner request; task T1, S1-S6. |
+| Priority | P2: separate conditional limits without raising the budget. |
+| Dependencies | RH-W-0080 |
+| Status | completed |
+| Completed work | `rule_outputs()` generates `batch-interaction.md`; session-start loads it when batch activates. Projections synchronized through maintenance. |
+| Remaining work | none |
+| Additions | Tests for limits, routing, budget, and mode parity. |
+| Exclusions | Existing installations keep human-owned working agreements unchanged; updates create the new file only when absent, with no migration. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | RED: three missing-file KeyErrors; GREEN: five batch tests pass. |
+| Decision history | Owner authorized bounded implementation without commit, publication, or PR. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0106
 | Field | Value |
 |---|---|

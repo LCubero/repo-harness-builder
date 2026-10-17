@@ -2,6 +2,14 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-18
+
+- Se documentó el modo batch para personas en la guía de uso (inglés y español): qué hace, cómo pedirlo, cuándo termina y qué nunca reemplaza. El enlace al archivo de reglas de batch pasa de los propietarios de preferencias de respuesta a ese párrafo.
+
+- RH-W-0107: separa los límites de autoridad por lotes en `batch-interaction.md`, enlazado desde session-start, con pruebas y proyecciones sincronizadas. Las instalaciones existentes conservan sus working agreements humanos sin cambios; la actualización crea el archivo nuevo solo si falta, sin migración.
+
+- Se restauró en `REPO-HARNESS.md` y su par en español la regla obligatoria de contraste de evidencia que el generador mantiene: contrastar la evidencia aplicable y nunca depender de una sola fuente. Se había quitado del rulebook de este repositorio en `762c940`, aunque la plantilla la conservó. Sin cambios de producto, pruebas ni proyecciones.
+
 ## 2026-10-16
 
 - Se cerraron por decisión del propietario los dos últimos registros aplazados de la hoja de ruta: RH-W-0052 queda `completed` porque la porción solo de archivo entregada y la guía de retirada manual (PR #380) cubren la retirada del harness, sin desinstalador automático; RH-W-0015 queda `rejected` porque cualquier herramienta integrada futura (MCP, CLI, binario) viviría en un repositorio separado. Se actualizaron EN/ES la hoja de ruta, el estado actual, el mapa de documentación y los encabezados de RH-W-0052. Solo documentación.

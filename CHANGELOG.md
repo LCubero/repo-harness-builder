@@ -4,6 +4,14 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-18
+
+- Documented batch mode for humans in the usage guide (English and Spanish): what it does, how to request it, when it ends, and what it never replaces. The batch rule-file link moves from the response-preference owners to that paragraph.
+
+- RH-W-0107: split batch authority limits into `batch-interaction.md`, linked from session-start, with tests and synchronized projections. Existing installations keep human-owned working agreements unchanged; updates create the new file only when absent, with no migration.
+
+- Restored the generator's evidence-reconciliation hard rule in the self-hosted `REPO-HARNESS.md` and its Spanish peer: reconcile the applicable owning evidence, never one source alone. It had been dropped from this repository's rulebook in `762c940` while the template kept it. No product, test, or projection changes.
+
 ## 2026-10-16
 
 - Closed the last two deferred roadmap records by owner decision: RH-W-0052 is `completed` because the delivered archive-only slice and the manual removal guidance (PR #380) cover harness removal, with no automatic uninstaller; RH-W-0015 is `rejected` because any future integrated tool (MCP, CLI, binary) would live in a separate repository. Roadmap, current state, documentation map, and RH-W-0052 banners updated EN/ES. Documentation only.
