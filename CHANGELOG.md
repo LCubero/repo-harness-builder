@@ -6,19 +6,21 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
-- RH-W-0108: rulebooks and rule files now recommend a 700-token target with tolerance up to 750, explicitly leaving the budget to repository owners. Render/check stay non-blocking at any size. Updated tests, self-hosted rules, builder projections, and EN/ES docs; existing installations retain human-owned rule files without migration. The 1000-token skill-body ceiling is unchanged.
+- Added issue and PR references to today's changelog entries, and recorded in current state the batch clarification form and the unreleased changes on `main` after `v3.1-rc.15`. Documentation only.
 
-- The generated response contract now defines how batch mode presents its grouped non-authorizing clarifications: one numbered list in one blocking block with one final question, the only exception to one question at a time; approval and authority gates stay single questions. Previously session-start pointed to the response contract for this presentation, but the contract had none and other rules forbid stacking questions. Test, projections, and EN/ES docs included. Rule files are created only when absent, so existing installations keep their human-owned response contract unchanged; no migration.
+- RH-W-0108: rulebooks and rule files now recommend a 700-token target with tolerance up to 750, explicitly leaving the budget to repository owners. Render/check stay non-blocking at any size. Updated tests, self-hosted rules, builder projections, and EN/ES docs; existing installations retain human-owned rule files without migration. The 1000-token skill-body ceiling is unchanged. (issue #416, PR #417)
 
-- Restored English/Spanish parity: `REPO-HARNESS.es.md` now presents all eleven canonical hard rules (it carried an older six-rule list, including a stricter Git rule) and states that the 700-token budget applies to the English canonical file; the Spanish usage guide gains the missing outcomes and safe-sync/commit-and-push consent paragraph; the Spanish decisions entry on new and existing repositories regains its archive-approval detail. The RH-W-0080 design no longer links to the untracked local task record. Documentation only.
+- The generated response contract now defines how batch mode presents its grouped non-authorizing clarifications: one numbered list in one blocking block with one final question, the only exception to one question at a time; approval and authority gates stay single questions. Previously session-start pointed to the response contract for this presentation, but the contract had none and other rules forbid stacking questions. Test, projections, and EN/ES docs included. Rule files are created only when absent, so existing installations keep their human-owned response contract unchanged; no migration. (issue #414, PR #415)
 
-- Recorded RH-W-0107 delivery evidence in the roadmap: PR #410 squash-merged as `6269856`, issue #409 closed. Documentation only.
+- Restored English/Spanish parity: `REPO-HARNESS.es.md` now presents all eleven canonical hard rules (it carried an older six-rule list, including a stricter Git rule) and states that the 700-token budget applies to the English canonical file; the Spanish usage guide gains the missing outcomes and safe-sync/commit-and-push consent paragraph; the Spanish decisions entry on new and existing repositories regains its archive-approval detail. The RH-W-0080 design no longer links to the untracked local task record. Documentation only. (issue #412, PR #413)
 
-- Documented batch mode for humans in the usage guide (English and Spanish): what it does, how to request it, when it ends, and what it never replaces. The batch rule-file link moves from the response-preference owners to that paragraph.
+- Recorded RH-W-0107 delivery evidence in the roadmap: PR #410 squash-merged as `6269856`, issue #409 closed. Documentation only. (PR #411)
 
-- RH-W-0107: split batch authority limits into `batch-interaction.md`, linked from session-start, with tests and synchronized projections. Existing installations keep human-owned working agreements unchanged; updates create the new file only when absent, with no migration.
+- Documented batch mode for humans in the usage guide (English and Spanish): what it does, how to request it, when it ends, and what it never replaces. The batch rule-file link moves from the response-preference owners to that paragraph. (PR #410)
 
-- Restored the generator's evidence-reconciliation hard rule in the self-hosted `REPO-HARNESS.md` and its Spanish peer: reconcile the applicable owning evidence, never one source alone. It had been dropped from this repository's rulebook in `762c940` while the template kept it. No product, test, or projection changes.
+- RH-W-0107: split batch authority limits into `batch-interaction.md`, linked from session-start, with tests and synchronized projections. Existing installations keep human-owned working agreements unchanged; updates create the new file only when absent, with no migration. (issue #409, PR #410)
+
+- Restored the generator's evidence-reconciliation hard rule in the self-hosted `REPO-HARNESS.md` and its Spanish peer: reconcile the applicable owning evidence, never one source alone. It had been dropped from this repository's rulebook in `762c940` while the template kept it. No product, test, or projection changes. (PR #410)
 
 ## 2026-10-16
 
