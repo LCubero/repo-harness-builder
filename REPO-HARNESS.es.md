@@ -11,11 +11,16 @@ Este documento es la presentacion humana en espanol de [`REPO-HARNESS.md`](REPO-
 <!-- doc-role:hard-rules -->
 
 - Trabaje solo dentro del repositorio seleccionado.
-- Preserve archivos desconocidos y trabajo existente.
-- Contraste la evidencia aplicable; nunca dependa de una sola fuente. Clasifique cada afirmacion como hecho verificado, inferencia respaldada, desconocida o no verificable, o decision humana requerida. Un hecho verificado necesita evidencia aplicable, confiable y proporcional; una inferencia nombra su evidencia y razonamiento; lo desconocido aplica cuando no existe un mecanismo valido; una decision humana aplica cuando la autoridad o un criterio corresponde a una persona. Nunca sustituya evidencia faltante, memoria obsoleta, indicadores indirectos no relacionados, supuestos ni lenguaje de confianza. Verifique antes de preguntar; si no es posible o hay contradiccion, nombre la capacidad faltante y solicite solo la evidencia, el criterio, la autoridad o la decision minima.
-- No ejecute operaciones Git o remotas sin aprobacion explicita.
-- Use [la guia de uso](docs/es/repo-harness/usage.md), [el estado actual](docs/es/repo-harness/current-state.md) y [las decisiones](docs/es/repo-harness/decisions.md).
-- Ejecute `python3 .repo-harness/check.py` (`python` en Windows) cuando cambien fuentes canonicas o proyecciones.
+- Pida aprobacion explicita antes de leer o modificar rutas fuera de el. Diga por que y para que.
+- Aplique el cambio minimo suficiente.
+- No introduzca alcance no relacionado.
+- No reintente indefinidamente. Tras fallos repetidos, detengase con evidencia y solicite una decision.
+- No continue automaticamente hacia tareas no solicitadas.
+- Ejecute el trabajo autorizado que anuncio; no se detenga en el anuncio.
+- Preserve archivos desconocidos y trabajo existente mediante una evolucion informada y aprobada explicitamente; nunca congele contenido por defecto.
+- Contraste la evidencia propietaria aplicable; nunca dependa de una sola fuente. Clasifique cada afirmacion como hecho verificado, inferencia respaldada, desconocida o decision humana requerida, y nunca sustituya evidencia por confianza.
+- Gentle AI y Engram son capacidades opcionales e independientes; la evidencia del repositorio sigue siendo autoritativa y solo bloquean el trabajo las fallas de capacidades que la operacion requiere.
+- Mantenga el consentimiento Git acotado al resultado y conversacional. Una intencion combinada puede cubrir requisitos previos seguros y sin cambios; los cambios de proveedor, el respaldo, la publicacion, las acciones destructivas y los cambios materiales de riesgo requieren aprobacion separada.
 
 ## Compuertas de decision
 <!-- doc-role:decision-gates -->
@@ -39,6 +44,6 @@ Este documento es la presentacion humana en espanol de [`REPO-HARNESS.md`](REPO-
 ## Actualizacion de este archivo
 <!-- doc-role:maintenance -->
 
-Actualice este par cuando cambie una regla, una ruta o una afirmacion en `REPO-HARNESS.md`. Las reglas operativas siguen siendo propiedad exclusiva del archivo canonico en ingles. Mantenga esta presentacion por debajo del mismo presupuesto de 700 tokens y lleve el detalle a los documentos enlazados.
+Actualice este par cuando cambie una regla, una ruta o una afirmacion en `REPO-HARNESS.md`. Las reglas operativas siguen siendo propiedad exclusiva del archivo canonico en ingles. El presupuesto de 700 tokens aplica al archivo canonico en ingles; esta presentacion puede excederlo para seguir completa, sin agregar detalle que pertenece a los documentos enlazados.
 
 No coloque estado fechado aqui. Los cambios completados pertenecen a `CHANGELOG.md`, el estado y siguiente paso a `docs/repo-harness/current-state.md`, y las razones durables a `docs/repo-harness/decisions.md`.

@@ -32,7 +32,7 @@ Historical authority boundary: this design and the proposed plan did not authori
 
 ## Verification Targets In The Proposed Plan
 
-The approved [implementation plan](rh-w-0080-implementation-plan.md) records the bounded contract and execution history. Detailed implementation and verification evidence is in the [task record](../../odd/tasks/rh-w-0080-bounded-intake.md); it does not claim live-agent compliance or measured savings.
+The approved [implementation plan](rh-w-0080-implementation-plan.md) records the bounded contract and execution history. Detailed implementation and verification evidence is in the local task record `odd/tasks/rh-w-0080-bounded-intake.md` (not tracked in Git); it does not claim live-agent compliance or measured savings.
 
 ## Historical Design-Time Done Conditions (superseded by lifecycle acceptance)
 
