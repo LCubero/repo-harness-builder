@@ -4,7 +4,7 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
-## 2026-10-18
+## 2026-10-17
 
 - Added issue and PR references to today's changelog entries, and recorded in current state the batch clarification form and the unreleased changes on `main` after `v3.1-rc.15`. Documentation only.
 

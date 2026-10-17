@@ -2,7 +2,7 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
-## 2026-10-18
+## 2026-10-17
 
 - Se agregaron referencias de issue y PR a las entradas de hoy del historial, y se registró en el estado actual la forma de aclaraciones del modo batch y los cambios no publicados en `main` posteriores a `v3.1-rc.15`. Solo documentación.
 
