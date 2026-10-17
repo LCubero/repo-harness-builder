@@ -32,7 +32,7 @@ Limite historico de autoridad: este diseno y el plan propuesto no autorizaban im
 
 ## Objetivos de verificacion del plan propuesto
 
-El [plan de implementacion](rh-w-0080-implementation-plan.md) aprobado conserva el contrato acotado y el historial de ejecucion. La evidencia detallada de implementacion y verificacion esta en el [registro de tarea](../../../odd/tasks/rh-w-0080-bounded-intake.md); no afirma cumplimiento de agentes en vivo ni ahorros medidos.
+El [plan de implementacion](rh-w-0080-implementation-plan.md) aprobado conserva el contrato acotado y el historial de ejecucion. La evidencia detallada de implementacion y verificacion esta en el registro local de tarea `odd/tasks/rh-w-0080-bounded-intake.md` (no versionado en Git); no afirma cumplimiento de agentes en vivo ni ahorros medidos.
 
 ## Condiciones historicas del diseño (reemplazadas por la aceptacion del ciclo)
 

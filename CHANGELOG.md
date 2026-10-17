@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- Restored English/Spanish parity: `REPO-HARNESS.es.md` now presents all eleven canonical hard rules (it carried an older six-rule list, including a stricter Git rule) and states that the 700-token budget applies to the English canonical file; the Spanish usage guide gains the missing outcomes and safe-sync/commit-and-push consent paragraph; the Spanish decisions entry on new and existing repositories regains its archive-approval detail. The RH-W-0080 design no longer links to the untracked local task record. Documentation only.
+
 - Recorded RH-W-0107 delivery evidence in the roadmap: PR #410 squash-merged as `6269856`, issue #409 closed. Documentation only.
 
 - Documented batch mode for humans in the usage guide (English and Spanish): what it does, how to request it, when it ends, and what it never replaces. The batch rule-file link moves from the response-preference owners to that paragraph.
