@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- Documented batch mode for humans in the usage guide (English and Spanish): what it does, how to request it, when it ends, and what it never replaces. The batch rule-file link moves from the response-preference owners to that paragraph.
+
 - RH-W-0107: split batch authority limits into `batch-interaction.md`, linked from session-start, with tests and synchronized projections. Existing installations keep human-owned working agreements unchanged; updates create the new file only when absent, with no migration.
 
 - Restored the generator's evidence-reconciliation hard rule in the self-hosted `REPO-HARNESS.md` and its Spanish peer: reconcile the applicable owning evidence, never one source alone. It had been dropped from this repository's rulebook in `762c940` while the template kept it. No product, test, or projection changes.
