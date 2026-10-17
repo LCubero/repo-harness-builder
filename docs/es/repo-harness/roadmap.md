@@ -548,7 +548,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 
 | Campo | Valor |
 |---|---|
-| Origen | Decisión del propietario del 2026-10-18: meta flexible de 700 tokens con tolerancia de 50; el consumidor decide su presupuesto. |
+| Origen | Decisión del propietario del 2026-10-18: meta flexible de 700 tokens con tolerancia de 50; el consumidor decide su presupuesto. Issue #416. |
 | Prioridad | P2: aclarar ideales recomendados sin fricción de ejecución. |
 | Dependencias | RH-W-0073; se conserva el comportamiento no bloqueante de RH-W-0013 completada. |
 | Estado | completed |
@@ -558,8 +558,8 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Exclusiones | Las instalaciones existentes conservan sus reglas humanas; sin migración. El techo de 1000 tokens del cuerpo de skills no cambia. |
 | Aplazamientos | none |
 | Rechazos | Sustituye el rechazo de RH-W-0073 a elevar 700; los presupuestos son recomendaciones, no restricciones del consumidor. |
-| Evidencia | Pruebas enfocadas observaron RED antes de implementar y GREEN después; el informe de verificación de la unidad conserva resultados finales. No se afirma entrega. |
-| Historial de decisiones | 2026-10-18: el propietario autorizó meta 700, tolerancia 750, elección del consumidor y ausencia de fricción de ejecución; solo implementación, con entrega Git a cargo del padre. |
+| Evidencia | RED y luego GREEN en 38 pruebas enfocadas; suite completa 675 pruebas, `OK (skipped=11)`; checker y CLI check `current`, 0 escrituras; `self-test` pasa; revisión nativa (riesgo, legibilidad, confiabilidad) aprobada y reconocida. Entregado mediante el PR #417 (squash). |
+| Historial de decisiones | 2026-10-18: el propietario autorizó meta 700, tolerancia 750, elección del consumidor y ausencia de fricción de ejecución; luego commit, PR y merge. 2026-10-18: completado. |
 | Siguiente condición de avance | none (terminal); reabrir ante regresión. |
 
 ### RH-W-0107
