@@ -4,6 +4,8 @@
 
 ## 2026-10-18
 
+- RH-W-0107: separa los límites de autoridad por lotes en `batch-interaction.md`, enlazado desde session-start, con pruebas y proyecciones sincronizadas. Las instalaciones existentes conservan sus working agreements humanos sin cambios; la actualización crea el archivo nuevo solo si falta, sin migración.
+
 - Se restauró en `REPO-HARNESS.md` y su par en español la regla obligatoria de contraste de evidencia que el generador mantiene: contrastar la evidencia aplicable y nunca depender de una sola fuente. Se había quitado del rulebook de este repositorio en `762c940`, aunque la plantilla la conservó. Sin cambios de producto, pruebas ni proyecciones.
 
 ## 2026-10-16

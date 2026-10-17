@@ -31,7 +31,7 @@ Example:
 
 For each response axis, an explicit current-session instruction wins, then the file, then `standard`. Modes are never inferred from writing style or behavior. Both modes may combine; they shape replies only and make no clinical claim.
 
-Rule owners: [response contract](../../.repo-harness/rules/response-contract.md), [ADHD-friendly](../../.repo-harness/rules/response-adhd-friendly.md), and [plain-language](../../.repo-harness/rules/response-plain-language.md).
+Rule owners: [response contract](../../.repo-harness/rules/response-contract.md), [ADHD-friendly](../../.repo-harness/rules/response-adhd-friendly.md), [plain-language](../../.repo-harness/rules/response-plain-language.md), and [batch interaction limits](../../.repo-harness/rules/batch-interaction.md).
 
 ## Integrated Availability
 <!-- doc-role:availability -->

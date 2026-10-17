@@ -8,7 +8,7 @@ Una solicitud explicita puede activar un modo efimero de interaccion por lotes p
 
 ## Activacion y consulta
 
-La propiedad queda fijada por la arquitectura actual. `skill/repo-harness-builder/scripts/harness_tool.py::session_start_skill()` posee activacion explicita, intake despues de inspeccionar, aclaraciones agrupadas no autorizantes y continuacion acotada al objetivo. `::session_stop_skill()` posee el vencimiento al pausar, cerrar, completar, abandonar o reemplazar el objetivo. `::rule_outputs()` posee exclusiones compartidas de autoridad en working agreements para que los skills no las dupliquen ni debiliten.
+La propiedad queda fijada por la arquitectura actual. `skill/repo-harness-builder/scripts/harness_tool.py::session_start_skill()` posee activacion explicita, intake despues de inspeccionar, aclaraciones agrupadas no autorizantes y continuacion acotada al objetivo. `::session_stop_skill()` posee el vencimiento al pausar, cerrar, completar, abandonar o reemplazar el objetivo. `::rule_outputs()` posee exclusiones compartidas de autoridad en `.repo-harness/rules/batch-interaction.md` para que los skills no las dupliquen ni debiliten.
 
 1. La persona usuaria nombra explicitamente el modo por lotes y un objetivo acotado.
 2. Se inspecciona la evidencia actual del repositorio antes de preguntar.

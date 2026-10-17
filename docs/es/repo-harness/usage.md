@@ -32,7 +32,7 @@ Ejemplo:
 
 Para cada eje de respuesta, prevalece una instruccion explicita de la sesion actual, luego el archivo y luego `standard`. Nunca se infieren modos del estilo de escritura o comportamiento. Ambos modos pueden combinarse; solo moldean respuestas y no hacen afirmaciones clinicas.
 
-Propietarios de las reglas: [contrato de respuesta](../../../.repo-harness/rules/response-contract.md), [ADHD-friendly](../../../.repo-harness/rules/response-adhd-friendly.md) y [plain-language](../../../.repo-harness/rules/response-plain-language.md).
+Propietarios de las reglas: [contrato de respuesta](../../../.repo-harness/rules/response-contract.md), [ADHD-friendly](../../../.repo-harness/rules/response-adhd-friendly.md), [plain-language](../../../.repo-harness/rules/response-plain-language.md) y [límites de interacción por lotes](../../../.repo-harness/rules/batch-interaction.md).
 
 ## Disponibilidad integrada
 <!-- doc-role:availability -->
