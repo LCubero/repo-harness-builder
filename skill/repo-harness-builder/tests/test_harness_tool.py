@@ -810,7 +810,8 @@ class ApprovalUxTests(unittest.TestCase):
         preservation = (ROOT / "references" / "preservation-and-safety.md").read_text(encoding="utf-8")
         for phrase in (
             "run read-only `git check-ignore` on the planned paths",
-            "a fresh clone would lack them and its checker would report `drift`",
+            "ignored generated files or runtime projections make a fresh clone's checker report `drift`",
+            "the checker never inspects root pointers",
             "Repeat the surviving references in the apply report",
             "ask one short conversational question before the apply approval",
             "keep them local (the default; nothing changes)",
@@ -6518,6 +6519,24 @@ resume_authority: required
                     measured,
                     f"{locale} current-state portfolio counts disagree with the roadmap they project",
                 )
+
+    def test_current_state_portfolio_totals_are_derived_from_the_roadmap(self):
+        repository = ROOT.parents[1]
+        _, records = self._roadmap_records()
+        statuses = list(records.values())
+        measured = [len(statuses), statuses.count("completed"), statuses.count("rejected")]
+        claims = {
+            "docs/repo-harness/current-state.md": r"The (\d+)-record portfolio contains (\d+) `completed` and (\d+) `rejected`",
+            "docs/es/repo-harness/current-state.md": r"El portafolio de (\d+) registros contiene (\d+) `completed` y (\d+) `rejected`",
+        }
+        for relative, pattern in claims.items():
+            path = repository / relative
+            if not path.is_file():
+                self.skipTest("repository current-state fixtures are outside the portable package")
+            with self.subTest(path=relative):
+                claim = re.search(pattern, path.read_text(encoding="utf-8"))
+                self.assertIsNotNone(claim, f"{relative} must state the portfolio totals")
+                self.assertEqual([int(value) for value in claim.groups()], measured)
 
     def test_terminal_unit_plans_open_with_their_roadmap_status(self):
         """A finished plan that still reads as executable invites an agent to re-run it."""
