@@ -6082,7 +6082,7 @@ resume_authority: required
             ("compose independently", "se componen de forma independiente"),
             ("`not_found`, `found_on_path`, and `verified`", "`not_found`, `found_on_path` y `verified`"),
             ("effective states", "estados efectivos"),
-            ("operation-scoped", "acotada a la operacion"),
+            ("operation-scoped", "acotada a la operación"),
         )
         for index, text in enumerate(peers):
             with self.subTest(peer=index):
@@ -6401,7 +6401,7 @@ resume_authority: required
         ),
         "es": (
             "docs/es/repo-harness/current-state.md",
-            r"Tamano del portafolio: (\d+) registros no terminales, (\d+) `proposed`, (\d+) `ready`, "
+            r"Tamaño del portafolio: (\d+) registros no terminales, (\d+) `proposed`, (\d+) `ready`, "
             r"(\d+) `deferred` y (\d+) `active`",
         ),
     }
@@ -6413,7 +6413,7 @@ resume_authority: required
         ),
         "es": (
             "docs/es/repo-harness/current-state.md",
-            r"planes de accion\]\([^)]*\) para (\d+) de los (\d+) registros no terminales\.(.*?)aun no tienen plan de accion",
+            r"planes de acción\]\([^)]*\) para (\d+) de los (\d+) registros no terminales\.(.*?)aún no tienen plan de acción",
         ),
     }
 
