@@ -5,7 +5,7 @@
 ## Verified State
 <!-- doc-role:verified-state -->
 
-- `RH-W-0113` is `completed`: the generated usage guide (English and Spanish) now describes the local backup, saving preferences by explicit request, and batch mode, and the Spanish guide gains the authority-digest paragraph and correct accents (issue #428). See the [canonical record](roadmap.md#rh-w-0113).
+- `RH-W-0113` is `completed`: the generated usage guide (English and Spanish) now describes the local backup, saving preferences by explicit request, and batch mode, and the Spanish guide gains the authority-digest paragraph and correct accents (issue #428, PR #429). See the [canonical record](roadmap.md#rh-w-0113).
 - `RH-W-0112` is `completed`: the builder references now describe `harness_tool.py` as it behaves (runtime set changes, authority correction, budget tolerance, suggestions, archive, state vocabulary, report templates); documentation only (issue #426, PR #427). See the [canonical record](roadmap.md#rh-w-0112).
 - `RH-W-0111` is `completed`: three generated session-contract sentences no longer contradict repository owners (budget choice, backup privacy wording, final question inside the blocking block) (issue #424, PR #425). See the [canonical record](roadmap.md#rh-w-0111).
 - `RH-W-0110` is `completed`: the generated Spanish rulebook is now a complete presentation of the English one, and the generated i18n guide carries the Entry Mapping rule; this repository's Spanish rulebook, i18n guide, and Spanish usage line match the builder (issue #422, PR #423). See the [canonical record](roadmap.md#rh-w-0110).

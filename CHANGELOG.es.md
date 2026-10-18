@@ -4,7 +4,7 @@
 
 ## 2026-10-18
 
-- RH-W-0113: la guía de uso generada describe ahora lo que hacen las skills y reglas generadas. Session-start recupera el backup local válido más reciente en `.repo-harness/memory-bk/` y session-stop escribe uno; las preferencias también se pueden guardar pidiéndolo explícitamente al agente, que nunca las guarda por iniciativa propia; el modo por lotes solo agrupa preguntas de aclaración, nunca aprobaciones, y enlaza su regla. La guía en español incorpora el párrafo de digests de autoridad y tildes correctas, y la guía de uso en español de este repositorio lleva tildes. Las instalaciones existentes conservan sus guías humanas (issue #428).
+- RH-W-0113: la guía de uso generada describe ahora lo que hacen las skills y reglas generadas. Session-start recupera el backup local válido más reciente en `.repo-harness/memory-bk/` y session-stop escribe uno; las preferencias también se pueden guardar pidiéndolo explícitamente al agente, que nunca las guarda por iniciativa propia; el modo por lotes solo agrupa preguntas de aclaración, nunca aprobaciones, y enlaza su regla. La guía en español incorpora el párrafo de digests de autoridad y tildes correctas, y la guía de uso en español de este repositorio lleva tildes. Las instalaciones existentes conservan sus guías humanas (issue #428, PR #429).
 
 ## 2026-10-17
 
