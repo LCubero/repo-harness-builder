@@ -3694,6 +3694,7 @@ def repair(root: Path, apply: bool = False, approved_plan_sha256: str | None = N
         raise ValueError("repair plan changed during preflight; run repair preview again")
     created = []
     invocation_paths = []
+    finished = set()
     created_directories = []
     rollback = {{}}
     try:
@@ -3706,6 +3707,7 @@ def repair(root: Path, apply: bool = False, approved_plan_sha256: str | None = N
                 expected,
                 lambda: invocation_paths.append((relative, target, expected)),
             )
+            finished.add(relative)
             guarded_path(root, relative)
             if hashlib.sha256(target.read_bytes()).hexdigest() != hashlib.sha256(repeated["_expected"][relative]).hexdigest():
                 raise OSError("creation verification failed")
@@ -3732,7 +3734,7 @@ def repair(root: Path, apply: bool = False, approved_plan_sha256: str | None = N
     except (OSError, ValueError):
         for relative, target, expected in reversed(invocation_paths):
             try:
-                if target.is_file() and target.read_bytes() == expected:
+                if target.is_file() and (relative not in finished or target.read_bytes() == expected):
                     target.unlink()
                     rollback[relative] = "removed"
                 else:
@@ -5403,19 +5405,26 @@ def write_outputs(
                 [path.relative_to(root.resolve(strict=True)).as_posix() for path in written],
             )
             return result
-        except (OSError, ContractError):
-            for target, content in replaced.items():
-                if target.read_bytes() != content:
-                    atomic_replace_bytes(target, content)
-            for target, content in appended.items():
-                if target.read_bytes() != content:
-                    atomic_replace_bytes(target, content)
+        except BaseException:
+            # Best effort: one failed restore (a full disk, for example) must not stop the rest.
+            for target, content in [*replaced.items(), *appended.items()]:
+                try:
+                    if target.read_bytes() != content:
+                        try:
+                            atomic_replace_bytes(target, content)
+                        except OSError:
+                            target.write_bytes(content)
+                except OSError:
+                    pass
             for target in reversed(written):
-                relative = target.resolve(strict=False).relative_to(root.resolve(strict=True)).as_posix()
-                if target.is_file() and not is_indirect(target) and (
-                    target not in completed or digest_bytes(target.read_bytes()) == digest_text(outputs[relative])
-                ):
-                    target.unlink()
+                try:
+                    relative = target.resolve(strict=False).relative_to(root.resolve(strict=True)).as_posix()
+                    if target.is_file() and not is_indirect(target) and (
+                        target not in completed or digest_bytes(target.read_bytes()) == digest_text(outputs[relative])
+                    ):
+                        target.unlink()
+                except OSError:
+                    pass
             raise
 
     if plan["migrate"]:
