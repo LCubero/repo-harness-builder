@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0112
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Auditoría de solo lectura del 2026-10-17 de las referencias de la skill del builder frente a `harness_tool.py`: la recuperación ante cambios de entornos indicaba borrar archivos que la herramienta ya reemplaza, la guía de corrección de autoridad describía mal el digest de generación, la validación conservaba el umbral de fallo de 700, y faltaban por documentar las sugerencias, el archivo, varios resultados y los campos de reemplazos y migraciones en los informes. Issue #426. |
+| Prioridad | P2: un agente que siguiera las referencias borraría archivos sin necesidad, afirmaría una cobertura que la reducción elimina y no conocería flujos y resultados que sí existen. |
+| Dependencias | RH-W-0108 (tolerancia de presupuesto), RH-W-0044 (vista previa de sugerencias), RH-W-0052 (archivo). |
+| Estado | completed |
+| Trabajo completado | `audit-and-interview.md` y `preservation-and-safety.md` describen la ampliación y la reducción de entornos como reemplazo aprobado del manifiesto y del checker, y la reducción deja sin cobertura del checker las proyecciones retiradas; la corrección de autoridad indica que cualquier cambio de premisa cambia el digest de generación; `validation.md` mide contra la tolerancia de 750 con 700 como meta e incorpora un vocabulario de estados del checker generado, la reparación, el check del builder y el render; se documentan las sugerencias y el comando `archive`, que solo copia; ambas plantillas de informe registran archivos reemplazados y migrados. |
+| Trabajo restante | none |
+| Adiciones | Aserciones más estrictas sobre la documentación de entornos en pruebas existentes. |
+| Exclusiones | Sin cambio de comportamiento del código. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | El agente ejecutó renders de ampliación y reducción: ambos listan `.repo-harness/manifest.json` y `.repo-harness/check.py` en `replace`. Pruebas filtradas de referencias: 116 OK. Suite completa 681 pruebas, `OK (skipped=11)`; checker y CLI check `current`, 0 escrituras; `self-test` pasa. Entregado mediante el PR #427 (squash). |
+| Historial de decisiones | 2026-10-17: el propietario pidió seguir revisando bajo la delegación vigente ("decídelo tú"); el agente eligió una corrección solo de documentación. 2026-10-17: completado. |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0111
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

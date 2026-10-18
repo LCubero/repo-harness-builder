@@ -9,6 +9,9 @@ Never translate: commands, paths, identifiers, enum values, states, and anything
 
 - {{t "Status"}}: `{{status}}`
 - {{t "Created"}}: {{created}}
+- {{t "Replaced"}}: {{replaced}}
+- {{t "Migrated"}}: {{migrated}}
+- {{t "Changed total"}}: {{changed_total}}
 - {{t "Left untouched"}}: {{untouched}}
 - {{t "Runtime profiles"}}: {{runtimes}}
 - {{t "Writes performed by the check"}}: `0`

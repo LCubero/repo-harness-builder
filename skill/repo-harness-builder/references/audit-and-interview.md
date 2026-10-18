@@ -50,11 +50,11 @@ While it is an open decision, report every supported profile the audit inspected
 
 An installed `.repo-harness/manifest.json` already records a runtime set. When it exists, that set is the default and the audit reports it as the source that won. Read `runtimeSet` in the tool output: `recorded` is what the repository committed to, `requested` is what this run asked for.
 
-When they differ, say so before planning, and say which direction. Only `runtimeSet.unrecorded` needs recovery: those runtimes get new projections the manifest cannot learn about, because it is never rewritten, so the generated checker stays blind to them and keeps reporting `current` while inspecting part of the harness. The recovery is to delete `.repo-harness/manifest.json` and `.repo-harness/check.py`, then run again with the full set, which the builder recreates because they are then absent. The tool names both files in `runtimeSet.staleManifest`. Never present that case as complete without this step.
+When they differ, report the direction before approval. Widening or narrowing puts `.repo-harness/manifest.json` and `.repo-harness/check.py` in `replace`; approved apply rewrites both to the requested set; no deletion is needed. See [runtime changes](preservation-and-safety.md#adding-a-runtime-later) for coverage consequences and diagnostics.
 
 Read `packageFreshness` in the same output and report it as its own line. `stale` means the installed harness is behind this builder, which the user needs to hear before any plan is presented. `ahead` means this builder is older than the harness it is inspecting: relay its `warning` in substance and let the user decide whether to continue. `absent` and `unverifiable` are not repository failures; they mean the comparison had nothing trustworthy to read, so say exactly that instead of implying the harness is current.
 
-Dropping a recorded runtime is the harmless direction. Nothing new is created, the manifest still records the dropped profile, and the generated checker still covers it. Report the difference and say plainly that no recovery applies.
+Widening needs the full desired set in one approved render. Narrowing leaves the dropped runtime's files in the repository but removes their checker coverage; the human decides whether to keep or manually remove them.
 
 Root pointers are runtime-conditional and belong under their own profile, never in the common set. `CLAUDE.md` ships only with `claude-code`; `AGENTS.md` ships only with `opencode` or `pi`, and one file serves both. Only `REPO-HARNESS.md` and `CHANGELOG.md` are common to every selection. Listing a pointer as common promises a file that a selection excluding its profile will never create.
 
@@ -102,6 +102,6 @@ The canonical authority context carries three separate lists for that reason.
 Evidence that is unsupported, missing, indirect, external, or changed fails closed. The tool
 verifies what the bindings assert and nothing beyond them.
 
-After a correction the host must refresh the context and preview again. Editing a premise without
-a new material revision produces the same generation digest and would silently reuse an approval
-that described a different answer.
+Any premise edit changes `authorityContextSha256` and therefore `generationSha256`, so an old
+approval cannot be reused silently. Still bump `materialRevision` for every material correction;
+the host must refresh the context and preview again.

@@ -10714,7 +10714,7 @@ class RuntimeSelectionContractTests(unittest.TestCase):
             "source and destination SHA-256",
             "plan digest",
             "rolls back every replacement, create, and append",
-            "human-owned paths remain proposal-only",
+            "human-owned paths allow only the [bounded integrations](preservation-and-safety.md#human-owned-versus-generated)",
             "preview and check write nothing",
         ):
             self.assertIn(phrase, validation)
@@ -11309,13 +11309,21 @@ class RecordedRuntimeSetTests(unittest.TestCase):
             self.assertFalse(plan["runtimeSet"]["matches"])
             self.assertIn(".repo-harness/manifest.json", plan["runtimeSet"]["staleManifest"])
 
-    def test_contracts_name_the_recovery_for_a_widened_runtime_set(self):
+    def test_contracts_describe_approved_runtime_set_replacement(self):
         audit = (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")
         safety = (ROOT / "references" / "preservation-and-safety.md").read_text(encoding="utf-8")
         for name, text in (("audit", audit), ("safety", safety)):
             with self.subTest(reference=name):
                 self.assertIn("`.repo-harness/manifest.json`", text)
-                self.assertIn("blind", text.lower(), f"{name}: does not name the consequence")
+                self.assertIn("`.repo-harness/check.py`", text)
+                self.assertIn("`replace`", text)
+                self.assertIn("requested set", text)
+                self.assertIn("full desired set in one approved render", text)
+                self.assertIn("no deletion is needed", text.lower())
+                self.assertIn("checker coverage", text)
+                self.assertIn("manually remove", text)
+                self.assertNotIn("delete the two files", text)
+                self.assertNotIn("because it is never rewritten", text)
 
 
 class LegacyManifestLanguageTests(unittest.TestCase):

@@ -12,6 +12,8 @@ Never translate: commands, paths, identifiers, enum values, states, and anything
 - {{t "Runtime profiles inspected"}}: {{runtimes_inspected}}
 - {{t "Runtime set"}}: {{runtime_set_or_open}}
 - {{t "Absent and eligible to create"}}: {{absent}}
+- {{t "Planned replacements"}}: {{replace}}
+- {{t "Planned migrations"}}: {{migrate}}
 - {{t "Already present and left untouched"}}: {{present}}
 - {{t "Evidence read"}}: {{evidence}}
 - {{t "Recovery condition"}}: {{recovery_or_none}}
