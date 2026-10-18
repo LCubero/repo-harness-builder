@@ -6,26 +6,28 @@ Load when: saving or recalling across sessions with Engram.
 
 ## Rules
 
-- Engram is optional and independent of Gentle AI. Repository evidence remains authoritative; block only continuity required by the operation or repository policy.
-- Resolve explicit repository project scope before every operation. Under project ambiguity, perform zero Engram reads or writes.
-- Each operation reports its own outcome. This is per-operation accounting, not mandatory startup display: routine session-start omits unchanged successful continuity details, but always surfaces failures and task-relevant results. Session-stop preserves independent save results. Never fabricate an aggregate Engram status or collapse successful reads, writes, prompt association, conflict discovery, lifecycle review, capture, or sync because another operation failed.
-- Surface Engram failures and never claim successful continuity when recovery or saving failed.
-- Reconcile before trusting: check every recalled claim against the file it describes before acting on it.
-- Accept an empty exact-topic or exact-subject result only when it is a validated empty from successful same-surface evidence or a same-surface positive control.
-- Treat `judgment_required`, `needs_review`, and other review-age or conflict hints as advisory metadata until current repository owners verify the underlying claim.
-- Save significant decisions, discoveries, fixes, and session summaries to Engram when available.
-- Do not save what the repository already records. A restatement of current code or history is noise.
-- Never let memory replace documentation. If a fact belongs in `REPO-HARNESS.md` or `docs/repo-harness/`, write it there.
+- Engram optional, independent of Gentle AI; repository evidence remains authoritative; block only operation/policy-required continuity.
+- Resolve explicit repository project scope; ambiguity: zero reads/writes.
+- Each operation reports its own outcome. This is per-operation accounting, not mandatory startup display: startup omits unchanged success but always surfaces failures and task-relevant results; stop preserves saves. Never fabricate an aggregate Engram status or collapse success because another failed.
+- Surface Engram failures from recovery/saving; never claim successful continuity; reconcile claims against files before acting.
+- Accept an empty exact-topic or exact-subject result only as a validated empty from successful same-surface evidence or a same-surface positive control.
+- Treat `judgment_required`, `needs_review`, and review-age/conflict hints as advisory metadata until current repository owners verify the claim.
+- Save significant decisions/discoveries/fixes/session summaries when available; never restatements. Facts belong in `REPO-HARNESS.md` or `docs/repo-harness/`.
 
 ## Native Backup Contract
 
-- Local backup is required in every mode. Engram is an additional independent destination only when available; every unavailable operation remains visible and is never emulated. Each source reports an independent outcome.
-- Write one direct `.repo-harness/memory-bk/YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` file with exclusive creation. Its exact frontmatter keys are `project`, `timestamp_utc`, `source`, and `session_id`.
-- Body: `# Session Continuity`, then `Where We Left Off` (children: `Next Action`, `Pending Work`, `Current Blocker`) before detailed continuity: Goal, Instructions, Discoveries, Accomplished, Next Steps, and Relevant Files. Empty sections use `None.`; relevant files use repository-relative paths only.
+- Local backup is required in every mode. Engram optional; unavailable operations visible, never emulated. Sources report independent outcomes.
+- Exclusively write direct `.repo-harness/memory-bk/YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md`. Its exact frontmatter keys are `project`, `timestamp_utc`, `source`, and `session_id`.
+- New backups preserve frontmatter. Body: `# Session Continuity`; `## Where We Left Off`; `### Next Action`; `### Pending Work`; `### Current Blocker`; `## Goal`; `## Instructions`; `## Discoveries`; `## Accomplished`; `## Next Steps`; `## Relevant Files`. Detail: Goal, Instructions, Discoveries, Accomplished, Next Steps, and Relevant Files. Empty resume fields and detailed sections use `None.`; Empty sections use `None.`; relevant files use repository-relative paths only.
+- Existing valid backups without `Where We Left Off` remain readable through detailed continuity and never gain synthesized, migrated, rewritten, or backfilled fields.
+- RH-W-0069 retains the native backup schema, privacy, exclusive-write, local-before-Engram, validation, and independent-outcome ownership.
+- RH-W-0078 retains physical generated-skill splitting and progressive disclosure.
+- RH-W-0031, RH-W-0071, RH-W-0082, and RH-W-0018 retain language and preference semantics. Roadmap, current state, and changelog retain their current roles.
+- No new infrastructure, parser/API, schema owner, cache, daemon, service, scheduler, migration, cleanup, retention behavior, checkpoint, preference framework, Gentle probe, Engram preflight, or second continuity store is introduced.
 - Applicable claims carry one inline classification: `verified fact`, `supported inference`, `unknown or unverifiable`, or `human decision required`.
-- Verify recalled claims in this authority order: source and tests; roadmap; current state; decisions; changelog; Git and checker; then non-authoritative Engram and local backup evidence.
-- Before either destination, omit credentials, tokens, passwords, private keys, cookies, connection strings; raw environment values and provider payloads; outside-root absolute paths; copied source, diffs, logs, stack traces, generated bytes, and test output; sensitive personal data; and approval, checkpoint, lifecycle copy, receipt, or delivery state. Report bounded privacy reduction without copying rejected values.
-- Omit external private repository names and locations unless a current repository owner records an approved stable alias. Even then, exclude the private name, absolute location, remote URL, or sibling path.
+- Verify recalled claims in authority order: source and tests; roadmap; current state; decisions; changelog; Git and checker; then non-authoritative Engram and local backup evidence.
+- Omit from both destinations: credentials, tokens, passwords, private keys, cookies, connection strings; raw environment values and provider payloads; outside-root absolute paths; copied source, diffs, logs, stack traces, generated bytes, and test output; sensitive personal data; approval, checkpoint, lifecycle copy, receipt, or delivery state. Report bounded privacy reduction.
+- Omit external private repository names and locations absent current-owner-approved stable alias; exclude private name, absolute location, remote URL, or sibling path.
 - Built-in runtime memory is ignored and never required. No generic memory API, database, encryption subsystem, daemon, scheduler, background service, synchronization engine, retention cleanup, or separate conflict-state persistence is introduced.
 
 ## Budget

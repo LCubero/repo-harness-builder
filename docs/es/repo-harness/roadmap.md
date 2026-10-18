@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0109
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Decisión del propietario del 2026-10-17 durante una revisión de alineación de solo lectura: este repositorio es la prueba en vivo del builder, así que el reglamento y los archivos de reglas generados deben tener el mismo contenido compartido que los autoalojados. Responde la pregunta abierta que RH-W-0073 dejó en sus aplazamientos: si la compresión también cambia la plantilla del generador. |
+| Prioridad | P2: las reglas duras de la plantilla (331 tokens proxy) casi no dejaban espacio para contenido real del proyecto; este repositorio con ellas mediría 819 frente a la tolerancia de 750. |
+| Dependencias | RH-W-0073 (diseño de compresión), RH-W-0108 (presupuesto), RH-W-0044 (vista previa de sugerencias). |
+| Estado | completed |
+| Trabajo completado | `rulebook()` genera las reglas duras cortas autoalojadas, incluida la regla completa de preservación "never freeze content by default"; el `working-agreements.md` generado lleva el detalle movido de anunciar contra ejecutar y de clasificación de evidencia; `REPO-HARNESS.md` autoalojado, su par en español y `memory.md` coinciden con el render fuera de las ranuras del proyecto (Purpose, filas extra de compuertas, cuerpo de Project Agreements, marcadores doc-role). La vista previa de sugerencias ignora las líneas de marcador `doc-role` dentro de secciones propietarias, así que el reglamento autoalojado ya no es `ambiguous`. Una prueba de congruencia fija las secciones compartidas. Proyecciones del builder sincronizadas mediante mantenimiento. |
+| Trabajo restante | none |
+| Adiciones | Prueba de congruencia autoalojada; prueba de sugerencias con marcador doc-role. |
+| Exclusiones | Sin marcadores doc-role en el reglamento inglés generado, porque `check()` reportaría como `sections-missing` los reglamentos de consumidores existentes que no los tienen. Las instalaciones existentes conservan su reglamento y reglas humanas; sin migración. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | RED y luego GREEN: prueba de congruencia (6 subpruebas fallaban antes), prueba de marcador doc-role (antes `ambiguous`). Reglamento generado 572, acuerdos de trabajo 692, memoria 709 tokens proxy; autoalojados: reglamento 721, acuerdos 712, memoria 709. Render sobre este repositorio: `REPO-HARNESS.md` sale de `ambiguousPaths`, 0 sugerencias. Suite completa 677 pruebas, `OK (skipped=11)`; checker y CLI check `current`, 0 escrituras; `self-test` pasa; revisión nativa (riesgo, legibilidad, confiabilidad) aprobada y reconocida con una advertencia de legibilidad no bloqueante sobre `memory.md`. La entrega (issue, PR, merge) sigue la política ordinaria del repositorio. |
+| Historial de decisiones | 2026-10-17: el propietario eligió adoptar en la plantilla el diseño autoalojado ("ambos producen el mismo resultado, tienen las mismas cosas"). |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0108
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

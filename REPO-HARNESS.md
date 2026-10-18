@@ -20,7 +20,7 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 - Do not continue automatically into unrequested tasks.
 - Execute authorized work you have announced; do not stop at the announcement.
 - Preserve unknown files and existing work through informed, explicitly approved evolution; never freeze content by default.
-- Reconcile the applicable owning evidence, never one source alone. Label every claim as verified fact, supported inference, unknown, or human decision required, and never substitute confidence for evidence.
+- Reconcile the applicable owning evidence, never one source alone. Label every claim as verified fact, supported inference, unknown or unverifiable, or human decision required, and never substitute confidence for evidence.
 - Gentle AI and Engram are independent optional capabilities; repository evidence remains authoritative, and only operation-required capability failures block work.
 - Keep Git consent outcome-scoped and conversational. Combined intent may cover unchanged safe prerequisites; provider changes, backup, publication, destructive actions, and material risk changes require separate approval.
 
@@ -50,4 +50,4 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 2. Keep never-miss rules here; move detail to `.repo-harness/rules/` with at most one gate row.
 3. Target 700 tokens, measured as `wc -w` times 1.33; up to 750 tolerated. Beyond that, growth moves down. These are the builder's recommended ideals; the repository owner may choose a different budget.
 
-No dated status here. Completed changes go to `CHANGELOG.md`, current state to `docs/repo-harness/current-state.md`, and rationale to `docs/repo-harness/decisions.md`.
+No dated status here. Completed changes go to `CHANGELOG.md`, current state and next step to `docs/repo-harness/current-state.md`, decisions and their reasons to `docs/repo-harness/decisions.md`.

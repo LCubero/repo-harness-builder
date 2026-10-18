@@ -1372,6 +1372,9 @@ def structural_headings(text: str) -> list[str]:
     return [heading for heading in found if not DATE_HEADING.match(heading)]
 
 
+DOC_ROLE_LINE = re.compile(r"<!-- doc-role:[a-z0-9-]+ -->")
+
+
 def declared_roles(text: str) -> list[str]:
     """List the locale-independent section roles a document declares."""
     return re.findall(r"<!-- doc-role:([a-z0-9-]+) -->", text)
@@ -2121,18 +2124,10 @@ def rulebook(project_id: str, standalone: bool) -> str:
     it carries a budget and a gate table instead of the detail itself.
     """
     evidence_rule = (
-        "- Reconcile applicable owning repository evidence before classifying status, pending work, defects, or completion; never rely on one source in isolation."
+        "- Reconcile the applicable owning evidence, never one source alone. Label every claim as verified fact, supported inference, unknown or unverifiable, or human decision required, and never substitute confidence for evidence."
     )
     integration_rule = "- Use repository files only for continuity." if standalone else (
-        "- Gentle AI and Engram are independent optional capabilities; repository evidence remains authoritative. Block only operation-required failures."
-    )
-    verification_rule = (
-        "- Classify each claim as verified fact, supported inference, unknown or unverifiable, or human decision "
-        "required. A verified fact needs applicable, trustworthy, proportionate evidence; an inference names its "
-        "evidence and reasoning; unknown applies when no valid mechanism exists; a human decision applies when "
-        "authority or a criterion is human-owned. Never substitute missing evidence, stale memory, unrelated "
-        "proxies, assumptions, or confidence wording. Verify before asking; if unavailable or contradictory, "
-        "name the missing capability and request only the minimum evidence, criterion, authority, or decision."
+        "- Gentle AI and Engram are independent optional capabilities; repository evidence remains authoritative, and only operation-required capability failures block work."
     )
     continuity_gate = (
         "Saving or recalling work across sessions"
@@ -2157,10 +2152,9 @@ Describe what this project does and who it serves.
 - Do not introduce unrelated scope.
 - Do not retry indefinitely. After repeated failure, stop with evidence and request a decision.
 - Do not continue automatically into unrequested tasks.
-- Do not stop after merely announcing an immediately executable verification or action inside the requested and authorized scope. Execute it and report the result. Pause only for approval, authority, evidence, safety, or a material decision.
-- Preserve unknown files and existing work.
+- Execute authorized work you have announced; do not stop at the announcement.
+- Preserve unknown files and existing work through informed, explicitly approved evolution; never freeze content by default.
 {evidence_rule}
-{verification_rule}
 {integration_rule}
 - Keep Git consent outcome-scoped and conversational. Combined intent may cover unchanged safe prerequisites; provider changes, backup, publication, destructive actions, and material risk changes require separate approval.
 
@@ -2290,10 +2284,13 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 - Do not continue into unrequested work.
 - If an operation fails on Windows because a path is too long, suggest `git config --global core.longpaths true` for the human to run. Never change global configuration yourself.
 - When the human signals that you repeat a mistake or ignore an earlier instruction, judged by meaning rather than fixed phrases, stop, find that instruction, correct course, and continue. Ask before preserving the observation across sessions. Never assess the person.
+- Do not stop after merely announcing an immediately executable verification or action inside the requested and authorized scope. Execute it and report the result. Pause only for approval, authority, evidence, safety, or a material decision.
 
 ## Honesty
 
 - Verify claims; disclose failing tests, skipped steps, and unverified assumptions. Report outcomes, not intentions.
+- A verified fact needs applicable, trustworthy, proportionate evidence. An inference names its evidence and reasoning. Unknown applies when no valid mechanism exists. A human decision applies when authority or a criterion is human-owned.
+- Never substitute missing evidence, stale memory, unrelated proxies, assumptions, or confidence wording. Verify before asking; if unavailable or contradictory, name the missing capability and request only the minimum evidence, criterion, authority, or decision.
 - When research cites sources, list every source that was located but not read, with a short reason (authentication, transport failure, incomplete content, or snippets). Never present an unread source as evidence.
 - Keep a useful link in the document that owns its subject. Do not create a separate reference list.
 - When asked to remember or note something, route it to its existing owner: a decision to `docs/repo-harness/decisions.md`, pending work to `docs/repo-harness/roadmap.md`, a working rule to this file{preference_route}. If it is already recorded, do not duplicate it; if the owner is unclear, ask once. Never create a generic notes file.
@@ -3801,7 +3798,12 @@ def human_suggestion_preview(
         if len(rendered_section) != 2 or len(current_section) != 2:
             ambiguous_paths.append(relative)
             continue
-        rendered_section, current_section = rendered_section[0], current_section[0]
+        # Section-role markers are locale-independent metadata, not contract prose.
+        rendered_section, current_section = (
+            "".join(line for line in section[0].splitlines(keepends=True)
+                    if not DOC_ROLE_LINE.fullmatch(line.rstrip("\r\n")))
+            for section in (rendered_section, current_section)
+        )
         rendered_lines = rendered_section.splitlines()
         current_lines = current_section.splitlines()
         obligations = {literal for _, literal in units}

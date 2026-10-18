@@ -41,7 +41,7 @@ DISCIPLINE = (
     "Do not introduce unrelated scope.",
     "Do not retry indefinitely. After repeated failure, stop with evidence and request a decision.",
     "Do not continue automatically into unrequested tasks.",
-    "Preserve unknown files and existing work.",
+    "Preserve unknown files and existing work through informed, explicitly approved evolution; never freeze content by default.",
 )
 
 
@@ -4336,9 +4336,27 @@ class HumanOwnedSuggestionTests(unittest.TestCase):
             self.assertTrue(item["reason"] and item["evidence"] and item["currentExcerpt"] and item["proposedPreview"])
             self.assertEqual(path.read_bytes(), before)
 
-
-
-
+    def test_doc_role_marker_in_the_owner_section_is_metadata_not_divergence(self):
+        """A section-role marker is locale-independent metadata. It must not hide a missing
+        obligation or turn an otherwise identical owner section into an ambiguous one."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = self.fixture(root)
+            path = root / RULEBOOK
+            marked = outputs[RULEBOOK].replace("## Hard Rules\n", "## Hard Rules\n<!-- doc-role:hard-rules -->\n", 1)
+            path.write_text(marked, encoding="utf-8")
+            clean = self.preview(root, outputs)
+            self.assertNotIn(RULEBOOK, clean.get("ambiguousPaths", []))
+            self.assertEqual(clean["suggestions"], [])
+            obligation = "- Do not introduce unrelated scope.\n"
+            path.write_text(marked.replace(obligation, ""), encoding="utf-8")
+            before = path.read_bytes()
+            report = self.preview(root, outputs)
+            self.assertNotIn(RULEBOOK, report.get("ambiguousPaths", []))
+            self.assertEqual([item["contractUnitId"] for item in report["suggestions"]],
+                             ["hard-rules/do-not-introduce-unrelated-scope"])
+            self.assertEqual(report["writes"], 0)
+            self.assertEqual(path.read_bytes(), before)
 
     def test_distinct_rulebook_units_and_scoped_anchors(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -6156,6 +6174,37 @@ resume_authority: required
                     f"{TOOL.RULEBOOK_TOKEN_TOLERANCE}; split or shed detail beyond the recommended tolerance",
                 )
 
+    def test_rendered_rulebook_and_rules_are_congruent_with_self_hosted(self):
+        repository = ROOT.parents[1]
+        paths = ("REPO-HARNESS.md", ".repo-harness/rules/working-agreements.md",
+                 ".repo-harness/rules/memory.md")
+        if not all((repository / path).is_file() for path in paths):
+            self.skipTest("repository rulebook fixture is outside the portable package")
+        outputs = TOOL.render("repo-harness-builder", ["claude-code", "opencode", "pi"])
+
+        def shared(text, path):
+            if path == "REPO-HARNESS.md":
+                text = text.split("## Hard Rules\n", 1)[1].split("## Decision Gates", 1)[0]
+                text = re.sub(r"^<!-- doc-role:.* -->\n", "", text, flags=re.MULTILINE)
+                return text.strip()
+            if path.endswith("working-agreements.md"):
+                return re.sub(r"(## Project Agreements\n).*?(?=## Budget)", r"\1\n", text, flags=re.DOTALL)
+            return text
+
+        for path in paths:
+            with self.subTest(path=path):
+                self.assertEqual(shared(outputs[path], path),
+                                 shared((repository / path).read_text(encoding="utf-8"), path))
+        agreements = outputs[paths[1]]
+        for detail in (
+            "Do not stop after merely announcing an immediately executable verification or action inside the requested and authorized scope. Execute it and report the result. Pause only for approval, authority, evidence, safety, or a material decision.",
+            "A verified fact needs applicable, trustworthy, proportionate evidence. An inference names its evidence and reasoning. Unknown applies when no valid mechanism exists. A human decision applies when authority or a criterion is human-owned.",
+            "Never substitute missing evidence, stale memory, unrelated proxies, assumptions, or confidence wording. Verify before asking; if unavailable or contradictory, name the missing capability and request only the minimum evidence, criterion, authority, or decision.",
+        ):
+            with self.subTest(detail=detail):
+                self.assertIn("- " + detail, agreements)
+        self.assertNotIn("<!-- doc-role:", outputs[paths[0]])
+
     def test_every_block_moved_out_of_the_rulebook_survives_in_its_rule_file(self):
         """The rulebook keeps one short line and delegates the detail. `.repo-harness/rules/` is
         render-owned, so a regeneration would silently drop the moved detail and leave the short
@@ -7417,7 +7466,7 @@ resume_authority: required
         documentation = outputs[".repo-harness/skills/repo-harness-documentation/SKILL.md"]
 
         self.assertIn(
-            "Reconcile applicable owning repository evidence before classifying status, pending work, defects, or completion; never rely on one source in isolation.",
+            "Reconcile the applicable owning evidence, never one source alone. Label every claim as verified fact, supported inference, unknown or unverifiable, or human decision required, and never substitute confidence for evidence.",
             rulebook,
         )
         for phrase in (
@@ -7438,10 +7487,9 @@ resume_authority: required
     def test_rulebook_owns_proportional_verification_principle_for_all_core_skills(self):
         outputs = TOOL.render("Example", [])
         rule = (
-            "Classify each claim as verified fact, supported inference, unknown or unverifiable, or human "
-            "decision required. A verified fact needs applicable, trustworthy, proportionate evidence; an "
-            "inference names its evidence and reasoning; unknown applies when no valid mechanism exists; a "
-            "human decision applies when authority or a criterion is human-owned. Never substitute missing "
+            "A verified fact needs applicable, trustworthy, proportionate evidence. An "
+            "inference names its evidence and reasoning. Unknown applies when no valid mechanism exists. A "
+            "human decision applies when authority or a criterion is human-owned.\n- Never substitute missing "
             "evidence, stale memory, unrelated proxies, assumptions, or confidence wording. Verify before "
             "asking; if unavailable or contradictory, name the missing capability and request only the "
             "minimum evidence, criterion, authority, or decision."
@@ -7452,7 +7500,11 @@ resume_authority: required
             ".repo-harness/skills/repo-harness-documentation/SKILL.md",
         )
 
-        self.assertIn(f"- {rule}", outputs[RULEBOOK])
+        self.assertIn(
+            "Label every claim as verified fact, supported inference, unknown or unverifiable, or human decision required",
+            outputs[RULEBOOK],
+        )
+        self.assertIn(f"- {rule}", outputs[".repo-harness/rules/working-agreements.md"])
         for path in inherited_paths:
             with self.subTest(path=path):
                 self.assertIn(
@@ -7463,7 +7515,9 @@ resume_authority: required
         self.assertEqual(sum(text.count(rule) for text in outputs.values()), 1)
 
     def test_rulebook_requires_follow_through_on_authorized_executable_work(self):
-        rulebook = TOOL.render("Example", ["opencode"])[RULEBOOK]
+        outputs = TOOL.render("Example", ["opencode"])
+        self.assertIn("Execute authorized work you have announced; do not stop at the announcement.", outputs[RULEBOOK])
+        rulebook = outputs[".repo-harness/rules/working-agreements.md"]
 
         for phrase in (
             "merely announcing an immediately executable verification or action",
@@ -7476,7 +7530,8 @@ resume_authority: required
     def test_rulebook_follow_through_preserves_pause_and_scope_boundaries(self):
         rulebook = TOOL.render("Example", ["opencode"])[RULEBOOK]
 
-        self.assertIn("Pause only for approval, authority, evidence, safety, or a material decision", rulebook)
+        agreements = TOOL.render("Example", ["opencode"])[".repo-harness/rules/working-agreements.md"]
+        self.assertIn("Pause only for approval, authority, evidence, safety, or a material decision", agreements)
         self.assertIn("Do not continue automatically into unrequested tasks", rulebook)
         self.assertIn("Ask for explicit approval before reading or modifying paths outside it", rulebook)
         for phrase in (

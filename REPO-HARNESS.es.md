@@ -18,7 +18,7 @@ Este documento es la presentacion humana en espanol de [`REPO-HARNESS.md`](REPO-
 - No continue automaticamente hacia tareas no solicitadas.
 - Ejecute el trabajo autorizado que anuncio; no se detenga en el anuncio.
 - Preserve archivos desconocidos y trabajo existente mediante una evolucion informada y aprobada explicitamente; nunca congele contenido por defecto.
-- Contraste la evidencia propietaria aplicable; nunca dependa de una sola fuente. Clasifique cada afirmacion como hecho verificado, inferencia respaldada, desconocida o decision humana requerida, y nunca sustituya evidencia por confianza.
+- Contraste la evidencia propietaria aplicable; nunca dependa de una sola fuente. Clasifique cada afirmacion como hecho verificado, inferencia respaldada, desconocida o no verificable, o decision humana requerida, y nunca sustituya evidencia por confianza.
 - Gentle AI y Engram son capacidades opcionales e independientes; la evidencia del repositorio sigue siendo autoritativa y solo bloquean el trabajo las fallas de capacidades que la operacion requiere.
 - Mantenga el consentimiento Git acotado al resultado y conversacional. Una intencion combinada puede cubrir requisitos previos seguros y sin cambios; los cambios de proveedor, el respaldo, la publicacion, las acciones destructivas y los cambios materiales de riesgo requieren aprobacion separada.
 
@@ -46,4 +46,4 @@ Este documento es la presentacion humana en espanol de [`REPO-HARNESS.md`](REPO-
 
 Actualice este par cuando cambie una regla, una ruta o una afirmacion en `REPO-HARNESS.md`. Las reglas operativas siguen siendo propiedad exclusiva del archivo canonico en ingles. La meta de 700 tokens, con tolerancia hasta 750, aplica al archivo canónico en inglés, medido como `wc -w` por 1.33. Son ideales recomendados del builder; el propietario puede elegir otro presupuesto. Esta presentación puede excederlo para seguir completa, sin agregar detalle que pertenece a los documentos enlazados.
 
-No coloque estado fechado aqui. Los cambios completados pertenecen a `CHANGELOG.md`, el estado y siguiente paso a `docs/repo-harness/current-state.md`, y las razones durables a `docs/repo-harness/decisions.md`.
+No coloque estado fechado aqui. Los cambios completados pertenecen a `CHANGELOG.md`, el estado y siguiente paso a `docs/repo-harness/current-state.md`, y las decisiones y sus razones a `docs/repo-harness/decisions.md`.
