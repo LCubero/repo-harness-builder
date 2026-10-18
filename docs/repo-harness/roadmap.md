@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0118
+| Field | Value |
+|---|---|
+| Origin | Owner request on 2026-10-18 after RH-W-0117: reporting ignored harness paths left the owner to work out what to decide; the builder should warn and ask. Issue #441. |
+| Priority | P3: one decision becomes explicit instead of implied. |
+| Dependencies | RH-W-0117 (ignored-path report). |
+| Status | completed |
+| Completed work | `preservation-and-safety.md`: when planned harness paths are git-ignored, the agent asks one short conversational question before the apply approval — keep them local (the default; nothing changes) or version them, in which case it proposes the exact `.gitignore` lines to remove and edits them only after approval. Ignore rules never change without that choice. |
+| Remaining work | none |
+| Additions | The existing RH-W-0117 reference test now pins the question and both choices. |
+| Exclusions | No behavior change; the builder still manages only its five ignore directives. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | RED then GREEN: the extended reference test failed on the three new phrases before and passes after. Full suite 686 tests, `OK (skipped=11)`; checker `current`, 0 writes; `self-test` pass. |
+| Decision history | 2026-10-18: owner asked whether it would be easier for the builder to warn and ask; the agent agreed and kept it to one reference sentence. 2026-10-18: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0117
 | Field | Value |
 |---|---|

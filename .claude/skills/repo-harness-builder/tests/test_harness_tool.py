@@ -811,8 +811,10 @@ class ApprovalUxTests(unittest.TestCase):
         for phrase in (
             "run read-only `git check-ignore` on the planned paths",
             "a fresh clone would lack them and its checker would report `drift`",
-            "Never edit those ignore rules unless the human asks",
             "Repeat the surviving references in the apply report",
+            "ask one short conversational question before the apply approval",
+            "keep them local (the default; nothing changes)",
+            "propose the exact `.gitignore` lines to remove and edit them only after approval",
         ):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, preservation)
