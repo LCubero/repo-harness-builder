@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- RH-W-0123: Judgment Day on `main` approved. Its three MEDIUM rows are fixed: an interrupted apply (Ctrl+C) rolls back, rollback keeps going when temporary files cannot be created, and the generated `check.py repair` removes a reference it left half-written.
+
 - RH-W-0122: apply and migration replace files atomically (same-directory temporary file plus `os.replace`), a create that fails mid-write leaves no partial file, and advisory manifest reads refuse an indirect `.repo-harness` outside the selected root.
 
 - RH-W-0121: updating an installed harness keeps its license and runtimes, `render` and `check` report a mode change in `integrationModeSet`, the generated `check.py repair` restores missing references, and the builder guidance (runtime question, omitted `--runtime`, license expressions) matches the CLI.

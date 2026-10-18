@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0123
+| Field | Value |
+|---|---|
+| Origin | Judgment Day on `main` at `ba00fc2` (range `3074f7d..ba00fc2`, two blind judges) froze three MEDIUM rows (ledger SHA-256 `1ec0c8d0b0233fdf1f5359636a6fbca6e3bd227141b925e302e169bba2100ef3`): JD-A-001 (Ctrl+C during a create left a partial file), JD-B-001 (when temporary files cannot be created, the first failing restore aborted the rest of rollback), and JD-A-002 (the generated repair kept a partially written reference). |
+| Priority | P2: rare interruptions could still leave the partial files RH-W-0122 set out to prevent. |
+| Dependencies | RH-W-0122. |
+| Status | completed |
+| Completed work | `write_outputs` rolls back on any interruption, including `KeyboardInterrupt`, and re-raises it. Each rollback step is best effort: when the atomic restore cannot create its temporary file, it restores in place, and a failing step (even an unexpected error) no longer stops the remaining cleanup or masks the original error; the generated-skill migration rollback follows the same rule. The generated `check.py repair` removes a file it created but did not finish writing, while a completed file changed afterwards stays preserved. |
+| Remaining work | none |
+| Additions | Four failure-injection tests (interrupted create, no temporary files, unexpected cleanup error, partial repair write). |
+| Exclusions | No behavior change for successful applies or repairs. |
+| Deferrals | Two edge cases the independent verifier named and the agent chose not to fix (no real-repository evidence): the generated-skill migration rollback removes the destinations it created without a content check, and the in-place restore fallback runs only after an `OSError` from the atomic restore. |
+| Rejections | none |
+| Evidence | Judgment Day verdict: `APPROVED` (no BLOCKER/CRITICAL rows; final verification was the 701-test suite on `ba00fc2`). RED then GREEN: all three new tests failed before the change (a partial file remained; the `.gitignore` restore and `new.txt` cleanup did not run; rollback reported `preserved-changed`). An independent verifier then found that an unexpected cleanup error could mask the original failure and that the migration rollback was not best effort; both were fixed in the same PR. Full suite 705 tests, `OK (skipped=12)`; checker `current`, 0 writes. Issue #454. |
+| Decision history | 2026-10-18: the owner asked for Judgment Day ("dale") and had delegated the decisions ("decidelo tu"); the agent fixed the MEDIUM rows as ordinary work because each fix is a few lines. 2026-10-18: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0122
 | Field | Value |
 |---|---|

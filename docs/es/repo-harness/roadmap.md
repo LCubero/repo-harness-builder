@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0123
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Un Judgment Day sobre `main` en `ba00fc2` (rango `3074f7d..ba00fc2`, dos jueces ciegos) congeló tres filas MEDIUM (SHA-256 del registro `1ec0c8d0b0233fdf1f5359636a6fbca6e3bd227141b925e302e169bba2100ef3`): JD-A-001 (Ctrl+C durante una creación dejaba un archivo parcial), JD-B-001 (cuando no se pueden crear archivos temporales, la primera restauración fallida detenía el resto del rollback) y JD-A-002 (la reparación generada conservaba una referencia escrita a medias). |
+| Prioridad | P2: interrupciones poco frecuentes todavía podían dejar los archivos parciales que RH-W-0122 quería evitar. |
+| Dependencias | RH-W-0122. |
+| Estado | completed |
+| Trabajo completado | `write_outputs` hace rollback ante cualquier interrupción, incluido `KeyboardInterrupt`, y la vuelve a lanzar. Cada paso del rollback es de mejor esfuerzo: si la restauración atómica no puede crear su archivo temporal, restaura en el lugar, y un paso fallido (incluso con un error inesperado) ya no detiene el resto de la limpieza ni oculta el error original; el rollback de la migración de skills generadas sigue la misma regla. El `check.py repair` generado elimina un archivo que creó pero no terminó de escribir, mientras que un archivo completo modificado después se conserva. |
+| Trabajo restante | none |
+| Adiciones | Cuatro pruebas de inyección de fallos (creación interrumpida, sin archivos temporales, error inesperado en la limpieza, escritura parcial en la reparación). |
+| Exclusiones | Sin cambio de comportamiento en aplicaciones o reparaciones exitosas. |
+| Aplazamientos | Dos casos límite que nombró el verificador independiente y que el agente decidió no corregir (sin evidencia en repositorios reales): el rollback de la migración de skills generadas elimina los destinos que creó sin comprobar su contenido, y el respaldo de restauración en el lugar solo se ejecuta tras un `OSError` de la restauración atómica. |
+| Rechazos | none |
+| Evidencia | Veredicto del Judgment Day: `APPROVED` (ninguna fila BLOCKER/CRITICAL; la verificación final fue la suite de 701 pruebas en `ba00fc2`). RED y luego GREEN: las tres pruebas nuevas fallaban antes del cambio (quedaba un archivo parcial; la restauración de `.gitignore` y la limpieza de `new.txt` no se ejecutaban; el rollback informaba `preserved-changed`). Después, un verificador independiente encontró que un error inesperado en la limpieza podía ocultar el fallo original y que el rollback de la migración no era de mejor esfuerzo; ambos se corrigieron en el mismo PR. Suite completa 705 pruebas, `OK (skipped=12)`; checker `current`, 0 escrituras. Issue #454. |
+| Historial de decisiones | 2026-10-18: el propietario pidió Judgment Day ("dale") y había delegado las decisiones ("decidelo tu"); el agente corrigió las filas MEDIUM como trabajo ordinario porque cada corrección es de pocas líneas. 2026-10-18: completado. |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0122
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

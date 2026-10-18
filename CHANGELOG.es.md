@@ -4,6 +4,8 @@
 
 ## 2026-10-18
 
+- RH-W-0123: el Judgment Day sobre `main` aprobó. Sus tres filas MEDIUM quedan corregidas: una aplicación interrumpida (Ctrl+C) hace rollback, el rollback continúa cuando no se pueden crear archivos temporales y el `check.py repair` generado elimina una referencia que dejó escrita a medias.
+
 - RH-W-0122: la aplicación y la migración reemplazan archivos de forma atómica (archivo temporal en el mismo directorio y `os.replace`), una creación que falla a mitad de escritura no deja un archivo parcial y las lecturas consultivas del manifest rechazan un `.repo-harness` indirecto fuera de la raíz seleccionada.
 
 - RH-W-0121: actualizar un harness instalado conserva su licencia y sus runtimes, `render` y `check` informan un cambio de modo en `integrationModeSet`, el `check.py repair` generado restaura las referencias faltantes y la guía del builder (pregunta de runtimes, `--runtime` omitido, expresiones de licencia) coincide con la CLI.
