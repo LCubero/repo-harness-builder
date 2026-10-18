@@ -548,7 +548,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 
 | Campo | Valor |
 |---|---|
-| Origen | Decisión del propietario del 2026-10-17 durante una revisión de alineación de solo lectura: este repositorio es la prueba en vivo del builder, así que el reglamento y los archivos de reglas generados deben tener el mismo contenido compartido que los autoalojados. Responde la pregunta abierta que RH-W-0073 dejó en sus aplazamientos: si la compresión también cambia la plantilla del generador. |
+| Origen | Decisión del propietario del 2026-10-17 durante una revisión de alineación de solo lectura: este repositorio es la prueba en vivo del builder, así que el reglamento y los archivos de reglas generados deben tener el mismo contenido compartido que los autoalojados. Responde la pregunta abierta que RH-W-0073 dejó en sus aplazamientos: si la compresión también cambia la plantilla del generador. Issue #420. |
 | Prioridad | P2: las reglas duras de la plantilla (331 tokens proxy) casi no dejaban espacio para contenido real del proyecto; este repositorio con ellas mediría 819 frente a la tolerancia de 750. |
 | Dependencias | RH-W-0073 (diseño de compresión), RH-W-0108 (presupuesto), RH-W-0044 (vista previa de sugerencias). |
 | Estado | completed |
@@ -558,8 +558,8 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Exclusiones | Sin marcadores doc-role en el reglamento inglés generado, porque `check()` reportaría como `sections-missing` los reglamentos de consumidores existentes que no los tienen. Las instalaciones existentes conservan su reglamento y reglas humanas; sin migración. |
 | Aplazamientos | none |
 | Rechazos | none |
-| Evidencia | RED y luego GREEN: prueba de congruencia (6 subpruebas fallaban antes), prueba de marcador doc-role (antes `ambiguous`). Reglamento generado 572, acuerdos de trabajo 692, memoria 709 tokens proxy; autoalojados: reglamento 721, acuerdos 712, memoria 709. Render sobre este repositorio: `REPO-HARNESS.md` sale de `ambiguousPaths`, 0 sugerencias. Suite completa 677 pruebas, `OK (skipped=11)`; checker y CLI check `current`, 0 escrituras; `self-test` pasa; revisión nativa (riesgo, legibilidad, confiabilidad) aprobada y reconocida con una advertencia de legibilidad no bloqueante sobre `memory.md`. La entrega (issue, PR, merge) sigue la política ordinaria del repositorio. |
-| Historial de decisiones | 2026-10-17: el propietario eligió adoptar en la plantilla el diseño autoalojado ("ambos producen el mismo resultado, tienen las mismas cosas"). |
+| Evidencia | RED y luego GREEN: prueba de congruencia (6 subpruebas fallaban antes), prueba de marcador doc-role (antes `ambiguous`). Reglamento generado 572, acuerdos de trabajo 692, memoria 709 tokens proxy; autoalojados: reglamento 721, acuerdos 712, memoria 709. Render sobre este repositorio: `REPO-HARNESS.md` sale de `ambiguousPaths`, 0 sugerencias. Suite completa 677 pruebas, `OK (skipped=11)`; checker y CLI check `current`, 0 escrituras; `self-test` pasa; revisión nativa (riesgo, legibilidad, confiabilidad) aprobada y reconocida con una advertencia de legibilidad no bloqueante sobre `memory.md`. Entregado mediante el PR #421 (squash). |
+| Historial de decisiones | 2026-10-17: el propietario eligió adoptar en la plantilla el diseño autoalojado ("ambos producen el mismo resultado, tienen las mismas cosas"); luego delegó la entrega al agente (issue, PR, merge). 2026-10-17: completado. |
 | Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
 
 ### RH-W-0108

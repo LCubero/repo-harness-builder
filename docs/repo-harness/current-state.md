@@ -5,7 +5,7 @@
 ## Verified State
 <!-- doc-role:verified-state -->
 
-- `RH-W-0109` is `completed`: the generated rulebook and rule files now carry the same shared content as this self-hosted harness (short hard rules, detail in working agreements, full preservation rule). Existing installations keep their human-owned files; no migration. See the [canonical record](roadmap.md#rh-w-0109).
+- `RH-W-0109` is `completed`: the generated rulebook and rule files now carry the same shared content as this self-hosted harness (short hard rules, detail in working agreements, full preservation rule). Existing installations keep their human-owned files; no migration (issue #420, PR #421). See the [canonical record](roadmap.md#rh-w-0109).
 - `RH-W-0108` is `completed`: recommended 700-token target with tolerance up to 750; consumers choose their budget and render/check never block on size. See the [canonical record](roadmap.md#rh-w-0108). Existing human-owned rule files are not migrated; the skill-body ceiling remains 1000.
 - Batch mode presentation is defined: the generated response contract groups non-authorizing clarifications as one numbered list in one blocking block, the only exception to one question at a time (issue #414, PR #415). Existing installations keep their human-owned response contract.
 - `main` carries unreleased changes after `v3.1-rc.15`: RH-W-0107, the batch clarification form, RH-W-0108, the restored evidence-reconciliation rule, and English/Spanish documentation parity (PRs #410, #411, #413, #415, #417). No new tag or release was made; publishing remains an owner decision.
