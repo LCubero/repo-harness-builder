@@ -143,6 +143,46 @@ class SafeWriteAndManifestTests(unittest.TestCase):
                 with self.assertRaises(TOOL.ContractError):
                     TOOL.check(root, "Example", [])
 
+    def test_codegraph_choice_and_malformed_runtimes_read_as_absent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = root / TOOL.MANIFEST_PATH
+            manifest.parent.mkdir()
+            manifest.write_text(json.dumps({"project": {"ignoreCodegraph": False}}), encoding="utf-8")
+            with mock.patch.object(TOOL, "guarded_target", side_effect=TOOL.ContractError("indirect parent")):
+                self.assertTrue(TOOL.declared_codegraph_ignore(root))
+            for content in ("[]", '{"runtimes": [{}]}'):
+                manifest.write_text(content, encoding="utf-8")
+                self.assertIsNone(TOOL.recorded_runtimes(root))
+
+    def test_rollback_restores_appended_files_atomically(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = install(root, "Example", ())
+            gitignore = root / ".gitignore"
+            gitignore.write_text("node_modules/\n", encoding="utf-8")
+            original = gitignore.read_bytes()
+            path = ".repo-harness/skills/repo-harness-session-start/SKILL.md"
+            desired = dict(outputs)
+            desired[path] += "\nUpdated generated text.\n"
+            plan = TOOL.plan_changes(root, desired)
+            self.assertIn(".gitignore", [item["path"] for item in plan["append"]])
+            restored = []
+            real_replace = TOOL.atomic_replace_bytes
+
+            def replace(target, content):
+                if Path(target).name == "SKILL.md" and not restored:
+                    restored.append("failed")
+                    raise OSError("forced replacement failure")
+                restored.append(Path(target).name)
+                return real_replace(target, content)
+
+            with mock.patch.object(TOOL, "atomic_replace_bytes", replace):
+                with self.assertRaisesRegex(OSError, "forced replacement failure"):
+                    TOOL.write_outputs(root, desired, plan)
+            self.assertIn(".gitignore", restored)
+            self.assertEqual(gitignore.read_bytes(), original)
+
     def test_normal_apply_preserves_expected_bytes_and_is_idempotent(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

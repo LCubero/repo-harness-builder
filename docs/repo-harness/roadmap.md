@@ -551,13 +551,13 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Priority | P1: an interrupted apply could lose human-visible bytes or leave a half-written generated file, and a link could make the builder read outside the repository. |
 | Dependencies | RH-W-0121. |
 | Status | completed |
-| Completed work | Replacements and rollback restores (render apply and the generated-skill migration) write a same-directory temporary file and publish it with `os.replace`, so an interruption leaves the old or the new bytes, never a truncated file. A created file joins rollback as soon as it is opened, so a failed write leaves no partial file. `recorded_runtimes`, `declared_languages`, and `check` read the manifest through the guarded root and treat an indirect path as absent. |
+| Completed work | Replacements, human-suggestion integrations, and rollback restores of replaced or appended files (render apply and the generated-skill migration) write a same-directory temporary file and publish it with `os.replace`, so an interruption leaves the old or the new bytes, never a truncated file. A created file joins rollback as soon as it is opened, so a failed write leaves no partial file. `recorded_runtimes`, `declared_languages`, `declared_codegraph_ignore`, and `check` read the manifest through the guarded root and treat an indirect path or a malformed record as absent. An independent verifier found the first cut missed appended-file rollback, human integration, and the codegraph read; they were fixed in the same PR. |
 | Remaining work | none |
-| Additions | Five tests (atomic replacement, partial create, indirect manifest, guard refusal, unchanged normal apply); three failure-injection tests now target the atomic writer. |
+| Additions | Seven tests (atomic replacement, partial create, indirect manifest, guard refusal, codegraph choice and malformed runtimes, atomic rollback of appended files, unchanged normal apply); three failure-injection tests now target the atomic writer. |
 | Exclusions | No behavior change for successful applies. The generated checker's own repair keeps its existing create rollback. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | RED then GREEN: a forced replacement failure did not raise before the change, a mid-write create failure left the file, and a refused guard still returned the recorded runtimes. The symlink test skips where the OS forbids directory symlinks; the guard-refusal test covers the same path. Full suite 699 tests, `OK (skipped=12)`; checker `current`, 0 writes. Issue #451. |
+| Evidence | RED then GREEN: a forced replacement failure did not raise before the change, a mid-write create failure left the file, and a refused guard still returned the recorded runtimes. The symlink test skips where the OS forbids directory symlinks; the guard-refusal test covers the same path. Full suite 701 tests, `OK (skipped=12)`; checker `current`, 0 writes. Issue #451. |
 | Decision history | 2026-10-18: the owner delegated the decisions ("decidelo tu"); the agent kept this risk-bearing unit in its own PR, separate from RH-W-0121. 2026-10-18: completed. |
 | Next advancement condition | none (terminal); reopen on regression. |
 

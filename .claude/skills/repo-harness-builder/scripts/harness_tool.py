@@ -5206,8 +5206,9 @@ def atomic_replace_bytes(target: Path, content: bytes) -> None:
         with tempfile.NamedTemporaryFile(dir=target.parent, prefix=f".{target.name}.", delete=False) as handle:
             temporary = Path(handle.name)
             handle.write(content)
-        os.chmod(temporary, stat.S_IMODE(target.stat().st_mode))
+        mode = stat.S_IMODE(target.stat().st_mode)
         os.replace(temporary, target)
+        os.chmod(target, mode)
     finally:
         if temporary is not None and temporary.exists():
             temporary.unlink()
@@ -5374,7 +5375,7 @@ def write_outputs(
                 current = target.read_bytes()
                 appended[target] = current
                 if item["action"] == "integrate-human-suggestion":
-                    target.write_bytes(item["content"].encode("utf-8"))
+                    atomic_replace_bytes(target, item["content"].encode("utf-8"))
                     require(digest_bytes(target.read_bytes()) == item["destinationSha256"],
                             f"human integration mismatch: {relative}")
                     continue
@@ -5407,7 +5408,8 @@ def write_outputs(
                 if target.read_bytes() != content:
                     atomic_replace_bytes(target, content)
             for target, content in appended.items():
-                target.write_bytes(content)
+                if target.read_bytes() != content:
+                    atomic_replace_bytes(target, content)
             for target in reversed(written):
                 relative = target.resolve(strict=False).relative_to(root.resolve(strict=True)).as_posix()
                 if target.is_file() and not is_indirect(target) and (
@@ -5515,10 +5517,11 @@ def recorded_runtimes(root: Path) -> Optional[list[str]]:
         manifest = guarded_target(root, MANIFEST_PATH)
         if is_indirect(manifest) or not manifest.is_file():
             return None
-        recorded = json.loads(manifest.read_text(encoding="utf-8")).get("runtimes")
+        data = json.loads(manifest.read_text(encoding="utf-8"))
     except (ContractError, json.JSONDecodeError, OSError, UnicodeDecodeError):
         return None
-    if not isinstance(recorded, list) or not set(recorded) <= RUNTIMES:
+    recorded = data.get("runtimes") if isinstance(data, dict) else None
+    if not isinstance(recorded, list) or not all(isinstance(item, str) for item in recorded) or not set(recorded) <= RUNTIMES:
         return None
     return sorted(set(recorded))
 
@@ -5598,10 +5601,12 @@ def declared_languages(root: Path) -> tuple[list[str] | None, str | None]:
 
 def declared_codegraph_ignore(root: Path) -> bool:
     """Read an explicit choice, using the enabled default for historical manifests."""
-    manifest_path = root / MANIFEST_PATH
     try:
+        manifest_path = guarded_target(root, MANIFEST_PATH)
+        if is_indirect(manifest_path):
+            return True
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    except (OSError, ValueError, TypeError):
+    except (ContractError, OSError, ValueError, TypeError):
         return True
     project = manifest.get("project") if isinstance(manifest, dict) else None
     if not isinstance(project, dict) or "ignoreCodegraph" not in project:
