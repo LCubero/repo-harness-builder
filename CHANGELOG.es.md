@@ -4,6 +4,8 @@
 
 ## 2026-10-18
 
+- Se actualizó el siguiente paso vigente (EN/ES) con las pruebas en repositorios reales de RH-W-0117.
+
 - RH-W-0117: pruebas sobre copias de cuatro repositorios reales encontraron que las reglas de ignore suelen ocultar `.claude/`, `.opencode/`, `.pi/`, `AGENTS.md` o `CLAUDE.md` (un clon nuevo no los tiene y su checker informa `drift`) y que las referencias antiguas que sobreviven a una migración desaparecen tras aplicar. Las referencias del builder indican ahora al agente que informe las rutas del harness ignoradas antes de aprobar, sin editar reglas de ignore, y que repita esas referencias en el informe de aplicación (issue #438, PR #439).
 
 - Seguimiento de RH-W-0114: se acentuaron 134 palabras en español no ambiguas que la primera pasada omitió en los documentos vivos de este repositorio (sobre todo la hoja de ruta); solo tildes.
