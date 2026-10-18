@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-19
+
+- Updated the current next step (EN/ES) through RH-W-0123.
+
 ## 2026-10-18
 
 - RH-W-0123: Judgment Day on `main` approved. Its three MEDIUM rows are fixed: an interrupted apply (Ctrl+C) rolls back, rollback keeps going when temporary files cannot be created, and the generated `check.py repair` removes a reference it left half-written.
