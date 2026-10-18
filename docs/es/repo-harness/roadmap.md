@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0120
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Una revisión de solo lectura de `main` en `c3781fd` el 2026-10-18 (dos jueces ciegos, un explorador de documentación y una instalación de prueba completa) encontró documentos vigentes que contradicen a sus propietarios actuales. |
+| Prioridad | P2: decisiones vigentes y mapas enviaban a los lectores a una vía de entrega prohibida y describían como pendiente trabajo entregado o rechazado. |
+| Dependencias | none |
+| Estado | completed |
+| Trabajo completado | `decisions.md` (EN/ES) indica ahora que la protección de `main` exige un PR, que los checkpoints se entregaron (PR #171), que el lector de preferencias tiene tres claves y que RH-W-0018 está `rejected`. `current-state.md` (EN/ES) marca como resuelto por RH-W-0109 el hallazgo de compresión de la plantilla. Los mapas de documentación describen RH-W-0018, RH-W-0076 y RH-W-0092 como están, y ambos alcances de RH-W-0076 llevan un aviso de completado. El `usage.md` en español incorpora la frase sobre la caché del mismo proceso. El encabezado del changelog del PR #446 pasa de 2026-10-19 a su fecha real, 2026-10-18. |
+| Trabajo restante | none |
+| Adiciones | none |
+| Exclusiones | Sin cambio de comportamiento, sin código del producto, pruebas ni proyecciones. Los hallazgos de código de la misma revisión son RH-W-0121 y RH-W-0122. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | Cada afirmación corregida se comprobó contra la hoja de ruta, `CONTRIBUTING.md`, el contrato de respuesta y el commit `c3781fd`. Suite completa 687 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras. Issue #447. |
+| Historial de decisiones | 2026-10-18: el propietario delegó las decisiones siguientes ("decidelo tu"); el agente dividió la revisión en documentación (este registro) y dos registros de código. 2026-10-18: completado. |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0119
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

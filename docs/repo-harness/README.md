@@ -32,7 +32,7 @@
 | [rh-w-0053-implementation-plan.md](rh-w-0053-implementation-plan.md) | Delivered test-first RH-W-0053 interrupted-operation checkpoint execution record; verified evidence is retained |
 | [rh-w-0048-design.md](rh-w-0048-design.md) | Completed and delivered recovery design; the [roadmap record](roadmap.md#rh-w-0048) owns reconciliation and re-verification evidence |
 | [rh-w-0048-implementation-plan.md](rh-w-0048-implementation-plan.md) | Historical strict-TDD recovery execution record; the roadmap owns remaining lifecycle work |
-| [rh-w-0046-rh-w-0018-design.md](rh-w-0046-rh-w-0018-design.md) | Owner-delegated approved joint repository fetch-consent and low-question preference-boundary design; completed RH-W-0046 remains separate from deferred RH-W-0018 |
+| [rh-w-0046-rh-w-0018-design.md](rh-w-0046-rh-w-0018-design.md) | Owner-delegated approved joint repository fetch-consent and low-question preference-boundary design; completed RH-W-0046 remains separate from rejected RH-W-0018 |
 | [rh-w-0046-implementation-plan.md](rh-w-0046-implementation-plan.md) | Completed historical RH-W-0046 repository fetch-consent execution record; the exact consent boundary may reopen only on regression |
 | [rh-w-0044-design.md](rh-w-0044-design.md) | Owner-approved suggestion design; implementation completed and delivered under the conservative ambiguity decision through PR #236 |
 | [rh-w-0044-implementation-plan.md](rh-w-0044-implementation-plan.md) | Corrected test-first plan delivered through PR #226; local implementation completed and verified separately from product delivery |
@@ -59,7 +59,7 @@
 | [rh-w-0013-implementation-plan.md](rh-w-0013-implementation-plan.md) | Completed two-task RH-W-0013 blocker plan; historical task instructions retained |
 | [rh-w-0073-design.md](rh-w-0073-design.md) | Completed rulebook budget enforcement design; historical design body retained |
 | [rh-w-0073-implementation-plan.md](rh-w-0073-implementation-plan.md) | Completed RH-W-0073 implementation plan; historical execution evidence retained |
-| [rh-w-0076-scope.md](rh-w-0076-scope.md) | Historical three-slice proposal: slice 1 delivered; residual plan retirement and builder ceiling/compression await owner scope approval |
+| [rh-w-0076-scope.md](rh-w-0076-scope.md) | Completed three-slice scope: slices 1 and 2 delivered (plan retirement through PR #263); builder ceiling/compression transferred to RH-W-0078; historical body retained |
 | [rh-w-0084-scope.md](rh-w-0084-scope.md) | Completed owner-approved LLM-first research scope; historical scope body and lifecycle updates are retained |
 | [rh-w-0083-scope.md](rh-w-0083-scope.md) | Completed owner-approved immediate-before-response obligation and focused acceptance-test scope; historical boundary retained |
 | [rh-w-0087-scope.md](rh-w-0087-scope.md) | Completed owner-approved generated-commit AI-attribution prohibition scope; historical boundary retained |
@@ -73,7 +73,7 @@
 | [rh-w-0078-scope.md](rh-w-0078-scope.md) | Owner-approved scope for multi-file generated skills, reachable references, and selective existing-Python mechanics; implementation is now separately authorized |
 | [rh-w-0078-design.md](rh-w-0078-design.md) | Owner-approved bounded bilingual thin-entry design and reproducible measurement procedure; runtime results remain unknown, and measurement is required before effectiveness claims, not before implementation |
 | [rh-w-0078-implementation-plan.md](rh-w-0078-implementation-plan.md) | Bilingual implementation delivered and completed by owner acceptance; runtime measurement waived, with no measured-savings claim |
-| [rh-w-0092-scope.md](rh-w-0092-scope.md) | Proposed scope for conditional Windows long-path guidance; global Git remediation remains human-run only |
+| [rh-w-0092-scope.md](rh-w-0092-scope.md) | Completed scope superseded by the simple working-agreement rule, delivered through PR #331; historical body retained; global Git remediation remains human-run only |
 | [rh-w-0095-design.md](rh-w-0095-design.md) | Delivered contextual-acknowledgement design; historical implementation evidence retained and PR #213 merge recorded |
 | [rh-w-0067-design.md](rh-w-0067-design.md) | Completed response-shaping contract design; historical design body retained |
 | [rh-w-0067-implementation-plan.md](rh-w-0067-implementation-plan.md) | Completed RH-W-0067 implementation plan; historical task instructions retained |

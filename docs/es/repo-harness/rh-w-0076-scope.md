@@ -1,5 +1,7 @@
 # Alcance de correccion RH-W-0076
 
+**Estado: `completed`; cortes 1 y 2 entregados (retiro de planes mediante PR #263), techo/compresión del builder transferidos a RH-W-0078. El alcance siguiente es histórico; la [hoja de ruta](roadmap.md#rh-w-0076) posee el ciclo de vida.**
+
 ## Decision
 
 RH-W-0076 posee tres limites declarados sin nada capaz de detectar una violacion. Este alcance nombra que cambia cada correccion, que control detecta una recurrencia y como se corta el trabajo. No autoriza implementacion.

@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0120
+| Field | Value |
+|---|---|
+| Origin | A read-only review of `main` at `c3781fd` on 2026-10-18 (two blind judges, one documentation explorer, and an end-to-end scratch install) found living documents that contradict their current owners. |
+| Priority | P2: standing decisions and maps sent readers to a prohibited delivery path and described delivered or rejected work as pending. |
+| Dependencies | none |
+| Status | completed |
+| Completed work | `decisions.md` (EN/ES) now states that `main` protection requires a PR, that checkpoints were delivered (PR #171), that the preference reader holds three keys, and that RH-W-0018 is `rejected`. `current-state.md` (EN/ES) marks the template-compression finding resolved by RH-W-0109. The documentation maps describe RH-W-0018, RH-W-0076, and RH-W-0092 as they are, and both RH-W-0076 scopes carry a completed banner. The Spanish `usage.md` gains the same-process cache sentence. The changelog heading for PR #446 moves from 2026-10-19 to its real date, 2026-10-18. |
+| Remaining work | none |
+| Additions | none |
+| Exclusions | No behavior change, no product source, tests, or runtime projections. Builder code findings from the same review are RH-W-0121 and RH-W-0122. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Every corrected claim was checked against the roadmap, `CONTRIBUTING.md`, the response contract, and commit `c3781fd`. Full suite 687 tests, `OK (skipped=11)`; checker `current`, 0 writes. Issue #447. |
+| Decision history | 2026-10-18: the owner delegated the follow-up decisions ("decidelo tu"); the agent split the review into documentation (this record) and two code records. 2026-10-18: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0119
 | Field | Value |
 |---|---|
