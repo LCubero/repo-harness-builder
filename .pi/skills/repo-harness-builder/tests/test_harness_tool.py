@@ -6067,6 +6067,33 @@ resume_authority: required
             "current-state claims a suite size the suite does not have; update it in the same change",
         )
 
+    def test_generated_decisions_match_file_updates_and_native_backup(self):
+        old = (
+            "Git, provider, backup, and publication operations are outside the core harness.",
+            "every other existing file stays unchanged",
+            "Las operaciones de Git, proveedor, respaldo y publicación quedan fuera del núcleo del harness.",
+            "cualquier otro archivo existente permanece sin cambios",
+        )
+        required = {
+            "docs/repo-harness/decisions.md": (
+                "the native local backup written at session close is part of it",
+                "The builder creates absent files and changes an existing file only through an approved plan bound to that file's exact current bytes.",
+            ),
+            "docs/es/repo-harness/decisions.md": (
+                "el backup local nativo que se escribe al cerrar la sesión forma parte de él",
+                "El builder crea archivos ausentes y cambia un archivo existente solo mediante un plan aprobado ligado a los bytes actuales exactos de ese archivo.",
+            ),
+        }
+        for standalone in (False, True):
+            outputs = TOOL.render("Example", ["opencode"], standalone=standalone, documentation_languages=["en", "es"])
+            for path, phrases in required.items():
+                with self.subTest(standalone=standalone, path=path):
+                    text = outputs[path]
+                    for phrase in old:
+                        self.assertNotIn(phrase, text)
+                    for phrase in phrases:
+                        self.assertIn(phrase, text)
+
     def test_rh_w_0079_decision_records_independent_optional_capabilities(self):
         repository = ROOT.parents[1]
         decisions = repository / "docs/repo-harness/decisions.md"

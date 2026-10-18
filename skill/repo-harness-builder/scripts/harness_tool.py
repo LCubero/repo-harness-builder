@@ -2605,8 +2605,8 @@ No project-specific records have been resolved.
 
 - Repository documentation remains the visible source of project state.
 {continuity_decision}
-- Git, provider, backup, and publication operations are outside the core harness.
-- The harness creates absent files. Only selected root runtime pointers may receive their exact missing directive; every other existing file stays unchanged.
+- Git, provider, external backup, and publication operations are outside the core harness; the native local backup written at session close is part of it.
+- The builder creates absent files and changes an existing file only through an approved plan bound to that file's exact current bytes.
 """
     maintenance = f"""# Bilingual Documentation Maintenance
 
@@ -2852,8 +2852,8 @@ No se han resuelto registros específicos del proyecto.
 
 - La documentación del repositorio permanece como fuente visible del estado del proyecto.
 {continuity_decision_es}
-- Las operaciones de Git, proveedor, respaldo y publicación quedan fuera del núcleo del harness.
-- El harness crea archivos ausentes. Solo los punteros raíz seleccionados pueden recibir su directiva exacta faltante; cualquier otro archivo existente permanece sin cambios.
+- Las operaciones de Git, proveedor, respaldo externo y publicación quedan fuera del núcleo del harness; el backup local nativo que se escribe al cerrar la sesión forma parte de él.
+- El builder crea archivos ausentes y cambia un archivo existente solo mediante un plan aprobado ligado a los bytes actuales exactos de ese archivo.
 """
     continuity_gate_es = (
         "Guardar o recuperar trabajo entre sesiones" if standalone
