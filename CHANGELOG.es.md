@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-19
+
+- El registro RH-W-0117 de la hoja de ruta (EN/ES) ahora nombra los cuatro repositorios del propietario como repositorios de prueba A a D en lugar de sus nombres reales, porque este repositorio es público.
+
 ## 2026-10-18
 
 - Se documentaron RH-W-0116 y RH-W-0118 en la guía del builder EN/ES (`human-evolved` tras actualizar; la pregunta sobre rutas del harness ignoradas por Git) y se actualizó el siguiente paso vigente hasta RH-W-0119.
