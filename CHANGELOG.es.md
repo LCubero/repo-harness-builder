@@ -4,6 +4,8 @@
 
 ## 2026-10-18
 
+- Se documentaron RH-W-0116 y RH-W-0118 en la guía del builder EN/ES (`human-evolved` tras actualizar; la pregunta sobre rutas del harness ignoradas por Git) y se actualizó el siguiente paso vigente hasta RH-W-0119.
+
 - RH-W-0119: un Judgment Day sobre `main` encontró tres afirmaciones falsas y las corrigió: la referencia del builder ya no dice que los punteros raíz ignorados hacen que el checker informe `drift` (el checker nunca los inspecciona); el estado actual da ahora los totales reales del portafolio, derivados por una prueba nueva; y el Judgment Day de RH-W-0115 se describe como escalado y cerrado por decisión delegada del propietario (issue #443, PR #444).
 
 - RH-W-0118: cuando rutas planificadas del harness están ignoradas por Git, el agente del builder hace una pregunta antes de aprobar — mantenerlas locales (por defecto; nada cambia) o versionarlas, proponiendo las líneas exactas de `.gitignore` a quitar y editándolas solo tras aprobación (issue #441, PR #442).
