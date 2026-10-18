@@ -557,7 +557,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | No behavior change. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | Two blind judges; JD-A-001 corroborated by JD-B-002. Frozen ledger SHA-256 `34e44ffc454416e131a72c402a492e055f8e8558afe292f9bff3f62bd5053167`. RED then GREEN: the new totals test failed with `[112, 105, 7] != [118, 111, 7]` and the reference test failed on the corrected sentence before the fix; both pass after. Round-1 scoped re-judgment: all three rows `verified`. Full suite 687 tests, `OK (skipped=11)`; checker `current`, 0 writes; `self-test` pass. Verdict: `JUDGMENT: APPROVED`. |
+| Evidence | Two blind judges; JD-A-001 corroborated by JD-B-002. Frozen ledger SHA-256 `34e44ffc454416e131a72c402a492e055f8e8558afe292f9bff3f62bd5053167`. RED then GREEN: the new totals test failed with `[112, 105, 7] != [118, 111, 7]` and the reference test failed on the corrected sentence before the fix; both pass after. Round-1 scoped re-judgment: all three rows `verified`. Full suite 687 tests, `OK (skipped=11)`; checker `current`, 0 writes; `self-test` pass. Verdict: `JUDGMENT: APPROVED`. Delivered through PR #444 (squash merge). |
 | Decision history | 2026-10-18: owner asked for Judgment Day ("haz juicio"); the agent chose `main` at `05eb2b8` as the target and fixed all three rows in round 1 under the standing delegation. 2026-10-18: completed. |
 | Next advancement condition | none (terminal); reopen on regression. |
 

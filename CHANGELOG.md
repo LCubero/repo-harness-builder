@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
-- RH-W-0119: a Judgment Day on `main` found three false statements and fixed them: the builder reference no longer says ignored root pointers make the checker report `drift` (the checker never inspects them); current state now gives the true portfolio totals, derived by a new test; and the RH-W-0115 Judgment Day is described as escalated and closed by delegated owner decision (issue #443).
+- RH-W-0119: a Judgment Day on `main` found three false statements and fixed them: the builder reference no longer says ignored root pointers make the checker report `drift` (the checker never inspects them); current state now gives the true portfolio totals, derived by a new test; and the RH-W-0115 Judgment Day is described as escalated and closed by delegated owner decision (issue #443, PR #444).
 
 - RH-W-0118: when planned harness paths are git-ignored, the builder agent asks one question before approval — keep them local (default; nothing changes) or version them, proposing the exact `.gitignore` lines to remove and editing them only after approval (issue #441, PR #442).
 

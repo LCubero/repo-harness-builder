@@ -558,7 +558,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Exclusiones | Sin cambio de comportamiento. |
 | Aplazamientos | none |
 | Rechazos | none |
-| Evidencia | Dos jueces ciegos; JD-A-001 corroborada por JD-B-002. SHA-256 del registro congelado `34e44ffc454416e131a72c402a492e055f8e8558afe292f9bff3f62bd5053167`. RED y luego GREEN: la nueva prueba de totales fallaba con `[112, 105, 7] != [118, 111, 7]` y la prueba de referencias fallaba en la frase corregida antes de la corrección; ambas pasan después. Re-juicio acotado de la ronda 1: las tres filas `verified`. Suite completa 687 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; `self-test` pasa. Veredicto: `JUDGMENT: APPROVED`. |
+| Evidencia | Dos jueces ciegos; JD-A-001 corroborada por JD-B-002. SHA-256 del registro congelado `34e44ffc454416e131a72c402a492e055f8e8558afe292f9bff3f62bd5053167`. RED y luego GREEN: la nueva prueba de totales fallaba con `[112, 105, 7] != [118, 111, 7]` y la prueba de referencias fallaba en la frase corregida antes de la corrección; ambas pasan después. Re-juicio acotado de la ronda 1: las tres filas `verified`. Suite completa 687 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; `self-test` pasa. Veredicto: `JUDGMENT: APPROVED`. Entregado mediante el PR #444 (squash). |
 | Historial de decisiones | 2026-10-18: el propietario pidió Judgment Day ("haz juicio"); el agente eligió `main` en `05eb2b8` como objetivo y corrigió las tres filas en la ronda 1 bajo la delegación vigente. 2026-10-18: completado. |
 | Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
 
