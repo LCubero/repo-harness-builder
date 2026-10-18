@@ -546,6 +546,30 @@ def repair_preflight(root: Path) -> dict:
         for relative in targets.values():
             add_material(relative, canonical_relative, expected, "bytes")
 
+    for canonical_relative in manifest.get("canonicalReferences", []):
+        parts = PurePosixPath(canonical_relative).parts
+        targets = [
+            SKILL_SURFACES[runtime].format(name=parts[2]).rsplit("/", 1)[0] + "/references/" + parts[-1]
+            for runtime in manifest["runtimes"]
+        ]
+        try:
+            canonical = guarded_path(root, canonical_relative)
+            if not canonical.exists() and not canonical.is_symlink():
+                for relative in targets:
+                    add_material(relative, canonical_relative, b"", "damaged")
+                    canonical_missing[relative] = "canonical source is missing"
+                continue
+            if not canonical.is_file():
+                raise ValueError("canonical source is not a direct regular file")
+            expected = canonical.read_bytes()
+        except (OSError, ValueError):
+            for relative in targets:
+                add_material(relative, canonical_relative, b"", "damaged")
+                damaged[relative] = "canonical source is unavailable or unsafe"
+            continue
+        for relative in targets:
+            add_material(relative, canonical_relative, expected, "bytes")
+
     entries = []
     expected_create = {}
     exclusions = []

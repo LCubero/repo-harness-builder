@@ -777,8 +777,8 @@ def expected_authority_builder_config(args: argparse.Namespace) -> AuthorityBuil
             else {"gentleAi": "available", "engram": "available"}
         )
     return {
-        "runtimes": sorted(set(args.runtime or [])),
-        "license": args.license_id or GENERATED_SKILL_LICENSE,
+        "runtimes": sorted(set(getattr(args, "effective_runtimes", args.runtime or []))),
+        "license": getattr(args, "effective_license", args.license_id or GENERATED_SKILL_LICENSE),
         "integrationMode": "standalone" if args.standalone else "integrated",
         "reportLanguage": args.report_language,
         "documentationLanguages": list(normalize_documentation_languages(args.documentation_languages)),
@@ -3578,6 +3578,30 @@ def repair_preflight(root: Path) -> dict:
         for relative in targets.values():
             add_material(relative, canonical_relative, expected, "bytes")
 
+    for canonical_relative in manifest.get("canonicalReferences", []):
+        parts = PurePosixPath(canonical_relative).parts
+        targets = [
+            SKILL_SURFACES[runtime].format(name=parts[2]).rsplit("/", 1)[0] + "/references/" + parts[-1]
+            for runtime in manifest["runtimes"]
+        ]
+        try:
+            canonical = guarded_path(root, canonical_relative)
+            if not canonical.exists() and not canonical.is_symlink():
+                for relative in targets:
+                    add_material(relative, canonical_relative, b"", "damaged")
+                    canonical_missing[relative] = "canonical source is missing"
+                continue
+            if not canonical.is_file():
+                raise ValueError("canonical source is not a direct regular file")
+            expected = canonical.read_bytes()
+        except (OSError, ValueError):
+            for relative in targets:
+                add_material(relative, canonical_relative, b"", "damaged")
+                damaged[relative] = "canonical source is unavailable or unsafe"
+            continue
+        for relative in targets:
+            add_material(relative, canonical_relative, expected, "bytes")
+
     entries = []
     expected_create = {{}}
     exclusions = []
@@ -5479,6 +5503,23 @@ def recorded_runtimes(root: Path) -> Optional[list[str]]:
     return sorted(set(recorded))
 
 
+def integration_mode_set_report(root: Path, standalone: bool) -> dict[str, Any]:
+    """Compare the requested mode with a safely read advisory installation record."""
+    recorded = None
+    try:
+        manifest = guarded_target(root, MANIFEST_PATH)
+        if not is_indirect(manifest) and manifest.is_file():
+            data = json.loads(manifest.read_text(encoding="utf-8"))
+            mode = data.get("integrationMode") if isinstance(data, dict) else None
+            if mode in ("standalone", "integrated"):
+                recorded = mode
+    except (ContractError, OSError, ValueError, UnicodeError):
+        pass
+    requested = "standalone" if standalone else "integrated"
+    return {"recorded": recorded, "requested": requested,
+            "matches": recorded is None or recorded == requested}
+
+
 def runtime_set_report(root: Path, runtimes: list[str]) -> dict[str, Any]:
     """Compare the requested runtime set against the one an installed manifest records.
 
@@ -5671,6 +5712,7 @@ def check(
         "files": entries,
         "skillLicense": selected_license or "unknown",
         "runtimeSet": runtime_set_report(root, runtimes),
+        "integrationModeSet": integration_mode_set_report(root, standalone),
         # Only a manifest `language` record counts; an older manifest's inferred value is a guess.
         "recordedLanguage": (
             {"conversation": conversation_language, "documentation": list(documentation_languages or [])}
@@ -5790,7 +5832,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         child = sub.add_parser(name, help=help_text)
         child.add_argument("--root", type=Path, required=True)
         child.add_argument("--project-name", required=True)
-        child.add_argument("--runtime", action="append", choices=sorted(RUNTIMES), default=[], help="runtime profile; repeat the flag to select several, omit it for the core only")
+        child.add_argument("--runtime", action="append", choices=sorted(RUNTIMES), default=[], help="runtime profile; repeat the flag to select several, omit it to use recorded runtimes, or core only for a new installation")
         child.add_argument("--standalone", action="store_true", help="generate repository-only continuity without Gentle AI or Engram")
         if name == "render":
             child.add_argument("--license", dest="license_id", help="SPDX identifier for generated skills; defaults to MIT for a new installation")
@@ -5865,11 +5907,13 @@ def main(argv: Optional[list[str]] = None) -> int:
                 "engram": preflight["engramState"],
             }
         trusted_skill_license = args.license_id is not None
+        args.effective_runtimes = selected
+        args.effective_license = args.license_id if trusted_skill_license else (declared_skill_license(root) or GENERATED_SKILL_LICENSE)
         outputs = render_repository(
             root,
             args.project_name,
             selected,
-            args.license_id or GENERATED_SKILL_LICENSE,
+            args.effective_license,
             args.standalone,
             args.report_language,
             args.documentation_languages,
@@ -5936,7 +5980,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 if builder_active
                 else {}
             )
-            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), **({"suggestionSelection": selected_choice} if all(selection) else {}), "gitState": git_state, "writes": 0}), end="")
+            print(dump_json({"status": "plan", "reportLanguage": args.report_language, "documentation": entry_points, **strict, "planSha256": digest, **authority_projection, **({"capabilityPreflight": capability_preflight} if capability_preflight else {}), **plan, "runtimeSet": runtime_set_report(root, selected), "integrationModeSet": integration_mode_set_report(root, args.standalone), "survivingLegacyReferences": surviving_legacy_reference_report(root, plan), "humanSuggestions": human_suggestion_preview(root, outputs), **({"suggestionSelection": selected_choice} if all(selection) else {}), "gitState": git_state, "writes": 0}), end="")
         else:
             require(bool(args.approved_plan_sha256), "--approved-plan-sha256 is required with --apply")
             require(args.approved_plan_sha256 == digest, "approved plan does not match current repository bytes")

@@ -50,7 +50,7 @@
 - Confirm Python 3.10+ standard-library-only operation and absence of forbidden Unicode.
 - Confirm the builder claims no path inside another tool's directory. `.atl` belongs to Gentle AI, `.codegraph` to CodeGraph, and `.engram` to Engram. The external-tool ignore directive is exactly `.codegraph/`, enabled by default and suppressed by the persisted `--no-codegraph-ignore` choice. Both settings still include the four exact harness-local-state ignore directives for `tmp`, `archive`, `state`, and `memory-bk`. An existing `.gitignore` keeps every byte and receives only the smallest line-ending-preserving append for missing exact directives; opt-out never removes existing lines.
 - Confirm the packaged suite passes when the skill directory is installed on its own, with no host directory outside the package required.
-- Confirm the runtime set is never inferred. With none supplied, the audit reports every supported profile and its absent paths, names the set as the open decision, and an empty selection renders the core with no wrapper for any profile.
+- Confirm the runtime set is never inferred. An explicit runtime argument wins; otherwise use the installed manifest's recorded set. Only while neither resolves the set does the audit report every supported profile and its absent paths and name the set as the open decision. With no recorded set, omitted `--runtime` renders the core with no wrapper for any profile.
 
 ## State Vocabulary
 
@@ -69,7 +69,7 @@ Excluded switch evidence includes repository instructions, memory, stale summari
 
 Machine-value tests cover commands, arguments, paths, URLs, identifiers, tokens, invocations, branches, remotes, upstreams, ahead counts, commit messages, digests, approval tokens, enum values, and permission scopes. Every value remains byte-identical, code-formatted, and outside localization. Conversation language is not a security or permission boundary.
 
-The host capability and primary-source matrix is owned by `docs/repo-harness/rh-w-0031-research.md`. Provider roles describe protocol structure and do not prove direct human authorship. Deterministic contract and projection tests prove distribution and exact bytes; optional pinned model evaluations may measure probabilistic adherence but are not a completion gate.
+The host capability and primary-source matrix is documented in `docs/repo-harness/rh-w-0031-research.md` as source-repository research history, not a dependency of the portable package. Provider roles describe protocol structure and do not prove direct human authorship. Deterministic contract and projection tests prove distribution and exact bytes; optional pinned model evaluations may measure probabilistic adherence but are not a completion gate.
 
 ## Commands
 
@@ -108,7 +108,7 @@ python3 -B scripts/harness_tool.py self-test
 python3 -B DIR/.repo-harness/check.py
 ```
 
-`--runtime` is repeatable. One `check` call reports every profile passed to it, so auditing several profiles never needs one invocation per profile. Passing none reports the core only.
+`--runtime` is repeatable. One `check` call reports every profile passed to it, so auditing several profiles never needs one invocation per profile. Omitting `--runtime` uses the installed manifest's recorded set; it reports the core only when no runtime set is recorded (a new installation).
 
 The external command wrapper lives outside this package. Its three contract checks run only when `REPO_HARNESS_COMMAND_PATH` names the wrapper file, and skip otherwise. The path is never inferred from a host directory convention.
 
