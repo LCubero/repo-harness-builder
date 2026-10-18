@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0112
+| Field | Value |
+|---|---|
+| Origin | Read-only audit on 2026-10-17 of the builder skill's references against `harness_tool.py`: runtime-change recovery prescribed deleting files the tool already replaces, the authority-correction guidance misdescribed the generation digest, validation kept the old 700 failure threshold, and suggestions, archive, several outcomes, and replaced/migrated report fields were undocumented. Issue #426. |
+| Priority | P2: an agent following the references would delete files needlessly, claim coverage that narrowing removes, and miss supported workflows and outcomes. |
+| Dependencies | RH-W-0108 (budget tolerance), RH-W-0044 (suggestion preview), RH-W-0052 (archive). |
+| Status | completed |
+| Completed work | `audit-and-interview.md` and `preservation-and-safety.md` describe runtime widening and narrowing as approved replacement of the manifest and checker, with narrowing dropping checker coverage of removed projections; authority correction states that any premise edit changes the generation digest; `validation.md` measures against the 750 tolerance with 700 as target and gains a state vocabulary for the generated checker, repair, builder check, and render; suggestions and the copy-only `archive` command are documented; both report templates record replaced and migrated files. |
+| Remaining work | none |
+| Additions | Stronger runtime-documentation assertions in existing tests. |
+| Exclusions | No code behavior change. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Parent ran widening and narrowing renders: both list `.repo-harness/manifest.json` and `.repo-harness/check.py` in `replace`. Filtered reference tests 116 OK. Full suite 681 tests, `OK (skipped=11)`; checker and CLI check `current`, 0 writes; `self-test` pass. Delivered through PR #427 (squash merge). |
+| Decision history | 2026-10-17: owner asked to keep reviewing under the standing delegation ("decídelo tú"); the agent chose a documentation-only correction. 2026-10-17: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0111
 | Field | Value |
 |---|---|
