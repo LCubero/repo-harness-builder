@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0113
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Revisión de alineación de solo lectura del 2026-10-18 que comparó un render bilingüe nuevo con este harness: la guía de uso generada omitía el backup local en `.repo-harness/memory-bk/`, decía que las preferencias solo se editan a mano aunque el contrato de respuesta generado permite pedir al agente que las guarde, y no mencionaba el modo por lotes aunque se genera `batch-interaction.md`. La guía en español además carecía del párrafo de digests de autoridad y tenía errores de tildes. Issue #428. |
+| Prioridad | P2: las instalaciones nuevas reciben una guía humana que describe menos de lo que hacen sus skills y reglas. |
+| Dependencias | RH-W-0069 (backup local), RH-W-0107 (límites por lotes), RH-W-0071 (preferencias). |
+| Estado | completed |
+| Trabajo completado | El `usage.md` generado (inglés y español, integrado y standalone) indica que session-start recupera el backup local válido más reciente y session-stop escribe uno, que las preferencias también se pueden guardar por petición explícita y nunca por iniciativa del agente, y que el modo por lotes solo agrupa aclaraciones, nunca aprobaciones, con enlace a su regla. La guía en español incorpora el párrafo de digests de autoridad y tildes correctas. La guía de uso en español de este repositorio lleva tildes. |
+| Trabajo restante | none |
+| Adiciones | Dos pruebas de la guía de uso (inglés integrado y standalone; español bilingüe y solo español). |
+| Exclusiones | Sin marcador `doc-role` nuevo; las instalaciones existentes conservan sus guías humanas, sin migración. Los demás documentos en español sin tildes de este repositorio quedan para otro trabajo. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | RED y luego GREEN: dos pruebas nuevas de la guía de uso fallaban (4 subpruebas) y ahora pasan. Render diferencial contra `388bfbb`: solo cambian `docs/repo-harness/usage.md` y `docs/es/repo-harness/usage.md` en renders integrados, standalone, bilingües y solo en español; las guías standalone no nombran Engram ni Gentle AI. La prueba de referencias privadas exime ahora la ruta pública `.repo-harness/memory-bk/`. Suite completa 683 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; `self-test` pasa. Revisión nativa `review-aca2bfac08b02cfe` aprobada y reconocida (el aviso R2-001 era este marcador de evidencia). |
+| Historial de decisiones | 2026-10-18: el propietario pidió seguir revisando la alineación bajo la delegación vigente ("decídelo tú"); el agente eligió primero esta corrección de la guía. 2026-10-18: completado. |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0112
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-18
+
+- RH-W-0113: the generated usage guide now describes what the generated skills and rules do. Session-start recovers the newest valid local backup under `.repo-harness/memory-bk/` and session-stop writes one; preferences can also be saved by explicitly asking the agent, which never saves them on its own; batch mode groups clarification questions only, never approvals, and links its rule. The Spanish guide gains the authority-digest paragraph and correct accents, and this repository's Spanish usage guide is accented. Existing installations keep their human-owned guides (issue #428).
+
 ## 2026-10-17
 
 - RH-W-0112: the builder references now describe the tool as it behaves. Runtime widening and narrowing replace the manifest and checker through the approved plan (no deletion; narrowing drops checker coverage of removed projections); any premise edit changes the generation digest; on-disk budget tests fail above the 750 tolerance; human-owned suggestions, the copy-only `archive` command, and the outcome vocabulary of the checker, repair, builder check, and render are documented; report templates record replaced and migrated files. Documentation only. (issue #426, PR #427)

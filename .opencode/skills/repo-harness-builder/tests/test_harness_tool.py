@@ -1572,6 +1572,8 @@ class ProductWorkflowTests(unittest.TestCase):
         second = TOOL.render("Example", ["opencode", "claude-code"])
         self.assertEqual(first, second)
         combined = "\n".join(content for path, content in first.items() if path.endswith(".md") and (path.startswith("docs/") or path.startswith("README")))
+        # The harness-owned local backup directory is public; any other memory-bk path would be private.
+        combined = combined.replace("`.repo-harness/memory-bk/`", "")
         for forbidden in ("." + "ld9", "memory-bk", "C:\\Users\\", "E:\\code\\"):
             self.assertNotIn(forbidden, combined)
 
@@ -8959,6 +8961,40 @@ class UsageGuideTests(unittest.TestCase):
         self.assertIn("repository files remain authoritative", guide)
         self.assertIn("## Approval Boundaries", guide)
         self.assertNotRegex(guide, r"(?i)engram|gentle ai|cloud")
+
+    def test_guide_describes_backup_preference_saving_and_batch_mode(self):
+        for standalone in (False, True):
+            guide = TOOL.render("Example", ["opencode"], standalone=standalone)["docs/repo-harness/usage.md"]
+            with self.subTest(standalone=standalone):
+                start = next(line for line in guide.splitlines() if line.startswith("1. "))
+                stop = next(line for line in guide.splitlines() if line.startswith("3. "))
+                self.assertIn("`.repo-harness/memory-bk/`", start)
+                self.assertIn("`.repo-harness/memory-bk/`", stop)
+                self.assertIn("or explicitly ask the agent to save them; the agent never saves them on its own", guide)
+                self.assertIn("Batch mode", guide)
+                self.assertIn("[batch interaction rule](../../.repo-harness/rules/batch-interaction.md)", guide)
+                self.assertLessEqual(len(guide.splitlines()), 32)
+
+    def test_spanish_guide_matches_english_coverage_with_correct_accents(self):
+        bilingual = TOOL.render("Example", ["opencode"], documentation_languages=["en", "es"])
+        spanish_only = TOOL.render("Example", ["opencode"], documentation_languages=["es"])
+        for guide, prefix in (
+            (bilingual["docs/es/repo-harness/usage.md"], "../../../"),
+            (spanish_only["docs/repo-harness/usage.md"], "../../"),
+        ):
+            with self.subTest(prefix=prefix):
+                start = next(line for line in guide.splitlines() if line.startswith("1. "))
+                stop = next(line for line in guide.splitlines() if line.startswith("3. "))
+                self.assertIn("`.repo-harness/memory-bk/`", start)
+                self.assertIn("`.repo-harness/memory-bk/`", stop)
+                self.assertIn("o pida explícitamente al agente que las guarde; el agente nunca las guarda por iniciativa propia", guide)
+                self.assertIn("El modo por lotes", guide)
+                self.assertIn(f"[regla de interacción por lotes]({prefix}.repo-harness/rules/batch-interaction.md)", guide)
+                self.assertIn("`authorityContextSha256`", guide)
+                self.assertIn("`generationSha256`", guide)
+                self.assertIn("límite de operación", guide)
+                self.assertIn("garantías ausentes", guide)
+                self.assertNotIn("inválida", guide)
 
     def test_rulebook_and_documentation_map_link_to_the_usage_guide(self):
         outputs = TOOL.render("Example", [])
