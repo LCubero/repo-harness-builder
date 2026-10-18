@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0118
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Petición del propietario del 2026-10-18 tras RH-W-0117: informar las rutas del harness ignoradas dejaba al propietario adivinar qué decidir; el builder debía avisar y preguntar. Issue #441. |
+| Prioridad | P3: una decisión pasa de implícita a explícita. |
+| Dependencias | RH-W-0117 (informe de rutas ignoradas). |
+| Estado | completed |
+| Trabajo completado | `preservation-and-safety.md`: cuando rutas planificadas del harness están ignoradas por Git, el agente hace una pregunta conversacional breve antes de la aprobación de aplicación — mantenerlas locales (por defecto; nada cambia) o versionarlas, en cuyo caso propone las líneas exactas de `.gitignore` a quitar y las edita solo tras aprobación. Las reglas de ignore nunca cambian sin esa elección. |
+| Trabajo restante | none |
+| Adiciones | La prueba de referencias de RH-W-0117 fija ahora la pregunta y ambas opciones. |
+| Exclusiones | Sin cambio de comportamiento; el builder sigue administrando solo sus cinco directivas de ignore. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | RED y luego GREEN: la prueba de referencias ampliada fallaba en las tres frases nuevas y ahora pasa. Suite completa 686 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; `self-test` pasa. Entregado mediante el PR #442 (squash). |
+| Historial de decisiones | 2026-10-18: el propietario preguntó si no sería más fácil que el builder avisara y preguntara; el agente estuvo de acuerdo y lo limitó a una frase en la referencia. 2026-10-18: completado. |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0117
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

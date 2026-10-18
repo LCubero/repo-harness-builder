@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- RH-W-0118: when planned harness paths are git-ignored, the builder agent asks one question before approval — keep them local (default; nothing changes) or version them, proposing the exact `.gitignore` lines to remove and editing them only after approval (issue #441, PR #442).
+
 - Updated the current next step (EN/ES) with the real-repository tests of RH-W-0117.
 
 - RH-W-0117: tests on copies of four real repositories found that ignore rules often hide `.claude/`, `.opencode/`, `.pi/`, `AGENTS.md`, or `CLAUDE.md` (a fresh clone lacks them and its checker reports `drift`), and that surviving legacy references vanish after a migration. The builder references now tell the agent to report ignored harness paths before approval, without editing ignore rules, and to repeat surviving references in the apply report (issue #438, PR #439).
