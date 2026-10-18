@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0117
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Pruebas de instalación y actualización del 2026-10-18 sobre copias de cuatro repositorios reales del propietario (sin remotos, trabajando en copias aparte). En tres, `.claude/`, `.opencode/`, `.pi/`, `AGENTS.md` o `CLAUDE.md` están ignorados por Git: la instalación funciona y `check` da `current` localmente, pero un clon nuevo no tiene esos archivos y su checker informa `drift`, sin que nadie lo avise antes de aprobar. En el cuarto (harness 3.0 con skills `<project>-*`), la migración elimina las skills antiguas mientras los wrappers editados por el propio repositorio siguen nombrándolas; la vista previa las lista en `survivingLegacyReferences`, pero la lista desaparece tras aplicar. Issue #438. |
+| Prioridad | P2: consumidores reales pierden el harness al clonar o conservan wrappers de comandos rotos sin aviso. |
+| Dependencias | RH-W-0116 (guía de actualización), la migración de skills generadas. |
+| Estado | completed |
+| Trabajo completado | `preservation-and-safety.md` indica al agente que ejecute `git check-ignore` de solo lectura sobre las rutas planificadas antes de aprobar, informe los archivos generados, proyecciones o punteros raíz ignorados y nunca edite esas reglas sin que se lo pidan; y que repita `survivingLegacyReferences` en el informe de aplicación. |
+| Trabajo restante | none |
+| Adiciones | Una prueba de referencias. |
+| Exclusiones | Sin cambio de comportamiento, sin edición automática de reglas de ignore y sin reescribir wrappers editados por el repositorio. Las instalaciones en Brain_AI, ai-skill-pack y amimis dejaron intactos README, CHANGELOG, cambios del usuario y archivos humanos, agregando solo líneas exactas. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | Cuatro copias entregadas por el propietario en `.repo-harness/tmp/repos/` (sin remotos; las instalaciones corrieron sobre copias `cp -a` aparte). Brain_AI, ai-skill-pack, amimis: aplicación `VALIDATED`, check `current`, archivos humanos intactos, solo líneas exactas agregadas; un clon nuevo del Brain_AI instalado no tenía `.claude/`, `.opencode/`, `AGENTS.md` ni `CLAUDE.md` y su checker informó `drift`. 00-skillssss (harness 3.0): la migración movió tres skills; ocho wrappers editados por el repositorio quedaron `stale` y la vista previa tras aplicar ya no los listaba. RED y luego GREEN: la nueva prueba de referencias fallaba (4 subpruebas) y ahora pasa. Suite completa 686 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; `self-test` pasa. |
+| Historial de decisiones | 2026-10-18: el propietario entregó copias de repositorios para probar y delegó las decisiones ("decídelo tú"); el agente eligió una guía solo en referencias, coherente con RH-W-0116. 2026-10-18: completado. |
+| Siguiente condición de avance | none (terminal); se reabre si la guía al agente resulta insuficiente y se necesita un informe legible por máquina. |
+
 ### RH-W-0116
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

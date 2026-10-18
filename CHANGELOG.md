@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- RH-W-0117: tests on copies of four real repositories found that ignore rules often hide `.claude/`, `.opencode/`, `.pi/`, `AGENTS.md`, or `CLAUDE.md` (a fresh clone lacks them and its checker reports `drift`), and that surviving legacy references vanish after a migration. The builder references now tell the agent to report ignored harness paths before approval, without editing ignore rules, and to repeat surviving references in the apply report (issue #438).
+
 - RH-W-0114 follow-up: accented 134 unambiguous Spanish words the first pass missed in the living self-hosted documents (mostly the roadmap); accents only.
 
 - Updated the current-state unreleased-changes list through RH-W-0116 and the current next step in English and Spanish.
