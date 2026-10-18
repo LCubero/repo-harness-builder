@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0116
+| Field | Value |
+|---|---|
+| Origin | Consumer simulation on 2026-10-18 (install with `v3.1-rc.15`, upgrade with `main`): the upgrade works, but 13 unedited human-owned files keep the text the older version generated, `check` reports them as `human-evolved`, and no suggestion is offered. Some of that text contradicts the replaced skills (the old `memory.md` privacy line fixed by RH-W-0111, "never raise the budget" fixed by RH-W-0108). The builder references defined `human-evolved` as edited prose and did not mention the effect. Issue #434. |
+| Priority | P2: an agent running an upgrade did not tell the human that kept rules may be outdated. |
+| Dependencies | RH-W-0044 (suggestion preview), RH-W-0107 to RH-W-0115 (no-migration exclusions). |
+| Status | completed |
+| Completed work | `preservation-and-safety.md`, `validation.md`, and `architecture.md` define `human-evolved` as human-owned content that differs from the current render, whether a human edit or text an earlier builder version generated. The upgrade section tells the agent to report every `human-evolved` file as possibly outdated after an upgrade, compare it with a fresh render into an empty directory, and propose only approved changes. |
+| Remaining work | none |
+| Additions | One reference test. |
+| Exclusions | No behavior, manifest, or checker change and no migration. Telling the two cases apart in `check` would need new manifest data; the agent chose not to design it now. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Consumer simulation in `.repo-harness/tmp/`: empty repository (74 created, check `current`, re-render identical), existing repository (README untouched, only exact lines appended, check `current`), and `v3.1-rc.15` install upgraded with `main` (20 skills replaced, one rule created, a human edit preserved, check `current`; 13 unedited human-owned files reported `human-evolved`, 0 suggestions). RED then GREEN: the new reference test failed before and passes after. Full suite 685 tests, `OK (skipped=11)`; checker `current`, 0 writes; `self-test` pass. Delivered through PR #435 (squash merge). |
+| Decision history | 2026-10-18: owner delegated the decision ("decídelo tú"); the agent kept the no-migration decision and chose a reference-only correction, because builder references reach existing installations through their runtime projections. 2026-10-18: completed. |
+| Next advancement condition | none (terminal); reopen if consumers need `check` to distinguish earlier generated text. |
+
 ### RH-W-0115
 | Field | Value |
 |---|---|

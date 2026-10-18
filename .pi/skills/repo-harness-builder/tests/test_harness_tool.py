@@ -789,6 +789,23 @@ class ApprovalUxTests(unittest.TestCase):
         self.assertIn("Apply requires the approved current digest", preservation)
         self.assertIn("Outside that active execution, use ordinary conversational approval rules", audit)
 
+    def test_upgrade_references_flag_earlier_generated_human_owned_text(self):
+        references = ROOT / "references"
+        preservation = (references / "preservation-and-safety.md").read_text(encoding="utf-8")
+        validation = (references / "validation.md").read_text(encoding="utf-8")
+        meaning = "a human edit or text an earlier builder version generated"
+        self.assertIn(meaning, preservation)
+        self.assertIn(meaning, validation)
+        self.assertNotIn("`human-evolved` for structurally valid human-owned changes", preservation)
+        upgrades = preservation.split("## Prior-Version Upgrades\n", 1)[1].split("\n## ", 1)[0]
+        for phrase in (
+            "report every `human-evolved` file as possibly outdated",
+            "compare it with a fresh render into an empty directory",
+            "propose only the changes the human approves",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, upgrades)
+
     def test_explicit_inspection_dispatches_before_installation_interview(self):
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         steps = skill.split("## Execution Steps\n", 1)[1].split("\n## ", 1)[0]

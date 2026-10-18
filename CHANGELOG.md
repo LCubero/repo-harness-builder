@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- RH-W-0116: a consumer upgrade simulation (`v3.1-rc.15` to `main`) showed that unedited human-owned files keep earlier generated text that can contradict the new skills, reported as `human-evolved`. The builder references now define `human-evolved` as a human edit or earlier generated text and tell the agent, after an upgrade, to report such files as possibly outdated, compare them with a fresh render, and propose only approved changes. No behavior change or migration (issue #434, PR #435).
+
 - RH-W-0115: Judgment Day on the full builder/self-hosted alignment found two contradictory generated standing decisions. The generated `decisions.md` (EN/ES) now names the native local backup at session close as part of the core harness (external backup stays outside) and says the builder changes an existing file only through an approved plan bound to that file's exact current bytes. Existing installations keep their human-owned file (issue #432, PR #433).
 
 - RH-W-0114: the living self-hosted Spanish documents (documentation map, current state, decisions, roadmap, builder guide, contribution guide, and the Spanish changelog header) are now accented; accents only, no change of meaning. Historical designs and changelog entries are unchanged (issue #430, PR #431).
