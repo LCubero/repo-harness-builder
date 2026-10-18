@@ -557,7 +557,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | No behavior change; the builder still manages only its five ignore directives. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | RED then GREEN: the extended reference test failed on the three new phrases before and passes after. Full suite 686 tests, `OK (skipped=11)`; checker `current`, 0 writes; `self-test` pass. |
+| Evidence | RED then GREEN: the extended reference test failed on the three new phrases before and passes after. Full suite 686 tests, `OK (skipped=11)`; checker `current`, 0 writes; `self-test` pass. Delivered through PR #442 (squash merge). |
 | Decision history | 2026-10-18: owner asked whether it would be easier for the builder to warn and ask; the agent agreed and kept it to one reference sentence. 2026-10-18: completed. |
 | Next advancement condition | none (terminal); reopen on regression. |
 

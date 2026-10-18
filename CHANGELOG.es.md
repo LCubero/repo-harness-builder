@@ -4,7 +4,7 @@
 
 ## 2026-10-18
 
-- RH-W-0118: cuando rutas planificadas del harness están ignoradas por Git, el agente del builder hace una pregunta antes de aprobar — mantenerlas locales (por defecto; nada cambia) o versionarlas, proponiendo las líneas exactas de `.gitignore` a quitar y editándolas solo tras aprobación (issue #441).
+- RH-W-0118: cuando rutas planificadas del harness están ignoradas por Git, el agente del builder hace una pregunta antes de aprobar — mantenerlas locales (por defecto; nada cambia) o versionarlas, proponiendo las líneas exactas de `.gitignore` a quitar y editándolas solo tras aprobación (issue #441, PR #442).
 
 - Se actualizó el siguiente paso vigente (EN/ES) con las pruebas en repositorios reales de RH-W-0117.
 

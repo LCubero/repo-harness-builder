@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
-- RH-W-0118: when planned harness paths are git-ignored, the builder agent asks one question before approval — keep them local (default; nothing changes) or version them, proposing the exact `.gitignore` lines to remove and editing them only after approval (issue #441).
+- RH-W-0118: when planned harness paths are git-ignored, the builder agent asks one question before approval — keep them local (default; nothing changes) or version them, proposing the exact `.gitignore` lines to remove and editing them only after approval (issue #441, PR #442).
 
 - Updated the current next step (EN/ES) with the real-repository tests of RH-W-0117.
 

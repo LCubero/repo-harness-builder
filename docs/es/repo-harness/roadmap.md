@@ -558,7 +558,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Exclusiones | Sin cambio de comportamiento; el builder sigue administrando solo sus cinco directivas de ignore. |
 | Aplazamientos | none |
 | Rechazos | none |
-| Evidencia | RED y luego GREEN: la prueba de referencias ampliada fallaba en las tres frases nuevas y ahora pasa. Suite completa 686 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; `self-test` pasa. |
+| Evidencia | RED y luego GREEN: la prueba de referencias ampliada fallaba en las tres frases nuevas y ahora pasa. Suite completa 686 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; `self-test` pasa. Entregado mediante el PR #442 (squash). |
 | Historial de decisiones | 2026-10-18: el propietario preguntó si no sería más fácil que el builder avisara y preguntara; el agente estuvo de acuerdo y lo limitó a una frase en la referencia. 2026-10-18: completado. |
 | Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
 
