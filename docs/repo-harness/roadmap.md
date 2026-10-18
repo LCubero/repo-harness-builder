@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0109
+| Field | Value |
+|---|---|
+| Origin | Owner decision on 2026-10-17 during a read-only alignment review: this repository is the live test of the builder, so the generated rulebook and rule files must carry the same shared content as the self-hosted ones. Answers the open owner question RH-W-0073 left in its Deferrals: whether the compression also changes the generator template. Issue #420. |
+| Priority | P2: the template's hard rules (331 proxy tokens) left almost no room for real project content; this repository with them would measure 819 against the 750 tolerance. |
+| Dependencies | RH-W-0073 (compression design), RH-W-0108 (budget), RH-W-0044 (suggestion preview). |
+| Status | completed |
+| Completed work | `rulebook()` renders the self-hosted short hard rules, including the full "never freeze content by default" preservation rule; the generated `working-agreements.md` carries the moved announce-versus-execute and evidence-classification detail; self-hosted `REPO-HARNESS.md`, its Spanish peer, and `memory.md` match the render outside project slots (Purpose, extra gate rows, Project Agreements body, doc-role markers). The suggestion preview ignores `doc-role` marker lines inside owner sections, so the self-hosted rulebook is no longer `ambiguous`. A congruence test pins the shared sections. Builder projections synchronized through maintenance. |
+| Remaining work | none |
+| Additions | Self-hosted congruence test; doc-role-marker suggestion test. |
+| Exclusions | No doc-role markers in the generated English rulebook, because `check()` would report existing consumer rulebooks without them as `sections-missing`. Existing installations keep their human-owned rulebook and rule files; no migration. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | RED then GREEN: congruence test (6 failing subtests before), doc-role marker test (ambiguous before). Rendered rulebook 572, working agreements 692, memory 709 proxy tokens; self-hosted rulebook 721, working agreements 712, memory 709. Render on this repository: `REPO-HARNESS.md` leaves `ambiguousPaths`, 0 suggestions. Full suite 677 tests, `OK (skipped=11)`; checker and CLI check `current`, 0 writes; `self-test` pass; native review (risk, readability, reliability) approved and acknowledged with one non-blocking readability warning on `memory.md`. Delivered through PR #421 (squash merge). |
+| Decision history | 2026-10-17: owner chose to adopt the self-hosted layout in the template ("both produce the same result, have the same things"); then delegated delivery to the agent (issue, PR, merge). 2026-10-17: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0108
 | Field | Value |
 |---|---|
