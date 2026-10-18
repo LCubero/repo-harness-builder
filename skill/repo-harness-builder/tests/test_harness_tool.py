@@ -213,7 +213,7 @@ class ContributionGuideTests(unittest.TestCase):
             for name in ("CONTRIBUTING.md", "CONTRIBUTING.es.md"):
                 (root / "docs" / name).write_text("Human guide\n", encoding="utf-8")
             outputs = TOOL.render_repository(root, "Example", [], documentation_languages=["en", "es"], contribution_guide=True)
-            self.assertIn("docs/CONTRIBUTING.es.md", outputs["REPO-HARNESS.es.md"])
+            self.assertIn("| Proponer cambios a este proyecto | [docs/CONTRIBUTING.es.md](docs/CONTRIBUTING.es.md) |\n\n## Actualización de este archivo", outputs["REPO-HARNESS.es.md"])
             self.assertNotIn("CONTRIBUTING.es.md", outputs)
             self.assertNotIn("docs/CONTRIBUTING.es.md", outputs)
 
@@ -6204,6 +6204,56 @@ resume_authority: required
             with self.subTest(detail=detail):
                 self.assertIn("- " + detail, agreements)
         self.assertNotIn("<!-- doc-role:", outputs[paths[0]])
+
+    def test_spanish_congruence_complete_rulebook(self):
+        for standalone in (False, True):
+            with self.subTest(standalone=standalone):
+                outputs = TOOL.render("Example", [], standalone=standalone,
+                                      documentation_languages=["en", "es"])
+                en, es = outputs["REPO-HARNESS.md"], outputs["REPO-HARNESS.es.md"]
+                self.assertEqual(en.count("\n- "), es.count("\n- "))
+                self.assertEqual(en.count("\n|"), es.count("\n|"))
+                self.assertIn("presentación completa en español", es)
+                for word in ("aprobacion", "explicita", "proposito", "situacion", "canonico", "ingles", "decision", "automaticamente"):
+                    self.assertNotRegex(re.sub(r"<!--.*?-->", "", es), r"\b" + word + r"\b")
+                if standalone:
+                    self.assertIn("- Use solo archivos del repositorio para la continuidad.", es)
+                    self.assertNotIn("Gentle AI", es)
+                else:
+                    self.assertIn("Guardar o recuperar entre sesiones, memoria no disponible", es)
+
+    def test_i18n_congruence_entry_mapping_and_old_consumer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = install(root, documentation_languages=["en", "es"])
+            for path, heading in (("docs/repo-harness/i18n-maintenance.md", "## Entry Mapping"),
+                                  ("docs/es/repo-harness/i18n-maintenance.md", "## Correspondencia de entradas")):
+                self.assertIn(heading, outputs[path])
+                old = outputs[path].split("\n" + heading, 1)[0].rstrip() + "\n"
+                (root / path).write_text(old, encoding="utf-8", newline="\n")
+            report = TOOL.check(root, "Example", [])
+            states = {item["path"]: item["state"] for item in report["files"]}
+            self.assertEqual(report["status"], "current")
+            for path in ("docs/repo-harness/i18n-maintenance.md", "docs/es/repo-harness/i18n-maintenance.md"):
+                self.assertEqual(states[path], "human-evolved")
+
+    def test_spanish_congruence_self_hosted(self):
+        repository = ROOT.parents[1]
+        paths = ("REPO-HARNESS.es.md", "docs/repo-harness/i18n-maintenance.md",
+                 "docs/es/repo-harness/i18n-maintenance.md", "docs/es/repo-harness/usage.md")
+        if not all((repository / path).is_file() for path in paths):
+            self.skipTest("repository fixture is outside the portable package")
+        outputs = TOOL.render_repository(repository, "repo-harness-builder", ["claude-code", "opencode", "pi"],
+                                         documentation_languages=["en", "es"])
+        for path in paths[1:3]:
+            self.assertEqual((repository / path).read_bytes(), outputs[path].encode("utf-8"))
+        actual = (repository / paths[0]).read_text(encoding="utf-8")
+        for start, end in (("## Reglas obligatorias", "## Compuertas de decisión"),
+                           ("## Actualización de este archivo", None)):
+            self.assertEqual(actual.split(start, 1)[1].split(end, 1)[0] if end else actual.split(start, 1)[1],
+                             outputs[paths[0]].split(start, 1)[1].split(end, 1)[0] if end else outputs[paths[0]].split(start, 1)[1])
+        self.assertIn("Use las tres skills generadas como un ciclo: recupere contexto, mantenga vigente la documentación durable y deje una transferencia verificada.",
+                      (repository / paths[3]).read_text(encoding="utf-8"))
 
     def test_every_block_moved_out_of_the_rulebook_survives_in_its_rule_file(self):
         """The rulebook keeps one short line and delegates the detail. `.repo-harness/rules/` is

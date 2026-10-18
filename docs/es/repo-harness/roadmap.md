@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0110
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Revisión de alineación de solo lectura del 2026-10-17 después de RH-W-0109: el reglamento en español generado era un resumen de cuatro reglas que se declaraba completo, en contra de la regla i18n generada de que los pares en español son completos y de significado equivalente; la guía i18n autoalojada tenía una regla de correspondencia de entradas que la plantilla no tenía. Issue #422. |
+| Prioridad | P2: cada consumidor bilingüe recibía desde el primer día un reglamento en español incompleto. |
+| Dependencias | RH-W-0109 (mismo criterio), RH-W-0044 (vista previa de sugerencias). |
+| Estado | completed |
+| Trabajo completado | El `REPO-HARNESS.es.md` generado es una presentación completa y con tildes equivalente al reglamento en inglés (11 reglas obligatorias, tabla de compuertas, mantenimiento), y la guía de contribución pasa a ser una fila de la tabla en español. El `i18n-maintenance.md` generado EN/ES incorpora la sección de correspondencia de entradas sin un nuevo marcador `doc-role`. El reglamento en español autoalojado (fuera de las ranuras del proyecto), la guía i18n EN/ES (idéntica byte a byte al render) y la línea registrada de la guía de uso en español coinciden ahora con el builder. Proyecciones del builder sincronizadas mediante mantenimiento. |
+| Trabajo restante | none |
+| Adiciones | Prueba de completitud del reglamento en español generado (integrado y autónomo), pruebas de correspondencia de entradas y de compatibilidad, prueba de congruencia autoalojada ampliada. |
+| Exclusiones | Sin nuevo marcador `doc-role` para la correspondencia de entradas, porque `check()` reportaría a cada consumidor bilingüe existente como `sections-missing` y el estado general como `drift`. Las tildes del resto de archivos autoalojados en español quedan para una unidad posterior. Las instalaciones existentes conservan sus archivos humanos; sin migración. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | RED y luego GREEN: cuatro comprobaciones de congruencia y completitud fallaban antes; 71 pruebas enfocadas pasan. Render sobre este repositorio: la guía i18n EN/ES y la guía de uso en español salen de `ambiguousPaths`; la guía i18n EN/ES reporta `current`. Los resultados de la suite completa, del checker y de la revisión quedan en el PR. |
+| Historial de decisiones | 2026-10-17: el propietario autorizó la corrección ("quiero arreglarlo dejarlo congruente"), con la entrega delegada como en RH-W-0109. 2026-10-17: completado. |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0109
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

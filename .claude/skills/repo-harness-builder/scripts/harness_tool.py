@@ -2626,6 +2626,12 @@ Keep one reciprocal language selector in each root README. Validate every relati
 ## Freshness
 
 `CHANGELOG.md` is the sole chronological owner and `docs/repo-harness/current-state.md` is the sole current-state owner. Localized peers present those facts and identify the canonical source, so dates and status never become independent truth.
+
+## Entry Mapping
+
+In a list a reader counts, such as a dated `CHANGELOG.md` section, the Spanish peer maps one entry to one entry. A reader comparing the two must not have to guess whether a missing entry is a translation choice or a lost fact.
+
+One exception exists, and it must be declared where it applies rather than inferred. A historical section may consolidate several English entries into fewer thematic Spanish entries only when every fact survives in some entry and the section itself says it is consolidated. An undeclared count difference is a defect, not a style choice. New sections are always one to one.
 """
     def canonical_source_es(name: str) -> str:
         """Link a Spanish peer to its English owner so declared localized-peer edges hold."""
@@ -2654,6 +2660,12 @@ Mantenga un selector recíproco de idioma en cada README raíz. Valide cada enla
 ## Vigencia
 
 `CHANGELOG.md` es el único propietario cronológico y `docs/repo-harness/current-state.md` es el único propietario del estado actual. Los pares localizados presentan esos hechos e identifican la fuente canónica, para que las fechas y el estado no se conviertan en verdades independientes.
+
+## Correspondencia de entradas
+
+En una lista que el lector cuenta, como una sección fechada de `CHANGELOG.md`, el par en español corresponde una entrada a una entrada. Quien compare ambas versiones no debe tener que adivinar si una entrada ausente es una decisión de traducción o un hecho perdido.
+
+Existe una sola excepción, y debe declararse donde aplica en vez de inferirse. Una sección histórica puede consolidar varias entradas en inglés en menos entradas temáticas en español solo cuando cada hecho sobrevive en alguna entrada y la propia sección declara que está consolidada. Una diferencia de conteo sin declarar es un defecto, no una elección de estilo. Las secciones nuevas son siempre una a una.
 """
     readme = f"""# {project_id}
 
@@ -2827,37 +2839,64 @@ No se han resuelto registros específicos del proyecto.
 - Las operaciones de Git, proveedor, respaldo y publicación quedan fuera del núcleo del harness.
 - El harness crea archivos ausentes. Solo los punteros raíz seleccionados pueden recibir su directiva exacta faltante; cualquier otro archivo existente permanece sin cambios.
 """
-    rulebook_es = f"""# {project_id}: guía operativa en español
+    continuity_gate_es = (
+        "Guardar o recuperar trabajo entre sesiones" if standalone
+        else "Guardar o recuperar entre sesiones, memoria no disponible"
+    )
+    continuity_rule_es = (
+        "- Use solo archivos del repositorio para la continuidad." if standalone
+        else "- Gentle AI y Engram son capacidades opcionales e independientes; la evidencia del repositorio sigue siendo autoritativa y solo bloquean el trabajo las fallas de capacidades que la operación requiere."
+    )
+    rulebook_es = f"""# {project_id}
 
 {marker}
 
-Esta es una presentación completa en español. [`{rulebook_path}`]({rulebook_path}) es la única fuente operativa canónica y prevalece si existe una discrepancia.
+Este documento es la presentación completa en español de [`{rulebook_path}`]({rulebook_path}). El archivo en inglés sigue siendo el único reglamento canónico y ejecutable, y prevalece si existe una discrepancia.
 
 ## Propósito
 <!-- doc-role:purpose -->
 
-El harness mantiene visibles las reglas de trabajo, el estado durable y las rutas hacia las skills generadas.
+Describa qué hace este proyecto y a quién sirve.
 
 ## Reglas obligatorias
 <!-- doc-role:hard-rules -->
 
-- Trabaje solo dentro del repositorio seleccionado y preserve archivos desconocidos.
-- Verifique la evidencia actual antes de confiar en memoria previa.
-- Use [la guía de uso](docs/es/repo-harness/usage.md), [el estado actual](docs/es/repo-harness/current-state.md) y [las decisiones](docs/es/repo-harness/decisions.md).
-- Ejecute `python3 .repo-harness/check.py` (`python` en Windows) para comprobar las proyecciones.
+- Trabaje solo dentro del repositorio seleccionado.
+- Pida aprobación explícita antes de leer o modificar rutas fuera de él. Diga por qué y para qué.
+- Aplique el cambio mínimo suficiente.
+- No introduzca alcance no relacionado.
+- No reintente indefinidamente. Tras fallos repetidos, deténgase con evidencia y solicite una decisión.
+- No continúe automáticamente hacia tareas no solicitadas.
+- Ejecute el trabajo autorizado que anunció; no se detenga en el anuncio.
+- Preserve archivos desconocidos y trabajo existente mediante una evolución informada y aprobada explícitamente; nunca congele contenido por defecto.
+- Contraste la evidencia propietaria aplicable; nunca dependa de una sola fuente. Clasifique cada afirmación como hecho verificado, inferencia respaldada, desconocida o no verificable, o decisión humana requerida, y nunca sustituya evidencia por confianza.
+{continuity_rule_es}
+- Mantenga el consentimiento Git acotado al resultado y conversacional. Una intención combinada puede cubrir requisitos previos seguros y sin cambios; los cambios de proveedor, el respaldo, la publicación, las acciones destructivas y los cambios materiales de riesgo requieren aprobación separada.
 
 ## Compuertas de decisión
 <!-- doc-role:decision-gates -->
 
-- Para iniciar o reanudar, use `.repo-harness/skills/repo-harness-session-start/SKILL.md`.
-- Para pausar o cerrar, use `.repo-harness/skills/repo-harness-session-stop/SKILL.md`.
-- Para el flujo humano, consulte [la guía de uso](docs/es/repo-harness/usage.md).
-- Para estado, entregas y razones, consulte [el estado actual](docs/es/repo-harness/current-state.md), [CHANGELOG.md](CHANGELOG.md) y [las decisiones](docs/es/repo-harness/decisions.md).
+| Situación | Lea o ejecute |
+|---|---|
+| Iniciar o reanudar trabajo | `.repo-harness/skills/repo-harness-session-start/SKILL.md` |
+| Pausar o cerrar trabajo | `.repo-harness/skills/repo-harness-session-stop/SKILL.md` |
+| Usar el harness como persona | [guía de uso](docs/es/repo-harness/usage.md) |
+| Cambió una skill canónica o una copia de entorno puede estar desactualizada | `python3 .repo-harness/check.py` (`python` en Windows) |
+| Dimensionar un cambio, decidir cuándo parar, cómo se trabaja | `.repo-harness/rules/working-agreements.md` |
+| {continuity_gate_es} | `.repo-harness/rules/memory.md` |
+| Una respuesta requiere aviso, acción pendiente, pregunta, aprobación, siguiente acción visible o explicación contextual | `.repo-harness/rules/response-contract.md` |
+| Crear, mover o borrar un documento | [mapa de documentación](docs/es/repo-harness/README.md) |
+| Dónde está el proyecto y qué se entregó | [estado actual](docs/es/repo-harness/current-state.md), luego [CHANGELOG.es.md](CHANGELOG.es.md) |
+| Por qué se decidió algo, o una restricción vigente | [decisiones](docs/es/repo-harness/decisions.md) |
 
 ## Actualización de este archivo
 <!-- doc-role:maintenance -->
 
-Actualice este par cuando cambie una regla o ruta en `{rulebook_path}`. El archivo canónico en inglés conserva la propiedad operativa. No coloque estado fechado aquí; mantenga el detalle en sus documentos propietarios.
+1. Actualice este par cuando cambie una regla, una ruta o una afirmación en `{rulebook_path}`; las reglas operativas siguen siendo propiedad exclusiva del archivo canónico en inglés.
+2. Mantenga aquí las reglas que nunca deben faltar; mueva el detalle a `.repo-harness/rules/` con como máximo una fila de compuerta.
+3. La meta de {RULEBOOK_TOKEN_BUDGET} tokens, con tolerancia hasta {RULEBOOK_TOKEN_TOLERANCE}, aplica al archivo canónico en inglés, medido como `wc -w` por 1.33. Son ideales recomendados del builder; el propietario puede elegir otro presupuesto. Esta presentación puede excederlo para seguir completa, sin agregar detalle que pertenece a los documentos enlazados.
+
+No coloque estado fechado aquí. Los cambios completados pertenecen a `CHANGELOG.md`, el estado y siguiente paso a `docs/repo-harness/current-state.md`, y las decisiones y sus razones a `docs/repo-harness/decisions.md`.
 """
     spanish_changelog_intro = (
         "Este archivo registra los cambios completados en orden cronológico."
@@ -4118,8 +4157,8 @@ def render_repository(
             peer = guide.removesuffix(".md") + ".es.md"
             localized = peer if peer in outputs or guarded_target(root, peer).is_file() else guide
             outputs["REPO-HARNESS.es.md"] = outputs["REPO-HARNESS.es.md"].replace(
-                "\n## Actualización de este archivo",
-                f"\n- Para proponer cambios, consulte [{localized}]({localized}).\n\n## Actualización de este archivo", 1)
+                "\n\n## Actualización de este archivo",
+                f"\n| Proponer cambios a este proyecto | [{localized}]({localized}) |\n\n## Actualización de este archivo", 1)
     # CONTRIBUTING is repository-specific; declare its peer only when both are present.
     if (("CONTRIBUTING.md" in outputs or guarded_target(root, "CONTRIBUTING.md").is_file())
             and ("CONTRIBUTING.es.md" in outputs or guarded_target(root, "CONTRIBUTING.es.md").is_file())

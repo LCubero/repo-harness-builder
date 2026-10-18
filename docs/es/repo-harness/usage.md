@@ -4,7 +4,7 @@ La fuente canonica es [`../../repo-harness/usage.md`](../../repo-harness/usage.m
 
 <!-- doc-role:overview -->
 
-Use las tres habilidades generadas como un ciclo: recupere contexto, mantenga vigente la documentacion durable y deje una transferencia verificada.
+Use las tres skills generadas como un ciclo: recupere contexto, mantenga vigente la documentación durable y deje una transferencia verificada.
 
 ## Flujo diario
 <!-- doc-role:daily-workflow -->
