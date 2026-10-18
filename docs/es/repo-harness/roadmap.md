@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0122
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | La revisión de solo lectura de `main` en `c3781fd` del 2026-10-18 encontró que los reemplazos truncaban los archivos en su lugar, que una creación que fallaba a mitad de escritura dejaba un archivo parcial y que las lecturas consultivas del manifest seguían un `.repo-harness` indirecto fuera de la raíz seleccionada (filas JD-A-002, JD-A-003 y JD-A-004). |
+| Prioridad | P1: una aplicación interrumpida podía perder bytes o dejar un archivo generado a medias, y un enlace podía hacer que el builder leyera fuera del repositorio. |
+| Dependencias | RH-W-0121. |
+| Estado | completed |
+| Trabajo completado | Los reemplazos, las integraciones de sugerencias humanas y las restauraciones de rollback de archivos reemplazados o con líneas agregadas (aplicación de render y migración de skills generadas) escriben un archivo temporal en el mismo directorio y lo publican con `os.replace`, así que una interrupción deja los bytes viejos o los nuevos, nunca un archivo truncado. Un archivo creado entra en el rollback en cuanto se abre, así que una escritura fallida no deja un archivo parcial. `recorded_runtimes`, `declared_languages`, `declared_codegraph_ignore` y `check` leen el manifest mediante la raíz protegida y tratan una ruta indirecta o un registro malformado como ausente. Un verificador independiente encontró que el primer corte omitía el rollback de archivos con líneas agregadas, la integración humana y la lectura de codegraph; se corrigieron en el mismo PR. |
+| Trabajo restante | none |
+| Adiciones | Siete pruebas (reemplazo atómico, creación parcial, manifest indirecto, rechazo de la guarda, elección de codegraph y runtimes malformados, rollback atómico de archivos con líneas agregadas y aplicación normal sin cambios); tres pruebas de inyección de fallos apuntan ahora al escritor atómico. |
+| Exclusiones | Sin cambio de comportamiento en aplicaciones exitosas. La reparación propia del checker generado conserva su rollback de creación actual. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | RED y luego GREEN: un fallo forzado de reemplazo no se propagaba antes del cambio, un fallo de creación a mitad de escritura dejaba el archivo y una guarda rechazada seguía devolviendo los runtimes registrados. La prueba con symlink se omite donde el sistema prohíbe symlinks de directorio; la prueba de rechazo de la guarda cubre la misma ruta. Suite completa 701 pruebas, `OK (skipped=12)`; checker `current`, 0 escrituras. Issue #451. |
+| Historial de decisiones | 2026-10-18: el propietario delegó las decisiones ("decidelo tu"); el agente mantuvo esta unidad con riesgo en su propio PR, separada de RH-W-0121. 2026-10-18: completado. |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0121
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
@@ -558,7 +578,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Exclusiones | Sin flag nuevo en la CLI; `--standalone` conserva su significado. La seguridad de escritura y las lecturas protegidas del manifest son RH-W-0122. |
 | Aplazamientos | Archivos `.gitattributes` anidados (JD-A-007): no hay evidencia en repositorios reales. |
 | Rechazos | Migración heredada de skills en `.pi` (JD-A-009): los nombres fijos (4c5cca8, 2026-08-14) son anteriores a la primera etiqueta `v3.1-rc.1` y Pi no tenía proyección `.pi/skills` entonces, así que ninguna instalación publicada la necesita. JD-A-001: los destinos de proyección vienen solo de `canonicalProjections`, que los manifests de consumidores no declaran. JD-A-010/JD-B-002: repetir las referencias supervivientes tras aplicar es una guía al agente por diseño (RH-W-0117). |
-| Evidencia | RED y luego GREEN para cada regla: la referencia faltante no aparecía en la lista de reparación; los contextos de autoridad con la licencia instalada o los runtimes registrados fallaban por desajuste de configuración; faltaba `integrationModeSet`; un manifest histórico sin licencia fallaba antes del respaldo MIT. Suite completa 694 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras. Issue #449. |
+| Evidencia | RED y luego GREEN para cada regla: la referencia faltante no aparecía en la lista de reparación; los contextos de autoridad con la licencia instalada o los runtimes registrados fallaban por desajuste de configuración; faltaba `integrationModeSet`; un manifest histórico sin licencia fallaba antes del respaldo MIT. Suite completa 694 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras. Issue #449, PR #450 (squash). |
 | Historial de decisiones | 2026-10-18: el propietario delegó las decisiones ("decidelo tu"); el agente eligió informar en lugar de un flag de modo nuevo y rechazó o aplazó las filas sin evidencia actual. 2026-10-18: completado. |
 | Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
 

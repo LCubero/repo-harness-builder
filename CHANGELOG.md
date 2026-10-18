@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- RH-W-0122: apply and migration replace files atomically (same-directory temporary file plus `os.replace`), a create that fails mid-write leaves no partial file, and advisory manifest reads refuse an indirect `.repo-harness` outside the selected root.
+
 - RH-W-0121: updating an installed harness keeps its license and runtimes, `render` and `check` report a mode change in `integrationModeSet`, the generated `check.py repair` restores missing references, and the builder guidance (runtime question, omitted `--runtime`, license expressions) matches the CLI.
 
 - RH-W-0120: a read-only review of `main` found living documents that contradicted their owners; `decisions.md`, `current-state.md`, the documentation maps, the RH-W-0076 scopes, and the Spanish `usage.md` now match the roadmap and `CONTRIBUTING.md`, and the PR #446 entry moved to its real date (EN/ES; documentation only).

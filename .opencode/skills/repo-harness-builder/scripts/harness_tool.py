@@ -5199,6 +5199,21 @@ def plan_generated_output_migration(
     return {"action": "migrate-generated-skills", "moves": moves, "replace": replace, "remove": sorted(source_paths)}
 
 
+def atomic_replace_bytes(target: Path, content: bytes) -> None:
+    """Publish complete replacement bytes from a same-directory temporary file."""
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=target.parent, prefix=f".{target.name}.", delete=False) as handle:
+            temporary = Path(handle.name)
+            handle.write(content)
+        mode = stat.S_IMODE(target.stat().st_mode)
+        os.replace(temporary, target)
+        os.chmod(target, mode)
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
+
+
 def apply_generated_output_migration(
     root: Path,
     installed_outputs: dict[str, str],
@@ -5237,7 +5252,7 @@ def apply_generated_output_migration(
                 handle.write(desired_outputs[move["destinationPath"]])
             require(digest_bytes(target.read_bytes()) == move["destinationSha256"], f"migration destination mismatch: {move['destinationPath']}")
         for item in plan["replace"]:
-            guarded_target(root, item["path"]).write_text(desired_outputs[item["path"]], encoding="utf-8", newline="\n")
+            atomic_replace_bytes(guarded_target(root, item["path"]), desired_outputs[item["path"]].encode("utf-8"))
         for source in plan["remove"]:
             target = guarded_target(root, source)
             move = next(item for item in plan["moves"] if item["sourcePath"] == source)
@@ -5263,7 +5278,8 @@ def apply_generated_output_migration(
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(content)
         for target, content in originals.items():
-            target.write_bytes(content)
+            if target.read_bytes() != content:
+                atomic_replace_bytes(target, content)
         for target in reversed(created):
             if target.is_file():
                 target.unlink()
@@ -5339,6 +5355,7 @@ def write_outputs(
 
     def apply_additive() -> list[str]:
         written: list[Path] = []
+        completed: set[Path] = set()
         appended: dict[Path, bytes] = {}
         replaced: dict[Path, bytes] = {}
         try:
@@ -5348,8 +5365,9 @@ def write_outputs(
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target = guarded_target(root, relative)
                 with target.open("x", encoding="utf-8", newline="\n") as handle:
+                    written.append(target)
                     handle.write(outputs[relative])
-                written.append(target)
+                completed.add(target)
                 require(target.resolve(strict=True).is_relative_to(root.resolve(strict=True)), f"output escaped root: {relative}")
             for item in plan["append"]:
                 relative = item["path"]
@@ -5357,7 +5375,7 @@ def write_outputs(
                 current = target.read_bytes()
                 appended[target] = current
                 if item["action"] == "integrate-human-suggestion":
-                    target.write_bytes(item["content"].encode("utf-8"))
+                    atomic_replace_bytes(target, item["content"].encode("utf-8"))
                     require(digest_bytes(target.read_bytes()) == item["destinationSha256"],
                             f"human integration mismatch: {relative}")
                     continue
@@ -5373,7 +5391,7 @@ def write_outputs(
                 relative = item["path"]
                 target = guarded_target(root, relative)
                 replaced[target] = target.read_bytes()
-                target.write_text(outputs[relative], encoding="utf-8", newline="\n")
+                atomic_replace_bytes(target, outputs[relative].encode("utf-8"))
                 require(digest_bytes(target.read_bytes()) == item["destinationSha256"], f"replacement mismatch: {relative}")
             result = sorted(
                 path.relative_to(root.resolve(strict=True)).as_posix()
@@ -5387,12 +5405,16 @@ def write_outputs(
             return result
         except (OSError, ContractError):
             for target, content in replaced.items():
-                target.write_bytes(content)
+                if target.read_bytes() != content:
+                    atomic_replace_bytes(target, content)
             for target, content in appended.items():
-                target.write_bytes(content)
+                if target.read_bytes() != content:
+                    atomic_replace_bytes(target, content)
             for target in reversed(written):
                 relative = target.resolve(strict=False).relative_to(root.resolve(strict=True)).as_posix()
-                if target.is_file() and digest_bytes(target.read_bytes()) == digest_text(outputs[relative]):
+                if target.is_file() and not is_indirect(target) and (
+                    target not in completed or digest_bytes(target.read_bytes()) == digest_text(outputs[relative])
+                ):
                     target.unlink()
             raise
 
@@ -5491,14 +5513,15 @@ def recorded_runtimes(root: Path) -> Optional[list[str]]:
     Unreadable and malformed manifests report None rather than raising, because this is
     an advisory comparison and the strict manifest guard belongs to the generated checker.
     """
-    manifest = root / MANIFEST_PATH
-    if not manifest.is_file():
-        return None
     try:
-        recorded = json.loads(manifest.read_text(encoding="utf-8")).get("runtimes")
-    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+        manifest = guarded_target(root, MANIFEST_PATH)
+        if is_indirect(manifest) or not manifest.is_file():
+            return None
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+    except (ContractError, json.JSONDecodeError, OSError, UnicodeDecodeError):
         return None
-    if not isinstance(recorded, list) or not set(recorded) <= RUNTIMES:
+    recorded = data.get("runtimes") if isinstance(data, dict) else None
+    if not isinstance(recorded, list) or not all(isinstance(item, str) for item in recorded) or not set(recorded) <= RUNTIMES:
         return None
     return sorted(set(recorded))
 
@@ -5544,8 +5567,11 @@ def runtime_set_report(root: Path, runtimes: list[str]) -> dict[str, Any]:
 def declared_languages(root: Path) -> tuple[list[str] | None, str | None]:
     """Read the languages an installed harness declared, tolerating an absent one."""
     try:
-        manifest = json.loads((root / MANIFEST_PATH).read_text(encoding="utf-8"))
-    except (OSError, ValueError, TypeError):
+        target = guarded_target(root, MANIFEST_PATH)
+        if is_indirect(target):
+            return None, None
+        manifest = json.loads(target.read_text(encoding="utf-8"))
+    except (ContractError, OSError, ValueError, TypeError):
         return None, None
     if not isinstance(manifest, dict):
         return None, None
@@ -5575,10 +5601,12 @@ def declared_languages(root: Path) -> tuple[list[str] | None, str | None]:
 
 def declared_codegraph_ignore(root: Path) -> bool:
     """Read an explicit choice, using the enabled default for historical manifests."""
-    manifest_path = root / MANIFEST_PATH
     try:
+        manifest_path = guarded_target(root, MANIFEST_PATH)
+        if is_indirect(manifest_path):
+            return True
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    except (OSError, ValueError, TypeError):
+    except (ContractError, OSError, ValueError, TypeError):
         return True
     project = manifest.get("project") if isinstance(manifest, dict) else None
     if not isinstance(project, dict) or "ignoreCodegraph" not in project:
@@ -5602,8 +5630,8 @@ def check(
     The installed harness declares its own languages, so they are discovered rather
     than supplied again: checking must never contradict what the repository recorded.
     """
-    documentation_languages, conversation_language = declared_languages(root)
     installed_manifest = guarded_target(root, MANIFEST_PATH)
+    documentation_languages, conversation_language = declared_languages(root)
     commands_declared = True
     if installed_manifest.is_file() and not is_indirect(installed_manifest):
         try:
