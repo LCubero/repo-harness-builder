@@ -4,6 +4,8 @@
 
 ## 2026-10-18
 
+- RH-W-0121: actualizar un harness instalado conserva su licencia y sus runtimes, `render` y `check` informan un cambio de modo en `integrationModeSet`, el `check.py repair` generado restaura las referencias faltantes y la guía del builder (pregunta de runtimes, `--runtime` omitido, expresiones de licencia) coincide con la CLI.
+
 - RH-W-0120: una revisión de solo lectura de `main` encontró documentos vigentes que contradecían a sus propietarios; `decisions.md`, `current-state.md`, los mapas de documentación, los alcances de RH-W-0076 y el `usage.md` en español coinciden ahora con la hoja de ruta y `CONTRIBUTING.md`, y la entrada del PR #446 pasó a su fecha real (EN/ES; solo documentación).
 
 - El registro RH-W-0117 de la hoja de ruta (EN/ES) ahora nombra los cuatro repositorios del propietario como repositorios de prueba A a D en lugar de sus nombres reales, porque este repositorio es público.
