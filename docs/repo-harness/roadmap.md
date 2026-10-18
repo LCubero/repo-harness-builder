@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0114
+| Field | Value |
+|---|---|
+| Origin | RH-W-0113 alignment review on 2026-10-18: living self-hosted Spanish documents were written without accents, while generated Spanish documentation and the self-hosted Spanish rulebook are accented. Issue #430. |
+| Priority | P3: wording quality of the self-hosted Spanish presentation; no behavior. |
+| Dependencies | RH-W-0110 (accented generated Spanish rulebook), RH-W-0113 (accented Spanish usage guide). |
+| Status | completed |
+| Completed work | Accents only, no change of meaning, in `docs/es/repo-harness/README.md`, `current-state.md`, `decisions.md`, `roadmap.md`, `builder-guide.md`, `CONTRIBUTING.es.md`, and the `CHANGELOG.es.md` header. Three self-hosted tests now match the accented Spanish phrases. |
+| Remaining work | none |
+| Additions | none |
+| Exclusions | Historical `rh-w-*` designs, plans and findings, archived documents, and historical changelog entries stay unchanged. Code spans, link targets, comments, identifiers, record headings, and headings with inbound anchor links are unchanged; ambiguous words and misspellings needing more than an accent stay as written. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Worker pass: about 6,500 accent-only replacements in seven files; an accent-folded comparison found the text otherwise identical and 5,871 protected Markdown regions byte-identical; parent sampled context-sensitive words (completó, registró, sí, qué, continúa, fallo/falló). Three self-hosted tests pinned unaccented phrases and now pin the accented ones. Full suite 683 tests, `OK (skipped=11)`; checker `current`, 0 writes. Delivered through PR #431 (squash merge). |
+| Decision history | 2026-10-18: owner asked to continue under the standing delegation ("sigamos"); the agent chose the accent pass on living documents only. 2026-10-18: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0113
 | Field | Value |
 |---|---|
