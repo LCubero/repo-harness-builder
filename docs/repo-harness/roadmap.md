@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0119
+| Field | Value |
+|---|---|
+| Origin | Judgment Day on 2026-10-18 over `main` at `05eb2b8` (full alignment plus the range since the previous judgment; two blind judges) froze three HIGH rows: JD-A-001 (corroborated by JD-B-002), the RH-W-0117 guidance said ignored root pointers make a fresh clone's checker report `drift`, but the checker never inspects `AGENTS.md` or `CLAUDE.md`; JD-B-001, current state claimed a 112-record portfolio with 105 `completed` while the roadmap held 118 (111 `completed`, 7 `rejected`), a count wrong before 2026-10-18 and only incremented since; JD-A-002, the current next step said `main` passed the RH-W-0115 Judgment Day, which was escalated and closed by delegated owner decision. Issue #443. |
+| Priority | P1: a builder instruction and two current-state claims were false. |
+| Dependencies | RH-W-0115, RH-W-0117. |
+| Status | completed |
+| Completed work | `preservation-and-safety.md` says ignored generated files or runtime projections make a fresh clone's checker report `drift`, while ignored root pointers leave agents without the rulebook route and the checker never inspects them. Both current-state peers state the true totals and describe RH-W-0115 as escalated and closed by delegated owner decision. A new test derives the portfolio totals from the roadmap. |
+| Remaining work | none |
+| Additions | One current-state totals test; the RH-W-0117 reference test pins the corrected sentence. |
+| Exclusions | No behavior change. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Two blind judges; JD-A-001 corroborated by JD-B-002. Frozen ledger SHA-256 `34e44ffc454416e131a72c402a492e055f8e8558afe292f9bff3f62bd5053167`. RED then GREEN: the new totals test failed with `[112, 105, 7] != [118, 111, 7]` and the reference test failed on the corrected sentence before the fix; both pass after. Round-1 scoped re-judgment: all three rows `verified`. Full suite 687 tests, `OK (skipped=11)`; checker `current`, 0 writes; `self-test` pass. Verdict: `JUDGMENT: APPROVED`. |
+| Decision history | 2026-10-18: owner asked for Judgment Day ("haz juicio"); the agent chose `main` at `05eb2b8` as the target and fixed all three rows in round 1 under the standing delegation. 2026-10-18: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0118
 | Field | Value |
 |---|---|

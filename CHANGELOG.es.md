@@ -4,6 +4,8 @@
 
 ## 2026-10-18
 
+- RH-W-0119: un Judgment Day sobre `main` encontró tres afirmaciones falsas y las corrigió: la referencia del builder ya no dice que los punteros raíz ignorados hacen que el checker informe `drift` (el checker nunca los inspecciona); el estado actual da ahora los totales reales del portafolio, derivados por una prueba nueva; y el Judgment Day de RH-W-0115 se describe como escalado y cerrado por decisión delegada del propietario (issue #443).
+
 - RH-W-0118: cuando rutas planificadas del harness están ignoradas por Git, el agente del builder hace una pregunta antes de aprobar — mantenerlas locales (por defecto; nada cambia) o versionarlas, proponiendo las líneas exactas de `.gitignore` a quitar y editándolas solo tras aprobación (issue #441, PR #442).
 
 - Se actualizó el siguiente paso vigente (EN/ES) con las pruebas en repositorios reales de RH-W-0117.

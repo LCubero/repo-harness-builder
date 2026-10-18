@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0119
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Judgment Day del 2026-10-18 sobre `main` en `05eb2b8` (alineación completa y el rango desde el juicio anterior; dos jueces ciegos) congeló tres filas HIGH: JD-A-001 (corroborada por JD-B-002), la guía de RH-W-0117 decía que los punteros raíz ignorados hacen que el checker de un clon nuevo informe `drift`, pero el checker nunca inspecciona `AGENTS.md` ni `CLAUDE.md`; JD-B-001, el estado actual afirmaba un portafolio de 112 registros con 105 `completed` mientras la hoja de ruta tenía 118 (111 `completed`, 7 `rejected`), un conteo ya erróneo antes del 2026-10-18 que solo se incrementó desde entonces; JD-A-002, el siguiente paso vigente decía que `main` superó el Judgment Day de RH-W-0115, que se escaló y se cerró por decisión delegada del propietario. Issue #443. |
+| Prioridad | P1: una instrucción del builder y dos afirmaciones del estado actual eran falsas. |
+| Dependencias | RH-W-0115, RH-W-0117. |
+| Estado | completed |
+| Trabajo completado | `preservation-and-safety.md` dice que los archivos generados o proyecciones ignorados hacen que el checker de un clon nuevo informe `drift`, mientras que los punteros raíz ignorados dejan a los agentes sin la ruta al rulebook y el checker nunca los inspecciona. Ambos estados actuales enuncian los totales reales y describen RH-W-0115 como escalado y cerrado por decisión delegada del propietario. Una prueba nueva deriva los totales del portafolio desde la hoja de ruta. |
+| Trabajo restante | none |
+| Adiciones | Una prueba de totales del estado actual; la prueba de referencias de RH-W-0117 fija la frase corregida. |
+| Exclusiones | Sin cambio de comportamiento. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | Dos jueces ciegos; JD-A-001 corroborada por JD-B-002. SHA-256 del registro congelado `34e44ffc454416e131a72c402a492e055f8e8558afe292f9bff3f62bd5053167`. RED y luego GREEN: la nueva prueba de totales fallaba con `[112, 105, 7] != [118, 111, 7]` y la prueba de referencias fallaba en la frase corregida antes de la corrección; ambas pasan después. Re-juicio acotado de la ronda 1: las tres filas `verified`. Suite completa 687 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; `self-test` pasa. Veredicto: `JUDGMENT: APPROVED`. |
+| Historial de decisiones | 2026-10-18: el propietario pidió Judgment Day ("haz juicio"); el agente eligió `main` en `05eb2b8` como objetivo y corrigió las tres filas en la ronda 1 bajo la delegación vigente. 2026-10-18: completado. |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0118
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
