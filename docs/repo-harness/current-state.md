@@ -5,7 +5,7 @@
 ## Verified State
 <!-- doc-role:verified-state -->
 
-- `RH-W-0110` is `completed`: the generated Spanish rulebook is now a complete presentation of the English one, and the generated i18n guide carries the Entry Mapping rule; this repository's Spanish rulebook, i18n guide, and Spanish usage line match the builder (issue #422). See the [canonical record](roadmap.md#rh-w-0110).
+- `RH-W-0110` is `completed`: the generated Spanish rulebook is now a complete presentation of the English one, and the generated i18n guide carries the Entry Mapping rule; this repository's Spanish rulebook, i18n guide, and Spanish usage line match the builder (issue #422, PR #423). See the [canonical record](roadmap.md#rh-w-0110).
 - `RH-W-0109` is `completed`: the generated rulebook and rule files now carry the same shared content as this self-hosted harness (short hard rules, detail in working agreements, full preservation rule). Existing installations keep their human-owned files; no migration (issue #420, PR #421). See the [canonical record](roadmap.md#rh-w-0109).
 - `RH-W-0108` is `completed`: recommended 700-token target with tolerance up to 750; consumers choose their budget and render/check never block on size. See the [canonical record](roadmap.md#rh-w-0108). Existing human-owned rule files are not migrated; the skill-body ceiling remains 1000.
 - Batch mode presentation is defined: the generated response contract groups non-authorizing clarifications as one numbered list in one blocking block, the only exception to one question at a time (issue #414, PR #415). Existing installations keep their human-owned response contract.

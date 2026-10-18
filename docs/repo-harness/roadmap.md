@@ -557,7 +557,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | No new `doc-role` marker for Entry Mapping, because `check()` would report every existing bilingual consumer as `sections-missing` and overall `drift`. Accents in the other self-hosted Spanish files stay a separate later unit. Existing installations keep their human-owned files; no migration. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | RED then GREEN: four failing congruence/completeness checks before; focused 71 tests pass. Render on this repository: i18n EN/ES and the Spanish usage leave `ambiguousPaths`; i18n EN/ES report `current`. Full-suite, checker, and review results are recorded in the PR. |
+| Evidence | RED then GREEN: four failing congruence/completeness checks before; focused 71 tests pass. Render on this repository: i18n EN/ES and the Spanish usage leave `ambiguousPaths`; i18n EN/ES report `current`. Full suite 680 tests, `OK (skipped=11)`; checker and CLI check `current`, 0 writes; `self-test` pass; native review (risk, readability, reliability) approved and acknowledged with no findings. Delivered through PR #423 (squash merge). |
 | Decision history | 2026-10-17: owner authorized the fix ("quiero arreglarlo dejarlo congruente"), with delivery delegated as in RH-W-0109. 2026-10-17: completed. |
 | Next advancement condition | none (terminal); reopen on regression. |
 

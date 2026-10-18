@@ -558,7 +558,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Exclusiones | Sin nuevo marcador `doc-role` para la correspondencia de entradas, porque `check()` reportaría a cada consumidor bilingüe existente como `sections-missing` y el estado general como `drift`. Las tildes del resto de archivos autoalojados en español quedan para una unidad posterior. Las instalaciones existentes conservan sus archivos humanos; sin migración. |
 | Aplazamientos | none |
 | Rechazos | none |
-| Evidencia | RED y luego GREEN: cuatro comprobaciones de congruencia y completitud fallaban antes; 71 pruebas enfocadas pasan. Render sobre este repositorio: la guía i18n EN/ES y la guía de uso en español salen de `ambiguousPaths`; la guía i18n EN/ES reporta `current`. Los resultados de la suite completa, del checker y de la revisión quedan en el PR. |
+| Evidencia | RED y luego GREEN: cuatro comprobaciones de congruencia y completitud fallaban antes; 71 pruebas enfocadas pasan. Render sobre este repositorio: la guía i18n EN/ES y la guía de uso en español salen de `ambiguousPaths`; la guía i18n EN/ES reporta `current`. Suite completa 680 pruebas, `OK (skipped=11)`; checker y CLI check `current`, 0 escrituras; `self-test` pasa; revisión nativa (riesgo, legibilidad, confiabilidad) aprobada y reconocida sin hallazgos. Entregado mediante el PR #423 (squash). |
 | Historial de decisiones | 2026-10-17: el propietario autorizó la corrección ("quiero arreglarlo dejarlo congruente"), con la entrega delegada como en RH-W-0109. 2026-10-17: completado. |
 | Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
 
