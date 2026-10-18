@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-19
+
+- Se actualizó el siguiente paso vigente (EN/ES) hasta RH-W-0123.
+
 ## 2026-10-18
 
 - RH-W-0123: el Judgment Day sobre `main` aprobó. Sus tres filas MEDIUM quedan corregidas: una aplicación interrumpida (Ctrl+C) hace rollback, el rollback continúa cuando no se pueden crear archivos temporales y el `check.py repair` generado elimina una referencia que dejó escrita a medias.
