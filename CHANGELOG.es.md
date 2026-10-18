@@ -2,11 +2,11 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
-## 2026-10-19
+## 2026-10-18
+
+- Se publicó [`v3.1-rc.16`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.16) desde `6db5a6ba9321f23dde4379ec3d9d5153bbce7be9` el 2026-10-18T23:23:18Z por decisión del propietario, con RH-W-0107 a RH-W-0123: `repo-harness-builder-v3.1-rc.16-claude-code.zip` (271144 bytes, SHA-256 `03760a492c52035ab2bbf47b7fca8d875d3668f1dc28f2bd8d82886ba41738f0`); `repo-harness-builder-v3.1-rc.16-opencode.zip` (271228 bytes, SHA-256 `fbb17b4926af56e57744315d25648998d5990e695cbc2bd1e1eaf8b264e62327`); `repo-harness-builder-v3.1-rc.16-pi.zip` (270976 bytes, SHA-256 `7cfbe693bad0725a0ed42d62e5337a3acefb38f7faab39ec1d968b0729aa1d1f`).
 
 - Se actualizó el siguiente paso vigente (EN/ES) hasta RH-W-0123.
-
-## 2026-10-18
 
 - RH-W-0123: el Judgment Day sobre `main` aprobó. Sus tres filas MEDIUM quedan corregidas: una aplicación interrumpida (Ctrl+C) hace rollback, el rollback continúa cuando no se pueden crear archivos temporales y el `check.py repair` generado elimina una referencia que dejó escrita a medias.
 
