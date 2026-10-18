@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0122
+| Field | Value |
+|---|---|
+| Origin | The read-only review of `main` at `c3781fd` on 2026-10-18 found that replacements truncated files in place, that a create failing mid-write left a partial file behind, and that advisory manifest reads followed an indirect `.repo-harness` outside the selected root (judge rows JD-A-002, JD-A-003, JD-A-004). |
+| Priority | P1: an interrupted apply could lose human-visible bytes or leave a half-written generated file, and a link could make the builder read outside the repository. |
+| Dependencies | RH-W-0121. |
+| Status | completed |
+| Completed work | Replacements and rollback restores (render apply and the generated-skill migration) write a same-directory temporary file and publish it with `os.replace`, so an interruption leaves the old or the new bytes, never a truncated file. A created file joins rollback as soon as it is opened, so a failed write leaves no partial file. `recorded_runtimes`, `declared_languages`, and `check` read the manifest through the guarded root and treat an indirect path as absent. |
+| Remaining work | none |
+| Additions | Five tests (atomic replacement, partial create, indirect manifest, guard refusal, unchanged normal apply); three failure-injection tests now target the atomic writer. |
+| Exclusions | No behavior change for successful applies. The generated checker's own repair keeps its existing create rollback. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | RED then GREEN: a forced replacement failure did not raise before the change, a mid-write create failure left the file, and a refused guard still returned the recorded runtimes. The symlink test skips where the OS forbids directory symlinks; the guard-refusal test covers the same path. Full suite 699 tests, `OK (skipped=12)`; checker `current`, 0 writes. Issue #451. |
+| Decision history | 2026-10-18: the owner delegated the decisions ("decidelo tu"); the agent kept this risk-bearing unit in its own PR, separate from RH-W-0121. 2026-10-18: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0121
 | Field | Value |
 |---|---|
@@ -557,7 +574,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | No new CLI flag; `--standalone` keeps its meaning. Write safety and guarded manifest reads are RH-W-0122. |
 | Deferrals | Nested `.gitattributes` files (JD-A-007): no real-repository evidence. |
 | Rejections | Legacy `.pi` skill migration (JD-A-009): fixed skill names (4c5cca8, 2026-08-14) predate the first tag `v3.1-rc.1`, and Pi had no `.pi/skills` projection then, so no released installation needs it. JD-A-001: projection targets come only from `canonicalProjections`, which consumer manifests do not declare. JD-A-010/JD-B-002: repeating surviving references after apply is agent guidance by design (RH-W-0117). |
-| Evidence | RED then GREEN for each rule: the missing reference was absent from the repair list; authority contexts with the installed license or recorded runtimes failed with a configuration mismatch; `integrationModeSet` was missing; a historical manifest without a license failed before the MIT fallback. Full suite 694 tests, `OK (skipped=11)`; checker `current`, 0 writes. Issue #449. |
+| Evidence | RED then GREEN for each rule: the missing reference was absent from the repair list; authority contexts with the installed license or recorded runtimes failed with a configuration mismatch; `integrationModeSet` was missing; a historical manifest without a license failed before the MIT fallback. Full suite 694 tests, `OK (skipped=11)`; checker `current`, 0 writes. Issue #449, PR #450 (squash merge). |
 | Decision history | 2026-10-18: the owner delegated the decisions ("decidelo tu"); the agent chose reporting over a new mode flag and rejected or deferred the rows without present evidence. 2026-10-18: completed. |
 | Next advancement condition | none (terminal); reopen on regression. |
 
