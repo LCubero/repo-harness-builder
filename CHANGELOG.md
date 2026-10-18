@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-17
 
+- RH-W-0110: the generated Spanish rulebook is now a complete, accented presentation of the English rulebook (all hard rules, the gate table, and maintenance) instead of a four-rule summary that called itself complete, and the contribution guide appears as a Spanish table row. The generated i18n guide (EN/ES) gains the Entry Mapping rule without a new section marker, so existing consumers are not reported as missing sections. This repository's Spanish rulebook, i18n guide, and Spanish usage line now match the builder. Existing installations keep their human-owned files; no migration. (issue #422, PR #423)
+
 - RH-W-0109: the generated rulebook now uses the self-hosted short hard rules, including the full rule to preserve existing work through informed, explicitly approved evolution and never freeze content by default; the announce-versus-execute and evidence-classification detail moves into the generated working agreements, so new rulebooks keep about 100 more tokens for project content. The self-hosted rulebook, its Spanish peer, and `memory.md` now match the render outside project slots, a congruence test pins this, and the suggestion preview ignores `doc-role` marker lines so the self-hosted rulebook is no longer reported as ambiguous. Existing installations keep their human-owned files; no migration. (issue #420, PR #421)
 
 - Added issue and PR references to today's changelog entries, and recorded in current state the batch clarification form and the unreleased changes on `main` after `v3.1-rc.15`. Documentation only.

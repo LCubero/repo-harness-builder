@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0110
+| Field | Value |
+|---|---|
+| Origin | Read-only alignment review on 2026-10-17 after RH-W-0109: the generated Spanish rulebook was a four-rule summary that called itself complete, breaking the generated i18n rule that Spanish peers are complete with equivalent meaning; the self-hosted i18n guide carried an Entry Mapping rule the template lacked. Issue #422. |
+| Priority | P2: every bilingual consumer received an incomplete Spanish rulebook on day one. |
+| Dependencies | RH-W-0109 (same criterion), RH-W-0044 (suggestion preview). |
+| Status | completed |
+| Completed work | The generated `REPO-HARNESS.es.md` is a complete, accented presentation equivalent to the English rulebook (11 hard rules, gate table, maintenance), and the contribution guide becomes a Spanish table row. The generated `i18n-maintenance.md` EN/ES gains the Entry Mapping section without a new `doc-role` marker. Self-hosted Spanish rulebook (outside project slots), i18n EN/ES (byte-identical to the render), and the registered Spanish usage line now match the builder. Builder projections synchronized through maintenance. |
+| Remaining work | none |
+| Additions | Completeness test for the generated Spanish rulebook (integrated and standalone), Entry Mapping and backward-compatibility tests, extended self-hosted congruence test. |
+| Exclusions | No new `doc-role` marker for Entry Mapping, because `check()` would report every existing bilingual consumer as `sections-missing` and overall `drift`. Accents in the other self-hosted Spanish files stay a separate later unit. Existing installations keep their human-owned files; no migration. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | RED then GREEN: four failing congruence/completeness checks before; focused 71 tests pass. Render on this repository: i18n EN/ES and the Spanish usage leave `ambiguousPaths`; i18n EN/ES report `current`. Full suite 680 tests, `OK (skipped=11)`; checker and CLI check `current`, 0 writes; `self-test` pass; native review (risk, readability, reliability) approved and acknowledged with no findings. Delivered through PR #423 (squash merge). |
+| Decision history | 2026-10-17: owner authorized the fix ("quiero arreglarlo dejarlo congruente"), with delivery delegated as in RH-W-0109. 2026-10-17: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0109
 | Field | Value |
 |---|---|
