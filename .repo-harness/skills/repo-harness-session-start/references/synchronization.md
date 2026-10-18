@@ -19,7 +19,7 @@ Outcomes are scoped. Startup uses `ready`, `paused`, `blocked`, `failed`, or `de
 | Git has a dirty worktree or index | Report exact dirty state, continue local startup, and defer synchronization. Do not suggest or run fetch or integration. |
 | detached HEAD or unborn branch | Mark the optional Git branch `blocked`, keep startup `ready`, and give actionable remediation: check out or create the intended branch locally before synchronization. |
 | Missing upstream, missing upstream remote, or missing upstream branch | Mark the optional Git branch `blocked`, keep startup `ready`, and name the exact local configuration or remote branch evidence that is missing. Do not guess a target. |
-| multiple remotes make the target ambiguous | Mark the optional Git branch `paused`, keep startup `ready`, show the candidates, and ask which remote is intended as the final user-facing line. |
+| multiple remotes make the target ambiguous | Mark the optional Git branch `paused`, keep startup `ready`, show the candidates, and ask which remote is intended as the single question of the final blocking block. |
 | Clean Git with a usable upstream | Show branch, upstream, clean status, remote URL host and scheme, then ask one localized approval question using semantic fields `command`, `remote`, `branch`, and `permission scope`. Render their exact values as non-translatable code and keep network approval mandatory. |
 | Equal | Report synchronization healthy and continue. |
 | ahead-only | Report synchronization healthy, including exact local unpushed commit evidence. |

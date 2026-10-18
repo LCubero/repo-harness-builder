@@ -5927,6 +5927,22 @@ resume_authority: required
                 self.assertIn("unavailable", scoped)
                 self.assertIn("never emulated", scoped)
 
+    def test_documentation_and_final_contract_wording(self):
+        for standalone in (False, True):
+            with self.subTest(standalone=standalone):
+                outputs = TOOL.render("Example", ["claude-code", "opencode", "pi"], standalone=standalone)
+                for path, text in outputs.items():
+                    with self.subTest(path=path):
+                        self.assertNotIn("never to raise the budget", text)
+                        self.assertNotIn("final user-facing line", text)
+                documentation = outputs[".repo-harness/skills/repo-harness-documentation/SKILL.md"]
+                self.assertIn("A section that grows there is the signal to move it down; raising the budget is the repository owner's choice, not the default.", documentation)
+                memory = outputs[".repo-harness/rules/memory.md"]
+                self.assertIn("`Accomplished` may name completed outcomes with their public references, such as an issue or pull-request number.", memory)
+                start = self.indexed_closure(outputs, "session-start", ("reconciliation.md", "synchronization.md"))
+                self.assertIn("ask which remote is intended as the single question of the final blocking block.", start)
+                self.assertIn("When approval is safe and relevant, the single concrete question must be the last line inside the final blocking block.", start)
+
     def test_generated_continuity_excludes_runtime_memory_and_stateful_overreach(self):
         for standalone in (False, True):
             outputs = TOOL.render("Example", [], standalone=standalone)
@@ -5938,7 +5954,7 @@ resume_authority: required
             with self.subTest(standalone=standalone):
                 self.assertIn("Built-in runtime memory is ignored and never required", scoped)
                 self.assertIn("No generic memory API, database, encryption subsystem, daemon, scheduler, background service, synchronization engine, retention cleanup, or separate conflict-state persistence", scoped)
-                self.assertIn("approval, checkpoint, lifecycle copy, receipt, or delivery state", scoped)
+                self.assertIn("approval or consent tokens, checkpoint bytes, copied lifecycle records, receipts, or pending delivery state", scoped)
 
     def test_standalone_reconciliation_never_requires_or_emulates_engram(self):
         outputs = TOOL.render("Example", [], standalone=True)
@@ -7448,7 +7464,7 @@ resume_authority: required
     def test_session_start_requires_actionable_terminal_questions_and_remediation(self):
         start = self.indexed_closure(TOOL.render("Example", []), "session-start", ("reconciliation.md", "synchronization.md"))
         for phrase in (
-            "final user-facing line",
+            "the one visible concrete question, placed last inside the final blocking block",
             "ask one localized approval question",
             "detached HEAD",
             "unborn branch",
@@ -7913,7 +7929,7 @@ resume_authority: required
         ):
             self.assertIn(phrase, stop)
         self.assertIn("pause before any staging", stop)
-        self.assertIn("final user-facing line", stop)
+        self.assertIn("the one visible concrete question, placed last inside the final blocking block", stop)
 
     def test_session_stop_separates_eol_only_paths_from_content_changes(self):
         stop = TOOL.render("Example", [])[".repo-harness/skills/repo-harness-session-stop/references/git-commit.md"]
