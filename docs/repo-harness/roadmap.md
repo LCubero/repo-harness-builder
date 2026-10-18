@@ -557,7 +557,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | No behavior change, no product source, tests, or runtime projections. Builder code findings from the same review are RH-W-0121 and RH-W-0122. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | Every corrected claim was checked against the roadmap, `CONTRIBUTING.md`, the response contract, and commit `c3781fd`. Full suite 687 tests, `OK (skipped=11)`; checker `current`, 0 writes. Issue #447. |
+| Evidence | Every corrected claim was checked against the roadmap, `CONTRIBUTING.md`, the response contract, and commit `c3781fd`. Full suite 687 tests, `OK (skipped=11)`; checker `current`, 0 writes. Issue #447, PR #448 (squash merge). |
 | Decision history | 2026-10-18: the owner delegated the follow-up decisions ("decidelo tu"); the agent split the review into documentation (this record) and two code records. 2026-10-18: completed. |
 | Next advancement condition | none (terminal); reopen on regression. |
 

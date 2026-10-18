@@ -558,7 +558,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Exclusiones | Sin cambio de comportamiento, sin código del producto, pruebas ni proyecciones. Los hallazgos de código de la misma revisión son RH-W-0121 y RH-W-0122. |
 | Aplazamientos | none |
 | Rechazos | none |
-| Evidencia | Cada afirmación corregida se comprobó contra la hoja de ruta, `CONTRIBUTING.md`, el contrato de respuesta y el commit `c3781fd`. Suite completa 687 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras. Issue #447. |
+| Evidencia | Cada afirmación corregida se comprobó contra la hoja de ruta, `CONTRIBUTING.md`, el contrato de respuesta y el commit `c3781fd`. Suite completa 687 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras. Issue #447, PR #448 (squash). |
 | Historial de decisiones | 2026-10-18: el propietario delegó las decisiones siguientes ("decidelo tu"); el agente dividió la revisión en documentación (este registro) y dos registros de código. 2026-10-18: completado. |
 | Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
 
