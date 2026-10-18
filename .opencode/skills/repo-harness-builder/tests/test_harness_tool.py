@@ -806,6 +806,17 @@ class ApprovalUxTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, upgrades)
 
+    def test_references_report_ignored_paths_and_repeat_surviving_references(self):
+        preservation = (ROOT / "references" / "preservation-and-safety.md").read_text(encoding="utf-8")
+        for phrase in (
+            "run read-only `git check-ignore` on the planned paths",
+            "a fresh clone would lack them and its checker would report `drift`",
+            "Never edit those ignore rules unless the human asks",
+            "Repeat the surviving references in the apply report",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, preservation)
+
     def test_explicit_inspection_dispatches_before_installation_interview(self):
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         steps = skill.split("## Execution Steps\n", 1)[1].split("\n## ", 1)[0]

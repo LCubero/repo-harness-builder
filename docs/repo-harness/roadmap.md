@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0117
+| Field | Value |
+|---|---|
+| Origin | Install and upgrade tests on copies of four real owner repositories (remotes removed, worked on separate copies) on 2026-10-18. In three, `.claude/`, `.opencode/`, `.pi/`, `AGENTS.md`, or `CLAUDE.md` are git-ignored: install succeeds and `check` is `current` locally, but a fresh clone lacks those files and its checker reports `drift`, and nobody is told before approval. In the fourth (harness 3.0 with `<project>-*` skills), the migration removes the old skills while repository-edited wrappers still name them; the preview lists them in `survivingLegacyReferences`, but the list disappears after apply. Issue #438. |
+| Priority | P2: real consumers lose the harness on clone, or keep broken command wrappers, without being told. |
+| Dependencies | RH-W-0116 (upgrade guidance), the generated-skill migration. |
+| Status | completed |
+| Completed work | `preservation-and-safety.md` tells the agent to run read-only `git check-ignore` on the planned paths before approval, report ignored generated files, runtime projections, or root pointers, and never edit those ignore rules unless asked; and to repeat `survivingLegacyReferences` in the apply report. |
+| Remaining work | none |
+| Additions | One reference test. |
+| Exclusions | No behavior change, no automatic ignore-rule edits, no rewriting of repository-edited wrappers. Brain_AI, ai-skill-pack, and amimis installs left README, CHANGELOG, user changes, and human files intact, appending only exact lines. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Four owner-provided copies under `.repo-harness/tmp/repos/` (remotes removed; installs ran on separate `cp -a` copies). Brain_AI, ai-skill-pack, amimis: apply `VALIDATED`, check `current`, human files intact, only exact lines appended; a fresh clone of the installed Brain_AI lacked `.claude/`, `.opencode/`, `AGENTS.md`, `CLAUDE.md` and its checker reported `drift`. 00-skillssss (harness 3.0): migration moved three skills; eight repository-edited wrappers stayed `stale` and the post-apply preview no longer listed them. RED then GREEN: the new reference test failed (4 subtests) before and passes after. Full suite 686 tests, `OK (skipped=11)`; checker `current`, 0 writes; `self-test` pass. Delivered through PR #439 (squash merge). |
+| Decision history | 2026-10-18: owner provided repository copies for testing and delegated decisions ("decídelo tú"); the agent chose reference-only guidance, consistent with RH-W-0116. 2026-10-18: completed. |
+| Next advancement condition | none (terminal); reopen if the agent guidance proves insufficient and a machine-readable report is needed. |
+
 ### RH-W-0116
 | Field | Value |
 |---|---|
