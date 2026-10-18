@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- RH-W-0121: updating an installed harness keeps its license and runtimes, `render` and `check` report a mode change in `integrationModeSet`, the generated `check.py repair` restores missing references, and the builder guidance (runtime question, omitted `--runtime`, license expressions) matches the CLI.
+
 - RH-W-0120: a read-only review of `main` found living documents that contradicted their owners; `decisions.md`, `current-state.md`, the documentation maps, the RH-W-0076 scopes, and the Spanish `usage.md` now match the roadmap and `CONTRIBUTING.md`, and the PR #446 entry moved to its real date (EN/ES; documentation only).
 
 - The RH-W-0117 roadmap record (EN/ES) now names the four owner-provided repositories as test repositories A to D instead of their real names, because this repository is public.

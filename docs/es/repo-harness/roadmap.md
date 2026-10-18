@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0121
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | La revisión de solo lectura de `main` en `c3781fd` del 2026-10-18 encontró que una actualización podía cambiar en silencio un harness instalado y que la reparación generada omitía las referencias (filas JD-A-005, JD-A-006, JD-A-008, JD-B-001 y JD-B-003 a JD-B-006). |
+| Prioridad | P2: una actualización podía restablecer la licencia elegida o cambiar de modo sin avisar, y la reparación no podía restaurar una referencia que informaba como drift. |
+| Dependencias | RH-W-0120. |
+| Estado | completed |
+| Trabajo completado | El `check.py repair` generado cubre ahora `canonicalReferences`. `render` sin `--license` conserva la licencia instalada autenticada (MIT solo en una instalación nueva o en un manifest histórico sin licencia). La configuración de autoridad vincula los mismos runtimes y licencia efectivos que usa el renderizador. La vista previa y `check` informan `integrationModeSet` (modo registrado frente al solicitado), y la referencia de entrevista hace del modo registrado el valor por defecto al actualizar. `SKILL.md` pregunta por los runtimes solo mientras el conjunto no está resuelto; `validation.md` y la ayuda de `--runtime` dicen que omitirlo usa el conjunto registrado; la entrevista de licencia exige una expresión SPDX o `LicenseRef-` válida; la investigación rh-w-0031 queda marcada como historia del repositorio fuente. |
+| Trabajo restante | none |
+| Adiciones | Siete pruebas de regresión; cuatro pruebas existentes actualizadas para el conjunto de reparación y la redacción del paso 2. |
+| Exclusiones | Sin flag nuevo en la CLI; `--standalone` conserva su significado. La seguridad de escritura y las lecturas protegidas del manifest son RH-W-0122. |
+| Aplazamientos | Archivos `.gitattributes` anidados (JD-A-007): no hay evidencia en repositorios reales. |
+| Rechazos | Migración heredada de skills en `.pi` (JD-A-009): los nombres fijos (4c5cca8, 2026-08-14) son anteriores a la primera etiqueta `v3.1-rc.1` y Pi no tenía proyección `.pi/skills` entonces, así que ninguna instalación publicada la necesita. JD-A-001: los destinos de proyección vienen solo de `canonicalProjections`, que los manifests de consumidores no declaran. JD-A-010/JD-B-002: repetir las referencias supervivientes tras aplicar es una guía al agente por diseño (RH-W-0117). |
+| Evidencia | RED y luego GREEN para cada regla: la referencia faltante no aparecía en la lista de reparación; los contextos de autoridad con la licencia instalada o los runtimes registrados fallaban por desajuste de configuración; faltaba `integrationModeSet`; un manifest histórico sin licencia fallaba antes del respaldo MIT. Suite completa 694 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras. Issue #449. |
+| Historial de decisiones | 2026-10-18: el propietario delegó las decisiones ("decidelo tu"); el agente eligió informar en lugar de un flag de modo nuevo y rechazó o aplazó las filas sin evidencia actual. 2026-10-18: completado. |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0120
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

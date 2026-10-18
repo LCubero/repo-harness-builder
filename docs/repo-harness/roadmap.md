@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0121
+| Field | Value |
+|---|---|
+| Origin | The read-only review of `main` at `c3781fd` on 2026-10-18 found that updates could silently change an installed harness and that the generated repair skipped references (judge rows JD-A-005, JD-A-006, JD-A-008, JD-B-001, JD-B-003 to JD-B-006). |
+| Priority | P2: an update could reset a chosen license or switch modes without saying so, and repair could not restore a reference it reported as drift. |
+| Dependencies | RH-W-0120. |
+| Status | completed |
+| Completed work | The generated `check.py repair` now covers `canonicalReferences`. `render` without `--license` keeps the authenticated installed license (MIT only for a new installation or a historical manifest without one). The authority configuration binds the same effective runtimes and license the renderer uses. Render preview and `check` report `integrationModeSet` (recorded versus requested mode), and the interview reference makes the recorded mode the update default. `SKILL.md` asks for runtimes only while the set is unresolved; `validation.md` and the `--runtime` help say an omitted runtime uses the recorded set; the license interview requires a valid SPDX or `LicenseRef-` expression; the rh-w-0031 research is marked as source-repository history. |
+| Remaining work | none |
+| Additions | Seven regression tests; four existing tests updated for the intended repair set and step 2 wording. |
+| Exclusions | No new CLI flag; `--standalone` keeps its meaning. Write safety and guarded manifest reads are RH-W-0122. |
+| Deferrals | Nested `.gitattributes` files (JD-A-007): no real-repository evidence. |
+| Rejections | Legacy `.pi` skill migration (JD-A-009): fixed skill names (4c5cca8, 2026-08-14) predate the first tag `v3.1-rc.1`, and Pi had no `.pi/skills` projection then, so no released installation needs it. JD-A-001: projection targets come only from `canonicalProjections`, which consumer manifests do not declare. JD-A-010/JD-B-002: repeating surviving references after apply is agent guidance by design (RH-W-0117). |
+| Evidence | RED then GREEN for each rule: the missing reference was absent from the repair list; authority contexts with the installed license or recorded runtimes failed with a configuration mismatch; `integrationModeSet` was missing; a historical manifest without a license failed before the MIT fallback. Full suite 694 tests, `OK (skipped=11)`; checker `current`, 0 writes. Issue #449. |
+| Decision history | 2026-10-18: the owner delegated the decisions ("decidelo tu"); the agent chose reporting over a new mode flag and rejected or deferred the rows without present evidence. 2026-10-18: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0120
 | Field | Value |
 |---|---|

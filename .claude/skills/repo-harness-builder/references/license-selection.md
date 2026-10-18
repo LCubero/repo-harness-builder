@@ -7,7 +7,7 @@ Ask the user to choose a license when the repository does not already declare on
 | `MIT` | Short permissive terms allowing broad reuse, modification, sublicensing, and sale when the copyright and permission notice are retained. It contains no explicit patent grant. |
 | `Apache-2.0` | Permissive terms with an explicit contributor patent license, patent-litigation termination, changed-file notices, and NOTICE handling when applicable. |
 | `GPL-3.0-only` | Strong copyleft: conveyed modified source works remain under GPL v3, and corresponding source obligations apply to conveyed object code. Use `GPL-3.0-or-later` only if the user explicitly wants the later-version option. |
-| Another or custom choice | Accept another valid SPDX expression or a user-supplied custom choice. Explain that custom legal text may warrant legal review. |
+| Another or custom choice | The renderer accepts only a valid SPDX expression, including `LicenseRef-...` for a custom license, not arbitrary legal text. Explain that custom legal text may warrant legal review. |
 
 Never claim one option is universally best or most popular.
 

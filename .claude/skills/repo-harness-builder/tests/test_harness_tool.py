@@ -841,7 +841,7 @@ class ApprovalUxTests(unittest.TestCase):
         self.assertIn("direct cli `check` remains a separate read-only rendered comparison", branch)
         self.assertIn("existing installation, update, or correction flow unchanged", dispatch)
         self.assertIn("Ask only unresolved conversation language, then documentation languages, one at a time; reuse the report-language answer and `recordedLanguage`.", steps)
-        self.assertIn("Report absent runtime surfaces and ask which profiles to include; stop. Do not infer profiles.", steps)
+        self.assertIn("Unresolved runtimes: report absent surfaces; ask which profiles to include; stop. Do not infer profiles.", steps)
         self.assertIn("default `--activation maintenance`", skill)
         self.assertIn("--activation builder", steps)
         self.assertIn("--apply", steps)
@@ -10300,6 +10300,11 @@ class GeneratedCheckScriptTests(unittest.TestCase):
                     surface_family, surface = self.loaded(root).COMMAND_SURFACES[runtime]
                     if surface_family == family:
                         targets.add(surface.format(name=name))
+        for canonical in manifest.get("canonicalReferences", []):
+            parts = PurePosixPath(canonical).parts
+            for runtime in manifest["runtimes"]:
+                surface = self.loaded(root).SKILL_SURFACES[runtime].format(name=parts[2])
+                targets.add(str(PurePosixPath(surface).parent / "references" / parts[-1]))
         for runtime_targets in manifest.get("canonicalProjections", {}).values():
             targets.update(runtime_targets.values())
         return targets
@@ -10734,7 +10739,7 @@ class RuntimeSelectionContractTests(unittest.TestCase):
     def test_skill_gates_an_absent_runtime_selection(self):
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         audit = (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")
-        self.assertIn("Report absent runtime surfaces and ask which profiles to include; stop. Do not infer profiles.", skill)
+        self.assertIn("Unresolved runtimes: report absent surfaces; ask which profiles to include; stop. Do not infer profiles.", skill)
         section = audit.split("## Runtime Selection", 1)[1].split("## Report Language", 1)[0]
         self.assertIn("Nothing supplied. The set stays an open decision.", section)
         self.assertIn("report every supported profile", section)
@@ -12776,6 +12781,109 @@ class StatelessBoundaryTests(unittest.TestCase):
             )
             self.assertEqual(applied.returncode, 0, applied.stderr)
             self.assertTrue((root / "REPO-HARNESS.md").is_file())
+
+
+class UpdateDefaultsRegressionTests(unittest.TestCase):
+    def cli(self, root, command="render", *extra):
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            code = TOOL.main([command, "--root", str(root), "--project-name", "Example", *extra])
+        self.assertEqual(code, 0, out.getvalue() + err.getvalue())
+        return json.loads(out.getvalue())
+
+    def install(self, root, *extra):
+        args = ("--standalone", *extra)
+        preview = self.cli(root, "render", *args)
+        self.cli(root, "render", *args, "--apply", "--approved-plan-sha256", preview["planSha256"])
+
+    def authority(self, root, license_id, runtimes, *extra):
+        context = AuthorityContextTests().context(evidence=[])
+        context["premises"][0]["evidenceIds"] = []
+        context["builder"].update(runtimes=runtimes, license=license_id,
+                                  integrationMode="standalone", documentationLanguages=["en"],
+                                  conversationLanguage="english", ignoreCodegraph=True,
+                                  effectiveCapabilities={"gentleAi": "disabled", "engram": "disabled"})
+        path = root / "authority.json"
+        path.write_text(TOOL.canonical_json(context), encoding="utf-8")
+        return self.cli(root, "render", "--standalone", "--activation", "builder",
+                        "--project-id", "example", "--authority-context-file", str(path), *extra)
+
+    def test_s1_checker_repairs_missing_reference(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.install(root, "--runtime", "pi")
+            manifest = json.loads((root / TOOL.MANIFEST_PATH).read_text(encoding="utf-8"))
+            source = manifest["canonicalReferences"][0]
+            parts = Path(source).parts
+            relative = f".pi/skills/{parts[2]}/references/{parts[-1]}"
+            target = root / relative
+            target.unlink()
+            checker = [sys.executable, "-B", str(root / ".repo-harness/check.py")]
+            preview = json.loads(subprocess.run([*checker, "repair"], capture_output=True, text=True, check=True).stdout)
+            self.assertIn(relative, preview["create"])
+            result = subprocess.run([*checker, "repair", "--apply", "--approved-plan-sha256", preview["planSha256"]], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(target.read_bytes(), (root / source).read_bytes())
+
+    def test_s2_update_keeps_installed_license(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.install(root, "--license", "Apache-2.0")
+            preview = self.cli(root, "render", "--standalone")
+            self.assertEqual(preview["blocked"], [])
+            explicit = self.cli(root, "render", "--standalone", "--license", "Apache-2.0")
+            self.assertEqual(preview["planSha256"], explicit["planSha256"])
+            self.authority(root, "Apache-2.0", [])
+
+    def test_s3_authority_uses_recorded_runtimes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.install(root, "--runtime", "pi")
+            self.authority(root, "MIT", ["pi"])
+
+    def test_s4_reports_recorded_and_requested_modes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.install(root)
+            for command in ("render", "check"):
+                for flags, requested in (((), "integrated"), (("--standalone",), "standalone")):
+                    with self.subTest(command=command, requested=requested):
+                        report = self.cli(root, command, *flags)
+                        self.assertEqual(report["integrationModeSet"], {
+                            "recorded": "standalone", "requested": requested,
+                            "matches": requested == "standalone"})
+
+    def test_mode_report_tolerates_absent_and_malformed_records(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.assertIsNone(self.cli(root)["integrationModeSet"]["recorded"])
+            target = root / TOOL.MANIFEST_PATH
+            target.parent.mkdir(exist_ok=True)
+            for content in ("{", "[]", '{"integrationMode": "unknown"}'):
+                target.write_text(content, encoding="utf-8")
+                self.assertIsNone(TOOL.integration_mode_set_report(root, False)["recorded"])
+
+    def test_historical_manifest_without_license_still_defaults_to_mit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = TOOL.render("Example", [], standalone=True)
+            manifest = json.loads(outputs[TOOL.MANIFEST_PATH])
+            manifest.pop("skillLicense")
+            manifest.pop("canonicalReferences", None)
+            historical_manifest = TOOL.dump_json(manifest)
+            outputs[TOOL.MANIFEST_PATH] = historical_manifest
+            outputs[".repo-harness/check.py"] = TOOL.check_script(TOOL.digest_text(historical_manifest))
+            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+            self.assertIsNone(TOOL.declared_skill_license(root))
+            self.authority(root, "MIT", [])
+
+    def test_new_install_defaults_to_mit_and_explicit_runtime_wins(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.install(root, "--runtime", "pi")
+            self.assertEqual(TOOL.declared_skill_license(root), "MIT")
+            report = self.authority(root, "MIT", ["opencode"], "--runtime", "opencode")
+            self.assertEqual(report["runtimeSet"]["requested"], ["opencode"])
 
 
 if __name__ == "__main__":
