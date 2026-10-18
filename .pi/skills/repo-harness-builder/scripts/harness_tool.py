@@ -5275,16 +5275,29 @@ def apply_generated_output_migration(
             | {MANIFEST_PATH, ".repo-harness/check.py"}
             | set(continued)
         )
-    except (OSError, ContractError):
+    except BaseException:
+        # Best effort, like write_outputs: one failed step must not stop the rest or mask the cause.
         for target, content in removed.items():
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(content)
+            try:
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(content)
+            except Exception:
+                pass
         for target, content in originals.items():
-            if target.read_bytes() != content:
-                atomic_replace_bytes(target, content)
+            try:
+                if target.read_bytes() != content:
+                    try:
+                        atomic_replace_bytes(target, content)
+                    except OSError:
+                        target.write_bytes(content)
+            except Exception:
+                pass
         for target in reversed(created):
-            if target.is_file():
-                target.unlink()
+            try:
+                if target.is_file():
+                    target.unlink()
+            except Exception:
+                pass
         raise
 
 
@@ -5414,7 +5427,7 @@ def write_outputs(
                             atomic_replace_bytes(target, content)
                         except OSError:
                             target.write_bytes(content)
-                except OSError:
+                except Exception:
                     pass
             for target in reversed(written):
                 try:
@@ -5423,7 +5436,7 @@ def write_outputs(
                         target not in completed or digest_bytes(target.read_bytes()) == digest_text(outputs[relative])
                     ):
                         target.unlink()
-                except OSError:
+                except Exception:
                     pass
             raise
 

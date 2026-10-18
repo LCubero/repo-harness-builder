@@ -552,13 +552,13 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Prioridad | P2: interrupciones poco frecuentes todavía podían dejar los archivos parciales que RH-W-0122 quería evitar. |
 | Dependencias | RH-W-0122. |
 | Estado | completed |
-| Trabajo completado | `write_outputs` hace rollback ante cualquier interrupción, incluido `KeyboardInterrupt`, y la vuelve a lanzar. Cada paso del rollback es de mejor esfuerzo: si la restauración atómica no puede crear su archivo temporal, restaura en el lugar, y un paso fallido ya no detiene el resto de la limpieza. El `check.py repair` generado elimina un archivo que creó pero no terminó de escribir, mientras que un archivo completo modificado después se conserva. |
+| Trabajo completado | `write_outputs` hace rollback ante cualquier interrupción, incluido `KeyboardInterrupt`, y la vuelve a lanzar. Cada paso del rollback es de mejor esfuerzo: si la restauración atómica no puede crear su archivo temporal, restaura en el lugar, y un paso fallido (incluso con un error inesperado) ya no detiene el resto de la limpieza ni oculta el error original; el rollback de la migración de skills generadas sigue la misma regla. El `check.py repair` generado elimina un archivo que creó pero no terminó de escribir, mientras que un archivo completo modificado después se conserva. |
 | Trabajo restante | none |
-| Adiciones | Tres pruebas de inyección de fallos (creación interrumpida, sin archivos temporales, escritura parcial en la reparación). |
+| Adiciones | Cuatro pruebas de inyección de fallos (creación interrumpida, sin archivos temporales, error inesperado en la limpieza, escritura parcial en la reparación). |
 | Exclusiones | Sin cambio de comportamiento en aplicaciones o reparaciones exitosas. |
 | Aplazamientos | none |
 | Rechazos | none |
-| Evidencia | Veredicto del Judgment Day: `APPROVED` (ninguna fila BLOCKER/CRITICAL; la verificación final fue la suite de 701 pruebas en `ba00fc2`). RED y luego GREEN: las tres pruebas nuevas fallaban antes del cambio (quedaba un archivo parcial; la restauración de `.gitignore` y la limpieza de `new.txt` no se ejecutaban; el rollback informaba `preserved-changed`). Suite completa 704 pruebas, `OK (skipped=12)`; checker `current`, 0 escrituras. Issue #454. |
+| Evidencia | Veredicto del Judgment Day: `APPROVED` (ninguna fila BLOCKER/CRITICAL; la verificación final fue la suite de 701 pruebas en `ba00fc2`). RED y luego GREEN: las tres pruebas nuevas fallaban antes del cambio (quedaba un archivo parcial; la restauración de `.gitignore` y la limpieza de `new.txt` no se ejecutaban; el rollback informaba `preserved-changed`). Después, un verificador independiente encontró que un error inesperado en la limpieza podía ocultar el fallo original y que el rollback de la migración no era de mejor esfuerzo; ambos se corrigieron en el mismo PR. Suite completa 705 pruebas, `OK (skipped=12)`; checker `current`, 0 escrituras. Issue #454. |
 | Historial de decisiones | 2026-10-18: el propietario pidió Judgment Day ("dale") y había delegado las decisiones ("decidelo tu"); el agente corrigió las filas MEDIUM como trabajo ordinario porque cada corrección es de pocas líneas. 2026-10-18: completado. |
 | Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
 

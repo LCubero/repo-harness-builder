@@ -153,6 +153,45 @@ class SafeWriteAndManifestTests(unittest.TestCase):
             self.assertFalse((root / "new.txt").exists())
             self.assertEqual(gitignore.read_bytes(), original)
 
+    def test_unexpected_cleanup_error_never_masks_the_original_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = install(root, "Example", ())
+            outputs["a-first.txt"] = "first\n"
+            outputs["b-second.txt"] = "second\n"
+            plan = TOOL.plan_changes(root, outputs)
+            original_open = Path.open
+            real_digest = TOOL.digest_bytes
+            failed = []
+
+            def failing_second(candidate, mode="r", *args, **kwargs):
+                handle = original_open(candidate, mode, *args, **kwargs)
+                if mode == "x" and candidate.name == "b-second.txt":
+                    class FailingWriter:
+                        def __enter__(self):
+                            return self
+
+                        def write(self, content):
+                            failed.append(True)
+                            raise OSError("forced second create failure")
+
+                        def __exit__(self, *exc):
+                            handle.close()
+                    return FailingWriter()
+                return handle
+
+            def broken_digest(*args, **kwargs):
+                # Only the rollback, after the failure, hits this unexpected error.
+                if failed:
+                    raise ValueError("unexpected cleanup error")
+                return real_digest(*args, **kwargs)
+
+            with mock.patch.object(Path, "open", failing_second), \
+                    mock.patch.object(TOOL, "digest_bytes", broken_digest):
+                with self.assertRaisesRegex(OSError, "forced second create failure"):
+                    TOOL.write_outputs(root, outputs, plan)
+            self.assertFalse((root / "b-second.txt").exists())
+
     def test_checker_repair_rollback_removes_its_partial_reference(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
