@@ -4,11 +4,11 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
-## 2026-10-19
+## 2026-10-18
+
+- RH-W-0120: a read-only review of `main` found living documents that contradicted their owners; `decisions.md`, `current-state.md`, the documentation maps, the RH-W-0076 scopes, and the Spanish `usage.md` now match the roadmap and `CONTRIBUTING.md`, and the PR #446 entry moved to its real date (EN/ES; documentation only).
 
 - The RH-W-0117 roadmap record (EN/ES) now names the four owner-provided repositories as test repositories A to D instead of their real names, because this repository is public.
-
-## 2026-10-18
 
 - Documented RH-W-0116 and RH-W-0118 in the EN/ES builder guide (`human-evolved` after upgrades; the question about git-ignored harness paths) and updated the current next step through RH-W-0119.
 

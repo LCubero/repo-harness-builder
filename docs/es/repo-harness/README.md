@@ -30,7 +30,7 @@
 | [Plan de implementación RH-W-0053](rh-w-0053-implementation-plan.md) | Registro de ejecución RH-W-0053 entregado y completado con pruebas primero; se conserva la evidencia verificada |
 | [Diseño RH-W-0048](rh-w-0048-design.md) | Diseño de recuperación completado y entregado; el [registro del roadmap](roadmap.md#rh-w-0048) posee la evidencia de reconciliación y verificación independiente |
 | [Plan de implementación RH-W-0048](rh-w-0048-implementation-plan.md) | Registro histórico de ejecución con TDD estricto; el roadmap posee el trabajo restante del ciclo |
-| [Diseño RH-W-0046/RH-W-0018](rh-w-0046-rh-w-0018-design.md) | Diseño conjunto aprobado por delegación del propietario sobre consentimiento de fetch y preferencias de menos preguntas; RH-W-0046 completada sigue separada de RH-W-0018 aplazada |
+| [Diseño RH-W-0046/RH-W-0018](rh-w-0046-rh-w-0018-design.md) | Diseño conjunto aprobado por delegación del propietario sobre consentimiento de fetch y preferencias de menos preguntas; RH-W-0046 completada sigue separada de RH-W-0018 rechazada |
 | [Plan RH-W-0046](rh-w-0046-implementation-plan.md) | Registro histórico de ejecución RH-W-0046 completada; el límite exacto de consentimiento solo puede reabrirse por regresión |
 | [Diseño RH-W-0044](rh-w-0044-design.md) | Diseño aprobado; implementación completada y entregada bajo la decisión conservadora mediante el PR #236 |
 | [Plan de implementación RH-W-0044](rh-w-0044-implementation-plan.md) | Plan corregido con pruebas primero entregado mediante PR #226; implementación local completada y verificada por separado de la entrega |
@@ -57,7 +57,7 @@
 | [Plan de implementación RH-W-0013](rh-w-0013-implementation-plan.md) | Par humano del plan completado de dos tareas para RH-W-0013; instrucciones históricas conservadas |
 | [Diseño RH-W-0073](rh-w-0073-design.md) | Diseño completado de control del presupuesto del rulebook; se conserva el cuerpo histórico del diseño |
 | [Plan de implementación RH-W-0073](rh-w-0073-implementation-plan.md) | Plan de implementación RH-W-0073 completado; se conserva la evidencia histórica de ejecución |
-| [Alcance RH-W-0076](rh-w-0076-scope.md) | Propuesta histórica de tres cortes: corte 1 entregado; retiro de planes y techo/compresión del builder esperan aprobación del alcance residual |
+| [Alcance RH-W-0076](rh-w-0076-scope.md) | Alcance completado de tres cortes: cortes 1 y 2 entregados (retiro de planes mediante PR #263); techo/compresión del builder transferidos a RH-W-0078; cuerpo histórico conservado |
 | [Alcance RH-W-0084](rh-w-0084-scope.md) | Alcance de investigación LLM-first completado y aprobado por el propietario; se conservan el cuerpo histórico y las actualizaciones de ciclo de vida |
 | [Alcance RH-W-0083](rh-w-0083-scope.md) | Alcance completado y aprobado por el propietario de la obligación inmediatamente anterior a responder y sus pruebas enfocadas; se conserva el límite histórico |
 | [Alcance RH-W-0087](rh-w-0087-scope.md) | Alcance completado y aprobado por el propietario que prohíbe atribución de IA en commits generados; se conserva el límite histórico |
@@ -71,7 +71,7 @@
 | [Alcance RH-W-0078](rh-w-0078-scope.md) | Alcance aprobado por el propietario para skills generadas de varios archivos, referencias alcanzables y mecánica selectiva en Python existente; la implementación ya tiene autorización separada |
 | [Diseño RH-W-0078](rh-w-0078-design.md) | Diseño bilingüe acotado y procedimiento de medición reproducible aprobados por el propietario; resultados de runtime siguen desconocidos y medir es requisito antes de afirmar efectividad, no antes de implementar |
 | [Plan de implementación RH-W-0078](rh-w-0078-implementation-plan.md) | Implementación bilingüe entregada y completada por aceptación del propietario; medición de runtime eximida, sin afirmar ahorros medidos |
-| [Alcance RH-W-0092](rh-w-0092-scope.md) | Alcance propuesto para guía condicional de rutas largas en Windows; la remediación global de Git solo la ejecuta la persona |
+| [Alcance RH-W-0092](rh-w-0092-scope.md) | Alcance completado y reemplazado por la regla simple de acuerdos de trabajo, entregada mediante PR #331; cuerpo histórico conservado; la remediación global de Git solo la ejecuta la persona |
 | [Diseño RH-W-0095](rh-w-0095-design.md) | Diseño de acuses contextuales entregado; conserva la evidencia histórica de implementación y registra la fusión del PR #213 |
 | [Diseño RH-W-0067](rh-w-0067-design.md) | Par humano del diseño completado del contrato de respuesta; cuerpo histórico conservado |
 | [Plan de implementación RH-W-0067](rh-w-0067-implementation-plan.md) | Par humano del plan de implementación completado; instrucciones históricas conservadas |

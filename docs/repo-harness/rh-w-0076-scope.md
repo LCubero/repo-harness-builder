@@ -1,5 +1,7 @@
 # RH-W-0076 Correction Scope
 
+**Status: `completed`; slices 1 and 2 delivered (plan retirement through PR #263), builder ceiling/compression transferred to RH-W-0078. The scope below is historical; the [roadmap](roadmap.md#rh-w-0076) owns lifecycle.**
+
 ## Decision
 
 RH-W-0076 owns three declared limits with nothing able to detect a breach. This scope names what each correction changes, what control detects a recurrence, and how the work is sliced. It authorizes no implementation.
