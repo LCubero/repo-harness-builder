@@ -4,7 +4,7 @@
 
 ## 2026-10-18
 
-- RH-W-0116: una simulación de actualización de consumidor (`v3.1-rc.15` a `main`) mostró que los archivos humanos sin editar conservan texto generado anterior que puede contradecir las skills nuevas, informado como `human-evolved`. Las referencias del builder definen ahora `human-evolved` como edición humana o texto generado anterior e indican al agente que, tras actualizar, informe esos archivos como posiblemente desactualizados, los compare con un render nuevo y proponga solo cambios aprobados. Sin cambio de comportamiento ni migración (issue #434).
+- RH-W-0116: una simulación de actualización de consumidor (`v3.1-rc.15` a `main`) mostró que los archivos humanos sin editar conservan texto generado anterior que puede contradecir las skills nuevas, informado como `human-evolved`. Las referencias del builder definen ahora `human-evolved` como edición humana o texto generado anterior e indican al agente que, tras actualizar, informe esos archivos como posiblemente desactualizados, los compare con un render nuevo y proponga solo cambios aprobados. Sin cambio de comportamiento ni migración (issue #434, PR #435).
 
 - RH-W-0115: Judgment Day sobre la alineación completa entre el builder y este harness encontró dos decisiones permanentes generadas contradictorias. El `decisions.md` generado (EN/ES) nombra ahora el backup local nativo al cerrar la sesión como parte del núcleo (el respaldo externo queda fuera) y dice que el builder cambia un archivo existente solo mediante un plan aprobado ligado a los bytes actuales exactos de ese archivo. Las instalaciones existentes conservan su archivo humano (issue #432, PR #433).
 

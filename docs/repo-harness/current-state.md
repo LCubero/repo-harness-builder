@@ -5,7 +5,7 @@
 ## Verified State
 <!-- doc-role:verified-state -->
 
-- `RH-W-0116` is `completed`: after an upgrade, the builder references tell the agent to report kept `human-evolved` files as possibly outdated and compare them with a fresh render; `human-evolved` is defined as a human edit or earlier generated text. No behavior change (issue #434). See the [canonical record](roadmap.md#rh-w-0116).
+- `RH-W-0116` is `completed`: after an upgrade, the builder references tell the agent to report kept `human-evolved` files as possibly outdated and compare them with a fresh render; `human-evolved` is defined as a human edit or earlier generated text. No behavior change (issue #434, PR #435). See the [canonical record](roadmap.md#rh-w-0116).
 - `RH-W-0115` is `completed`: Judgment Day on the full alignment found two contradictory generated standing decisions (file updates and native backup); both now match the approved plan and session-stop in EN and ES (issue #432, PR #433). See the [canonical record](roadmap.md#rh-w-0115).
 - `RH-W-0114` is `completed`: the living self-hosted Spanish documents are now accented (accents only, no change of meaning); historical designs and changelog entries are unchanged (issue #430, PR #431). See the [canonical record](roadmap.md#rh-w-0114).
 - `RH-W-0113` is `completed`: the generated usage guide (English and Spanish) now describes the local backup, saving preferences by explicit request, and batch mode, and the Spanish guide gains the authority-digest paragraph and correct accents (issue #428, PR #429). See the [canonical record](roadmap.md#rh-w-0113).
