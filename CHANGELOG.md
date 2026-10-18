@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
-- RH-W-0115: Judgment Day on the full builder/self-hosted alignment found two contradictory generated standing decisions. The generated `decisions.md` (EN/ES) now names the native local backup at session close as part of the core harness (external backup stays outside) and says the builder changes an existing file only through an approved plan bound to that file's exact current bytes. Existing installations keep their human-owned file (issue #432).
+- RH-W-0115: Judgment Day on the full builder/self-hosted alignment found two contradictory generated standing decisions. The generated `decisions.md` (EN/ES) now names the native local backup at session close as part of the core harness (external backup stays outside) and says the builder changes an existing file only through an approved plan bound to that file's exact current bytes. Existing installations keep their human-owned file (issue #432, PR #433).
 
 - RH-W-0114: the living self-hosted Spanish documents (documentation map, current state, decisions, roadmap, builder guide, contribution guide, and the Spanish changelog header) are now accented; accents only, no change of meaning. Historical designs and changelog entries are unchanged (issue #430, PR #431).
 

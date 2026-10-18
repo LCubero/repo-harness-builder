@@ -4,7 +4,7 @@
 
 ## 2026-10-18
 
-- RH-W-0115: Judgment Day sobre la alineación completa entre el builder y este harness encontró dos decisiones permanentes generadas contradictorias. El `decisions.md` generado (EN/ES) nombra ahora el backup local nativo al cerrar la sesión como parte del núcleo (el respaldo externo queda fuera) y dice que el builder cambia un archivo existente solo mediante un plan aprobado ligado a los bytes actuales exactos de ese archivo. Las instalaciones existentes conservan su archivo humano (issue #432).
+- RH-W-0115: Judgment Day sobre la alineación completa entre el builder y este harness encontró dos decisiones permanentes generadas contradictorias. El `decisions.md` generado (EN/ES) nombra ahora el backup local nativo al cerrar la sesión como parte del núcleo (el respaldo externo queda fuera) y dice que el builder cambia un archivo existente solo mediante un plan aprobado ligado a los bytes actuales exactos de ese archivo. Las instalaciones existentes conservan su archivo humano (issue #432, PR #433).
 
 - RH-W-0114: los documentos vivos en español de este repositorio (mapa de documentación, estado actual, decisiones, hoja de ruta, guía del builder, guía de contribución y la cabecera del changelog en español) llevan ahora tildes; solo tildes, sin cambio de significado. Los diseños históricos y las entradas del changelog no cambian (issue #430, PR #431).
 

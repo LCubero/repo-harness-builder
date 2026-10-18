@@ -5,7 +5,7 @@ La fuente canónica de estos hechos es [`../../repo-harness/current-state.md`](.
 ## Estado verificado
 <!-- doc-role:verified-state -->
 
-- `RH-W-0115` está `completed`: Judgment Day sobre la alineación completa encontró dos decisiones permanentes generadas contradictorias (actualización de archivos y backup nativo); ambas coinciden ahora con el plan aprobado y session-stop en EN y ES (issue #432). Consulte el [registro canónico](roadmap.md#rh-w-0115).
+- `RH-W-0115` está `completed`: Judgment Day sobre la alineación completa encontró dos decisiones permanentes generadas contradictorias (actualización de archivos y backup nativo); ambas coinciden ahora con el plan aprobado y session-stop en EN y ES (issue #432, PR #433). Consulte el [registro canónico](roadmap.md#rh-w-0115).
 - `RH-W-0114` está `completed`: los documentos vivos en español de este repositorio llevan ahora tildes (solo tildes, sin cambio de significado); los diseños históricos y las entradas del changelog no cambian (issue #430, PR #431). Consulte el [registro canónico](roadmap.md#rh-w-0114).
 - `RH-W-0113` está `completed`: la guía de uso generada (inglés y español) describe ahora el backup local, guardar preferencias por petición explícita y el modo por lotes, y la guía en español incorpora el párrafo de digests de autoridad y tildes correctas (issue #428, PR #429). Consulte el [registro canónico](roadmap.md#rh-w-0113).
 - `RH-W-0112` está `completed`: las referencias del builder describen ahora `harness_tool.py` tal como se comporta (cambios de entornos, corrección de autoridad, tolerancia de presupuesto, sugerencias, archivo, vocabulario de estados, plantillas de informe); solo documentación (issue #426, PR #427). Vea el [registro canónico](roadmap.md#rh-w-0112).
