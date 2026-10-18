@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0116
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Simulación de consumidor del 2026-10-18 (instalación con `v3.1-rc.15`, actualización con `main`): la actualización funciona, pero 13 archivos humanos sin editar conservan el texto que generó la versión anterior, `check` los informa como `human-evolved` y no se ofrece ninguna sugerencia. Parte de ese texto contradice las skills reemplazadas (la antigua línea de privacidad de `memory.md` corregida por RH-W-0111, "never raise the budget" corregida por RH-W-0108). Las referencias del builder definían `human-evolved` como prosa editada y no mencionaban el efecto. Issue #434. |
+| Prioridad | P2: un agente que ejecutaba una actualización no avisaba a la persona de que las reglas conservadas pueden estar desactualizadas. |
+| Dependencias | RH-W-0044 (vista previa de sugerencias), RH-W-0107 a RH-W-0115 (exclusiones sin migración). |
+| Estado | completed |
+| Trabajo completado | `preservation-and-safety.md`, `validation.md` y `architecture.md` definen `human-evolved` como contenido humano que difiere del render actual, sea una edición humana o texto que generó una versión anterior del builder. La sección de actualizaciones indica al agente que, tras actualizar, informe cada archivo `human-evolved` como posiblemente desactualizado, lo compare con un render nuevo en un directorio vacío y proponga solo los cambios que la persona apruebe. |
+| Trabajo restante | none |
+| Adiciones | Una prueba de referencias. |
+| Exclusiones | Sin cambio de comportamiento, manifiesto ni checker y sin migración. Distinguir ambos casos en `check` requeriría datos nuevos en el manifiesto; el agente decidió no diseñarlo ahora. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | Simulación de consumidor en `.repo-harness/tmp/`: repositorio vacío (74 creados, check `current`, nuevo render idéntico), repositorio existente (README intacto, solo se agregan líneas exactas, check `current`) e instalación `v3.1-rc.15` actualizada con `main` (20 skills reemplazadas, una regla creada, una edición humana conservada, check `current`; 13 archivos humanos sin editar informados como `human-evolved`, 0 sugerencias). RED y luego GREEN: la nueva prueba de referencias fallaba antes y pasa después. Suite completa 685 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; `self-test` pasa. |
+| Historial de decisiones | 2026-10-18: el propietario delegó la decisión ("decídelo tú"); el agente mantuvo la decisión sin migración y eligió una corrección solo de referencias, porque las referencias del builder llegan a las instalaciones existentes mediante sus proyecciones. 2026-10-18: completado. |
+| Siguiente condición de avance | none (terminal); se reabre si los consumidores necesitan que `check` distinga texto generado anterior. |
+
 ### RH-W-0115
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
