@@ -557,7 +557,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | No behavior change for successful applies. The generated checker's own repair keeps its existing create rollback. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | RED then GREEN: a forced replacement failure did not raise before the change, a mid-write create failure left the file, and a refused guard still returned the recorded runtimes. The symlink test skips where the OS forbids directory symlinks; the guard-refusal test covers the same path. Full suite 701 tests, `OK (skipped=12)`; checker `current`, 0 writes. Issue #451. |
+| Evidence | RED then GREEN: a forced replacement failure did not raise before the change, a mid-write create failure left the file, and a refused guard still returned the recorded runtimes. The symlink test skips where the OS forbids directory symlinks; the guard-refusal test covers the same path. Full suite 701 tests, `OK (skipped=12)`; checker `current`, 0 writes. Issue #451, PR #452 (squash merge). |
 | Decision history | 2026-10-18: the owner delegated the decisions ("decidelo tu"); the agent kept this risk-bearing unit in its own PR, separate from RH-W-0121. 2026-10-18: completed. |
 | Next advancement condition | none (terminal); reopen on regression. |
 

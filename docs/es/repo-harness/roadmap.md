@@ -558,7 +558,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Exclusiones | Sin cambio de comportamiento en aplicaciones exitosas. La reparación propia del checker generado conserva su rollback de creación actual. |
 | Aplazamientos | none |
 | Rechazos | none |
-| Evidencia | RED y luego GREEN: un fallo forzado de reemplazo no se propagaba antes del cambio, un fallo de creación a mitad de escritura dejaba el archivo y una guarda rechazada seguía devolviendo los runtimes registrados. La prueba con symlink se omite donde el sistema prohíbe symlinks de directorio; la prueba de rechazo de la guarda cubre la misma ruta. Suite completa 701 pruebas, `OK (skipped=12)`; checker `current`, 0 escrituras. Issue #451. |
+| Evidencia | RED y luego GREEN: un fallo forzado de reemplazo no se propagaba antes del cambio, un fallo de creación a mitad de escritura dejaba el archivo y una guarda rechazada seguía devolviendo los runtimes registrados. La prueba con symlink se omite donde el sistema prohíbe symlinks de directorio; la prueba de rechazo de la guarda cubre la misma ruta. Suite completa 701 pruebas, `OK (skipped=12)`; checker `current`, 0 escrituras. Issue #451, PR #452 (squash). |
 | Historial de decisiones | 2026-10-18: el propietario delegó las decisiones ("decidelo tu"); el agente mantuvo esta unidad con riesgo en su propio PR, separada de RH-W-0121. 2026-10-18: completado. |
 | Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
 
