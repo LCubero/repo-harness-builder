@@ -555,7 +555,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Remaining work | none |
 | Additions | Four failure-injection tests (interrupted create, no temporary files, unexpected cleanup error, partial repair write). |
 | Exclusions | No behavior change for successful applies or repairs. |
-| Deferrals | none |
+| Deferrals | Two edge cases the independent verifier named and the agent chose not to fix (no real-repository evidence): the generated-skill migration rollback removes the destinations it created without a content check, and the in-place restore fallback runs only after an `OSError` from the atomic restore. |
 | Rejections | none |
 | Evidence | Judgment Day verdict: `APPROVED` (no BLOCKER/CRITICAL rows; final verification was the 701-test suite on `ba00fc2`). RED then GREEN: all three new tests failed before the change (a partial file remained; the `.gitignore` restore and `new.txt` cleanup did not run; rollback reported `preserved-changed`). An independent verifier then found that an unexpected cleanup error could mask the original failure and that the migration rollback was not best effort; both were fixed in the same PR. Full suite 705 tests, `OK (skipped=12)`; checker `current`, 0 writes. Issue #454. |
 | Decision history | 2026-10-18: the owner asked for Judgment Day ("dale") and had delegated the decisions ("decidelo tu"); the agent fixed the MEDIUM rows as ordinary work because each fix is a few lines. 2026-10-18: completed. |

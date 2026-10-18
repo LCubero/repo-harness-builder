@@ -556,7 +556,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Trabajo restante | none |
 | Adiciones | Cuatro pruebas de inyección de fallos (creación interrumpida, sin archivos temporales, error inesperado en la limpieza, escritura parcial en la reparación). |
 | Exclusiones | Sin cambio de comportamiento en aplicaciones o reparaciones exitosas. |
-| Aplazamientos | none |
+| Aplazamientos | Dos casos límite que nombró el verificador independiente y que el agente decidió no corregir (sin evidencia en repositorios reales): el rollback de la migración de skills generadas elimina los destinos que creó sin comprobar su contenido, y el respaldo de restauración en el lugar solo se ejecuta tras un `OSError` de la restauración atómica. |
 | Rechazos | none |
 | Evidencia | Veredicto del Judgment Day: `APPROVED` (ninguna fila BLOCKER/CRITICAL; la verificación final fue la suite de 701 pruebas en `ba00fc2`). RED y luego GREEN: las tres pruebas nuevas fallaban antes del cambio (quedaba un archivo parcial; la restauración de `.gitignore` y la limpieza de `new.txt` no se ejecutaban; el rollback informaba `preserved-changed`). Después, un verificador independiente encontró que un error inesperado en la limpieza podía ocultar el fallo original y que el rollback de la migración no era de mejor esfuerzo; ambos se corrigieron en el mismo PR. Suite completa 705 pruebas, `OK (skipped=12)`; checker `current`, 0 escrituras. Issue #454. |
 | Historial de decisiones | 2026-10-18: el propietario pidió Judgment Day ("dale") y había delegado las decisiones ("decidelo tu"); el agente corrigió las filas MEDIUM como trabajo ordinario porque cada corrección es de pocas líneas. 2026-10-18: completado. |
