@@ -2484,9 +2484,14 @@ def docs_outputs(
 {continuity} They do not become durable truth until reconciled with repository evidence and promoted into the appropriate canonical owner.
 """
     recovery = (
-        "recovers relevant repository continuity and reconciles it with current repository evidence"
+        "recovers relevant repository continuity, including the newest valid local backup under `.repo-harness/memory-bk/`, and reconciles it with current repository evidence"
         if standalone
-        else "recovers relevant context and reconciles it with current repository evidence"
+        else "recovers relevant context from the newest valid local backup under `.repo-harness/memory-bk/` and Engram when available, and reconciles it with current repository evidence"
+    )
+    handoff = (
+        "writes one local backup under `.repo-harness/memory-bk/`"
+        if standalone
+        else "writes one local backup under `.repo-harness/memory-bk/`, then Engram when available"
     )
     availability = (
         "Gentle AI and Engram are independent optional capabilities. Use each at its owned operation boundary; block only when the operation or repository policy requires it. Surface failures without claiming missing guarantees or withholding the repository handoff."
@@ -2506,9 +2511,9 @@ Use the three generated skills as a loop: recover context, keep durable document
 
 ## Daily Workflow
 <!-- doc-role:daily-workflow -->
-1. Start or resume with `repo-harness-session-start` and state the objective. It {recovery}, reports a scoped outcome, and inspects local Git state read-only. A remote-check question applies only when synchronization is relevant and safe. To persist reply language or response modes, edit `.repo-harness/state/preferences/user-preferences.json` by hand; the [response contract](../../.repo-harness/rules/response-contract.md) owns keys and precedence.
+1. Start or resume with `repo-harness-session-start` and state the objective. It {recovery}, reports a scoped outcome, and inspects local Git state read-only. A remote-check question applies only when synchronization is relevant and safe. To persist reply language or response modes, edit `.repo-harness/state/preferences/user-preferences.json` by hand, or explicitly ask the agent to save them; the agent never saves them on its own. The [response contract](../../.repo-harness/rules/response-contract.md) owns keys and precedence.
 2. Use `repo-harness-documentation` when durable documentation or visible project state needs updating.
-3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation and continuity. Only requested Git work triggers path screening and exact work-unit proposals under repository policy; unchanged authorization is not requested again.
+3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation, then {handoff}. Only requested Git work triggers path screening and exact work-unit proposals under repository policy; unchanged authorization is not requested again.
 
 ## Integrated Availability
 <!-- doc-role:availability -->
@@ -2520,7 +2525,7 @@ Run `python3 .repo-harness/check.py` (`python` on Windows) after canonical skill
 
 ## Approval Boundaries
 <!-- doc-role:approval-boundaries -->
-The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, or `degraded`, scoped so optional Git failure does not fail successful continuity. Documentation writes require explicit conversational approval. Explicit safe-sync consent covers bounded fetch plus fast-forward-only integration. Explicit combined commit-and-push consent covers exact staging, commit, checks, one fetch preflight, and one push to the identified upstream. Commit-only and push-only remain narrow, and material changes invalidate consent. Dirty or diverged repositories stay local for human resolution, and no Git action is required for continuity. A builder run carrying an authority context also prints digests you can review without reading anything private: `authorityContextSha256`, `targetBindingSha256`, `planSha256`, and `generationSha256` binding them together, with premise values and decision statements shown as explicit redaction markers and each evidence item as a repository-relative locator and a digest. Check those locators are the files you expect, then approve. If something was wrong the host must refresh the context with a new material revision and preview again, because a corrected answer with an identical plan keeps the same `planSha256` and gets a different `generationSha256`.
+The daily skills inspect read-only by default. Outcomes are `ready`, `paused`, `blocked`, `failed`, `completed`, or `degraded`, scoped so optional Git failure does not fail successful continuity. Documentation writes require explicit conversational approval. Explicit safe-sync consent covers bounded fetch plus fast-forward-only integration. Explicit combined commit-and-push consent covers exact staging, commit, checks, one fetch preflight, and one push to the identified upstream. Commit-only and push-only remain narrow, and material changes invalidate consent. Dirty or diverged repositories stay local for human resolution, and no Git action is required for continuity. A builder run carrying an authority context also prints digests you can review without reading anything private: `authorityContextSha256`, `targetBindingSha256`, `planSha256`, and `generationSha256` binding them together, with premise values and decision statements shown as explicit redaction markers and each evidence item as a repository-relative locator and a digest. Check those locators are the files you expect, then approve. If something was wrong the host must refresh the context with a new material revision and preview again, because a corrected answer with an identical plan keeps the same `planSha256` and gets a different `generationSha256`. Batch mode starts only when you name it with one bounded task: the agent then asks its remaining clarification questions as one numbered list. Its answers are never approvals, and it ends with the task or the session; the [batch interaction rule](../../.repo-harness/rules/batch-interaction.md) owns its limits.
 
 ## Removing The Harness Manually
 <!-- doc-role:manual-removal -->
@@ -2729,9 +2734,20 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
 {spanish_index_owner_rows}
 """
     availability_es = (
-        "Gentle AI y Engram son capacidades opcionales independientes. Use cada una en su limite de operación; bloquee solo cuando la operación o la política del repositorio la exija. Informe fallos sin prometer garantias ausentes ni omitir el informe del repositorio."
+        "Gentle AI y Engram son capacidades opcionales independientes. Use cada una en su límite de operación; bloquee solo cuando la operación o la política del repositorio la exija. Informe fallos sin prometer garantías ausentes ni omitir el informe del repositorio."
         if not standalone
         else "Confirme que las skills generadas estén disponibles en el entorno seleccionado. La continuidad permanece en archivos del repositorio y no depende de un servicio externo de memoria."
+    )
+    es_root = "../../" if spanish_only else "../../../"
+    recovery_es = (
+        "Recupera la continuidad pertinente del repositorio, incluido el backup local válido más reciente en `.repo-harness/memory-bk/`"
+        if standalone
+        else "Recupera contexto pertinente del backup local válido más reciente en `.repo-harness/memory-bk/` y de Engram cuando está disponible"
+    )
+    handoff_es = (
+        "escribe un backup local en `.repo-harness/memory-bk/`"
+        if standalone
+        else "escribe un backup local en `.repo-harness/memory-bk/` y después en Engram cuando está disponible"
     )
     ownership_es = (
         "Engram conserva contexto temporal entre sesiones; el repositorio permanece como fuente autoritativa. Promueva hechos durables verificados mediante la skill de documentación."
@@ -2746,9 +2762,9 @@ Use las tres skills generadas como un ciclo: recupere contexto, mantenga vigente
 
 ## Flujo diario
 <!-- doc-role:daily-workflow -->
-1. Inicie o reanude con `repo-harness-session-start` e indique el objetivo. Recupera contexto pertinente, lo reconcilia con evidencia actual e inspecciona Git en solo lectura. Una pregunta de comprobación remota aplica solo cuando sincronizar es pertinente y seguro. Para conservar el idioma o los modos de respuesta, edite `.repo-harness/state/preferences/user-preferences.json` a mano; el [contrato de respuesta]({'../../' if spanish_only else '../../../'}.repo-harness/rules/response-contract.md) es propietario de las claves y la precedencia.
+1. Inicie o reanude con `repo-harness-session-start` e indique el objetivo. {recovery_es}, lo reconcilia con evidencia actual e inspecciona Git en solo lectura. Una pregunta de comprobación remota aplica solo cuando sincronizar es pertinente y seguro. Para conservar el idioma o los modos de respuesta, edite `.repo-harness/state/preferences/user-preferences.json` a mano, o pida explícitamente al agente que las guarde; el agente nunca las guarda por iniciativa propia. El [contrato de respuesta]({es_root}.repo-harness/rules/response-contract.md) es propietario de las claves y la precedencia.
 2. Use `repo-harness-documentation` cuando sea necesario actualizar documentación durable o el estado visible del proyecto.
-3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia, documentación y continuidad requeridas. Solo el trabajo Git solicitado activa revisión de rutas y propuestas exactas bajo la política del repositorio; no se repite una autorización sin cambios.
+3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia y documentación requeridas y luego {handoff_es}. Solo el trabajo Git solicitado activa revisión de rutas y propuestas exactas bajo la política del repositorio; no se repite una autorización sin cambios.
 
 ## Disponibilidad integrada
 <!-- doc-role:availability -->
@@ -2760,7 +2776,7 @@ Ejecute `python3 .repo-harness/check.py` (`python` en Windows) después de cambi
 
 ## Límites de aprobación
 <!-- doc-role:approval-boundaries -->
-Las skills diarias inspeccionan en modo de solo lectura por defecto. Los resultados son `ready`, `paused`, `blocked`, `failed`, `completed` o `degraded`; el alcance evita que un fallo opcional de Git invalide una continuidad exitosa. Las escrituras documentales requieren aprobación conversacional explícita. El consentimiento para sincronización segura cubre un fetch acotado y una integración solo por avance rápido. El consentimiento combinado para commit y push cubre las rutas exactas, el commit, las comprobaciones, un fetch previo y un push al upstream identificado. Los consentimientos solo para commit o solo para push permanecen limitados, y cualquier cambio material los inválida. Los repositorios sucios o divergentes permanecen locales para resolución humana; la continuidad no exige ninguna operación de Git.
+Las skills diarias inspeccionan en modo de solo lectura por defecto. Los resultados son `ready`, `paused`, `blocked`, `failed`, `completed` o `degraded`; el alcance evita que un fallo opcional de Git invalide una continuidad exitosa. Las escrituras documentales requieren aprobación conversacional explícita. El consentimiento para sincronización segura cubre un fetch acotado y una integración solo por avance rápido. El consentimiento combinado para commit y push cubre las rutas exactas, el commit, las comprobaciones, un fetch previo y un push al upstream identificado. Los consentimientos solo para commit o solo para push permanecen limitados, y cualquier cambio material los invalida. Los repositorios sucios o divergentes permanecen locales para resolución humana; la continuidad no exige ninguna operación de Git. Una ejecución del builder con contexto de autoridad también imprime digests que puede revisar sin leer nada privado: `authorityContextSha256`, `targetBindingSha256`, `planSha256` y `generationSha256`, que los vincula; los valores de premisas y las declaraciones de decisión aparecen como marcadores de redacción explícitos, y cada elemento de evidencia como una ruta relativa al repositorio y un digest. Compruebe que esas rutas sean los archivos esperados y luego apruebe. Si algo estaba mal, el host debe refrescar el contexto con una nueva revisión material y volver a previsualizar, porque una respuesta corregida con un plan idéntico conserva el mismo `planSha256` y recibe un `generationSha256` distinto. El modo por lotes empieza solo cuando usted lo nombra con una tarea acotada: el agente formula entonces sus preguntas de aclaración pendientes como una sola lista numerada. Sus respuestas nunca son aprobaciones y termina con la tarea o la sesión; la [regla de interacción por lotes]({es_root}.repo-harness/rules/batch-interaction.md) es propietaria de sus límites.
 
 ## Retirar el harness manualmente
 <!-- doc-role:manual-removal -->

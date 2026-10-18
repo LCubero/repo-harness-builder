@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el unico historial cronologico canonico. Este archivo ofrece una presentacion completa en espanol y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-18
+
+- RH-W-0113: la guía de uso generada describe ahora lo que hacen las skills y reglas generadas. Session-start recupera el backup local válido más reciente en `.repo-harness/memory-bk/` y session-stop escribe uno; las preferencias también se pueden guardar pidiéndolo explícitamente al agente, que nunca las guarda por iniciativa propia; el modo por lotes solo agrupa preguntas de aclaración, nunca aprobaciones, y enlaza su regla. La guía en español incorpora el párrafo de digests de autoridad y tildes correctas, y la guía de uso en español de este repositorio lleva tildes. Las instalaciones existentes conservan sus guías humanas (issue #428, PR #429).
+
 ## 2026-10-17
 
 - RH-W-0112: las referencias del builder describen ahora la herramienta tal como se comporta. Ampliar o reducir entornos reemplaza el manifiesto y el checker mediante el plan aprobado (sin borrar; reducir deja sin cobertura del checker las proyecciones retiradas); cualquier cambio de premisa cambia el digest de generación; las pruebas de presupuesto en disco fallan por encima de la tolerancia de 750; se documentan las sugerencias para archivos humanos, el comando `archive`, que solo copia, y el vocabulario de resultados del checker, la reparación, el check del builder y el render; las plantillas de informe registran archivos reemplazados y migrados. Solo documentación. (issue #426, PR #427)

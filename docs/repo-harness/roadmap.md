@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0113
+| Field | Value |
+|---|---|
+| Origin | Read-only alignment review on 2026-10-18 comparing a fresh bilingual render with this harness: the generated usage guide omitted the local backup under `.repo-harness/memory-bk/`, said preferences are edited only by hand although the generated response contract lets the human ask the agent to save them, and did not mention batch mode although `batch-interaction.md` is generated. The Spanish guide also lacked the authority-digest paragraph and had accent errors. Issue #428. |
+| Priority | P2: new installations get a human guide that describes less than their skills and rules do. |
+| Dependencies | RH-W-0069 (local backup), RH-W-0107 (batch limits), RH-W-0071 (preferences). |
+| Status | completed |
+| Completed work | The generated `usage.md` (English and Spanish, integrated and standalone) says session-start recovers the newest valid local backup and session-stop writes one, that preferences can also be saved by explicit request and never by the agent on its own, and that batch mode groups clarifications only, never approvals, with a link to its rule. The Spanish guide gains the authority-digest paragraph and correct accents. This repository's Spanish usage guide is accented. |
+| Remaining work | none |
+| Additions | Two usage-guide tests (English integrated and standalone; Spanish bilingual and Spanish-only). |
+| Exclusions | No new `doc-role` marker; existing installations keep their human-owned guides, no migration. Other unaccented self-hosted Spanish documents stay for separate work. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | RED then GREEN: two new usage-guide tests failed (4 subtests) before and pass after. Differential render against `388bfbb`: only `docs/repo-harness/usage.md` and `docs/es/repo-harness/usage.md` change across integrated, standalone, bilingual, and Spanish-only renders; standalone guides name neither Engram nor Gentle AI. The no-private-references test now exempts the public `.repo-harness/memory-bk/` path. Full suite 683 tests, `OK (skipped=11)`; checker `current`, 0 writes; `self-test` pass. Native review `review-aca2bfac08b02cfe` approved and acknowledged (advisory R2-001 was this evidence placeholder). Delivered through PR #429 (squash merge). |
+| Decision history | 2026-10-18: owner asked to keep reviewing alignment under the standing delegation ("decídelo tú"); the agent chose this guide correction first. 2026-10-18: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0112
 | Field | Value |
 |---|---|
