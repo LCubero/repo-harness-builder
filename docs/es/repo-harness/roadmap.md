@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0115
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Judgment Day del 2026-10-18 sobre la alineación completa entre el builder y este harness (dos jueces ciegos, de acuerdo): el `decisions.md` generado (EN/ES) decía que todo archivo existente salvo los punteros raíz queda sin cambios, aunque el plan aprobado también agrega líneas exactas a `.gitignore`/`.gitattributes` y reemplaza salidas generadas autenticadas, y ponía los respaldos fuera del núcleo aunque session-stop escribe un backup local nativo. IDs congelados JD-A-001 y JD-A-002 (corroborados por JD-B-001 y JD-B-002). Issue #432. |
+| Prioridad | P1: los consumidores del harness generado recibían decisiones permanentes contradictorias. |
+| Dependencias | RH-W-0069 (backup local nativo), RH-W-0067 (reemplazo aprobado). |
+| Estado | completed |
+| Trabajo completado | Las decisiones permanentes generadas (inglés y español, integrado y standalone) mantienen Git, proveedor, respaldo externo y publicación fuera del núcleo y nombran el backup local nativo al cerrar la sesión como parte de él, y dicen que el builder cambia un archivo existente solo mediante un plan aprobado ligado a los bytes actuales exactos de ese archivo. |
+| Trabajo restante | none |
+| Adiciones | Una prueba de regresión sobre renders EN/ES, integrados y standalone. |
+| Exclusiones | Sin marcador `doc-role` nuevo; las instalaciones existentes conservan su archivo de decisiones humano, sin migración. Las decisiones de este repositorio ya enuncian ambas reglas. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | Dos jueces ciegos coincidieron en ambas filas. RED y luego GREEN: la nueva prueba de regresión fallaba (4 subpruebas) antes de la corrección y pasa después. Re-juicio de la ronda 1: JD-A-002 `verified`, JD-A-001 `regression`; ronda 2: JD-A-001 `regression`; escalado y cerrado por decisión delegada del propietario. Suite completa 684 pruebas, `OK (skipped=11)`; checker `current`, 0 escrituras; `self-test` pasa. |
+| Historial de decisiones | 2026-10-18: el propietario pidió Judgment Day sobre la alineación completa. JD-A-002 quedó verificado tras la ronda 1; JD-A-001 se juzgó regresión tras las rondas 1 y 2 (las listas enumeradas de cambios estaban incompletas) y se escaló. El propietario delegó la decisión ("decídelo tú"); el agente verificó cada ruta de escritura del builder (agregar, reemplazar, sugerencia humana, migración, copia de archivo) y eligió una frase acotada al builder, porque la skill de documentación edita archivos con aprobación conversacional, no ligada a bytes. 2026-10-18: completado. |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0114
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

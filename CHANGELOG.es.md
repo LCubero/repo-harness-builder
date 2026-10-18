@@ -4,6 +4,8 @@
 
 ## 2026-10-18
 
+- RH-W-0115: Judgment Day sobre la alineación completa entre el builder y este harness encontró dos decisiones permanentes generadas contradictorias. El `decisions.md` generado (EN/ES) nombra ahora el backup local nativo al cerrar la sesión como parte del núcleo (el respaldo externo queda fuera) y dice que el builder cambia un archivo existente solo mediante un plan aprobado ligado a los bytes actuales exactos de ese archivo. Las instalaciones existentes conservan su archivo humano (issue #432).
+
 - RH-W-0114: los documentos vivos en español de este repositorio (mapa de documentación, estado actual, decisiones, hoja de ruta, guía del builder, guía de contribución y la cabecera del changelog en español) llevan ahora tildes; solo tildes, sin cambio de significado. Los diseños históricos y las entradas del changelog no cambian (issue #430, PR #431).
 
 - RH-W-0113: la guía de uso generada describe ahora lo que hacen las skills y reglas generadas. Session-start recupera el backup local válido más reciente en `.repo-harness/memory-bk/` y session-stop escribe uno; las preferencias también se pueden guardar pidiéndolo explícitamente al agente, que nunca las guarda por iniciativa propia; el modo por lotes solo agrupa preguntas de aclaración, nunca aprobaciones, y enlaza su regla. La guía en español incorpora el párrafo de digests de autoridad y tildes correctas, y la guía de uso en español de este repositorio lleva tildes. Las instalaciones existentes conservan sus guías humanas (issue #428, PR #429).

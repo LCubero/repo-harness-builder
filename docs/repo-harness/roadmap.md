@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0115
+| Field | Value |
+|---|---|
+| Origin | Judgment Day on 2026-10-18 over the full builder/self-hosted alignment (two blind judges, both agreeing): the generated `decisions.md` (EN/ES) said every existing file except root runtime pointers stays unchanged, although the approved plan also appends exact `.gitignore`/`.gitattributes` lines and replaces authenticated generated outputs, and it placed backups outside the core harness although session-stop writes a native local backup. Frozen IDs JD-A-001 and JD-A-002 (corroborated by JD-B-001 and JD-B-002). Issue #432. |
+| Priority | P1: consumers of the generated harness received contradictory standing decisions. |
+| Dependencies | RH-W-0069 (native local backup), RH-W-0067 (approved replacement). |
+| Status | completed |
+| Completed work | The generated standing decisions (English and Spanish, integrated and standalone) keep Git, provider, external backup, and publication outside the core harness while naming the native local backup at session close as part of it, and say the builder changes an existing file only through an approved plan bound to that file's exact current bytes. |
+| Remaining work | none |
+| Additions | One regression test over EN/ES, integrated and standalone renders. |
+| Exclusions | No new `doc-role` marker; existing installations keep their human-owned decisions file, no migration. This repository's decisions already state both rules. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Two blind judges agreed on both rows. RED then GREEN: the new regression test failed (4 subtests) before the fix and passes after. Round-1 re-judgment: JD-A-002 `verified`, JD-A-001 `regression`; round 2: JD-A-001 `regression`; escalated and closed by delegated owner decision. Full suite 684 tests, `OK (skipped=11)`; checker `current`, 0 writes; `self-test` pass. |
+| Decision history | 2026-10-18: owner asked for Judgment Day on the full alignment. JD-A-002 was verified after round 1; JD-A-001 was judged a regression after rounds 1 and 2 (enumerated lists of changes were incomplete) and escalated. The owner delegated the decision ("decídelo tú"); the agent verified every builder write path (append, replace, human suggestion, migration, archive copy) and chose a sentence scoped to the builder, because the documentation skill edits files with conversational, not byte-bound, approval. 2026-10-18: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0114
 | Field | Value |
 |---|---|
