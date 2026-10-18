@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- RH-W-0114 follow-up: accented 134 unambiguous Spanish words the first pass missed in the living self-hosted documents (mostly the roadmap); accents only.
+
 - Updated the current-state unreleased-changes list through RH-W-0116 and the current next step in English and Spanish.
 
 - RH-W-0116: a consumer upgrade simulation (`v3.1-rc.15` to `main`) showed that unedited human-owned files keep earlier generated text that can contradict the new skills, reported as `human-evolved`. The builder references now define `human-evolved` as a human edit or earlier generated text and tell the agent, after an upgrade, to report such files as possibly outdated, compare them with a fresh render, and propose only approved changes. No behavior change or migration (issue #434, PR #435).

@@ -29,11 +29,11 @@ Después de [instalar el constructor](../../../README.es.md#instalación):
 4. Revise el plan exacto y use la aprobación vinculada al digest y al idioma: `APPROVE` o `DENY` en inglés, `APROBAR` o `DENEGAR` en español.
 5. Inicie el trabajo normal con la habilidad generada `repo-harness-session-start`.
 
-Al actualizar, el constructor reutiliza los idiomas registrados en el manifiesto instalado en lugar de volver a preguntarlos, y cuando el plan no tiene nada que crear, anexar, reemplazar ni migrar, no pide aprobación, y solo informa que el harness esta actualizado si nada queda bloqueado. Sus consultas Git de solo lectura forman parte de la auditoria y no requieren permiso aparte.
+Al actualizar, el constructor reutiliza los idiomas registrados en el manifiesto instalado en lugar de volver a preguntarlos, y cuando el plan no tiene nada que crear, anexar, reemplazar ni migrar, no pide aprobación, y solo informa que el harness esta actualizado si nada queda bloqueado. Sus consultas Git de solo lectura forman parte de la auditoría y no requieren permiso aparte.
 
-Sin operación explícita, el constructor realiza una auditoria de solo lectura. No inicializa Git ni modifica remotos, crea commits, envia cambios o publica, salvo que esas acciones separadas se soliciten y aprueben después.
+Sin operación explícita, el constructor realiza una auditoría de solo lectura. No inicializa Git ni modifica remotos, crea commits, envia cambios o publica, salvo que esas acciones separadas se soliciten y aprueben después.
 
-El constructor posee la auditoria, vista previa, aprobación y aplicación. Si el entorno no lista la habilidad nueva, inicie una sesión nueva del entorno. Después de aplicar, ejecute `python3 .repo-harness/check.py` (`python` en Windows) en el objetivo: solo la salida 0 con `"status": "current"` y `"writes": 0` indica que el harness es congruente. El trabajo diario sigue el [Flujo diario](usage.md#flujo-diario).
+El constructor posee la auditoría, vista previa, aprobación y aplicación. Si el entorno no lista la habilidad nueva, inicie una sesión nueva del entorno. Después de aplicar, ejecute `python3 .repo-harness/check.py` (`python` en Windows) en el objetivo: solo la salida 0 con `"status": "current"` y `"writes": 0` indica que el harness es congruente. El trabajo diario sigue el [Flujo diario](usage.md#flujo-diario).
 
 Deténgase e inspeccione en vez de forzar cuando el artefacto sea inválido, un destino este ocupado, el entorno no liste la habilidad, el constructor rechace o el checker informe deriva. Con el artefacto y los requisitos ya locales, no se necesita red.
 
@@ -77,14 +77,14 @@ El constructor instala o actualiza. Las tres habilidades del repositorio forman 
 
 ```text
 Primera ejecucion del constructor
-  -> auditoria de solo lectura
-  -> elecciones de entorno, integracion y licencia
+  -> auditoría de solo lectura
+  -> elecciones de entorno, integración y licencia
   -> plan exacto y digest
-  -> aprobacion explicita para aplicar
+  -> aprobación explicita para aplicar
   -> harness generado y verificado
 
 Sesion normal
-  -> session-start lee evidencia del repositorio, luego backup local y despues Engram opcional
+  -> session-start lee evidencia del repositorio, luego backup local y después Engram opcional
   -> el trabajo sigue REPO-HARNESS.md
   -> documentation actualiza propietarios durables cuando hace falta
   -> session-stop verifica y escribe la transferencia local primero
@@ -101,7 +101,7 @@ Ambos modos usan el backup local nativo. El modo integrado compone de forma inde
 # OpenCode: pida al agente que use la skill repo-harness-builder.
 # Revise la auditoria, responda una eleccion a la vez, inspeccione el plan y apruebe.
 
-Cargue repo-harness-session-start y continue la migracion de API.
+Cargue repo-harness-session-start y continue la migración de API.
 # Trabaje, pruebe y verifique.
 
 Cargue repo-harness-documentation y actualice el estado y el historial.
