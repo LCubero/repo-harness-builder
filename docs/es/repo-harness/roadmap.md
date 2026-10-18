@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0111
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Auditoría de solo lectura del 2026-10-17 de las tres skills de sesión generadas frente a los propietarios de este repositorio: encontró tres oraciones generadas contradictorias: "never to raise the budget" (sustituida por RH-W-0108), una exclusión de privacidad de "delivery state" en los respaldos que choca con la sección obligatoria `Accomplished`, y una pregunta de aprobación en "the final user-facing line" que choca con el delimitador de cierre del contrato de respuesta. Issue #424. |
+| Prioridad | P2: las sesiones generadas reciben instrucciones que no pueden cumplirse todas al pie de la letra. |
+| Dependencias | RH-W-0108 (presupuesto), RH-W-0069 (intención de privacidad de los respaldos: no ser almacén de recibos ni de registros de entrega). |
+| Estado | completed |
+| Trabajo completado | La skill de documentación dice ahora que subir el presupuesto es decisión del propietario del repositorio, no la opción por defecto. El `memory.md` generado excluye tokens de aprobación o consentimiento, bytes de checkpoint, copias de registros de ciclo de vida, recibos o entregas pendientes, y permite que `Accomplished` nombre resultados terminados con su referencia pública. Session-start y session-stop colocan la única pregunta de aprobación al final, dentro del último bloque de decisión. El `memory.md` y las skills generadas de este repositorio coinciden con el render. |
+| Trabajo restante | none |
+| Adiciones | Aserciones de regresión de que ninguna salida generada conserva las frases anteriores, en render integrado y autónomo. |
+| Exclusiones | Las instalaciones existentes conservan su `memory.md` de solo creación; sin migración. Las skills generadas se actualizan con el mantenimiento ordinario. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | RED y luego GREEN: la nueva prueba de regresión fallaba (34 subpruebas); 68 pruebas enfocadas pasan. `memory.md` generado y autoalojado: 738 tokens proxy. Suite completa 681 pruebas, `OK (skipped=11)`; checker y CLI check `current`, 0 escrituras; `self-test` pasa. Entregado mediante el PR #425 (squash). |
+| Historial de decisiones | 2026-10-17: el propietario delegó la decisión en el agente ("decídelo tú"); el agente eligió las tres correcciones de redacción sin mecanismos nuevos. 2026-10-17: completado. |
+| Siguiente condición de avance | none (terminal); se reabre ante una regresión. |
+
 ### RH-W-0110
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

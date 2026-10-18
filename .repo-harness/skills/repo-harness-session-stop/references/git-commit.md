@@ -30,7 +30,7 @@ Load only before evaluating commit eligibility or applying detailed post-deliver
 - Commit approval does not approve push. Push approval does not approve staging or creating a commit.
 - Never use `git add .`, stage secrets, user-owned personal storage, `.codegraph/`, unknown generated caches, or unrelated pre-existing work automatically.
 - Never force-push, rebase, reset, auto-merge, or resolve conflicts automatically.
-- Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
+- Any safe, relevant pending approval must be the one visible concrete question, placed last inside the final blocking block. Listing a pending gate is not actionable.
 
 ## Post-Delivery Reconciliation
 

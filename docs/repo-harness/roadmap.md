@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0111
+| Field | Value |
+|---|---|
+| Origin | Read-only audit on 2026-10-17 of the three generated session skills against this repository's owners found three contradicting generated sentences: "never to raise the budget" (superseded by RH-W-0108), a backup privacy exclusion of "delivery state" that conflicts with the required `Accomplished` section, and an approval question on "the final user-facing line" that conflicts with the response contract's closing delimiter. Issue #424. |
+| Priority | P2: generated sessions receive instructions that cannot all be followed literally. |
+| Dependencies | RH-W-0108 (budget), RH-W-0069 (backup privacy intent: no receipt or delivery record store). |
+| Status | completed |
+| Completed work | The documentation skill now says raising the budget is the repository owner's choice, not the default. The generated `memory.md` excludes approval or consent tokens, checkpoint bytes, copied lifecycle records, receipts, or pending delivery state, and lets `Accomplished` name completed outcomes with their public references. Session-start and session-stop place the single approval question last inside the final blocking block. This repository's `memory.md` and generated skills match the render. |
+| Remaining work | none |
+| Additions | Regression assertions that no generated output keeps the old phrases, for integrated and standalone renders. |
+| Exclusions | Existing installations keep their create-only `memory.md`; no migration. Generated skills update through ordinary maintenance. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | RED then GREEN: new regression test failed (34 subtests) before; focused 68 tests pass. Rendered and self-hosted `memory.md` 738 proxy tokens. Full suite 681 tests, `OK (skipped=11)`; checker and CLI check `current`, 0 writes; `self-test` pass. Delivered through PR #425 (squash merge). |
+| Decision history | 2026-10-17: owner delegated the decision to the agent ("decídelo tú"); the agent chose the three wording fixes without new mechanisms. 2026-10-17: completed. |
+| Next advancement condition | none (terminal); reopen on regression. |
+
 ### RH-W-0110
 | Field | Value |
 |---|---|

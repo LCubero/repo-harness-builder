@@ -1562,7 +1562,7 @@ Use at the start or resumption of work in `{project_id}`. Invoke this skill deli
 - A clean worktree and index with a usable upstream requires one conversational approval before network access.
 - If the user explicitly asks to sync or update safely after the exact upstream is identified, that consent covers bounded fetch plus fast-forward-only integration without a second approval. Do not ask separately for fetch and fast-forward-only integration.
 - Invalidate synchronization consent and pause if the remote advanced into divergence, the upstream or destination changed, integration is not fast-forward-only, authentication needs a different credential path, verification fails, or any destructive or conflict-resolving action becomes necessary.
-- Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
+- Any safe, relevant pending approval must be the one visible concrete question, placed last inside the final blocking block. Listing a pending gate is not actionable.
 
 ## Native Continuity Recovery
 
@@ -1659,7 +1659,7 @@ Outcomes are scoped. Startup uses `ready`, `paused`, `blocked`, `failed`, or `de
 | Git has a dirty worktree or index | Report exact dirty state, continue local startup, and defer synchronization. Do not suggest or run fetch or integration. |
 | detached HEAD or unborn branch | Mark the optional Git branch `blocked`, keep startup `ready`, and give actionable remediation: check out or create the intended branch locally before synchronization. |
 | Missing upstream, missing upstream remote, or missing upstream branch | Mark the optional Git branch `blocked`, keep startup `ready`, and name the exact local configuration or remote branch evidence that is missing. Do not guess a target. |
-| multiple remotes make the target ambiguous | Mark the optional Git branch `paused`, keep startup `ready`, show the candidates, and ask which remote is intended as the final user-facing line. |
+| multiple remotes make the target ambiguous | Mark the optional Git branch `paused`, keep startup `ready`, show the candidates, and ask which remote is intended as the single question of the final blocking block. |
 | Clean Git with a usable upstream | Show branch, upstream, clean status, remote URL host and scheme, then ask one localized approval question using semantic fields `command`, `remote`, `branch`, and `permission scope`. Render their exact values as non-translatable code and keep network approval mandatory. |
 | Equal | Report synchronization healthy and continue. |
 | ahead-only | Report synchronization healthy, including exact local unpushed commit evidence. |
@@ -1677,7 +1677,7 @@ Never use git pull, git rebase, git reset, force operations, merge on divergence
 
 ## Output Contract
 
-Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. Always report repository resolution and retain only continuity evidence relevant to the requested work. When a recovered relevant next action is precisely the current session-start check, report its observed outcome before recommending a different objective; continuity sources remain non-authoritative, and this does not authorize automatic continuation or bypass human gates. State whether any mutation occurred. When approval is safe and relevant, the final user-facing line must be the single concrete question.
+Return current objective, evidence read, completed work, remaining work, discrepancies, startup outcome, Git repository state, optional Git branch outcome, remediation, and one next recommended step. Always report repository resolution and retain only continuity evidence relevant to the requested work. When a recovered relevant next action is precisely the current session-start check, report its observed outcome before recommending a different objective; continuity sources remain non-authoritative, and this does not authorize automatic continuation or bypass human gates. State whether any mutation occurred. When approval is safe and relevant, the single concrete question must be the last line inside the final blocking block.
 When the checker applicability gate is triggered, report its result in the reply language: `current` means every runtime projection is up to date, and `drift` is reported as needing an update, naming each drifted runtime projection.
 Label every reported claim with its rulebook evidence class: verified fact, supported inference, unknown or unverifiable, or human decision required. An inference names the evidence it rests on and what would raise it to verified. Never present an inference in assertive form.
 Conversation language: immediately before composing the response, apply the `Conversation language` rule above; compose all user-facing prose in the resolved conversation language, preserve exact machine-significant bytes, and keep artifact language separate. Verified human and higher-priority host instructions retain precedence. Wrapper, task name, command text, and ordinary prose are not verified human switch instructions.
@@ -1764,7 +1764,7 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 - Commit approval does not approve push. Push approval does not approve staging or creating a commit.
 - Never use `git add .`, stage secrets, user-owned personal storage, `.codegraph/`, unknown generated caches, or unrelated pre-existing work automatically.
 - Never force-push, rebase, reset, auto-merge, or resolve conflicts automatically.
-- Any safe, relevant pending approval must be the one visible concrete question on the final user-facing line. Listing a pending gate is not actionable.
+- Any safe, relevant pending approval must be the one visible concrete question, placed last inside the final blocking block. Listing a pending gate is not actionable.
 
 ## Native Continuity Backup
 
@@ -2069,7 +2069,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 ## Hard Rules
 
 - Load and follow the canonical rulebook at `{rulebook_path}`, including its execution discipline.
-- Treat `{rulebook_path}` as the concise entry point, not a dumping ground. It answers how work is done here, never where the project stands. A section that grows there is the signal to move it down, never to raise the budget.
+- Treat `{rulebook_path}` as the concise entry point, not a dumping ground. It answers how work is done here, never where the project stands. A section that grows there is the signal to move it down; raising the budget is the repository owner's choice, not the default.
 - Keep one canonical owner for each durable fact. Link to that owner instead of duplicating content.
 - Maintain documentation maps, relative links, current-state accuracy, rule freshness, and clear ownership.
 - Separate durable documentation from temporary session notes. Promote temporary facts only after they remain relevant and are verified.
@@ -2215,7 +2215,7 @@ def rule_outputs(rulebook_path: str, standalone: bool) -> dict[str, str]:
 - Existing valid backups without `Where We Left Off` remain readable through detailed continuity and never gain synthesized, migrated, rewritten, or backfilled fields.
 {native_owner_contract}- Applicable claims carry one inline classification: `verified fact`, `supported inference`, `unknown or unverifiable`, or `human decision required`.
 - Verify recalled claims in authority order: source and tests; roadmap; current state; decisions; changelog; Git and checker; {continuity_evidence_tail}.
-- Omit from both destinations: credentials, tokens, passwords, private keys, cookies, connection strings; raw environment values and provider payloads; outside-root absolute paths; copied source, diffs, logs, stack traces, generated bytes, and test output; sensitive personal data; approval, checkpoint, lifecycle copy, receipt, or delivery state. Report bounded privacy reduction.
+- Omit from both destinations: credentials, tokens, passwords, private keys, cookies, connection strings; raw environment values and provider payloads; outside-root absolute paths; copied source, diffs, logs, stack traces, generated bytes, and test output; sensitive personal data; approval or consent tokens, checkpoint bytes, copied lifecycle records, receipts, or pending delivery state. `Accomplished` may name completed outcomes with their public references, such as an issue or pull-request number. Report bounded privacy reduction.
 - Omit external private repository names and locations absent current-owner-approved stable alias; exclude private name, absolute location, remote URL, or sibling path.
 - Built-in runtime memory is ignored and never required. No generic memory API, database, encryption subsystem, daemon, scheduler, background service, synchronization engine, retention cleanup, or separate conflict-state persistence is introduced.
 """
