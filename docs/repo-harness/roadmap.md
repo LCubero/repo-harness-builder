@@ -558,7 +558,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | S3, headings that keep the given project name (`Mi-VPSs` instead of `mi-vpss`): an isolated candidate changed an existing installation's README and rulebook from `identical` to `existing` and the checker state from `current` to `human-evolved`, so the change would alter update behavior. Not implemented; a regression test pins today's compatible behavior. |
 | Rejections | none |
 | Evidence | RED then GREEN: the focused tests failed before the change (7 subtest failures) and pass after. Differential render against the base commit for both names: Spanish-only output differs only in `docs/repo-harness/current-state.md` and the documentation map; bilingual output only in the EN/ES current-state entries. Projections synchronized through maintenance preview and current-digest apply (`3149790d047c937f803286a85234a0553459a5f543592ce3e59839a356cf27cc`, nine files); checker `current`, 0 writes. |
-| Decision history | 2026-10-18: the owner approved the fix ("correcto hay que arreglar eso") after the review of both installs. 2026-10-18: completed; S3 deferred on update-compatibility evidence. |
+| Decision history | 2026-10-18: the owner approved the fix ("correcto hay que arreglar eso") after the review of both installs. 2026-10-18: completed; S3 deferred on update-compatibility evidence. Delivered through PR #462 (squash `6a08332`) and published in `v3.1-rc.17`. |
 | Next advancement condition | none (terminal); a heading change needs its own record with an update path. |
 
 ### RH-W-0123
