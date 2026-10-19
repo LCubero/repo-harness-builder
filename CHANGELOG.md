@@ -6,7 +6,9 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
-- RH-W-0124: a fresh install no longer starts with contradictory documents: the seed current state stops citing an unrecorded `RH-W-0001`, a Spanish-only documentation map names `roadmap.md` and `decisions.md` as canonical owners, and the builder's language question uses neutral Spanish. Headings keep the normalized project name because changing them would alter updates (issue #461).
+- Published [`v3.1-rc.17`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.17) from `6a08332dfe50d5a1a4681e26b9fecf16dd81e9fb` on 2026-10-19T01:38:50Z by owner decision, carrying RH-W-0124: `repo-harness-builder-v3.1-rc.17-claude-code.zip` (272191 bytes, SHA-256 `5253186b7d929572b5919de870b9df27dc938838a0d1661d324a3a035e063c37`); `repo-harness-builder-v3.1-rc.17-opencode.zip` (272275 bytes, SHA-256 `be7b242057148d27b32481f03e0455b88474830dfc9f7225035273b3b221073f`); `repo-harness-builder-v3.1-rc.17-pi.zip` (272023 bytes, SHA-256 `bbb455b343a7f0fac27c9bab260a058e224673f5db53244232eb0834dee1616d`).
+
+- RH-W-0124: a fresh install no longer starts with contradictory documents: the seed current state stops citing an unrecorded `RH-W-0001`, a Spanish-only documentation map names `roadmap.md` and `decisions.md` as canonical owners, and the builder's language question uses neutral Spanish. Headings keep the normalized project name because changing them would alter updates (issue #461, PR #462).
 
 - Published [`v3.1-rc.16`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.16) from `6db5a6ba9321f23dde4379ec3d9d5153bbce7be9` on 2026-10-18T23:23:18Z by owner decision, carrying RH-W-0107 through RH-W-0123: `repo-harness-builder-v3.1-rc.16-claude-code.zip` (271144 bytes, SHA-256 `03760a492c52035ab2bbf47b7fca8d875d3668f1dc28f2bd8d82886ba41738f0`); `repo-harness-builder-v3.1-rc.16-opencode.zip` (271228 bytes, SHA-256 `fbb17b4926af56e57744315d25648998d5990e695cbc2bd1e1eaf8b264e62327`); `repo-harness-builder-v3.1-rc.16-pi.zip` (270976 bytes, SHA-256 `7cfbe693bad0725a0ed42d62e5337a3acefb38f7faab39ec1d968b0729aa1d1f`).
 
