@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-18
 
+- Corrected stale claims (EN/ES) that Linux was never exercised: the owner ran the full suite and live Pi installs on Linux on 2026-10-16 (RH-W-0105, RH-W-0106); only macOS remains unverified. RH-W-0124 now records the owner's acceptance of lowercase headings.
+
 - Published [`v3.1-rc.17`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.17) from `6a08332dfe50d5a1a4681e26b9fecf16dd81e9fb` on 2026-10-19T01:38:50Z by owner decision, carrying RH-W-0124: `repo-harness-builder-v3.1-rc.17-claude-code.zip` (272191 bytes, SHA-256 `5253186b7d929572b5919de870b9df27dc938838a0d1661d324a3a035e063c37`); `repo-harness-builder-v3.1-rc.17-opencode.zip` (272275 bytes, SHA-256 `be7b242057148d27b32481f03e0455b88474830dfc9f7225035273b3b221073f`); `repo-harness-builder-v3.1-rc.17-pi.zip` (272023 bytes, SHA-256 `bbb455b343a7f0fac27c9bab260a058e224673f5db53244232eb0834dee1616d`).
 
 - RH-W-0124: a fresh install no longer starts with contradictory documents: the seed current state stops citing an unrecorded `RH-W-0001`, a Spanish-only documentation map names `roadmap.md` and `decisions.md` as canonical owners, and the builder's language question uses neutral Spanish. Headings keep the normalized project name because changing them would alter updates (issue #461, PR #462).

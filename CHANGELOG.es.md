@@ -4,6 +4,8 @@
 
 ## 2026-10-18
 
+- Se corrigieron afirmaciones desactualizadas (EN/ES) de que Linux nunca se probó: el propietario ejecutó la suite completa e instalaciones reales con Pi en Linux el 2026-10-16 (RH-W-0105, RH-W-0106); solo macOS sigue sin verificar. RH-W-0124 registra ahora que el propietario aceptó los títulos en minúsculas.
+
 - Se publicó [`v3.1-rc.17`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.17) desde `6a08332dfe50d5a1a4681e26b9fecf16dd81e9fb` el 2026-10-19T01:38:50Z por decisión del propietario, con RH-W-0124: `repo-harness-builder-v3.1-rc.17-claude-code.zip` (272191 bytes, SHA-256 `5253186b7d929572b5919de870b9df27dc938838a0d1661d324a3a035e063c37`); `repo-harness-builder-v3.1-rc.17-opencode.zip` (272275 bytes, SHA-256 `be7b242057148d27b32481f03e0455b88474830dfc9f7225035273b3b221073f`); `repo-harness-builder-v3.1-rc.17-pi.zip` (272023 bytes, SHA-256 `bbb455b343a7f0fac27c9bab260a058e224673f5db53244232eb0834dee1616d`).
 
 - RH-W-0124: una instalación nueva ya no empieza con documentos contradictorios: el estado actual inicial deja de citar un `RH-W-0001` sin registro, un mapa de documentación solo en español nombra `roadmap.md` y `decisions.md` como propietarios canónicos y la pregunta de idioma del builder usa español neutro. Los títulos conservan el nombre normalizado del proyecto porque cambiarlos alteraría las actualizaciones (issue #461, PR #462).
