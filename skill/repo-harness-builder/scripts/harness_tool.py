@@ -2550,7 +2550,7 @@ The minimal repository AI harness exists. This file is only the concise projecti
 
 <!-- doc-role:recent-work -->
 
-- `RH-W-0001`: bootstrapped canonical project documentation and operational session skills.
+- Created the minimal repository AI harness and its visible continuity documentation.
 
 ## Pending Work
 
@@ -2709,6 +2709,16 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
         if spanish_only
         else "| `current-state.md` | Presentación en español del estado canónico en `../../repo-harness/current-state.md` |"
     )
+    spanish_index_roadmap_row = (
+        "| `roadmap.md` | Registros canónicos del ciclo de vida para el trabajo pendiente y resuelto |"
+        if spanish_only
+        else "| `roadmap.md` | Espejo humano del propietario canónico del ciclo de vida |"
+    )
+    spanish_index_decisions_row = (
+        "| `decisions.md` | Decisiones y restricciones duraderas con evidencia |"
+        if spanish_only
+        else "| `decisions.md` | Presentación en español de decisiones y restricciones |"
+    )
     spanish_index_maintenance_row = (
         "" if spanish_only else "\n| `i18n-maintenance.md` | Contrato de mantenimiento bilingüe |"
     )
@@ -2729,8 +2739,8 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
 |---|---|
 | `usage.md` | Flujo humano, disponibilidad y límites de aprobación |
 {spanish_index_state_row}
-| `roadmap.md` | Espejo humano del propietario canónico del ciclo de vida |
-| `decisions.md` | Presentación en español de decisiones y restricciones |{spanish_index_maintenance_row}
+{spanish_index_roadmap_row}
+{spanish_index_decisions_row}{spanish_index_maintenance_row}
 {spanish_index_owner_rows}
 """
     availability_es = (
@@ -2801,7 +2811,7 @@ El harness mínimo de IA del repositorio existe. Este archivo proyecta solo hech
 
 <!-- doc-role:recent-work -->
 
-- `RH-W-0001`: se crearon la documentación canónica del proyecto y las skills operativas de sesión.
+- Se creó el harness mínimo de IA del repositorio y su documentación visible de continuidad.
 
 ## Trabajo pendiente
 

@@ -542,6 +542,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0124
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Dos instalaciones nuevas de `v3.1-rc.16` hechas por el propietario (solo Pi, documentación solo en español, `UNLICENSED`, carpetas sin Git, proyectos `Mi-VPSs` y `LD-VPS`) el 2026-10-18 mostraron cuatro defectos en la salida generada (issue #461). |
+| Prioridad | P2: toda instalación nueva empieza con documentos que contradicen las reglas del propio harness. |
+| Dependencias | none |
+| Estado | completed |
+| Trabajo completado | S1: el estado actual inicial ya no cita `RH-W-0001`, que la hoja de ruta inicial nunca registra; describe el arranque con las palabras del changelog inicial (EN y ES). S2: un mapa de documentación solo en español describe `roadmap.md` y `decisions.md` como los propietarios canónicos que son; la redacción bilingüe no cambia. S4: la pregunta bilingüe inicial de idioma del builder usa español neutro (`quiere` en lugar del voseo `querés`); no se encontró otro voseo en el paquete de la skill. |
+| Trabajo restante | none |
+| Adiciones | Cinco pruebas de regresión (trabajo reciente inicial, mapa solo en español, mapa bilingüe sin cambios, pregunta de idioma neutra y compatibilidad de los títulos al actualizar). |
+| Exclusiones | Las instalaciones existentes conservan sus archivos de propiedad humana; sin migración. |
+| Aplazamientos | S3, títulos que conservan el nombre dado del proyecto (`Mi-VPSs` en lugar de `mi-vpss`): un candidato aislado cambió el README y el rulebook de una instalación existente de `identical` a `existing` y el estado del checker de `current` a `human-evolved`, por lo que el cambio alteraría las actualizaciones. No se implementó; una prueba de regresión fija el comportamiento compatible actual. |
+| Rechazos | none |
+| Evidencia | RED y luego GREEN: las pruebas enfocadas fallaron antes del cambio (7 fallos de subpruebas) y pasan después. Render diferencial contra el commit base para ambos nombres: la salida solo en español difiere únicamente en `docs/repo-harness/current-state.md` y el mapa de documentación; la bilingüe, solo en las entradas EN/ES del estado actual. Proyecciones sincronizadas con vista previa de mantenimiento y aplicación con el digest vigente (`3149790d047c937f803286a85234a0553459a5f543592ce3e59839a356cf27cc`, nueve archivos); checker `current`, 0 escrituras. |
+| Historial de decisiones | 2026-10-18: el propietario aprobó la corrección ("correcto hay que arreglar eso") tras la revisión de ambas instalaciones. 2026-10-18: completado; S3 aplazado por evidencia de compatibilidad de actualización. |
+| Condición del siguiente avance | none (terminal); un cambio de títulos necesita su propio registro con una ruta de actualización. |
+
 ### RH-W-0123
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
