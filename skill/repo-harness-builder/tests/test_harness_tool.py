@@ -372,6 +372,89 @@ class ConsumerReadmeContractTests(unittest.TestCase):
                 self.assertEqual((root / "README.md").read_text(encoding="utf-8"), damaged)
 
 
+class FreshInstallDocumentationTests(unittest.TestCase):
+    def cli(self, root, command, languages, project_name="Mi-VPSs", *extra):
+        arguments = [sys.executable, "-B", str(SCRIPT), command, "--root", str(root),
+                     "--project-name", project_name, "--runtime", "pi"]
+        if command == "render":
+            arguments += ["--license", "UNLICENSED", "--conversation-language", "espanol"]
+            for language in languages:
+                arguments += ["--documentation-language", language]
+        result = subprocess.run([*arguments, *extra], capture_output=True, text=True, encoding="utf-8")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        return json.loads(result.stdout)
+
+    def install(self, root, languages, project_name="Mi-VPSs"):
+        preview = self.cli(root, "render", languages, project_name)
+        self.assertEqual(preview["blocked"], [])
+        self.cli(root, "render", languages, project_name,
+                 "--apply", "--approved-plan-sha256", preview["planSha256"])
+
+    def test_seed_recent_work_matches_changelog_without_unresolved_id(self):
+        for languages in (["en"], ["es"], ["en", "es"]):
+            with self.subTest(languages=languages), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                self.install(root, languages)
+                peers = [("docs/repo-harness", "CHANGELOG.md")]
+                if languages == ["en", "es"]:
+                    peers.append(("docs/es/repo-harness", "CHANGELOG.es.md"))
+                for prefix, changelog in peers:
+                    state = (root / prefix / "current-state.md").read_text(encoding="utf-8")
+                    self.assertNotIn("RH-W-0001", state, "seed current-state cites an absent roadmap ID")
+                    entry = next(line for line in (root / changelog).read_text(encoding="utf-8").splitlines()
+                                 if line.startswith("- "))
+                    self.assertIn(entry, state)
+                    roadmap = (root / prefix / "roadmap.md").read_text(encoding="utf-8")
+                    self.assertNotIn("RH-W-0001", roadmap)
+
+    def test_spanish_only_map_names_canonical_owners(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.install(root, ["es"])
+            index = (root / "docs/repo-harness/README.md").read_text(encoding="utf-8")
+            self.assertIn("| `roadmap.md` | Registros canónicos del ciclo de vida para el trabajo pendiente y resuelto |", index)
+            self.assertIn("| `decisions.md` | Decisiones y restricciones duraderas con evidencia |", index)
+            self.assertNotIn("Espejo humano", index)
+            self.assertNotIn("Presentación en español de decisiones", index)
+
+    def test_bilingual_map_keeps_existing_peer_wording(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.install(root, ["en", "es"])
+            index = (root / "docs/es/repo-harness/README.md").read_text(encoding="utf-8")
+            self.assertIn("| `roadmap.md` | Espejo humano del propietario canónico del ciclo de vida |", index)
+            self.assertIn("| `decisions.md` | Presentación en español de decisiones y restricciones |", index)
+
+    def test_existing_normalized_headings_stay_current_on_update(self):
+        # S3 is deferred: changing seed headings reclassifies existing installs
+        # from identical/current to existing/human-evolved. Keep that contract.
+        for project_name in ("Mi-VPSs", "LD-VPS"):
+            for languages in (["es"], ["en", "es"]):
+                with self.subTest(project_name=project_name, languages=languages), tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    self.install(root, languages, project_name)
+                    paths = ["README.md", "REPO-HARNESS.md"]
+                    if languages == ["en", "es"]:
+                        paths += ["README.es.md", "REPO-HARNESS.es.md"]
+                    for path in paths:
+                        self.assertEqual((root / path).read_text(encoding="utf-8").splitlines()[0],
+                                         f"# {project_name.lower()}")
+                    preview = self.cli(root, "render", languages, project_name)
+                    self.assertTrue(set(paths) <= set(preview["identical"]))
+                    self.assertEqual(preview["replace"], [])
+                    report = self.cli(root, "check", languages, project_name)
+                    self.assertEqual(report["status"], "current")
+                    self.assertEqual(report["writes"], 0)
+                    for entry in report["files"]:
+                        if entry["path"] in paths:
+                            self.assertEqual(entry["state"], "current")
+
+    def test_report_language_question_uses_neutral_spanish(self):
+        interview = (ROOT / "references/audit-and-interview.md").read_text(encoding="utf-8")
+        self.assertIn("¿Qué idioma quiere usar para esta conversación y el informe?", interview)
+        self.assertNotIn("querés", interview)
+
+
 class ContributionGuideTests(unittest.TestCase):
     def test_contribution_existing_locations_preserved(self):
         for path in ("CONTRIBUTING.md", "docs/CONTRIBUTING.md", ".github/CONTRIBUTING.md"):
@@ -11576,7 +11659,7 @@ class InterviewFrictionContractTests(unittest.TestCase):
     def test_an_asked_report_language_also_sets_the_conversation_language(self):
         section = self.audit().split("## Report Language", 1)[1].split("\n## ", 1)[0]
         self.assertIn("ask one bilingual report-language question and stop; its answer also sets the conversation language", section)
-        self.assertIn("Which language should I use for this conversation and report? / ¿Qué idioma querés usar para esta conversación y el informe?", section)
+        self.assertIn("Which language should I use for this conversation and report? / ¿Qué idioma quiere usar para esta conversación y el informe?", section)
         self.assertIn("Offer `English` and `Español`", section)
         self.assertIn("This bilingual opening is only for unresolved language", section)
         self.assertIn("Ask only unresolved conversation language", self.skill())

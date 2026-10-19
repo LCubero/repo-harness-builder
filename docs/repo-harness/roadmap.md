@@ -544,6 +544,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0124
+| Field | Value |
+|---|---|
+| Origin | Two fresh owner installs of `v3.1-rc.16` (Pi only, Spanish-only documentation, `UNLICENSED`, non-Git folders, project names `Mi-VPSs` and `LD-VPS`) on 2026-10-18 showed four defects in generated output (issue #461). |
+| Priority | P2: every fresh installation starts with documents that contradict the harness's own rules. |
+| Dependencies | none |
+| Status | completed |
+| Completed work | S1: the seed current state no longer lists `RH-W-0001`, which the seed roadmap never records; it describes the bootstrap in the seed changelog's words (EN and ES). S2: a Spanish-only documentation map describes `roadmap.md` and `decisions.md` as the canonical owners they are; bilingual wording is unchanged. S4: the builder's bilingual first-language question uses neutral Spanish (`quiere` instead of the voseo `querés`); no other voseo was found in the skill package. |
+| Remaining work | none |
+| Additions | Five regression tests (seed recent work, Spanish-only map, unchanged bilingual map, neutral language question, and update compatibility of headings). |
+| Exclusions | Existing installations keep their human-owned files; no migration. |
+| Deferrals | S3, headings that keep the given project name (`Mi-VPSs` instead of `mi-vpss`): an isolated candidate changed an existing installation's README and rulebook from `identical` to `existing` and the checker state from `current` to `human-evolved`, so the change would alter update behavior. Not implemented; a regression test pins today's compatible behavior. |
+| Rejections | none |
+| Evidence | RED then GREEN: the focused tests failed before the change (7 subtest failures) and pass after. Differential render against the base commit for both names: Spanish-only output differs only in `docs/repo-harness/current-state.md` and the documentation map; bilingual output only in the EN/ES current-state entries. Projections synchronized through maintenance preview and current-digest apply (`3149790d047c937f803286a85234a0553459a5f543592ce3e59839a356cf27cc`, nine files); checker `current`, 0 writes. |
+| Decision history | 2026-10-18: the owner approved the fix ("correcto hay que arreglar eso") after the review of both installs. 2026-10-18: completed; S3 deferred on update-compatibility evidence. |
+| Next advancement condition | none (terminal); a heading change needs its own record with an update path. |
+
 ### RH-W-0123
 | Field | Value |
 |---|---|
