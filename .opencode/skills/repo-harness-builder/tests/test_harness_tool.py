@@ -425,6 +425,40 @@ class FreshInstallDocumentationTests(unittest.TestCase):
             self.assertIn("| `roadmap.md` | Espejo humano del propietario canónico del ciclo de vida |", index)
             self.assertIn("| `decisions.md` | Presentación en español de decisiones y restricciones |", index)
 
+    def test_bilingual_spanish_roadmap_names_english_owner(self):
+        outputs = TOOL.render("Example", [], documentation_languages=["en", "es"])
+        roadmap = outputs["docs/es/repo-harness/roadmap.md"]
+        self.assertNotIn("Esta hoja de ruta es el propietario canónico del ciclo de vida.", roadmap)
+        self.assertIn(
+            "Esta hoja de ruta es el espejo en español del propietario canónico del ciclo de vida, "
+            "[`../../repo-harness/roadmap.md`](../../repo-harness/roadmap.md).",
+            roadmap,
+        )
+
+    def test_spanish_only_roadmap_stays_canonical_owner(self):
+        outputs = TOOL.render("Example", [], documentation_languages=["es"])
+        self.assertIn(
+            "Esta hoja de ruta es el propietario canónico del ciclo de vida.",
+            outputs["docs/repo-harness/roadmap.md"],
+        )
+
+    def test_spanish_map_carries_continuity_warning(self):
+        cases = (
+            (["en", "es"], False, "docs/es/repo-harness/README.md", "Los resúmenes de sesión de Engram"),
+            (["en", "es"], True, "docs/es/repo-harness/README.md", "Los resúmenes de sesión en archivos del repositorio"),
+            (["es"], False, "docs/repo-harness/README.md", "Los resúmenes de sesión de Engram"),
+        )
+        tail = "No se convierten en verdad durable hasta reconciliarse con la evidencia del repositorio y promoverse al propietario canónico correspondiente."
+        for languages, standalone, path, opening in cases:
+            with self.subTest(languages=languages, standalone=standalone):
+                outputs = TOOL.render("Example", [], standalone=standalone, documentation_languages=languages)
+                index = outputs[path]
+                self.assertIn(opening, index)
+                self.assertIn(tail, index)
+                english = outputs["docs/repo-harness/README.md"] if languages == ["en", "es"] else None
+                if english is not None:
+                    self.assertIn("They do not become durable truth", english)
+
     def test_existing_normalized_headings_stay_current_on_update(self):
         # S3 is deferred: changing seed headings reclassifies existing installs
         # from identical/current to existing/human-evolved. Keep that contract.

@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-21
+
+- RH-W-0125: una hoja de ruta española bilingüe ya no se declara propietaria canónica del ciclo de vida; se presenta como espejo de la hoja de ruta en inglés. El mapa de documentación en español incluye ahora la oración de continuidad del mapa inglés: los resúmenes de sesión siguen siendo temporales hasta reconciliarse. Las instalaciones existentes conservan sus archivos; sin migración.
+
 ## 2026-10-19
 
 - Se preservó evidencia histórica Linux con sus límites en la hoja de ruta y su par español completo, se enlazó su proyección de estado actual y se aclaró que la adaptación compleja posterior debe quedar anotada sin eximir análisis/integración segura requeridos. Solo documentación; sin correcciones de producto ni cambios de ciclo de vida.

@@ -2727,6 +2727,11 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
         if spanish_only
         else "| `../../repo-harness/README.md` | Mapa canónico en inglés |\n| `../../../CHANGELOG.md` | Historial cronológico canónico |"
     )
+    continuity_es = (
+        "Los resúmenes de sesión en archivos del repositorio siguen siendo entradas temporales de continuidad."
+        if standalone
+        else "Los resúmenes de sesión de Engram siguen siendo entradas temporales de continuidad y deben reconciliarse con la evidencia del repositorio."
+    )
     index_es = f"""# Documentación del harness de IA
 
 {marker}
@@ -2742,6 +2747,8 @@ El contenido entre los marcadores `repo-harness-builder` es administrado por el 
 {spanish_index_roadmap_row}
 {spanish_index_decisions_row}{spanish_index_maintenance_row}
 {spanish_index_owner_rows}
+
+{continuity_es} No se convierten en verdad durable hasta reconciliarse con la evidencia del repositorio y promoverse al propietario canónico correspondiente.
 """
     availability_es = (
         "Gentle AI y Engram son capacidades opcionales independientes. Use cada una en su límite de operación; bloquee solo cuando la operación o la política del repositorio la exija. Informe fallos sin prometer garantías ausentes ni omitir el informe del repositorio."
@@ -2825,13 +2832,18 @@ El harness mínimo de IA del repositorio existe. Este archivo proyecta solo hech
 
 Revise `REPO-HARNESS.md` junto con este documento y actualice solo afirmaciones respaldadas por evidencia.
 """
+    roadmap_owner_es = (
+        "Esta hoja de ruta es el propietario canónico del ciclo de vida."
+        if spanish_only
+        else "Esta hoja de ruta es el espejo en español del propietario canónico del ciclo de vida, [`../../repo-harness/roadmap.md`](../../repo-harness/roadmap.md)."
+    )
     roadmap_es = f"""# Hoja de ruta del ciclo de vida
 
 {marker}
 {canonical_source_es("roadmap.md")}
 <!-- doc-role:lifecycle-owner -->
 
-Esta hoja de ruta es el propietario canónico del ciclo de vida. Registre solo trabajo no trivial con IDs inmutables `RH-W-####`. Cada registro conserva origen, prioridad justificada de `P0` a `P3`, dependencias, estado, trabajo completado y restante, adiciones, exclusiones, aplazamientos, rechazos, evidencia, historial de decisiones y una Condición del siguiente avance observable.
+{roadmap_owner_es} Registre solo trabajo no trivial con IDs inmutables `RH-W-####`. Cada registro conserva origen, prioridad justificada de `P0` a `P3`, dependencias, estado, trabajo completado y restante, adiciones, exclusiones, aplazamientos, rechazos, evidencia, historial de decisiones y una Condición del siguiente avance observable.
 
 ## Reglas del ciclo de vida
 <!-- doc-role:lifecycle-rules -->
