@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-19
+
+- Preserved qualified historical Linux test evidence in the roadmap and complete Spanish peer, linked its current-state projection, and clarified that complex post-install adaptation must be explicitly recorded without waiving required analysis/safe integration. Documentation only; no product fixes or lifecycle changes.
+
 ## 2026-10-18
 
 - Corrected stale claims (EN/ES) that Linux was never exercised: the owner ran the full suite and live Pi installs on Linux on 2026-10-16 (RH-W-0105, RH-W-0106); only macOS remains unverified. RH-W-0124 now records the owner's acceptance of lowercase headings.

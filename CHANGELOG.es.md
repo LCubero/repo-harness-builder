@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-19
+
+- Se preservó evidencia histórica Linux con sus límites en la hoja de ruta y su par español completo, se enlazó su proyección de estado actual y se aclaró que la adaptación compleja posterior debe quedar anotada sin eximir análisis/integración segura requeridos. Solo documentación; sin correcciones de producto ni cambios de ciclo de vida.
+
 ## 2026-10-18
 
 - Se corrigieron afirmaciones desactualizadas (EN/ES) de que Linux nunca se probó: el propietario ejecutó la suite completa e instalaciones reales con Pi en Linux el 2026-10-16 (RH-W-0105, RH-W-0106); solo macOS sigue sin verificar. RH-W-0124 registra ahora que el propietario aceptó los títulos en minúsculas.

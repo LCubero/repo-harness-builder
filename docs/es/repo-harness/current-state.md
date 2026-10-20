@@ -2,6 +2,11 @@
 
 La fuente canónica de estos hechos es [`../../repo-harness/current-state.md`](../../repo-harness/current-state.md).
 
+## Proyección de evidencia Linux
+
+- La evidencia histórica Linux del 2026-10-19/20 queda preservada en la [sección de evidencia de la hoja de ruta](roadmap.md#evidencia-de-pruebas-en-linux--2026-10-1920): variantes de instalación, continuidad/preferencias/documentación en Pi, standalone e integrado sin herramientas Engram expuestas, distinguiendo trazas y lecturas independientes.
+- Las observaciones conservadas no son correcciones completadas ni registros nuevos. El incumplimiento repetido del inicio y hallazgos bilingües generados se distinguen de comprobaciones mecánicas aprobadas. Solo la adaptación compleja puede ser posterior SI queda anotada explícitamente; análisis/integración segura siguen requeridos. No se afirma repetición de suite fuente, paridad exacta con release, macOS/Claude/OpenCode en vivo ni preparación estable.
+
 ## Estado verificado
 <!-- doc-role:verified-state -->
 

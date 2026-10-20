@@ -20,6 +20,53 @@ Source and tests own current behavior; this roadmap owns lifecycle; [current sta
 
 Verified baseline retained from the prior roadmap: checker `current`, exit 0, 0 writes; PR #2 merged as `ec56b1b` for issue #1; runtime-set widening is complete; issue #8 completed exact `.codegraph/` ignore with persistent opt-out; Judgment Day round 2 remains incomplete after judge B hit a session limit; five round-1 findings and the later capabilities below were identified. Each unit remains bounded to its prior outcome, verification, and non-goal.
 
+## Linux Test Evidence — 2026-10-19/20
+
+### Provenance And Scope
+
+Historical evidence promoted from `.ld9/linux-testing-handoff.md` and `.repo-harness/memory-bk/20261020T035902Z-close-01a15662.md`; the local notes retain detailed observations, verbatim human examples, and inspection limits. Windows Engram is not Linux evidence. This section preserves observations, not a second backlog, new work registration, lifecycle transition, or implementation schedule.
+
+The table distinguishes owner-supplied execution traces from independent historical checker runs and file readbacks. No consumer operation was rerun for this documentation promotion. Current source spot-checks below contrast instructions with observed agent behavior; they do not retroactively repair it.
+
+### Observed Coverage
+
+| Scenario | Supplied traces | Independent historical checks/readbacks and limits |
+| --- | --- | --- |
+| Existing code/documentation projects without a detected harness | Installation previews and successful applies in selected projects | Both checkers current/exit 0/writes 0 in installed cases; tracked changes matched stated additions. Purpose/state remained generic in reviewed cases: mechanical success is not completed adaptation. Detection was bounded, not exhaustive. |
+| Existing folder without Git | Successful installation, preserved existing material, no initialization | Both checkers current/exit 0/writes 0; `.git` still absent. Existing directories remained present; no full pre-existing-content byte snapshot. Git initialization was not implicitly authorized. |
+| Clean English and Spanish | Successful installs; Spanish yes did not switch the English interview | Both checkers current/exit 0/writes 0, recorded settings and sampled localized root/docs readbacks matched choices; no automatic Git initialization. |
+| Clean bilingual, Spanish and English conversation separately | Successful installs with all three runtimes selected | Both checkers current/exit 0/writes 0; EN/ES documents and Claude Code/OpenCode/Pi entries present on disk. Only Pi was exercised live. |
+| Pi start/help/stop/fresh recovery | Registered skills invoked; help retained reply language; stop created backup and fresh start recovered it | Actual local backup read and filename/frontmatter checked. Engram success in these integrated traces was reported by the test agent, not independently queried. |
+| Language switching and persistence | Explicit Spanish instruction immediately won, including help reading an English guide; later fresh reply recovered Spanish through Engram/local continuity | This was not a JSON save. A separate explicit repository save produced `conversationLanguage: espanol`, independently read; subsequent fresh-start reader reported valid/persisted-explicit-preference and replied Spanish. Documentation languages stayed separate. |
+| Response preferences | Explicit mode save, stop/fresh-start activation of both shaping rules, then one explanatory response; explicit reset to standard retained Spanish | JSON independently read after save and reset. Explanation was compatible with requested structure/plain language, not a deterministic quality guarantee. No second fresh-start reset-consumption run. |
+| Documentation skill | Read-only map/link/peer review, then separately authorized bilingual purpose-only edit | Two generated text discrepancies corroborated. Both purpose texts read back; neutralizing each changed line reproduced supplied pre-edit remaining-byte hashes for TWO files, not an independently captured full-tree snapshot. |
+| Standalone | Successful install, initial invocation constraint honored, Pi `/reload` exposed new skills, local stop/recovery without external-memory calls in those flows | Both checkers current/exit 0/writes 0 with correct standalone comparison; manifest/local-only instructions and actual backup read. Host integrations were not uninstalled or disabled. |
+| Integrated, Engram tools not exposed | Successful install and local stop/recovery; external write reported unavailable, no fabricated external success | Both checkers current/exit 0/writes 0; actual backup read and accepted by subsequent startup. This was missing tool exposure, NOT a callable-tool network/server-failure test. Original agent self-test was skipped, not passed. |
+
+### Retained Observations Against Current Owners
+
+These observations may await separately scoped correction. Related completed records are antecedents, not automatically reopened, solved, or regressed by this evidence.
+
+| Observation / human request | Current contrast and ownership boundary |
+| --- | --- |
+| Repeated preference-before-charter startup deviation; one compliant trace | `skill/repo-harness-builder/scripts/harness_tool.py` already requires root/charter before the single preference reader. Functional recovery passed; strict startup conformance did not consistently pass. |
+| Bilingual Spanish roadmap calls itself canonical despite pointing to English | Current generator still contains the contradictory wording. Related [RH-W-0124](#rh-w-0124) fixed Spanish-only ownership, a distinct case; no new fix is claimed. |
+| Bilingual Spanish documentation map omits English Engram warning | Current generator's English map retains temporary/non-authoritative continuity guidance, absent in its Spanish map. Current projection consistency does not establish semantic parity. |
+| Explain preferences in documentation/help: effects, supported values, conversational saving and discovery | Existing usage already lists keys, JSON and explicit saving; generator already has preference/help behavior. Improve clarity, not invent storage. Antecedents: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
+| Post-install skill availability notice | Pi `/reload` actually worked in the observed runtime; no all-runtime/version guarantee. Requested final guidance may mention appropriate reload/reopen. Antecedent: [RH-W-0055](#rh-w-0055). |
+| Approval spacing/emphasis | Exact human EN/ES examples remain in the local note under “Owner Feedback - Approval Prompt Spacing”: blank separation before answer list and emphasized final question, unchanged tokens/meaning. Current `APPROVAL_DOMAINS` remains compact; no prompt changed. |
+| Interview stalls, wrong count breakdowns, rejected `en`/`es` values, missing standalone check flag | Recovered agent-command/reporting/conformance issues, not demonstrated renderer/apply corruption. `audit-and-interview.md` already forbids filler waits and requires tool-derived counts. Antecedent: [RH-W-0105](#rh-w-0105). |
+| One standalone builder tail saved to Engram despite local-only generated instructions | Call observed; cause/admission layer unproven. Correct standalone disk policy does not disable independent host memory instructions/tools. Do not label this a proven generator bug. |
+| Alleged filename discrepancy in missing-tools test | Agent withdrew it; direct filename readback found no mismatch. No confirmed defect or repair. |
+
+### Human Clarification And Evidence Limits
+
+Human decision: prioritize new projects and existing code/documentation projects without a repository harness. Legacy repo-harness and other-harness integration remain lower/future priority, without removing support or authorizing migration work. One reviewed existing-project preview's apply/denial (test4 in the local note) remains unknown.
+
+The current clarification narrows the earlier post-installation suggestion: only complex adaptation may be left for after installation IF explicitly recorded. It is not blanket deferral, a waiver of required content analysis/safe integration, or a mandatory automatic post-install workflow. The existing baseline/integration [decision](decisions.md) retains those boundaries.
+
+Unknown/unverified: exact installed release-archive byte parity; exhaustive preservation of every untracked/pre-existing file; macOS behavior; live Claude Code/OpenCode operation; full optional Git/checkpoint/repair coverage; stable-release readiness. Consumer checks and supplied self-tests are not a source-suite rerun. This round implemented no fixes and grants no automatic testing, implementation, issue, release, or delivery authority.
+
 ## Remaining Approved Execution Order
 
 RH-W-0099 was completed through issue #364. RH-W-0100 was completed through issue #366. RH-W-0104 was registered as `proposed` on 2026-10-11 through issue #370 and completed on 2026-10-13 through the same issue. RH-W-0103 was completed on 2026-10-13 through issue #375; the `v3.1-rc.11` update test confirmed RH-W-0099 and RH-W-0100 in a live Pi consumer.
