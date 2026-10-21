@@ -50,8 +50,8 @@ These observations may await separately scoped correction. Related completed rec
 | Observation / human request | Current contrast and ownership boundary |
 | --- | --- |
 | Repeated preference-before-charter startup deviation; one compliant trace | `skill/repo-harness-builder/scripts/harness_tool.py` already requires root/charter before the single preference reader. Functional recovery passed; strict startup conformance did not consistently pass. |
-| Bilingual Spanish roadmap calls itself canonical despite pointing to English | Current generator still contains the contradictory wording. Related [RH-W-0124](#rh-w-0124) fixed Spanish-only ownership, a distinct case. Fixed locally by [RH-W-0125](#rh-w-0125). |
-| Bilingual Spanish documentation map omits English Engram warning | Current generator's English map retains temporary/non-authoritative continuity guidance, absent in its Spanish map. Current projection consistency does not establish semantic parity. Fixed locally by [RH-W-0125](#rh-w-0125). |
+| Bilingual Spanish roadmap calls itself canonical despite pointing to English | Current generator still contains the contradictory wording. Related [RH-W-0124](#rh-w-0124) fixed Spanish-only ownership, a distinct case. Fixed by [RH-W-0125](#rh-w-0125). |
+| Bilingual Spanish documentation map omits English Engram warning | Current generator's English map retains temporary/non-authoritative continuity guidance, absent in its Spanish map. Current projection consistency does not establish semantic parity. Fixed by [RH-W-0125](#rh-w-0125). |
 | Explain preferences in documentation/help: effects, supported values, conversational saving and discovery | Existing usage already lists keys, JSON and explicit saving; generator already has preference/help behavior. Improve clarity, not invent storage. Antecedents: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
 | Post-install skill availability notice | Pi `/reload` actually worked in the observed runtime; no all-runtime/version guarantee. Requested final guidance may mention appropriate reload/reopen. Antecedent: [RH-W-0055](#rh-w-0055). |
 | Approval spacing/emphasis | Exact human EN/ES examples remain in the local note under “Owner Feedback - Approval Prompt Spacing”: blank separation before answer list and emphasized final question, unchanged tokens/meaning. Current `APPROVAL_DOMAINS` remains compact; no prompt changed. |
@@ -605,7 +605,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the focused tests failed before the change (4 failures) and pass after. Differential check: an installation made with the base script and checked with the new one stays `current` with 0 writes and no replacements; only the changed seeds are reported as `existing`/`human-evolved` (Spanish-only: the map; bilingual: the Spanish map and roadmap), the same accepted behavior as RH-W-0124. Projections copied byte-for-byte to the three runtimes; checker `current`, 0 writes. |
-| Decision history | 2026-10-20: the owner delegated the choice of correction and approved it ("dale"). Completed locally on branch `fix/bilingual-seed-ownership`; issue, PR, and release remain owner decisions. |
+| Decision history | 2026-10-20: the owner delegated the choice of correction and approved it ("dale"). Owner approved publication and merge ("si es necesario si dale", "dale dale"); delivered through issue #468 and PR #469, stacked on documentation PR #467. Release remains an owner decision. |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0124

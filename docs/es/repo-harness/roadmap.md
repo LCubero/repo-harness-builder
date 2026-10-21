@@ -50,8 +50,8 @@ Estas observaciones pueden esperar correcciones con alcance separado. Los regist
 | Observación / petición humana | Contraste actual y límite de propiedad |
 | --- | --- |
 | Desviación repetida: preferencias antes del estatuto; una traza conforme | `skill/repo-harness-builder/scripts/harness_tool.py` ya exige raíz/estatuto antes del único lector. Recuperación funcional aprobada; cumplimiento estricto de inicio no fue constante. |
-| Hoja de ruta española bilingüe se dice canónica aunque remite al inglés | El generador actual conserva la contradicción. [RH-W-0124](#rh-w-0124) corrigió propiedad solo en español, caso distinto. Corregido localmente por [RH-W-0125](#rh-w-0125). |
-| Mapa español bilingüe omite advertencia inglesa sobre Engram | El mapa inglés del generador conserva continuidad temporal/no autoritativa, ausente en el español. Consistencia de proyecciones no demuestra paridad semántica. Corregido localmente por [RH-W-0125](#rh-w-0125). |
+| Hoja de ruta española bilingüe se dice canónica aunque remite al inglés | El generador actual conserva la contradicción. [RH-W-0124](#rh-w-0124) corrigió propiedad solo en español, caso distinto. Corregido por [RH-W-0125](#rh-w-0125). |
+| Mapa español bilingüe omite advertencia inglesa sobre Engram | El mapa inglés del generador conserva continuidad temporal/no autoritativa, ausente en el español. Consistencia de proyecciones no demuestra paridad semántica. Corregido por [RH-W-0125](#rh-w-0125). |
 | Explicar preferencias en documentación/ayuda: efectos, valores, guardado conversacional y descubrimiento | Uso ya enumera claves, JSON y guardado explícito; generador ya tiene comportamiento de preferencias/ayuda. Mejorar claridad, no inventar almacenamiento. Antecedentes: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
 | Aviso de disponibilidad de skills tras instalar | Pi `/reload` funcionó en el entorno observado; sin garantía universal de entornos/versiones. Guía final solicitada puede indicar recarga/reapertura apropiada. Antecedente: [RH-W-0055](#rh-w-0055). |
 | Espaciado/énfasis de aprobación | Ejemplos humanos EN/ES exactos siguen en nota local bajo “Owner Feedback - Approval Prompt Spacing”: separación antes de lista y pregunta final enfatizada, tokens/significado intactos. `APPROVAL_DOMAINS` actual sigue compacto; no se cambió prompt. |
@@ -606,7 +606,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | RED y luego GREEN: las pruebas enfocadas fallaron antes del cambio (4 fallos) y pasan después. Comprobación diferencial: una instalación hecha con el script base y comprobada con el nuevo sigue `current` con 0 escrituras y sin reemplazos; solo las semillas cambiadas se informan como `existing`/`human-evolved` (solo en español: el mapa; bilingüe: el mapa y la hoja de ruta en español), el mismo comportamiento aceptado en RH-W-0124. Proyecciones copiadas byte a byte a los tres entornos; checker `current`, 0 escrituras. |
-| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la corrección y la aprobó ("dale"). Completado localmente en la rama `fix/bilingual-seed-ownership`; issue, PR y release siguen siendo decisiones del propietario. |
+| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la corrección y la aprobó ("dale"). El propietario aprobó publicar y fusionar ("si es necesario si dale", "dale dale"); entregado mediante el issue #468 y la PR #469, apilada sobre la PR de documentación #467. El release sigue siendo decisión del propietario. |
 | Condición del siguiente avance | none (terminal). |
 
 ### RH-W-0124

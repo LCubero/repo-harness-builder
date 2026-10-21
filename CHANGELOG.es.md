@@ -4,7 +4,7 @@
 
 ## 2026-10-20
 
-- RH-W-0125: una hoja de ruta española bilingüe ya no se declara propietaria canónica del ciclo de vida; se presenta como espejo de la hoja de ruta en inglés. El mapa de documentación en español incluye ahora la oración de continuidad del mapa inglés: los resúmenes de sesión siguen siendo temporales hasta reconciliarse. Las instalaciones existentes conservan sus archivos; sin migración.
+- RH-W-0125: una hoja de ruta española bilingüe ya no se declara propietaria canónica del ciclo de vida; se presenta como espejo de la hoja de ruta en inglés. El mapa de documentación en español incluye ahora la oración de continuidad del mapa inglés: los resúmenes de sesión siguen siendo temporales hasta reconciliarse. Las instalaciones existentes conservan sus archivos; sin migración (issue #468, PR #469).
 
 ## 2026-10-19
 
