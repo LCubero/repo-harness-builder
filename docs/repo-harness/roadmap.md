@@ -605,7 +605,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the eight cases failed before the change (missing keys) and pass after; the 32-line usage budget holds. Maintenance preview replaced exactly 6 projection files (builder script and tests in three runtimes); apply `VALIDATED`; checker `current`, 0 writes. The first full suite caught one older Spanish-guide assertion still expecting the replaced sentence; it now asserts the new one. Differential check: fresh installs from the base and new scripts differ only in the usage guide, and updating a base install keeps that guide as human-owned with no replacements or writes. Full suite: 717 tests OK (skipped=12); `git diff --check` clean. |
-| Decision history | 2026-10-21: the owner delegated the choice of the next correction ("decidelo tu"). The parent also checked the retained missing `--standalone` check flag and kept it unchanged: it is the documented mode selector, not a defect. Publication and release remain owner decisions. |
+| Decision history | 2026-10-21: the owner delegated the choice of the next correction ("decidelo tu"). The parent also checked the retained missing `--standalone` check flag and kept it unchanged: it is the documented mode selector, not a defect. The owner approved publication and merge ("si", "siiii"); delivered through issue #474 and PR #475, squash-merged as `36fae95`. Release remains an owner decision. |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0127
