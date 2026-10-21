@@ -12,6 +12,8 @@ Resolve integration before planning or approval. For a new installation, default
 
 While auditing, resolve the license the generated skills will carry: read a root `LICENSE` or `LICENSE.md`, then a `license` field in `package.json`, `pyproject.toml`, or `Cargo.toml`. Use the first non-empty, single-line SPDX expression found. Reject values containing characters outside letters, digits, spaces, `.`, `+`, `-`, `:`, and parentheses. Pass the exact accepted value to the renderer, which encodes it as a quoted YAML string rather than interpolating it as a plain scalar. When nothing declares one, read `license-selection.md` and ask the user to choose; do not choose on the project's behalf. If the user declines to choose, generate `UNLICENSED` and say so.
 
+After a successful apply, end the report by telling the human that newly installed skills appear only after the runtime reloads them: in Pi run `/reload`; otherwise open a new session.
+
 ## Optional Contribution Guide
 
 Check before asking: recognize `CONTRIBUTING.md` by safe file presence only in the repository root, `docs/`, then `.github/`; when bilingual, check the `CONTRIBUTING.es.md` peer beside the found guide. Never infer a provider from Git, remotes, URLs, or guide content.

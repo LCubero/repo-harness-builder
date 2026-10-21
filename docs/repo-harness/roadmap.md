@@ -53,9 +53,9 @@ These observations may await separately scoped correction. Related completed rec
 | Bilingual Spanish roadmap calls itself canonical despite pointing to English | Current generator still contains the contradictory wording. Related [RH-W-0124](#rh-w-0124) fixed Spanish-only ownership, a distinct case. Fixed by [RH-W-0125](#rh-w-0125). |
 | Bilingual Spanish documentation map omits English Engram warning | Current generator's English map retains temporary/non-authoritative continuity guidance, absent in its Spanish map. Current projection consistency does not establish semantic parity. Fixed by [RH-W-0125](#rh-w-0125). |
 | Explain preferences in documentation/help: effects, supported values, conversational saving and discovery | Existing usage already lists keys, JSON and explicit saving; generator already has preference/help behavior. Improve clarity, not invent storage. Antecedents: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
-| Post-install skill availability notice | Pi `/reload` actually worked in the observed runtime; no all-runtime/version guarantee. Requested final guidance may mention appropriate reload/reopen. Antecedent: [RH-W-0055](#rh-w-0055). |
-| Approval spacing/emphasis | Exact human EN/ES examples remain in the local note under “Owner Feedback - Approval Prompt Spacing”: blank separation before answer list and emphasized final question, unchanged tokens/meaning. Current `APPROVAL_DOMAINS` remains compact; no prompt changed. |
-| Interview stalls, wrong count breakdowns, rejected `en`/`es` values, missing standalone check flag | Recovered agent-command/reporting/conformance issues, not demonstrated renderer/apply corruption. `audit-and-interview.md` already forbids filler waits and requires tool-derived counts. Antecedent: [RH-W-0105](#rh-w-0105). |
+| Post-install skill availability notice | Pi `/reload` actually worked in the observed runtime; no all-runtime/version guarantee. Requested final guidance may mention appropriate reload/reopen. Antecedent: [RH-W-0055](#rh-w-0055). Fixed by [RH-W-0127](#rh-w-0127). |
+| Approval spacing/emphasis | Exact human EN/ES examples remain in the local note under “Owner Feedback - Approval Prompt Spacing”: blank separation before answer list and emphasized final question, unchanged tokens/meaning. Current `APPROVAL_DOMAINS` remains compact; no prompt changed. Fixed by [RH-W-0127](#rh-w-0127). |
+| Interview stalls, wrong count breakdowns, rejected `en`/`es` values, missing standalone check flag | Recovered agent-command/reporting/conformance issues, not demonstrated renderer/apply corruption. `audit-and-interview.md` already forbids filler waits and requires tool-derived counts. Antecedent: [RH-W-0105](#rh-w-0105). The rejected `en`/`es` values are fixed by [RH-W-0127](#rh-w-0127); the rest stays open. |
 | One standalone builder tail saved to Engram despite local-only generated instructions | Call observed; cause/admission layer unproven. Correct standalone disk policy does not disable independent host memory instructions/tools. Do not label this a proven generator bug. |
 | Alleged filename discrepancy in missing-tools test | Agent withdrew it; direct filename readback found no mismatch. No confirmed defect or repair. |
 
@@ -591,6 +591,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0127
+| Field | Value |
+|---|---|
+| Origin | Three retained [Linux test evidence](#linux-test-evidence--2026-10-1920) installation observations: agents passed `--conversation-language es` and got exit 2 before retrying `espanol`; the owner asked for space before the approval question with exact examples; the install report never said how to make new skills appear (Pi `/reload` worked). |
+| Priority | P2: each install pays a failed command, a cramped approval prompt, or a missing next step, without data risk. |
+| Dependencies | none |
+| Status | completed |
+| Completed work | S1: `render` `--documentation-language`, `--conversation-language`, and `--report-language` accept both `en`/`english` and `es`/`espanol`, normalized to each flag's canonical value before use, so plans and manifests match the canonical spelling; any other value is still rejected with exit 2 and no writes. S2: the approval prompt has a blank line before the answer list and before the final question, now emphasized as `***  Do you approve this exact plan?  ***` / `***  ¿Aprueba este plan exacto?  ***`; headline, instruction, and tokens are unchanged. S3: the builder interview reference tells the agent to end a successful apply report by saying new skills appear after the runtime reloads them: `/reload` in Pi, otherwise a new session. |
+| Remaining work | none |
+| Additions | Four tests: alias plans match canonical plans, canonical values unchanged, invalid values fail without writes, reload sentence present; the localized prompt test expects the new spacing. |
+| Exclusions | Approval tokens stay exact and aliases there stay rejected. No reload command is claimed for Claude Code or OpenCode. Interview stalls, count breakdowns, and the missing `--standalone` check flag stay separate. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | RED then GREEN: the five focused tests failed before the change (six alias subcases with exit 2, prompt spacing, missing sentence) and pass after. Maintenance preview replaced exactly 9 projection files (builder script, tests, and interview reference in three runtimes); apply `VALIDATED`; checker `current`, 0 writes. Differential check: with canonical values the base and new scripts give the same plan digest and byte-identical fresh installs; `--conversation-language es` exits 2 with the base script and previews with 0 writes with the new one; `spanish` still exits 2. Full suite: 717 tests OK (skipped=12); `git diff --check` clean. |
+| Decision history | 2026-10-21: the owner delegated the choice of the next correction ("decidelo tu"). Publication and release remain owner decisions. |
+| Next advancement condition | none (terminal). |
+
 ### RH-W-0126
 | Field | Value |
 |---|---|
@@ -605,7 +622,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the focused test failed before the change (2 failures) and passes after. A first attempt that also moved the recovery-order line broke an existing ordering test and was reverted to an in-place edit. Maintenance preview replaced exactly 10 projection files (builder script and tests in three runtimes, four startup skill copies); apply `VALIDATED`; checker `current`, 0 writes; byte parity in the three runtimes. Differential check: fresh Spanish Pi installs from the base and new scripts differ only in the two startup skill copies, and updating a base install with the new script replaces exactly those two files, with no creates, appends, migrations, or blocked paths. Full suite: 713 tests OK (skipped=12); `git diff --check` clean. |
-| Decision history | 2026-10-21: the owner delegated the choice of correction ("decidelo tu"). Publication and release remain owner decisions. |
+| Decision history | 2026-10-21: the owner delegated the choice of correction ("decidelo tu") and approved publication and merge ("dale"); delivered through issue #470 and PR #471, squash-merged as `6340c86`. Release remains an owner decision. |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0125
@@ -622,7 +639,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the focused tests failed before the change (4 failures) and pass after. Differential check: an installation made with the base script and checked with the new one stays `current` with 0 writes and no replacements; only the changed seeds are reported as `existing`/`human-evolved` (Spanish-only: the map; bilingual: the Spanish map and roadmap), the same accepted behavior as RH-W-0124. Projections copied byte-for-byte to the three runtimes; checker `current`, 0 writes. |
-| Decision history | 2026-10-20: the owner delegated the choice of correction and approved it ("dale"). Owner approved publication and merge ("si es necesario si dale", "dale dale"); delivered through issue #468 and PR #469, stacked on documentation PR #467. Release remains an owner decision. |
+| Decision history | 2026-10-20: the owner delegated the choice of correction and approved it ("dale"). Owner approved publication and merge ("si es necesario si dale", "dale dale"); delivered through issue #468 and PR #469, squash-merged as `c33c7f2`, stacked on documentation PR #467. Release remains an owner decision. |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0124

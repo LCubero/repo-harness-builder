@@ -1271,8 +1271,57 @@ class ApprovalUxTests(unittest.TestCase):
                     TOOL.approval_granted(answer, language)
 
     def test_prompts_are_fully_localized(self):
-        self.assertEqual(TOOL.approval_prompt("english"), "Builder content-bound approval\nAnswers are case-sensitive and must be written exactly in uppercase.\nAllowed answers:\n- APPROVE\n- DENY\nDo you approve this exact plan?")
-        self.assertEqual(TOOL.approval_prompt("espanol"), "Aprobación de contenido del constructor\nLas respuestas distinguen mayúsculas y minúsculas y deben escribirse exactamente en mayúsculas.\nRespuestas permitidas:\n- APROBAR\n- DENEGAR\n¿Aprueba este plan exacto?")
+        self.assertEqual(TOOL.approval_prompt("english"), "Builder content-bound approval\nAnswers are case-sensitive and must be written exactly in uppercase.\nAllowed answers:\n\n- APPROVE\n- DENY\n\n***  Do you approve this exact plan?  ***")
+        self.assertEqual(TOOL.approval_prompt("espanol"), "Aprobación de contenido del constructor\nLas respuestas distinguen mayúsculas y minúsculas y deben escribirse exactamente en mayúsculas.\nRespuestas permitidas:\n\n- APROBAR\n- DENEGAR\n\n***  ¿Aprueba este plan exacto?  ***")
+
+    def test_post_apply_report_requires_runtime_reload_notice(self):
+        audit = (ROOT / "references" / "audit-and-interview.md").read_text(encoding="utf-8")
+        self.assertIn(
+            "After a successful apply, end the report by telling the human that newly installed skills appear only after the runtime reloads them: in Pi run `/reload`; otherwise open a new session.",
+            audit,
+        )
+
+    def test_cli_language_aliases_match_canonical_plans(self):
+        for flag in ("--documentation-language", "--conversation-language", "--report-language"):
+            for short, long in (("en", "english"), ("es", "espanol")):
+                with self.subTest(flag=flag, language=short), tempfile.TemporaryDirectory() as directory:
+                    base = [sys.executable, "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--standalone"]
+                    canonical = short if flag == "--documentation-language" else long
+                    expected = json.loads(subprocess.run([*base, flag, canonical], check=True, capture_output=True, text=True).stdout)
+                    for value in (short, long):
+                        result = subprocess.run([*base, flag, value], capture_output=True, text=True)
+                        self.assertEqual(result.returncode, 0, result.stderr)
+                        self.assertEqual(json.loads(result.stdout), expected)
+                    self.assertEqual(list(Path(directory).iterdir()), [])
+                    alias = long if flag == "--documentation-language" else short
+                    applied = subprocess.run([*base, flag, alias, "--apply", "--approved-plan-sha256", expected["planSha256"]], capture_output=True, text=True)
+                    self.assertEqual(applied.returncode, 0, applied.stderr)
+                    manifest = json.loads((Path(directory) / ".repo-harness" / "manifest.json").read_text(encoding="utf-8"))
+                    self.assertEqual(manifest["language"], {
+                        "conversation": long if flag == "--conversation-language" else "english",
+                        "documentation": [short] if flag == "--documentation-language" else ["en"],
+                    })
+                    self.assertEqual(json.loads(applied.stdout)["reportLanguage"], long if flag == "--report-language" else "english")
+
+    def test_cli_canonical_language_values_remain_unchanged(self):
+        for short, long in (("en", "english"), ("es", "espanol")):
+            with self.subTest(language=short), tempfile.TemporaryDirectory() as directory:
+                base = [sys.executable, "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--standalone"]
+                result = subprocess.run([*base, "--documentation-language", short, "--conversation-language", long, "--report-language", long], check=True, capture_output=True, text=True)
+                payload = json.loads(result.stdout)
+                self.assertEqual(payload["reportLanguage"], long)
+                applied = subprocess.run([*base, "--documentation-language", short, "--conversation-language", long, "--report-language", long, "--apply", "--approved-plan-sha256", payload["planSha256"]], capture_output=True, text=True)
+                self.assertEqual(applied.returncode, 0, applied.stderr)
+                manifest = json.loads((Path(directory) / ".repo-harness" / "manifest.json").read_text(encoding="utf-8"))
+                self.assertEqual(manifest["language"], {"conversation": long, "documentation": [short]})
+
+    def test_cli_invalid_language_values_fail_without_writes(self):
+        for flag in ("--documentation-language", "--conversation-language", "--report-language"):
+            with self.subTest(flag=flag), tempfile.TemporaryDirectory() as directory:
+                result = subprocess.run([sys.executable, "-B", str(SCRIPT), "render", "--root", directory, "--project-name", "Example", "--standalone", flag, "spanish", "--apply"], capture_output=True, text=True)
+                self.assertEqual(result.returncode, 2)
+                self.assertIn("invalid choice", result.stderr)
+                self.assertEqual(list(Path(directory).iterdir()), [])
 
     def test_preview_exposes_the_localized_approval_domain(self):
         with tempfile.TemporaryDirectory() as directory:

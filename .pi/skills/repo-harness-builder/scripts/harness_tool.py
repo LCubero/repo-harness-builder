@@ -108,10 +108,10 @@ APPROVAL_DOMAINS = {
         "prompt": (
             "Builder content-bound approval\n"
             "Answers are case-sensitive and must be written exactly in uppercase.\n"
-            "Allowed answers:\n"
+            "Allowed answers:\n\n"
             "- APPROVE\n"
-            "- DENY\n"
-            "Do you approve this exact plan?"
+            "- DENY\n\n"
+            "***  Do you approve this exact plan?  ***"
         ),
         "invalid": "Invalid answer. Write exactly APPROVE or DENY in uppercase.",
     },
@@ -121,10 +121,10 @@ APPROVAL_DOMAINS = {
         "prompt": (
             "Aprobación de contenido del constructor\n"
             "Las respuestas distinguen mayúsculas y minúsculas y deben escribirse exactamente en mayúsculas.\n"
-            "Respuestas permitidas:\n"
+            "Respuestas permitidas:\n\n"
             "- APROBAR\n"
-            "- DENEGAR\n"
-            "¿Aprueba este plan exacto?"
+            "- DENEGAR\n\n"
+            "***  ¿Aprueba este plan exacto?  ***"
         ),
         "invalid": "Respuesta no válida. Escriba exactamente APROBAR o DENEGAR en mayúsculas.",
     },
@@ -5909,9 +5909,9 @@ def main(argv: Optional[list[str]] = None) -> int:
         if name == "render":
             child.add_argument("--license", dest="license_id", help="SPDX identifier for generated skills; defaults to MIT for a new installation")
             child.add_argument("--contribution-guide", action="store_true", help="Propose a brief human-owned guide only when no recognized guide exists")
-            child.add_argument("--report-language", choices=sorted(APPROVAL_DOMAINS), default=DEFAULT_REPORT_LANGUAGE, help="language for builder approval output; defaults to english")
-            child.add_argument("--documentation-language", action="append", dest="documentation_languages", choices=sorted(DOCUMENTATION_LANGUAGES), help="human documentation locale; use es alone for Spanish-only, repeat en then es for bilingual, omit for English-only")
-            child.add_argument("--conversation-language", choices=sorted(APPROVAL_DOMAINS), help="language the generated sessions converse in; ask the human, defaults to english")
+            child.add_argument("--report-language", choices=("en", "english", "es", "espanol"), default=DEFAULT_REPORT_LANGUAGE, help="language for builder approval output; defaults to english")
+            child.add_argument("--documentation-language", action="append", dest="documentation_languages", choices=("en", "english", "es", "espanol"), help="human documentation locale; use es alone for Spanish-only, repeat en then es for bilingual, omit for English-only")
+            child.add_argument("--conversation-language", choices=("en", "english", "es", "espanol"), help="language the generated sessions converse in; ask the human, defaults to english")
             child.add_argument("--no-codegraph-ignore", dest="ignore_codegraph", action="store_false", help="do not add .codegraph/ to the root .gitignore")
             child.add_argument("--activation", choices=("builder", "maintenance"), default="maintenance", help="declare an explicitly active repo-harness-builder skill execution; only that activation uses the strict approval domain")
             child.add_argument("--suggestion-choice", choices=SUGGESTION_CHOICES)
@@ -5936,6 +5936,14 @@ def main(argv: Optional[list[str]] = None) -> int:
     self_test = sub.add_parser("self-test", help="bootstrap and verify a temporary empty project")
     self_test.add_argument("--standalone", action="store_true", help="test repository-only continuity")
     args = parser.parse_args(argv)
+    if args.command == "render":
+        args.report_language = {"en": "english", "es": "espanol"}.get(args.report_language, args.report_language)
+        args.conversation_language = {"en": "english", "es": "espanol"}.get(args.conversation_language, args.conversation_language)
+        if args.documentation_languages:
+            args.documentation_languages = [
+                {"english": "en", "espanol": "es"}.get(language, language)
+                for language in args.documentation_languages
+            ]
     try:
         if args.command == "self-test":
             print(dump_json(bootstrap_demo(args.standalone)), end="")
