@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-21
 
+- RH-W-0128: the generated usage guide, which `repo-harness-help` reads, now lists the three response preferences, their values and effects, and how to save them.
 - RH-W-0127: `render` language flags accept both `en`/`english` and `es`/`espanol`; the approval prompt has space before the answers and an emphasized final question; a successful install report now says how to make new skills appear (`/reload` in Pi, otherwise a new session).
 - RH-W-0126: the generated startup skill now names where the charter lives (`docs/repo-harness/decisions.md`), treats an absent charter as `not_found`, and the preference-reader step names the same path. Linux traces had read preferences first because the skill never said where the charter was.
 

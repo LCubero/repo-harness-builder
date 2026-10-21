@@ -4,6 +4,7 @@
 
 ## 2026-10-21
 
+- RH-W-0128: la guía de uso generada, que lee `repo-harness-help`, ahora enumera las tres preferencias de respuesta, sus valores y efectos, y cómo guardarlas.
 - RH-W-0127: los flags de idioma de `render` aceptan `en`/`english` y `es`/`espanol`; el aviso de aprobación tiene espacio antes de las respuestas y una pregunta final resaltada; un informe de instalación exitosa ahora dice cómo hacer aparecer las skills nuevas (`/reload` en Pi; en otro caso, una sesión nueva).
 - RH-W-0126: la skill de inicio generada ahora nombra dónde está el estatuto (`docs/repo-harness/decisions.md`), trata un estatuto ausente como `not_found` y el paso del lector de preferencias nombra la misma ruta. Las trazas de Linux leían primero las preferencias porque la skill nunca decía dónde estaba el estatuto.
 
