@@ -1346,7 +1346,6 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                 self.assertEqual(skill.count("read-preference --root <selected-repository-root>"), 1)
                 self.assertIn("using only the active runtime's fixed reader", skill)
                 self.assertIn("run exactly once", skill)
-                self.assertIn("After root and charter checks, before deeper owners", skill)
                 self.assertIn("`invalid` supplies no preference", skill)
                 self.assertIn("never raw preference bytes; its exit code is 2", skill)
                 self.assertIn("Any other nonzero exit", skill)
@@ -1355,10 +1354,13 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                 self.assertIn("verified human instruction, valid persisted preference, eligible verified session language, validated manifest fallback, then English", skill)
                 self.assertIn("Do not retry, repair, write, read preference JSON directly, or invoke another runtime's script", skill)
                 recovery_order = (
-                    "validate root, read bounded charter, resolve preference using the one fixed reader exactly once, "
+                    "validate root, read bounded charter (`docs/repo-harness/decisions.md`; absent is `not_found`, not failure), "
+                    "resolve preference using the one fixed reader exactly once, "
                     "then the newest valid local backup. Discover only the exact active checkpoint path afterward"
                 )
                 self.assertIn(recovery_order, skill)
+                # The step that runs the reader must itself name where the charter lives.
+                self.assertIn("After the root check and the charter read (`docs/repo-harness/decisions.md`), before deeper owners", skill)
                 self.assertEqual(skill.count("read-preference --root <selected-repository-root>"), 1)
 
     def test_fixed_preference_cli_valid_absent_and_invalid_without_writes(self):
