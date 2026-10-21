@@ -9499,6 +9499,21 @@ class UsageGuideTests(unittest.TestCase):
         self.assertIn("## Approval Boundaries", guide)
         self.assertNotRegex(guide, r"(?i)engram|gentle ai|cloud")
 
+    def test_availability_heading_names_integration_only_when_integrated(self):
+        for standalone, languages, path, expected, rejected in (
+            (False, ["en"], "docs/repo-harness/usage.md", "## Integrated Availability\n", None),
+            (False, ["es"], "docs/repo-harness/usage.md", "## Disponibilidad integrada\n", None),
+            (True, ["en"], "docs/repo-harness/usage.md", "## Availability\n", "Integrated Availability"),
+            (True, ["es"], "docs/repo-harness/usage.md", "## Disponibilidad\n", "Disponibilidad integrada"),
+            (True, ["en", "es"], "docs/repo-harness/usage.md", "## Availability\n", "Integrated Availability"),
+            (True, ["en", "es"], "docs/es/repo-harness/usage.md", "## Disponibilidad\n", "Disponibilidad integrada"),
+        ):
+            with self.subTest(standalone=standalone, languages=languages, path=path):
+                guide = TOOL.render("Example", ["opencode"], standalone=standalone, documentation_languages=languages)[path]
+                self.assertIn(expected + "<!-- doc-role:availability -->", guide)
+                if rejected:
+                    self.assertNotIn(rejected, guide)
+
     def test_guide_describes_backup_preference_saving_and_batch_mode(self):
         for standalone in (False, True):
             guide = TOOL.render("Example", ["opencode"], standalone=standalone)["docs/repo-harness/usage.md"]

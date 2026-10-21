@@ -2515,7 +2515,7 @@ Use the three generated skills as a loop: recover context, keep durable document
 2. Use `repo-harness-documentation` when durable documentation or visible project state needs updating.
 3. Pause or close with `repo-harness-session-stop`. It verifies evidence and required documentation, then {handoff}. Only requested Git work triggers path screening and exact work-unit proposals under repository policy; unchanged authorization is not requested again.
 
-## Integrated Availability
+## {"Availability" if standalone else "Integrated Availability"}
 <!-- doc-role:availability -->
 {availability}
 
@@ -2783,7 +2783,7 @@ Use las tres skills generadas como un ciclo: recupere contexto, mantenga vigente
 2. Use `repo-harness-documentation` cuando sea necesario actualizar documentación durable o el estado visible del proyecto.
 3. Pause o cierre con `repo-harness-session-stop`. Verifica evidencia y documentación requeridas y luego {handoff_es}. Solo el trabajo Git solicitado activa revisión de rutas y propuestas exactas bajo la política del repositorio; no se repite una autorización sin cambios.
 
-## Disponibilidad integrada
+## {"Disponibilidad" if standalone else "Disponibilidad integrada"}
 <!-- doc-role:availability -->
 {availability_es}
 

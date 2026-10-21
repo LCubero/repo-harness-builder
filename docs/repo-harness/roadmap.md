@@ -55,7 +55,7 @@ These observations may await separately scoped correction. Related completed rec
 | Explain preferences in documentation/help: effects, supported values, conversational saving and discovery | Existing usage already lists keys, JSON and explicit saving; generator already has preference/help behavior. Improve clarity, not invent storage. Antecedents: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). Fixed by [RH-W-0128](#rh-w-0128). |
 | Post-install skill availability notice | Pi `/reload` actually worked in the observed runtime; no all-runtime/version guarantee. Requested final guidance may mention appropriate reload/reopen. Antecedent: [RH-W-0055](#rh-w-0055). Fixed by [RH-W-0127](#rh-w-0127). |
 | Approval spacing/emphasis | Exact human EN/ES examples remain in the local note under “Owner Feedback - Approval Prompt Spacing”: blank separation before answer list and emphasized final question, unchanged tokens/meaning. Current `APPROVAL_DOMAINS` remains compact; no prompt changed. Fixed by [RH-W-0127](#rh-w-0127). |
-| Interview stalls, wrong count breakdowns, rejected `en`/`es` values, missing standalone check flag | Recovered agent-command/reporting/conformance issues, not demonstrated renderer/apply corruption. `audit-and-interview.md` already forbids filler waits and requires tool-derived counts. Antecedent: [RH-W-0105](#rh-w-0105). The rejected `en`/`es` values are fixed by [RH-W-0127](#rh-w-0127); the rest stays open. The missing `--standalone` check flag is by design, not a defect: `--standalone` is the sole mode selector, `check` reports `integrationModeSet` (`recorded`, `requested`, `matches`), and the interview reference already says to pass `--standalone` for a recorded standalone installation (verified 2026-10-21; see [RH-W-0128](#rh-w-0128)). |
+| Interview stalls, wrong count breakdowns, rejected `en`/`es` values, missing standalone check flag | Recovered agent-command/reporting/conformance issues, not demonstrated renderer/apply corruption. `audit-and-interview.md` already forbids filler waits and requires tool-derived counts. Antecedent: [RH-W-0105](#rh-w-0105). The rejected `en`/`es` values are fixed by [RH-W-0127](#rh-w-0127); the rest stays open. The missing `--standalone` check flag is by design, not a defect: `--standalone` is the sole mode selector, `check` reports `integrationModeSet` (`recorded`, `requested`, `matches`), and the interview reference already says to pass `--standalone` for a recorded standalone installation (verified 2026-10-20; see [RH-W-0128](#rh-w-0128)). |
 | One standalone builder tail saved to Engram despite local-only generated instructions | Call observed; cause/admission layer unproven. Correct standalone disk policy does not disable independent host memory instructions/tools. Do not label this a proven generator bug. |
 | Alleged filename discrepancy in missing-tools test | Agent withdrew it; direct filename readback found no mismatch. No confirmed defect or repair. |
 
@@ -605,7 +605,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the eight cases failed before the change (missing keys) and pass after; the 32-line usage budget holds. Maintenance preview replaced exactly 6 projection files (builder script and tests in three runtimes); apply `VALIDATED`; checker `current`, 0 writes. The first full suite caught one older Spanish-guide assertion still expecting the replaced sentence; it now asserts the new one. Differential check: fresh installs from the base and new scripts differ only in the usage guide, and updating a base install keeps that guide as human-owned with no replacements or writes. Full suite: 717 tests OK (skipped=12); `git diff --check` clean. |
-| Decision history | 2026-10-21: the owner delegated the choice of the next correction ("decidelo tu"). The parent also checked the retained missing `--standalone` check flag and kept it unchanged: it is the documented mode selector, not a defect. The owner approved publication and merge ("si", "siiii"); delivered through issue #474 and PR #475, squash-merged as `36fae95`. Release remains an owner decision. |
+| Decision history | 2026-10-20: the owner delegated the choice of the next correction ("decidelo tu"). The parent also checked the retained missing `--standalone` check flag and kept it unchanged: it is the documented mode selector, not a defect. The owner approved publication and merge ("si", "siiii"); delivered through issue #474 and PR #475, squash-merged as `36fae95`. Release remains an owner decision. |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0127
@@ -622,13 +622,13 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the five focused tests failed before the change (six alias subcases with exit 2, prompt spacing, missing sentence) and pass after. Maintenance preview replaced exactly 9 projection files (builder script, tests, and interview reference in three runtimes); apply `VALIDATED`; checker `current`, 0 writes. Differential check: with canonical values the base and new scripts give the same plan digest and byte-identical fresh installs; `--conversation-language es` exits 2 with the base script and previews with 0 writes with the new one; `spanish` still exits 2. Full suite: 717 tests OK (skipped=12); `git diff --check` clean. |
-| Decision history | 2026-10-21: the owner delegated the choice of the next correction ("decidelo tu") and approved publication and merge ("dale"); delivered through issue #472 and PR #473, squash-merged as `4430dc2`. Release remains an owner decision. |
+| Decision history | 2026-10-20: the owner delegated the choice of the next correction ("decidelo tu") and approved publication and merge ("dale"); delivered through issue #472 and PR #473, squash-merged as `4430dc2`. Release remains an owner decision. |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0126
 | Field | Value |
 |---|---|
-| Origin | Retained [Linux test evidence](#linux-test-evidence--2026-10-1920) observation: startup read preferences before the charter in every Linux trace but one. Reproduced on Windows in this repository on 2026-10-21. |
+| Origin | Retained [Linux test evidence](#linux-test-evidence--2026-10-1920) observation: startup read preferences before the charter in every Linux trace but one. Reproduced on Windows in this repository on 2026-10-20. |
 | Priority | P2: every generated session start can skip the charter step, although functional recovery still passes. |
 | Dependencies | none |
 | Status | completed |
@@ -639,7 +639,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the focused test failed before the change (2 failures) and passes after. A first attempt that also moved the recovery-order line broke an existing ordering test and was reverted to an in-place edit. Maintenance preview replaced exactly 10 projection files (builder script and tests in three runtimes, four startup skill copies); apply `VALIDATED`; checker `current`, 0 writes; byte parity in the three runtimes. Differential check: fresh Spanish Pi installs from the base and new scripts differ only in the two startup skill copies, and updating a base install with the new script replaces exactly those two files, with no creates, appends, migrations, or blocked paths. Full suite: 713 tests OK (skipped=12); `git diff --check` clean. |
-| Decision history | 2026-10-21: the owner delegated the choice of correction ("decidelo tu") and approved publication and merge ("dale"); delivered through issue #470 and PR #471, squash-merged as `6340c86`. Release remains an owner decision. |
+| Decision history | 2026-10-20: the owner delegated the choice of correction ("decidelo tu") and approved publication and merge ("dale"); delivered through issue #470 and PR #471, squash-merged as `6340c86`. Release remains an owner decision. |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0125
