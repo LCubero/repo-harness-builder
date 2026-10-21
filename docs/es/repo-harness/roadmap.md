@@ -20,6 +20,53 @@ Código y pruebas poseen el comportamiento; la hoja canónica posee el ciclo de 
 
 Se conserva la base anterior: checker `current`, salida 0 y 0 escrituras; PR #2 integrado como `ec56b1b` para issue #1; ampliación de runtimes completa; issue #8 completo para `.codegraph/`; ronda 2 de Judgment Day incompleta por límite de sesión del juez B; cinco hallazgos de ronda 1 y capacidades posteriores identificados.
 
+## Evidencia de pruebas en Linux — 2026-10-19/20
+
+### Procedencia y alcance
+
+Evidencia histórica promovida desde `.ld9/linux-testing-handoff.md` y `.repo-harness/memory-bk/20261020T035902Z-close-01a15662.md`; las notas locales conservan observaciones detalladas, ejemplos humanos textuales y límites de inspección. Engram de Windows no es evidencia de Linux. Esta sección preserva observaciones, no otro backlog, registro de trabajo, transición de ciclo de vida ni programación de implementación.
+
+La tabla distingue transcripciones aportadas por el propietario de comprobaciones históricas independientes y lecturas de archivos. No se repitió ninguna operación de consumidor para esta promoción documental. Los contrastes puntuales con las fuentes actuales comparan instrucciones y conducta observada; no la corrigen retroactivamente.
+
+### Cobertura observada
+
+| Escenario | Transcripciones aportadas | Comprobaciones/lecturas históricas independientes y límites |
+| --- | --- | --- |
+| Proyectos con código/documentación sin harness detectado | Previews e instalaciones satisfactorias en proyectos seleccionados | Ambos comprobadores current/exit 0/writes 0 en casos instalados; cambios rastreados coincidieron con adiciones declaradas. Propósito/estado seguían genéricos en casos revisados: éxito mecánico no es adaptación completa. Detección acotada, no exhaustiva. |
+| Carpeta existente sin Git | Instalación satisfactoria, material existente preservado, sin inicialización | Ambos comprobadores current/exit 0/writes 0; `.git` seguía ausente. Directorios existentes presentes, sin captura completa de bytes previos. Inicializar Git no estaba implícitamente autorizado. |
+| Limpios en inglés y español | Instalaciones satisfactorias; un sí en español no cambió la entrevista inglesa | Ambos comprobadores current/exit 0/writes 0, configuración y lecturas localizadas de raíz/docs acordes con elecciones; sin inicialización automática de Git. |
+| Bilingües limpios, conversación española e inglesa por separado | Instalaciones satisfactorias con los tres entornos seleccionados | Ambos comprobadores current/exit 0/writes 0; documentos EN/ES y entradas Claude Code/OpenCode/Pi presentes en disco. Solo Pi se ejercitó en vivo. |
+| Pi inicio/ayuda/cierre/recuperación nueva | Skills registradas invocadas; ayuda mantuvo idioma; cierre creó respaldo y nuevo inicio lo recuperó | Respaldo local real leído y nombre/frontmatter comprobados. El agente informó éxito de Engram en estas trazas integradas; no se consultó independientemente. |
+| Cambio de idioma y persistencia | Instrucción española explícita prevaleció de inmediato, incluso con guía inglesa; respuesta nueva recuperó español por Engram/continuidad local | Eso no fue guardar JSON. Otra petición explícita guardó `conversationLanguage: espanol`, leído independientemente; después el lector de inicio nuevo informó valid/persisted-explicit-preference y respondió en español. Idiomas documentales separados. |
+| Preferencias de respuesta | Guardado explícito de modos, cierre/inicio nuevo activando ambas reglas, una explicación posterior; restablecimiento explícito a standard conservó español | JSON leído independientemente tras guardar y restablecer. Explicación compatible con estructura/lenguaje sencillo, no garantía determinista de calidad. Sin segundo inicio para consumir el restablecimiento. |
+| Skill documental | Revisión sin escrituras de mapa/enlaces/pares; después edición bilingüe autorizada solo del propósito | Dos discrepancias generadas corroboradas. Ambos propósitos leídos; neutralizar cada línea cambiada reprodujo hashes previos aportados del resto de DOS archivos, no una captura independiente del árbol completo. |
+| Standalone | Instalación satisfactoria, restricción inicial respetada, Pi `/reload` expuso skills nuevas, cierre/recuperación local sin llamadas de memoria externa en esos flujos | Ambos comprobadores current/exit 0/writes 0 con comparación standalone correcta; manifest/instrucciones locales y respaldo real leídos. No se desinstalaron ni desactivaron integraciones del host. |
+| Integrado, herramientas Engram no expuestas | Instalación y cierre/recuperación local satisfactorios; escritura externa no disponible, sin éxito externo inventado | Ambos comprobadores current/exit 0/writes 0; respaldo real leído y aceptado por inicio posterior. Fue ausencia de herramientas, NO fallo de red/servidor devuelto por herramienta invocable. Self-test original omitido, no aprobado. |
+
+### Observaciones conservadas frente a propietarios actuales
+
+Estas observaciones pueden esperar correcciones con alcance separado. Los registros completados relacionados son antecedentes, no quedan automáticamente reabiertos, resueltos ni declarados regresiones.
+
+| Observación / petición humana | Contraste actual y límite de propiedad |
+| --- | --- |
+| Desviación repetida: preferencias antes del estatuto; una traza conforme | `skill/repo-harness-builder/scripts/harness_tool.py` ya exige raíz/estatuto antes del único lector. Recuperación funcional aprobada; cumplimiento estricto de inicio no fue constante. |
+| Hoja de ruta española bilingüe se dice canónica aunque remite al inglés | El generador actual conserva la contradicción. [RH-W-0124](#rh-w-0124) corrigió propiedad solo en español, caso distinto; no se afirma nueva corrección. |
+| Mapa español bilingüe omite advertencia inglesa sobre Engram | El mapa inglés del generador conserva continuidad temporal/no autoritativa, ausente en el español. Consistencia de proyecciones no demuestra paridad semántica. |
+| Explicar preferencias en documentación/ayuda: efectos, valores, guardado conversacional y descubrimiento | Uso ya enumera claves, JSON y guardado explícito; generador ya tiene comportamiento de preferencias/ayuda. Mejorar claridad, no inventar almacenamiento. Antecedentes: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
+| Aviso de disponibilidad de skills tras instalar | Pi `/reload` funcionó en el entorno observado; sin garantía universal de entornos/versiones. Guía final solicitada puede indicar recarga/reapertura apropiada. Antecedente: [RH-W-0055](#rh-w-0055). |
+| Espaciado/énfasis de aprobación | Ejemplos humanos EN/ES exactos siguen en nota local bajo “Owner Feedback - Approval Prompt Spacing”: separación antes de lista y pregunta final enfatizada, tokens/significado intactos. `APPROVAL_DOMAINS` actual sigue compacto; no se cambió prompt. |
+| Entrevista detenida, desgloses erróneos, valores `en`/`es` rechazados, falta de flag standalone al comprobar | Problemas recuperados de comandos/informes/cumplimiento del agente, no corrupción demostrada del render/apply. `audit-and-interview.md` ya prohíbe esperar relleno y exige conteos de herramienta. Antecedente: [RH-W-0105](#rh-w-0105). |
+| Un final del builder standalone guardó en Engram pese a instrucciones locales generadas | Llamada observada; causa/capa de admisión sin probar. Política standalone correcta en disco no desactiva instrucciones/herramientas independientes del host. No es un fallo demostrado del generador. |
+| Supuesta discrepancia de nombres en prueba sin herramientas | Agente la retiró; lectura directa no encontró diferencia. Sin defecto ni reparación confirmados. |
+
+### Aclaración humana y límites de evidencia
+
+Decisión humana: priorizar proyectos nuevos y existentes con código/documentación sin harness de repositorio. Legacy repo-harness e integración con otro harness siguen con prioridad menor/futura, sin retirar soporte ni autorizar migración. Apply/denegación de un preview existente (test4 en la nota local) sigue desconocido.
+
+La aclaración actual acota la sugerencia anterior: solo la adaptación compleja puede quedar para después de instalar SI se deja anotada explícitamente. No es aplazamiento general, exención del análisis de contenido/integración segura requeridos ni flujo automático obligatorio posterior. La [decisión](decisions.md) existente de base/integración conserva esos límites.
+
+Desconocido/no verificado: paridad exacta de bytes con archivos de release; preservación exhaustiva de todo archivo previo/no rastreado; macOS; Claude Code/OpenCode en vivo; cobertura completa de Git/checkpoints/reparación opcionales; preparación para release estable. Comprobaciones de consumidores y self-tests aportados no son una repetición de la suite fuente. Esta ronda no implementó correcciones ni concede autoridad automática para pruebas, implementación, issues, release o entrega.
+
 ## Orden de ejecución aprobado restante
 
 RH-W-0099 se completó mediante el issue #364. RH-W-0100 se completó mediante el issue #366. RH-W-0104 se registró como `proposed` el 2026-10-11 mediante el issue #370 y se completó el 2026-10-13 mediante el mismo issue. RH-W-0103 se completó el 2026-10-13 mediante el issue #375; la prueba de actualización de `v3.1-rc.11` confirmó RH-W-0099 y RH-W-0100 en un consumidor Pi real.
