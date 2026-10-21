@@ -4,16 +4,15 @@
 
 ## 2026-10-21
 
-- RH-W-0128: la guía de uso generada, que lee `repo-harness-help`, ahora enumera las tres preferencias de respuesta, sus valores y efectos, y cómo guardarlas.
-- RH-W-0127: los flags de idioma de `render` aceptan `en`/`english` y `es`/`espanol`; el aviso de aprobación tiene espacio antes de las respuestas y una pregunta final resaltada; un informe de instalación exitosa ahora dice cómo hacer aparecer las skills nuevas (`/reload` en Pi; en otro caso, una sesión nueva).
-- RH-W-0126: la skill de inicio generada ahora nombra dónde está el estatuto (`docs/repo-harness/decisions.md`), trata un estatuto ausente como `not_found` y el paso del lector de preferencias nombra la misma ruta. Las trazas de Linux leían primero las preferencias porque la skill nunca decía dónde estaba el estatuto.
+- La guía de uso generada de una instalación standalone ahora titula su sección de disponibilidad `## Disponibilidad` (`## Availability` en inglés) en lugar de `Disponibilidad integrada`; las guías integradas no cambian. Las instalaciones existentes conservan su guía de uso propiedad humana; sin migración (issue #477).
+- Se corrigieron las fechas del historial de cambios y de la hoja de ruta al día local del host (UTC-6): RH-W-0126 a RH-W-0128 y la entrada de evidencia Linux se entregaron el 2026-10-20, no el 2026-10-21 ni el 2026-10-19.
 
 ## 2026-10-20
 
+- RH-W-0128: la guía de uso generada, que lee `repo-harness-help`, ahora enumera las tres preferencias de respuesta, sus valores y efectos, y cómo guardarlas.
+- RH-W-0127: los flags de idioma de `render` aceptan `en`/`english` y `es`/`espanol`; el aviso de aprobación tiene espacio antes de las respuestas y una pregunta final resaltada; un informe de instalación exitosa ahora dice cómo hacer aparecer las skills nuevas (`/reload` en Pi; en otro caso, una sesión nueva).
+- RH-W-0126: la skill de inicio generada ahora nombra dónde está el estatuto (`docs/repo-harness/decisions.md`), trata un estatuto ausente como `not_found` y el paso del lector de preferencias nombra la misma ruta. Las trazas de Linux leían primero las preferencias porque la skill nunca decía dónde estaba el estatuto.
 - RH-W-0125: una hoja de ruta española bilingüe ya no se declara propietaria canónica del ciclo de vida; se presenta como espejo de la hoja de ruta en inglés. El mapa de documentación en español incluye ahora la oración de continuidad del mapa inglés: los resúmenes de sesión siguen siendo temporales hasta reconciliarse. Las instalaciones existentes conservan sus archivos; sin migración (issue #468, PR #469).
-
-## 2026-10-19
-
 - Se preservó evidencia histórica Linux con sus límites en la hoja de ruta y su par español completo, se enlazó su proyección de estado actual y se aclaró que la adaptación compleja posterior debe quedar anotada sin eximir análisis/integración segura requeridos. Solo documentación; sin correcciones de producto ni cambios de ciclo de vida.
 
 ## 2026-10-18

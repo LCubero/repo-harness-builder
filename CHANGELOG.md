@@ -6,16 +6,15 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-21
 
-- RH-W-0128: the generated usage guide, which `repo-harness-help` reads, now lists the three response preferences, their values and effects, and how to save them.
-- RH-W-0127: `render` language flags accept both `en`/`english` and `es`/`espanol`; the approval prompt has space before the answers and an emphasized final question; a successful install report now says how to make new skills appear (`/reload` in Pi, otherwise a new session).
-- RH-W-0126: the generated startup skill now names where the charter lives (`docs/repo-harness/decisions.md`), treats an absent charter as `not_found`, and the preference-reader step names the same path. Linux traces had read preferences first because the skill never said where the charter was.
+- A standalone install's generated usage guide now heads its availability section `## Availability` (`## Disponibilidad` in Spanish) instead of `Integrated Availability`; integrated guides are unchanged. Existing installations keep their human-owned usage guide; no migration (issue #477).
+- Corrected changelog and roadmap dates to the host-local day (UTC-6): RH-W-0126 through RH-W-0128 and the Linux evidence entry were delivered on 2026-10-20, not 2026-10-21 or 2026-10-19.
 
 ## 2026-10-20
 
+- RH-W-0128: the generated usage guide, which `repo-harness-help` reads, now lists the three response preferences, their values and effects, and how to save them.
+- RH-W-0127: `render` language flags accept both `en`/`english` and `es`/`espanol`; the approval prompt has space before the answers and an emphasized final question; a successful install report now says how to make new skills appear (`/reload` in Pi, otherwise a new session).
+- RH-W-0126: the generated startup skill now names where the charter lives (`docs/repo-harness/decisions.md`), treats an absent charter as `not_found`, and the preference-reader step names the same path. Linux traces had read preferences first because the skill never said where the charter was.
 - RH-W-0125: a bilingual Spanish roadmap no longer calls itself the canonical lifecycle owner; it names itself the mirror of the English roadmap. The Spanish documentation map now carries the English map's continuity sentence: session summaries stay temporary until reconciled. Existing installations keep their files; no migration (issue #468, PR #469).
-
-## 2026-10-19
-
 - Preserved qualified historical Linux test evidence in the roadmap and complete Spanish peer, linked its current-state projection, and clarified that complex post-install adaptation must be explicitly recorded without waiving required analysis/safe integration. Documentation only; no product fixes or lifecycle changes.
 
 ## 2026-10-18
