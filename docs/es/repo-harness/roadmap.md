@@ -52,10 +52,10 @@ Estas observaciones pueden esperar correcciones con alcance separado. Los regist
 | Desviación repetida: preferencias antes del estatuto; una traza conforme | `skill/repo-harness-builder/scripts/harness_tool.py` ya exige raíz/estatuto antes del único lector. Recuperación funcional aprobada; cumplimiento estricto de inicio no fue constante. Causa encontrada: la skill de inicio generada nunca decía dónde está el estatuto. Corregido por [RH-W-0126](#rh-w-0126). |
 | Hoja de ruta española bilingüe se dice canónica aunque remite al inglés | El generador actual conserva la contradicción. [RH-W-0124](#rh-w-0124) corrigió propiedad solo en español, caso distinto. Corregido por [RH-W-0125](#rh-w-0125). |
 | Mapa español bilingüe omite advertencia inglesa sobre Engram | El mapa inglés del generador conserva continuidad temporal/no autoritativa, ausente en el español. Consistencia de proyecciones no demuestra paridad semántica. Corregido por [RH-W-0125](#rh-w-0125). |
-| Explicar preferencias en documentación/ayuda: efectos, valores, guardado conversacional y descubrimiento | Uso ya enumera claves, JSON y guardado explícito; generador ya tiene comportamiento de preferencias/ayuda. Mejorar claridad, no inventar almacenamiento. Antecedentes: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
+| Explicar preferencias en documentación/ayuda: efectos, valores, guardado conversacional y descubrimiento | Uso ya enumera claves, JSON y guardado explícito; generador ya tiene comportamiento de preferencias/ayuda. Mejorar claridad, no inventar almacenamiento. Antecedentes: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). Corregido por [RH-W-0128](#rh-w-0128). |
 | Aviso de disponibilidad de skills tras instalar | Pi `/reload` funcionó en el entorno observado; sin garantía universal de entornos/versiones. Guía final solicitada puede indicar recarga/reapertura apropiada. Antecedente: [RH-W-0055](#rh-w-0055). Corregido por [RH-W-0127](#rh-w-0127). |
 | Espaciado/énfasis de aprobación | Ejemplos humanos EN/ES exactos siguen en nota local bajo “Owner Feedback - Approval Prompt Spacing”: separación antes de lista y pregunta final enfatizada, tokens/significado intactos. `APPROVAL_DOMAINS` actual sigue compacto; no se cambió prompt. Corregido por [RH-W-0127](#rh-w-0127). |
-| Entrevista detenida, desgloses erróneos, valores `en`/`es` rechazados, falta de flag standalone al comprobar | Problemas recuperados de comandos/informes/cumplimiento del agente, no corrupción demostrada del render/apply. `audit-and-interview.md` ya prohíbe esperar relleno y exige conteos de herramienta. Antecedente: [RH-W-0105](#rh-w-0105). Los valores `en`/`es` rechazados quedan corregidos por [RH-W-0127](#rh-w-0127); el resto sigue abierto. |
+| Entrevista detenida, desgloses erróneos, valores `en`/`es` rechazados, falta de flag standalone al comprobar | Problemas recuperados de comandos/informes/cumplimiento del agente, no corrupción demostrada del render/apply. `audit-and-interview.md` ya prohíbe esperar relleno y exige conteos de herramienta. Antecedente: [RH-W-0105](#rh-w-0105). Los valores `en`/`es` rechazados quedan corregidos por [RH-W-0127](#rh-w-0127); el resto sigue abierto. La falta de `--standalone` al comprobar es intencional, no un defecto: `--standalone` es el único selector de modo, `check` informa `integrationModeSet` (`recorded`, `requested`, `matches`) y la referencia de entrevista ya indica pasar `--standalone` en una instalación standalone registrada (verificado el 2026-10-21; ver [RH-W-0128](#rh-w-0128)). |
 | Un final del builder standalone guardó en Engram pese a instrucciones locales generadas | Llamada observada; causa/capa de admisión sin probar. Política standalone correcta en disco no desactiva instrucciones/herramientas independientes del host. No es un fallo demostrado del generador. |
 | Supuesta discrepancia de nombres en prueba sin herramientas | Agente la retiró; lectura directa no encontró diferencia. Sin defecto ni reparación confirmados. |
 
@@ -589,6 +589,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0128
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Pedido del propietario conservado en la [evidencia de pruebas en Linux](#evidencia-de-pruebas-en-linux--2026-10-1920): "las preferencias como guardarlas, cuales hay y que hacen", en la documentación del repositorio y en `repo-harness-help`. |
+| Prioridad | P3: una persona no podía conocer las preferencias disponibles desde la guía generada sin leer un archivo de reglas para agentes. |
+| Dependencias | none |
+| Estado | completed |
+| Trabajo completado | La guía de uso generada (semillas en inglés y español, modo integrado y standalone) ahora enumera `conversationLanguage`, `responseStructure` y `explanationStyle` con sus valores y lo que hace cada una, da un ejemplo de pedido para guardarlas, nombra el archivo JSON para editarlo a mano, indica que el agente nunca las guarda por iniciativa propia y que el archivo se lee al iniciar la próxima sesión, y conserva el enlace al contrato de respuesta para la precedencia. `repo-harness-help` lee esta guía, así que la ayuda obtiene el mismo contenido sin cambio propio. |
+| Trabajo restante | none |
+| Adiciones | La prueba de preferencias de la guía generada ahora cubre guías solo en inglés, solo en español y ambas bilingües, en renders integrados y standalone (ocho casos). |
+| Exclusiones | Ninguna preferencia, clave, almacenamiento ni comportamiento de ayuda nuevos. Las instalaciones existentes conservan su guía de uso de propiedad humana; sin migración. La guía de uso de este repositorio ya tenía una sección completa de preferencias. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | RED y luego GREEN: los ocho casos fallaron antes del cambio (faltaban las claves) y pasan después; se mantiene el presupuesto de 32 líneas de la guía. La vista previa de mantenimiento reemplazó exactamente 6 archivos de proyección (script y pruebas del constructor en tres runtimes); aplicación `VALIDATED`; checker `current`, 0 escrituras. La primera suite completa detectó una aserción anterior de la guía en español que aún esperaba la frase reemplazada; ahora verifica la nueva. Comprobación diferencial: instalaciones nuevas con el script base y el nuevo solo difieren en la guía de uso, y actualizar una instalación base conserva esa guía como propiedad humana sin reemplazos ni escrituras. Suite completa: 717 pruebas OK (skipped=12); `git diff --check` limpio. |
+| Historial de decisiones | 2026-10-21: el propietario delegó la elección de la siguiente corrección ("decidelo tu"). El padre también revisó la observación conservada sobre la falta de `--standalone` al comprobar y la dejó sin cambios: es el selector de modo documentado, no un defecto. Publicación y release siguen siendo decisiones del propietario. |
+| Siguiente condición de avance | none (terminal). |
+
 ### RH-W-0127
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
@@ -606,7 +626,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | RED y luego GREEN: las cinco pruebas enfocadas fallaron antes del cambio (seis subcasos de alias con salida 2, espaciado del aviso, oración ausente) y pasan después. La vista previa de mantenimiento reemplazó exactamente 9 archivos de proyección (script, pruebas y referencia de entrevista del constructor en tres runtimes); aplicación `VALIDATED`; checker `current`, 0 escrituras. Comprobación diferencial: con valores canónicos, los scripts base y nuevo dan el mismo digest de plan e instalaciones nuevas idénticas byte a byte; `--conversation-language es` sale con 2 en el script base y genera la vista previa con 0 escrituras en el nuevo; `spanish` sigue saliendo con 2. Suite completa: 717 pruebas OK (skipped=12); `git diff --check` limpio. |
-| Historial de decisiones | 2026-10-21: el propietario delegó la elección de la siguiente corrección ("decidelo tu"). Publicación y release siguen siendo decisiones del propietario. |
+| Historial de decisiones | 2026-10-21: el propietario delegó la elección de la siguiente corrección ("decidelo tu") y aprobó publicar y fusionar ("dale"); entregado mediante el issue #472 y la PR #473, fusionada con squash como `4430dc2`. Release sigue siendo decisión del propietario. |
 | Siguiente condición de avance | none (terminal). |
 
 ### RH-W-0126

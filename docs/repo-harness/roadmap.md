@@ -52,10 +52,10 @@ These observations may await separately scoped correction. Related completed rec
 | Repeated preference-before-charter startup deviation; one compliant trace | `skill/repo-harness-builder/scripts/harness_tool.py` already requires root/charter before the single preference reader. Functional recovery passed; strict startup conformance did not consistently pass. Cause found: the generated startup skill never named where the charter lives. Fixed by [RH-W-0126](#rh-w-0126). |
 | Bilingual Spanish roadmap calls itself canonical despite pointing to English | Current generator still contains the contradictory wording. Related [RH-W-0124](#rh-w-0124) fixed Spanish-only ownership, a distinct case. Fixed by [RH-W-0125](#rh-w-0125). |
 | Bilingual Spanish documentation map omits English Engram warning | Current generator's English map retains temporary/non-authoritative continuity guidance, absent in its Spanish map. Current projection consistency does not establish semantic parity. Fixed by [RH-W-0125](#rh-w-0125). |
-| Explain preferences in documentation/help: effects, supported values, conversational saving and discovery | Existing usage already lists keys, JSON and explicit saving; generator already has preference/help behavior. Improve clarity, not invent storage. Antecedents: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
+| Explain preferences in documentation/help: effects, supported values, conversational saving and discovery | Existing usage already lists keys, JSON and explicit saving; generator already has preference/help behavior. Improve clarity, not invent storage. Antecedents: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). Fixed by [RH-W-0128](#rh-w-0128). |
 | Post-install skill availability notice | Pi `/reload` actually worked in the observed runtime; no all-runtime/version guarantee. Requested final guidance may mention appropriate reload/reopen. Antecedent: [RH-W-0055](#rh-w-0055). Fixed by [RH-W-0127](#rh-w-0127). |
 | Approval spacing/emphasis | Exact human EN/ES examples remain in the local note under “Owner Feedback - Approval Prompt Spacing”: blank separation before answer list and emphasized final question, unchanged tokens/meaning. Current `APPROVAL_DOMAINS` remains compact; no prompt changed. Fixed by [RH-W-0127](#rh-w-0127). |
-| Interview stalls, wrong count breakdowns, rejected `en`/`es` values, missing standalone check flag | Recovered agent-command/reporting/conformance issues, not demonstrated renderer/apply corruption. `audit-and-interview.md` already forbids filler waits and requires tool-derived counts. Antecedent: [RH-W-0105](#rh-w-0105). The rejected `en`/`es` values are fixed by [RH-W-0127](#rh-w-0127); the rest stays open. |
+| Interview stalls, wrong count breakdowns, rejected `en`/`es` values, missing standalone check flag | Recovered agent-command/reporting/conformance issues, not demonstrated renderer/apply corruption. `audit-and-interview.md` already forbids filler waits and requires tool-derived counts. Antecedent: [RH-W-0105](#rh-w-0105). The rejected `en`/`es` values are fixed by [RH-W-0127](#rh-w-0127); the rest stays open. The missing `--standalone` check flag is by design, not a defect: `--standalone` is the sole mode selector, `check` reports `integrationModeSet` (`recorded`, `requested`, `matches`), and the interview reference already says to pass `--standalone` for a recorded standalone installation (verified 2026-10-21; see [RH-W-0128](#rh-w-0128)). |
 | One standalone builder tail saved to Engram despite local-only generated instructions | Call observed; cause/admission layer unproven. Correct standalone disk policy does not disable independent host memory instructions/tools. Do not label this a proven generator bug. |
 | Alleged filename discrepancy in missing-tools test | Agent withdrew it; direct filename readback found no mismatch. No confirmed defect or repair. |
 
@@ -591,6 +591,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0128
+| Field | Value |
+|---|---|
+| Origin | Retained [Linux test evidence](#linux-test-evidence--2026-10-1920) owner request: "las preferencias como guardarlas, cuales hay y que hacen", in the repository documentation and in `repo-harness-help`. |
+| Priority | P3: a human could not learn the available preferences from the generated guide without reading an agent rule file. |
+| Dependencies | none |
+| Status | completed |
+| Completed work | The generated usage guide (English and Spanish seeds, integrated and standalone) now lists `conversationLanguage`, `responseStructure`, and `explanationStyle` with their values and what each does, gives one example request to save them, names the JSON file for hand edits, says the agent never saves on its own and that the next session start reads the file, and keeps the response-contract link for precedence. `repo-harness-help` reads this guide, so help gains the same content without its own change. |
+| Remaining work | none |
+| Additions | The generated-usage preference test now covers English-only, Spanish-only, and both bilingual guides in integrated and standalone renders (eight cases). |
+| Exclusions | No new preference, key, storage, or help behavior. Existing installations keep their human-owned usage guide; no migration. This repository's own usage guide already had a full preference section. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | RED then GREEN: the eight cases failed before the change (missing keys) and pass after; the 32-line usage budget holds. Maintenance preview replaced exactly 6 projection files (builder script and tests in three runtimes); apply `VALIDATED`; checker `current`, 0 writes. The first full suite caught one older Spanish-guide assertion still expecting the replaced sentence; it now asserts the new one. Differential check: fresh installs from the base and new scripts differ only in the usage guide, and updating a base install keeps that guide as human-owned with no replacements or writes. Full suite: 717 tests OK (skipped=12); `git diff --check` clean. |
+| Decision history | 2026-10-21: the owner delegated the choice of the next correction ("decidelo tu"). The parent also checked the retained missing `--standalone` check flag and kept it unchanged: it is the documented mode selector, not a defect. Publication and release remain owner decisions. |
+| Next advancement condition | none (terminal). |
+
 ### RH-W-0127
 | Field | Value |
 |---|---|
@@ -605,7 +622,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the five focused tests failed before the change (six alias subcases with exit 2, prompt spacing, missing sentence) and pass after. Maintenance preview replaced exactly 9 projection files (builder script, tests, and interview reference in three runtimes); apply `VALIDATED`; checker `current`, 0 writes. Differential check: with canonical values the base and new scripts give the same plan digest and byte-identical fresh installs; `--conversation-language es` exits 2 with the base script and previews with 0 writes with the new one; `spanish` still exits 2. Full suite: 717 tests OK (skipped=12); `git diff --check` clean. |
-| Decision history | 2026-10-21: the owner delegated the choice of the next correction ("decidelo tu"). Publication and release remain owner decisions. |
+| Decision history | 2026-10-21: the owner delegated the choice of the next correction ("decidelo tu") and approved publication and merge ("dale"); delivered through issue #472 and PR #473, squash-merged as `4430dc2`. Release remains an owner decision. |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0126

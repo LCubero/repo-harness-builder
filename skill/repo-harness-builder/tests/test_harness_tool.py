@@ -1905,15 +1905,34 @@ class ProductWorkflowTests(unittest.TestCase):
         self.assertEqual(offenders, [], chr(10).join(offenders))
 
     def test_generated_usage_includes_response_preferences_with_resolving_rule_links(self):
-        for languages, path in (
-            (["en"], "docs/repo-harness/usage.md"),
-            (["en", "es"], "docs/es/repo-harness/usage.md"),
-            (["es"], "docs/repo-harness/usage.md"),
+        for standalone, languages, path, spanish in (
+            (standalone, languages, path, spanish)
+            for standalone in (False, True)
+            for languages, path, spanish in (
+                (["en"], "docs/repo-harness/usage.md", False),
+                (["es"], "docs/repo-harness/usage.md", True),
+                (["en", "es"], "docs/repo-harness/usage.md", False),
+                (["en", "es"], "docs/es/repo-harness/usage.md", True),
+            )
         ):
-            with self.subTest(languages=languages, path=path):
-                outputs = TOOL.render("Example", [], documentation_languages=languages)
+            with self.subTest(standalone=standalone, languages=languages, path=path):
+                outputs = TOOL.render("Example", [], standalone=standalone, documentation_languages=languages)
                 text = outputs[path]
-                self.assertIn(".repo-harness/state/preferences/user-preferences.json", text)
+                for token in (
+                    "conversationLanguage", "english", "espanol",
+                    "responseStructure", "standard", "adhd-friendly",
+                    "explanationStyle", "plain-language",
+                    ".repo-harness/state/preferences/user-preferences.json",
+                ):
+                    self.assertIn(f"`{token}`", text)
+                if spanish:
+                    self.assertIn("El agente nunca las guarda por iniciativa propia.", text)
+                    self.assertIn("Guarde español como mi idioma de conversación en las preferencias del repositorio.", text)
+                    self.assertIn("al iniciar la próxima sesión", text)
+                else:
+                    self.assertIn("The agent never saves them on its own.", text)
+                    self.assertIn("Save Spanish as my conversation language in the repository preferences.", text)
+                    self.assertIn("at the next session start", text)
                 self.assertNotIn("## Response Preferences", text)
                 self.assertNotIn("## Preferencias de respuesta", text)
                 self.assertNotIn("<!-- doc-role:response-preferences -->", text)
@@ -9488,7 +9507,8 @@ class UsageGuideTests(unittest.TestCase):
                 stop = next(line for line in guide.splitlines() if line.startswith("3. "))
                 self.assertIn("`.repo-harness/memory-bk/`", start)
                 self.assertIn("`.repo-harness/memory-bk/`", stop)
-                self.assertIn("or explicitly ask the agent to save them; the agent never saves them on its own", guide)
+                self.assertIn("To save preferences, explicitly ask:", guide)
+                self.assertIn("The agent never saves them on its own.", guide)
                 self.assertIn("Batch mode", guide)
                 self.assertIn("[batch interaction rule](../../.repo-harness/rules/batch-interaction.md)", guide)
                 self.assertLessEqual(len(guide.splitlines()), 32)
@@ -9505,7 +9525,7 @@ class UsageGuideTests(unittest.TestCase):
                 stop = next(line for line in guide.splitlines() if line.startswith("3. "))
                 self.assertIn("`.repo-harness/memory-bk/`", start)
                 self.assertIn("`.repo-harness/memory-bk/`", stop)
-                self.assertIn("o pida explícitamente al agente que las guarde; el agente nunca las guarda por iniciativa propia", guide)
+                self.assertIn("El agente nunca las guarda por iniciativa propia.", guide)
                 self.assertIn("El modo por lotes", guide)
                 self.assertIn(f"[regla de interacción por lotes]({prefix}.repo-harness/rules/batch-interaction.md)", guide)
                 self.assertIn("`authorityContextSha256`", guide)
