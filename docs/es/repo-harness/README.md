@@ -90,3 +90,5 @@
 | [Traspaso de arranque archivado](../../repo-harness/archive/repo-bootstrap-handoff.md) | Registro histórico en inglés de la separación del 2026-08-12; solo procedencia, no es política ni plan ni fuente de trabajo pendiente |
 | [Mapa canónico en inglés](../../repo-harness/README.md) | Propiedad documental canónica |
 | [CHANGELOG.md](../../../CHANGELOG.md) | Historial cronológico canónico |
+
+Los resúmenes de sesión de Engram siguen siendo entradas temporales de continuidad y deben reconciliarse con la evidencia del repositorio. No se convierten en verdad durable hasta reconciliarse con la evidencia del repositorio y promoverse al propietario canónico correspondiente.

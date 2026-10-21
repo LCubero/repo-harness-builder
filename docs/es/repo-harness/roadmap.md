@@ -50,8 +50,8 @@ Estas observaciones pueden esperar correcciones con alcance separado. Los regist
 | Observación / petición humana | Contraste actual y límite de propiedad |
 | --- | --- |
 | Desviación repetida: preferencias antes del estatuto; una traza conforme | `skill/repo-harness-builder/scripts/harness_tool.py` ya exige raíz/estatuto antes del único lector. Recuperación funcional aprobada; cumplimiento estricto de inicio no fue constante. |
-| Hoja de ruta española bilingüe se dice canónica aunque remite al inglés | El generador actual conserva la contradicción. [RH-W-0124](#rh-w-0124) corrigió propiedad solo en español, caso distinto; no se afirma nueva corrección. |
-| Mapa español bilingüe omite advertencia inglesa sobre Engram | El mapa inglés del generador conserva continuidad temporal/no autoritativa, ausente en el español. Consistencia de proyecciones no demuestra paridad semántica. |
+| Hoja de ruta española bilingüe se dice canónica aunque remite al inglés | El generador actual conserva la contradicción. [RH-W-0124](#rh-w-0124) corrigió propiedad solo en español, caso distinto. Corregido por [RH-W-0125](#rh-w-0125). |
+| Mapa español bilingüe omite advertencia inglesa sobre Engram | El mapa inglés del generador conserva continuidad temporal/no autoritativa, ausente en el español. Consistencia de proyecciones no demuestra paridad semántica. Corregido por [RH-W-0125](#rh-w-0125). |
 | Explicar preferencias en documentación/ayuda: efectos, valores, guardado conversacional y descubrimiento | Uso ya enumera claves, JSON y guardado explícito; generador ya tiene comportamiento de preferencias/ayuda. Mejorar claridad, no inventar almacenamiento. Antecedentes: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
 | Aviso de disponibilidad de skills tras instalar | Pi `/reload` funcionó en el entorno observado; sin garantía universal de entornos/versiones. Guía final solicitada puede indicar recarga/reapertura apropiada. Antecedente: [RH-W-0055](#rh-w-0055). |
 | Espaciado/énfasis de aprobación | Ejemplos humanos EN/ES exactos siguen en nota local bajo “Owner Feedback - Approval Prompt Spacing”: separación antes de lista y pregunta final enfatizada, tokens/significado intactos. `APPROVAL_DOMAINS` actual sigue compacto; no se cambió prompt. |
@@ -588,6 +588,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 ## Registros activos
 
 <!-- doc-role:active-records -->
+
+### RH-W-0125
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Dos hallazgos de documentación bilingüe generada conservados en la [evidencia de pruebas en Linux](#evidencia-de-pruebas-en-linux--2026-10-1920) (2026-10-19/20) y confirmados en el generador actual el 2026-10-20. |
+| Prioridad | P2: toda instalación bilingüe empieza con un par en español que contradice a su propietario en inglés u omite su límite de continuidad. |
+| Dependencias | none |
+| Estado | completed |
+| Trabajo completado | S1: una hoja de ruta española bilingüe ya no se declara propietaria canónica del ciclo de vida; se presenta como espejo en español y enlaza `../../repo-harness/roadmap.md`. Una hoja de ruta solo en español sigue siendo la propietaria del ciclo de vida. S2: el mapa de documentación en español (bilingüe y solo en español) incluye la oración de continuidad del mapa inglés: los resúmenes de sesión (de Engram, o en archivos del repositorio en modo standalone) siguen siendo temporales hasta reconciliarse y promoverse. El mapa en español de este repositorio recibe la misma oración. |
+| Trabajo restante | none |
+| Adiciones | Tres pruebas de regresión (propietario de la hoja de ruta española bilingüe, propietario sin cambios de la hoja de ruta solo en español y oración de continuidad del mapa español en renders integrado, standalone y solo en español). |
+| Exclusiones | Las instalaciones existentes conservan sus archivos de propiedad humana; sin migración. La conformidad del orden de arranque y las demás observaciones de Linux conservadas siguen aparte. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | RED y luego GREEN: las pruebas enfocadas fallaron antes del cambio (4 fallos) y pasan después. Comprobación diferencial: una instalación hecha con el script base y comprobada con el nuevo sigue `current` con 0 escrituras y sin reemplazos; solo las semillas cambiadas se informan como `existing`/`human-evolved` (solo en español: el mapa; bilingüe: el mapa y la hoja de ruta en español), el mismo comportamiento aceptado en RH-W-0124. Proyecciones copiadas byte a byte a los tres entornos; checker `current`, 0 escrituras. |
+| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la corrección y la aprobó ("dale"). El propietario aprobó publicar y fusionar ("si es necesario si dale", "dale dale"); entregado mediante el issue #468 y la PR #469, apilada sobre la PR de documentación #467. El release sigue siendo decisión del propietario. |
+| Condición del siguiente avance | none (terminal). |
 
 ### RH-W-0124
 

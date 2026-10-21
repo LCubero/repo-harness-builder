@@ -50,8 +50,8 @@ These observations may await separately scoped correction. Related completed rec
 | Observation / human request | Current contrast and ownership boundary |
 | --- | --- |
 | Repeated preference-before-charter startup deviation; one compliant trace | `skill/repo-harness-builder/scripts/harness_tool.py` already requires root/charter before the single preference reader. Functional recovery passed; strict startup conformance did not consistently pass. |
-| Bilingual Spanish roadmap calls itself canonical despite pointing to English | Current generator still contains the contradictory wording. Related [RH-W-0124](#rh-w-0124) fixed Spanish-only ownership, a distinct case; no new fix is claimed. |
-| Bilingual Spanish documentation map omits English Engram warning | Current generator's English map retains temporary/non-authoritative continuity guidance, absent in its Spanish map. Current projection consistency does not establish semantic parity. |
+| Bilingual Spanish roadmap calls itself canonical despite pointing to English | Current generator still contains the contradictory wording. Related [RH-W-0124](#rh-w-0124) fixed Spanish-only ownership, a distinct case. Fixed by [RH-W-0125](#rh-w-0125). |
+| Bilingual Spanish documentation map omits English Engram warning | Current generator's English map retains temporary/non-authoritative continuity guidance, absent in its Spanish map. Current projection consistency does not establish semantic parity. Fixed by [RH-W-0125](#rh-w-0125). |
 | Explain preferences in documentation/help: effects, supported values, conversational saving and discovery | Existing usage already lists keys, JSON and explicit saving; generator already has preference/help behavior. Improve clarity, not invent storage. Antecedents: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
 | Post-install skill availability notice | Pi `/reload` actually worked in the observed runtime; no all-runtime/version guarantee. Requested final guidance may mention appropriate reload/reopen. Antecedent: [RH-W-0055](#rh-w-0055). |
 | Approval spacing/emphasis | Exact human EN/ES examples remain in the local note under “Owner Feedback - Approval Prompt Spacing”: blank separation before answer list and emphasized final question, unchanged tokens/meaning. Current `APPROVAL_DOMAINS` remains compact; no prompt changed. |
@@ -590,6 +590,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0125
+| Field | Value |
+|---|---|
+| Origin | Two generated bilingual-documentation findings retained in the [Linux test evidence](#linux-test-evidence--2026-10-1920) (2026-10-19/20) and confirmed in the current generator on 2026-10-20. |
+| Priority | P2: every bilingual installation starts with a Spanish peer that contradicts its English owner or omits its continuity boundary. |
+| Dependencies | none |
+| Status | completed |
+| Completed work | S1: a bilingual Spanish roadmap no longer calls itself the canonical lifecycle owner; it names itself the Spanish mirror and links `../../repo-harness/roadmap.md`. A Spanish-only roadmap still owns the lifecycle. S2: the Spanish documentation map (bilingual and Spanish-only) carries the English map's continuity sentence: session summaries (Engram, or repository files when standalone) stay temporary until reconciled and promoted. This repository's Spanish map gains the same sentence. |
+| Remaining work | none |
+| Additions | Three regression tests (bilingual Spanish roadmap owner, unchanged Spanish-only roadmap owner, Spanish map continuity sentence in integrated, standalone, and Spanish-only renders). |
+| Exclusions | Existing installations keep their human-owned files; no migration. Startup-order conformance and the other retained Linux observations stay separate. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | RED then GREEN: the focused tests failed before the change (4 failures) and pass after. Differential check: an installation made with the base script and checked with the new one stays `current` with 0 writes and no replacements; only the changed seeds are reported as `existing`/`human-evolved` (Spanish-only: the map; bilingual: the Spanish map and roadmap), the same accepted behavior as RH-W-0124. Projections copied byte-for-byte to the three runtimes; checker `current`, 0 writes. |
+| Decision history | 2026-10-20: the owner delegated the choice of correction and approved it ("dale"). Owner approved publication and merge ("si es necesario si dale", "dale dale"); delivered through issue #468 and PR #469, stacked on documentation PR #467. Release remains an owner decision. |
+| Next advancement condition | none (terminal). |
 
 ### RH-W-0124
 | Field | Value |
