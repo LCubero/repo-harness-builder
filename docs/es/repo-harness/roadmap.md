@@ -53,9 +53,9 @@ Estas observaciones pueden esperar correcciones con alcance separado. Los regist
 | Hoja de ruta española bilingüe se dice canónica aunque remite al inglés | El generador actual conserva la contradicción. [RH-W-0124](#rh-w-0124) corrigió propiedad solo en español, caso distinto. Corregido por [RH-W-0125](#rh-w-0125). |
 | Mapa español bilingüe omite advertencia inglesa sobre Engram | El mapa inglés del generador conserva continuidad temporal/no autoritativa, ausente en el español. Consistencia de proyecciones no demuestra paridad semántica. Corregido por [RH-W-0125](#rh-w-0125). |
 | Explicar preferencias en documentación/ayuda: efectos, valores, guardado conversacional y descubrimiento | Uso ya enumera claves, JSON y guardado explícito; generador ya tiene comportamiento de preferencias/ayuda. Mejorar claridad, no inventar almacenamiento. Antecedentes: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
-| Aviso de disponibilidad de skills tras instalar | Pi `/reload` funcionó en el entorno observado; sin garantía universal de entornos/versiones. Guía final solicitada puede indicar recarga/reapertura apropiada. Antecedente: [RH-W-0055](#rh-w-0055). |
-| Espaciado/énfasis de aprobación | Ejemplos humanos EN/ES exactos siguen en nota local bajo “Owner Feedback - Approval Prompt Spacing”: separación antes de lista y pregunta final enfatizada, tokens/significado intactos. `APPROVAL_DOMAINS` actual sigue compacto; no se cambió prompt. |
-| Entrevista detenida, desgloses erróneos, valores `en`/`es` rechazados, falta de flag standalone al comprobar | Problemas recuperados de comandos/informes/cumplimiento del agente, no corrupción demostrada del render/apply. `audit-and-interview.md` ya prohíbe esperar relleno y exige conteos de herramienta. Antecedente: [RH-W-0105](#rh-w-0105). |
+| Aviso de disponibilidad de skills tras instalar | Pi `/reload` funcionó en el entorno observado; sin garantía universal de entornos/versiones. Guía final solicitada puede indicar recarga/reapertura apropiada. Antecedente: [RH-W-0055](#rh-w-0055). Corregido por [RH-W-0127](#rh-w-0127). |
+| Espaciado/énfasis de aprobación | Ejemplos humanos EN/ES exactos siguen en nota local bajo “Owner Feedback - Approval Prompt Spacing”: separación antes de lista y pregunta final enfatizada, tokens/significado intactos. `APPROVAL_DOMAINS` actual sigue compacto; no se cambió prompt. Corregido por [RH-W-0127](#rh-w-0127). |
+| Entrevista detenida, desgloses erróneos, valores `en`/`es` rechazados, falta de flag standalone al comprobar | Problemas recuperados de comandos/informes/cumplimiento del agente, no corrupción demostrada del render/apply. `audit-and-interview.md` ya prohíbe esperar relleno y exige conteos de herramienta. Antecedente: [RH-W-0105](#rh-w-0105). Los valores `en`/`es` rechazados quedan corregidos por [RH-W-0127](#rh-w-0127); el resto sigue abierto. |
 | Un final del builder standalone guardó en Engram pese a instrucciones locales generadas | Llamada observada; causa/capa de admisión sin probar. Política standalone correcta en disco no desactiva instrucciones/herramientas independientes del host. No es un fallo demostrado del generador. |
 | Supuesta discrepancia de nombres en prueba sin herramientas | Agente la retiró; lectura directa no encontró diferencia. Sin defecto ni reparación confirmados. |
 
@@ -589,6 +589,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0127
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Tres observaciones de instalación conservadas en la [evidencia de pruebas en Linux](#evidencia-de-pruebas-en-linux--2026-10-1920): los agentes pasaron `--conversation-language es` y recibieron salida 2 antes de reintentar con `espanol`; el propietario pidió espacio antes de la pregunta de aprobación con ejemplos exactos; el informe de instalación nunca decía cómo hacer aparecer las skills nuevas (en Pi funcionó `/reload`). |
+| Prioridad | P2: cada instalación paga un comando fallido, un aviso de aprobación apretado o un siguiente paso ausente, sin riesgo para los datos. |
+| Dependencias | none |
+| Estado | completed |
+| Trabajo completado | S1: `--documentation-language`, `--conversation-language` y `--report-language` de `render` aceptan `en`/`english` y `es`/`espanol`, normalizados al valor canónico de cada flag antes de usarse, de modo que planes y manifiestos coinciden con la forma canónica; cualquier otro valor sigue rechazado con salida 2 y sin escrituras. S2: el aviso de aprobación tiene una línea en blanco antes de la lista de respuestas y antes de la pregunta final, ahora resaltada como `***  Do you approve this exact plan?  ***` / `***  ¿Aprueba este plan exacto?  ***`; encabezado, instrucción y tokens no cambian. S3: la referencia de entrevista del constructor indica al agente terminar un informe de aplicación exitosa diciendo que las skills nuevas aparecen cuando el entorno las recarga: `/reload` en Pi; en otro caso, una sesión nueva. |
+| Trabajo restante | none |
+| Adiciones | Cuatro pruebas: los planes con alias coinciden con los canónicos, los valores canónicos no cambian, los valores inválidos fallan sin escrituras y la oración de recarga está presente; la prueba del aviso localizado espera el nuevo espaciado. |
+| Exclusiones | Los tokens de aprobación siguen exactos y allí los alias siguen rechazados. No se afirma ningún comando de recarga para Claude Code u OpenCode. La entrevista detenida, los desgloses de conteo y la falta del flag `--standalone` al comprobar siguen separados. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | RED y luego GREEN: las cinco pruebas enfocadas fallaron antes del cambio (seis subcasos de alias con salida 2, espaciado del aviso, oración ausente) y pasan después. La vista previa de mantenimiento reemplazó exactamente 9 archivos de proyección (script, pruebas y referencia de entrevista del constructor en tres runtimes); aplicación `VALIDATED`; checker `current`, 0 escrituras. Comprobación diferencial: con valores canónicos, los scripts base y nuevo dan el mismo digest de plan e instalaciones nuevas idénticas byte a byte; `--conversation-language es` sale con 2 en el script base y genera la vista previa con 0 escrituras en el nuevo; `spanish` sigue saliendo con 2. Suite completa: 717 pruebas OK (skipped=12); `git diff --check` limpio. |
+| Historial de decisiones | 2026-10-21: el propietario delegó la elección de la siguiente corrección ("decidelo tu"). Publicación y release siguen siendo decisiones del propietario. |
+| Siguiente condición de avance | none (terminal). |
+
 ### RH-W-0126
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
@@ -606,7 +626,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | RED y luego GREEN: la prueba enfocada falló antes del cambio (2 fallos) y pasa después. Un primer intento que además movía la línea del orden de recuperación rompió una prueba de orden existente y se revirtió a una edición en el lugar. La vista previa de mantenimiento reemplazó exactamente 10 archivos de proyección (script y pruebas del constructor en tres runtimes, cuatro copias de la skill de inicio); aplicación `VALIDATED`; checker `current`, 0 escrituras; paridad de bytes en los tres runtimes. Comprobación diferencial: instalaciones nuevas en español para Pi con el script base y el nuevo solo difieren en las dos copias de la skill de inicio, y actualizar una instalación base con el script nuevo reemplaza exactamente esos dos archivos, sin creaciones, adiciones, migraciones ni rutas bloqueadas. Suite completa: 713 pruebas OK (skipped=12); `git diff --check` limpio. |
-| Historial de decisiones | 2026-10-21: el propietario delegó la elección de la corrección ("decidelo tu"). Publicación y release siguen siendo decisiones del propietario. |
+| Historial de decisiones | 2026-10-21: el propietario delegó la elección de la corrección ("decidelo tu") y aprobó publicar y fusionar ("dale"); entregado mediante el issue #470 y la PR #471, fusionada con squash como `6340c86`. Release sigue siendo decisión del propietario. |
 | Siguiente condición de avance | none (terminal). |
 
 ### RH-W-0125
@@ -626,7 +646,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | RED y luego GREEN: las pruebas enfocadas fallaron antes del cambio (4 fallos) y pasan después. Comprobación diferencial: una instalación hecha con el script base y comprobada con el nuevo sigue `current` con 0 escrituras y sin reemplazos; solo las semillas cambiadas se informan como `existing`/`human-evolved` (solo en español: el mapa; bilingüe: el mapa y la hoja de ruta en español), el mismo comportamiento aceptado en RH-W-0124. Proyecciones copiadas byte a byte a los tres entornos; checker `current`, 0 escrituras. |
-| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la corrección y la aprobó ("dale"). El propietario aprobó publicar y fusionar ("si es necesario si dale", "dale dale"); entregado mediante el issue #468 y la PR #469, apilada sobre la PR de documentación #467. El release sigue siendo decisión del propietario. |
+| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la corrección y la aprobó ("dale"). El propietario aprobó publicar y fusionar ("si es necesario si dale", "dale dale"); entregado mediante el issue #468 y la PR #469, fusionada con squash como `c33c7f2`, apilada sobre la PR de documentación #467. El release sigue siendo decisión del propietario. |
 | Condición del siguiente avance | none (terminal). |
 
 ### RH-W-0124
