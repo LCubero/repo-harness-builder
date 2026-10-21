@@ -594,7 +594,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ### RH-W-0125
 | Field | Value |
 |---|---|
-| Origin | Two generated bilingual-documentation findings retained in the [Linux test evidence](#linux-test-evidence--2026-10-1920) (2026-10-19/20) and confirmed in the current generator on 2026-10-21. |
+| Origin | Two generated bilingual-documentation findings retained in the [Linux test evidence](#linux-test-evidence--2026-10-1920) (2026-10-19/20) and confirmed in the current generator on 2026-10-20. |
 | Priority | P2: every bilingual installation starts with a Spanish peer that contradicts its English owner or omits its continuity boundary. |
 | Dependencies | none |
 | Status | completed |
@@ -605,7 +605,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the focused tests failed before the change (4 failures) and pass after. Differential check: an installation made with the base script and checked with the new one stays `current` with 0 writes and no replacements; only the changed seeds are reported as `existing`/`human-evolved` (Spanish-only: the map; bilingual: the Spanish map and roadmap), the same accepted behavior as RH-W-0124. Projections copied byte-for-byte to the three runtimes; checker `current`, 0 writes. |
-| Decision history | 2026-10-21: the owner delegated the choice of correction and approved it ("dale"). Completed locally on branch `fix/bilingual-seed-ownership`; issue, PR, and release remain owner decisions. |
+| Decision history | 2026-10-20: the owner delegated the choice of correction and approved it ("dale"). Completed locally on branch `fix/bilingual-seed-ownership`; issue, PR, and release remain owner decisions. |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0124

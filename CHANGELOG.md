@@ -4,7 +4,7 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
-## 2026-10-21
+## 2026-10-20
 
 - RH-W-0125: a bilingual Spanish roadmap no longer calls itself the canonical lifecycle owner; it names itself the mirror of the English roadmap. The Spanish documentation map now carries the English map's continuity sentence: session summaries stay temporary until reconciled. Existing installations keep their files; no migration.
 

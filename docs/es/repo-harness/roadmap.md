@@ -595,7 +595,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 
 | Campo | Valor |
 |---|---|
-| Origen | Dos hallazgos de documentación bilingüe generada conservados en la [evidencia de pruebas en Linux](#evidencia-de-pruebas-en-linux--2026-10-1920) (2026-10-19/20) y confirmados en el generador actual el 2026-10-21. |
+| Origen | Dos hallazgos de documentación bilingüe generada conservados en la [evidencia de pruebas en Linux](#evidencia-de-pruebas-en-linux--2026-10-1920) (2026-10-19/20) y confirmados en el generador actual el 2026-10-20. |
 | Prioridad | P2: toda instalación bilingüe empieza con un par en español que contradice a su propietario en inglés u omite su límite de continuidad. |
 | Dependencias | none |
 | Estado | completed |
@@ -606,7 +606,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | RED y luego GREEN: las pruebas enfocadas fallaron antes del cambio (4 fallos) y pasan después. Comprobación diferencial: una instalación hecha con el script base y comprobada con el nuevo sigue `current` con 0 escrituras y sin reemplazos; solo las semillas cambiadas se informan como `existing`/`human-evolved` (solo en español: el mapa; bilingüe: el mapa y la hoja de ruta en español), el mismo comportamiento aceptado en RH-W-0124. Proyecciones copiadas byte a byte a los tres entornos; checker `current`, 0 escrituras. |
-| Historial de decisiones | 2026-10-21: el propietario delegó la elección de la corrección y la aprobó ("dale"). Completado localmente en la rama `fix/bilingual-seed-ownership`; issue, PR y release siguen siendo decisiones del propietario. |
+| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la corrección y la aprobó ("dale"). Completado localmente en la rama `fix/bilingual-seed-ownership`; issue, PR y release siguen siendo decisiones del propietario. |
 | Condición del siguiente avance | none (terminal). |
 
 ### RH-W-0124
