@@ -49,7 +49,7 @@ Estas observaciones pueden esperar correcciones con alcance separado. Los regist
 
 | Observación / petición humana | Contraste actual y límite de propiedad |
 | --- | --- |
-| Desviación repetida: preferencias antes del estatuto; una traza conforme | `skill/repo-harness-builder/scripts/harness_tool.py` ya exige raíz/estatuto antes del único lector. Recuperación funcional aprobada; cumplimiento estricto de inicio no fue constante. |
+| Desviación repetida: preferencias antes del estatuto; una traza conforme | `skill/repo-harness-builder/scripts/harness_tool.py` ya exige raíz/estatuto antes del único lector. Recuperación funcional aprobada; cumplimiento estricto de inicio no fue constante. Causa encontrada: la skill de inicio generada nunca decía dónde está el estatuto. Corregido por [RH-W-0126](#rh-w-0126). |
 | Hoja de ruta española bilingüe se dice canónica aunque remite al inglés | El generador actual conserva la contradicción. [RH-W-0124](#rh-w-0124) corrigió propiedad solo en español, caso distinto. Corregido por [RH-W-0125](#rh-w-0125). |
 | Mapa español bilingüe omite advertencia inglesa sobre Engram | El mapa inglés del generador conserva continuidad temporal/no autoritativa, ausente en el español. Consistencia de proyecciones no demuestra paridad semántica. Corregido por [RH-W-0125](#rh-w-0125). |
 | Explicar preferencias en documentación/ayuda: efectos, valores, guardado conversacional y descubrimiento | Uso ya enumera claves, JSON y guardado explícito; generador ya tiene comportamiento de preferencias/ayuda. Mejorar claridad, no inventar almacenamiento. Antecedentes: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
@@ -588,6 +588,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 ## Registros activos
 
 <!-- doc-role:active-records -->
+
+### RH-W-0126
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Observación conservada de la [evidencia de pruebas en Linux](#evidencia-de-pruebas-en-linux--2026-10-1920): el inicio leyó las preferencias antes del estatuto en todas las trazas de Linux menos una. Reproducido en Windows en este repositorio el 2026-10-21. |
+| Prioridad | P2: todo inicio de sesión generado puede saltarse el paso del estatuto, aunque la recuperación funcional siga pasando. |
+| Dependencias | none |
+| Estado | completed |
+| Trabajo completado | La skill de inicio generada nombraba un paso de "estatuto acotado" sin decir dónde está; esa ruta (`docs/repo-harness/decisions.md`) solo aparecía en `reconciliation.md`, que la misma skill dice no leer en una recuperación ordinaria, y los `decisions.md` generados para consumidores no tienen estatuto. La skill ahora nombra la ruta en el orden de recuperación, indica que un estatuto ausente es `not_found`, no un fallo, y el paso que ejecuta el lector de preferencias nombra la misma ruta. |
+| Trabajo restante | none |
+| Adiciones | La prueba existente del lector de inicio ahora verifica la ruta nombrada en ambos pasos y el caso `not_found`. |
+| Exclusiones | No se agrega estatuto al `decisions.md` de consumidores; ningún paso, almacén ni comprobación nuevos. Las demás observaciones de Linux conservadas siguen separadas. Las pruebas de texto no demuestran el cumplimiento de un agente en vivo. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | RED y luego GREEN: la prueba enfocada falló antes del cambio (2 fallos) y pasa después. Un primer intento que además movía la línea del orden de recuperación rompió una prueba de orden existente y se revirtió a una edición en el lugar. La vista previa de mantenimiento reemplazó exactamente 10 archivos de proyección (script y pruebas del constructor en tres runtimes, cuatro copias de la skill de inicio); aplicación `VALIDATED`; checker `current`, 0 escrituras; paridad de bytes en los tres runtimes. Comprobación diferencial: instalaciones nuevas en español para Pi con el script base y el nuevo solo difieren en las dos copias de la skill de inicio, y actualizar una instalación base con el script nuevo reemplaza exactamente esos dos archivos, sin creaciones, adiciones, migraciones ni rutas bloqueadas. Suite completa: 713 pruebas OK (skipped=12); `git diff --check` limpio. |
+| Historial de decisiones | 2026-10-21: el propietario delegó la elección de la corrección ("decidelo tu"). Publicación y release siguen siendo decisiones del propietario. |
+| Siguiente condición de avance | none (terminal). |
 
 ### RH-W-0125
 

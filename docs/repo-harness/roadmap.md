@@ -49,7 +49,7 @@ These observations may await separately scoped correction. Related completed rec
 
 | Observation / human request | Current contrast and ownership boundary |
 | --- | --- |
-| Repeated preference-before-charter startup deviation; one compliant trace | `skill/repo-harness-builder/scripts/harness_tool.py` already requires root/charter before the single preference reader. Functional recovery passed; strict startup conformance did not consistently pass. |
+| Repeated preference-before-charter startup deviation; one compliant trace | `skill/repo-harness-builder/scripts/harness_tool.py` already requires root/charter before the single preference reader. Functional recovery passed; strict startup conformance did not consistently pass. Cause found: the generated startup skill never named where the charter lives. Fixed by [RH-W-0126](#rh-w-0126). |
 | Bilingual Spanish roadmap calls itself canonical despite pointing to English | Current generator still contains the contradictory wording. Related [RH-W-0124](#rh-w-0124) fixed Spanish-only ownership, a distinct case. Fixed by [RH-W-0125](#rh-w-0125). |
 | Bilingual Spanish documentation map omits English Engram warning | Current generator's English map retains temporary/non-authoritative continuity guidance, absent in its Spanish map. Current projection consistency does not establish semantic parity. Fixed by [RH-W-0125](#rh-w-0125). |
 | Explain preferences in documentation/help: effects, supported values, conversational saving and discovery | Existing usage already lists keys, JSON and explicit saving; generator already has preference/help behavior. Improve clarity, not invent storage. Antecedents: [RH-W-0113](#rh-w-0113), [RH-W-0071](#rh-w-0071), [RH-W-0082](#rh-w-0082). |
@@ -590,6 +590,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ## Active Records
 
 <!-- doc-role:active-records -->
+
+### RH-W-0126
+| Field | Value |
+|---|---|
+| Origin | Retained [Linux test evidence](#linux-test-evidence--2026-10-1920) observation: startup read preferences before the charter in every Linux trace but one. Reproduced on Windows in this repository on 2026-10-21. |
+| Priority | P2: every generated session start can skip the charter step, although functional recovery still passes. |
+| Dependencies | none |
+| Status | completed |
+| Completed work | The generated startup skill named a "bounded charter" step without saying where the charter lives; that path (`docs/repo-harness/decisions.md`) appeared only in `reconciliation.md`, which the same skill says not to read for ordinary recovery, and generated consumer `decisions.md` files have no charter. The skill now names the path in the recovery order, says an absent charter is `not_found`, not failure, and the step that runs the preference reader names the same path. |
+| Remaining work | none |
+| Additions | The existing startup-reader test now asserts the named path in both steps and the `not_found` case. |
+| Exclusions | No charter is added to consumer `decisions.md`; no new step, store, or check. Other retained Linux observations stay separate. Live agent compliance is not proven by text tests. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | RED then GREEN: the focused test failed before the change (2 failures) and passes after. A first attempt that also moved the recovery-order line broke an existing ordering test and was reverted to an in-place edit. Maintenance preview replaced exactly 10 projection files (builder script and tests in three runtimes, four startup skill copies); apply `VALIDATED`; checker `current`, 0 writes; byte parity in the three runtimes. Differential check: fresh Spanish Pi installs from the base and new scripts differ only in the two startup skill copies, and updating a base install with the new script replaces exactly those two files, with no creates, appends, migrations, or blocked paths. Full suite: 713 tests OK (skipped=12); `git diff --check` clean. |
+| Decision history | 2026-10-21: the owner delegated the choice of correction ("decidelo tu"). Publication and release remain owner decisions. |
+| Next advancement condition | none (terminal). |
 
 ### RH-W-0125
 | Field | Value |
