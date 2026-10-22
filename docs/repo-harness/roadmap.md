@@ -591,6 +591,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0130
+| Field | Value |
+|---|---|
+| Origin | 2026-10-22 owner correction: changelog dates must follow the time zone of the user where the agent runs, or the one the user sets ("debe ser la del usurio donde se ejecuta el agente o la que establezca el usuario"). Review found two gaps in the [RH-W-0129](#rh-w-0129) and [RH-W-0081](#rh-w-0081) rules: no user-set time zone, and "its local Git commit date" reads the offset stored by whoever made the commit, which can differ from the user's zone. |
+| Priority | P2: a changelog entry could be filed under a day that is not the user's day. |
+| Dependencies | none |
+| Status | completed |
+| Completed work | The generated documentation skill dates changelog entries by the change's day in the user's chosen time zone, else host-local, and never assumes UTC. Generated session-stop dates each entry in the time zone the user set (in the conversation or a recorded decision), otherwise the host-local time zone where the agent runs, preferring the change's Git commit timestamp converted to that time zone. |
+| Remaining work | none |
+| Additions | none; the two existing lines and their two existing regression tests were reworded. |
+| Exclusions | No clock service, timezone database, preference key, state, or manifest change; RH-W-0069 UTC backup identity unchanged. Existing installations receive the lines through the normal update when the files still carry generated provenance; human-owned copies stay proposal-only. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | `GeneratedCoreTests.test_documentation_skill_dates_changelog_by_host_local_evidence` and `test_session_stop_dates_changelog_by_host_local_evidence` observed RED then GREEN; the documentation skill body stays at 999 proxy tokens, under the 1000 ceiling. Maintenance preview replaced exactly 14 paths (documentation skill and session-stop `git-commit.md` in four locations each, plus the builder script and tests in three runtimes); apply `VALIDATED`; second preview empty. Differential check: base and new renders differ only in those two generated files, with and without runtimes and standalone. |
+| Decision history | 2026-10-22: the owner asked for the correction and to review it without assuming ("REVISALO no asumas"); issue #481. |
+| Next advancement condition | none (terminal). |
+
 ### RH-W-0129
 | Field | Value |
 |---|---|

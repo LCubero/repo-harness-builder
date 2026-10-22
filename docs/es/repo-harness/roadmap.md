@@ -589,6 +589,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0130
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Corrección del propietario del 2026-10-22: las fechas del historial de cambios deben seguir la zona horaria del usuario donde se ejecuta el agente, o la que el usuario establezca ("debe ser la del usurio donde se ejecuta el agente o la que establezca el usuario"). La revisión encontró dos huecos en las reglas de [RH-W-0129](#rh-w-0129) y [RH-W-0081](#rh-w-0081): no había zona horaria establecida por el usuario, y "la fecha local de su commit de Git" lee el desfase guardado por quien hizo el commit, que puede diferir de la zona del usuario. |
+| Prioridad | P2: una entrada del historial de cambios podía quedar en un día que no es el día del usuario. |
+| Dependencias | none |
+| Estado | completed |
+| Trabajo completado | La skill de documentación generada fecha las entradas del historial de cambios con el día del cambio en la zona horaria elegida por el usuario, si no la local del host, y nunca supone UTC. El cierre de sesión generado fecha cada entrada en la zona horaria que el usuario estableció (en la conversación o en una decisión registrada), si no la zona horaria local del host donde se ejecuta el agente, prefiriendo la marca de tiempo del commit de Git del cambio convertida a esa zona horaria. |
+| Trabajo restante | none |
+| Adiciones | none; se reformularon las dos líneas existentes y sus dos pruebas de regresión existentes. |
+| Exclusiones | Ningún servicio de reloj, base de datos de zonas horarias, clave de preferencia, estado ni cambio de manifiesto; la identidad UTC de respaldo de RH-W-0069 no cambia. Las instalaciones existentes reciben las líneas mediante la actualización normal cuando los archivos conservan la procedencia generada; las copias de propiedad humana quedan solo como propuesta. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | `GeneratedCoreTests.test_documentation_skill_dates_changelog_by_host_local_evidence` y `test_session_stop_dates_changelog_by_host_local_evidence` se observaron en RED y luego en GREEN; el cuerpo de la skill de documentación sigue en 999 tokens proxy, bajo el techo de 1000. La vista previa de mantenimiento reemplazó exactamente 14 rutas (la skill de documentación y `git-commit.md` del cierre de sesión en cuatro ubicaciones cada uno, más el script y las pruebas del constructor en tres runtimes); aplicación `VALIDATED`; segunda vista previa vacía. Comprobación diferencial: los renders base y nuevo solo difieren en esos dos archivos generados, con y sin runtimes y en standalone. |
+| Historial de decisiones | 2026-10-22: el propietario pidió la corrección y revisarla sin suponer ("REVISALO no asumas"); issue #481. |
+| Siguiente condición de avance | none (terminal). |
+
 ### RH-W-0129
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

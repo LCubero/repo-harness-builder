@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-22
+
+- RH-W-0130: la fecha del historial de cambios generado (skill de documentación y cierre de sesión) ahora usa la zona horaria que el usuario estableció, en la conversación o en una decisión registrada, si no la zona horaria local del host donde se ejecuta el agente, y convierte a ella la marca de tiempo del commit de Git del cambio en lugar de confiar en el desfase de quien hizo el commit; nunca UTC por defecto (issue #481).
+
 ## 2026-10-21
 
 - RH-W-0129: la skill de documentación generada ahora fecha las entradas del historial de cambios con el día local del host del cambio completado, prefiriendo la fecha local de su commit de Git y nunca UTC, la misma regla que ya sigue el cierre de sesión (issue #479).

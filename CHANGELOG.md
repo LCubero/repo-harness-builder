@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-22
+
+- RH-W-0130: generated changelog dating (documentation skill and session-stop) now uses the time zone the user set, in the conversation or a recorded decision, otherwise the host-local time zone where the agent runs, and converts the change's Git commit timestamp to it instead of trusting the committer's offset; never UTC by default (issue #481).
+
 ## 2026-10-21
 
 - RH-W-0129: the generated documentation skill now dates changelog entries by the host-local day of the completed change, preferring its local Git commit date and never UTC, the same rule session-stop already follows (issue #479).
