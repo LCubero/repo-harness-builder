@@ -606,7 +606,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | `GeneratedCoreTests.test_documentation_skill_dates_changelog_by_host_local_evidence` y `test_session_stop_dates_changelog_by_host_local_evidence` se observaron en RED y luego en GREEN; el cuerpo de la skill de documentación sigue en 999 tokens proxy, bajo el techo de 1000. La vista previa de mantenimiento reemplazó exactamente 14 rutas (la skill de documentación y `git-commit.md` del cierre de sesión en cuatro ubicaciones cada uno, más el script y las pruebas del constructor en tres runtimes); aplicación `VALIDATED`; segunda vista previa vacía. Comprobación diferencial: los renders base y nuevo solo difieren en esos dos archivos generados, con y sin runtimes y en standalone. |
-| Historial de decisiones | 2026-10-22: el propietario pidió la corrección y revisarla sin suponer ("REVISALO no asumas"); issue #481. |
+| Historial de decisiones | 2026-10-22: el propietario pidió la corrección y revisarla sin suponer ("REVISALO no asumas"); issue #481. 2026-10-22: publicado en [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Siguiente condición de avance | none (terminal). |
 
 ### RH-W-0129
@@ -626,7 +626,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | `GeneratedCoreTests.test_documentation_skill_dates_changelog_by_host_local_evidence` se observó en RED y luego en GREEN. Una primera frase separada más larga llevó el cuerpo de la skill de 980 a 1027 tokens proxy, por encima del techo de 1000; integrar la regla en la línea existente lo deja en 999. La vista previa de mantenimiento reemplazó exactamente 10 rutas (skill de documentación canónica, sus tres copias por runtime, y el script y las pruebas del constructor en tres runtimes); aplicación `VALIDATED`; segunda vista previa vacía; checker `current`, 0 escrituras. Comprobación diferencial: los renders base y nuevo solo difieren en la skill de documentación. |
-| Historial de decisiones | 2026-10-21: el propietario delegó la elección ("decidelo tu") y aprobó comenzar ("dale"); issue #479. |
+| Historial de decisiones | 2026-10-21: el propietario delegó la elección ("decidelo tu") y aprobó comenzar ("dale"); issue #479. 2026-10-22: publicado en [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Siguiente condición de avance | none (terminal). |
 
 ### RH-W-0128
@@ -646,7 +646,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | RED y luego GREEN: los ocho casos fallaron antes del cambio (faltaban las claves) y pasan después; se mantiene el presupuesto de 32 líneas de la guía. La vista previa de mantenimiento reemplazó exactamente 6 archivos de proyección (script y pruebas del constructor en tres runtimes); aplicación `VALIDATED`; checker `current`, 0 escrituras. La primera suite completa detectó una aserción anterior de la guía en español que aún esperaba la frase reemplazada; ahora verifica la nueva. Comprobación diferencial: instalaciones nuevas con el script base y el nuevo solo difieren en la guía de uso, y actualizar una instalación base conserva esa guía como propiedad humana sin reemplazos ni escrituras. Suite completa: 717 pruebas OK (skipped=12); `git diff --check` limpio. |
-| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la siguiente corrección ("decidelo tu"). El padre también revisó la observación conservada sobre la falta de `--standalone` al comprobar y la dejó sin cambios: es el selector de modo documentado, no un defecto. El propietario aprobó publicar y fusionar ("si", "siiii"); entregado mediante el issue #474 y la PR #475, fusionada con squash como `36fae95`. Release sigue siendo decisión del propietario. |
+| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la siguiente corrección ("decidelo tu"). El padre también revisó la observación conservada sobre la falta de `--standalone` al comprobar y la dejó sin cambios: es el selector de modo documentado, no un defecto. El propietario aprobó publicar y fusionar ("si", "siiii"); entregado mediante el issue #474 y la PR #475, fusionada con squash como `36fae95`. Release sigue siendo decisión del propietario. 2026-10-22: publicado en [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Siguiente condición de avance | none (terminal). |
 
 ### RH-W-0127
@@ -666,7 +666,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | RED y luego GREEN: las cinco pruebas enfocadas fallaron antes del cambio (seis subcasos de alias con salida 2, espaciado del aviso, oración ausente) y pasan después. La vista previa de mantenimiento reemplazó exactamente 9 archivos de proyección (script, pruebas y referencia de entrevista del constructor en tres runtimes); aplicación `VALIDATED`; checker `current`, 0 escrituras. Comprobación diferencial: con valores canónicos, los scripts base y nuevo dan el mismo digest de plan e instalaciones nuevas idénticas byte a byte; `--conversation-language es` sale con 2 en el script base y genera la vista previa con 0 escrituras en el nuevo; `spanish` sigue saliendo con 2. Suite completa: 717 pruebas OK (skipped=12); `git diff --check` limpio. |
-| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la siguiente corrección ("decidelo tu") y aprobó publicar y fusionar ("dale"); entregado mediante el issue #472 y la PR #473, fusionada con squash como `4430dc2`. Release sigue siendo decisión del propietario. |
+| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la siguiente corrección ("decidelo tu") y aprobó publicar y fusionar ("dale"); entregado mediante el issue #472 y la PR #473, fusionada con squash como `4430dc2`. Release sigue siendo decisión del propietario. 2026-10-22: publicado en [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Siguiente condición de avance | none (terminal). |
 
 ### RH-W-0126
@@ -686,7 +686,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | RED y luego GREEN: la prueba enfocada falló antes del cambio (2 fallos) y pasa después. Un primer intento que además movía la línea del orden de recuperación rompió una prueba de orden existente y se revirtió a una edición en el lugar. La vista previa de mantenimiento reemplazó exactamente 10 archivos de proyección (script y pruebas del constructor en tres runtimes, cuatro copias de la skill de inicio); aplicación `VALIDATED`; checker `current`, 0 escrituras; paridad de bytes en los tres runtimes. Comprobación diferencial: instalaciones nuevas en español para Pi con el script base y el nuevo solo difieren en las dos copias de la skill de inicio, y actualizar una instalación base con el script nuevo reemplaza exactamente esos dos archivos, sin creaciones, adiciones, migraciones ni rutas bloqueadas. Suite completa: 713 pruebas OK (skipped=12); `git diff --check` limpio. |
-| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la corrección ("decidelo tu") y aprobó publicar y fusionar ("dale"); entregado mediante el issue #470 y la PR #471, fusionada con squash como `6340c86`. Release sigue siendo decisión del propietario. |
+| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la corrección ("decidelo tu") y aprobó publicar y fusionar ("dale"); entregado mediante el issue #470 y la PR #471, fusionada con squash como `6340c86`. Release sigue siendo decisión del propietario. 2026-10-22: publicado en [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Siguiente condición de avance | none (terminal). |
 
 ### RH-W-0125
@@ -706,7 +706,7 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Aplazamientos | none |
 | Rechazos | none |
 | Evidencia | RED y luego GREEN: las pruebas enfocadas fallaron antes del cambio (4 fallos) y pasan después. Comprobación diferencial: una instalación hecha con el script base y comprobada con el nuevo sigue `current` con 0 escrituras y sin reemplazos; solo las semillas cambiadas se informan como `existing`/`human-evolved` (solo en español: el mapa; bilingüe: el mapa y la hoja de ruta en español), el mismo comportamiento aceptado en RH-W-0124. Proyecciones copiadas byte a byte a los tres entornos; checker `current`, 0 escrituras. |
-| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la corrección y la aprobó ("dale"). El propietario aprobó publicar y fusionar ("si es necesario si dale", "dale dale"); entregado mediante el issue #468 y la PR #469, fusionada con squash como `c33c7f2`, apilada sobre la PR de documentación #467. El release sigue siendo decisión del propietario. |
+| Historial de decisiones | 2026-10-20: el propietario delegó la elección de la corrección y la aprobó ("dale"). El propietario aprobó publicar y fusionar ("si es necesario si dale", "dale dale"); entregado mediante el issue #468 y la PR #469, fusionada con squash como `c33c7f2`, apilada sobre la PR de documentación #467. El release sigue siendo decisión del propietario. 2026-10-22: publicado en [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Condición del siguiente avance | none (terminal). |
 
 ### RH-W-0124

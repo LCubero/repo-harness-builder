@@ -605,7 +605,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | `GeneratedCoreTests.test_documentation_skill_dates_changelog_by_host_local_evidence` and `test_session_stop_dates_changelog_by_host_local_evidence` observed RED then GREEN; the documentation skill body stays at 999 proxy tokens, under the 1000 ceiling. Maintenance preview replaced exactly 14 paths (documentation skill and session-stop `git-commit.md` in four locations each, plus the builder script and tests in three runtimes); apply `VALIDATED`; second preview empty. Differential check: base and new renders differ only in those two generated files, with and without runtimes and standalone. |
-| Decision history | 2026-10-22: the owner asked for the correction and to review it without assuming ("REVISALO no asumas"); issue #481. |
+| Decision history | 2026-10-22: the owner asked for the correction and to review it without assuming ("REVISALO no asumas"); issue #481. 2026-10-22: published in [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0129
@@ -622,7 +622,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | `GeneratedCoreTests.test_documentation_skill_dates_changelog_by_host_local_evidence` observed RED then GREEN. A first longer separate sentence pushed the skill body from 980 to 1027 proxy tokens, over the 1000 ceiling; folding the rule into the existing line keeps it at 999. Maintenance preview replaced exactly 10 paths (canonical documentation skill, its three runtime copies, and the builder script and tests in three runtimes); apply `VALIDATED`; second preview empty; checker `current`, 0 writes. Differential check: base and new renders differ only in the documentation skill. |
-| Decision history | 2026-10-21: the owner delegated the choice ("decidelo tu") and approved starting ("dale"); issue #479. |
+| Decision history | 2026-10-21: the owner delegated the choice ("decidelo tu") and approved starting ("dale"); issue #479. 2026-10-22: published in [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0128
@@ -639,7 +639,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the eight cases failed before the change (missing keys) and pass after; the 32-line usage budget holds. Maintenance preview replaced exactly 6 projection files (builder script and tests in three runtimes); apply `VALIDATED`; checker `current`, 0 writes. The first full suite caught one older Spanish-guide assertion still expecting the replaced sentence; it now asserts the new one. Differential check: fresh installs from the base and new scripts differ only in the usage guide, and updating a base install keeps that guide as human-owned with no replacements or writes. Full suite: 717 tests OK (skipped=12); `git diff --check` clean. |
-| Decision history | 2026-10-20: the owner delegated the choice of the next correction ("decidelo tu"). The parent also checked the retained missing `--standalone` check flag and kept it unchanged: it is the documented mode selector, not a defect. The owner approved publication and merge ("si", "siiii"); delivered through issue #474 and PR #475, squash-merged as `36fae95`. Release remains an owner decision. |
+| Decision history | 2026-10-20: the owner delegated the choice of the next correction ("decidelo tu"). The parent also checked the retained missing `--standalone` check flag and kept it unchanged: it is the documented mode selector, not a defect. The owner approved publication and merge ("si", "siiii"); delivered through issue #474 and PR #475, squash-merged as `36fae95`. Release remains an owner decision. 2026-10-22: published in [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0127
@@ -656,7 +656,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the five focused tests failed before the change (six alias subcases with exit 2, prompt spacing, missing sentence) and pass after. Maintenance preview replaced exactly 9 projection files (builder script, tests, and interview reference in three runtimes); apply `VALIDATED`; checker `current`, 0 writes. Differential check: with canonical values the base and new scripts give the same plan digest and byte-identical fresh installs; `--conversation-language es` exits 2 with the base script and previews with 0 writes with the new one; `spanish` still exits 2. Full suite: 717 tests OK (skipped=12); `git diff --check` clean. |
-| Decision history | 2026-10-20: the owner delegated the choice of the next correction ("decidelo tu") and approved publication and merge ("dale"); delivered through issue #472 and PR #473, squash-merged as `4430dc2`. Release remains an owner decision. |
+| Decision history | 2026-10-20: the owner delegated the choice of the next correction ("decidelo tu") and approved publication and merge ("dale"); delivered through issue #472 and PR #473, squash-merged as `4430dc2`. Release remains an owner decision. 2026-10-22: published in [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0126
@@ -673,7 +673,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the focused test failed before the change (2 failures) and passes after. A first attempt that also moved the recovery-order line broke an existing ordering test and was reverted to an in-place edit. Maintenance preview replaced exactly 10 projection files (builder script and tests in three runtimes, four startup skill copies); apply `VALIDATED`; checker `current`, 0 writes; byte parity in the three runtimes. Differential check: fresh Spanish Pi installs from the base and new scripts differ only in the two startup skill copies, and updating a base install with the new script replaces exactly those two files, with no creates, appends, migrations, or blocked paths. Full suite: 713 tests OK (skipped=12); `git diff --check` clean. |
-| Decision history | 2026-10-20: the owner delegated the choice of correction ("decidelo tu") and approved publication and merge ("dale"); delivered through issue #470 and PR #471, squash-merged as `6340c86`. Release remains an owner decision. |
+| Decision history | 2026-10-20: the owner delegated the choice of correction ("decidelo tu") and approved publication and merge ("dale"); delivered through issue #470 and PR #471, squash-merged as `6340c86`. Release remains an owner decision. 2026-10-22: published in [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0125
@@ -690,7 +690,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | RED then GREEN: the focused tests failed before the change (4 failures) and pass after. Differential check: an installation made with the base script and checked with the new one stays `current` with 0 writes and no replacements; only the changed seeds are reported as `existing`/`human-evolved` (Spanish-only: the map; bilingual: the Spanish map and roadmap), the same accepted behavior as RH-W-0124. Projections copied byte-for-byte to the three runtimes; checker `current`, 0 writes. |
-| Decision history | 2026-10-20: the owner delegated the choice of correction and approved it ("dale"). Owner approved publication and merge ("si es necesario si dale", "dale dale"); delivered through issue #468 and PR #469, squash-merged as `c33c7f2`, stacked on documentation PR #467. Release remains an owner decision. |
+| Decision history | 2026-10-20: the owner delegated the choice of correction and approved it ("dale"). Owner approved publication and merge ("si es necesario si dale", "dale dale"); delivered through issue #468 and PR #469, squash-merged as `c33c7f2`, stacked on documentation PR #467. Release remains an owner decision. 2026-10-22: published in [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18). |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0124
