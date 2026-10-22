@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-21
 
+- RH-W-0129: the generated documentation skill now dates changelog entries by the host-local day of the completed change, preferring its local Git commit date and never UTC, the same rule session-stop already follows (issue #479).
 - A standalone install's generated usage guide now heads its availability section `## Availability` (`## Disponibilidad` in Spanish) instead of `Integrated Availability`; integrated guides are unchanged. Existing installations keep their human-owned usage guide; no migration (issue #477).
 - Corrected changelog and roadmap dates to the host-local day (UTC-6): RH-W-0126 through RH-W-0128 and the Linux evidence entry were delivered on 2026-10-20, not 2026-10-21 or 2026-10-19.
 

@@ -4,6 +4,7 @@
 
 ## 2026-10-21
 
+- RH-W-0129: la skill de documentación generada ahora fecha las entradas del historial de cambios con el día local del host del cambio completado, prefiriendo la fecha local de su commit de Git y nunca UTC, la misma regla que ya sigue el cierre de sesión (issue #479).
 - La guía de uso generada de una instalación standalone ahora titula su sección de disponibilidad `## Disponibilidad` (`## Availability` en inglés) en lugar de `Disponibilidad integrada`; las guías integradas no cambian. Las instalaciones existentes conservan su guía de uso propiedad humana; sin migración (issue #477).
 - Se corrigieron las fechas del historial de cambios y de la hoja de ruta al día local del host (UTC-6): RH-W-0126 a RH-W-0128 y la entrada de evidencia Linux se entregaron el 2026-10-20, no el 2026-10-21 ni el 2026-10-19.
 

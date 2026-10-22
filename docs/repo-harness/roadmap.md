@@ -591,6 +591,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0129
+| Field | Value |
+|---|---|
+| Origin | 2026-10-21 owner correction: changelog dates kept falling on the UTC day instead of the host-local day ("no respetas mi horario costa rica -6"), and dates must follow each consumer's own local time. Session start found that [RH-W-0081](#rh-w-0081) already covers generated session-stop, while the generated documentation skill only said entries are "dated". |
+| Priority | P2: changelog edits made through the documentation skill could place completed work under a false local day. |
+| Dependencies | none |
+| Status | completed |
+| Completed work | The generated `repo-harness-documentation` skill now says changelog entries are dated by the host-local day of the change (its local Git commit date), never UTC: the rule RH-W-0081 gave session-stop, folded into the existing changelog line. |
+| Remaining work | none |
+| Additions | One reworded documentation-skill line and one regression test, which also pins the skill body under the style guide's 1000-token ceiling. |
+| Exclusions | No clock service, timezone logic, state, or manifest change; session-stop and RH-W-0069 backup identity unchanged. Existing installations receive the line through the normal update when their documentation skill still carries generated provenance; human-owned copies stay proposal-only. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | `GeneratedCoreTests.test_documentation_skill_dates_changelog_by_host_local_evidence` observed RED then GREEN. A first longer separate sentence pushed the skill body from 980 to 1027 proxy tokens, over the 1000 ceiling; folding the rule into the existing line keeps it at 999. Maintenance preview replaced exactly 10 paths (canonical documentation skill, its three runtime copies, and the builder script and tests in three runtimes); apply `VALIDATED`; second preview empty; checker `current`, 0 writes. Differential check: base and new renders differ only in the documentation skill. |
+| Decision history | 2026-10-21: the owner delegated the choice ("decidelo tu") and approved starting ("dale"); issue #479. |
+| Next advancement condition | none (terminal). |
+
 ### RH-W-0128
 | Field | Value |
 |---|---|

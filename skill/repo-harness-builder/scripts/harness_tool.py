@@ -2073,7 +2073,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 - Keep one canonical owner for each durable fact. Link to that owner instead of duplicating content.
 - Maintain documentation maps, relative links, current-state accuracy, rule freshness, and clear ownership.
 - Separate durable documentation from temporary session notes. Promote temporary facts only after they remain relevant and are verified.
-- Keep changelog entries factual, dated, concise, and non-duplicated. Link decisions or documentation only when useful.
+- Keep changelog entries factual, concise, non-duplicated, and dated by the host-local day of the change (its local Git commit date), never UTC. Link decisions or documentation only when useful.
 - Use `CHANGELOG.md` for completed changes, not future plans. Keep current state and next steps in `docs/repo-harness/current-state.md`.
 - Verify a pending or completed claim against applicable owning evidence before adding, retaining, moving, or removing it.
 - Treat `docs/repo-harness/roadmap.md` as the canonical lifecycle owner. When reality changes, reconcile its `RH-W-####` record, the concise current-state projection, localized peers, and {lifecycle_mirror} in the same work unit.

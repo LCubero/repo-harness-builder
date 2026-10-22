@@ -7410,6 +7410,13 @@ resume_authority: required
         self.assertIn("never derive it from the UTC continuity backup timestamp", stop)
         self.assertIn("If that evidence is unavailable or ambiguous, ask one question", stop)
 
+    def test_documentation_skill_dates_changelog_by_host_local_evidence(self):
+        outputs = TOOL.render("Example", [])
+        docs = outputs[".repo-harness/skills/repo-harness-documentation/SKILL.md"]
+        self.assertIn("dated by the host-local day of the change (its local Git commit date), never UTC", docs)
+        _, body = docs.split("---\n", 2)[1:]
+        self.assertLess(TOOL.token_proxy(body), 1000)
+
     def test_session_start_runs_projection_checker_only_when_its_rulebook_gate_applies(self):
         start = self.indexed_closure(
             TOOL.render("Example", ["opencode", "claude-code"]), "session-start", ("reconciliation.md",)
