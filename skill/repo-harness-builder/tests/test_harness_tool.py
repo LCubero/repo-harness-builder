@@ -7404,8 +7404,12 @@ resume_authority: required
     def test_session_stop_dates_changelog_by_host_local_evidence(self):
         outputs = TOOL.render("Example", [])
         stop = self.indexed_closure(outputs, "session-stop", ("git-commit.md",))
-        self.assertIn("host-local calendar date of the completed change", stop)
-        self.assertIn("preferring the exact change's local Git commit date", stop)
+        self.assertIn(
+            "calendar date of the completed change in the time zone the user set "
+            "(in the conversation or a recorded decision), otherwise the host-local time zone where the agent runs",
+            stop,
+        )
+        self.assertIn("preferring the exact change's Git commit timestamp converted to that time zone", stop)
         self.assertIn("never substitute UTC", stop)
         self.assertIn("never derive it from the UTC continuity backup timestamp", stop)
         self.assertIn("If that evidence is unavailable or ambiguous, ask one question", stop)
@@ -7413,7 +7417,7 @@ resume_authority: required
     def test_documentation_skill_dates_changelog_by_host_local_evidence(self):
         outputs = TOOL.render("Example", [])
         docs = outputs[".repo-harness/skills/repo-harness-documentation/SKILL.md"]
-        self.assertIn("dated by the host-local day of the change (its local Git commit date), never UTC", docs)
+        self.assertIn("dated by the change's day in the user's chosen time zone, else host-local; never assume UTC", docs)
         _, body = docs.split("---\n", 2)[1:]
         self.assertLess(TOOL.token_proxy(body), 1000)
 

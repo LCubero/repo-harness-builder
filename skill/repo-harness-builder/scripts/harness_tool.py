@@ -1753,7 +1753,7 @@ Use when pausing or ending work in `{project_id}`. Invoke this skill deliberatel
 - Conversation language: {language_contract}
 - Keep conversation, report, documentation, and artifact language independent. Skills, contracts, documentation, and every other generated artifact stay in English unless explicitly requested otherwise for that artifact.
 - Keep the rulebook inside its budget. Move durable detail down into its owned deeper document.
-- Propose one concise `CHANGELOG.md` entry for meaningful completed work under the existing documentation approval. Avoid an entry for a trivial or no-op session. Date each entry by the host-local calendar date of the completed change, preferring the exact change's local Git commit date; never substitute UTC, and never derive it from the UTC continuity backup timestamp. If that evidence is unavailable or ambiguous, ask one question.
+- Propose one concise `CHANGELOG.md` entry for meaningful completed work under the existing documentation approval. Avoid an entry for a trivial or no-op session. Date each entry by the calendar date of the completed change in the time zone the user set (in the conversation or a recorded decision), otherwise the host-local time zone where the agent runs, preferring the exact change's Git commit timestamp converted to that time zone; never substitute UTC, and never derive it from the UTC continuity backup timestamp. If that evidence is unavailable or ambiguous, ask one question.
 - Reconcile every changed `RH-W-####` record in `docs/repo-harness/roadmap.md`, the concise current-state projection, localized peers, and {lifecycle_mirror} in the same work unit.
 {continuity.rstrip()}
 - Git, commit, push, provider, external backup, and publication actions are separate optional gates and are never implied by session stop.
@@ -2073,7 +2073,7 @@ Use when creating, reviewing, or updating project documentation and visible proj
 - Keep one canonical owner for each durable fact. Link to that owner instead of duplicating content.
 - Maintain documentation maps, relative links, current-state accuracy, rule freshness, and clear ownership.
 - Separate durable documentation from temporary session notes. Promote temporary facts only after they remain relevant and are verified.
-- Keep changelog entries factual, concise, non-duplicated, and dated by the host-local day of the change (its local Git commit date), never UTC. Link decisions or documentation only when useful.
+- Keep changelog entries factual, concise, deduplicated, dated by the change's day in the user's chosen time zone, else host-local; never assume UTC. Link decisions or documentation only when useful.
 - Use `CHANGELOG.md` for completed changes, not future plans. Keep current state and next steps in `docs/repo-harness/current-state.md`.
 - Verify a pending or completed claim against applicable owning evidence before adding, retaining, moving, or removing it.
 - Treat `docs/repo-harness/roadmap.md` as the canonical lifecycle owner. When reality changes, reconcile its `RH-W-####` record, the concise current-state projection, localized peers, and {lifecycle_mirror} in the same work unit.
