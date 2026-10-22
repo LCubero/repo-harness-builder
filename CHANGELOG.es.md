@@ -4,6 +4,7 @@
 
 ## 2026-10-22
 
+- Se repararon siete enlaces a secciones rotos: tres enlaces en español a los resultados de cierre de RH-W-0068 ahora usan el ancla del título en español, y cuatro enlaces de RH-W-0055 ahora apuntan a la sección de la guía del constructor que reemplazó la sección retirada del README.
 - La guía de uso de este repositorio (EN/ES) ahora indica que las escrituras documentales requieren aprobación conversacional explícita, como la guía generada, y el siguiente paso del estado actual registra RH-W-0130 en `main` y que las ramas fusionadas solo quedan en local.
 - RH-W-0130: la fecha del historial de cambios generado (skill de documentación y cierre de sesión) ahora usa la zona horaria que el usuario estableció, en la conversación o en una decisión registrada, si no la zona horaria local del host donde se ejecuta el agente, y convierte a ella la marca de tiempo del commit de Git del cambio en lugar de confiar en el desfase de quien hizo el commit; nunca UTC por defecto (issue #481).
 

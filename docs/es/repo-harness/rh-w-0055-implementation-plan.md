@@ -12,7 +12,7 @@ Es un cambio solo de documentación. No toca código, pruebas, comportamiento ge
    - Forma: `skill/repo-harness-builder/` y `command/repo-harness-builder.md` deben existir bajo `ARTIFACT_ROOT`; si no, detenerse como artefacto inválido.
    - Requisitos: Python 3 y el runtime elegido ya instalados.
    - La tabla de destinos del diseño y luego un bloque POSIX shell para copiar y pegar por runtime (Git Bash en Windows), parametrizado solo por `ARTIFACT_ROOT` y la raíz del repositorio destino. Cada bloque se niega si algún destino ya existe y nunca sobrescribe.
-   - Invocar `repo-harness-builder` en el repositorio destino; enlazar [Constructor y habilidades generadas](../../../README.es.md#constructor-y-habilidades-generadas) para auditoría, vista previa y aprobación.
+   - Invocar `repo-harness-builder` en el repositorio destino; enlazar [Constructor y habilidades generadas](builder-guide.md#constructor-y-habilidades-generadas) para auditoría, vista previa y aprobación.
    - Después de aplicar, ejecutar `python3 .repo-harness/check.py` (`python` en Windows); solo salida 0 con `current` y cero escrituras indica congruencia. Un runtime puede necesitar un proceso nuevo para registrar skills nuevas.
    - Uso diario: enlazar [Flujo diario](usage.md#flujo-diario).
    - Una lista corta de paradas: artefacto inválido, destino ocupado, runtime sin registrar, rechazo del builder, deriva del checker. Sin red funciona una vez que el artefacto y los requisitos son locales.
