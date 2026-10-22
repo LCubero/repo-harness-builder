@@ -30,7 +30,7 @@ La persona selecciona explícitamente uno o más runtimes. Para cada runtime, la
 | OpenCode | `.opencode/skills/repo-harness-builder/` | `.opencode/commands/repo-harness-builder.md` |
 | Pi | `.pi/skills/repo-harness-builder/` | `.pi/prompts/repo-harness-builder.md` |
 
-La copia es aditiva: un destino ocupado detiene el flujo para inspección y nunca se sobrescribe. Después se abre el repositorio objetivo y se invoca la entrada `repo-harness-builder` instalada. El builder conserva la propiedad exclusiva de auditoría, selección de proyecciones, preview, aprobación, apply y `check`; la guía enlaza [Constructor y habilidades generadas](../../../README.es.md#constructor-y-habilidades-generadas) sin repetir esos contratos.
+La copia es aditiva: un destino ocupado detiene el flujo para inspección y nunca se sobrescribe. Después se abre el repositorio objetivo y se invoca la entrada `repo-harness-builder` instalada. El builder conserva la propiedad exclusiva de auditoría, selección de proyecciones, preview, aprobación, apply y `check`; la guía enlaza [Constructor y habilidades generadas](builder-guide.md#constructor-y-habilidades-generadas) sin repetir esos contratos.
 
 Después de un apply exitoso se ejecuta `python3 .repo-harness/check.py` (`python` en Windows). Solo salida 0 con `current` y cero escrituras establece congruencia en disco. El registro del runtime puede requerir un proceso nuevo si el actual conserva contenido anterior; no se inventa una orden de recarga. El trabajo diario sigue [Flujo diario](usage.md#flujo-diario): inicio de sesión, documentación cuando cambia estado durable y cierre de sesión.
 

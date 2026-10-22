@@ -6,6 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-22
 
+- Repaired seven broken section links: three Spanish links to the RH-W-0068 closure outcomes now use the Spanish heading anchor, and four RH-W-0055 links now point to the builder guide section that replaced the removed README section.
 - This repository's usage guide (EN/ES) now states that documentation writes require explicit conversational approval, as the generated guide does, and the current-state next step records RH-W-0130 on `main` and that merged branches remain only locally.
 - RH-W-0130: generated changelog dating (documentation skill and session-stop) now uses the time zone the user set, in the conversation or a recorded decision, otherwise the host-local time zone where the agent runs, and converts the change's Git commit timestamp to it instead of trusting the committer's offset; never UTC by default (issue #481).
 

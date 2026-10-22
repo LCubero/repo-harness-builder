@@ -12,7 +12,7 @@ This is a documentation-only change. It touches no source, test, generated behav
    - Shape check: `skill/repo-harness-builder/` and `command/repo-harness-builder.md` must exist under `ARTIFACT_ROOT`; otherwise stop as an invalid artifact.
    - Prerequisites: Python 3 and the selected runtime already installed.
    - The design's destination table, then one copy-paste POSIX shell block per runtime (Git Bash on Windows), parameterized only by `ARTIFACT_ROOT` and the target repository root. Each block refuses when either destination already exists and never overwrites.
-   - Invoke `repo-harness-builder` in the target repository; link [Builder And Generated Skills](../../README.md#builder-and-generated-skills) for the audit, preview, and approval flow.
+   - Invoke `repo-harness-builder` in the target repository; link [Builder And Generated Skills](builder-guide.md#builder-and-generated-skills) for the audit, preview, and approval flow.
    - After apply, run `python3 .repo-harness/check.py` (`python` on Windows); only exit 0 with `current` and zero writes means congruence. A runtime may need a fresh process to register new skills.
    - Daily use: link [Daily Workflow](usage.md#daily-workflow).
    - One short list of failure stops: invalid artifact, occupied destination, unregistered runtime, builder refusal, checker drift. Offline works once the artifact and prerequisites are local.

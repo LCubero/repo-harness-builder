@@ -12,7 +12,7 @@ Terminar una conversación sin fingir que se cumplió cada obligación. Advertir
 
 ## Reconciliación propuesta con RH-W-0068
 
-**Hecho verificado:** el [propietario de cierre implementado](rh-w-0068-documentation-closure-design.md#closure-outcomes) prohíbe `completed` si la documentación obligatoria está declinada, pendiente, fallida o incompleta, y exige `paused` o `blocked`. El contrato instalado de session-stop también exige un resultado de cierre y define `paused` y `blocked` según información o requisitos realmente faltantes. Esas exigencias no pueden quedar intactas para una omisión aceptada sin una decisión pendiente.
+**Hecho verificado:** el [propietario de cierre implementado](rh-w-0068-documentation-closure-design.md#resultados-de-cierre) prohíbe `completed` si la documentación obligatoria está declinada, pendiente, fallida o incompleta, y exige `paused` o `blocked`. El contrato instalado de session-stop también exige un resultado de cierre y define `paused` y `blocked` según información o requisitos realmente faltantes. Esas exigencias no pueden quedar intactas para una omisión aceptada sin una decisión pendiente.
 
 **Modificación aprobada por el propietario:** es un cambio acotado de clasificación/salida, no una excepción a la elegibilidad para completar:
 

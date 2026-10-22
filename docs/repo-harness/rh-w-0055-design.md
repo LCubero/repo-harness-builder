@@ -30,7 +30,7 @@ The user explicitly selects one or more runtimes. For each runtime, the guide gi
 | OpenCode | `.opencode/skills/repo-harness-builder/` | `.opencode/commands/repo-harness-builder.md` |
 | Pi | `.pi/skills/repo-harness-builder/` | `.pi/prompts/repo-harness-builder.md` |
 
-The copy is additive: an occupied destination stops for inspection and never overwrites. The user then opens the target repository and invokes its installed `repo-harness-builder` entry. The builder remains sole owner of repository audit, generated-runtime selection, preview, approval, apply, and post-apply `check`; the guide links to [Builder And Generated Skills](../../README.md#builder-and-generated-skills) instead of restating those contracts.
+The copy is additive: an occupied destination stops for inspection and never overwrites. The user then opens the target repository and invokes its installed `repo-harness-builder` entry. The builder remains sole owner of repository audit, generated-runtime selection, preview, approval, apply, and post-apply `check`; the guide links to [Builder And Generated Skills](builder-guide.md#builder-and-generated-skills) instead of restating those contracts.
 
 After successful apply, run generated `python3 .repo-harness/check.py` (`python` on Windows). Only exit 0 with `current` and zero writes establishes on-disk congruence. Runtime registration may require a fresh process when the current process cached older content; no reload command is invented. Daily work follows [Daily Workflow](usage.md#daily-workflow): session-start, documentation when durable state changes, and session-stop.
 
