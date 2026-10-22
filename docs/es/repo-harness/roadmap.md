@@ -589,6 +589,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0129
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Corrección del propietario del 2026-10-21: las fechas del historial de cambios seguían cayendo en el día UTC en lugar del día local del host ("no respetas mi horario costa rica -6"), y las fechas deben seguir la hora local de cada consumidor. El inicio de sesión encontró que [RH-W-0081](#rh-w-0081) ya cubre el cierre de sesión generado, mientras que la skill de documentación generada solo decía que las entradas llevan fecha. |
+| Prioridad | P2: las ediciones del historial de cambios hechas con la skill de documentación podían ubicar trabajo completado en un día local falso. |
+| Dependencias | none |
+| Estado | completed |
+| Trabajo completado | La skill generada `repo-harness-documentation` ahora indica que las entradas del historial de cambios se fechan con el día local del host del cambio (la fecha local de su commit de Git), nunca UTC: la regla que RH-W-0081 dio al cierre de sesión, integrada en la línea existente sobre el historial de cambios. |
+| Trabajo restante | none |
+| Adiciones | Una línea reformulada en la skill de documentación y una prueba de regresión, que además fija el cuerpo de la skill bajo el techo de 1000 tokens de la guía de estilo. |
+| Exclusiones | Ningún servicio de reloj, lógica de zonas horarias, estado ni cambio de manifiesto; el cierre de sesión y la identidad de respaldo de RH-W-0069 no cambian. Las instalaciones existentes reciben la línea mediante la actualización normal cuando su skill de documentación conserva la procedencia generada; las copias de propiedad humana quedan solo como propuesta. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | `GeneratedCoreTests.test_documentation_skill_dates_changelog_by_host_local_evidence` se observó en RED y luego en GREEN. Una primera frase separada más larga llevó el cuerpo de la skill de 980 a 1027 tokens proxy, por encima del techo de 1000; integrar la regla en la línea existente lo deja en 999. La vista previa de mantenimiento reemplazó exactamente 10 rutas (skill de documentación canónica, sus tres copias por runtime, y el script y las pruebas del constructor en tres runtimes); aplicación `VALIDATED`; segunda vista previa vacía; checker `current`, 0 escrituras. Comprobación diferencial: los renders base y nuevo solo difieren en la skill de documentación. |
+| Historial de decisiones | 2026-10-21: el propietario delegó la elección ("decidelo tu") y aprobó comenzar ("dale"); issue #479. |
+| Siguiente condición de avance | none (terminal). |
+
 ### RH-W-0128
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
