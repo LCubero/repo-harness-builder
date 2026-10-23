@@ -459,6 +459,30 @@ class FreshInstallDocumentationTests(unittest.TestCase):
                 if english is not None:
                     self.assertIn("They do not become durable truth", english)
 
+    def test_roadmap_lifecycle_mirror_follows_integration_mode(self):
+        english_rule = "- Update this owner, current-state projection, localized peers, and {mirror} in the same work unit when reality changes."
+        spanish_rule = "- Actualice este propietario, la proyección de estado actual, los pares localizados y {mirror} en la misma unidad de trabajo cuando cambie la realidad."
+        mirrors = {
+            ("en", True): "repository continuity record keyed by `RH-W-####`",
+            ("en", False): "Engram topic `work/RH-W-####`",
+            ("es", True): "el registro de continuidad del repositorio con clave `RH-W-####`",
+            ("es", False): "el tema de Engram `work/RH-W-####`",
+        }
+        cases = (
+            (["en"], "docs/repo-harness/roadmap.md", "en"),
+            (["es"], "docs/repo-harness/roadmap.md", "es"),
+            (["en", "es"], "docs/repo-harness/roadmap.md", "en"),
+            (["en", "es"], "docs/es/repo-harness/roadmap.md", "es"),
+        )
+        for languages, path, language in cases:
+            for standalone in (True, False):
+                with self.subTest(languages=languages, path=path, standalone=standalone):
+                    roadmap = TOOL.render("Example", [], standalone=standalone, documentation_languages=languages)[path]
+                    rule = (english_rule if language == "en" else spanish_rule).format(mirror=mirrors[(language, standalone)])
+                    self.assertIn(rule, roadmap)
+                    if standalone:
+                        self.assertNotIn("Engram", roadmap)
+
     def test_existing_normalized_headings_stay_current_on_update(self):
         # S3 is deferred: changing seed headings reclassifies existing installs
         # from identical/current to existing/human-evolved. Keep that contract.

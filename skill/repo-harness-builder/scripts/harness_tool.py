@@ -2578,7 +2578,7 @@ This roadmap is the canonical lifecycle owner. Track only non-trivial work with 
 - Status is one of `proposed`, `ready`, `active`, `blocked`, `deferred`, `completed`, `excluded`, or `rejected`.
 - `blocked` names its blocker, `deferred` names its advancement condition, and terminal records use remaining work `none`.
 - `excluded` is reconsiderable outside current scope. `rejected` is intentionally declined until an explicit later decision supersedes it.
-- Update this owner, current-state projection, localized peers, and Engram topic `work/RH-W-####` in the same work unit when reality changes.
+- Update this owner, current-state projection, localized peers, and {"repository continuity record keyed by `RH-W-####`" if standalone else "Engram topic `work/RH-W-####`"} in the same work unit when reality changes.
 
 ## Active Records
 <!-- doc-role:active-records -->
@@ -2851,7 +2851,7 @@ Revise `REPO-HARNESS.md` junto con este documento y actualice solo afirmaciones 
 - El estado es `proposed`, `ready`, `active`, `blocked`, `deferred`, `completed`, `excluded` o `rejected`.
 - `blocked` nombra su bloqueo, `deferred` su condición de avance y los registros terminales usan trabajo restante `none`.
 - `excluded` puede reconsiderarse fuera del alcance actual. `rejected` se declina intencionalmente hasta que una decisión posterior explícita lo reemplace.
-- Actualice este propietario, la proyección de estado actual, los pares localizados y el tema de Engram `work/RH-W-####` en la misma unidad de trabajo cuando cambie la realidad.
+- Actualice este propietario, la proyección de estado actual, los pares localizados y {"el registro de continuidad del repositorio con clave `RH-W-####`" if standalone else "el tema de Engram `work/RH-W-####`"} en la misma unidad de trabajo cuando cambie la realidad.
 
 ## Registros activos
 <!-- doc-role:active-records -->

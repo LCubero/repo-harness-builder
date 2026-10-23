@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-24
+
+- El roadmap generado de una instalación standalone (EN/ES) ya no indica al agente actualizar el tema de Engram `work/RH-W-####`; su regla de ciclo de vida ahora nombra el registro de continuidad del repositorio con clave `RH-W-####`, como ya hacían las skills generadas. Los roadmaps integrados no cambian. Las instalaciones existentes conservan su roadmap propiedad humana; sin migración (issue #486).
+
 ## 2026-10-22
 
 - Se publicó [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18) desde `6adf2d25f0bc9b5e2d98edeb8c9310fdab387323` el 2026-10-22T22:57:14Z (16:57 hora local del host, UTC-6) por decisión del propietario, con RH-W-0125 a RH-W-0130 y la corrección del título de uso standalone (issue #477): `repo-harness-builder-v3.1-rc.18-claude-code.zip` (274705 bytes, SHA-256 `bd25015b3f147e5047728c9be98eb1032142913faf1440977b6de42edab9cb81`); `repo-harness-builder-v3.1-rc.18-opencode.zip` (274789 bytes, SHA-256 `debd41b6811f97580436a359f77af9b9f99239a0f0ed7132326586010f17181c`); `repo-harness-builder-v3.1-rc.18-pi.zip` (274537 bytes, SHA-256 `2a2801ce97f327d82848628addb54b91185525f2e496593c3a3bc01a23c6c075`).

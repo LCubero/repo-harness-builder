@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-24
+
+- A standalone install's generated roadmap (EN/ES) no longer tells the agent to update the Engram topic `work/RH-W-####`; its lifecycle rule now names the repository continuity record keyed by `RH-W-####`, as the generated skills already did. Integrated roadmaps are unchanged. Existing installations keep their human-owned roadmap; no migration (issue #486).
+
 ## 2026-10-22
 
 - Published [`v3.1-rc.18`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.18) from `6adf2d25f0bc9b5e2d98edeb8c9310fdab387323` on 2026-10-22T22:57:14Z (16:57 host-local, UTC-6) by owner decision, carrying RH-W-0125 through RH-W-0130 and the standalone usage heading fix (issue #477): `repo-harness-builder-v3.1-rc.18-claude-code.zip` (274705 bytes, SHA-256 `bd25015b3f147e5047728c9be98eb1032142913faf1440977b6de42edab9cb81`); `repo-harness-builder-v3.1-rc.18-opencode.zip` (274789 bytes, SHA-256 `debd41b6811f97580436a359f77af9b9f99239a0f0ed7132326586010f17181c`); `repo-harness-builder-v3.1-rc.18-pi.zip` (274537 bytes, SHA-256 `2a2801ce97f327d82848628addb54b91185525f2e496593c3a3bc01a23c6c075`).
