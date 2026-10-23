@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-24
 
+- Generated session-start and session-stop now name where the manifest conversation language lives (`.repo-harness/manifest.json` `language.conversation`). Live Pi tests without extensions answered in English despite a Spanish manifest because neither skill said where to look; the precedence is unchanged (issue #488).
+
 - A standalone install's generated roadmap (EN/ES) no longer tells the agent to update the Engram topic `work/RH-W-####`; its lifecycle rule now names the repository continuity record keyed by `RH-W-####`, as the generated skills already did. Integrated roadmaps are unchanged. Existing installations keep their human-owned roadmap; no migration (issue #486).
 
 ## 2026-10-22

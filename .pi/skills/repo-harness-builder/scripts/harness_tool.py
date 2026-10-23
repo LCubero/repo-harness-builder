@@ -1982,7 +1982,7 @@ Use at the start or resumption of work in `{project_id}`. Invoke deliberately; t
 - Startup is read-only by default. Only explicit current consent to safely synchronize the identified upstream permits bounded fetch and fast-forward-only integration; never pull, commit, push, publish, rebase, reset, force, merge on divergence, resolve conflicts, auto-continue, or reuse checkpoint approval.
 - First resolve `.repo-harness/memory-bk/` through the guarded root; inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree. Absent directory or empty history is `not_found`, not failure; reject and report malformed, unsafe, indirect, or contradictory candidates without repair. Read at most one older backup, and only for `newest_invalid`, `objective_names_backup`, `conflict_needs_chronology`, or `newest_lacks_relevant_continuity`.
 - Before deeper owner reads, perform native recovery in order: validate root, read bounded charter (`docs/repo-harness/decisions.md`; absent is `not_found`, not failure), resolve preference using the one fixed reader exactly once, then the newest valid local backup. Discover only the exact active checkpoint path afterward; load its contract before interpreting or proposing resume. Missing, unsafe, unowned, or unreadable required references stop the affected operation.
-- Preserve language precedence: verified human instruction, valid persisted preference, eligible verified session language, validated manifest fallback, then English. Do not infer from absent, invalid, or unavailable data.
+- Preserve language precedence: verified human instruction, valid persisted preference, eligible verified session language, validated manifest fallback (`.repo-harness/manifest.json` `language.conversation`), then English. Do not infer from absent, invalid, or unavailable data.
 
 ## Conditional Reference Index
 
@@ -2019,7 +2019,7 @@ Use when pausing or ending work in `{project_id}`. Invoke deliberately; this ski
 
 - Load and follow the canonical rulebook at `{rulebook_path}`, including its execution discipline. Report only repository-supported facts and observed command results.
 - {RESPONSE_CONTRACT_REFERENCE}
-- {continuity_rule} Preserve conversation-language precedence, keep generated artifacts in English unless requested, and keep ordinary handoff and continuation questions conversational.
+- {continuity_rule} Preserve conversation-language precedence; without a human instruction or persisted preference, use `.repo-harness/manifest.json` `language.conversation`, then English. Keep generated artifacts in English unless requested, and keep ordinary handoff and continuation questions conversational.
 - Batch activation and grouped answers expire with their objective on pause, close, completion, abandonment, or replacement. Never reuse them automatically or persist them in continuity or another store.
 - Commit, push, provider, external backup, and publication are separate optional gates. Commit approval never grants push authority; no coauthor or AI attribution is permitted.
 - Missing, unsafe, unowned, or unreadable required references stop the affected operation; never compensate by reading every reference.
