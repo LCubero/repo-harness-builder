@@ -459,6 +459,17 @@ class FreshInstallDocumentationTests(unittest.TestCase):
                 if english is not None:
                     self.assertIn("They do not become durable truth", english)
 
+    def test_session_skills_name_the_manifest_language_fallback(self):
+        fallback = "`.repo-harness/manifest.json` `language.conversation`"
+        for standalone in (True, False):
+            with self.subTest(standalone=standalone):
+                outputs = TOOL.render("Example", ["pi"], standalone=standalone)
+                start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
+                stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+                self.assertIn(f"validated manifest fallback ({fallback}), then English", start)
+                self.assertIn(f"verified human instruction, persisted preference, eligible verified session language, then {fallback}, then English", stop)
+                self.assertLess(TOOL.token_proxy(start), 1000)
+
     def test_roadmap_lifecycle_mirror_follows_integration_mode(self):
         english_rule = "- Update this owner, current-state projection, localized peers, and {mirror} in the same work unit when reality changes."
         spanish_rule = "- Actualice este propietario, la proyección de estado actual, los pares localizados y {mirror} en la misma unidad de trabajo cuando cambie la realidad."
@@ -1424,7 +1435,7 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                 self.assertIn("Any other nonzero exit", skill)
                 self.assertIn("is `unavailable`; report unreadable continuity", skill)
                 self.assertIn("continue without persisted evidence", skill)
-                self.assertIn("verified human instruction, valid persisted preference, eligible verified session language, validated manifest fallback, then English", skill)
+                self.assertIn("verified human instruction, valid persisted preference, eligible verified session language, validated manifest fallback (`.repo-harness/manifest.json` `language.conversation`), then English", skill)
                 self.assertIn("Do not retry, repair, write, read preference JSON directly, or invoke another runtime's script", skill)
                 recovery_order = (
                     "validate root, read bounded charter (`docs/repo-harness/decisions.md`; absent is `not_found`, not failure), "

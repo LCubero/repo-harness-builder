@@ -17,7 +17,7 @@ Use when pausing or ending work in `repo-harness-builder`. Invoke deliberately; 
 
 - Load and follow the canonical rulebook at `REPO-HARNESS.md`, including its execution discipline. Report only repository-supported facts and observed command results.
 - Response shaping: immediately before composing any reply or reported output that carries a notice, pending action, question, approval, visible next action, or contextual explanation, load and apply `.repo-harness/rules/response-contract.md`.
-- Continuity outcome and optional Engram outcome are independent; never claim a save that failed. Preserve conversation-language precedence, keep generated artifacts in English unless requested, and keep ordinary handoff and continuation questions conversational.
+- Continuity outcome and optional Engram outcome are independent; never claim a save that failed. Preserve conversation-language precedence: verified human instruction, persisted preference, eligible verified session language, then `.repo-harness/manifest.json` `language.conversation`, then English. Keep generated artifacts in English unless requested, and keep ordinary handoff and continuation questions conversational.
 - Batch activation and grouped answers expire with their objective on pause, close, completion, abandonment, or replacement. Never reuse them automatically or persist them in continuity or another store.
 - Commit, push, provider, external backup, and publication are separate optional gates. Commit approval never grants push authority; no coauthor or AI attribution is permitted.
 - Missing, unsafe, unowned, or unreadable required references stop the affected operation; never compensate by reading every reference.

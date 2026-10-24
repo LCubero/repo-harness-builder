@@ -4,6 +4,8 @@
 
 ## 2026-10-24
 
+- El inicio y el cierre de sesión generados ahora nombran dónde está el idioma de conversación del manifiesto (`.repo-harness/manifest.json` `language.conversation`). Pruebas en vivo de Pi sin extensiones respondían en inglés pese a un manifiesto en español porque ninguna skill decía dónde buscarlo; la precedencia no cambia (issue #488).
+
 - El roadmap generado de una instalación standalone (EN/ES) ya no indica al agente actualizar el tema de Engram `work/RH-W-####`; su regla de ciclo de vida ahora nombra el registro de continuidad del repositorio con clave `RH-W-####`, como ya hacían las skills generadas. Los roadmaps integrados no cambian. Las instalaciones existentes conservan su roadmap propiedad humana; sin migración (issue #486).
 
 ## 2026-10-22
