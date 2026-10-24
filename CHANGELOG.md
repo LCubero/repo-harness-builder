@@ -4,8 +4,9 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
-## 2026-10-24
+## 2026-10-23
 
+- Published [`v3.1-rc.19`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.19) from `c6b04e674d12b114b2cf49a1b53740c0a0d2dbcb` on 2026-10-24T00:21:23Z (18:21 host-local, UTC-6) by owner decision, carrying issues #486 and #488 (`claude-code` 275392 bytes, SHA-256 `5d52a8699f5ec1a75e87b52f0b092b8a0dfa9bb712ddf2abd435e8b64e50fc8f`; `opencode` 275476 bytes, SHA-256 `cc7d488ce0b7afef298a54694f2dc4acd3bd1c75bcaef50e7edc86b338ae273a`; `pi` 275224 bytes, SHA-256 `6fbf5c84af32f1bf65211baaf5fa95a790a2ebe9dd3a32cb18da6e151ab928b1`); GitHub digests match, and fresh installs from these zips passed 74 of 74 checks.
 - Generated session-start and session-stop now name where the manifest conversation language lives (`.repo-harness/manifest.json` `language.conversation`). Live Pi tests without extensions answered in English despite a Spanish manifest because neither skill said where to look; the precedence is unchanged (issue #488).
 
 - A standalone install's generated roadmap (EN/ES) no longer tells the agent to update the Engram topic `work/RH-W-####`; its lifecycle rule now names the repository continuity record keyed by `RH-W-####`, as the generated skills already did. Integrated roadmaps are unchanged. Existing installations keep their human-owned roadmap; no migration (issue #486).
