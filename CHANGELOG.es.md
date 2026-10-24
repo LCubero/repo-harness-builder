@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-24
+
+- Se volvió a probar `v3.1-rc.19` en Linux: 74 de 74 comprobaciones de instalación, suite completa de 721 pruebas `OK (skipped=7)` y seis instalaciones en vivo de Pi que nunca se detuvieron y cuyos conteos del plan coincidieron con los archivos en disco; las respuestas de sesión usaron el idioma del manifiesto. La llamada a Engram en standalone viene de la extensión Engram del host, no del harness. Solo documentación.
+
 ## 2026-10-23
 
 - Se publicó [`v3.1-rc.19`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.19) desde `c6b04e674d12b114b2cf49a1b53740c0a0d2dbcb` el 2026-10-24T00:21:23Z (18:21 hora local del host, UTC-6) por decisión del propietario, con los issues #486 y #488 (`claude-code` 275392 bytes, SHA-256 `5d52a8699f5ec1a75e87b52f0b092b8a0dfa9bb712ddf2abd435e8b64e50fc8f`; `opencode` 275476 bytes, SHA-256 `cc7d488ce0b7afef298a54694f2dc4acd3bd1c75bcaef50e7edc86b338ae273a`; `pi` 275224 bytes, SHA-256 `6fbf5c84af32f1bf65211baaf5fa95a790a2ebe9dd3a32cb18da6e151ab928b1`); los digests de GitHub coinciden y las instalaciones nuevas desde estos zips pasaron 74 de 74 comprobaciones.
