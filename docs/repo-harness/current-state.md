@@ -231,7 +231,7 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-**Current next step (2026-10-24, after the Linux retest):** `v3.1-rc.19` passed on Linux: 74 of 74 install checks from its zips, the full suite (721 tests, `OK (skipped=7)`), and six live Pi installs plus session-start, a small change, and session-stop, checked against transcripts, files on disk, and the checker. The three retained Linux observations are resolved in the [roadmap evidence](roadmap.md#linux-test-evidence--2026-10-1920). Live Claude Code/OpenCode and macOS remain unverified. Next: a stable release or another candidate is the owner's decision.
+**Current next step (2026-10-24, after the Linux retest):** `v3.1-rc.19` passed on Linux: 74 of 74 install checks from its zips, the full suite (721 tests, `OK (skipped=7)`), and live Pi installs covering every interview option and all seven profile combinations, an existing non-Git folder, and an rc.18 update, plus session-start, a small change, and session-stop, checked against transcripts, files on disk, and the checker. The three retained Linux observations are resolved in the [roadmap evidence](roadmap.md#linux-test-evidence--2026-10-1920). Live Claude Code/OpenCode and macOS remain unverified. Next: a stable release or another candidate is the owner's decision.
 
 **Previous next step (2026-10-23, after rc.19):** [`v3.1-rc.19`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.19) is published from `c6b04e6` by owner decision; fresh installs from its zips passed 74 of 74 checks. Next: retest `v3.1-rc.19` on Linux, especially the standalone Engram call, interview stalls, and the session reply language.
 

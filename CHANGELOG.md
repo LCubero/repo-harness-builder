@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-24
 
-- Retested `v3.1-rc.19` on Linux: 74 of 74 install checks, full suite 721 tests `OK (skipped=7)`, and six live Pi installs that never stalled and whose plan counts matched the files on disk; session replies used the manifest language. The standalone Engram call comes from the host's Engram extension, not from the harness. Documentation only.
+- Retested `v3.1-rc.19` on Linux: 74 of 74 install checks, full suite 721 tests `OK (skipped=7)`, and live Pi installs covering every interview option, all seven profile combinations, an existing non-Git folder, and an rc.18 update, which never stalled and whose plan counts matched the files on disk; session replies used the manifest language. The standalone Engram call comes from the host's Engram extension, not from the harness. Documentation only.
 
 ## 2026-10-23
 
