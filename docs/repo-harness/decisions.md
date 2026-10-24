@@ -80,6 +80,7 @@
 - **Owner-authorized standing documentation decision:** follow the [repository-owned stable-prefix rule](../../skill/repo-harness-builder/references/gentle-ai-style-guide.md#stable-prefixes) when composing prompts or instructions. This is documentation only: it claims neither runtime enforcement nor measured cache savings, and does not authorize a runtime experiment or new cache mechanism.
 - **Historical owner release decision (2026-10-10; superseded on 2026-10-11):** publish no further release-candidate pre-releases; `v3.1-rc.7` was then the last published candidate.
 - **Historical owner release decision (2026-10-11; superseded on 2026-10-11):** explicitly publish `v3.1-rc.8`, superseding the 2026-10-10 no-more-RC decision; `v3.1-rc.8` was then the last published candidate.
+- **Owner release decision (2026-10-24):** explicitly publish `v3.1-rc.20` for testing. Any later release, tag, version change, or publication remains a separate owner decision.
 - **Owner release decision (2026-10-11):** explicitly publish `v3.1-rc.9` for testing. Any later release, tag, version change, or publication remains a separate owner decision.
 - **Owner release decision (2026-10-11):** explicitly publish `v3.1-rc.10` for testing. Any later release, tag, version change, or publication remains a separate owner decision.
 - **Owner release decision (2026-10-13):** explicitly publish `v3.1-rc.13` with the manual-removal guide for testing. No actual removal test is authorized. Any later release, tag, version change, or publication remains a separate owner decision.
