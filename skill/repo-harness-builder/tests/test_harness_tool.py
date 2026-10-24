@@ -6877,6 +6877,40 @@ resume_authority: required
         )
         self.assertNotIn("over-budget", source, "check() must not regain an over-budget state")
 
+    def test_documented_post_apply_check_parses_and_keeps_the_mode(self):
+        """Execution Step 6 also prints the post-apply check. Without `--standalone` a standalone install is
+        compared against integrated output and reports false drift (issue #492: 9 of 10 live standalone installs)."""
+        repository = ROOT.parents[1]
+        skill = repository / "skill/repo-harness-builder/SKILL.md"
+        if not skill.is_file():
+            self.skipTest("builder skill source is outside the portable package")
+        printed = re.search(r"`scripts/harness_tool\.py (check [^`]+)`", skill.read_text(encoding="utf-8"))
+        self.assertIsNotNone(printed, "Execution Step 6 must print the post-apply check invocation")
+        form = re.sub(r"\[([^\]]+)\]", lambda group: group.group(1).split("|")[0].strip(), printed.group(1))
+        with tempfile.TemporaryDirectory() as directory:
+            argv = [{"ROOT": directory, "NAME": "demo"}.get(word, word) for word in form.split()]
+            captured = {}
+            real_parse = argparse.ArgumentParser.parse_args
+
+            class _Parsed(Exception):
+                """Stop before any side effect."""
+
+            def spy(parser, args=None, namespace=None):
+                captured["args"] = real_parse(parser, args, namespace)
+                raise _Parsed
+
+            try:
+                with mock.patch.object(argparse.ArgumentParser, "parse_args", spy):
+                    TOOL.main(argv)
+            except _Parsed:
+                pass
+            except SystemExit as refusal:
+                self.fail(f"the documented check does not parse: argparse exited {refusal.code}")
+        args = captured["args"]
+        self.assertEqual(args.command, "check")
+        self.assertTrue(args.project_name, "--project-name is required and must be printed")
+        self.assertTrue(args.standalone, "the check must carry --standalone for a standalone install")
+
     def test_documented_render_command_parses_and_keeps_every_interview_answer(self):
         """Execution Step 6 prints the command a first install runs; a form that cannot parse, or that
         drops a flag the interview exists to fill, breaks that install or silently installs the wrong harness."""
