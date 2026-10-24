@@ -1447,6 +1447,55 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                 self.assertIn("After the root check and the charter read (`docs/repo-harness/decisions.md`), before deeper owners", skill)
                 self.assertEqual(skill.count("read-preference --root <selected-repository-root>"), 1)
 
+    def test_fixed_preference_cli_manifest_fallback(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = root / ".repo-harness/manifest.json"
+            manifest.parent.mkdir()
+            preference = root / TOOL.PREFERENCE_PATH
+            preference.parent.mkdir(parents=True)
+            for manifest_text, fallback in (
+                (None, None),
+                ('{"language":{"conversation":"espanol"}}', "espanol"),
+                ('{"language":{"conversation":"francais"}}', None),
+                ('{"language":', None),
+                ('{"language":[]}', None),
+                ('[]', None),
+            ):
+                if manifest_text is not None:
+                    manifest.write_text(manifest_text, encoding="utf-8")
+                for preference_text, status in ((None, "absent"), ('{"conversationLanguage":"english","responseStructure":"adhd-friendly","explanationStyle":"plain-language"}', "valid"), ('{}', "invalid")):
+                    with self.subTest(manifest=manifest_text, preference=status):
+                        # Each absent case runs before any preference file is created.
+                        if preference_text is not None:
+                            preference.write_text(preference_text, encoding="utf-8")
+                        output = io.StringIO()
+                        with contextlib.redirect_stdout(output):
+                            code = TOOL.main(["read-preference", "--root", str(root)])
+                        expected = {"status": status, "conversationLanguage": None, "responseStructure": None, "explanationStyle": None, "source": None, "manifestConversationLanguage": fallback}
+                        if status == "valid":
+                            expected.update(json.loads(preference_text), source="persisted-explicit-preference")
+                        elif status == "invalid":
+                            expected["diagnostic"] = TOOL.PREFERENCE_DIAGNOSTIC
+                        self.assertEqual((code, json.loads(output.getvalue())), (2 if status == "invalid" else 0, expected))
+                preference.unlink()
+            manifest.write_text('{"language":{"conversation":"espanol"}}', encoding="utf-8")
+            original_indirect = TOOL.is_indirect
+            with mock.patch.object(TOOL, "is_indirect", side_effect=lambda path: path == manifest or original_indirect(path)):
+                self.assertEqual(TOOL.read_conversation_preference(root), {"status": "absent", "conversationLanguage": None, "responseStructure": None, "explanationStyle": None, "source": None, "manifestConversationLanguage": None})
+            with mock.patch.object(Path, "open", side_effect=PermissionError("private manifest bytes")):
+                self.assertEqual(TOOL.read_conversation_preference(root)["manifestConversationLanguage"], None)
+            manifest.unlink()
+            manifest.mkdir()
+            self.assertEqual(TOOL.read_conversation_preference(root)["manifestConversationLanguage"], None)
+
+    def test_generated_start_reports_manifest_fallback_field(self):
+        outputs = TOOL.render("Example", ["claude-code", "opencode", "pi"])
+        starts = [text for path, text in outputs.items() if path.endswith("session-start/SKILL.md")]
+        self.assertTrue(starts)
+        for text in starts:
+            self.assertIn("`manifestConversationLanguage` supplies the validated manifest fallback", text)
+
     def test_fixed_preference_cli_valid_absent_and_invalid_without_writes(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -1458,7 +1507,7 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                     code = TOOL.main(["read-preference", "--root", str(root)])
                 return code, json.loads(output.getvalue())
 
-            self.assertEqual(invoke(), (0, {"status": "absent", "conversationLanguage": None, "responseStructure": None, "explanationStyle": None, "source": None}))
+            self.assertEqual(invoke(), (0, {"status": "absent", "conversationLanguage": None, "responseStructure": None, "explanationStyle": None, "source": None, "manifestConversationLanguage": None}))
             target.parent.mkdir(parents=True)
             for text, expected in (
                 ('{"conversationLanguage":"espanol"}', "valid"),

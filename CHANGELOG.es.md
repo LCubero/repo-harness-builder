@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-25
+
+- `read-preference` ahora devuelve `manifestConversationLanguage`, el idioma de respaldo validado del manifest con lectura protegida, independientemente del estado de las preferencias. Corrige el caso de la prueba en vivo en Windows del 2026-10-25: OpenCode respondió en inglés al iniciar sesión 3 de 3 veces pese a un manifest `espanol` y sin archivo de preferencias.
+
 ## 2026-10-24
 
 - `harness_tool.py check` sin `--standalone` ahora compara contra el modo de integración registrado, como ya hacía con los idiomas, la licencia y los runtimes. En una auditoría de actualización en vivo con rc.20 el agente omitió la opción y le dijo al usuario que había archivos generados desactualizados. `render` no cambia: ahí omitir `--standalone` es un cambio de modo que se informa (issue #495).

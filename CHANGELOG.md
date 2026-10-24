@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-25
+
+- `read-preference` now returns `manifestConversationLanguage`, the guarded validated manifest fallback, independently of preference status. This fixes the 2026-10-25 Windows live test where OpenCode session-start replied in English 3 of 3 times despite an `espanol` manifest and no preference file.
+
 ## 2026-10-24
 
 - `harness_tool.py check` without `--standalone` now compares against the recorded integration mode, as it already does for languages, license, and runtimes. In a live rc.20 update audit the agent omitted the flag and told the user generated files were stale. `render` is unchanged: an omitted `--standalone` there is a reported mode change (issue #495).
