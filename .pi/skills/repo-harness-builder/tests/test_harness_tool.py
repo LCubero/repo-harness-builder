@@ -467,7 +467,7 @@ class FreshInstallDocumentationTests(unittest.TestCase):
                 start = outputs[".repo-harness/skills/repo-harness-session-start/SKILL.md"]
                 stop = outputs[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
                 self.assertIn(f"validated manifest fallback ({fallback}), then English", start)
-                self.assertIn(f"without a human instruction or persisted preference, use {fallback}, then English", stop)
+                self.assertIn(f"verified human instruction, persisted preference, eligible verified session language, then {fallback}, then English", stop)
                 self.assertLess(TOOL.token_proxy(start), 1000)
 
     def test_roadmap_lifecycle_mirror_follows_integration_mode(self):

@@ -2019,7 +2019,7 @@ Use when pausing or ending work in `{project_id}`. Invoke deliberately; this ski
 
 - Load and follow the canonical rulebook at `{rulebook_path}`, including its execution discipline. Report only repository-supported facts and observed command results.
 - {RESPONSE_CONTRACT_REFERENCE}
-- {continuity_rule} Preserve conversation-language precedence; without a human instruction or persisted preference, use `.repo-harness/manifest.json` `language.conversation`, then English. Keep generated artifacts in English unless requested, and keep ordinary handoff and continuation questions conversational.
+- {continuity_rule} Preserve conversation-language precedence: verified human instruction, persisted preference, eligible verified session language, then `.repo-harness/manifest.json` `language.conversation`, then English. Keep generated artifacts in English unless requested, and keep ordinary handoff and continuation questions conversational.
 - Batch activation and grouped answers expire with their objective on pause, close, completion, abandonment, or replacement. Never reuse them automatically or persist them in continuity or another store.
 - Commit, push, provider, external backup, and publication are separate optional gates. Commit approval never grants push authority; no coauthor or AI attribution is permitted.
 - Missing, unsafe, unowned, or unreadable required references stop the affected operation; never compensate by reading every reference.
