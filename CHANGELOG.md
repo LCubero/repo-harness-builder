@@ -4,12 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
-## 2026-10-25
-
-- `read-preference` now returns `manifestConversationLanguage`, the guarded validated manifest fallback, independently of preference status. This fixes the 2026-10-25 Windows live test where OpenCode session-start replied in English 3 of 3 times despite an `espanol` manifest and no preference file.
-
 ## 2026-10-24
 
+- Published [`v3.1-rc.21`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.21) from `320b84789940f622d609418e4d7c6ef82ca23087` on 2026-10-24T21:11:08Z (15:11 host-local, UTC-6) by delegated owner decision, carrying issues #495 and #498 (`claude-code` 276653 bytes, SHA-256 `9d434a6afd80f8063398fde16a6f1caf79aa4ebb4cf71f9270aacbab9da2057b`; `opencode` 276737 bytes, SHA-256 `3e632763c6ecad270bbd83078bb8727bef8a14033d82eebdf8ff749eac43144e`; `pi` 276485 bytes, SHA-256 `da0eb3fe2120a0422b29386a35174d458775c526ab0c0811d60e3fb63e5f050d`); GitHub digests match. Before publication, Windows live installs with Pi, Claude Code, and OpenCode passed and session-start replied in the manifest language in all three runtimes.
+- `read-preference` now returns `manifestConversationLanguage`, the guarded validated manifest fallback, independently of preference status. This fixes the 2026-10-24 Windows live test where OpenCode session-start replied in English 3 of 3 times despite an `espanol` manifest and no preference file.
 - `harness_tool.py check` without `--standalone` now compares against the recorded integration mode, as it already does for languages, license, and runtimes. In a live rc.20 update audit the agent omitted the flag and told the user generated files were stale. `render` is unchanged: an omitted `--standalone` there is a reported mode change (issue #495).
 - Published [`v3.1-rc.20`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.20) from `326b04557e6eb30fba23a5870220609179562c2a` on 2026-10-24T16:17:47Z (10:17 host-local, UTC-6) by owner decision, carrying issue #492 (`claude-code` 274717 bytes, SHA-256 `b19f329b7570e693934bb1baa02c520a36d9a6f9f1c6839a619610d7785a300f`; `opencode` 274797 bytes, SHA-256 `0b09ef0a2b8d7642b78de1aea95dae823980b94d2424cc1611642b4f72476127`; `pi` 274557 bytes, SHA-256 `06a54311223191081f880cdd04e941af640c1a801295195404db1b38a12807a4`); GitHub digests match, fresh installs from these zips passed 74 of 74 checks, and nine live Pi installs from the published Pi zip passed.
 - The builder's Execution Step 6 now prints the post-apply `check` with the same root, name, runtimes, and `--standalone` as apply. In 8 of 10 live standalone installs the agent first ran `check` without `--standalone` (9 of 10 at least once), saw false drift, and reran it (issue #492).
