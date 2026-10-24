@@ -13402,13 +13402,38 @@ class UpdateDefaultsRegressionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             self.install(root)
-            for command in ("render", "check"):
-                for flags, requested in (((), "integrated"), (("--standalone",), "standalone")):
-                    with self.subTest(command=command, requested=requested):
-                        report = self.cli(root, command, *flags)
-                        self.assertEqual(report["integrationModeSet"], {
-                            "recorded": "standalone", "requested": requested,
-                            "matches": requested == "standalone"})
+            for flags, requested in (((), "integrated"), (("--standalone",), "standalone")):
+                with self.subTest(command="render", requested=requested):
+                    report = self.cli(root, "render", *flags)
+                    self.assertEqual(report["integrationModeSet"], {
+                        "recorded": "standalone", "requested": requested,
+                        "matches": requested == "standalone"})
+
+    def test_check_without_standalone_uses_the_recorded_mode(self):
+        """Issue #495: an agent that forgets --standalone must not see a standalone install as drifted."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.install(root)
+            for flags in ((), ("--standalone",)):
+                with self.subTest(flags=flags):
+                    report = self.cli(root, "check", *flags)
+                    self.assertEqual(report["status"], "current")
+                    self.assertEqual(report["integrationModeSet"], {
+                        "recorded": "standalone", "requested": "standalone", "matches": True})
+
+    def test_check_on_integrated_or_unrecorded_install_still_compares_integrated(self):
+        """The recorded mode is only a default: an integrated install and a new folder keep integrated."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.assertEqual(self.cli(root, "check")["integrationModeSet"]["requested"], "integrated")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            plan = self.cli(root, "render", "--runtime", "pi")
+            self.cli(root, "render", "--runtime", "pi", "--apply", "--approved-plan-sha256", plan["planSha256"])
+            report = self.cli(root, "check")
+            self.assertEqual(report["status"], "current")
+            self.assertEqual(report["integrationModeSet"], {
+                "recorded": "integrated", "requested": "integrated", "matches": True})
 
     def test_mode_report_tolerates_absent_and_malformed_records(self):
         with tempfile.TemporaryDirectory() as directory:
