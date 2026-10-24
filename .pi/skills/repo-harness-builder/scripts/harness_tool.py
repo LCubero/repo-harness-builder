@@ -5905,7 +5905,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         child.add_argument("--root", type=Path, required=True)
         child.add_argument("--project-name", required=True)
         child.add_argument("--runtime", action="append", choices=sorted(RUNTIMES), default=[], help="runtime profile; repeat the flag to select several, omit it to use recorded runtimes, or core only for a new installation")
-        child.add_argument("--standalone", action="store_true", help="generate repository-only continuity without Gentle AI or Engram")
+        child.add_argument("--standalone", action="store_true", help="generate repository-only continuity without Gentle AI or Engram" if name == "render" else "compare against repository-only continuity; omit it to use the recorded mode")
         if name == "render":
             child.add_argument("--license", dest="license_id", help="SPDX identifier for generated skills; defaults to MIT for a new installation")
             child.add_argument("--contribution-guide", action="store_true", help="Propose a brief human-owned guide only when no recognized guide exists")
@@ -5969,7 +5969,10 @@ def main(argv: Optional[list[str]] = None) -> int:
         selected = args.runtime or (recorded_runtimes(root) or [])
         git_state = inspect_git_state(root)
         if args.command == "check":
-            print(dump_json({**check(root, args.project_name, selected, args.standalone), "gitState": git_state}), end="")
+            # Like languages, license, and runtimes, an omitted mode is the recorded one: checking a
+            # standalone install against integrated output reports drift that does not exist.
+            standalone = args.standalone or integration_mode_set_report(root, False)["recorded"] == "standalone"
+            print(dump_json({**check(root, args.project_name, selected, standalone), "gitState": git_state}), end="")
             return 0
         capability_preflight: dict[str, Any] = {}
         args.effective_capabilities = {"gentleAi": "disabled", "engram": "disabled"}

@@ -4,6 +4,7 @@
 
 ## 2026-10-24
 
+- `harness_tool.py check` sin `--standalone` ahora compara contra el modo de integración registrado, como ya hacía con los idiomas, la licencia y los runtimes. En una auditoría de actualización en vivo con rc.20 el agente omitió la opción y le dijo al usuario que había archivos generados desactualizados. `render` no cambia: ahí omitir `--standalone` es un cambio de modo que se informa (issue #495).
 - El paso 6 de ejecución del builder ahora muestra el `check` posterior al apply con la misma raíz, nombre, runtimes y `--standalone` que el apply. En 9 de 10 instalaciones standalone en vivo, el agente corrió primero `check` sin `--standalone`, vio un falso desfase y lo repitió (issue #492).
 - Se volvió a probar `v3.1-rc.19` en Linux: 74 de 74 comprobaciones de instalación, suite completa de 721 pruebas `OK (skipped=7)` e instalaciones en vivo de Pi que cubren cada opción de la entrevista, las siete combinaciones de perfiles, una carpeta existente sin Git y una actualización desde rc.18, que nunca se detuvieron y cuyos conteos del plan coincidieron con los archivos en disco; las respuestas de sesión usaron el idioma del manifiesto. La llamada a Engram en standalone viene de la extensión Engram del host, no del harness. Solo documentación.
 
