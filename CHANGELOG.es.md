@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-25
+
+- Se volvieron a probar en Linux los zips publicados de `v3.1-rc.21`: los zips descargados de nuevo son idénticos byte a byte a la etiqueta; la suite completa pasó 726 tests `OK (skipped=7)`; pasaron 82 de 82 comprobaciones de instalación; nueve instalaciones en vivo de Pi que cubren cada opción de la entrevista y una actualización de rc.20 a rc.21 dieron `current`; y el inicio de sesión, un cambio, el cierre de sesión y el inicio de sesión siguiente pasaron en vivo con Pi (standalone e integrado), Claude Code 2.1.310 y OpenCode v2.1.4 (standalone; las primeras ejecuciones en vivo de Claude Code y OpenCode en Linux). OpenCode respondió en inglés en uno de dos inicios de sesión pese al idioma del manifest; el roadmap lo conserva como observación. Solo documentación.
+
 ## 2026-10-24
 
 - Se volvieron a probar en vivo en Windows los zips publicados de `v3.1-rc.21`: las instalaciones integradas nuevas con Pi, Claude Code y OpenCode y una actualización de OpenCode de rc.20 a rc.21 dieron `current`, y el inicio de sesión, un cambio en el README y el cierre de sesión pasaron en los tres runtimes (el primer cierre de sesión en vivo en Claude Code y OpenCode), respondiendo en el idioma del manifest y recuperando el respaldo local en la sesión siguiente.
