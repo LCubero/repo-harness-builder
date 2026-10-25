@@ -4,6 +4,7 @@
 
 ## 2026-10-25
 
+- Tres inicios de sesión más de OpenCode v2.1.4 en Linux elevaron las respuestas en inglés a dos de cinco pese al idioma del manifest; el orden de los eventos descarta la precedencia de `reconciliation.md` como causa, así que el roadmap lo conserva ahora como límite de ese modelo, sin cambio de código. Solo documentación.
 - Se volvieron a probar en Linux los zips publicados de `v3.1-rc.21`: los zips descargados de nuevo son idénticos byte a byte a la etiqueta; la suite completa pasó 726 tests `OK (skipped=7)`; pasaron 82 de 82 comprobaciones de instalación; nueve instalaciones en vivo de Pi que cubren cada opción de la entrevista y una actualización de rc.20 a rc.21 dieron `current`; y el inicio de sesión, un cambio, el cierre de sesión y el inicio de sesión siguiente pasaron en vivo con Pi (standalone e integrado), Claude Code 2.1.310 y OpenCode v2.1.4 (standalone; las primeras ejecuciones en vivo de Claude Code y OpenCode en Linux). OpenCode respondió en inglés en uno de dos inicios de sesión pese al idioma del manifest; el roadmap lo conserva como observación. Solo documentación.
 
 ## 2026-10-24
