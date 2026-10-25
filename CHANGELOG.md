@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-25
+
+- Retested the published `v3.1-rc.21` zips on Linux: the re-downloaded zips are byte-identical to the tag; the full suite passed 726 tests `OK (skipped=7)`; 82 of 82 install checks passed; nine live Pi installs covering every interview option and an rc.20 -> rc.21 update checked `current`; and session-start, a change, session-stop, and the next session-start passed live with Pi (standalone and integrated), Claude Code 2.1.310, and OpenCode v2.1.4 (standalone; the first live Claude Code and OpenCode runs on Linux). OpenCode replied in English in one of two session-starts despite the manifest language; the roadmap retains it as an observation. Documentation only.
+
 ## 2026-10-24
 
 - Retested the published `v3.1-rc.21` zips live on Windows: fresh integrated installs with Pi, Claude Code, and OpenCode and an OpenCode rc.20 -> rc.21 update checked `current`, and session-start, a README change, and session-stop passed in all three runtimes (the first live session-stop in Claude Code and OpenCode), replying in the manifest language and recovering the local backup in the next session.
