@@ -42,7 +42,6 @@
 .claude/skills/repo-harness-builder/assets/validation-report.template.md text eol=lf
 .claude/skills/repo-harness-builder/references/architecture.md text eol=lf
 .claude/skills/repo-harness-builder/references/audit-and-interview.md text eol=lf
-.claude/skills/repo-harness-builder/references/gentle-ai-style-guide.md text eol=lf
 .claude/skills/repo-harness-builder/references/license-selection.md text eol=lf
 .claude/skills/repo-harness-builder/references/preservation-and-safety.md text eol=lf
 .claude/skills/repo-harness-builder/references/validation.md text eol=lf
@@ -55,7 +54,6 @@
 .opencode/skills/repo-harness-builder/assets/validation-report.template.md text eol=lf
 .opencode/skills/repo-harness-builder/references/architecture.md text eol=lf
 .opencode/skills/repo-harness-builder/references/audit-and-interview.md text eol=lf
-.opencode/skills/repo-harness-builder/references/gentle-ai-style-guide.md text eol=lf
 .opencode/skills/repo-harness-builder/references/license-selection.md text eol=lf
 .opencode/skills/repo-harness-builder/references/preservation-and-safety.md text eol=lf
 .opencode/skills/repo-harness-builder/references/validation.md text eol=lf
@@ -68,7 +66,6 @@
 .pi/skills/repo-harness-builder/assets/validation-report.template.md text eol=lf
 .pi/skills/repo-harness-builder/references/architecture.md text eol=lf
 .pi/skills/repo-harness-builder/references/audit-and-interview.md text eol=lf
-.pi/skills/repo-harness-builder/references/gentle-ai-style-guide.md text eol=lf
 .pi/skills/repo-harness-builder/references/license-selection.md text eol=lf
 .pi/skills/repo-harness-builder/references/preservation-and-safety.md text eol=lf
 .pi/skills/repo-harness-builder/references/validation.md text eol=lf
@@ -102,3 +99,6 @@
 .repo-harness/skills/repo-harness-session-stop/references/checkpoint.md text eol=lf
 .repo-harness/skills/repo-harness-session-stop/references/git-commit.md text eol=lf
 .repo-harness/skills/repo-harness-session-stop/references/git-transport.md text eol=lf
+.claude/skills/repo-harness-builder/references/skill-style-guide.md text eol=lf
+.opencode/skills/repo-harness-builder/references/skill-style-guide.md text eol=lf
+.pi/skills/repo-harness-builder/references/skill-style-guide.md text eol=lf

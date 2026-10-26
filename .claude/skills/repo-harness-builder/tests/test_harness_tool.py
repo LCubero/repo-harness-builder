@@ -1241,7 +1241,7 @@ class ApprovalUxTests(unittest.TestCase):
             ("architecture.md", "Runtime/capability selection or architecture question"),
             ("preservation-and-safety.md", "Classify existing paths, plan, or apply"),
             ("validation.md", "Validate behavior, report limitations"),
-            ("gentle-ai-style-guide.md", "Edit generated-skill style"),
+            ("skill-style-guide.md", "Edit generated-skill style"),
             ("license-selection.md", "Choose a license only when none is declared"),
             ("authority-correction.md", "Correct authority premises or inspect transport"),
         ):

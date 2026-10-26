@@ -34,7 +34,7 @@ Optional arguments may name a report language, target repository, or constraints
 | Choose a license only when none is declared | `references/license-selection.md` |
 | Correct authority premises or inspect transport | `references/authority-correction.md` |
 | Validate behavior, report limitations | `references/validation.md` |
-| Edit generated-skill style | `references/gentle-ai-style-guide.md` |
+| Edit generated-skill style | `references/skill-style-guide.md` |
 
 ## Execution Steps
 

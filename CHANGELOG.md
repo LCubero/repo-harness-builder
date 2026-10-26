@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-26
 
+- Replaced the bundled skill-rules summary `references/gentle-ai-style-guide.md` with the owner's complete skill style guide, renamed to `references/skill-style-guide.md`, adding a Repository Profile that keeps the builder's budget rule, the recorded `Trigger:` and preference-reader exceptions, and the Stable Prefixes rule (issue #528).
+
 - Reworded the EN/ES README daily-use documentation step: just ask for documentation work, and the agent uses the `repo-harness-documentation` skill, which never runs on its own (issue #526).
 
 - Added a brief EN/ES README section listing what users can ask the harness: time zone, language and reply style, more detail, batch mode, safe sync, commit or push, documentation updates, pause or close, help, audit or update, and manual removal (issue #522).

@@ -2,7 +2,7 @@
 
 ## Contrato de revision
 
-Revisar este diseno contra el [registro canonico RH-W-0013](../../repo-harness/roadmap.md#rh-w-0013), el [Plan 16](../../repo-harness/roadmap.md#plan-16-rh-w-0013-measured-context-budgets), la [guia de estilo Gentle AI](../../../skill/repo-harness-builder/references/gentle-ai-style-guide.md), que permanece inmutable, y el comportamiento actual del generador y del checker. Debe conservar equivalencia semantica con el [diseno en ingles](../../repo-harness/rh-w-0013-design.md).
+Revisar este diseno contra el [registro canonico RH-W-0013](../../repo-harness/roadmap.md#rh-w-0013), el [Plan 16](../../repo-harness/roadmap.md#plan-16-rh-w-0013-measured-context-budgets), la [guia de estilo de skills](../../../skill/repo-harness-builder/references/skill-style-guide.md), que permanece inmutable, y el comportamiento actual del generador y del checker. Debe conservar equivalencia semantica con el [diseno en ingles](../../repo-harness/rh-w-0013-design.md).
 
 El estado es `ready`. Este documento no aprueba implementacion, otra transicion de ciclo de vida, commit, publicacion ni acceso externo.
 
