@@ -53,8 +53,13 @@ Ask your agent to use each skill when needed. Session notes stay local under `.r
 
 You can run the builder again later for an optional audit or update; see the builder guide below.
 
+- [Agent installation entry](llms.txt): technical instructions for agents helping install the harness.
 - [Builder guide](docs/repo-harness/builder-guide.md): generated files, language choices, safe upgrades, and development.
 - [Usage guide](docs/repo-harness/usage.md): working with the installed harness.
 - [CONTRIBUTING.md](CONTRIBUTING.md): contributing to this project.
 - [Changelog](CHANGELOG.md): completed changes.
 - [MIT License](LICENSE).
+
+<a href="https://github.com/Gentleman-Programming/gentle-ai">
+  <img width="220" src="https://raw.githubusercontent.com/Gentleman-Programming/gentle-ai/main/docs/assets/brand/built-with-gentle-ai.png" alt="Built with Gentle-AI" />
+</a>
