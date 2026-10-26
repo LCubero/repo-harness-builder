@@ -69,6 +69,23 @@ You choose how the agent answers:
 
 Ask for a mode during a session, or ask the agent to save it for future sessions. It never guesses or saves preferences on its own. See [response preferences](docs/repo-harness/usage.md#response-preferences).
 
+## What You Can Ask
+<!-- doc-role:requests -->
+
+Ask in your own words; no exact phrase is needed.
+
+- **Time zone:** say which one to use (for example, `America/Costa_Rica`). Changelog dates, backups, and reports use it; otherwise local computer time, never UTC. To keep it for future sessions, ask to record it as a decision.
+- **Language and reply style:** change them for this session, or ask to save them.
+- **More detail:** ask for it at any time; your reply style stays the same.
+- **Batch mode:** name one bounded task and ask for batch mode. The agent groups its open questions once, then works without asking per file. Approvals are still asked one at a time.
+- **Safe sync:** ask to sync safely. The agent fetches and updates only when no merge or conflict is needed.
+- **Commit or push:** ask for a commit, a push, or both when you stop. The agent shows the exact files and message first.
+- **Documentation update:** ask to update the project docs after important changes.
+- **Pause or finish:** ask to pause or close the session; the next session resumes from that handoff.
+- **Help:** run `repo-harness-help` for a short guide.
+- **Audit or update the harness:** run the builder again.
+- **Remove the harness:** ask for the [manual removal steps](docs/repo-harness/usage.md#removing-the-harness-manually); there is no automatic uninstaller.
+
 ## Learn More
 <!-- doc-role:license -->
 

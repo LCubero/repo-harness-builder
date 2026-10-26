@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-27
+
+- Added a brief EN/ES README section listing what users can ask the harness: time zone, language and reply style, more detail, batch mode, safe sync, commit or push, documentation updates, pause or close, help, audit or update, and manual removal (issue #522).
+
 ## 2026-10-26
 
 - Removed the historical agent-continuity research comparison of other agent projects and its documentation-map rows, so documentation covers only repo-harness-builder (issue #520).
