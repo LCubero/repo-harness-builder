@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-26
 
+- Reworded the EN/ES README daily-use documentation step: just ask for documentation work, and the agent uses the `repo-harness-documentation` skill, which never runs on its own (issue #526).
+
 - Added a brief EN/ES README section listing what users can ask the harness: time zone, language and reply style, more detail, batch mode, safe sync, commit or push, documentation updates, pause or close, help, audit or update, and manual removal (issue #522).
 
 - Removed the historical agent-continuity research comparison of other agent projects and its documentation-map rows, so documentation covers only repo-harness-builder (issue #520).

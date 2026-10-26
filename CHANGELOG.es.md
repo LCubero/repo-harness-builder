@@ -4,6 +4,8 @@
 
 ## 2026-10-26
 
+- Se reescribió el paso de documentación del uso diario en el README EN/ES: basta con pedir el trabajo de documentación, y el agente usa la skill `repo-harness-documentation`, que nunca se activa por sí sola (issue #526).
+
 - Se agregó una sección breve al README EN/ES con lo que se le puede pedir al harness: zona horaria, idioma y estilo de respuesta, más detalle, modo por lotes, sincronización segura, commit o push, actualizar la documentación, pausar o cerrar, ayuda, revisar o actualizar y retiro manual (issue #522).
 
 - Se eliminó la comparación histórica de investigación sobre continuidad de otros proyectos de agentes y sus filas en el mapa de documentación, para que la documentación trate solo de repo-harness-builder (issue #520).

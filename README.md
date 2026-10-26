@@ -53,7 +53,7 @@ Requires Python 3.10+ and your runtime already installed; if a destination alrea
 
 1. Start or resume with `repo-harness-session-start`.
 2. Work normally: ask the agent to do your task.
-3. When important project facts change, use `repo-harness-documentation` to keep project docs current.
+3. When you need documentation created or updated, just ask. The agent uses the `repo-harness-documentation` skill for that work; it never runs on its own.
 4. When pausing or finishing, use `repo-harness-session-stop` to leave context for the next session.
 
 Ask your agent to use each skill when needed. Session notes stay local under `.repo-harness/memory-bk/`; optional Engram memory never overrides repository files. See the [usage guide](docs/repo-harness/usage.md) for details.
