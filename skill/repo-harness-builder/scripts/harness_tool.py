@@ -1571,7 +1571,7 @@ Use this exact read-only order before any deeper owner read:
 1. Validate the selected repository root.
 2. Read the bounded charter pointer in `docs/repo-harness/decisions.md`; the charter pointer is bounded input and is never copied as policy.
 3. Resolve verified conversation language plus active stable preferences or continuing constraints from their existing owners. For conversation language, run the existing fixed reader exactly once after steps 1 and 2 and before deeper owner reads: use the installed builder skill script belonging to the actual active runtime, not whichever copies happen to exist on disk. Claude: `.claude/skills/repo-harness-builder/scripts/harness_tool.py`; OpenCode: `.opencode/skills/repo-harness-builder/scripts/harness_tool.py`; Pi: `.pi/skills/repo-harness-builder/scripts/harness_tool.py`. Execute `python <active-runtime-script> read-preference --root <selected-repository-root>` (use `python3` where required), with the validated selected root as the argument; do not read the preference JSON directly or invoke another runtime's script. Parse only the typed JSON result: `valid` supplies optional `conversationLanguage`, `responseStructure`, and `explanationStyle` plus `source` as persisted explicit preferences. `manifestConversationLanguage` supplies the validated manifest fallback. Pass response axes to the response contract as persisted explicit preferences; `absent` supplies no preference; `invalid` supplies no preference and requires a bounded diagnostic without raw preference bytes; the reader returns exit code 2 with this typed result. Any other nonzero exit, missing script, unavailable interpreter, or unusable result is `unavailable`: report that continuity could not be read, never claim success, and continue without persisted evidence. Do not retry, repair, or write. Resolve conversation-language precedence as verified current human instruction, valid persisted preference, eligible verified session language when no preference exists, validated manifest fallback, then English. In a flattened host without reliable switch provenance, do not claim session-language switch detection. Never infer a preference or constraint from absent, invalid, or unavailable evidence.
-4. First resolve `.repo-harness/memory-bk/` through the guarded root. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree. Read `Where We Left Off` from the newest valid RH-W-0069 backup.
+4. First resolve `.repo-harness/memory-bk/` through the guarded root. Inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree. New names: `YYYYMMDDTHHMMSS±HHMM-<pause|close>-<short-session-id>.md`, with RFC 3339 `timestamp` using the same offset (user-set time zone, otherwise host-local). Legacy `YYYYMMDDTHHMMSSZ-...` / `timestamp_utc` backups stay valid; never rename or migrate them. Choose newest by instant (`Z` = UTC), not filename order. Read `Where We Left Off` from the newest valid RH-W-0069 backup.
 5. Read deeper current owners only when one named trigger requires them.
 
 - An old valid backup without `Where We Left Off` falls back to RH-W-0069 detailed continuity without synthesizing fields.
@@ -1600,6 +1600,7 @@ Use this exact read-only order before any deeper owner read:
 
 - Complete the native repository-first continuity recovery first. Check only the exact `.repo-harness/state/checkpoints/active.md` path. Absence is `not_found`, not failure.
 - Reject non-regular, indirect, escaping, malformed, or project-mismatched input without following links.
+- Read `created_at` as RFC 3339 with user-set or host-local offset. Legacy `created_at_utc` stays readable; never migrate it.
 - Compare every material checkpoint claim with applicable current repository, Git, checker, lifecycle, and decision evidence. Current repository evidence wins over a checkpoint.
 - Classify the checkpoint as `usable`, `stale`, `contradictory`, `expired`, or `invalid`, and report the bounded reason. `usable` means only that the checkpoint can inform a resume proposal. `stale` means newer evidence exists and wins. `contradictory` means material claims disagree and current owners do not resolve the operational meaning. `invalid` covers unsafe path or schema failure.
 - Treat a checkpoint as logically expired when its objective completed, was abandoned, or was superseded; its project identity no longer matches; current evidence contradicts a material premise or shows the step settled; its lifecycle owner no longer permits the intent; or its path or structure is invalid. Age alone is advisory and never proves expiry.
@@ -1774,7 +1775,7 @@ For every deliberate pause or close, use this exact local-first order:
 2. Apply `.repo-harness/rules/memory.md`: build the structured session summary; determine `Next Action`, `Pending Work`, and `Current Blocker` in that order; then place the exact frontmatter-preserving resume block before detailed continuity.
 3. Apply the shared privacy filter.
 4. Guard the selected root, then resolve `.repo-harness/memory-bk/` through it. Create only that direct directory lazily; reject links, indirect paths, and cross-root resolution.
-5. Then create `YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` exclusively. Never overwrite an existing backup.
+5. Then create `YYYYMMDDTHHMMSS±HHMM-<pause|close>-<short-session-id>.md` exclusively. Use `timestamp` (RFC 3339) with the same offset as the filename, from the user-set time zone, otherwise host-local. Never overwrite an existing backup. Legacy `YYYYMMDDTHHMMSSZ-...` / `timestamp_utc` backups stay valid; never rename or migrate them. Choose newest by instant (`Z` = UTC), not filename order.
 6. Reopen the backup and verify its frontmatter and required headings.
 {external_backup_steps}
 
@@ -1794,7 +1795,7 @@ For every deliberate pause or close, use this exact local-first order:
 schema_version: 1
 project: <stable repository project id>
 checkpoint_id: <bounded lowercase ASCII id>
-created_at_utc: <RFC 3339 UTC timestamp>
+created_at: <RFC 3339 timestamp with user-set or host-local offset>
 objective: <one-line non-sensitive objective>
 step_state: not_started | started_unverified | failed
 resume_authority: required
@@ -1811,6 +1812,7 @@ resume_authority: required
 ## Relevant Files
 ```
 
+- Legacy `created_at_utc` stays readable; never migrate it.
 - Empty sections contain `None.`. Record only current-evidence-supported completed facts, one interrupted action with bounded observed evidence, remaining intent rather than an authorization promise, supported inferences with their evidence and verification condition, and repository-relative regular paths.
 - Exclude secrets, credentials, tokens, cookies, private keys, connection strings, environment values, provider payloads, absolute paths, personal data, source excerpts, diffs, logs, stack traces, and test output. Omit unsafe detail as `unknown or unverifiable` rather than fabricating it.
 - Inspect the current regular-file bytes before replacement. Use a safe same-directory replacement that preserves the old file on failure. Structurally read back the replacement before reporting success.
@@ -1980,8 +1982,8 @@ Use at the start or resumption of work in `{project_id}`. Invoke deliberately; t
 - After the root check and the charter read (`docs/repo-harness/decisions.md`), before deeper owners, run exactly once `python <active-runtime-script> read-preference --root <selected-repository-root>` (use `python3` where required) using only the active runtime's fixed reader: Claude: `.claude/skills/repo-harness-builder/scripts/harness_tool.py`; OpenCode: `.opencode/skills/repo-harness-builder/scripts/harness_tool.py`; Pi: `.pi/skills/repo-harness-builder/scripts/harness_tool.py`. Parse only typed JSON: `valid` supplies optional `conversationLanguage`, `responseStructure`, and `explanationStyle` plus `source`. `manifestConversationLanguage` supplies the validated manifest fallback. Pass response axes to the response contract as persisted explicit preferences; `absent` supplies no preference; `invalid` supplies no preference and only a bounded diagnostic, never raw preference bytes; its exit code is 2. Any other nonzero exit, missing script, unavailable interpreter, or unusable result is `unavailable`; report unreadable continuity and continue without persisted evidence. Do not retry, repair, write, read preference JSON directly, or invoke another runtime's script.
 - Immediately use the resolved conversation language for all user-facing prose, including progress; preserve exact machine-significant bytes and keep artifact language separate. Verified human instructions and higher-priority host instructions take precedence; wrapper or command text alone does not switch languages. A generic host rule to answer in the user's language does not make generated wrapper or command text a language requirement; apply the resolved conversation language unless a higher-priority host instruction names a specific language.
 - Startup is read-only by default. Only explicit current consent to safely synchronize the identified upstream permits bounded fetch and fast-forward-only integration; never pull, commit, push, publish, rebase, reset, force, merge on divergence, resolve conflicts, auto-continue, or reuse checkpoint approval.
-- First resolve `.repo-harness/memory-bk/` through the guarded root; inspect only direct regular `.md` files, reject links and indirect paths, and accept the newest valid backup only when its filename and frontmatter agree. Absent directory or empty history is `not_found`, not failure; reject and report malformed, unsafe, indirect, or contradictory candidates without repair. Read at most one older backup, and only for `newest_invalid`, `objective_names_backup`, `conflict_needs_chronology`, or `newest_lacks_relevant_continuity`.
-- Before deeper owner reads, perform native recovery in order: validate root, read bounded charter (`docs/repo-harness/decisions.md`; absent is `not_found`, not failure), resolve preference using the one fixed reader exactly once, then the newest valid local backup. Discover only the exact active checkpoint path afterward; load its contract before interpreting or proposing resume. Missing, unsafe, unowned, or unreadable required references stop the affected operation.
+- First resolve `.repo-harness/memory-bk/` through the guarded root; inspect only direct regular `.md` files, reject links and indirect paths; accept the newest valid backup only when its filename and frontmatter agree. New `YYYYMMDDTHHMMSS±HHMM-<pause|close>-<short-session-id>.md`: RFC 3339 `timestamp`, same offset. Legacy `YYYYMMDDTHHMMSSZ-...` / `timestamp_utc` backups stay valid; never rename or migrate. Choose newest by instant (`Z` = UTC). Absent directory or empty history is `not_found`, not failure; reject and report malformed, unsafe, indirect, or contradictory candidates without repair. Read at most one older backup, and only for `newest_invalid`, `objective_names_backup`, `conflict_needs_chronology`, or `newest_lacks_relevant_continuity`.
+- Before deeper owner reads, recover in order: root → bounded charter (`docs/repo-harness/decisions.md`; absent is `not_found`) → fixed preference reader → newest valid backup → exact checkpoint discovery. Load its contract before interpretation/resume. Missing, unsafe, unowned, or unreadable required references stop the affected operation.
 - Preserve language precedence: verified human instruction, valid persisted preference, eligible verified session language, validated manifest fallback (`.repo-harness/manifest.json` `language.conversation`), then English. Do not infer from absent, invalid, or unavailable data.
 
 ## Conditional Reference Index
@@ -2021,6 +2023,7 @@ Use when pausing or ending work in `{project_id}`. Invoke deliberately; this ski
 - {RESPONSE_CONTRACT_REFERENCE}
 - {continuity_rule} Preserve conversation-language precedence: verified human instruction, persisted preference, eligible verified session language, then `.repo-harness/manifest.json` `language.conversation`, then English. Keep generated artifacts in English unless requested, and keep ordinary handoff and continuation questions conversational.
 - Batch activation and grouped answers expire with their objective on pause, close, completion, abandonment, or replacement. Never reuse them automatically or persist them in continuity or another store.
+- Date `CHANGELOG.md` entries by the completed change's day in the user-set time zone (conversation or recorded decision), otherwise host-local; never UTC. Convert the exact change's Git commit timestamp if known; never copy a UTC backup date. Ask once if the change date is unavailable or ambiguous.
 - Commit, push, provider, external backup, and publication are separate optional gates. Commit approval never grants push authority; no coauthor or AI attribution is permitted.
 - Missing, unsafe, unowned, or unreadable required references stop the affected operation; never compensate by reading every reference.
 
@@ -2210,14 +2213,15 @@ def rule_outputs(rulebook_path: str, standalone: bool) -> dict[str, str]:
     native_memory_contract = f"""## Native Backup Contract
 
 - Local backup is required in every mode. {native_external_contract} Sources report independent outcomes.
-- Exclusively write direct `.repo-harness/memory-bk/YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md`. Its exact frontmatter keys are `project`, `timestamp_utc`, `source`, and `session_id`.
-- New backups preserve frontmatter. Body: `# Session Continuity`; `## Where We Left Off`; `### Next Action`; `### Pending Work`; `### Current Blocker`; `## Goal`; `## Instructions`; `## Discoveries`; `## Accomplished`; `## Next Steps`; `## Relevant Files`. Detail: Goal, Instructions, Discoveries, Accomplished, Next Steps, and Relevant Files. Empty resume fields and detailed sections use `None.`; Empty sections use `None.`; relevant files use repository-relative paths only.
+- Exclusively write `.repo-harness/memory-bk/YYYYMMDDTHHMMSS±HHMM-<pause|close>-<short-session-id>.md`. Its exact frontmatter keys are `project`, `timestamp`, `source`, and `session_id`. RFC 3339 `timestamp`: same offset as filename.
+- Legacy `YYYYMMDDTHHMMSSZ-...` / `timestamp_utc` stay valid; never rename or migrate. Choose newest by instant (`Z` = UTC).
+- Preserve frontmatter. Body: `# Session Continuity`; `## Where We Left Off`; `### Next Action`; `### Pending Work`; `### Current Blocker`; `## Goal`; `## Instructions`; `## Discoveries`; `## Accomplished`; `## Next Steps`; `## Relevant Files`. Detail: Goal, Instructions, Discoveries, Accomplished, Next Steps, and Relevant Files. Empty resume fields and detailed sections use `None.`; Empty sections use `None.`; relevant files use repository-relative paths only.
 - Existing valid backups without `Where We Left Off` remain readable through detailed continuity and never gain synthesized, migrated, rewritten, or backfilled fields.
-{native_owner_contract}- Applicable claims carry one inline classification: `verified fact`, `supported inference`, `unknown or unverifiable`, or `human decision required`.
+{native_owner_contract}- Classify claims inline: `verified fact`, `supported inference`, `unknown or unverifiable`, or `human decision required`.
 - Verify recalled claims in authority order: source and tests; roadmap; current state; decisions; changelog; Git and checker; {continuity_evidence_tail}.
 - Omit from both destinations: credentials, tokens, passwords, private keys, cookies, connection strings; raw environment values and provider payloads; outside-root absolute paths; copied source, diffs, logs, stack traces, generated bytes, and test output; sensitive personal data; approval or consent tokens, checkpoint bytes, copied lifecycle records, receipts, or pending delivery state. `Accomplished` may name completed outcomes with their public references, such as an issue or pull-request number. Report bounded privacy reduction.
 - Omit external private repository names and locations absent current-owner-approved stable alias; exclude private name, absolute location, remote URL, or sibling path.
-- Built-in runtime memory is ignored and never required. No generic memory API, database, encryption subsystem, daemon, scheduler, background service, synchronization engine, retention cleanup, or separate conflict-state persistence is introduced.
+- Ignore built-in runtime memory. No memory API, database, encryption, daemon, scheduler, service, sync engine, retention cleanup, or separate conflict-state persistence.
 """
     if standalone:
         memory = f"""# Repository Continuity
@@ -2251,7 +2255,7 @@ Load when: saving or recalling across sessions with Engram.
 
 - Engram optional, independent of Gentle AI; repository evidence remains authoritative; block only operation/policy-required continuity.
 - Resolve explicit repository project scope; ambiguity: zero reads/writes.
-- Each operation reports its own outcome. This is per-operation accounting, not mandatory startup display: startup omits unchanged success but always surfaces failures and task-relevant results; stop preserves saves. Never fabricate an aggregate Engram status or collapse success because another failed.
+- Each operation reports its own outcome; per-operation accounting, not mandatory startup display: startup omits unchanged success but always surfaces failures and task-relevant results; stop preserves saves. Never fabricate an aggregate Engram status or collapse success because another failed.
 - Surface Engram failures from recovery/saving; never claim successful continuity; reconcile claims against files before acting.
 - Accept an empty exact-topic or exact-subject result only as a validated empty from successful same-surface evidence or a same-surface positive control.
 - Treat `judgment_required`, `needs_review`, and review-age/conflict hints as advisory metadata until current repository owners verify the claim.
@@ -2275,7 +2279,8 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 - No overengineering: no unnecessary tool, layer, abstraction, config surface, or process.
 - Solve real current problems, not hypothetical future ones. Delete unused scaffolding.
 - Before heavy work, split it and set a time limit. Parallel work is fine when the number of concurrent jobs is bounded. If saturation risk cannot be bounded, warn and ask.
-- Put temporary files in `.repo-harness/tmp/`; use the system temp only when that fails or a task needs a location outside Git.
+- Put temporary files in `.repo-harness/tmp/`; leave the working folder only when strictly necessary and explicitly approved.
+- Every date or time the harness writes or shows (changelogs, documents, backups, checkpoints, reports) uses the user-set time zone (conversation or recorded decision), otherwise host-local; never UTC.
 
 ## Stopping
 

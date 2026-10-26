@@ -590,6 +590,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0131
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Corrección del propietario del 2026-10-25 tras rc.21: un cierre ordinario fechó el historial por UTC y el constructor usó temporales del sistema (issue #504). |
+| Prioridad | P2: las fechas generadas deben seguir el día del usuario y los temporales deben quedarse en la carpeta de trabajo. |
+| Dependencias | none |
+| Estado | completed |
+| Trabajo completado | Toda fecha/hora del harness generado usa la zona establecida por el usuario, si no la local del host, nunca UTC. El cierre ordinario incluye la regla para fechar el historial. Los respaldos nuevos usan nombres con desfase y `timestamp`; la recuperación compara instantes. Los checkpoints nuevos usan `created_at` con desfase. Los respaldos UTC y `created_at_utc` anteriores siguen siendo legibles sin renombrado ni migración. El constructor exige pipes, ningún temporal y ninguna escritura antes de aprobación; los acuerdos mantienen temporales en `.repo-harness/tmp/`. |
+| Trabajo restante | none |
+| Adiciones | Siete pruebas de contrato enfocadas; aserciones de esquema existentes actualizadas; instrucciones canónicas y proyecciones propias y de runtimes sincronizadas. |
+| Exclusiones | Solo instrucciones: ningún parser, migración, almacén de zonas, clave de preferencia ni edición de diseños históricos. Las reglas humanas de consumidores existentes siguen siendo solo propuestas. No se afirma commit, push, PR, release ni cumplimiento de agentes en vivo. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | Siete pruebas enfocadas observadas en RED por las reglas ausentes y luego en GREEN para renders integrados y standalone; pasaron 73 regresiones enfocadas. Suite completa: 733 pruebas en 479.774s, `OK (skipped=12)`, ejecutada una vez en Windows/Python 3.14. El digest de mantenimiento `fab1d2e207ee1e8bcf71d8b4079e5d143c7f24dbd1c850d08a115c3d309ff54c` aplicó 29 reemplazos; segunda vista previa vacía; checker `current`, 0 escrituras. Las reglas humanas propias se reconciliaron por separado, conservando el acuerdo local. Resultados detallados: `odd/tasks/local-time-zone.md`. |
+| Historial de decisiones | 2026-10-25: el propietario autorizó T1, S1–S7 bajo el issue #504, incluyendo documentación bilingüe y vista previa de mantenimiento/aplicación con digest actual, sin entrega Git. |
+| Siguiente condición de avance | none (terminal). |
+
 ### RH-W-0130
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

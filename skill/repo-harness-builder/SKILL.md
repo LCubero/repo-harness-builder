@@ -10,13 +10,14 @@ metadata:
 
 ## Activation Contract
 
-Invoke the skill deliberately: Claude Code `/repo-harness-builder`, Pi `/skill:repo-harness-builder`, or OpenCode's `skill` tool. The exact approval UI and strict rules apply only during an explicitly active builder execution. Repository identity, self-hosting, maintenance, generated-file ownership, session skills, and direct questions do not activate it. Otherwise use ordinary conversational approval and the CLI's default `--activation maintenance`.
+Invoke the skill deliberately: Claude Code `/repo-harness-builder`, Pi `/skill:repo-harness-builder`, or OpenCode's `skill` tool. Builder UI and strict rules apply only during an explicitly active builder execution. Repository identity, self-hosting, maintenance, generated-file ownership, session skills, and direct questions do not activate it. Otherwise use ordinary conversational approval and the CLI's default `--activation maintenance`.
 
 Optional arguments may name a report language, target repository, or constraints; resolve language precedence under `references/audit-and-interview.md`. With no arguments, use the current working directory.
 
 ## Hard Rules
 
 - Work only in the selected repository. Never follow links, aliases, siblings, or external references.
+- Write no temporary files; pipe output. Before approval, write nothing anywhere, including system temp such as `/tmp`.
 - Preserve existing content through informed integration. Never overwrite or archive without explicit approval; version control is not a hostile-filesystem boundary.
 - For nonempty installation/update plans, show all four action sets and approve only the current content-bound plan digest; never reuse it.
 - Strict answers belong only to active builder execution: English `APPROVE`/`DENY`; Spanish `APROBAR`/`DENEGAR`. Maintenance omits that domain. No runtime, profile, methodology, Git, provider, backup, publication, or release authority is implicit.
@@ -51,8 +52,8 @@ First read `references/validation.md`; if it is missing, unsafe, unreadable, or 
 
 ## Output Contract
 
-For nonempty installation/update plans, report status, readiness, four action sets, generated tree, verification outcomes, exclusions, residual risks, and the current plan digest. Empty plans follow the safety reference. For inspection, report only the observed checker outcome and limitations; do not invent action sets, a generated tree, or an apply plan. Distinguish observed evidence from unknowns; do not claim runtime savings or live-agent guarantees without measurement.
+For nonempty installation/update plans, report status, readiness, four action sets, generated tree, checks, exclusions, risks, and current plan digest. Empty plans: safety reference. For inspection, report only the observed checker outcome and limitations; do not invent action sets, a generated tree, or an apply plan. Distinguish evidence from unknowns; no unmeasured runtime-savings or live-agent guarantees.
 
 ## References
 
-Load only the owner a gate names, when triggered.
+Load only triggered owners.

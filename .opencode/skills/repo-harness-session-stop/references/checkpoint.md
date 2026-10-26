@@ -10,7 +10,7 @@ For every deliberate pause or close, use this exact local-first order:
 2. Apply `.repo-harness/rules/memory.md`: build the structured session summary; determine `Next Action`, `Pending Work`, and `Current Blocker` in that order; then place the exact frontmatter-preserving resume block before detailed continuity.
 3. Apply the shared privacy filter.
 4. Guard the selected root, then resolve `.repo-harness/memory-bk/` through it. Create only that direct directory lazily; reject links, indirect paths, and cross-root resolution.
-5. Then create `YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` exclusively. Never overwrite an existing backup.
+5. Then create `YYYYMMDDTHHMMSS±HHMM-<pause|close>-<short-session-id>.md` exclusively. Use `timestamp` (RFC 3339) with the same offset as the filename, from the user-set time zone, otherwise host-local. Never overwrite an existing backup. Legacy `YYYYMMDDTHHMMSSZ-...` / `timestamp_utc` backups stay valid; never rename or migrate them. Choose newest by instant (`Z` = UTC), not filename order.
 6. Reopen the backup and verify its frontmatter and required headings.
 7. Attempt the Engram write when available and report its result independently.
 8. Cross-check only when both writes succeeded; report semantic conflict without silently merging.
@@ -33,7 +33,7 @@ For every deliberate pause or close, use this exact local-first order:
 schema_version: 1
 project: <stable repository project id>
 checkpoint_id: <bounded lowercase ASCII id>
-created_at_utc: <RFC 3339 UTC timestamp>
+created_at: <RFC 3339 timestamp with user-set or host-local offset>
 objective: <one-line non-sensitive objective>
 step_state: not_started | started_unverified | failed
 resume_authority: required
@@ -50,6 +50,7 @@ resume_authority: required
 ## Relevant Files
 ```
 
+- Legacy `created_at_utc` stays readable; never migrate it.
 - Empty sections contain `None.`. Record only current-evidence-supported completed facts, one interrupted action with bounded observed evidence, remaining intent rather than an authorization promise, supported inferences with their evidence and verification condition, and repository-relative regular paths.
 - Exclude secrets, credentials, tokens, cookies, private keys, connection strings, environment values, provider payloads, absolute paths, personal data, source excerpts, diffs, logs, stack traces, and test output. Omit unsafe detail as `unknown or unverifiable` rather than fabricating it.
 - Inspect the current regular-file bytes before replacement. Use a safe same-directory replacement that preserves the old file on failure. Structurally read back the replacement before reporting success.

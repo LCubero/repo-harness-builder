@@ -6,6 +6,7 @@
 
 - Complete the native repository-first continuity recovery first. Check only the exact `.repo-harness/state/checkpoints/active.md` path. Absence is `not_found`, not failure.
 - Reject non-regular, indirect, escaping, malformed, or project-mismatched input without following links.
+- Read `created_at` as RFC 3339 with user-set or host-local offset. Legacy `created_at_utc` stays readable; never migrate it.
 - Compare every material checkpoint claim with applicable current repository, Git, checker, lifecycle, and decision evidence. Current repository evidence wins over a checkpoint.
 - Classify the checkpoint as `usable`, `stale`, `contradictory`, `expired`, or `invalid`, and report the bounded reason. `usable` means only that the checkpoint can inform a resume proposal. `stale` means newer evidence exists and wins. `contradictory` means material claims disagree and current owners do not resolve the operational meaning. `invalid` covers unsafe path or schema failure.
 - Treat a checkpoint as logically expired when its objective completed, was abandoned, or was superseded; its project identity no longer matches; current evidence contradicts a material premise or shows the step settled; its lifecycle owner no longer permits the intent; or its path or structure is invalid. Age alone is advisory and never proves expiry.
