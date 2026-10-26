@@ -41,7 +41,7 @@ Este documento es la presentación completa en español de [`REPO-HARNESS.md`](R
 | Dónde está el proyecto y qué se entregó | [estado actual](docs/es/repo-harness/current-state.md), luego [CHANGELOG.es.md](CHANGELOG.es.md) |
 | Seguir o cambiar trabajo pendiente o resuelto no trivial | [hoja de ruta](docs/es/repo-harness/roadmap.md); reconcilie su proyección en el estado actual, su par localizado y el espejo `work/RH-W-####` de Engram en la misma unidad de trabajo |
 | Por qué se decidió algo, o una restricción vigente | [decisiones](docs/es/repo-harness/decisions.md) |
-| Componer o cambiar prompts o instrucciones del repositorio | [regla de prefijos estables](skill/repo-harness-builder/references/gentle-ai-style-guide.md#stable-prefixes) |
+| Componer o cambiar prompts o instrucciones del repositorio | [regla de prefijos estables](skill/repo-harness-builder/references/skill-style-guide.md#stable-prefixes) |
 
 ## Actualización de este archivo
 <!-- doc-role:maintenance -->

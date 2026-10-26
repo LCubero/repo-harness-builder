@@ -2,7 +2,7 @@
 
 ## Review Contract
 
-Review this design against the canonical [RH-W-0013 roadmap record](roadmap.md#rh-w-0013), [Plan 16](roadmap.md#plan-16-rh-w-0013-measured-context-budgets), the immutable vendored [Gentle AI style guide](../../skill/repo-harness-builder/references/gentle-ai-style-guide.md), and current generator and checker behavior. The [Spanish peer](../es/repo-harness/rh-w-0013-design.md) must remain semantically equivalent.
+Review this design against the canonical [RH-W-0013 roadmap record](roadmap.md#rh-w-0013), [Plan 16](roadmap.md#plan-16-rh-w-0013-measured-context-budgets), the immutable vendored [skill style guide](../../skill/repo-harness-builder/references/skill-style-guide.md), and current generator and checker behavior. The [Spanish peer](../es/repo-harness/rh-w-0013-design.md) must remain semantically equivalent.
 
 Status is `ready`. This document approves no implementation, further lifecycle transition, commit, publication, or external access.
 

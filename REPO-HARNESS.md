@@ -41,7 +41,7 @@ Read first. This is how work is done here. Where the project stands lives in [cu
 | Where the project stands and what shipped | [current state](docs/repo-harness/current-state.md), then [CHANGELOG.md](CHANGELOG.md) |
 | Tracking or changing non-trivial pending or resolved work | [roadmap](docs/repo-harness/roadmap.md); reconcile its current-state projection, localized peer, and `work/RH-W-####` Engram mirror in the same work unit |
 | Why something was decided, or a standing constraint | [decisions](docs/repo-harness/decisions.md) |
-| Composing or changing repository-controlled prompts or instructions | [stable-prefix rule](skill/repo-harness-builder/references/gentle-ai-style-guide.md#stable-prefixes) |
+| Composing or changing repository-controlled prompts or instructions | [stable-prefix rule](skill/repo-harness-builder/references/skill-style-guide.md#stable-prefixes) |
 
 ## Updating This File
 <!-- doc-role:maintenance -->

@@ -6,7 +6,7 @@
 
 ## Verified Baseline
 
-Generated `repo-harness-session-start` and `repo-harness-session-stop` exceed the established body ceiling; generated `repo-harness-documentation` complies. The bundled [Gentle AI style guide](../../skill/repo-harness-builder/references/gentle-ai-style-guide.md) already defines skill structure, progressive disclosure, local references, and size guidance.
+Generated `repo-harness-session-start` and `repo-harness-session-stop` exceed the established body ceiling; generated `repo-harness-documentation` complies. The bundled [skill style guide](../../skill/repo-harness-builder/references/skill-style-guide.md) already defines skill structure, progressive disclosure, local references, and size guidance.
 
 ## Proposed Direction
 

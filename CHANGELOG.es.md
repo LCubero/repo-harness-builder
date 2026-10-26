@@ -4,6 +4,8 @@
 
 ## 2026-10-26
 
+- Se reemplazó el resumen empaquetado de reglas de skills `references/gentle-ai-style-guide.md` por la guía completa de estilo de skills del propietario, renombrada a `references/skill-style-guide.md`, con un Perfil del repositorio que conserva la regla de presupuesto del constructor, las excepciones registradas de `Trigger:` y del lector de preferencias, y la regla de prefijos estables (issue #528).
+
 - Se reescribió el paso de documentación del uso diario en el README EN/ES: basta con pedir el trabajo de documentación, y el agente usa la skill `repo-harness-documentation`, que nunca se activa por sí sola (issue #526).
 
 - Se agregó una sección breve al README EN/ES con lo que se le puede pedir al harness: zona horaria, idioma y estilo de respuesta, más detalle, modo por lotes, sincronización segura, commit o push, actualizar la documentación, pausar o cerrar, ayuda, revisar o actualizar y retiro manual (issue #522).

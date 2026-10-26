@@ -6,7 +6,7 @@
 
 ## Base verificada
 
-Los `repo-harness-session-start` y `repo-harness-session-stop` generados exceden el techo establecido del cuerpo; `repo-harness-documentation` generado cumple. La [guía empaquetada de estilo de Gentle AI](../../../skill/repo-harness-builder/references/gentle-ai-style-guide.md) ya define estructura de skills, divulgación progresiva, referencias locales y guía de tamaño.
+Los `repo-harness-session-start` y `repo-harness-session-stop` generados exceden el techo establecido del cuerpo; `repo-harness-documentation` generado cumple. La [guía empaquetada de estilo de skills](../../../skill/repo-harness-builder/references/skill-style-guide.md) ya define estructura de skills, divulgación progresiva, referencias locales y guía de tamaño.
 
 ## Dirección propuesta
 

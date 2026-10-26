@@ -53,11 +53,6 @@
       "opencode": ".opencode/skills/repo-harness-builder/references/authority-correction.md",
       "pi": ".pi/skills/repo-harness-builder/references/authority-correction.md"
     },
-    "skill/repo-harness-builder/references/gentle-ai-style-guide.md": {
-      "claude-code": ".claude/skills/repo-harness-builder/references/gentle-ai-style-guide.md",
-      "opencode": ".opencode/skills/repo-harness-builder/references/gentle-ai-style-guide.md",
-      "pi": ".pi/skills/repo-harness-builder/references/gentle-ai-style-guide.md"
-    },
     "skill/repo-harness-builder/references/license-selection.md": {
       "claude-code": ".claude/skills/repo-harness-builder/references/license-selection.md",
       "opencode": ".opencode/skills/repo-harness-builder/references/license-selection.md",
@@ -67,6 +62,11 @@
       "claude-code": ".claude/skills/repo-harness-builder/references/preservation-and-safety.md",
       "opencode": ".opencode/skills/repo-harness-builder/references/preservation-and-safety.md",
       "pi": ".pi/skills/repo-harness-builder/references/preservation-and-safety.md"
+    },
+    "skill/repo-harness-builder/references/skill-style-guide.md": {
+      "claude-code": ".claude/skills/repo-harness-builder/references/skill-style-guide.md",
+      "opencode": ".opencode/skills/repo-harness-builder/references/skill-style-guide.md",
+      "pi": ".pi/skills/repo-harness-builder/references/skill-style-guide.md"
     },
     "skill/repo-harness-builder/references/validation.md": {
       "claude-code": ".claude/skills/repo-harness-builder/references/validation.md",
