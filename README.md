@@ -21,6 +21,16 @@
 
 The harness works on its own. Integrated mode composes available Gentle AI and Engram capabilities independently; CodeGraph is optional. See the [builder guide](docs/repo-harness/builder-guide.md) for integration boundaries and the complete list of generated files.
 
+## What The Harness Does
+<!-- doc-role:features -->
+
+- **Picks up where you left off:** each session starts from repository evidence and the last local handoff.
+- **Keeps documentation current:** one home per fact, with current state, decisions, and changelog kept in sync.
+- **Asks before acting:** writes, commits, pushes, and network access need your approval; Git stays optional.
+- **Says how sure it is:** claims are labeled as verified, inferred, unknown, or needing your decision.
+- **Speaks your language:** English or Spanish replies, with English, Spanish, or bilingual documentation.
+- **Updates safely:** the builder audits an existing harness and keeps your own edits.
+
 ## Install
 <!-- doc-role:quick-start -->
 
@@ -47,6 +57,17 @@ Requires Python 3.10+ and your runtime already installed; if a destination alrea
 4. When pausing or finishing, use `repo-harness-session-stop` to leave context for the next session.
 
 Ask your agent to use each skill when needed. Session notes stay local under `.repo-harness/memory-bk/`; optional Engram memory never overrides repository files. See the [usage guide](docs/repo-harness/usage.md) for details.
+
+## Response Preferences
+<!-- doc-role:response-preferences -->
+
+You choose how the agent answers:
+
+- **Language:** English or Spanish.
+- **ADHD-friendly structure:** answer first, short chunks, one question at a time.
+- **Plain language:** simple words, short sentences, technical terms defined.
+
+Ask for a mode during a session, or ask the agent to save it for future sessions. It never guesses or saves preferences on its own. See [response preferences](docs/repo-harness/usage.md#response-preferences).
 
 ## Learn More
 <!-- doc-role:license -->

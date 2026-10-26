@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-26
+
+- Added brief README sections on what the harness does and on response preferences (language, ADHD-friendly, plain language), and removed off-topic references to other agent projects from the builder guide and decisions (issue #518).
+
 ## 2026-10-25
 
 - Added the Built with Gentle-AI badge to both READMEs and a linked English `llms.txt` entry for safe, target-selected agent installation (issue #513).
