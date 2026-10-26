@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-25
 
+- Made EN/ES README installation and daily steps readable without Mermaid or wide tables, linked stable v3.1, and reconciled usage and builder guidance on activation, updates, languages, local continuity and time zones (RH-W-0132, issue #511).
+
 - Published stable [`v3.1`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1) (latest, non-draft, non-prerelease) on 2026-10-25T22:31:38-06:00 from [`0e8b53696b5ec5eaa3ea5d22e5cf61521738349d`](https://github.com/LCubero/repo-harness-builder/commit/0e8b53696b5ec5eaa3ea5d22e5cf61521738349d), by owner-delegated acceptance (issue #509). Three safe runtime zips each contain 14 source-identical regular files; extracted `--help` and `self-test --standalone` passed, and GitHub digests match local. Final source suite: 734 tests, `OK (skipped=12)`, exit 0, 468.884s. Asset hashes are in the release notes. macOS remains unverified; historical Windows/Linux runs are not fresh tests of every stable asset, and universal model compliance is not claimed.
 
 - Session-stop again proposes the changelog entry and writes it only after approval; moving the dating rule onto the ordinary path (#504) had dropped that wording, and a live rc.22 test showed Pi writing the changelog without asking. The same live test confirmed local changelog dates, offset backup names, and newest-by-instant backup selection in Pi and Claude Code (issue #507).
