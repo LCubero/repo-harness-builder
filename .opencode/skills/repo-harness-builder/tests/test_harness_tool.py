@@ -71,6 +71,12 @@ class LocalTimeZoneContractTests(unittest.TestCase):
             for phrase in ("CHANGELOG.md", "user-set time zone", "otherwise host-local", "never UTC"):
                 self.assertIn(phrase, text)
 
+    def test_ordinary_stop_proposes_changelog_before_writing(self):
+        for standalone in (False, True):
+            text = self.outputs(standalone)[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+            self.assertIn("Propose one concise `CHANGELOG.md` entry", text)
+            self.assertIn("write it only after approval", text)
+
     def test_new_backup_name_and_timestamp_agree(self):
         for standalone in (False, True):
             for text in self.backup_texts(self.outputs(standalone)):

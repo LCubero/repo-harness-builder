@@ -606,7 +606,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Deferrals | none |
 | Rejections | none |
 | Evidence | Seven focused tests observed RED on missing rules, then GREEN in integrated and standalone renders; 73 focused regressions passed. Full suite: 733 tests in 479.774s, `OK (skipped=12)`, run once on Windows/Python 3.14. Maintenance digest `fab1d2e207ee1e8bcf71d8b4079e5d143c7f24dbd1c850d08a115c3d309ff54c` applied 29 replacements; second preview empty; checker `current`, 0 writes. Human-owned self-hosted rules were reconciled separately, preserving the local agreement. Detailed receipts: `odd/tasks/local-time-zone.md`. |
-| Decision history | 2026-10-25: owner authorized T1, S1–S7 under issue #504, including bilingual documentation and maintenance preview/current-digest apply, without Git delivery. |
+| Decision history | 2026-10-25: owner authorized T1, S1–S7 under issue #504, including bilingual documentation and maintenance preview/current-digest apply, without Git delivery. Delivered through PR #505 and published in `v3.1-rc.22`. 2026-10-25: a live rc.22 test (Pi and Claude Code without Git, a Pi rc.21 -> rc.22 update) confirmed local changelog dates, offset backup names, and newest-by-instant selection over a later-sorting legacy name; it also showed Pi writing the changelog without proposing it, because the moved dating line had dropped the original "propose" wording. Issue #507 restores it: session-stop proposes the entry and writes it only after approval. |
 | Next advancement condition | none (terminal). |
 
 ### RH-W-0130

@@ -2023,7 +2023,7 @@ Use when pausing or ending work in `{project_id}`. Invoke deliberately; this ski
 - {RESPONSE_CONTRACT_REFERENCE}
 - {continuity_rule} Preserve conversation-language precedence: verified human instruction, persisted preference, eligible verified session language, then `.repo-harness/manifest.json` `language.conversation`, then English. Keep generated artifacts in English unless requested, and keep ordinary handoff and continuation questions conversational.
 - Batch activation and grouped answers expire with their objective on pause, close, completion, abandonment, or replacement. Never reuse them automatically or persist them in continuity or another store.
-- Date `CHANGELOG.md` entries by the completed change's day in the user-set time zone (conversation or recorded decision), otherwise host-local; never UTC. Convert the exact change's Git commit timestamp if known; never copy a UTC backup date. Ask once if the change date is unavailable or ambiguous.
+- Propose one concise `CHANGELOG.md` entry for meaningful completed work and write it only after approval. Date it by the completed change's day in the user-set time zone (conversation or recorded decision), otherwise host-local; never UTC. Convert the exact change's Git commit timestamp if known; never copy a UTC backup date. Ask once if the change date is unavailable or ambiguous.
 - Commit, push, provider, external backup, and publication are separate optional gates. Commit approval never grants push authority; no coauthor or AI attribution is permitted.
 - Missing, unsafe, unowned, or unreadable required references stop the affected operation; never compensate by reading every reference.
 
