@@ -19,7 +19,6 @@
 | [i18n-research.md](i18n-research.md) | Primary-source research and architecture tradeoffs |
 | [contribution-workflow-research.md](contribution-workflow-research.md) | Primary-source comparison and recommendation for contribution policy |
 | [integration-research.md](integration-research.md) | Canonical primary-source research owner for generic Gentle AI and Engram integration |
-| [agent-continuity-research.md](agent-continuity-research.md) | Primary-source comparison of Hermes Agent, OpenClaw, and Pi continuity, learning, trust, and recovery patterns |
 | [rh-w-0025-implementation-plan.md](rh-w-0025-implementation-plan.md) | Completed capability-aware Gentle AI and Engram coordination plan; historical task instructions retained |
 | [rh-w-0031-research.md](rh-w-0031-research.md) | Canonical primary-source evidence owner for conversation-language boundaries |
 | [rh-w-0031-implementation-plan.md](rh-w-0031-implementation-plan.md) | Completed minimal session-start correction plan; historical task instructions retained |

@@ -4,6 +4,8 @@
 
 ## 2026-10-26
 
+- Se eliminó la comparación histórica de investigación sobre continuidad de otros proyectos de agentes y sus filas en el mapa de documentación, para que la documentación trate solo de repo-harness-builder (issue #520).
+
 - Se agregaron secciones breves al README sobre qué hace el harness y sobre las preferencias de respuesta (idioma, amigable con TDAH, lenguaje sencillo), y se quitaron referencias ajenas a otros proyectos de agentes de la guía del constructor y las decisiones (issue #518).
 
 ## 2026-10-25
