@@ -10,7 +10,7 @@ La fuente canónica de estos hechos es [`../../repo-harness/current-state.md`](.
 ## Estado verificado
 <!-- doc-role:verified-state -->
 
-- `RH-W-0132` está `completed` para la documentación EN/ES del repositorio: flujo README en Markdown nativo e instalación por entorno, estable v3.1 y guías de uso/actualización reconciliadas (issue #511). La lectura móvil posterior, evaluación nativa y entrega por PR siguen pendientes; consulte el [registro canónico](roadmap.md#rh-w-0132).
+- `RH-W-0132` está `completed` para la documentación EN/ES del repositorio: flujo README en Markdown nativo e instalación por entorno, estable v3.1 y guías de uso/actualización reconciliadas (issue #511). Entregado mediante el PR #512 (`5087002`); pasaron 12 comprobaciones enfocadas, se completó la lectura en ancho estrecho y la revisión nativa de bajo riesgo cerró aprobada; consulte el [registro canónico](roadmap.md#rh-w-0132).
 
 - `RH-W-0131` está `completed`: las fechas/horas generadas usan la zona establecida por el usuario, si no la local del host; el cierre ordinario incluye la fecha del historial, los respaldos/checkpoints nuevos llevan desfase, los registros UTC anteriores siguen legibles y el constructor usa pipes sin temporales (issue #504). Consulte el [registro canónico](roadmap.md#rh-w-0131).
 - `RH-W-0130` está `completed`: la fecha del historial de cambios generado ahora usa la zona horaria que el usuario estableció, si no la local del host donde se ejecuta el agente, convirtiendo a ella la marca de tiempo del commit de Git del cambio, tanto en la skill de documentación como en el cierre de sesión (issue #481). Consulte el [registro canónico](roadmap.md#rh-w-0130).

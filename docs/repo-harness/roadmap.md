@@ -605,9 +605,9 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | No generated sources, runtime projections, dependencies, or behavior changes; no live-agent compliance claim. |
 | Deferrals | none |
 | Rejections | none |
-| Evidence | Before implementation, GitHub at 390px showed blank Mermaid output and clipped invocation. Ten focused map/role/lifecycle/count/README checks passed; both checkers report current, exit 0, 0 writes, with matching runtimes/integration. After-mobile validation and native assessment remain pending. |
-| Decision history | 2026-10-25: owner authorized the bounded bilingual documentation correction under issue #511. Implementation completed; review, commit and PR delivery remain pending, with no publication claimed. |
-| Next advancement condition | none (terminal implementation); final validation and PR delivery pending. |
+| Evidence | Before implementation, GitHub at 390px showed blank Mermaid output and clipped invocation. Twelve focused map/role/lifecycle/count/README checks passed; both checkers report current, exit 0, 0 writes, with matching runtimes/integration. Revised GitHub Markdown rendered without Mermaid or tables; a 390px-wide content preview was visually checked without overflow (browser outer viewport 500px, not every mobile client). Native low-risk review closed approved and acknowledged. |
+| Decision history | 2026-10-25: owner authorized the bounded bilingual documentation correction under issue #511. Delivered through PR #512 as `5087002`; issue #511 closed. No product release was required. |
+| Next advancement condition | none (completed and delivered). |
 
 ### RH-W-0131
 | Field | Value |
