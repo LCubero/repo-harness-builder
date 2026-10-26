@@ -1,0 +1,19 @@
+# repo-harness-builder: agent installation entry
+
+The builder installs, audits, and updates a repository-local harness. The consumer harness supports daily work; it is not this builder project's identity or configuration.
+
+Authoritative instructions: [builder skill](skill/repo-harness-builder/SKILL.md). Details: [builder guide](docs/repo-harness/builder-guide.md). This entry routes to that contract, not a replacement installer or permission to write files.
+
+## When asked to install this repo harness
+
+1. First obtain the user's explicit selected TARGET repository path and runtime: Pi, Claude Code, or OpenCode. Never infer the runtime from available tools. Do not read or walk outside the current repository root without explicit authorization; get permission before accessing or writing the target.
+2. Require Python 3.10+ and an installed runtime. Prefer the matching official runtime ZIP from the [stable releases](https://github.com/LCubero/repo-harness-builder/releases/latest). Extract at the authorized target root; the archive creates the runtime's `skills/repo-harness-builder/` directory:
+   - Pi: `.pi/skills/repo-harness-builder/`; invoke `/skill:repo-harness-builder`.
+   - Claude Code: `.claude/skills/repo-harness-builder/`; invoke `/repo-harness-builder`.
+   - OpenCode: `.opencode/skills/repo-harness-builder/`; ask the agent to use `repo-harness-builder` through its `skill` tool.
+3. If using a source checkout instead, copy ONLY the whole `skill/repo-harness-builder/` directory into the selected runtime skill path above. Retain its references, assets, scripts, tests, and LICENSE. Do not copy the whole repository, this project's `.repo-harness/`, instructions, AGENTS/CLAUDE files, project documentation, configuration, or history. Inspect and compare existing destinations before any approved replacement; never blindly overwrite, including during ZIP extraction.
+4. Open the target repository in the selected runtime. In Pi use `/reload` or a new session; in other runtimes use a new session or their supported refresh. Read the copied `SKILL.md` and use the installed builder as mapped above; no separate invocation API is needed.
+5. Let the canonical skill own the audit, interview, preview, current-digest approval, and apply. Never invent consent or treat installation of the skill as approval of its generated changes. Stop on a missing skill, refusal, blocked destination, or invalid artifact rather than forcing installation.
+6. After apply, run `python3 .repo-harness/check.py` (`python` on Windows) at the target root. Require exit 0, `status: current`, and `writes: 0`; report drift instead of silently repairing it. Continue normal work through the generated session-start, documentation, and session-stop skills; see the [usage guide](docs/repo-harness/usage.md).
+
+Git, a remote, publication, and ecosystem integrations are not required. Gentle AI, Engram, and CodeGraph remain optional capabilities, not installation prerequisites.

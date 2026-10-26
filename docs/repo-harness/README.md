@@ -8,6 +8,7 @@
 | Document | Ownership |
 | --- | --- |
 | [README.md](../../README.md) | Short product introduction and repository-local installation |
+| [llms.txt](../../llms.txt) | English technical entry for agents installing the builder in a selected target repository |
 | [builder-guide.md](builder-guide.md) | Detailed builder behavior, generated files, integrations, languages, upgrades, and development |
 | [CONTRIBUTING.md](../../CONTRIBUTING.md) | Issue-first contribution workflow, verification, review, and merge rules |
 | [usage.md](usage.md) | Human workflow, integration availability checks, and approval boundaries |

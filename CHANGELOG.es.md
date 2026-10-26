@@ -4,6 +4,8 @@
 
 ## 2026-10-25
 
+- Se agregó la insignia Built with Gentle-AI a ambos README y una entrada `llms.txt` enlazada en inglés para la instalación segura por agentes en un destino seleccionado (issue #513).
+
 - Se hicieron legibles la instalación y los pasos diarios de los README EN/ES sin Mermaid ni tablas anchas, se enlazó el estable v3.1 y se reconciliaron las guías sobre activación, actualizaciones, idiomas, continuidad local y zonas horarias (RH-W-0132, issue #511).
 
 - Se publicó el estable [`v3.1`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1) (latest, no borrador ni pre-release) el 2026-10-25T22:31:38-06:00 desde [`0e8b53696b5ec5eaa3ea5d22e5cf61521738349d`](https://github.com/LCubero/repo-harness-builder/commit/0e8b53696b5ec5eaa3ea5d22e5cf61521738349d), por aceptación delegada del propietario (issue #509). Los tres zips seguros por runtime contienen 14 archivos regulares idénticos a la fuente cada uno; pasaron `--help` y `self-test --standalone` extraídos, y los digests de GitHub coinciden con los locales. Suite final de la fuente: 734 pruebas, `OK (skipped=12)`, salida 0, 468.884s. Los hashes están en las notas del release. macOS sigue sin verificar; las pruebas históricas Windows/Linux no son pruebas nuevas de cada archivo estable y no se afirma cumplimiento universal de modelos.

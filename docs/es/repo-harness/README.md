@@ -6,6 +6,7 @@
 | Documento | Propiedad |
 | --- | --- |
 | [README.es.md](../../../README.es.md) | Introducción breve al producto e instalación local al repositorio |
+| [llms.txt](../../../llms.txt) | Entrada técnica en inglés para agentes que instalan el constructor en un repositorio destino seleccionado |
 | [builder-guide.md](builder-guide.md) | Comportamiento detallado del constructor, archivos generados, integraciones, idiomas, actualizaciones y desarrollo |
 | [CONTRIBUTING.es.md](../../../CONTRIBUTING.es.md) | Flujo de contribución, verificación, revisión y merge |
 | [usage.md](usage.md) | Flujo humano y límites de aprobación |
