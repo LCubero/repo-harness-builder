@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-26
 
+- Removed the Built with Gentle-AI badge from both READMEs at the owner's request (issue #530).
+
 - Replaced the bundled skill-rules summary `references/gentle-ai-style-guide.md` with the owner's complete skill style guide, renamed to `references/skill-style-guide.md`, adding a Repository Profile that keeps the builder's budget rule, the recorded `Trigger:` and preference-reader exceptions, and the Stable Prefixes rule (issue #528).
 
 - Reworded the EN/ES README daily-use documentation step: just ask for documentation work, and the agent uses the `repo-harness-documentation` skill, which never runs on its own (issue #526).
