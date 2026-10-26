@@ -10,7 +10,7 @@
 ## Verified State
 <!-- doc-role:verified-state -->
 
-- `RH-W-0132` is `completed` for repository-facing EN/ES documentation: native Markdown README flow and runtime items, stable v3.1 installation, and reconciled usage/update guidance (issue #511). Mobile readback, native assessment and PR delivery remain pending; see the [canonical record](roadmap.md#rh-w-0132).
+- `RH-W-0132` is `completed` for repository-facing EN/ES documentation: native Markdown README flow and runtime items, stable v3.1 installation, and reconciled usage/update guidance (issue #511). Delivered through PR #512 (`5087002`); 12 focused checks passed, narrow-width readback completed, and native low-risk review closed approved; see the [canonical record](roadmap.md#rh-w-0132).
 
 - `RH-W-0131` is `completed`: generated dates/times use the user-set zone, otherwise host-local; ordinary close carries changelog dating, new backups/checkpoints carry offsets, legacy UTC records stay readable, and builder output uses pipes without temporary files (issue #504). See the [canonical record](roadmap.md#rh-w-0131).
 - `RH-W-0130` is `completed`: generated changelog dating now uses the time zone the user set, otherwise the host-local one where the agent runs, converting the change's Git commit timestamp to it, in both the documentation skill and session-stop (issue #481). See the [canonical record](roadmap.md#rh-w-0130).

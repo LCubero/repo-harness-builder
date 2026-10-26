@@ -606,9 +606,9 @@ Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el de
 | Exclusiones | Sin fuentes generadas, proyecciones, dependencias ni cambios de comportamiento; no se afirma cumplimiento de agentes en vivo. |
 | Aplazamientos | none |
 | Rechazos | none |
-| Evidencia | Antes de implementar, GitHub a 390px mostró Mermaid vacío e invocación recortada. Pasaron diez comprobaciones enfocadas de mapas/roles/ciclo/conteos/README; ambos checkers informan current, salida 0, 0 escrituras y coincidencia de entornos/integración. La validación móvil posterior y evaluación nativa siguen pendientes. |
-| Historial de decisiones | 2026-10-25: el propietario autorizó la corrección documental bilingüe acotada bajo issue #511. Implementación completada; revisión, commit y entrega por PR pendientes, sin afirmar publicación. |
-| Siguiente condición de avance | none (implementación terminal); validación final y entrega por PR pendientes. |
+| Evidencia | Antes de implementar, GitHub a 390px mostró Mermaid vacío e invocación recortada. Pasaron doce comprobaciones enfocadas de mapas/roles/ciclo/conteos/README; ambos checkers informan current, salida 0, 0 escrituras y coincidencia de entornos/integración. El Markdown de GitHub actualizado se renderizó sin Mermaid ni tablas; se revisó visualmente el contenido a 390px sin desbordes (viewport exterior de 500px, no todos los clientes móviles). La revisión nativa de bajo riesgo cerró aprobada y reconocida. |
+| Historial de decisiones | 2026-10-25: el propietario autorizó la corrección documental bilingüe acotada bajo issue #511. Entregado mediante el PR #512 como `5087002`; issue #511 cerrado. No hizo falta publicar otra versión del producto. |
+| Siguiente condición de avance | none (completado y entregado). |
 
 ### RH-W-0131
 
