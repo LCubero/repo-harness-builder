@@ -592,6 +592,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0131
+| Field | Value |
+|---|---|
+| Origin | 2026-10-25 owner correction after rc.21: an ordinary session-stop dated the changelog by UTC, and the builder used system temp (issue #504). |
+| Priority | P2: generated dates must follow the user's day, and temporary work must stay inside the working folder. |
+| Dependencies | none |
+| Status | completed |
+| Completed work | Every generated harness date/time uses the user-set time zone, otherwise host-local, never UTC. Ordinary session-stop carries changelog dating. New backups use offset names and `timestamp`; newest recovery compares instants. New checkpoints use offset `created_at`. Legacy UTC backups and `created_at_utc` remain readable without renaming or migration. Builder instructions require pipes, no temporary files, and no writes anywhere before approval; working agreements keep temporary files in `.repo-harness/tmp/`. |
+| Remaining work | none |
+| Additions | Seven focused contract tests; existing schema assertions updated; canonical instructions and self-hosted/runtime projections synchronized. |
+| Exclusions | Instruction text only: no parser, migration, time-zone store, preference key, or historical design edits. Existing human-owned consumer rules remain proposal-only. No commit, push, PR, release, or live-agent compliance claim. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Seven focused tests observed RED on missing rules, then GREEN in integrated and standalone renders; 73 focused regressions passed. Full suite: 733 tests in 479.774s, `OK (skipped=12)`, run once on Windows/Python 3.14. Maintenance digest `fab1d2e207ee1e8bcf71d8b4079e5d143c7f24dbd1c850d08a115c3d309ff54c` applied 29 replacements; second preview empty; checker `current`, 0 writes. Human-owned self-hosted rules were reconciled separately, preserving the local agreement. Detailed receipts: `odd/tasks/local-time-zone.md`. |
+| Decision history | 2026-10-25: owner authorized T1, S1–S7 under issue #504, including bilingual documentation and maintenance preview/current-digest apply, without Git delivery. |
+| Next advancement condition | none (terminal). |
+
 ### RH-W-0130
 | Field | Value |
 |---|---|

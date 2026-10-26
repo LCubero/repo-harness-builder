@@ -45,6 +45,69 @@ DISCIPLINE = (
 )
 
 
+class LocalTimeZoneContractTests(unittest.TestCase):
+    def outputs(self, standalone=False, languages=None):
+        return TOOL.render("Example", [], standalone=standalone,
+                           documentation_languages=languages)
+
+    def backup_texts(self, outputs):
+        base = ".repo-harness/skills/repo-harness-"
+        return [outputs[".repo-harness/rules/memory.md"],
+                outputs[base + "session-stop/references/checkpoint.md"],
+                outputs[base + "session-start/SKILL.md"],
+                outputs[base + "session-start/references/reconciliation.md"]]
+
+    def test_all_harness_dates_use_one_time_zone_rule(self):
+        for standalone in (False, True):
+            text = self.outputs(standalone)[".repo-harness/rules/working-agreements.md"]
+            for phrase in ("Every date or time", "writes or shows", "user-set time zone",
+                           "otherwise host-local", "never UTC", "changelogs", "documents",
+                           "backups", "checkpoints", "reports"):
+                self.assertIn(phrase, text)
+
+    def test_ordinary_stop_carries_changelog_dating_rule(self):
+        for standalone in (False, True):
+            text = self.outputs(standalone)[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
+            for phrase in ("CHANGELOG.md", "user-set time zone", "otherwise host-local", "never UTC"):
+                self.assertIn(phrase, text)
+
+    def test_new_backup_name_and_timestamp_agree(self):
+        for standalone in (False, True):
+            for text in self.backup_texts(self.outputs(standalone)):
+                for phrase in ("YYYYMMDDTHHMMSS±HHMM-<pause|close>-<short-session-id>.md",
+                               "`timestamp`", "RFC 3339", "same offset"):
+                    self.assertIn(phrase, text)
+
+    def test_legacy_backups_remain_valid_and_order_by_instant(self):
+        for standalone in (False, True):
+            for text in self.backup_texts(self.outputs(standalone)):
+                for phrase in ("YYYYMMDDTHHMMSSZ-...", "`timestamp_utc`", "stay valid",
+                               "never rename", "newest by instant", "`Z` = UTC"):
+                    self.assertIn(phrase, text)
+
+    def test_checkpoint_offset_and_legacy_readability(self):
+        base = ".repo-harness/skills/repo-harness-"
+        for standalone in (False, True):
+            outputs = self.outputs(standalone)
+            stop = outputs[base + "session-stop/references/checkpoint.md"]
+            self.assertIn("created_at: <RFC 3339 timestamp with user-set or host-local offset>", stop)
+            self.assertNotIn("created_at_utc:", stop)
+            for text in (stop, outputs[base + "session-start/references/checkpoint.md"]):
+                self.assertIn("Legacy `created_at_utc` stays readable", text)
+
+    def test_builder_pipes_output_without_temporary_files(self):
+        text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        for phrase in ("Write no temporary files", "pipe output", "Before approval",
+                       "write nothing anywhere", "system temp", "`/tmp`"):
+            self.assertIn(phrase, text)
+
+    def test_generated_temporary_files_stay_in_working_folder(self):
+        text = self.outputs()[".repo-harness/rules/working-agreements.md"]
+        self.assertIn("Put temporary files in `.repo-harness/tmp/`", text)
+        self.assertIn("leave the working folder only when strictly necessary", text)
+        self.assertNotIn("use the system temp only when that fails", text)
+
+
 class SafeWriteAndManifestTests(unittest.TestCase):
     def test_replacement_failure_never_truncates_original(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -1438,9 +1501,8 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                 self.assertIn("verified human instruction, valid persisted preference, eligible verified session language, validated manifest fallback (`.repo-harness/manifest.json` `language.conversation`), then English", skill)
                 self.assertIn("Do not retry, repair, write, read preference JSON directly, or invoke another runtime's script", skill)
                 recovery_order = (
-                    "validate root, read bounded charter (`docs/repo-harness/decisions.md`; absent is `not_found`, not failure), "
-                    "resolve preference using the one fixed reader exactly once, "
-                    "then the newest valid local backup. Discover only the exact active checkpoint path afterward"
+                    "root → bounded charter (`docs/repo-harness/decisions.md`; absent is `not_found`) "
+                    "→ fixed preference reader → newest valid backup → exact checkpoint discovery"
                 )
                 self.assertIn(recovery_order, skill)
                 # The step that runs the reader must itself name where the charter lives.
@@ -6097,14 +6159,14 @@ class GeneratedCoreTests(unittest.TestCase):
         )
         positions = [memory.index(heading) for heading in expected_body]
         self.assertEqual(positions, sorted(positions))
-        self.assertIn("Its exact frontmatter keys are `project`, `timestamp_utc`, `source`, and `session_id`.", memory)
+        self.assertIn("Its exact frontmatter keys are `project`, `timestamp`, `source`, and `session_id`.", memory)
         self.assertIn("Empty resume fields and detailed sections use `None.`", memory)
         ordered = (
             "Refresh current repository evidence",
             "determine `Next Action`, `Pending Work`, and `Current Blocker` in that order",
             "place the exact frontmatter-preserving resume block before detailed continuity",
             "Apply the shared privacy filter",
-            "create `YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` exclusively",
+            "create `YYYYMMDDTHHMMSS±HHMM-<pause|close>-<short-session-id>.md` exclusively",
             "Reopen the backup and verify its frontmatter and required headings",
             "Attempt the Engram write when available",
         )
@@ -6190,7 +6252,7 @@ class GeneratedCoreTests(unittest.TestCase):
             "Apply the shared privacy filter",
             "resolve `.repo-harness/memory-bk/`",
             "Create only that direct directory lazily",
-            "create `YYYYMMDDTHHMMSSZ-<pause|close>-<short-session-id>.md` exclusively",
+            "create `YYYYMMDDTHHMMSS±HHMM-<pause|close>-<short-session-id>.md` exclusively",
             "Reopen the backup and verify its frontmatter and required headings",
             "Attempt the Engram write when available",
             "Cross-check only when both writes succeeded",
@@ -6239,7 +6301,7 @@ class GeneratedCoreTests(unittest.TestCase):
 schema_version: 1
 project: <stable repository project id>
 checkpoint_id: <bounded lowercase ASCII id>
-created_at_utc: <RFC 3339 UTC timestamp>
+created_at: <RFC 3339 timestamp with user-set or host-local offset>
 objective: <one-line non-sensitive objective>
 step_state: not_started | started_unverified | failed
 resume_authority: required
@@ -6399,7 +6461,7 @@ resume_authority: required
                 entry = TOOL.render("Example", [], standalone=standalone)[
                     ".repo-harness/skills/repo-harness-session-start/SKILL.md"
                 ]
-                recovery = entry.index("then the newest valid local backup")
+                recovery = entry.index("→ newest valid backup")
                 guards = (
                     "resolve `.repo-harness/memory-bk/` through the guarded root;",
                     "inspect only direct regular `.md` files, reject links and indirect paths",
@@ -6471,7 +6533,7 @@ resume_authority: required
     def test_memory_rule_declares_native_backup_schema_authority_and_privacy(self):
         memory = TOOL.render("Example", [])[".repo-harness/rules/memory.md"]
         for phrase in (
-            "`project`, `timestamp_utc`, `source`, and `session_id`",
+            "`project`, `timestamp`, `source`, and `session_id`",
             "`# Session Continuity`",
             "Goal, Instructions, Discoveries, Accomplished, Next Steps, and Relevant Files",
             "Empty sections use `None.`",
@@ -6530,8 +6592,8 @@ resume_authority: required
                 ".repo-harness/skills/repo-harness-session-stop/SKILL.md",
             ))
             with self.subTest(standalone=standalone):
-                self.assertIn("Built-in runtime memory is ignored and never required", scoped)
-                self.assertIn("No generic memory API, database, encryption subsystem, daemon, scheduler, background service, synchronization engine, retention cleanup, or separate conflict-state persistence", scoped)
+                self.assertIn("Ignore built-in runtime memory", scoped)
+                self.assertIn("No memory API, database, encryption, daemon, scheduler, service, sync engine, retention cleanup, or separate conflict-state persistence", scoped)
                 self.assertIn("approval or consent tokens, checkpoint bytes, copied lifecycle records, receipts, or pending delivery state", scoped)
 
     def test_standalone_reconciliation_never_requires_or_emulates_engram(self):
@@ -10167,8 +10229,8 @@ class RuleFileTests(unittest.TestCase):
                     outputs[RULEBOOK],
                 )
                 self.assertIn(
-                    "Put temporary files in `.repo-harness/tmp/`; use the system temp only when that fails "
-                    "or a task needs a location outside Git.",
+                    "Put temporary files in `.repo-harness/tmp/`; leave the working folder only when strictly "
+                    "necessary and explicitly approved.",
                     outputs[".repo-harness/rules/working-agreements.md"],
                 )
 
