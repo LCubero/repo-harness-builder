@@ -31,9 +31,9 @@ Después de [instalar el constructor](../../../README.es.md#instalación):
 
 Al actualizar, el constructor reutiliza los idiomas registrados en el manifiesto instalado en lugar de volver a preguntarlos, y cuando el plan no tiene nada que crear, anexar, reemplazar ni migrar, no pide aprobación, y solo informa que el harness esta actualizado si nada queda bloqueado. Sus consultas Git de solo lectura forman parte de la auditoría y no requieren permiso aparte.
 
-Sin operación explícita, el constructor realiza una auditoría de solo lectura. No inicializa Git ni modifica remotos, crea commits, envia cambios o publica, salvo que esas acciones separadas se soliciten y aprueben después.
+Una solicitud explícita de inspección/check termina después de la auditoría de solo lectura. La activación normal de la skill continúa con la entrevista y el plan, y espera aprobación antes de escribir. No exige Git, remoto ni publicación; esas acciones requieren autorización aparte.
 
-El constructor posee la auditoría, vista previa, aprobación y aplicación. Si el entorno no lista la habilidad nueva, inicie una sesión nueva del entorno. Después de aplicar, ejecute `python3 .repo-harness/check.py` (`python` en Windows) en el objetivo: solo la salida 0 con `"status": "current"` y `"writes": 0` indica que el harness es congruente. El trabajo diario sigue el [Flujo diario](usage.md#flujo-diario).
+El constructor posee la auditoría, vista previa, aprobación y aplicación. Después de instalar o reemplazar una skill, use `/reload` en Pi o inicie una sesión nueva; en otros entornos, use su recarga soportada o una sesión nueva. Después de aplicar, ejecute `python3 .repo-harness/check.py` (`python` en Windows) en el objetivo: solo la salida 0 con `"status": "current"` y `"writes": 0` indica que el harness es congruente. El trabajo diario sigue el [Flujo diario](usage.md#flujo-diario).
 
 Deténgase e inspeccione en vez de forzar cuando el artefacto sea inválido, un destino este ocupado, el entorno no liste la habilidad, el constructor rechace o el checker informe deriva. Con el artefacto y los requisitos ya locales, no se necesita red.
 
@@ -42,7 +42,7 @@ Deténgase e inspeccione en vez de forzar cuando el artefacto sea inválido, un 
 
 - `REPO-HARNESS.md` en la raíz como entrada operativa concisa.
 - `README.md` en la raíz cuando falta, con una sección acotada administrada por el constructor.
-- Documentación durable completa en inglés bajo `docs/repo-harness/`.
+- Documentación durable completa en los idiomas seleccionados, en las rutas descritas en [Idioma de la documentación](#idioma-de-la-documentacion).
 - Habilidades de sesión y documentación neutrales bajo `.repo-harness/skills/`, más pares canónicos de comandos bajo `.repo-harness/commands/` y `.repo-harness/prompts/` para las familias de superficies emitidas.
 - Proyecciones seleccionadas para Claude Code, OpenCode o Pi.
 - `.repo-harness/check.py` para comprobaciones ordinarias de deriva sin escritura (`writes: 0`); solo `repair --apply --approved-plan-sha256 <digest>` explícito puede crear proyecciones locales faltantes.
@@ -58,7 +58,7 @@ Un harness es solo en inglés salvo que se declaren más locales de documentaci�
 | `CHANGELOG.md` | Registro fechado de cambios completados, separado del estado y trabajo futuro. |
 | Continuidad de sesión | Backups locales estructurados obligatorios bajo `.repo-harness/memory-bk/`, más continuidad Engram opcional cuando está disponible; el repositorio conserva la autoridad. |
 | Proyecciones | Superficies delgadas para Claude Code, OpenCode o Pi generadas desde habilidades canónicas y pares de comandos por familia. |
-| `.repo-harness/check.py` | Comprobación ordinaria de solo lectura con `writes: 0`; solo `repair --apply --approved-plan-sha256 <digest>` explícito puede crear proyecciones locales faltantes. |
+| `.repo-harness/check.py` | Verificación de solo lectura de las copias generadas; consulte el comando anterior. |
 
 ## Constructor y habilidades generadas
 <!-- doc-role:skills -->
@@ -126,7 +126,7 @@ El `check` del constructor no exige que un README de producto preservado adopte 
 
 El constructor analiza el contenido existente relevante y propone una integración informada. Preserva bytes desconocidos y nunca entiende la preservación como congelar el repositorio. Si el contenido está obsoleto o es estructuralmente incompatible, archivar y partir de una base limpia es una elección distinta que igual requiere aprobación explícita.
 
-Un repositorio existente nunca recibe un locale de documentación que no tenga ya. Un harness heredado cuyo manifiesto es anterior a los metadatos de idioma conserva los árboles de locale realmente instalados, de modo que un repositorio bilingüe antiguo no pierde en silencio su comprobación en español y un repositorio solo en inglés no gana en silencio archivos en español.
+Un repositorio existente recibe un locale de documentación nuevo solo cuando el usuario pide explícitamente ese cambio. Un harness heredado cuyo manifiesto es anterior a los metadatos de idioma conserva los árboles de locale realmente instalados, de modo que un repositorio bilingüe antiguo no pierde en silencio su comprobación en español y un repositorio solo en inglés no gana en silencio archivos en español.
 
 ### Idioma de la documentacion
 
@@ -146,7 +146,9 @@ Los selectores recíprocos de README son una sola integración atómica. Si el r
 
 ### Actualizaciones seguras
 
-Los harness anteriores se auditan, no se reemplazan a ciegas. Las rutas administradas se clasifican como `current`, `stale`, `missing`, `human-evolved` o `legacy`; reemplazo, integración, archivo y eliminación siguen siendo propuestas hasta recibir aprobación explícita. Una actualización reemplaza las skills generadas pero conserva los archivos humanos, así que `human-evolved` puede significar una edición humana o texto que generó una versión anterior; tras actualizar, el agente señala esos archivos como posiblemente desactualizados y los compara con un render nuevo.
+Actualizar la skill del constructor no actualiza el harness instalado. Descargue el nuevo archivo de su entorno, revise la carpeta existente del constructor y apruebe reemplazar solo esa skill. Recargue el entorno como se indica arriba, invoque `repo-harness-builder` y pida actualizar el harness de este repositorio. Revise explícitamente los entornos seleccionados; no los infiera de las herramientas instaladas. Apruebe el plan resultante antes de aplicar.
+
+Los harness anteriores se auditan, no se reemplazan a ciegas. Las rutas administradas se clasifican como `current`, `stale`, `missing`, `human-evolved` o `legacy`; reemplazo, integración, archivo y eliminación siguen siendo propuestas hasta recibir aprobación explícita. Una actualización reemplaza las skills generadas pero conserva los archivos humanos, así que `human-evolved` puede significar una edición humana o texto que generó una versión anterior; tras actualizar, el agente señala esos archivos como posiblemente desactualizados. Puede necesitarse una comparación aprobada con un render nuevo; preservarlos no certifica que sus instrucciones estén al día.
 
 El README es propiedad humana después de su creación. Su sección acotada del constructor identifica las entradas iniciales del harness, mientras quienes mantienen el repositorio pueden evolucionar la guía completa del producto. Los archivos existentes `CLAUDE.md` y `AGENTS.md` conservan sus bytes: el constructor solo agrega una línea exacta de enlace faltante y las ejecuciones repetidas son idempotentes.
 

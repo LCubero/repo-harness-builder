@@ -590,6 +590,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0132
+
+Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Solicitud del propietario del 2026-10-25 para README legibles en móvil y guías coherentes (issue #511). |
+| Prioridad | P2: la instalación y el uso diario deben leerse sin diagramas del cliente ni tablas recortadas horizontalmente. |
+| Dependencias | none |
+| Estado | completed |
+| Trabajo completado | Los README pares usan pasos diarios en Markdown nativo e instalación por entorno, enlazan el estable v3.1 y distinguen constructor de harness instalado. Las guías pares aclaran activación, locales seleccionados, recarga/actualización, resolución de idioma, continuidad local y zonas horarias, conservando aprobación y retirada manual segura. |
+| Trabajo restante | none |
+| Adiciones | Solo documentación del repositorio. |
+| Exclusiones | Sin fuentes generadas, proyecciones, dependencias ni cambios de comportamiento; no se afirma cumplimiento de agentes en vivo. |
+| Aplazamientos | none |
+| Rechazos | none |
+| Evidencia | Antes de implementar, GitHub a 390px mostró Mermaid vacío e invocación recortada. Pasaron diez comprobaciones enfocadas de mapas/roles/ciclo/conteos/README; ambos checkers informan current, salida 0, 0 escrituras y coincidencia de entornos/integración. La validación móvil posterior y evaluación nativa siguen pendientes. |
+| Historial de decisiones | 2026-10-25: el propietario autorizó la corrección documental bilingüe acotada bajo issue #511. Implementación completada; revisión, commit y entrega por PR pendientes, sin afirmar publicación. |
+| Siguiente condición de avance | none (implementación terminal); validación final y entrega por PR pendientes. |
+
 ### RH-W-0131
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.

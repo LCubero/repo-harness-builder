@@ -4,6 +4,8 @@
 
 ## 2026-10-25
 
+- Se hicieron legibles la instalación y los pasos diarios de los README EN/ES sin Mermaid ni tablas anchas, se enlazó el estable v3.1 y se reconciliaron las guías sobre activación, actualizaciones, idiomas, continuidad local y zonas horarias (RH-W-0132, issue #511).
+
 - Se publicó el estable [`v3.1`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1) (latest, no borrador ni pre-release) el 2026-10-25T22:31:38-06:00 desde [`0e8b53696b5ec5eaa3ea5d22e5cf61521738349d`](https://github.com/LCubero/repo-harness-builder/commit/0e8b53696b5ec5eaa3ea5d22e5cf61521738349d), por aceptación delegada del propietario (issue #509). Los tres zips seguros por runtime contienen 14 archivos regulares idénticos a la fuente cada uno; pasaron `--help` y `self-test --standalone` extraídos, y los digests de GitHub coinciden con los locales. Suite final de la fuente: 734 pruebas, `OK (skipped=12)`, salida 0, 468.884s. Los hashes están en las notas del release. macOS sigue sin verificar; las pruebas históricas Windows/Linux no son pruebas nuevas de cada archivo estable y no se afirma cumplimiento universal de modelos.
 
 - Session-stop vuelve a proponer la entrada del historial y la escribe solo tras la aprobación; mover la regla de fechado al camino ordinario (#504) había quitado esa frase, y una prueba en vivo de rc.22 mostró que Pi escribía el historial sin preguntar. La misma prueba confirmó fechas locales en el historial, nombres de respaldo con desfase y la elección del respaldo más reciente por instante en Pi y Claude Code (issue #507).

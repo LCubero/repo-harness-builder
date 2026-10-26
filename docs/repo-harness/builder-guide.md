@@ -31,9 +31,9 @@ After [installing the builder](../../README.md#install):
 
 On an update, the builder reuses the languages the installed manifest recorded instead of asking again, and when the plan has nothing to create, append, replace, or migrate it asks for no approval, and reports the harness current only when nothing is blocked. Its read-only Git queries are part of the audit and need no separate permission.
 
-With no operation, the builder performs a read-only audit. It does not initialize Git, mutate remotes, commit, push, or publish unless those separate actions are later requested and approved.
+An explicit inspect/check request stops after the read-only audit. Ordinary skill activation continues through the interview and plan, then waits for approval before writing. Git, a remote, and publication are not required; those actions need separate authorization.
 
-The builder owns audit, preview, approval, and apply. If the runtime does not list the new skill, start a fresh runtime session. After apply, run `python3 .repo-harness/check.py` (`python` on Windows) in the target: only exit 0 with `"status": "current"` and `"writes": 0` means the harness is congruent. Daily work follows the [Daily Workflow](usage.md#daily-workflow).
+The builder owns audit, preview, approval, and apply. After installing or replacing a skill, use Pi's `/reload`, or start a new session; in other runtimes, use their supported refresh or a new session. After apply, run `python3 .repo-harness/check.py` (`python` on Windows) in the target: only exit 0 with `"status": "current"` and `"writes": 0` means the harness is congruent. Daily work follows the [Daily Workflow](usage.md#daily-workflow).
 
 Stop and inspect instead of forcing when the artifact is invalid, a destination is occupied, the runtime does not list the skill, the builder refuses, or the checker reports drift. Once the artifact and prerequisites are local, no network access is needed.
 
@@ -42,7 +42,7 @@ Stop and inspect instead of forcing when the artifact is invalid, a destination 
 
 - Root `REPO-HARNESS.md` as the concise working entry point.
 - Root `README.md` when absent, with a bounded builder-managed section.
-- Complete English durable documentation under `docs/repo-harness/`.
+- Complete durable documentation in the selected languages, at the paths described in [Documentation Language](#documentation-language).
 - Runtime-neutral session and documentation skills under `.repo-harness/skills/`, plus canonical command peers under `.repo-harness/commands/` and `.repo-harness/prompts/` for emitted surface families.
 - Selected Claude Code, OpenCode, or Pi runtime projections.
 - `.repo-harness/check.py` for ordinary read-only projection drift checks (`writes: 0`); only explicit `repair --apply --approved-plan-sha256 <digest>` may create missing-local projections.
@@ -58,7 +58,7 @@ A harness is English-only unless you declare more documentation locales. See [Do
 | `CHANGELOG.md` | A dated record of meaningful completed changes, separate from current and future work. |
 | Session continuity | Required structured local backups under `.repo-harness/memory-bk/`, plus optional Engram continuity when available; repository evidence remains authoritative. |
 | Runtime projections | Thin Claude Code, OpenCode, or Pi surfaces generated from canonical skills and family-specific command peers. |
-| `.repo-harness/check.py` | An ordinary read-only congruence check that reports `writes: 0`; only explicit `repair --apply --approved-plan-sha256 <digest>` may create missing-local projections. |
+| `.repo-harness/check.py` | Read-only verification of generated copies; see the check command above. |
 
 ## Builder And Generated Skills
 <!-- doc-role:skills -->
@@ -126,7 +126,7 @@ Builder `check` does not require a preserved product README to adopt the harness
 
 The builder analyzes relevant existing content and proposes informed integration. It preserves unknown bytes and never treats preservation as freezing the repository. If content is obsolete or structurally incompatible, archive and clean-baseline work is a distinct choice that still requires explicit approval.
 
-An existing repository is never given a documentation locale it does not already have. A legacy harness whose manifest predates language metadata keeps the locale trees it actually has installed, so an older bilingual repository does not silently lose its Spanish checks and an English-only repository does not silently gain Spanish files.
+An existing repository gains a documentation locale only when the user explicitly requests that change. A legacy harness whose manifest predates language metadata keeps the locale trees it actually has installed, so an older bilingual repository does not silently lose its Spanish checks and an English-only repository does not silently gain Spanish files.
 
 ### Documentation Language
 
@@ -146,7 +146,9 @@ Reciprocal README selectors are one atomic integration. If a repository already 
 
 ### Safe Upgrades
 
-Older harnesses are audited rather than blindly replaced. Managed paths are classified as `current`, `stale`, `missing`, `human-evolved`, or `legacy`. Replacement, integration, archive, and deletion remain proposal-only until explicitly approved. An upgrade replaces generated skills but keeps human-owned files, so `human-evolved` can mean a human edit or text an earlier version generated; after an upgrade the agent flags those files as possibly outdated and compares them with a fresh render.
+Updating the builder skill does not update an installed harness. Download the new runtime archive, inspect the existing builder folder, and approve replacing only that skill. Refresh the runtime as above, invoke `repo-harness-builder`, and ask it to update this repository's harness. Review the selected runtimes explicitly; do not infer them from installed tools. Approve the resulting plan before applying.
+
+Older harnesses are audited rather than blindly replaced. Managed paths are classified as `current`, `stale`, `missing`, `human-evolved`, or `legacy`. Replacement, integration, archive, and deletion remain proposal-only until explicitly approved. An upgrade replaces generated skills but keeps human-owned files, so `human-evolved` can mean a human edit or text an earlier version generated; after an upgrade the agent flags those files as possibly outdated. An approved comparison with a fresh render may be needed; preservation does not certify that their guidance is current.
 
 The README is human-owned after creation. Its bounded builder section identifies the initial harness entry points, while maintainers may evolve the full product guide. Existing `CLAUDE.md` and `AGENTS.md` files are byte-preserved: the builder appends only an exact missing pointer line, and repeated runs are idempotent.
 

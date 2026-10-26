@@ -592,6 +592,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0132
+| Field | Value |
+|---|---|
+| Origin | 2026-10-25 owner request for readable mobile READMEs and coherent guides (issue #511). |
+| Priority | P2: installation and daily guidance must be readable without client-side diagrams or horizontally clipped tables. |
+| Dependencies | none |
+| Status | completed |
+| Completed work | Paired READMEs use native Markdown daily steps and runtime installation items, link stable v3.1, and distinguish builder from installed harness. Paired guides clarify activation, selected locales, refresh/update, language fallback, local continuity and time zones while retaining approval and manual-removal safeguards. |
+| Remaining work | none |
+| Additions | Repository-facing documentation only. |
+| Exclusions | No generated sources, runtime projections, dependencies, or behavior changes; no live-agent compliance claim. |
+| Deferrals | none |
+| Rejections | none |
+| Evidence | Before implementation, GitHub at 390px showed blank Mermaid output and clipped invocation. Ten focused map/role/lifecycle/count/README checks passed; both checkers report current, exit 0, 0 writes, with matching runtimes/integration. After-mobile validation and native assessment remain pending. |
+| Decision history | 2026-10-25: owner authorized the bounded bilingual documentation correction under issue #511. Implementation completed; review, commit and PR delivery remain pending, with no publication claimed. |
+| Next advancement condition | none (terminal implementation); final validation and PR delivery pending. |
+
 ### RH-W-0131
 | Field | Value |
 |---|---|
