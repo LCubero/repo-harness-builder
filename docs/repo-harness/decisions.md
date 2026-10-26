@@ -89,3 +89,9 @@
 - **Owner release decision (2026-10-13):** explicitly publish `v3.1-rc.12` for testing. Any later release, tag, version change, or publication remains a separate owner decision.
 - **Owner release decision (2026-10-11):** explicitly publish `v3.1-rc.11` for testing. Any later release, tag, version change, or publication remains a separate owner decision.
 - 2026-10-11: RH-W-0099 removed the builder command entry; the skill is invoked directly.
+
+## Stable v3.1 Acceptance — 2026-10-25
+
+Published stable [`v3.1`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1) (latest, non-draft, non-prerelease) on 2026-10-25T22:31:38-06:00 from [`0e8b53696b5ec5eaa3ea5d22e5cf61521738349d`](https://github.com/LCubero/repo-harness-builder/commit/0e8b53696b5ec5eaa3ea5d22e5cf61521738349d), by owner-delegated acceptance (issue #509). Three safe runtime zips each contain 14 source-identical regular files; extracted `--help` and `self-test --standalone` passed, and GitHub digests match local. Final source suite: 734 tests, `OK (skipped=12)`, exit 0, 468.884s. Asset hashes are in the release notes. macOS remains unverified; historical Windows/Linux runs are not fresh tests of every stable asset, and universal model compliance is not claimed.
+
+Acceptance uses historical Windows/Linux live evidence, five real-project copies with mechanical preservation/idempotence checks, separate live Pi changelog-approval verification, and Pi GPT04/gpt-6.1-sol Asia/Tokyo backup/checkpoint verification (+09:00; checkpoint `not_started`). Mechanical parity does not prove semantic project adaptation or optional semantic integrations. This bounded acceptance does not change the standing generic release policy.
