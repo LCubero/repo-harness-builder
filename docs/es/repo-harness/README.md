@@ -17,7 +17,6 @@
 | [Investigación](../../repo-harness/i18n-research.md) | Fuentes y decisiones de arquitectura bilingüe |
 | [Investigación del flujo de contribución](contribution-workflow-research.md) | Comparación primaria y recomendación en español |
 | [Investigación de integración](integration-research.md) | Espejo humano completo de la investigación canónica sobre Gentle AI y Engram |
-| [Investigación de continuidad de agentes](agent-continuity-research.md) | Par completo de la comparación sobre continuidad, aprendizaje, confianza y recuperación en Hermes Agent, OpenClaw y Pi |
 | [Plan de implementación RH-W-0025](rh-w-0025-implementation-plan.md) | Par humano del plan completado de coordinación consciente de capacidades; instrucciones históricas conservadas |
 | [Investigación RH-W-0031](../../repo-harness/rh-w-0031-research.md) | Propietario canónico en inglés de la evidencia primaria sobre los límites del idioma de conversación |
 | [Plan técnico RH-W-0031](../../repo-harness/rh-w-0031-implementation-plan.md) | Plan completado en inglés para la corrección mínima de session-start; se conservan las instrucciones históricas |

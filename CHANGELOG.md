@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-26
 
+- Removed the historical agent-continuity research comparison of other agent projects and its documentation-map rows, so documentation covers only repo-harness-builder (issue #520).
+
 - Added brief README sections on what the harness does and on response preferences (language, ADHD-friendly, plain language), and removed off-topic references to other agent projects from the builder guide and decisions (issue #518).
 
 ## 2026-10-25
