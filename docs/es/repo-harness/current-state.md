@@ -231,8 +231,6 @@ La fuente canónica de estos hechos es [`../../repo-harness/current-state.md`](.
 ## Siguiente paso
 <!-- doc-role:next-step -->
 
-Para el issue #511, terminar la verificación móvil posterior y evaluación nativa, y luego entregar el cambio documental acotado mediante PR; todavía no se afirma entrega.
-
 **Siguiente paso actual (2026-10-25, tras el estable v3.1):** usar [`v3.1`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1) e informar fallos reales con runtime, modelo, plataforma y evidencia de reproducción; macOS sigue sin verificar.
 
 **Siguiente paso histórico (2026-10-25, tras rc.22):** [`v3.1-rc.22`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.22) está publicado desde `8c89009` por decisión delegada del propietario, con #504 (RH-W-0131): las fechas y horas generadas usan la zona horaria del usuario, si no la local del host, nunca UTC, incluidos los nombres de respaldos y los checkpoints, y el constructor no escribe archivos temporales. La suite completa pasó sobre el árbol idéntico (733 tests, `OK (skipped=12)`) y la verificación independiente pasó los siete requisitos; la revisión nativa excedió su presupuesto de contexto y el cumplimiento de agentes en vivo no está medido. Siguiente: el propietario vuelve a probar rc.22 en un proyecto real; cualquier release posterior es una decisión aparte del propietario.
