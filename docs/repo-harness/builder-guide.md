@@ -16,8 +16,6 @@ Detection does not require a global installation: native Pi Engram tools can sup
 | Engram | Cross-session semantic memory and continuity. It never replaces repository truth. |
 | CodeGraph | The most optional component: a repository-local aid for locating files, symbols, relationships, and impact. It is not an authority store. |
 
-Hermes Agent, OpenClaw, and Pi may inform research, but recreating or copying them is not a product goal. `repo-harness` has different repository-scoped boundaries.
-
 ## Quick Start
 <!-- doc-role:quick-start -->
 

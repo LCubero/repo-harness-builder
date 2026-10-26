@@ -21,6 +21,16 @@
 
 El harness funciona por sí solo. El modo integrado compone de forma independiente las capacidades disponibles de Gentle AI y Engram; CodeGraph es opcional. Consulte la [guía del constructor](docs/es/repo-harness/builder-guide.md) para conocer los límites de integración y la lista completa de archivos generados.
 
+## Qué hace el harness
+<!-- doc-role:features -->
+
+- **Retoma donde quedó:** cada sesión parte de la evidencia del repositorio y del último traspaso local.
+- **Mantiene la documentación al día:** un solo lugar para cada dato, con estado actual, decisiones e historial de cambios sincronizados.
+- **Pregunta antes de actuar:** escrituras, commits, push y acceso a red requieren su aprobación; Git sigue siendo opcional.
+- **Dice qué tan seguro está:** cada afirmación se marca como verificada, inferida, desconocida o pendiente de su decisión.
+- **Habla su idioma:** respuestas en inglés o español, con documentación en inglés, español o bilingüe.
+- **Actualiza con seguridad:** el constructor revisa un harness existente y conserva sus propias ediciones.
+
 ## Instalación
 <!-- doc-role:quick-start -->
 
@@ -47,6 +57,17 @@ Requiere Python 3.10+ y su entorno ya instalado; si un destino ya existe, revís
 4. Al pausar o terminar, use `repo-harness-session-stop` para dejar contexto para la próxima sesión.
 
 Pida al agente que use cada habilidad cuando la necesite. Las notas quedan locales en `.repo-harness/memory-bk/`; la memoria opcional de Engram nunca reemplaza los archivos del repositorio. Consulte la [guía de uso](docs/es/repo-harness/usage.md) para más detalles.
+
+## Preferencias de respuesta
+<!-- doc-role:response-preferences -->
+
+Usted elige cómo responde el agente:
+
+- **Idioma:** inglés o español.
+- **Estructura amigable con TDAH:** la respuesta primero, bloques cortos, una pregunta a la vez.
+- **Lenguaje sencillo:** palabras simples, frases cortas y términos técnicos explicados.
+
+Pida un modo durante la sesión, o pida al agente que lo guarde para próximas sesiones. Nunca adivina ni guarda preferencias por su cuenta. Consulte las [preferencias de respuesta](docs/es/repo-harness/usage.md#preferencias-de-respuesta).
 
 ## Más información
 <!-- doc-role:license -->

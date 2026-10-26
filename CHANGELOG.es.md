@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-26
+
+- Se agregaron secciones breves al README sobre qué hace el harness y sobre las preferencias de respuesta (idioma, amigable con TDAH, lenguaje sencillo), y se quitaron referencias ajenas a otros proyectos de agentes de la guía del constructor y las decisiones (issue #518).
+
 ## 2026-10-25
 
 - Se agregó la insignia Built with Gentle-AI a ambos README y una entrada `llms.txt` enlazada en inglés para la instalación segura por agentes en un destino seleccionado (issue #513).

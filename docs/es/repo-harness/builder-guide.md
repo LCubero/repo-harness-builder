@@ -16,8 +16,6 @@ La detección no exige una instalación global: las herramientas nativas de Engr
 | Engram | Memoria semántica y continuidad entre sesiones. Nunca reemplaza la verdad del repositorio. |
 | CodeGraph | El componente más opcional: una ayuda local al repositorio para ubicar archivos, símbolos, relaciones e impacto. No es un almacen de autoridad. |
 
-Hermes Agent, OpenClaw y Pi pueden aportar a la investigación, pero recrearlos o copiarlos no es un objetivo del producto. `repo-harness` tiene límites distintos y acotados al repositorio.
-
 ## Inicio rápido
 <!-- doc-role:quick-start -->
 
