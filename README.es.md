@@ -69,6 +69,23 @@ Usted elige cómo responde el agente:
 
 Pida un modo durante la sesión, o pida al agente que lo guarde para próximas sesiones. Nunca adivina ni guarda preferencias por su cuenta. Consulte las [preferencias de respuesta](docs/es/repo-harness/usage.md#preferencias-de-respuesta).
 
+## Qué puede pedir
+<!-- doc-role:requests -->
+
+Pídalo con sus propias palabras; no hace falta una frase exacta.
+
+- **Zona horaria:** indique cuál usar (por ejemplo, `America/Costa_Rica`). Las fechas del historial de cambios, los respaldos y los reportes la usan; si no, la hora local del equipo, nunca UTC. Para conservarla en próximas sesiones, pida registrarla como decisión.
+- **Idioma y estilo de respuesta:** cámbielos para esta sesión o pida guardarlos.
+- **Más detalle:** pídalo cuando quiera; su estilo de respuesta se mantiene.
+- **Modo por lotes:** nombre una tarea acotada y pida el modo por lotes. El agente agrupa sus preguntas abiertas una vez y luego trabaja sin preguntar por cada archivo. Las aprobaciones se siguen pidiendo de una en una.
+- **Sincronización segura:** pida sincronizar de forma segura. El agente descarga y actualiza solo si no hace falta fusionar ni resolver conflictos.
+- **Commit o push:** pida un commit, un push o ambos al cerrar. El agente muestra antes los archivos exactos y el mensaje.
+- **Actualizar la documentación:** pídalo después de cambios importantes.
+- **Pausar o terminar:** pida pausar o cerrar la sesión; la siguiente sesión retoma desde ese traspaso.
+- **Ayuda:** ejecute `repo-harness-help` para una guía breve.
+- **Revisar o actualizar el harness:** ejecute el constructor de nuevo.
+- **Retirar el harness:** pida los [pasos de retiro manual](docs/es/repo-harness/usage.md#retirar-el-harness-manualmente); no hay desinstalador automático.
+
 ## Más información
 <!-- doc-role:license -->
 

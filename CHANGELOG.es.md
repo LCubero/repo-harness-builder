@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-27
+
+- Se agregó una sección breve al README EN/ES con lo que se le puede pedir al harness: zona horaria, idioma y estilo de respuesta, más detalle, modo por lotes, sincronización segura, commit o push, actualizar la documentación, pausar o cerrar, ayuda, revisar o actualizar y retiro manual (issue #522).
+
 ## 2026-10-26
 
 - Se eliminó la comparación histórica de investigación sobre continuidad de otros proyectos de agentes y sus filas en el mapa de documentación, para que la documentación trate solo de repo-harness-builder (issue #520).
