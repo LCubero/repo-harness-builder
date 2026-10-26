@@ -236,8 +236,6 @@
 ## Next Step
 <!-- doc-role:next-step -->
 
-For issue #511, finish after-mobile verification and native assessment, then deliver the bounded documentation change through a PR; no delivery is claimed yet.
-
 **Current next step (2026-10-25, after stable v3.1):** use [`v3.1`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1) and report actual failures with runtime, model, platform and reproduction evidence; macOS remains unverified.
 
 **Historical next step (2026-10-25, after rc.22):** [`v3.1-rc.22`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1-rc.22) is published from `8c89009` by delegated owner decision, carrying #504 (RH-W-0131): generated dates and times use the user-set time zone, otherwise host-local, never UTC, including backup names and checkpoints, and the builder writes no temporary files. The full suite passed on the identical tree (733 tests, `OK (skipped=12)`) and independent verification passed all seven requirements; native review exceeded its context budget and live-agent compliance is unmeasured. Next: the owner retests rc.22 in a real project; any later release is a separate owner decision.
