@@ -53,7 +53,7 @@ Requiere Python 3.10+ y su entorno ya instalado; si un destino ya existe, revís
 
 1. Inicie o reanude con `repo-harness-session-start`.
 2. Trabaje normalmente: pida al agente que haga su tarea.
-3. Cuando cambie información importante del proyecto, use `repo-harness-documentation` para mantener la documentación al día.
+3. Cuando necesite crear o actualizar documentación, solo pídalo. El agente usa la skill `repo-harness-documentation` para ese trabajo; nunca se activa por sí sola.
 4. Al pausar o terminar, use `repo-harness-session-stop` para dejar contexto para la próxima sesión.
 
 Pida al agente que use cada habilidad cuando la necesite. Las notas quedan locales en `.repo-harness/memory-bk/`; la memoria opcional de Engram nunca reemplaza los archivos del repositorio. Consulte la [guía de uso](docs/es/repo-harness/usage.md) para más detalles.
