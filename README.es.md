@@ -34,7 +34,7 @@ El harness funciona por sí solo. El modo integrado compone de forma independien
 ## Instalación
 <!-- doc-role:quick-start -->
 
-1. Descargue el zip marcado **pi**, **claude-code** u **opencode** para su entorno de la [versión estable v3.1](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1).
+1. Descargue el zip marcado **pi**, **claude-code** u **opencode** para su entorno de la [versión estable v3.1.1](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1.1).
 2. Extráigalo en la raíz del repositorio donde lo utilizará. Crea la carpeta de skills de su entorno indicada abajo (`skills` en plural). Manténgala dentro del repositorio; nunca la instale en una carpeta global o de usuario.
 
    - **Claude Code:** `.claude/skills/repo-harness-builder/`
