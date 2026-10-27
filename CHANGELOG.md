@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-26
 
+- Restored the Built with Gentle-AI badge at the end of both READMEs at the owner's request (issue #535).
+
 - Published stable [`v3.1.1`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1.1) (latest, non-draft, non-prerelease) on 2026-10-26T18:36:23-06:00 from [`f9d153b76ecd9eada8615cabbdd8f430e16240cb`](https://github.com/LCubero/repo-harness-builder/commit/f9d153b76ecd9eada8615cabbdd8f430e16240cb) by delegated owner decision (issue #532), carrying the adapted skill style guide (`claude-code` 285224 bytes, SHA-256 `21ed6b6593be8522b48b86e6c27af46262d466e603e86eccf37ce9068a116eae`; `opencode` 285308 bytes, SHA-256 `e68070917d36421f49b5dd5f63e89e86671c50e51190be74ed4cafbf6833971d`; `pi` 285056 bytes, SHA-256 `ccca2be9d83fab5aed9dfcbb3d85eb76138f25c994210854f3a00240f19e9523`); GitHub digests match. Each zip holds 14 source-identical files; extracted `--help`, `self-test --standalone`, a fresh standalone install checking `current`, and an idempotent second preview passed. Full suite: 734 tests, `OK (skipped=12)`.
 
 - Bumped the builder package version to `3.1.1` to release the adapted skill style guide (issue #532). No CLI or generated-contract behavior changed.

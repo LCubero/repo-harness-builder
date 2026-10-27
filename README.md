@@ -97,3 +97,7 @@ You can run the builder again later for an optional audit or update; see the bui
 - [CONTRIBUTING.md](CONTRIBUTING.md): contributing to this project.
 - [Changelog](CHANGELOG.md): completed changes.
 - [MIT License](LICENSE).
+
+<a href="https://github.com/Gentleman-Programming/gentle-ai">
+  <img width="220" src="https://raw.githubusercontent.com/Gentleman-Programming/gentle-ai/main/docs/assets/brand/built-with-gentle-ai.png" alt="Built with Gentle-AI" />
+</a>
