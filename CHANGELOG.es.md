@@ -4,7 +4,7 @@
 
 ## 2026-10-27
 
-- Se subió la versión del paquete del constructor a `3.1.1` para publicar la nueva guía de estilo de skills (issue #532); los zips de `v3.1` aún traen la antigua `gentle-ai-style-guide.md`. No cambia el comportamiento de la CLI ni de los contratos generados.
+- Se subió la versión del paquete del constructor a `3.1.1` para publicar la guía de estilo de skills adaptada (issue #532). No cambia el comportamiento de la CLI ni de los contratos generados.
 
 ## 2026-10-26
 

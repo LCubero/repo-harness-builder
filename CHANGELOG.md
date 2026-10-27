@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-27
 
-- Bumped the builder package version to `3.1.1` to release the new skill style guide (issue #532); `v3.1` zips still carry the old `gentle-ai-style-guide.md`. No CLI or generated-contract behavior changed.
+- Bumped the builder package version to `3.1.1` to release the adapted skill style guide (issue #532). No CLI or generated-contract behavior changed.
 
 ## 2026-10-26
 
