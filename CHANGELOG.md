@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-27
+
+- Bumped the builder package version to `3.1.1` to release the adapted skill style guide (issue #532). No CLI or generated-contract behavior changed.
+
 ## 2026-10-26
 
 - Removed the Built with Gentle-AI badge from both READMEs at the owner's request (issue #530).

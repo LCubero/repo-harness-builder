@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-27
+
+- Se subió la versión del paquete del constructor a `3.1.1` para publicar la guía de estilo de skills adaptada (issue #532). No cambia el comportamiento de la CLI ni de los contratos generados.
+
 ## 2026-10-26
 
 - Se quitó la insignia Built with Gentle-AI de ambos README a pedido del propietario (issue #530).
