@@ -45,7 +45,7 @@ Deténgase e inspeccione en vez de forzar cuando el artefacto sea inválido, un 
 - Proyecciones seleccionadas para Claude Code, OpenCode o Pi.
 - `.repo-harness/check.py` para comprobaciones ordinarias de deriva sin escritura (`writes: 0`); solo `repair --apply --approved-plan-sha256 <digest>` explícito puede crear proyecciones locales faltantes.
 - Directivas en `.gitignore` raíz: `.codegraph/` salvo opt-out explícito, más las cuatro directivas de estado local del harness (`/.repo-harness/tmp/`, `/.repo-harness/archive/`, `/.repo-harness/state/`, `/.repo-harness/memory-bk/`).
-- `.gitattributes` raíz con protección LF exacta para cada ruta generada comparada byte a byte.
+- `.gitattributes` raíz con la regla LF para todo el repositorio `* text=auto eol=lf`.
 
 Un harness es solo en inglés salvo que se declaren más locales de documentación. Consulte [Idioma de la documentación](#idioma-de-la-documentacion).
 
@@ -152,7 +152,7 @@ El README es propiedad humana después de su creación. Su sección acotada del 
 
 El `.gitignore` raíz sigue siendo propiedad humana. El plan aprobado crea el archivo si falta o agrega directivas exactas faltantes, preservando BOM, bytes, comentarios, líneas vacías, finales de línea y reglas ajenas. Incluye `.codegraph/` por defecto y siempre incluye `/.repo-harness/tmp/`, `/.repo-harness/archive/`, `/.repo-harness/state/` y `/.repo-harness/memory-bk/`. `--no-codegraph-ignore` registra la exclusión en el manifiesto y omite solo la directiva `.codegraph/`; las cuatro directivas de estado local permanecen y nunca se eliminan líneas de ignorado existentes. Cuando las reglas existentes ignorarían rutas planificadas del harness (a menudo `.claude/`, `.opencode/`, `.pi/`, `AGENTS.md` o `CLAUDE.md`), el agente pregunta antes de aprobar si mantenerlas locales (por defecto) o versionarlas, y edita `.gitignore` solo tras aprobación.
 
-El `.gitattributes` raíz también sigue siendo propiedad humana. El constructor crea o agrega una regla exacta `<path> text eol=lf` por cada ruta generada comparada byte a byte, preservando reglas ajenas y finales de línea existentes. Una regla coincidente que asigne comportamiento incompatible de texto o EOL bloquea el plan en vez de crear semántica ambigua de checkout.
+El `.gitattributes` raíz también sigue siendo propiedad humana. El constructor crea o agrega una sola regla para todo el repositorio, `* text=auto eol=lf`, preservando reglas ajenas y finales de línea existentes, para que todos los archivos de texto usen LF en cualquier sistema operativo. Si una línea posterior asigna un final de línea distinto de LF, el plan vuelve a agregar la regla al final. Los archivos ya confirmados con CRLF necesitan `git add --renormalize .` una vez.
 
 Los hechos operativos tienen un solo propietario. `REPO-HARNESS.md`, `CHANGELOG.md` y los propietarios durables de estado en inglés son canónicos. Cuando se declara otro locale, sus pares son presentaciones completas que enlazan a esos propietarios. Consulte el [contrato de mantenimiento bilingüe](i18n-maintenance.md), que aplica solo cuando se declara más de un locale.
 

@@ -45,7 +45,7 @@ Stop and inspect instead of forcing when the artifact is invalid, a destination 
 - Selected Claude Code, OpenCode, or Pi runtime projections.
 - `.repo-harness/check.py` for ordinary read-only projection drift checks (`writes: 0`); only explicit `repair --apply --approved-plan-sha256 <digest>` may create missing-local projections.
 - Root `.gitignore` directives: `.codegraph/` unless explicitly disabled, plus the four harness local-state directives (`/.repo-harness/tmp/`, `/.repo-harness/archive/`, `/.repo-harness/state/`, `/.repo-harness/memory-bk/`).
-- Root `.gitattributes` with exact LF protection for every byte-compared generated path.
+- Root `.gitattributes` with the repository-wide LF rule `* text=auto eol=lf`.
 
 A harness is English-only unless you declare more documentation locales. See [Documentation Language](#documentation-language).
 
@@ -152,7 +152,7 @@ The README is human-owned after creation. Its bounded builder section identifies
 
 Root `.gitignore` is also human-owned. The approved plan creates it when absent or appends missing exact directives, preserving BOM, existing bytes, comments, blank lines, line endings, and unrelated rules. It includes `.codegraph/` by default and always includes `/.repo-harness/tmp/`, `/.repo-harness/archive/`, `/.repo-harness/state/`, and `/.repo-harness/memory-bk/`. `--no-codegraph-ignore` records the opt-out in the manifest and suppresses only the `.codegraph/` directive; the four local-state directives remain, and existing ignore lines are never removed. When existing rules would ignore planned harness paths (often `.claude/`, `.opencode/`, `.pi/`, `AGENTS.md`, or `CLAUDE.md`), the agent asks before approval whether to keep them local (the default) or version them, and edits `.gitignore` only after approval.
 
-Root `.gitattributes` remains human-owned. The builder creates or appends one exact `<path> text eol=lf` rule for every byte-compared generated path, preserving unrelated rules and existing line endings. A matching rule that assigns incompatible text or EOL behavior blocks the plan instead of creating ambiguous checkout semantics.
+Root `.gitattributes` remains human-owned. The builder creates or appends one repository-wide rule, `* text=auto eol=lf`, preserving unrelated rules and existing line endings, so every text file is LF on every operating system. If a later line sets a non-LF line ending, the plan re-appends the rule at the end. Files already committed with CRLF need `git add --renormalize .` once.
 
 Operational facts remain single-owned. `REPO-HARNESS.md`, `CHANGELOG.md`, and the English durable state owners are canonical. When another locale is declared, its peers are complete localized presentations that link back to those owners. See the [bilingual maintenance contract](i18n-maintenance.md), which applies only to a repository that declared more than one locale.
 

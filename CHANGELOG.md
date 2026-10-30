@@ -4,6 +4,10 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
+## 2026-10-30
+
+- Generated root `.gitattributes` now keeps every text file LF with one repository-wide rule, `* text=auto eol=lf`, appended when missing and re-appended when a later line sets a non-LF line ending, so unchanged files no longer look modified across Windows, Linux, and macOS (RH-W-0133).
+
 ## 2026-10-26
 
 - Restored the Built with Gentle-AI badge at the end of both READMEs at the owner's request (issue #535).

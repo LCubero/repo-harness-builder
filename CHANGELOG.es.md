@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-30
+
+- El `.gitattributes` raíz generado ahora mantiene LF en todos los archivos de texto con una sola regla para todo el repositorio, `* text=auto eol=lf`, que se agrega cuando falta y se vuelve a agregar cuando una línea posterior asigna un final de línea distinto de LF, para que archivos sin cambios ya no aparezcan modificados entre Windows, Linux y macOS (RH-W-0133).
+
 ## 2026-10-26
 
 - Se restauró la insignia Built with Gentle-AI al final de ambos README a pedido del propietario (issue #535).

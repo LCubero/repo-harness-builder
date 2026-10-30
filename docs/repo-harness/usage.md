@@ -45,7 +45,7 @@ The local backup is required in integrated and standalone modes. Integrated mode
 ## Congruence And Ownership
 <!-- doc-role:ownership -->
 
-Run `python3 .repo-harness/check.py` (`python` on Windows) after canonical skills or runtime projections change. Root `.gitattributes` preserves LF checkout bytes through one exact `<path> text eol=lf` rule for every byte-compared generated path, including the checker, manifest, canonical skills and command families, runtime projections, wrappers, and optional exact product projections. Human-owned documents and directive-checked files are outside that generated-path contract. The checker proves on-disk parity, not whether the active process refreshed its registered skill content. An active process may cache older content: use `/reload` in Pi, or a new session; other runtimes need their supported refresh or a new session. Engram carries temporary cross-session context; repository files remain authoritative.
+Run `python3 .repo-harness/check.py` (`python` on Windows) after canonical skills or runtime projections change. Root `.gitattributes` keeps every text file LF on every operating system through one repository-wide rule, `* text=auto eol=lf`, which also protects every byte-compared generated path. Files already committed with CRLF need `git add --renormalize .` once. The checker proves on-disk parity, not whether the active process refreshed its registered skill content. An active process may cache older content: use `/reload` in Pi, or a new session; other runtimes need their supported refresh or a new session. Engram carries temporary cross-session context; repository files remain authoritative.
 
 ## Approval Boundaries
 <!-- doc-role:approval-boundaries -->
