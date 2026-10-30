@@ -595,19 +595,19 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ### RH-W-0133
 | Field | Value |
 |---|---|
-| Origin | 2026-10-29 consumer incident: a working copy shared between Windows and Fedora showed three unchanged project files as modified on every session, because the generated root `.gitattributes` pinned only harness paths. 2026-10-30 owner decision: every generated repository must keep every text file LF, as this source repository already does (issue #537). |
+| Origin | 2026-10-29 consumer incident: a working copy shared between Windows and Fedora showed three unchanged project files as modified on every session, because the generated root `.gitattributes` pinned only harness paths. Owner decision the same day: every generated repository must keep every text file LF, as this source repository already does (issue #537). |
 | Priority | P1: persistent false modifications hide real changes and invite CRLF-only commits in mixed-OS or dual-boot use. |
 | Dependencies | none |
-| Status | active |
+| Status | completed |
 | Completed work | The builder renders root `.gitattributes` as the one repository-wide rule `* text=auto eol=lf`, appends it to an existing file when missing, and re-appends it at the end when a later line sets a non-LF line ending on any path (macros included; binary markers excluded). `check` reports a missing rule as `directive-missing` and an override as `attribute-conflict`. Product references, generated usage text, repository usage, builder guide, and decisions updated in EN/ES. |
-| Remaining work | Issue, PR, and merge, which are owner decisions. |
+| Remaining work | none |
 | Additions | Append reason tells owners to run `git add --renormalize .` once for files already committed with CRLF. |
 | Exclusions | No rewrite of committed files, no removal of earlier exact `<path> text eol=lf` rules, no `core.autocrlf` change. |
 | Deferrals | none |
 | Rejections | Rejected inserting the rule at the top: owner decided everything must stay LF, so the rule goes last and wins. |
 | Evidence | Test-first: RED 23 failures and 4 errors across the line-ending tests; GREEN 43 focused tests pass. Git `check-attr` confirms harness and project files resolve `eol: lf`, including `*.bat`/`*.cmd` overrides after re-append, and an `core.autocrlf=true` checkout writes LF and stores a CRLF file as LF. A full render writes every created file with LF only. Full suite: 732 tests, `OK (skipped=12)`; checker `current`, 0 writes; three runtime projections byte-identical. Native high-tier review of `f4ae79d` (lineage `review-c6d775d4f8c01e01`, risk/readability/reliability) closed approved and acknowledged; its one CRITICAL finding was refuted, and one informational WARNING notes that a later `eol=lf` line restoring an earlier override still triggers a harmless re-append. |
-| Decision history | 2026-10-30: owner decided the rule must cover the whole repository and stay LF always; supersedes RH-W-0029's exclusion of a repository-wide line-ending policy. |
-| Next advancement condition | Owner approves issue and PR; merge completes the record. |
+| Decision history | 2026-10-29: owner decided the rule must cover the whole repository and stay LF always; supersedes RH-W-0029's exclusion of a repository-wide line-ending policy. The owner approved delivery; PR #538 squash-merged to `main` as `fd142ee617ffc0af05d4cda74f12e371fd313f1a` at 2026-10-29T18:54:14-06:00 and closed issue #537. No release is authorized or claimed. |
+| Next advancement condition | none (completed and delivered). |
 
 ### RH-W-0132
 | Field | Value |
@@ -2401,7 +2401,7 @@ Current observation: the fixed Pi reader returned a valid persisted `espanol` pr
 | Deferrals | none |
 | Rejections | Rejected broad `.claude/**` and `.opencode/**` rules, which would claim control over human files the harness does not own. Rejected applying the replacement alone, which writes LF that the next checkout would undo. |
 | Evidence | `.gitattributes` grew from 2 to 19 protected paths. `git diff` after apply showed real content changes in exactly the three `repo-harness-session-stop` copies, confirming the other 12 were line endings only. Blob and worktree sizes differed by exactly the CRLF count before the fix. Both checkers now report `current` with 0 stale. |
-| Decision history | 2026-08-15: the `RH-W-0008` plan surfaced 15 stale paths; byte-level classification proved the cause was incomplete attribute coverage from the issue #19 work, not generated content drift. 2026-10-30: its exclusion of a repository-wide line-ending policy is superseded by [RH-W-0133](#rh-w-0133). |
+| Decision history | 2026-08-15: the `RH-W-0008` plan surfaced 15 stale paths; byte-level classification proved the cause was incomplete attribute coverage from the issue #19 work, not generated content drift. 2026-10-29: its exclusion of a repository-wide line-ending policy is superseded by [RH-W-0133](#rh-w-0133). |
 | Next advancement condition | Reopen only if a byte-compared generated path is added without a matching rule, or if a CRLF checkout reports drift again. |
 
 ### RH-W-0028
