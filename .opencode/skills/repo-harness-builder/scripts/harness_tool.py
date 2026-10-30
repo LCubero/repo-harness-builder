@@ -49,6 +49,7 @@ LOCAL_STATE = {
 }
 LOCAL_STATE_IGNORE_DIRECTIVES = tuple(f"/{item['path']}" for item in LOCAL_STATE.values())
 GITATTRIBUTES_PATH = ".gitattributes"
+REPOSITORY_LF_RULE = "* text=auto eol=lf"
 README_PATH = "README.md"
 SPANISH_README_PATH = "README.es.md"
 README_SELECTOR_LINES = (
@@ -1230,8 +1231,8 @@ def byte_compared_paths(outputs: Mapping[str, str], rulebook_path: str) -> tuple
 
 
 def git_attribute_rules(outputs: Mapping[str, str], rulebook_path: str) -> tuple[str, ...]:
-    """Return the exact LF rules protecting every byte-compared generated path."""
-    return tuple(f"{path} text eol=lf" for path in byte_compared_paths(outputs, rulebook_path))
+    """Return the one repository-wide rule that keeps every text file LF, harness files included."""
+    return (REPOSITORY_LF_RULE,)
 
 
 def missing_attribute_rules(current: bytes, rules: Sequence[str]) -> tuple[str, ...]:
@@ -1249,10 +1250,8 @@ def attribute_pattern_matches(pattern: str, path: str) -> bool:
     return PurePosixPath(path).match(normalized)
 
 
-def conflicting_attribute_paths(current: bytes, protected: Sequence[str]) -> set[str]:
-    """Return protected paths whose ordered effective attributes conflict with LF."""
-    conflicts: set[str] = set()
-    lines = current.decode("utf-8", errors="replace").splitlines()
+def attribute_macro_expander(lines: Sequence[str]) -> Callable[[list[str]], list[str]]:
+    """Return a function expanding `[attr]` macros defined in the given attribute lines."""
     macros = {
         fields[0].removeprefix("[attr]"): fields[1:]
         for raw_line in lines
@@ -1268,6 +1267,37 @@ def conflicting_attribute_paths(current: bytes, protected: Sequence[str]) -> set
             else:
                 expanded.append(assignment)
         return expanded
+
+    return expand
+
+
+def repository_lf_overridden(current: bytes) -> bool:
+    """Report whether a line after the last repository-wide LF rule sets a non-LF line ending.
+
+    Binary markers (`binary`, `-text`) are not overrides: they stop text conversion
+    for files the owner declared binary, which have no line endings to keep.
+    """
+    lines = current.decode("utf-8", errors="replace").splitlines()
+    rule = REPOSITORY_LF_RULE.split()
+    last = max((index for index, line in enumerate(lines) if line.split() == rule), default=None)
+    if last is None:
+        return False
+    expand = attribute_macro_expander(lines)
+    for raw_line in lines[last + 1:]:
+        fields = raw_line.split()
+        if len(fields) < 2 or fields[0].startswith(("#", "[attr]")):
+            continue
+        for assignment in expand(fields[1:]):
+            if assignment in ("eol", "-eol", "!eol") or (assignment.startswith("eol=") and assignment != "eol=lf"):
+                return True
+    return False
+
+
+def conflicting_attribute_paths(current: bytes, protected: Sequence[str]) -> set[str]:
+    """Return protected paths whose ordered effective attributes conflict with LF."""
+    conflicts: set[str] = set()
+    lines = current.decode("utf-8", errors="replace").splitlines()
+    expand = attribute_macro_expander(lines)
 
     for path in protected:
         text, eol = "unspecified", "unspecified"
@@ -2526,7 +2556,7 @@ Use the three generated skills as a loop: recover context, keep durable document
 
 ## Congruence And Ownership
 <!-- doc-role:ownership -->
-Run `python3 .repo-harness/check.py` (`python` on Windows) after canonical skills or runtime projections change. The checker is read-only and reports whether generated runtime copies still match their canonical skills. Root `.gitattributes` must preserve LF checkout bytes with one exact `text eol=lf` rule for every byte-compared generated path, including the checker, the manifest, canonical skills, and runtime projections. Without them a CRLF checkout reports drift the checker cannot resolve. {continuity_owner}
+Run `python3 .repo-harness/check.py` (`python` on Windows) after canonical skills or runtime projections change. The checker is read-only and reports whether generated runtime copies still match their canonical skills. Root `.gitattributes` keeps every text file LF on every operating system with one repository-wide rule, `* text=auto eol=lf`, which also protects the checker, the manifest, canonical skills, and runtime projections. Without it a CRLF checkout reports drift the checker cannot resolve and unchanged files look modified across systems. Files already committed with CRLF need `git add --renormalize .` once. {continuity_owner}
 
 ## Approval Boundaries
 <!-- doc-role:approval-boundaries -->
@@ -2794,7 +2824,7 @@ Use las tres skills generadas como un ciclo: recupere contexto, mantenga vigente
 
 ## Congruencia y propiedad
 <!-- doc-role:ownership -->
-Ejecute `python3 .repo-harness/check.py` (`python` en Windows) después de cambiar skills canónicas o proyecciones de ejecución. El verificador es de solo lectura e informa si las copias generadas coinciden con sus skills canónicas. El archivo raíz `.gitattributes` debe preservar bytes LF al hacer checkout mediante una regla exacta `text eol=lf` por cada ruta generada comparada byte a byte, incluidos el verificador, el manifest, las skills canónicas y las proyecciones de ejecución. Sin ellas, un checkout CRLF informa una deriva que el verificador no puede resolver. {ownership_es}
+Ejecute `python3 .repo-harness/check.py` (`python` en Windows) después de cambiar skills canónicas o proyecciones de ejecución. El verificador es de solo lectura e informa si las copias generadas coinciden con sus skills canónicas. El archivo raíz `.gitattributes` mantiene LF en todos los archivos de texto y en todos los sistemas operativos con una sola regla para todo el repositorio, `* text=auto eol=lf`, que también protege el verificador, el manifest, las skills canónicas y las proyecciones de ejecución. Sin ella, un checkout CRLF informa una deriva que el verificador no puede resolver y archivos sin cambios aparecen modificados entre sistemas. Los archivos ya confirmados con CRLF necesitan `git add --renormalize .` una vez. {ownership_es}
 
 ## Límites de aprobación
 <!-- doc-role:approval-boundaries -->
@@ -4789,10 +4819,9 @@ def plan_changes(root: Path, outputs: dict[str, str], trusted_skill_license: boo
             missing = missing_attribute_rules(current, rules)
             addition = pointer_additions(current, missing)
             conflicts = sorted(conflicting_attribute_paths(current + addition, protected))
-            if conflicts:
-                addition += pointer_additions(
-                    current + addition, [f"{path} text eol=lf" for path in conflicts]
-                )
+            overridden = bool(conflicts) or repository_lf_overridden(current + addition)
+            if overridden and not addition:
+                addition = pointer_additions(current, [REPOSITORY_LF_RULE])
             if addition:
                 append.append({
                     "path": relative,
@@ -4800,7 +4829,14 @@ def plan_changes(root: Path, outputs: dict[str, str], trusted_skill_license: boo
                     "sha256": digest_bytes(current),
                     "resultSha256": digest_bytes(current + addition),
                     "content": addition.decode("utf-8"),
-                    **({"reason": "A later line forces non-LF line endings on harness files; re-appending the exact LF rules at the end keeps them LF so the checker does not report false drift."} if conflicts else {}),
+                    "reason": (
+                        "A later line forces non-LF line endings; re-appending the repository-wide rule "
+                        "at the end keeps every text file LF on every operating system."
+                        if overridden else
+                        "Adds the repository-wide rule so every text file is stored and checked out with LF "
+                        "on every operating system. Files already committed with CRLF need "
+                        "`git add --renormalize .` once."
+                    ),
                 })
             else:
                 existing.append({
@@ -5736,11 +5772,12 @@ def check(
             protected = byte_compared_paths(expected, rulebook_path)
             conflicts = sorted(conflicting_attribute_paths(current, protected))
             missing = missing_attribute_rules(current, git_attribute_rules(expected, rulebook_path))
-            if conflicts:
+            if not missing and (conflicts or repository_lf_overridden(current)):
                 entry["state"] = "attribute-conflict"
-                entry["conflicts"] = conflicts
-                entry["reason"] = "Effective attributes force non-LF line endings on harness files."
-                entry["suggestion"] = "Re-run the builder to re-append the exact LF rules at the end, or remove the overriding line."
+                if conflicts:
+                    entry["conflicts"] = conflicts
+                entry["reason"] = "A line after the repository-wide LF rule forces non-LF line endings."
+                entry["suggestion"] = "Re-run the builder to re-append `* text=auto eol=lf` at the end, or remove the overriding line."
             elif missing:
                 entry["state"] = "directive-missing"
                 entry["missing"] = list(missing)
