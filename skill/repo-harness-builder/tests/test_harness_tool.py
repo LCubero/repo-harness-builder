@@ -61,14 +61,16 @@ class LocalTimeZoneContractTests(unittest.TestCase):
         for standalone in (False, True):
             text = self.outputs(standalone)[".repo-harness/rules/working-agreements.md"]
             for phrase in ("Every date or time", "writes or shows", "user-set time zone",
-                           "otherwise host-local", "never UTC", "changelogs", "documents",
+                           "`timeZone` preference", "otherwise host-local (system clock",
+                           "not model context", "never UTC", "changelogs", "documents",
                            "backups", "checkpoints", "reports"):
                 self.assertIn(phrase, text)
 
     def test_ordinary_stop_carries_changelog_dating_rule(self):
         for standalone in (False, True):
             text = self.outputs(standalone)[".repo-harness/skills/repo-harness-session-stop/SKILL.md"]
-            for phrase in ("CHANGELOG.md", "user-set time zone", "otherwise host-local", "never UTC"):
+            for phrase in ("CHANGELOG.md", "user-set time zone", "persisted `timeZone` preference",
+                           "otherwise host-local", "never UTC"):
                 self.assertIn(phrase, text)
 
     def test_ordinary_stop_proposes_changelog_before_writing(self):
@@ -1464,29 +1466,21 @@ class ApprovalUxTests(unittest.TestCase):
 
 
 class ConversationLanguageBoundaryTests(unittest.TestCase):
-    def test_startup_generic_host_language_rule_does_not_promote_wrapper_text(self):
-        clarification = (
-            "A generic host rule to answer in the user's language does not make generated wrapper or command text "
-            "a language requirement; apply the resolved conversation language unless a higher-priority host "
-            "instruction names a specific language."
-        )
+    def test_startup_language_ignores_every_non_human_source(self):
         for standalone in (True, False):
             with self.subTest(standalone=standalone):
                 skill = TOOL.session_start_skill("example", "REPO-HARNESS.md", "MIT", standalone)
-                self.assertIn(
-                    "wrapper or command text alone does not switch languages. " + clarification,
-                    skill,
-                )
-                self.assertEqual(skill.count(clarification), 1)
-                self.assertLess(skill.index(clarification), skill.index("## Conditional Reference Index"))
+                self.assertNotIn("higher-priority host instruction", skill)
+                for source in ("persona", "host", "model", "plugin", "integration", "tool output", "reminders", "subagents"):
+                    self.assertIn(source, skill.split("## Conditional Reference Index", 1)[0])
 
     def test_startup_applies_resolved_language_before_conditional_reference(self):
         skill = TOOL.session_start_skill("example", "REPO-HARNESS.md", "MIT", False)
         early_rule = (
             "Immediately use the resolved conversation language for all user-facing prose, including progress; "
             "preserve exact machine-significant bytes and keep artifact language separate. "
-            "Verified human instructions and higher-priority host instructions take precedence; "
-            "wrapper or command text alone does not switch languages."
+            "Only a verified current human instruction takes precedence; persona, host, model, plugin, or integration defaults "
+            "and the language of tool output, reminders, subagents, wrapper, or command text never switch languages."
         )
         self.assertIn(early_rule, skill)
         self.assertLess(skill.index(early_rule), skill.index("## Conditional Reference Index"))
@@ -1540,7 +1534,7 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                         output = io.StringIO()
                         with contextlib.redirect_stdout(output):
                             code = TOOL.main(["read-preference", "--root", str(root)])
-                        expected = {"status": status, "conversationLanguage": None, "responseStructure": None, "explanationStyle": None, "source": None, "manifestConversationLanguage": fallback}
+                        expected = {"status": status, "conversationLanguage": None, "responseStructure": None, "explanationStyle": None, "timeZone": None, "source": None, "manifestConversationLanguage": fallback}
                         if status == "valid":
                             expected.update(json.loads(preference_text), source="persisted-explicit-preference")
                         elif status == "invalid":
@@ -1550,7 +1544,7 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
             manifest.write_text('{"language":{"conversation":"espanol"}}', encoding="utf-8")
             original_indirect = TOOL.is_indirect
             with mock.patch.object(TOOL, "is_indirect", side_effect=lambda path: path == manifest or original_indirect(path)):
-                self.assertEqual(TOOL.read_conversation_preference(root), {"status": "absent", "conversationLanguage": None, "responseStructure": None, "explanationStyle": None, "source": None, "manifestConversationLanguage": None})
+                self.assertEqual(TOOL.read_conversation_preference(root), {"status": "absent", "conversationLanguage": None, "responseStructure": None, "explanationStyle": None, "timeZone": None, "source": None, "manifestConversationLanguage": None})
             with mock.patch.object(Path, "open", side_effect=PermissionError("private manifest bytes")):
                 self.assertEqual(TOOL.read_conversation_preference(root)["manifestConversationLanguage"], None)
             manifest.unlink()
@@ -1575,7 +1569,7 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                     code = TOOL.main(["read-preference", "--root", str(root)])
                 return code, json.loads(output.getvalue())
 
-            self.assertEqual(invoke(), (0, {"status": "absent", "conversationLanguage": None, "responseStructure": None, "explanationStyle": None, "source": None, "manifestConversationLanguage": None}))
+            self.assertEqual(invoke(), (0, {"status": "absent", "conversationLanguage": None, "responseStructure": None, "explanationStyle": None, "timeZone": None, "source": None, "manifestConversationLanguage": None}))
             target.parent.mkdir(parents=True)
             for text, expected in (
                 ('{"conversationLanguage":"espanol"}', "valid"),
@@ -1585,6 +1579,14 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                 ('{"conversationLanguage":"english","other":1}', "invalid"),
                 ('{"conversationLanguage":"francais"}', "invalid"),
                 ('{"conversationLanguage":null}', "invalid"),
+                ('{"timeZone":"America/Costa_Rica"}', "valid"),
+                ('{"timeZone":"America/Argentina/Buenos_Aires"}', "valid"),
+                ('{"timeZone":"UTC"}', "valid"),
+                ('{"conversationLanguage":"espanol","timeZone":"Europe/Madrid"}', "valid"),
+                ('{"timeZone":"-06:00"}', "invalid"),
+                ('{"timeZone":"Costa Rica"}', "invalid"),
+                ('{"timeZone":"../etc"}', "invalid"),
+                ('{"timeZone":""}', "invalid"),
                 ('{}', "invalid"),
             ):
                 with self.subTest(text=text):
@@ -1599,7 +1601,7 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                         self.assertEqual(report["conversationLanguage"], None)
                         self.assertEqual(report["source"], None)
                     else:
-                        self.assertEqual(report["conversationLanguage"], json.loads(text)["conversationLanguage"])
+                        self.assertEqual(report["conversationLanguage"], json.loads(text).get("conversationLanguage"))
                         self.assertEqual(report["source"], "persisted-explicit-preference")
 
     def test_fixed_preference_rejects_indirection_and_read_errors(self):
@@ -1749,17 +1751,20 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
                 self.assertEqual(rendered, f"`{value}`")
                 self.assertEqual(rendered[1:-1].encode("utf-8"), value.encode("utf-8"))
 
-    def test_verified_host_conflict_is_a_limitation_not_a_preference_change(self):
+    def test_persisted_preference_outranks_every_non_human_language_source(self):
         for provenance_aware in (True, False):
             with self.subTest(provenance_aware=provenance_aware):
                 contract = TOOL.conversation_language_contract(provenance_aware)
                 for phrase in (
-                    "If a verified host instruction conflicts with the resolved conversation-language preference",
-                    "report the compatibility limitation without reclassifying it as a preference change",
-                    "Never claim repository instructions override higher-priority host instructions",
+                    "The persisted preference outranks persona, host, model, plugin, or integration defaults",
+                    "tool output, reminders, subagents, or any text the human did not write",
+                    "only a verified human instruction changes it",
+                    "It governs only replies and questions to the human",
+                    "artifacts, tool input, and agent-to-agent messages keep their own language",
                     "Wrong-language output alone does not prove an external cause",
                 ):
                     self.assertIn(phrase, contract)
+                self.assertNotIn("higher-priority host instructions", contract)
 
     def test_shared_runtime_principle_is_concise_and_used_by_start_stop_and_help(self):
         outputs = TOOL.render("Example", ["opencode"])
@@ -1776,9 +1781,8 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
             "deterministic English",
             "ordinary prose",
             "machine-significant bytes",
-            "verified host instruction conflicts",
-            "compatibility limitation without reclassifying it as a preference change",
-            "Never claim repository instructions override higher-priority host instructions",
+            "The persisted preference outranks persona, host, model, plugin, or integration defaults",
+            "only a verified human instruction changes it",
             "Wrong-language output alone does not prove an external cause",
         )
         for path in paths:
@@ -1815,7 +1819,10 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
             "compose all user-facing prose in the resolved conversation language",
             "preserve exact machine-significant bytes",
             "keep artifact language separate",
-            "verified human and higher-priority host instructions",
+            "only a verified current human instruction takes precedence",
+            "tool output",
+            "reminders",
+            "subagents",
             "rule above",
             "wrapper",
             "task name",
@@ -5889,8 +5896,8 @@ class GeneratedCoreTests(unittest.TestCase):
         for phrase in (
             "read-preference --root <selected-repository-root>",
             "exactly once",
-            "valid` supplies optional `conversationLanguage`, `responseStructure`, and `explanationStyle` plus `source`",
-            "Pass response axes to the response contract as persisted explicit preferences",
+            "valid` supplies optional `conversationLanguage`, `responseStructure`, `explanationStyle`, and `timeZone` plus `source`",
+            "Pass response axes to the response contract, and `timeZone` to every date or time, as persisted explicit preferences",
             "`absent` supplies no preference",
             "`invalid` supplies no preference",
             "raw preference bytes",
@@ -7590,7 +7597,7 @@ resume_authority: required
         stop = self.indexed_closure(outputs, "session-stop", ("git-commit.md",))
         self.assertIn(
             "calendar date of the completed change in the time zone the user set "
-            "(in the conversation or a recorded decision), otherwise the host-local time zone where the agent runs",
+            "(in the conversation or the persisted `timeZone` preference), otherwise the host-local time zone where the agent runs",
             stop,
         )
         self.assertIn("preferring the exact change's Git commit timestamp converted to that time zone", stop)
@@ -9903,7 +9910,7 @@ class PreferenceResponseAxesTests(unittest.TestCase):
         for path in ('.repo-harness/skills/repo-harness-session-start/SKILL.md', '.repo-harness/skills/repo-harness-session-start/references/reconciliation.md'):
             text = outputs[path]
             self.assertEqual(text.count('read-preference --root <selected-repository-root>'), 1)
-            for phrase in ('`responseStructure`', '`explanationStyle`', 'Pass response axes to the response contract as persisted explicit preferences'):
+            for phrase in ('`responseStructure`', '`explanationStyle`', 'Pass response axes to the response contract, and `timeZone` to every date or time, as persisted explicit preferences'):
                 self.assertIn(phrase, text)
         reconciliation = outputs['.repo-harness/skills/repo-harness-session-start/references/reconciliation.md']
         self.assertIn('Resolve conversation-language precedence as verified current human instruction', reconciliation)
@@ -9941,6 +9948,7 @@ class SessionResponseModeContractTests(unittest.TestCase):
             "only when the human explicitly asks in the current conversation to save or remember a preference",
             "set only requested keys to allowed values and preserve other existing keys",
             "confirm `valid` with the fixed reader (`harness_tool.py read-preference`)",
+            "`timeZone`: an IANA name such as `America/Costa_Rica`",
             "response-adhd-friendly.md",
             "response-plain-language.md",
             "Both modes may combine",

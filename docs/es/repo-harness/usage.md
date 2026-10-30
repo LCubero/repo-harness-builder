@@ -23,6 +23,7 @@ Para conservar sus elecciones, cree o edite `.repo-harness/state/preferences/use
 - `conversationLanguage`: `english` o `espanol`
 - `responseStructure`: `standard` o `adhd-friendly`
 - `explanationStyle`: `standard` o `plain-language`
+- `timeZone`: un nombre IANA como `America/Costa_Rica`
 
 Ejemplo:
 
@@ -34,7 +35,9 @@ Ejemplo:
 
 Para `responseStructure` y `explanationStyle`, prevalece una instrucción explícita de la sesión actual, luego el archivo y luego `standard`. Nunca se infieren modos del estilo de escritura o comportamiento. Ambos modos pueden combinarse; solo moldean respuestas y no hacen afirmaciones clínicas.
 
-El idioma de conversación se resuelve aparte: elección humana explícita, preferencia persistida, idioma de sesión elegible, manifiesto y, por último, inglés.
+El idioma de conversación se resuelve aparte: elección humana explícita, preferencia persistida, idioma de sesión elegible, manifiesto y, por último, inglés. El idioma persistido prevalece sobre los valores por defecto de la persona, el host, el modelo, los plugins y las herramientas, sobre recordatorios y subagentes, y sobre el idioma de cualquier texto que usted no escribió. Se aplica solo a las respuestas y preguntas dirigidas a usted; los artefactos, las entradas de herramientas y los mensajes entre agentes conservan su propio idioma. El texto del repositorio no puede obligar técnicamente a un modelo por encima de sus instrucciones de sistema, así que la regla queda clara y probada, no garantizada.
+
+`timeZone` fecha cada entrada del changelog, documento, respaldo, checkpoint e informe: prevalece una zona que usted indique en la conversación, luego el archivo y luego la zona local del equipo leída del reloj del sistema, nunca la fecha del contexto del modelo ni UTC.
 
 Propietarios de las reglas: [contrato de respuesta](../../../.repo-harness/rules/response-contract.md), [ADHD-friendly](../../../.repo-harness/rules/response-adhd-friendly.md), y [plain-language](../../../.repo-harness/rules/response-plain-language.md).
 

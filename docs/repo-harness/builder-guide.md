@@ -138,7 +138,7 @@ Conversation language is independent of documentation locales. It sets the langu
 
 Approval text is relayed exactly from the localized CLI prompt, and plan counts come from the tool output. An empty executable plan needs no approval, empty action table, or digest; blocked entries still prevent a claim that the harness is current. A contribution guide matching the builder's own brief template receives no outdated-guide review suggestion.
 
-You can persist the conversation language and ADHD-friendly or plain-language response modes by hand in a [local preference file](usage.md#response-preferences), or explicitly ask the agent to save them; it never saves preferences on its own.
+You can persist the conversation language, time zone, and ADHD-friendly or plain-language response modes by hand in a [local preference file](usage.md#response-preferences), or explicitly ask the agent to save them; it never saves preferences on its own.
 
 Reciprocal README selectors are one atomic integration. If a repository already has `README.md` and the exact executable plan cannot update it, `README.es.md` is classified as blocked rather than created. A one-way selector that claims a bilingual repository is never produced.
 

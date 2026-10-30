@@ -11,7 +11,7 @@ Load when: sizing a change, deciding when to stop, or agreeing how work is done 
 - Solve real current problems, not hypothetical future ones. Delete unused scaffolding.
 - Before heavy work, split it and set a time limit. Parallel work is fine when the number of concurrent jobs is bounded. If saturation risk cannot be bounded, warn and ask.
 - Put temporary files in `.repo-harness/tmp/`; leave the working folder only when strictly necessary and explicitly approved.
-- Every date or time the harness writes or shows (changelogs, documents, backups, checkpoints, reports) uses the user-set time zone (conversation or recorded decision), otherwise host-local; never UTC.
+- Every date or time the harness writes or shows (changelogs, documents, backups, checkpoints, reports) uses the user-set time zone (conversation or `timeZone` preference), otherwise host-local (system clock, not model context); never UTC.
 
 ## Stopping
 

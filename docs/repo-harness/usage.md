@@ -22,6 +22,7 @@ To persist your choices, create or edit `.repo-harness/state/preferences/user-pr
 - `conversationLanguage`: `english` or `espanol`
 - `responseStructure`: `standard` or `adhd-friendly`
 - `explanationStyle`: `standard` or `plain-language`
+- `timeZone`: an IANA name such as `America/Costa_Rica`
 
 Example:
 
@@ -33,7 +34,9 @@ Example:
 
 For `responseStructure` and `explanationStyle`, an explicit current-session instruction wins, then the file, then `standard`. Modes are never inferred from writing style or behavior. Both modes may combine; they shape replies only and make no clinical claim.
 
-Conversation language resolves separately: explicit human choice, persisted preference, eligible session language, manifest, then English.
+Conversation language resolves separately: explicit human choice, persisted preference, eligible session language, manifest, then English. The persisted language outranks persona, host, model, plugin, and tool defaults, reminders, subagents, and the language of any text you did not write. It applies only to replies and questions to you; artifacts, tool input, and agent-to-agent messages keep their own language. Repository text cannot technically force a model past its system instructions, so the rule is stated clearly and tested, not guaranteed.
+
+`timeZone` dates every changelog entry, document, backup, checkpoint, and report: a zone you state in the conversation wins, then the file, then the host-local zone read from the system clock, never the model's context date or UTC.
 
 Rule owners: [response contract](../../.repo-harness/rules/response-contract.md), [ADHD-friendly](../../.repo-harness/rules/response-adhd-friendly.md), and [plain-language](../../.repo-harness/rules/response-plain-language.md).
 

@@ -590,6 +590,26 @@ Cuatro planes consumen estado local bajo namespaces que reserva el Plan 1: Plan 
 
 <!-- doc-role:active-records -->
 
+### RH-W-0134
+
+Estado: `active`. Trabajo restante: PR y merge. La tabla siguiente conserva el detalle del registro.
+
+| Campo | Valor |
+|---|---|
+| Origen | Solicitud del propietario del 2026-10-29: el agente fechó registros con la fecha de su contexto en vez del reloj del equipo, y respondió en inglés tras un recordatorio de herramienta en inglés pese a la preferencia persistida `espanol` (issue #540). |
+| Prioridad | P1: ambos fallos se repitieron y contradicen elecciones explícitas persistidas del propietario. |
+| Dependencias | Lector de preferencias de RH-W-0071; regla de zona horaria de RH-W-0131. |
+| Estado | active |
+| Trabajo completado | El lector fijo acepta un `timeZone` opcional con nombre IANA (se valida el formato, no la existencia, porque Python en Windows puede no traer base de zonas) y siempre devuelve el campo. Las fechas usan la zona indicada en la conversación, luego `timeZone`, luego la zona local del reloj del sistema, nunca el contexto del modelo ni UTC. El principio de idioma compartido, la regla de inicio de sesión y el contrato de salida indican que el idioma persistido prevalece sobre persona, host, modelo, plugins e integraciones y sobre el idioma de salidas de herramientas, recordatorios, subagentes o cualquier texto no humano; solo una instrucción humana verificada lo cambia. Se eliminaron las cláusulas de "las instrucciones del host de mayor prioridad prevalecen". Se actualizaron en EN/ES el uso generado, el contrato de respuesta, los acuerdos de trabajo, los README, el uso y la guía del constructor. |
+| Trabajo restante | PR y merge. |
+| Adiciones | `timeZone` en el archivo de preferencias y en la salida del lector. |
+| Exclusiones | Sin nuevo almacén de preferencias, sin dependencia de base de zonas, sin guardado automático; el valor propio de `timeZone` del propietario se guarda solo cuando lo confirme. |
+| Aplazamientos | none |
+| Rechazos | Se rechazó afirmar que el texto del repositorio puede anular técnicamente las instrucciones de sistema de un modelo: la regla queda indicada y probada, no garantizada. |
+| Evidencia | Primero pruebas: RED en pruebas de lector, idioma, fechas y contrato de respuesta; GREEN en las clases enfocadas. Suite completa: 732 pruebas, `OK (skipped=12)`; checker `current`, 0 escrituras; las tres proyecciones de runtime son idénticas byte a byte. La revisión nativa de nivel alto de `c01599d` (linaje `review-d2feb033f3501770`, riesgo/legibilidad/confiabilidad) cerró aprobada y reconocida; un WARNING informativo señala que la validación de formato rechaza alias IANA heredados como `EST5EDT` o `Etc/GMT+6`. |
+| Historial de decisiones | 2026-10-29: el propietario pidió ambos cambios y delegó el diseño bajo el charter (sin sobreingeniería). |
+| Siguiente condición de avance | El merge completa el registro. |
+
 ### RH-W-0133
 
 Estado: `completed`. Trabajo restante: `none`. La tabla siguiente conserva el detalle del registro.
