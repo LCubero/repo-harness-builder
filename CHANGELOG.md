@@ -4,11 +4,9 @@
 
 This file records meaningful completed changes in chronological order, newest first. Current state and future work belong in `docs/repo-harness/current-state.md`.
 
-## 2026-10-30
+## 2026-10-29
 
 - Clarified conversation-language-only preference precedence for technical startup invocations and exposed captured Git failure diagnostics in tests.
-
-## 2026-10-29
 
 - Added an optional `timeZone` preference (IANA name) read at session start and used for every date the harness writes, falling back to the host clock; the saved conversation language now outranks persona, host, model, plugin, integration, tool, reminder, and subagent language until the human says otherwise (RH-W-0134, issue #540).
 
