@@ -34,7 +34,7 @@ The harness works on its own. Integrated mode composes available Gentle AI and E
 ## Install
 <!-- doc-role:quick-start -->
 
-1. Download the zip labeled **pi**, **claude-code**, or **opencode** for your runtime from the [stable v3.1.1 release](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.1.1).
+1. Download the zip labeled **pi**, **claude-code**, or **opencode** for your runtime from the [stable v3.2.0 release](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.2.0).
 2. Extract it at the root of the repository where you will use it. It creates your runtime's skills folder listed below (`skills` plural). Keep it inside the repository, never in a global or user-level configuration folder.
 
    - **Claude Code:** `.claude/skills/repo-harness-builder/`

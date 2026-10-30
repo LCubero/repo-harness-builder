@@ -4,6 +4,8 @@
 
 ## 2026-10-29
 
+- Se publicó el estable [`v3.2.0`](https://github.com/LCubero/repo-harness-builder/releases/tag/v3.2.0) (latest, no borrador ni pre-release) el 2026-10-29T23:55:12-06:00 desde [`9db1b9937b156ddeae589b2185182dfe684f4d98`](https://github.com/LCubero/repo-harness-builder/commit/9db1b9937b156ddeae589b2185182dfe684f4d98) por decisión delegada del propietario (issue #546), con la regla LF de `.gitattributes` para todo el repositorio (RH-W-0133), la preferencia `timeZone` y la precedencia del idioma de conversación guardado (RH-W-0134), y la aclaración de que esa precedencia aplica solo al idioma de conversación (#543) (`claude-code` 287267 bytes, SHA-256 `679f9e0e844b315b9f3de5c5ac81de67ed3f9ab249f67e2d9728ad7423daf30a`; `opencode` 287351 bytes, SHA-256 `0be1a7aa31049422f196552f21fcdd9db8d3e7aaecfb514b8b1c0af491abfd26`; `pi` 287099 bytes, SHA-256 `d3c4f652024ff3745820de85767b66f6b6421d1da0a6dd91839d87ae8ea3ad07`); los digests de GitHub coinciden. Cada zip contiene 14 archivos idénticos a la fuente; pasaron `--help` y `self-test --standalone` extraídos, una instalación standalone nueva con `current` y un segundo preview idempotente. Suite completa: 733 pruebas, `OK (skipped=12)`.
+
 - Se subió la versión del paquete del builder a `3.2.0` para publicar la regla LF de `.gitattributes` para todo el repositorio, la preferencia `timeZone` y las correcciones de precedencia del idioma de conversación (issue #546). Esta subida no cambia el comportamiento de la CLI ni de los contratos generados.
 
 - Se aclaró que la precedencia de la preferencia aplica solo a la selección del idioma de conversación en invocaciones técnicas de inicio, y las pruebas ahora muestran el diagnóstico capturado cuando falla Git.
