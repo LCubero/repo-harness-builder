@@ -4,6 +4,8 @@
 
 ## 2026-10-29
 
+- Se subió la versión del paquete del builder a `3.2.0` para publicar la regla LF de `.gitattributes` para todo el repositorio, la preferencia `timeZone` y las correcciones de precedencia del idioma de conversación (issue #546). Esta subida no cambia el comportamiento de la CLI ni de los contratos generados.
+
 - Se aclaró que la precedencia de la preferencia aplica solo a la selección del idioma de conversación en invocaciones técnicas de inicio, y las pruebas ahora muestran el diagnóstico capturado cuando falla Git.
 
 - Se agregó una preferencia opcional `timeZone` (nombre IANA) que se lee al iniciar la sesión y fecha todo lo que escribe el harness, con el reloj del equipo como respaldo; el idioma de conversación guardado prevalece ahora sobre el de persona, host, modelo, plugins, integraciones, herramientas, recordatorios y subagentes hasta que la persona indique otra cosa (RH-W-0134, issue #540).
