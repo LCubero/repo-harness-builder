@@ -6,7 +6,7 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-30
 
-- Generated root `.gitattributes` now keeps every text file LF with one repository-wide rule, `* text=auto eol=lf`, appended when missing and re-appended when a later line sets a non-LF line ending, so unchanged files no longer look modified across Windows, Linux, and macOS (RH-W-0133).
+- Generated root `.gitattributes` now keeps every text file LF with one repository-wide rule, `* text=auto eol=lf`, appended when missing and re-appended when a later line sets a non-LF line ending, so unchanged files no longer look modified across Windows, Linux, and macOS (RH-W-0133, issue #537).
 
 ## 2026-10-26
 

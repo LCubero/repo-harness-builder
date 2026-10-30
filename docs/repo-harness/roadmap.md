@@ -595,7 +595,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 ### RH-W-0133
 | Field | Value |
 |---|---|
-| Origin | 2026-10-29 consumer incident: a working copy shared between Windows and Fedora showed three unchanged project files as modified on every session, because the generated root `.gitattributes` pinned only harness paths. 2026-10-30 owner decision: every generated repository must keep every text file LF, as this source repository already does. |
+| Origin | 2026-10-29 consumer incident: a working copy shared between Windows and Fedora showed three unchanged project files as modified on every session, because the generated root `.gitattributes` pinned only harness paths. 2026-10-30 owner decision: every generated repository must keep every text file LF, as this source repository already does (issue #537). |
 | Priority | P1: persistent false modifications hide real changes and invite CRLF-only commits in mixed-OS or dual-boot use. |
 | Dependencies | none |
 | Status | active |

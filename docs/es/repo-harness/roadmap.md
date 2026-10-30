@@ -596,7 +596,7 @@ Estado: `active`. Trabajo restante: issue, PR y merge, que son decisiones del pr
 
 | Campo | Valor |
 |---|---|
-| Origen | Incidente en un consumidor del 2026-10-29: una copia de trabajo compartida entre Windows y Fedora mostraba tres archivos del proyecto sin cambios como modificados en cada sesión, porque el `.gitattributes` raíz generado solo fijaba rutas del harness. Decisión del propietario del 2026-10-30: cada repositorio generado debe mantener LF en todos los archivos de texto, como ya hace este repositorio fuente. |
+| Origen | Incidente en un consumidor del 2026-10-29: una copia de trabajo compartida entre Windows y Fedora mostraba tres archivos del proyecto sin cambios como modificados en cada sesión, porque el `.gitattributes` raíz generado solo fijaba rutas del harness. Decisión del propietario del 2026-10-30: cada repositorio generado debe mantener LF en todos los archivos de texto, como ya hace este repositorio fuente (issue #537). |
 | Prioridad | P1: las modificaciones falsas persistentes ocultan cambios reales e invitan a commits solo de CRLF en uso con varios sistemas o arranque dual. |
 | Dependencias | none |
 | Estado | active |
