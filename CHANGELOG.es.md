@@ -2,6 +2,10 @@
 
 [`CHANGELOG.md`](CHANGELOG.md) es el único historial cronológico canónico. Este archivo ofrece una presentación completa en español y se mantiene en la misma unidad de trabajo.
 
+## 2026-10-30
+
+- Se aclaró que la precedencia de la preferencia aplica solo a la selección del idioma de conversación en invocaciones técnicas de inicio, y las pruebas ahora muestran el diagnóstico capturado cuando falla Git.
+
 ## 2026-10-29
 
 - Se agregó una preferencia opcional `timeZone` (nombre IANA) que se lee al iniciar la sesión y fecha todo lo que escribe el harness, con el reloj del equipo como respaldo; el idioma de conversación guardado prevalece ahora sobre el de persona, host, modelo, plugins, integraciones, herramientas, recordatorios y subagentes hasta que la persona indique otra cosa (RH-W-0134, issue #540).
