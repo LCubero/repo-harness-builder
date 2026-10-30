@@ -606,7 +606,7 @@ Estado: `active`. Trabajo restante: PR y merge. La tabla siguiente conserva el d
 | Exclusiones | Sin nuevo almacén de preferencias, sin dependencia de base de zonas, sin guardado automático; el valor propio de `timeZone` del propietario se guarda solo cuando lo confirme. |
 | Aplazamientos | none |
 | Rechazos | Se rechazó afirmar que el texto del repositorio puede anular técnicamente las instrucciones de sistema de un modelo: la regla queda indicada y probada, no garantizada. |
-| Evidencia | Primero pruebas: RED en pruebas de lector, idioma, fechas y contrato de respuesta; GREEN en las clases enfocadas. Suite completa: 732 pruebas, `OK (skipped=12)`; checker `current`, 0 escrituras; las tres proyecciones de runtime son idénticas byte a byte. |
+| Evidencia | Primero pruebas: RED en pruebas de lector, idioma, fechas y contrato de respuesta; GREEN en las clases enfocadas. Suite completa: 732 pruebas, `OK (skipped=12)`; checker `current`, 0 escrituras; las tres proyecciones de runtime son idénticas byte a byte. La revisión nativa de nivel alto de `c01599d` (linaje `review-d2feb033f3501770`, riesgo/legibilidad/confiabilidad) cerró aprobada y reconocida; un WARNING informativo señala que la validación de formato rechaza alias IANA heredados como `EST5EDT` o `Etc/GMT+6`. |
 | Historial de decisiones | 2026-10-29: el propietario pidió ambos cambios y delegó el diseño bajo el charter (sin sobreingeniería). |
 | Siguiente condición de avance | El merge completa el registro. |
 

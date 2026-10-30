@@ -605,7 +605,7 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 | Exclusions | No new preference store, no zone database dependency, no automatic saving; the owner's own `timeZone` value is saved only after he confirms it. |
 | Deferrals | none |
 | Rejections | Rejected claiming repository text can technically override a model's system instructions: the rule is stated and tested, not guaranteed. |
-| Evidence | Test-first: RED across reader, language, dating, and response-contract tests; GREEN in the focused classes. Full suite: 732 tests, `OK (skipped=12)`; checker `current`, 0 writes; three runtime projections byte-identical. |
+| Evidence | Test-first: RED across reader, language, dating, and response-contract tests; GREEN in the focused classes. Full suite: 732 tests, `OK (skipped=12)`; checker `current`, 0 writes; three runtime projections byte-identical. Native high-tier review of `c01599d` (lineage `review-d2feb033f3501770`, risk/readability/reliability) closed approved and acknowledged; one informational WARNING notes that the format check rejects legacy IANA aliases such as `EST5EDT` or `Etc/GMT+6`. |
 | Decision history | 2026-10-29: owner requested both changes and delegated design under the charter (no overengineering). |
 | Next advancement condition | Merge completes the record. |
 
