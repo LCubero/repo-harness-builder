@@ -592,6 +592,23 @@ Four plans consume local state under namespaces Plan 1 reserves: Plan 2A for loc
 
 <!-- doc-role:active-records -->
 
+### RH-W-0134
+| Field | Value |
+|---|---|
+| Origin | 2026-10-29 owner request: the agent dated records from its context date instead of the host clock, and replied in English after an English tool reminder despite the persisted `espanol` preference (issue #540). |
+| Priority | P1: both failures repeated and contradict explicit persisted owner choices. |
+| Dependencies | RH-W-0071 preference reader; RH-W-0131 time-zone rule. |
+| Status | active |
+| Completed work | The fixed reader accepts an optional `timeZone` IANA name (format-checked, not existence-checked, because Windows Python may lack a zone database) and always returns the field. Dates use the zone stated in the conversation, then `timeZone`, then host-local from the system clock, never model context or UTC. The shared language principle, session-start rule, and output contract state that the persisted language outranks persona, host, model, plugin, and integration defaults and the language of tool output, reminders, subagents, or any non-human text; only a verified human instruction changes it. The former "higher-priority host instructions take precedence" clauses are removed. Generated usage, response contract, working agreements, READMEs, usage, and builder guide updated in EN/ES. |
+| Remaining work | PR and merge. |
+| Additions | `timeZone` in the preference file and reader output. |
+| Exclusions | No new preference store, no zone database dependency, no automatic saving; the owner's own `timeZone` value is saved only after he confirms it. |
+| Deferrals | none |
+| Rejections | Rejected claiming repository text can technically override a model's system instructions: the rule is stated and tested, not guaranteed. |
+| Evidence | Test-first: RED across reader, language, dating, and response-contract tests; GREEN in the focused classes. Full suite: 732 tests, `OK (skipped=12)`; checker `current`, 0 writes; three runtime projections byte-identical. |
+| Decision history | 2026-10-29: owner requested both changes and delegated design under the charter (no overengineering). |
+| Next advancement condition | Merge completes the record. |
+
 ### RH-W-0133
 | Field | Value |
 |---|---|

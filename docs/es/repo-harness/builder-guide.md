@@ -138,7 +138,7 @@ El idioma de conversación es independiente de los locales de documentación. De
 
 El texto de aprobación se transmite exactamente desde el aviso localizado de la CLI y los conteos del plan salen de la herramienta. Un plan ejecutable vacío no necesita aprobación, tabla de acciones vacía ni digest; las entradas bloqueadas siguen impidiendo afirmar que el harness está actualizado. Una guía de contribución que coincide con la plantilla breve del constructor no recibe una sugerencia de revisión por posible desactualización.
 
-Puede conservar a mano el idioma de conversación y los modos de respuesta ADHD-friendly o plain-language en un [archivo local de preferencias](usage.md#preferencias-de-respuesta), o pedir explícitamente al agente que los guarde; nunca guarda preferencias por iniciativa propia.
+Puede conservar a mano el idioma de conversación, la zona horaria y los modos de respuesta ADHD-friendly o plain-language en un [archivo local de preferencias](usage.md#preferencias-de-respuesta), o pedir explícitamente al agente que los guarde; nunca guarda preferencias por iniciativa propia.
 
 Los selectores recíprocos de README son una sola integración atómica. Si el repositorio ya tiene `README.md` y el plan ejecutable exacto no puede actualizarlo, `README.es.md` se clasifica como bloqueado en vez de crearse. Nunca se produce un selector unilateral que afirme un repositorio bilingüe.
 

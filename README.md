@@ -66,8 +66,9 @@ You choose how the agent answers:
 - **Language:** English or Spanish.
 - **ADHD-friendly structure:** answer first, short chunks, one question at a time.
 - **Plain language:** simple words, short sentences, technical terms defined.
+- **Time zone:** the zone used for every date the harness writes.
 
-Ask for a mode during a session, or ask the agent to save it for future sessions. It never guesses or saves preferences on its own. See [response preferences](docs/repo-harness/usage.md#response-preferences).
+Ask for a mode during a session, or ask the agent to save it for future sessions. A saved language wins over persona, host, or tool defaults until you say otherwise. It never guesses or saves preferences on its own. See [response preferences](docs/repo-harness/usage.md#response-preferences).
 
 ## What You Can Ask
 <!-- doc-role:requests -->

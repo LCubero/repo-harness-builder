@@ -66,8 +66,9 @@ Usted elige cómo responde el agente:
 - **Idioma:** inglés o español.
 - **Estructura amigable con TDAH:** la respuesta primero, bloques cortos, una pregunta a la vez.
 - **Lenguaje sencillo:** palabras simples, frases cortas y términos técnicos explicados.
+- **Zona horaria:** la zona que se usa en todas las fechas que escribe el harness.
 
-Pida un modo durante la sesión, o pida al agente que lo guarde para próximas sesiones. Nunca adivina ni guarda preferencias por su cuenta. Consulte las [preferencias de respuesta](docs/es/repo-harness/usage.md#preferencias-de-respuesta).
+Pida un modo durante la sesión, o pida al agente que lo guarde para próximas sesiones. Un idioma guardado prevalece sobre la persona, el host o las herramientas hasta que usted diga otra cosa. Nunca adivina ni guarda preferencias por su cuenta. Consulte las [preferencias de respuesta](docs/es/repo-harness/usage.md#preferencias-de-respuesta).
 
 ## Qué puede pedir
 <!-- doc-role:requests -->

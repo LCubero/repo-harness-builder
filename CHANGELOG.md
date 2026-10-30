@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-29
 
+- Added an optional `timeZone` preference (IANA name) read at session start and used for every date the harness writes, falling back to the host clock; the saved conversation language now outranks persona, host, model, plugin, integration, tool, reminder, and subagent language until the human says otherwise (RH-W-0134, issue #540).
+
 - Generated root `.gitattributes` now keeps every text file LF with one repository-wide rule, `* text=auto eol=lf`, appended when missing and re-appended when a later line sets a non-LF line ending, so unchanged files no longer look modified across Windows, Linux, and macOS (RH-W-0133, issue #537).
 
 ## 2026-10-26
