@@ -1477,14 +1477,39 @@ class ConversationLanguageBoundaryTests(unittest.TestCase):
     def test_startup_applies_resolved_language_before_conditional_reference(self):
         skill = TOOL.session_start_skill("example", "REPO-HARNESS.md", "MIT", False)
         early_rule = (
-            "Immediately use the resolved conversation language for all user-facing prose, including progress; "
+            "Check each reply, including progress: use resolved conversation language; "
             "preserve exact machine-significant bytes and keep artifact language separate. "
-            "Only a verified current human instruction takes precedence; persona, host, model, plugin, or integration defaults "
-            "and the language of tool output, reminders, subagents, wrapper, or command text never switch languages."
+            "English technical invocation never overrides persisted Spanish without an explicit human language-change request. "
+            "For conversation-language selection only, repo-harness's resolved preference takes precedence over "
+            "environment/persona/host/model/plugin/integration defaults, message-language mirroring, tool output, "
+            "reminders, subagents, wrapper/command text. "
+            "All other environment instructions (safety, permissions, tools) remain unchanged."
         )
         self.assertIn(early_rule, skill)
         self.assertLess(skill.index(early_rule), skill.index("## Conditional Reference Index"))
         self.assertEqual(skill.count("read-preference --root <selected-repository-root>"), 1)
+
+        for standalone in (True, False):
+            with self.subTest(standalone=standalone):
+                outputs = TOOL.render("Example", ["claude-code", "opencode", "pi"],
+                                      standalone=standalone, conversation_language="espanol")
+                for prefix in (".repo-harness", ".claude", ".opencode", ".pi"):
+                    skill = outputs[f"{prefix}/skills/repo-harness-session-start/SKILL.md"]
+                    contract = skill.split("## Conditional Reference Index", 1)[0]
+                    for phrase in (
+                        "English technical invocation never overrides persisted Spanish",
+                        "explicit human language-change request",
+                        "Check each reply",
+                        "For conversation-language selection only, repo-harness's resolved preference takes precedence over",
+                        "All other environment instructions (safety, permissions, tools) remain unchanged",
+                        "message-language mirroring",
+                        "preserve exact machine-significant bytes and keep artifact language separate",
+                        "verified human instruction, valid persisted preference",
+                    ):
+                        self.assertIn(phrase, contract, prefix)
+                    # Existing startup safety and its single fixed reader still apply.
+                    self.assertIn("Startup is read-only by default", skill)
+                    self.assertEqual(skill.count("read-preference --root <selected-repository-root>"), 1)
 
     def test_generated_startup_uses_one_active_runtime_fixed_reader(self):
         for standalone in (True, False):
@@ -12243,12 +12268,36 @@ class SurvivingLegacyReferenceTests(unittest.TestCase):
         rulebook.write_text(text, encoding="utf-8", newline="")
 
     def git(self, root: Path, *args: str) -> None:
-        subprocess.run(
-            ("git", "-C", str(root), *args),
-            capture_output=True,
-            text=True,
-            check=True,
+        try:
+            subprocess.run(
+                ("git", "-C", str(root), *args),
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        except subprocess.CalledProcessError as error:
+            self.fail(
+                f"Git command {error.cmd!r} exited {error.returncode}\n"
+                f"stdout:\n{error.stdout}\nstderr:\n{error.stderr}"
+            )
+
+    def test_git_failure_reports_command_exit_and_captured_output(self):
+        root = Path("controlled-fixture")
+        command = ("git", "-C", str(root), "add", "-A")
+        stdout = "captured stdout\nsecond line\n"
+        stderr = "fatal: controlled failure\n"
+        failure = subprocess.CalledProcessError(128, command, output=stdout, stderr=stderr)
+        with mock.patch.object(subprocess, "run", side_effect=failure) as run:
+            with self.assertRaises(self.failureException) as raised:
+                self.git(root, "add", "-A")
+            run.assert_called_once_with(command, capture_output=True, text=True, check=True)
+        self.assertEqual(
+            str(raised.exception),
+            f"Git command {command!r} exited 128\nstdout:\n{stdout}\nstderr:\n{stderr}",
         )
+        with mock.patch.object(subprocess, "run", return_value=subprocess.CompletedProcess(command, 0)) as run:
+            self.assertIsNone(self.git(root, "add", "-A"))
+            run.assert_called_once_with(command, capture_output=True, text=True, check=True)
 
     def track_everything(self, root: Path) -> None:
         self.git(root, "init", "-q")
