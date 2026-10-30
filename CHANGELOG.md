@@ -6,6 +6,8 @@ This file records meaningful completed changes in chronological order, newest fi
 
 ## 2026-10-29
 
+- Bumped the builder package version to `3.2.0` to release the repository-wide LF `.gitattributes` rule, the `timeZone` preference, and the conversation-language precedence fixes (issue #546). No CLI or generated-contract behavior changed in this bump.
+
 - Clarified conversation-language-only preference precedence for technical startup invocations and exposed captured Git failure diagnostics in tests.
 
 - Added an optional `timeZone` preference (IANA name) read at session start and used for every date the harness writes, falling back to the host clock; the saved conversation language now outranks persona, host, model, plugin, integration, tool, reminder, and subagent language until the human says otherwise (RH-W-0134, issue #540).
