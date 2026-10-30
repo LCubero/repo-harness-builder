@@ -3740,10 +3740,8 @@ class GeneratedOutputMigrationTests(unittest.TestCase):
         self.assertEqual(paths & expected_canonical, expected_canonical)
         self.assertEqual(paths & expected_runtime, expected_runtime)
         reference_paths = expected_canonical | expected_runtime
-        self.assertEqual(
-            set(TOOL.git_attribute_rules({path: "reference bytes" for path in reference_paths}, TOOL.RULEBOOK_PATH)),
-            {f"{path} text eol=lf" for path in reference_paths},
-        )
+        self.assertFalse(TOOL.conflicting_attribute_paths(
+            TOOL.render("Example", ["opencode", "pi"])[".gitattributes"].encode(), sorted(reference_paths)))
         self.assertFalse(any("repo-harness-documentation/references/" in path for path in paths))
         self.assertFalse(any("repo-harness-builder/references/" in path for path in paths))
         self.assertFalse(any("/references/unknown.md" in path for path in paths))
@@ -8804,10 +8802,10 @@ resume_authority: required
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         validation = (ROOT / "references" / "validation.md").read_text(encoding="utf-8")
         self.assertIn(".gitattributes", usage)
-        self.assertIn("text eol=lf", usage)
-        self.assertIn("byte-compared generated path", usage)
+        self.assertIn("* text=auto eol=lf", usage)
+        self.assertIn("git add --renormalize .", usage)
         self.assertIn("`.gitattributes`", validation)
-        self.assertIn("<path> text eol=lf", validation)
+        self.assertIn("`* text=auto eol=lf`", validation)
         self.assertIn("byte-compared generated path", validation)
         self.assertLess(skill.index("`references/validation.md`"), skill.index("## Execution Steps"))
 
@@ -10274,30 +10272,32 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
         "opencode": ".opencode",
         "pi": ".pi",
     }
-    EXPECTED = (
+    RULE = "* text=auto eol=lf"
+    EXPECTED = "* text=auto eol=lf\n"
+    LEGACY_EXACT = (
         ".repo-harness/check.py text eol=lf\n"
         ".repo-harness/manifest.json text eol=lf\n"
-        ".repo-harness/skills/repo-harness-documentation/SKILL.md text eol=lf\n"
-        ".repo-harness/skills/repo-harness-session-start/SKILL.md text eol=lf\n"
-        ".repo-harness/skills/repo-harness-session-start/references/checkpoint.md text eol=lf\n"
-        ".repo-harness/skills/repo-harness-session-start/references/reconciliation.md text eol=lf\n"
-        ".repo-harness/skills/repo-harness-session-start/references/synchronization.md text eol=lf\n"
-        ".repo-harness/skills/repo-harness-session-stop/SKILL.md text eol=lf\n"
-        ".repo-harness/skills/repo-harness-session-stop/references/checkpoint.md text eol=lf\n"
-        ".repo-harness/skills/repo-harness-session-stop/references/git-commit.md text eol=lf\n"
-        ".repo-harness/skills/repo-harness-session-stop/references/git-transport.md text eol=lf\n"
     )
 
-    def test_fresh_render_includes_only_the_bounded_attributes(self):
-        self.assertEqual(TOOL.render("Example", [])[".gitattributes"], self.EXPECTED)
+    @staticmethod
+    def effective(root: Path, *paths: str) -> str:
+        empty = root / "empty-attributes"
+        empty.write_bytes(b"")
+        return subprocess.run(
+            ["git", "-c", f"core.attributesFile={empty.as_posix()}", "check-attr", "text", "eol", "--", *paths],
+            cwd=root, env={**os.environ, "GIT_ATTR_NOSYSTEM": "1"},
+            capture_output=True, text=True, check=True).stdout
 
-    def test_every_byte_compared_generated_path_is_protected(self):
+    def test_fresh_render_is_one_repository_wide_lf_rule(self):
+        for runtimes in ([], ["claude-code"], ["claude-code", "opencode"], ["pi"]):
+            with self.subTest(runtimes=runtimes):
+                self.assertEqual(TOOL.render("Example", runtimes)[".gitattributes"], self.EXPECTED)
+
+    def test_repository_wide_rule_keeps_every_byte_compared_path_lf(self):
         for runtimes in ([], ["claude-code"], ["claude-code", "opencode"], ["pi"]):
             with self.subTest(runtimes=runtimes):
                 outputs = TOOL.render("Example", runtimes)
-                rules = set(outputs[".gitattributes"].splitlines())
                 compared_paths = set(TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH))
-                expected = {f"{path} text eol=lf" for path in compared_paths}
                 expected_reference_paths = set(self.CANONICAL_REFERENCE_PATHS)
                 for runtime in runtimes:
                     base = self.RUNTIME_BASES[runtime]
@@ -10306,65 +10306,29 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
                         for skill, references in self.REFERENCE_FILES_BY_SKILL.items()
                         for reference in references
                     )
-
-                self.assertEqual(rules, expected)
                 self.assertTrue(expected_reference_paths <= compared_paths)
-                declared_reference_paths = {
-                    rule.removesuffix(" text eol=lf")
-                    for rule in rules
-                    if "/references/" in rule
-                }
-                self.assertEqual(declared_reference_paths, expected_reference_paths)
-                self.assertIn(".repo-harness/check.py text eol=lf", rules)
-                for name in TOOL.COMMAND_TO_SKILL.values():
-                    self.assertIn(f".repo-harness/skills/{name}/SKILL.md text eol=lf", rules)
-                for runtime, base in self.RUNTIME_BASES.items():
-                    if runtime not in runtimes:
-                        self.assertFalse(any(path.startswith(f"{base}/") for path in declared_reference_paths))
-                for human_path in ("REPO-HARNESS.md", "docs/repo-harness/current-state.md", ".gitattributes"):
-                    self.assertNotIn(f"{human_path} text eol=lf", rules)
+                self.assertIn(".repo-harness/check.py", compared_paths)
+                self.assertFalse(TOOL.conflicting_attribute_paths(
+                    outputs[".gitattributes"].encode(), sorted(compared_paths)))
 
-    def test_reference_protection_detects_a_byte_comparison_omission(self):
-        omitted = ".claude/skills/repo-harness-session-start/references/reconciliation.md"
-        original = TOOL.byte_compared_paths
+    def test_rendered_rule_makes_harness_and_project_files_lf_in_git(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            (root / ".gitattributes").write_text(TOOL.render("Example", ["pi"])[".gitattributes"], encoding="utf-8")
+            result = self.effective(root, ".repo-harness/check.py", "docs/notes.md", "tests/test_app.py")
+            for path in (".repo-harness/check.py", "docs/notes.md", "tests/test_app.py"):
+                self.assertIn(f"{path}: text: auto", result)
+                self.assertIn(f"{path}: eol: lf", result)
 
-        def omit_reference(outputs, rulebook_path):
-            return [path for path in original(outputs, rulebook_path) if path != omitted]
-
-        with mock.patch.object(TOOL, "byte_compared_paths", side_effect=omit_reference):
-            outputs = TOOL.render("Example", ["claude-code"])
-            compared_paths = set(TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH))
-            with self.assertRaises(AssertionError):
-                self.assertIn(omitted, compared_paths)
-            self.assertNotIn(f"{omitted} text eol=lf", outputs[".gitattributes"].splitlines())
-
-    def test_runtime_projections_and_wrappers_are_protected(self):
-        outputs = TOOL.render("Example", ["claude-code", "opencode"])
-        rules = set(outputs[".gitattributes"].splitlines())
-
-        for base in (".claude", ".opencode"):
-            for command, name in TOOL.COMMAND_TO_SKILL.items():
-                self.assertIn(f"{base}/skills/{name}/SKILL.md text eol=lf", rules)
-                self.assertIn(f"{base}/commands/{command}.md text eol=lf", rules)
-            self.assertIn(f"{base}/commands/repo-harness-help.md text eol=lf", rules)
-
-    def test_human_owned_and_pointer_paths_are_never_pinned(self):
-        outputs = TOOL.render("Example", ["claude-code", "opencode"])
-        rules = outputs[".gitattributes"]
-        unpinned = (
-            TOOL.RULEBOOK_PATH,
-            "CHANGELOG.md",
-            "README.md",
-            "CLAUDE.md",
-            "AGENTS.md",
-            ".gitignore",
-            ".gitattributes",
-            ".repo-harness/rules/memory.md",
-            ".repo-harness/rules/working-agreements.md",
-            "docs/repo-harness/current-state.md",
-        )
-        for path in unpinned:
-            self.assertNotIn(f"{path} text eol=lf", rules)
+    def test_every_created_file_is_written_with_lf_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outputs = TOOL.render("Example", ["claude-code", "opencode", "pi"])
+            TOOL.write_outputs(root, outputs, TOOL.plan_changes(root, outputs))
+            for relative in outputs:
+                with self.subTest(path=relative):
+                    self.assertNotIn(b"\r", (root / relative).read_bytes())
 
     def test_conflicting_attributes_report_every_protected_path(self):
         outputs = TOOL.render("Example", ["claude-code"])
@@ -10375,19 +10339,14 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
         self.assertIn(".claude/commands/session-start.md", conflicts)
         self.assertNotIn(".repo-harness/check.py", conflicts)
 
-    def test_existing_attributes_preserve_bytes_and_append_only_missing_rules(self):
-        remainder = self.EXPECTED.split(".repo-harness/manifest.json text eol=lf\n", 1)[1]
+    def test_existing_attributes_preserve_bytes_and_append_the_rule(self):
         cases = (
+            (b"*.md text\n", b"*.md text\n" + self.EXPECTED.encode()),
             (
-                b"*.md text\n",
-                b"*.md text\n" + self.EXPECTED.encode(),
+                b"*.md text\r\n" + self.LEGACY_EXACT.replace("\n", "\r\n").encode(),
+                b"*.md text\r\n" + self.LEGACY_EXACT.replace("\n", "\r\n").encode() + b"* text=auto eol=lf\r\n",
             ),
-            (
-                b"*.md text\r\n.repo-harness/check.py text eol=lf\r\n",
-                b"*.md text\r\n.repo-harness/check.py text eol=lf\r\n"
-                + b".repo-harness/manifest.json text eol=lf\r\n"
-                + remainder.replace("\n", "\r\n").encode(),
-            ),
+            (b"* text eol=lf\n", b"* text eol=lf\n" + self.EXPECTED.encode()),
         )
         for original, expected in cases:
             with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
@@ -10397,35 +10356,43 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
                 outputs = TOOL.render("Example", [])
                 plan = TOOL.plan_changes(root, outputs)
 
-                self.assertEqual([item["path"] for item in plan["append"]], [".gitattributes"])
+                entry = next(item for item in plan["append"] if item["path"] == ".gitattributes")
+                self.assertIn("reason", entry)
+                self.assertFalse([item for item in plan["blocked"] if item["path"] == ".gitattributes"])
                 TOOL.write_outputs(root, outputs, plan)
                 self.assertEqual(target.read_bytes(), expected)
 
-    def test_existing_exact_rules_are_byte_identical_and_require_no_write(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            target = root / ".gitattributes"
-            original = b"# human\r\n" + self.EXPECTED.replace("\n", "\r\n").encode() + b"*.md text\r\n"
-            target.write_bytes(original)
-            outputs = TOOL.render("Example", [])
-            plan = TOOL.plan_changes(root, outputs)
+    def test_existing_rule_is_byte_identical_and_requires_no_write(self):
+        for original in (
+            b"# human\r\n* text=auto eol=lf\r\n*.md text\r\n*.png binary\r\n",
+            b"* text=auto eol=lf\n" + self.LEGACY_EXACT.encode(),
+        ):
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                target = root / ".gitattributes"
+                target.write_bytes(original)
+                outputs = TOOL.render("Example", [])
+                plan = TOOL.plan_changes(root, outputs)
 
-            self.assertIn(".gitattributes", [item["path"] for item in plan["existing"]])
-            self.assertNotIn(".gitattributes", [item["path"] for item in plan["append"]])
-            self.assertEqual(TOOL.write_outputs(root, outputs, plan), sorted(set(outputs) - {".gitattributes"}))
-            self.assertEqual(target.read_bytes(), original)
+                self.assertIn(".gitattributes", [item["path"] for item in plan["existing"]])
+                self.assertNotIn(".gitattributes", [item["path"] for item in plan["append"]])
+                self.assertEqual(TOOL.write_outputs(root, outputs, plan), sorted(set(outputs) - {".gitattributes"}))
+                self.assertEqual(target.read_bytes(), original)
 
-    def test_matching_non_lf_attributes_append_without_blocking(self):
+    def test_later_non_lf_lines_reappend_the_rule_at_the_end(self):
         cases = (
             b".repo-harness/check.py text eol=crlf\n",
             b".repo-harness/* text eol=crlf\n",
             b"* text=auto\n",
-            b".repo-harness/check.py text eol=lf\n.repo-harness/** eol=crlf\n",
-            b"[attr]windows text eol=crlf\n.repo-harness/* windows\n",
+            b"* text=auto eol=lf\n.repo-harness/** eol=crlf\n",
+            b"* text=auto eol=lf\n*.bat text eol=crlf\n",
+            b"* text=auto eol=lf\n[attr]windows text eol=crlf\n*.cmd windows\n",
+            b"* text=auto eol=lf\n.repo-harness/* -text\n",
         )
         for original in cases:
             with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
+                subprocess.run(["git", "init", "-q"], cwd=root, check=True)
                 target = root / ".gitattributes"
                 target.write_bytes(original)
                 outputs = TOOL.render("Example", [])
@@ -10433,54 +10400,31 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
 
                 self.assertFalse([item for item in plan["blocked"] if item["path"] == ".gitattributes"])
                 entry = next(item for item in plan["append"] if item["path"] == ".gitattributes")
-                if b"eol=lf\n.repo-harness/**" in original:
-                    self.assertIn("reason", entry)
+                self.assertEqual(entry["content"], self.EXPECTED)
+                self.assertIn("reason", entry)
                 TOOL.write_outputs(root, outputs, plan)
-                self.assertTrue(target.read_bytes().startswith(original))
-                self.assertFalse(TOOL.conflicting_attribute_paths(
-                    target.read_bytes(), TOOL.byte_compared_paths(outputs, TOOL.RULEBOOK_PATH)))
+                self.assertEqual(target.read_bytes(), original + self.EXPECTED.encode())
+                self.assertFalse(TOOL.repository_lf_overridden(target.read_bytes()))
+                result = self.effective(root, ".repo-harness/check.py", "a.bat", "a.cmd", "notes.md")
+                for path in (".repo-harness/check.py", "a.bat", "a.cmd", "notes.md"):
+                    self.assertIn(f"{path}: eol: lf", result)
 
-    def test_attribute_text_auto_append_git_effective_lf(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
-            (root / ".gitattributes").write_bytes(b"* text=auto\n")
-            outputs = TOOL.render("Example", [])
-            plan = TOOL.plan_changes(root, outputs)
-            self.assertFalse(plan["blocked"])
-            self.assertIn(".gitattributes", [item["path"] for item in plan["append"]])
-            TOOL.write_outputs(root, outputs, plan)
-            empty = root / "empty-attributes"
-            empty.write_bytes(b"")
-            result = subprocess.run(
-                ["git", "-c", f"core.attributesFile={empty.as_posix()}", "check-attr", "text", "eol", "--", ".repo-harness/check.py"],
-                cwd=root, env={**os.environ, "GIT_ATTR_NOSYSTEM": "1"},
-                capture_output=True, text=True, check=True)
-            self.assertIn("text: set", result.stdout)
-            self.assertIn("eol: lf", result.stdout)
+    def test_binary_lines_after_the_rule_are_not_overrides(self):
+        for later in (b"*.png binary\n", b"*.zip -text\n", b"*.md text\n", b"*.sh text eol=lf\n"):
+            with self.subTest(later=later):
+                self.assertFalse(TOOL.repository_lf_overridden(b"* text=auto eol=lf\n" + later))
 
-    def test_compatible_broader_attributes_do_not_block_exact_rule_append(self):
-        for original in (b"* text eol=lf\n", b"* text=auto eol=lf\n"):
-            with self.subTest(original=original), tempfile.TemporaryDirectory() as directory:
-                root = Path(directory)
-                target = root / ".gitattributes"
-                target.write_bytes(original)
-                outputs = TOOL.render("Example", [])
-                plan = TOOL.plan_changes(root, outputs)
-
-                self.assertFalse([item for item in plan["blocked"] if item["path"] == ".gitattributes"])
-                TOOL.write_outputs(root, outputs, plan)
-                self.assertEqual(target.read_text(encoding="utf-8"), original.decode() + self.EXPECTED)
-
-    def test_check_reports_only_bounded_attribute_protection(self):
+    def test_check_reports_repository_wide_lf_state(self):
         cases = (
             (b"# human\n" + self.EXPECTED.encode(), "present"),
-            (b"* text=auto\n" + self.EXPECTED.encode(), "present"),
-            (b".repo-harness/check.py text eol=lf\n", "directive-missing"),
-            (b".repo-harness/* text eol=crlf\n", "attribute-conflict"),
+            (b"* text=auto\n" + self.EXPECTED.encode() + self.LEGACY_EXACT.encode(), "present"),
+            (b"* text=auto eol=lf\n*.png binary\n", "present"),
+            (self.LEGACY_EXACT.encode(), "directive-missing"),
+            (b"* text=auto eol=lf\n.repo-harness/* text eol=crlf\n", "attribute-conflict"),
+            (b"* text=auto eol=lf\n*.bat text eol=crlf\n", "attribute-conflict"),
         )
         for attributes, expected_state in cases:
-            with self.subTest(expected_state=expected_state), tempfile.TemporaryDirectory() as directory:
+            with self.subTest(attributes=attributes), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 install(root)
                 (root / ".gitattributes").write_bytes(attributes)
@@ -10489,14 +10433,16 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
                 entry = next(item for item in report["files"] if item["path"] == ".gitattributes")
 
                 self.assertEqual(entry["state"], expected_state)
+                if expected_state == "directive-missing":
+                    self.assertEqual(entry["missing"], [self.RULE])
                 if expected_state == "attribute-conflict":
                     self.assertIn("reason", entry)
                     self.assertIn("suggestion", entry)
                 self.assertEqual(report["writes"], 0)
                 self.assertEqual(report["status"], "current" if expected_state == "present" else "drift")
 
-    def test_autocrlf_checkout_preserves_generated_manifest_checker_contract(self):
-        attributes = "* text=auto\n" + TOOL.render("Example", [])[".gitattributes"]
+    def test_autocrlf_checkout_keeps_harness_and_project_files_lf(self):
+        attributes = TOOL.render("Example", [])[".gitattributes"]
 
         with tempfile.TemporaryDirectory() as directory:
             checkout = Path(directory)
@@ -10508,14 +10454,22 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
                 attributes, encoding="utf-8", newline="\n"
             )
             install(checkout, runtimes=("claude-code", "opencode"))
+            (checkout / "docs").mkdir(exist_ok=True)
+            (checkout / "docs" / "notes.md").write_bytes(b"one\ntwo\n")
+            (checkout / "crlf.txt").write_bytes(b"one\r\ntwo\r\n")
             subprocess.run(["git", "add", "."], cwd=checkout, check=True)
-            for relative in (".repo-harness/check.py", TOOL.MANIFEST_PATH):
+            stored = subprocess.run(
+                ["git", "cat-file", "-p", ":crlf.txt"], cwd=checkout, capture_output=True, check=True
+            ).stdout
+            self.assertEqual(stored, b"one\ntwo\n")
+            checked = (".repo-harness/check.py", TOOL.MANIFEST_PATH, "docs/notes.md", "crlf.txt")
+            for relative in checked:
                 (checkout / relative).unlink()
             subprocess.run(
                 ["git", "checkout-index", "--all", "--force"], cwd=checkout, check=True
             )
 
-            for relative in (".repo-harness/check.py", TOOL.MANIFEST_PATH):
+            for relative in checked:
                 self.assertNotIn(b"\r\n", (checkout / relative).read_bytes())
             result = subprocess.run(
                 [sys.executable, ".repo-harness/check.py"],
@@ -10549,7 +10503,6 @@ class RepositoryLineEndingContractTests(unittest.TestCase):
 
         self.assertIn(".claude/skills/repo-harness-session-start/SKILL.md", conflicts)
         self.assertNotIn(".repo-harness/check.py", conflicts)
-
 
 class GeneratedCheckScriptTests(unittest.TestCase):
     """The generated harness must be able to check its own runtime copies without the builder."""
